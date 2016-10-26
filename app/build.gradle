@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
+
     defaultConfig {
         applicationId "com.appster.dentamatch"
         minSdkVersion 19
@@ -11,10 +12,28 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            buildConfigField("String", "API_BASE_URL", '"http://52.220.29.25/"')
+        }
+        qa {
+            signingConfig signingConfigs.debug
+            debuggable true
+            minifyEnabled false
+            buildConfigField("String", "API_BASE_URL", '"http://52.77.9.26/"')
+        }
+        staging {
+            signingConfig signingConfigs.debug
+            debuggable true
+            minifyEnabled false
+            buildConfigField("String", "API_BASE_URL", '"http://52.220.30.43/"')
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "API_BASE_URL", '"http://52.220.30.43/"')
         }
     }
 }
