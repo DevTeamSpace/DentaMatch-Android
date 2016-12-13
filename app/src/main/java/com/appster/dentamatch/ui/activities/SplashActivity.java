@@ -20,8 +20,8 @@ public class SplashActivity extends BaseActivity implements Runnable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_splash);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
+//        setContentView(R.layout.activity_main);
          /* Service starts to get FCM token if not saved in preference
         * */
 //        if(TextUtils.isEmpty(AppPreferences.getInstance().getStringPreference(Constants.FCM_TOKEN))) {

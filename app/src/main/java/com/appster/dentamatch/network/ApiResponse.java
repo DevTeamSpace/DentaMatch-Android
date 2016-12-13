@@ -1,7 +1,7 @@
 package com.appster.dentamatch.network;
 
+import com.appster.dentamatch.model.response.SignInResponse;
 import com.appster.dentamatch.model.response.SignUpResponse;
-import com.google.android.gms.signin.internal.SignInResponse;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
