@@ -1,25 +1,43 @@
-/captures
-.externalNativeBuild
 
-# Built application files
+# Gradle
+.gradle
+gradlew.bat
+build
 /build
-
-# Crashlytics configuations
-com_crashlytics_export_strings.xml
-
-# Local configuration file (sdk path, etc)
+/local.properties
 local.properties
+reports
+/captures
 
-# Gradle generated files
-.gradle/
+# Maven
+target
+pom.xml.*
+release.properties
+gen-external-apklibs
 
-# Signing files
-.signing/
+# Eclipse
+.classpath
+.project
+.settings
+eclipsebin
 
-# Sonar files
-.sonar/
-sonar-project.properties
-
-# User-specific configurations
+# IntelliJ IDEA
+.idea
+/.idea
 *.iml
-.idea/
+*.ipl
+*.iws
+classes/
+idea-classes/
+coverage-error.log
+/.idea/workspace.xml
+/.idea/libraries
+
+# Android
+gen
+bin
+project.properties
+out
+
+# Finder
+.DS_Store

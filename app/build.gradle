@@ -1,0 +1,149 @@
+apply plugin: 'com.android.application'
+
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
+    defaultConfig {
+        applicationId "com.appster.dentamatch"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    //Build types of App
+    buildTypes {
+        release {
+            lintOptions {
+                disable 'MissingTranslation'
+            }
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = outputFile.name.replace('.apk', "-${versionName}.apk")
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+    }
+
+    //Signing config for release build
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    //Different flavors of build
+    flavorDimensions "environment"
+
+    productFlavors {
+        QA {
+            dimension "environment"
+            buildConfigField "String", "BASE_URL", "\"http:\""
+            minSdkVersion 21
+        }
+
+        Dev {
+            dimension "environment"
+            buildConfigField "String", "BASE_URL", "\"http:jhhjfgh\""
+            minSdkVersion 21
+        }
+        Prod {
+            dimension "environment"
+            buildConfigField "String", "BASE_URL", "\"http:\""
+            resValue "string", "app_name", "AppFlavor1"
+            //minSdkVersion 21
+        }
+
+    }
+}
+
+ext {
+    //supportLibrary Version
+    supportLibrary = '25.0.1'
+
+    //Play services Version
+    playServiceVersion = '10.0.0'
+
+    //fireBase Version
+    fireBaseLibrary = '10.0.0'
+
+    //leakCanary Version
+    leakCanaryLibrary = '1.5'
+
+    //Retrofit Version
+    retrofitVersion = '2.1.0'
+
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    //Firebase libs
+    compile "com.google.firebase:firebase-messaging:${fireBaseLibrary}"
+
+    //Google Support libs
+    compile "com.android.support:design:${supportLibrary}"
+    compile "com.android.support:recyclerview-v7:${supportLibrary}"
+    compile "com.android.support:cardview-v7:${supportLibrary}"
+    compile "com.android.support:appcompat-v7:${supportLibrary}"
+    compile "com.android.support:support-annotations:${supportLibrary}"
+    compile 'com.android.support:multidex:1.0.1'
+
+
+    //Google Play service libs
+    compile "com.google.android.gms:play-services-location:${playServiceVersion}"
+    compile "com.google.android.gms:play-services-auth:${playServiceVersion}"
+
+
+    //Third party libs
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'cat.ereza:customactivityoncrash:1.5.0'
+    compile 'com.orhanobut:hawk:2.0.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.12.0'
+
+    compile "com.squareup.leakcanary:leakcanary-android:${leakCanaryLibrary}"
+    compile "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryLibrary}"
+    compile "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryLibrary}"
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
+    compile 'io.reactivex:rxjava:1.1.8'
+    compile 'io.reactivex:rxandroid:1.2.1'
+
+    testCompile 'junit:junit:4.12'
+}
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'
