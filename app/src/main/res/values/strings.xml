@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">DentaMatch</string>
+
+    <!-- font style name-->
+    <string name="font_light">Roboto-Light.ttf</string>
+    <string name="font_medium">Roboto-Medium.ttf</string>
+
+    <!--  Intro screen string-->
+    <string name="skip_button">Skip</string>
+    <string name="done_button">Done</string>
+
+    <string name="joyride_page1_text1">Search</string>
+    <string name="joyride_page1_text2">An easy way to find local businesses, services and products. Get only the most relevant results. No fluff.</string>
+
+    <string name="joyride_page2_text1">Curated List</string>
+    <string name="joyride_page2_text2">Create, maintain and share your own curated list of businesses. You can also browse other people’s curated lists.</string>
+
+    <string name="joyride_page3_text1">Rate and Review</string>
+    <string name="joyride_page3_text2">Share your thoughts on local businesses and services through ratings and reviews.</string>
+
+    <string name="joyride_page4_text1">Shop</string>
+    <string name="joyride_page4_text2">Buy products and services spanning across multiple categories and track them with ease.</string>
+
+    <!--  Error string-->
+    <string name="error_no_network_connection">No Network Connection</string>
+    <string name="error_unable_reterive_email">Unable to reterive email address from your social account.</string>
+    <string name="error_unable_access_account">Unable to access to your account.</string>
+
+
+
 </resources>

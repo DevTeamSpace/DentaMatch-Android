@@ -1,4 +1,4 @@
-package com.appster.dentamatch;
+package com.appster.dentamatch.commonstructure;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.appster.dentamatch", appContext.getPackageName());
+        assertEquals("com.example.test.commonstructure", appContext.getPackageName());
     }
 }

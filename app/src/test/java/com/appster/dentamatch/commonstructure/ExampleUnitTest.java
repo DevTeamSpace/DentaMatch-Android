@@ -1,4 +1,4 @@
-package com.appster.dentamatch;
+package com.appster.dentamatch.commonstructure;
 
 import org.junit.Test;
 
