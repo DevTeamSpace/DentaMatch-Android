@@ -25,7 +25,22 @@
     <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_unable_reterive_email">Unable to reterive email address from your social account.</string>
     <string name="error_unable_access_account">Unable to access to your account.</string>
+    <!--register & Login & Forgot password screen-->
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="preferred_location_label">Preferred Job Location</string>
+    <string name="login_label">Login</string>
+    <string name="send_label">Send</string>
 
-
+    <string name="register_label">Register</string>
+    <string name="forgot_password_label">Forgot Password?</string>
+    <string name="name_label">Name</string>
+    <string name="register_help_info">Helps recruiters to find you easily</string>
+    <string name="login_info_label">Login using your registered email</string>
+    <string name="forgot_password_title">Enter your email address below and we’ll send you the instructions on how to change your password.</string>
+    <string name="old_password_label">Old Password</string>
+    <string name="new_password_label">New Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
+    <string name="save_label">save</string>
 
 </resources>

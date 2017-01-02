@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/login_layout_header_view"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/bg_register">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white_color" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_logo" />
+
+        <LinearLayout
+            android:id="@+id/login_view_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_toLeftOf="@+id/dummy_view_id"
+            android:orientation="vertical">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/register_tv_register"
+                style="@style/text_view_normal"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_small_3"
+                android:gravity="center"
+                android:text="@string/register_label"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_medium" />
+
+            <ImageView
+                android:id="@+id/register_iv_peg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_click_indicator"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/dummy_view_id"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:id="@+id/login_view_login"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom"
+            android:layout_toRightOf="@+id/dummy_view_id"
+            android:orientation="vertical">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/login_tv_login"
+                style="@style/text_view_normal"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_small_3"
+                android:gravity="center"
+                android:text="@string/login_label"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_medium" />
+            />
+
+            <ImageView
+                android:id="@+id/login_iv_peg"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_click_indicator" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/login_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_btn_register"
+        android:layout_below="@+id/login_layout_header_view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/login_layout_login_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_ll_header_view_id"
+                android:layout_marginTop="@dimen/margin_55"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    style="@style/text_view_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_vertical"
+                    android:text="@string/login_info_label"
+                    android:textColor="@color/text_default_color"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/login_input_layout_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:clipToPadding="false"
+                    android:gravity="bottom"
+
+                    android:paddingTop="@dimen/padding_input_layout"
+                    app:hintTextAppearance="@style/edit_input_layout">
+
+                    <EditText
+                        android:id="@+id/login_et_email"
+
+                        style="@style/edit_text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:background="@drawable/edit_text_selector"
+                        android:drawablePadding="10dp"
+                        android:drawableStart="@drawable/bubble_shadow"
+                        android:hint="@string/email_label" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/login_input_layout_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:clipToPadding="false"
+
+                    android:gravity="bottom"
+                    android:paddingTop="@dimen/padding_input_layout"
+                    app:hintTextAppearance="@style/edit_input_layout">
+
+                    <EditText
+                        android:id="@+id/login_et_password"
+                        style="@style/edit_text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:background="@drawable/edit_text_selector"
+                        android:drawablePadding="10dp"
+                        android:drawableStart="@drawable/bubble_shadow"
+                        android:hint="@string/password_label" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/login_tv_forgot_password"
+                    style="@style/text_view_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:gravity="center"
+                    android:text="@string/forgot_password_label"
+                    android:textColor="@color/color_forgot_pwd" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/login_layout_register_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login_ll_header_view_id"
+                android:layout_marginBottom="@dimen/margin_19"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/register_input_layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_55"
+                    android:clipToPadding="false"
+                    android:gravity="bottom"
+                    android:paddingTop="@dimen/padding_input_layout"
+                    app:hintTextAppearance="@style/edit_input_layout">
+
+
+                    <EditText
+                        style="@style/edit_text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:background="@drawable/edit_text_selector"
+                        android:drawablePadding="@dimen/padding_drawable"
+                        android:drawableStart="@drawable/bubble_shadow"
+                        android:hint="@string/name_label"
+                        android:paddingTop="@dimen/padding_drawable"
+                        android:textColor="@color/text_default_color" />
+                </android.support.design.widget.TextInputLayout>
+                <!--<include-->
+                <!--android:id="@+id/et_name"-->
+                <!--layout="@layout/layout_edit_text"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="60dp"-->
+                <!--android:layout_marginLeft="@dimen/margin_normal"-->
+                <!--android:layout_marginRight="@dimen/margin_normal"-->
+                <!--android:layout_marginTop="@dimen/margin_55"-->
+
+                <!--/>-->
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/register_input_layout_email"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:clipToPadding="false"
+
+                    android:gravity="bottom"
+                    android:paddingTop="@dimen/padding_input_layout"
+
+                    app:hintTextAppearance="@style/edit_input_layout">
+
+
+                    <EditText
+                        style="@style/edit_text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:background="@drawable/edit_text_selector"
+                        android:drawablePadding="@dimen/padding_drawable"
+                        android:drawableStart="@drawable/bubble_shadow"
+                        android:hint="@string/email_label"
+                        android:paddingTop="@dimen/padding_drawable" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/register_input_layout_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:clipToPadding="false"
+                    android:gravity="bottom"
+                    android:paddingTop="@dimen/padding_input_layout"
+
+                    app:hintTextAppearance="@style/edit_input_layout">
+
+                    <EditText
+                        style="@style/edit_text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:layout_marginTop="@dimen/margin_19"
+                        android:background="@drawable/edit_text_selector"
+                        android:drawablePadding="@dimen/padding_drawable"
+                        android:drawableStart="@drawable/bubble_shadow"
+                        android:hint="@string/password_label" />
+                </android.support.design.widget.TextInputLayout>
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:id="@+id/register_input_layout_job_location"-->
+
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="60dp"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginTop="@dimen/margin_19"-->
+                <!--android:clipToPadding="false"-->
+
+                <!--android:gravity="bottom"-->
+                <!--android:paddingTop="4dp"-->
+                <!--app:hintTextAppearance="@style/edit_input_layout">-->
+
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    style="@style/text_view_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawablePadding="@dimen/padding_drawable"
+                    android:drawableStart="@drawable/bubble_shadow"
+                    android:hint="@string/preferred_location_label" />
+                <!--</android.support.design.widget.TextInputLayout>-->
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    style="@style/text_view_normal"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:drawablePadding="@dimen/padding_drawable"
+                    android:drawableStart="@drawable/bubble_shadow"
+                    android:gravity="center"
+                    android:text="@string/register_help_info"
+                    android:textColor="@color/register_help_color" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.appster.dentamatch.widget.CustomButton
+        android:id="@+id/login_btn_register"
+        style="@style/button_style"
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/com_facebook_blue"
+        android:gravity="center"
+        android:text="@string/login_label"
+        android:textColor="@color/white_color_pacity" />
+
+</RelativeLayout>

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.preferences.AppPreferences;
+import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.utils.Constants;
 
 /*
@@ -51,7 +52,8 @@ public class SplashActivity extends BaseActivity implements Runnable {
     public void run() {
 
         String accessToken = AppPreferences.getInstance().getStringPreference(Constants.ACCESS_TOKEN);
-
+        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        finish();
         if (!TextUtils.isEmpty(accessToken)) {
         }
     }

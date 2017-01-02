@@ -14,17 +14,24 @@
     <dimen name="default_padding">10dp</dimen>
     <dimen name="default_padding_20">20dp</dimen>
 
-    <dimen name="textSizeXLarge">20sp</dimen>
-    <dimen name="textSizeLarge">18sp</dimen>
-    <dimen name="textSizeMedium">16sp</dimen>
-    <dimen name="textSizeNormal">14sp</dimen>
-    <dimen name="textSizeSmall">12sp</dimen>
+
+
+    <dimen name="text_size_normal">15sp</dimen>
+    <dimen name="text_size_medium">13sp</dimen>
+
 
     <!--Default Margin-->
     <dimen name="margin_small_3">3dp</dimen>
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_medium">8dp</dimen>
+    <dimen name="margin_normal">25.9dp</dimen>
     <dimen name="margin_large">16dp</dimen>
     <dimen name="margin_xlarge">32dp</dimen>
+    <dimen name="margin_55">55dp</dimen>
+    <dimen name="margin_36">36dp</dimen>
+    <dimen name="margin_21">21dp</dimen>
+    <dimen name="margin_19">19dp</dimen>
+    <dimen name="padding_drawable">10dp</dimen>
+    <dimen name="padding_input_layout">3dp</dimen>
 
 </resources>

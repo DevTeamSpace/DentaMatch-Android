@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".AppController"
@@ -45,14 +45,14 @@
         </activity>-->
 
         <activity
-            android:name=".ui.activities.JobLocationActivity"
+            android:name=".ui.activities.SplashActivity"
             android:screenOrientation="userPortrait">
 
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -66,6 +66,15 @@
             </intent-filter>
         </activity>
         <activity android:name="com.appster.dentamatch.ui.auth.AppIntroActivity" />
+        <activity
+            android:name="com.appster.dentamatch.ui.auth.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.appster.dentamatch.ui.auth.ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.appster.dentamatch.ui.auth.ResetPasswordActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#0470c0</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#303F9F</color>
 
     <color name="semi_transparent_gray">#22000000</color>
     <color name="transparent">#00000000</color>
     <color name="light_gray">#cccccc</color>
+    <color name="start_color">#002c6c</color>
+    <color name="end_color">#950e173e</color>
+    <color name="center_color">#0e199f</color>
+    <color name="white_color">#ffffff</color>
+    <color name="white_color_pacity">#50ffffff</color>
+    <color name="edt_boundry_color">#e4e4e4</color>
+    <color name="edt_boundry_highlight_color">#046dbb</color>
+    <color name="edt_hint_color">#959595</color>
+    <color name="register_help_color">#a6a6a6</color>
+    <color name="text_default_color">#383838</color>
+    <color name="color_forgot_pwd">#0470c0</color>
 </resources>

@@ -34,12 +34,12 @@ public class CustomButton extends Button {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomButton);
         if (a.hasValue(R.styleable.CustomButton_customBackground)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                setBackground(a.getDrawable(R.styleable.CustomButton_customBackground));
+//                setBackground(a.getDrawable(R.styleable.CustomButton_customBackground));
             } else {
-                setBackgroundDrawable(a.getDrawable(R.styleable.CustomButton_customBackground));
+//                setBackgroundDrawable(a.getDrawable(R.styleable.CustomButton_customBackground));
             }
         } else
-            setBackgroundResource(R.drawable.round_corner_gray);
+//            setBackgroundResource(R.drawable.round_corner_gray);
         a.recycle();
 
     }
