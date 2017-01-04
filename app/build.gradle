@@ -17,8 +17,10 @@ android {
     dataBinding {
         enabled true;
     }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
+
     defaultConfig {
         applicationId "com.appster.dentamatch"
         minSdkVersion 15
@@ -44,10 +46,6 @@ android {
         debug {
             minifyEnabled false
         }
-    }
-
-    dataBinding {
-        enabled true
     }
 
     applicationVariants.all { variant ->
