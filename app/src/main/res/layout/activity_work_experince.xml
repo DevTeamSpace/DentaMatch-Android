@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_next_work_exp">
+
+            <LinearLayout
+                android:id="@+id/layout_parent_scroll_work_exp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="@dimen/margin_25">
+
+                    <ProgressBar
+                        android:id="@+id/create_profile_progress_bar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="122dp"
+                        android:layout_height="122dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/circular_shape"
+                        android:indeterminate="false"
+                        android:max="100"
+                        android:progress="5"
+                        android:progressDrawable="@drawable/circuler_progress" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/create_profile_iv_profile_icon"
+                        android:layout_width="@dimen/profile_image_height"
+                        android:layout_height="@dimen/profile_image_height"
+                        android:layout_centerInParent="true"
+                        android:src="@color/black_color" />
+                </RelativeLayout>
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    style="@style/text_view_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="@string/where_you_work"
+                    android:textColor="@color/black_color"
+                    android:textSize="@dimen/text_size_xlarge"
+                    app:customFont="@string/font_bold" />
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    style="@style/text_view_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:gravity="center_horizontal"
+                    android:text="@string/lable_relevant_exp"
+                    android:textColor="@color/edt_hint_color"
+                    android:textSize="@dimen/text_size_normal"
+                    app:customFont="@string/font_regular" />
+
+                <include layout="@layout/layout_work_exp" />
+
+                <include layout="@layout/layout_reference" />
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/btn_next_work_exp"
+            style="@style/button_style"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:text="@string/lable_next"
+            android:textColor="@color/white_color"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:textSize="@dimen/text_size_normal" />
+    </RelativeLayout>
+
+</layout>

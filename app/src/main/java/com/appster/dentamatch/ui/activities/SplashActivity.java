@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +14,7 @@ import com.appster.dentamatch.utils.Constants;
 /*
  * Written by Appster on 14/04/16.
  */
-public class SplashActivity extends BaseActivity implements Runnable {
+public class SplashActivity extends Activity implements Runnable {
 
     private static final int SPLASH_TIME = 2000;
     private Handler handler = new Handler();

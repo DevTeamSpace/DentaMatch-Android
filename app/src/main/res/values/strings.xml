@@ -3,7 +3,9 @@
 
     <!-- font style name-->
     <string name="font_light">Roboto-Light.ttf</string>
+    <string name="font_regular">Roboto-Regular.ttf</string>
     <string name="font_medium">Roboto-Medium.ttf</string>
+    <string name="font_bold">Roboto-Bold.ttf</string>
 
     <!--  Intro screen string-->
     <string name="skip_button">Skip</string>
@@ -38,9 +40,44 @@
     <string name="register_help_info">Helps recruiters to find you easily</string>
     <string name="login_info_label">Login using your registered email</string>
     <string name="forgot_password_title">Enter your email address below and we’ll send you the instructions on how to change your password.</string>
+    <!--  Reset password string-->
+
     <string name="old_password_label">Old Password</string>
     <string name="new_password_label">New Password</string>
     <string name="confirm_password_label">Confirm Password</string>
     <string name="save_label">save</string>
+    <!--  Bottom sheet string-->
+
+    <string name="label_take_photo">Take photo</string>
+    <string name="label_choose_gallary">Choose from gallery</string>
+    <string name="dental_state_board">DENTAL STATE BOARD</string>
+    <string name="lable_licence">LICENSE</string>
+    <string name="lable_licence_number">License Number</string>
+    <string name="label_upload_photo">Upload Photo</string>
+    <string name="lable_state">State</string>
+    <string name="lable_next">Next</string>
+    <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
+    <string name="decode_stream_alert">Unbale to parse this image.</string>
+    <string name="lable_not_now">Not now</string>
+    <string name="profile1_text">Let’s start with creating your profile.</string>
+    <string name="lable_job_title">Current Job Title</string>
+    <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
+    <!--alert button-->
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!--work experince-->
+    <string name="where_you_work">Where do you work?</string>
+    <string name="lable_relevant_exp">Relevant work experience strengthens your profile</string>
+    <string name="year_of_experice">Years Of Experience</string>
+    <string name="office_name">Office Name</string>
+    <string name="office_address">Office Address</string>
+    <string name="city">City</string>
+    <string name="reference_name">Reference Name</string>
+    <string name="reference_mobile">Reference Mobile No. (Optional)</string>
+    <string name="reference_email">Reference Email (Optional)</string>
+
 
 </resources>

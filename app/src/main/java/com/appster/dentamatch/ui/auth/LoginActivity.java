@@ -7,12 +7,14 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.activities.BaseActivity;
+import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 
 import org.w3c.dom.Text;
 
@@ -22,7 +24,8 @@ import org.w3c.dom.Text;
 public class LoginActivity extends Activity implements View.OnClickListener {
     private ImageView ivRegisterPeg, ivLoginPeg;
     private LinearLayout layoutRegisterSelector, layoutLoginSelector, layoutOnlyRegister, layoutOnlyLogin;
-    private TextView tvLogin, tvRegister,tvForgotPassword;
+    private TextView tvLogin, tvRegister, tvForgotPassword;
+    private Button btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         tvRegister = (TextView) findViewById(R.id.register_tv_register);
         tvLogin = (TextView) findViewById(R.id.login_tv_login);
         tvForgotPassword = (TextView) findViewById(R.id.login_tv_forgot_password);
+        btnRegister = (Button) findViewById(R.id.login_btn_register);
         ivRegisterPeg = (ImageView) findViewById(R.id.register_iv_peg);
         ivLoginPeg = (ImageView) findViewById(R.id.login_iv_peg);
         layoutRegisterSelector = (LinearLayout) findViewById(R.id.login_view_register);
@@ -46,6 +50,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         layoutLoginSelector.setOnClickListener(this);
         layoutRegisterSelector.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
 
     }
 
@@ -57,10 +62,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.login_view_register:
                 showSelectedView(false);
+                break;
 
+            case R.id.login_btn_register:
+                startActivity(new Intent(this, CreateProfileActivity1.class));
                 break;
             case R.id.login_tv_forgot_password:
-               startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
 
                 break;
         }
