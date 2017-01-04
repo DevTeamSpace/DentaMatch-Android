@@ -55,7 +55,7 @@ public class CustomButton extends Button {
         a.recycle();
         setGravity(Gravity.CENTER);
         setPadding(getResources().getDimensionPixelSize(R.dimen.default_padding), 0, getResources().getDimensionPixelSize(R.dimen.default_padding), 0);
-        setAllCaps(true);
+//        setAllCaps(true);
     }
 
     public void setCustomFont(Context ctx, String asset) {

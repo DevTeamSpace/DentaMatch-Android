@@ -127,7 +127,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/login_input_layout_email"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/edit_height"
+
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_19"
                     android:clipToPadding="false"
@@ -151,7 +152,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/login_input_layout_password"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/edit_height"
+
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_19"
                     android:clipToPadding="false"
@@ -197,7 +199,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/register_input_layout_name"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/edit_height"
+
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_55"
                     android:clipToPadding="false"
@@ -230,9 +233,9 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/register_input_layout_email"
-
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+
+                    android:layout_height="@dimen/edit_height"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_19"
                     android:clipToPadding="false"
@@ -257,7 +260,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/register_input_layout_password"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/edit_height"
+
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_19"
                     android:clipToPadding="false"
@@ -294,7 +298,8 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/edit_height"
+
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_19"

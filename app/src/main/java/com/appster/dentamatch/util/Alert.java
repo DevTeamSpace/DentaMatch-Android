@@ -27,7 +27,7 @@ public class Alert {
         return dialog;
     }
 
-    public static AlertDialog.Builder createYesNoAlert(Context context,
+    public static AlertDialog.Builder createYesNoAlert(Context context,String btnPositive,String btnNegative,
                                                        String title, String message, final OnAlertClickListener listener) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(
                 new ContextThemeWrapper(context,
@@ -35,22 +35,23 @@ public class Alert {
         if (title != null)
             dialog.setTitle(title);
         else
-            dialog.setTitle("Information");
+            dialog.setTitle("");
         dialog.setMessage(message);
-        dialog.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(btnPositive, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (listener != null)
                     listener.onPositive(dialogInterface);
             }
         });
-        dialog.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(btnNegative, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (listener != null)
                     listener.onNegative(dialogInterface);
             }
         });
+        dialog.show();
         return dialog;
     }
 

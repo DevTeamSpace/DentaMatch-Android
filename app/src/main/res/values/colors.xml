@@ -11,6 +11,7 @@
     <color name="end_color">#950e173e</color>
     <color name="center_color">#0e199f</color>
     <color name="white_color">#ffffff</color>
+    <color name="black_color">#0f183e</color>
     <color name="white_color_pacity">#50ffffff</color>
     <color name="edt_boundry_color">#e4e4e4</color>
     <color name="edt_boundry_highlight_color">#046dbb</color>
@@ -18,4 +19,15 @@
     <color name="register_help_color">#a6a6a6</color>
     <color name="text_default_color">#383838</color>
     <color name="color_forgot_pwd">#0470c0</color>
+
+    <!--bottom sheet view colors-->
+    <color name="color_bottom_sheet_text">#54000000</color>
+    <color name="bottom_sheet_start_color">#80ffffff</color>
+    <color name="bottom_sheet_center_color">#40ffffff</color>
+    <color name="bottom_sheet_end_color">#ffffff</color>
+    <!--create profile-->
+    <color name="cell_color">#f8f8f8</color>
+    <color name="cell_text_color">#383838</color>
+    <color name="progress_color">#a3d977</color>
+
 </resources>

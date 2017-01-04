@@ -17,6 +17,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -92,5 +93,9 @@ public class Utils {
         txv.setMovementMethod(LinkMovementMethod.getInstance());
         txv.setText(spanString, TextView.BufferType.SPANNABLE);
         txv.setSelected(true);
+    }
+
+    public static void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

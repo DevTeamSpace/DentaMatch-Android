@@ -16,6 +16,10 @@
 
 
 
+    <dimen name="text_size_header">29sp</dimen>
+    <dimen name="text_size_xlarge">23sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_normal">15sp</dimen>
     <dimen name="text_size_medium">13sp</dimen>
 
@@ -29,9 +33,23 @@
     <dimen name="margin_xlarge">32dp</dimen>
     <dimen name="margin_55">55dp</dimen>
     <dimen name="margin_36">36dp</dimen>
+    <dimen name="margin_25">25dp</dimen>
     <dimen name="margin_21">21dp</dimen>
     <dimen name="margin_19">19dp</dimen>
     <dimen name="padding_drawable">10dp</dimen>
     <dimen name="padding_input_layout">3dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_29">29dp</dimen>
+    <dimen name="line_height">1dp</dimen>
+
+    <!--profile-->
+    <dimen name="camera_image_size">142dp</dimen>
+    <dimen name="profile_image_width">102dp</dimen>
+    <dimen name="profile_image_height">102dp</dimen>
+    <dimen name="cell_height">55dp</dimen>
+    <dimen name="margin_43">43dp</dimen>
+    <dimen name="edit_height">62dp</dimen>
+    <dimen name="profile_header_height">250dp</dimen>
+
 
 </resources>

@@ -14,6 +14,9 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 serverProperties.load(new FileInputStream(serverConfigPropertiesFile))
 
 android {
+    dataBinding {
+        enabled true;
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
@@ -151,6 +154,7 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
     compile 'io.reactivex:rxjava:1.1.8'

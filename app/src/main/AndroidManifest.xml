@@ -40,6 +40,28 @@
             </intent-filter>
         </activity>-->
 
+        <activity
+            android:name=".ui.activities.SplashActivity"
+
+            android:screenOrientation="userPortrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "www.vconnect.com" -->
+                <data
+                    android:host="www.vconnect.com"
+                    android:pathPrefix="/"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.appster.dentamatch.ui.auth.AppIntroActivity" />
         <activity
             android:name="com.appster.dentamatch.ui.auth.LoginActivity"
@@ -49,6 +71,18 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.appster.dentamatch.ui.auth.ResetPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.appster.dentamatch.ui.profile.CreateProfileActivity1"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.appster.dentamatch.ui.profile.CreateProfileActivity2"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.appster.dentamatch.ui.profile.WorkExperienceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.termsnprivacy.TermsAndConditionActivity"
             android:screenOrientation="portrait" />
 
     </application>

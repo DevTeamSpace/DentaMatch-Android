@@ -27,12 +27,8 @@ public class Constants {
     }
 
     public interface REQUEST_CODE {
-        int REQUEST_CODE_LOGIN = 100;
-        int FILTER_REQUEST_CODE = 101;
-        int REQUEST_GALLERY = 102;
-        int REQUEST_CAMERA = 103;
-        int REQUEST_CODE_VOICE_SEARCH = 104;
-        int REQUEST_CODE_FIRST_LOGIN = 105;
+        int REQUEST_CODE_CAMERA = 1901;
+        int REQUEST_CODE_GALLERY = 1902;
 
         int REQUEST_CODE_WRITE_SD_CARD = 200;
         int REQUEST_CODE_LOCATION_ACCESS = 201;
