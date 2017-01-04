@@ -8,7 +8,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.ui.BaseActivity;
+import com.appster.dentamatch.ui.common.BaseActivity;
 
 public class Alert {
 

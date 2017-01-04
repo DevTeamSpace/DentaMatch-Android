@@ -42,7 +42,7 @@
         </activity>-->
 
         <activity
-            android:name=".ui.activities.SplashActivity"
+            android:name=".ui.common.SplashActivity"
 
             android:screenOrientation="userPortrait">
 

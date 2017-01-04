@@ -18,8 +18,8 @@ import android.widget.ProgressBar;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
-import com.appster.dentamatch.ui.BaseActivity;
-import com.appster.dentamatch.ui.Constants;
+import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.widget.BottomSheetView;

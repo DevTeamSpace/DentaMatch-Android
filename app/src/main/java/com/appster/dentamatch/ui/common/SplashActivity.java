@@ -1,10 +1,9 @@
-package com.appster.dentamatch.ui.activities;
+package com.appster.dentamatch.ui.common;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.auth.LoginActivity;

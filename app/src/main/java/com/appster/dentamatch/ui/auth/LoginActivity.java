@@ -3,7 +3,6 @@ package com.appster.dentamatch.ui.auth;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.ui.BaseActivity;
-import com.appster.dentamatch.ui.BaseActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by virender on 13/12/16.

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.appster.dentamatch.R;
-import static com.appster.dentamatch.ui.Constants.BundleKey;
+import static com.appster.dentamatch.util.Constants.BundleKey;
 import com.appster.dentamatch.widget.CustomTextView;
 
 

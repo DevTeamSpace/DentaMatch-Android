@@ -4,9 +4,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivityTermsAndConditionBinding;
 import com.appster.dentamatch.databinding.ActivityWorkExperinceBinding;
-import com.appster.dentamatch.ui.BaseActivity;
+import com.appster.dentamatch.ui.common.BaseActivity;
 
 /**
  * Created by virender on 04/01/17.

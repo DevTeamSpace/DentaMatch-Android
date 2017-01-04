@@ -3,7 +3,7 @@ package com.appster.dentamatch.ui.auth;
 import android.os.Bundle;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.ui.BaseActivity;
+import com.appster.dentamatch.ui.common.BaseActivity;
 
 /**
  * Created by virender on 30/12/16.

@@ -2,7 +2,7 @@ package com.appster.dentamatch.util.socialhelper;
 
 import android.content.Intent;
 
-import com.appster.dentamatch.ui.BaseActivity;
+import com.appster.dentamatch.ui.common.BaseActivity;
 
 import static com.appster.dentamatch.util.LogUtils.makeLogTag;
 

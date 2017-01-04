@@ -7,8 +7,8 @@ import android.view.View;
 
 import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.ui.BaseActivity;
-import com.appster.dentamatch.ui.Constants;
+import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.appster.dentamatch.util.PlayServicesUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -19,7 +19,7 @@ import com.appster.dentamatch.util.socialhelper.SocialMediaHelper;
 import com.appster.dentamatch.util.socialhelper.SocialProfile;
 import com.appster.dentamatch.util.socialhelper.SocialType;
 
-import static com.appster.dentamatch.ui.Constants.ACTIVITIES.SWITCH_ACTIVITY;
+import static com.appster.dentamatch.util.Constants.ACTIVITIES.SWITCH_ACTIVITY;
 
 public class SwitchActivity extends BaseActivity implements SocialAuthListener<SocialProfile> {
 

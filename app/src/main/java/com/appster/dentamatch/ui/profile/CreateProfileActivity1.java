@@ -20,11 +20,10 @@ import android.widget.ArrayAdapter;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityCreateProfile1Binding;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
-import com.appster.dentamatch.ui.Constants;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.PermissionUtils;
-import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.BottomSheetView;
 import com.squareup.picasso.Picasso;
 

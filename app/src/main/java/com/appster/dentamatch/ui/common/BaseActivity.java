@@ -1,4 +1,4 @@
-package com.appster.dentamatch.ui;
+package com.appster.dentamatch.ui.common;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,16 +14,8 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 
-import static com.appster.dentamatch.ui.Constants.FRAGMENTS;
-
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.util.Alert;
-import com.appster.dentamatch.util.Utils;
-
-import retrofit2.Call;
+import com.appster.dentamatch.util.Constants;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -38,7 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Toast mToast;
 
 
-    public static BaseFragment getFragment(FRAGMENTS fragmentId) {
+    public static BaseFragment getFragment(Constants.FRAGMENTS fragmentId) {
         BaseFragment fragment = null;
         switch (fragmentId) {
             case TEST_FRAGMENT:
@@ -184,7 +176,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public Fragment pushFragment(FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack, boolean shouldAdd, ANIMATION_TYPE animationType) {
+    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack, boolean shouldAdd, ANIMATION_TYPE animationType) {
         try {
             BaseFragment fragment = getFragment(fragmentId);
             if (fragment == null) return null;
@@ -218,35 +210,35 @@ public abstract class BaseActivity extends AppCompatActivity {
         return null;
     }
 
-    public void pushFragment(FRAGMENTS fragmentId) {
+    public void pushFragment(Constants.FRAGMENTS fragmentId) {
         pushFragment(fragmentId, null, ANIMATION_TYPE.DEFAULT);
     }
 
-    public void pushFragment(FRAGMENTS fragmentId, ANIMATION_TYPE animationType) {
+    public void pushFragment(Constants.FRAGMENTS fragmentId, ANIMATION_TYPE animationType) {
         pushFragment(fragmentId, null, animationType);
     }
 
-    public Fragment pushFragment(FRAGMENTS fragmentId, Bundle args) {
+    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args) {
         return pushFragment(fragmentId, args, R.id.frg_container, true, ANIMATION_TYPE.DEFAULT);
     }
 
-    public Fragment pushFragment(FRAGMENTS fragmentId, Bundle args, ANIMATION_TYPE animationType) {
+    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, ANIMATION_TYPE animationType) {
         return pushFragment(fragmentId, args, R.id.frg_container, true, animationType);
     }
 
-    public Fragment pushFragment(FRAGMENTS fragmentId, Bundle args, boolean addToBackStack) {
+    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, boolean addToBackStack) {
         return pushFragment(fragmentId, args, R.id.frg_container, addToBackStack, ANIMATION_TYPE.DEFAULT);
     }
 
-    public Fragment pushFragment(FRAGMENTS fragmentId, Bundle args, boolean addToBackStack, ANIMATION_TYPE animationType) {
+    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, boolean addToBackStack, ANIMATION_TYPE animationType) {
         return pushFragment(fragmentId, args, R.id.frg_container, addToBackStack, animationType);
     }
 
-    public Fragment pushFragment(FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack) {
+    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack) {
         return pushFragment(fragmentId, args, containerViewId, addToBackStack, false, ANIMATION_TYPE.DEFAULT);
     }
 
-    private Fragment pushFragment(FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack, ANIMATION_TYPE animationType) {
+    private Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack, ANIMATION_TYPE animationType) {
         return pushFragment(fragmentId, args, containerViewId, addToBackStack, false, animationType);
     }
 

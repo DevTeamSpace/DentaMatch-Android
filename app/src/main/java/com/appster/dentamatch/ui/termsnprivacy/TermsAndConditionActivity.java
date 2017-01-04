@@ -3,12 +3,11 @@ package com.appster.dentamatch.ui.termsnprivacy;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityTermsAndConditionBinding;
-import com.appster.dentamatch.ui.BaseActivity;
+import com.appster.dentamatch.ui.common.BaseActivity;
 
 /**
  * Created by virender on 03/01/17.

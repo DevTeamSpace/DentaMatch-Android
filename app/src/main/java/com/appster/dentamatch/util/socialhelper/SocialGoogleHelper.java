@@ -2,7 +2,7 @@ package com.appster.dentamatch.util.socialhelper;
 
 import android.content.Intent;
 
-import com.appster.dentamatch.ui.BaseActivity;
+import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.StringUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

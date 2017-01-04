@@ -2,7 +2,7 @@ package com.appster.dentamatch.util.socialhelper;
 
 import android.os.Bundle;
 
-import com.appster.dentamatch.ui.BaseActivity;
+import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.LogUtils;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

@@ -1,4 +1,4 @@
-package com.appster.dentamatch.ui;
+package com.appster.dentamatch.util;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.appster.dentamatch.ui;
+package com.appster.dentamatch.ui.common;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import com.appster.dentamatch.ui.common.BaseActivity;
 
 /**
  * Created by gautambisht on 11/11/16.
