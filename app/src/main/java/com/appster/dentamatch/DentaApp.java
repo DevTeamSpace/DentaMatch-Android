@@ -12,11 +12,11 @@ import com.appster.dentamatch.util.NetworkMonitor;
 import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
-import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.LeakCanary;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 
-public class TestApplication extends MultiDexApplication {
+public class DentaApp extends MultiDexApplication {
 
     private static Context mAppContext;
 
@@ -31,7 +31,7 @@ public class TestApplication extends MultiDexApplication {
         NetworkMonitor.initialize(this);
 
         if (BuildConfig.DEBUG) {
-            LeakCanary.install(this);
+//            LeakCanary.install(this);
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads()
                     .detectDiskWrites()

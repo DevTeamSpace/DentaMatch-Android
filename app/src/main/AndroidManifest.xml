@@ -5,9 +5,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
@@ -15,11 +14,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <application
-        android:name=".AppController"
+        android:name=".DentaApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -44,27 +40,6 @@
             </intent-filter>
         </activity>-->
 
-        <activity
-            android:name=".ui.activities.SplashActivity"
-            android:screenOrientation="userPortrait">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "www.vconnect.com" -->
-                <data
-                    android:host="www.vconnect.com"
-                    android:pathPrefix="/"
-                    android:scheme="http" />
-            </intent-filter>
-        </activity>
         <activity android:name="com.appster.dentamatch.ui.auth.AppIntroActivity" />
         <activity
             android:name="com.appster.dentamatch.ui.auth.LoginActivity"

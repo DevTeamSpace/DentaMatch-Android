@@ -42,7 +42,7 @@ public class CustomTextView extends TextView {
         if (a.hasValue(R.styleable.CustomTextView_customFont))
             customFont = a.getString(R.styleable.CustomTextView_customFont);
         else
-            customFont = "Roboto-Regular.ttf";
+            customFont = "fonts/Roboto-Regular.ttf";
         setCustomFont(ctx, customFont);
         a.recycle();
     }

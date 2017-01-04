@@ -20,9 +20,8 @@ import android.util.Log;
 
 import com.appster.dentamatch.BuildConfig;
 
-
 public class LogUtils {
-    private static final String LOG_PREFIX = "your app name";
+    private static final String LOG_PREFIX = "DentaMatch";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
     private static final int MAX_LOG_TAG_LENGTH = 23;
 

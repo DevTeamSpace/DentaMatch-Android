@@ -8,9 +8,9 @@ import com.orhanobut.hawk.Hawk;
 
 public final class PreferenceUtil {
 
-    public static final String KEY_APP_STATE = "APP_STATE";
-    public static final String KEY_JOY_RIDE = "JOY_RIDE";
-    public static final String KEY_FIRST_TIME = "FIRST_TIME";
+    private static final String KEY_APP_STATE = "APP_STATE";
+    private static final String KEY_JOY_RIDE = "JOY_RIDE";
+    private static final String KEY_FIRST_TIME = "FIRST_TIME";
 
     private PreferenceUtil() {
 

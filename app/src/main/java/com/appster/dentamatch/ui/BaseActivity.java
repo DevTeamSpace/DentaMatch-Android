@@ -13,8 +13,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
+
 import static com.appster.dentamatch.ui.Constants.FRAGMENTS;
+
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.util.Alert;
+import com.appster.dentamatch.util.Utils;
+
+import retrofit2.Call;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -40,6 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     abstract public String getActivityName();
+
     public void showSnackBar(String message) {
         Alert.showSnackBar(findViewById(android.R.id.content), message);
     }
@@ -265,6 +275,28 @@ public abstract class BaseActivity extends AppCompatActivity {
                 //showToast(getString(R.string.error_network_request));
             }
         });*/
+    }
+
+
+    public void logOut() {
+
+//        AuthWebServices client = RequestController.createService(AuthWebServices.class, true);
+//        Call<BaseResponse> response = client.logout();
+//        showProgressBar();
+//        response.enqueue(new BaseCallback<BaseResponse>(this) {
+//            @Override
+//            public void onSuccess(BaseResponse response) {
+//                //LogUtils.LOGD(TAG, "login Success" + response.getResult().getUserdetails().getGmailid());
+//                Utils.logOut(BaseActivity.this);
+//            }
+//
+//            @Override
+//            public void onFail(Call<BaseResponse> call, BaseResponse response1) {
+//
+//            }
+//        });
+
+
     }
 
     public enum ANIMATION_TYPE {

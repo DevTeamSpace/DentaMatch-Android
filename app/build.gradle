@@ -3,12 +3,15 @@ apply plugin: 'com.android.application'
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
 def keystorePropertiesFile = rootProject.file("keystore.properties")
+def serverConfigPropertiesFile = rootProject.file("serverConfig.properties")
 
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()
+def serverProperties = new Properties()
 
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+serverProperties.load(new FileInputStream(serverConfigPropertiesFile))
 
 android {
     compileSdkVersion 25
@@ -29,6 +32,7 @@ android {
             lintOptions {
                 disable 'MissingTranslation'
             }
+            debuggable true
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
@@ -37,6 +41,10 @@ android {
         debug {
             minifyEnabled false
         }
+    }
+
+    dataBinding {
+        enabled true
     }
 
     applicationVariants.all { variant ->
@@ -52,35 +60,38 @@ android {
     //Signing config for release build
     signingConfigs {
         config {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
 
-    //Different flavors of build
     flavorDimensions "environment"
-
     productFlavors {
         QA {
             dimension "environment"
-            buildConfigField "String", "BASE_URL", "\"http:\""
-            minSdkVersion 21
+            buildConfigField("String", "BASE_URL", '"https://qa.dentamach/api/"')
+            minSdkVersion 19
+            signingConfig signingConfigs.config
         }
-
         Dev {
             dimension "environment"
-            buildConfigField "String", "BASE_URL", "\"http:jhhjfgh\""
-            minSdkVersion 21
+            buildConfigField("String", "BASE_URL", '"https://dev.dentamach/api/"')
+            minSdkVersion 19
+            signingConfig signingConfigs.config
         }
-        Prod {
+        Production {
             dimension "environment"
-            buildConfigField "String", "BASE_URL", "\"http:\""
-            resValue "string", "app_name", "AppFlavor1"
-            //minSdkVersion 21
+            buildConfigField("String", "BASE_URL", '"https://production.dentamach/api/"')
+            minSdkVersion 19
         }
-
+        Staging {
+            dimension "environment"
+            buildConfigField("String", "BASE_URL", '"https://staging.dentamach/api/"')
+            minSdkVersion 19
+            signingConfig signingConfigs.config
+        }
     }
 }
 
@@ -101,6 +112,7 @@ ext {
     retrofitVersion = '2.1.0'
 
 }
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -124,23 +136,15 @@ dependencies {
     compile "com.android.support:support-annotations:${supportLibrary}"
     compile 'com.android.support:multidex:1.0.1'
 
-
     //Google Play service libs
     compile "com.google.android.gms:play-services-location:${playServiceVersion}"
     compile "com.google.android.gms:play-services-auth:${playServiceVersion}"
-
 
     //Third party libs
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'cat.ereza:customactivityoncrash:1.5.0'
     compile 'com.orhanobut:hawk:2.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.12.0'
-
-    compile "com.squareup.leakcanary:leakcanary-android:${leakCanaryLibrary}"
-    compile "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryLibrary}"
-    compile "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryLibrary}"
-
-    compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
@@ -153,6 +157,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
 
     testCompile 'junit:junit:4.12'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'

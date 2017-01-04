@@ -1,4 +1,4 @@
-package com.appster.dentamatch.commonstructure.network.retrofit;
+package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.BuildConfig;
 

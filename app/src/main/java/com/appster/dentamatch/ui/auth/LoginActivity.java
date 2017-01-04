@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.ui.activities.BaseActivity;
+import com.appster.dentamatch.ui.BaseActivity;
 
 import org.w3c.dom.Text;
 

@@ -42,5 +42,9 @@
     <string name="new_password_label">New Password</string>
     <string name="confirm_password_label">Confirm Password</string>
     <string name="save_label">save</string>
+    <string name="authentication_error">Authentication error , Please login again. </string>
+    <string name="server_error">There is some issue connecting with server.</string>
+    <string name="no_internet">Please check your Internet Connection.</string>
+    <string name="unidentified_error">Oops, Something went wrong..</string>
 
 </resources>
