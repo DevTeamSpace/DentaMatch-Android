@@ -29,25 +29,26 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="@dimen/margin_25">
+                <!--android:background="@drawable/circular_shape"-->
 
                 <ProgressBar
                     android:id="@+id/create_profile_progress_bar"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="122dp"
-                    android:layout_height="122dp"
+                    android:layout_width="@dimen/profile_progress_dimen"
+                    android:layout_height="@dimen/profile_progress_dimen"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circular_shape"
                     android:indeterminate="false"
+                    android:background="@drawable/circular_shape"
+                    android:progress="25"
                     android:max="100"
-                    android:progress="5"
                     android:progressDrawable="@drawable/circuler_progress" />
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/create_profile_iv_profile_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/profile_image_width"
+                    android:layout_height="@dimen/profile_image_height"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/profile_pic_placeholder" />
+                    android:src="@drawable/profile_pic_placeholder" />
             </RelativeLayout>
 
             <com.appster.dentamatch.widget.CustomTextView

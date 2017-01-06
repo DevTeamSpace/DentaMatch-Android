@@ -17,6 +17,7 @@ public class TermsAndConditionActivity extends BaseActivity {
     //    private ActivityT mBinder;
     private ActivityTermsAndConditionBinding mBinder;
     private boolean isPrivacyPolicy;
+    private String url="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,12 @@ public class TermsAndConditionActivity extends BaseActivity {
 
     private void initViews() {
         if(isPrivacyPolicy){
+            url="http://52.8.112.211/api/privacy-policy";
+
             mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_privacy));
 
         }else{
+            url="http://52.8.112.211/api/term-condition";
             mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_term));
 
 
@@ -45,7 +49,7 @@ public class TermsAndConditionActivity extends BaseActivity {
             public void run() {
 //                if (NetWorkCheck.isNetworkAvailable(TNCActivity.this)) {
                 mBinder.webviewTermAndCondition.setWebViewClient(new WebViewClient());
-                mBinder.webviewTermAndCondition.loadUrl("");
+                mBinder.webviewTermAndCondition.loadUrl(url);
 
 //                } else {
 //                }

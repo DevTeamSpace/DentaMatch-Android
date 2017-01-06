@@ -82,10 +82,9 @@
     </style>
 
     <style name="edit_input_layout" parent="@android:style/TextAppearance">
-
         <item name="android:textSize">@dimen/text_size_11</item>
-        <item name="android:textColor">@color/text_default_color</item>
-        <item name="android:textColorHint">@color/text_default_color</item>
+        <item name="android:textColorHint">@color/edt_hint_color</item>
+        <item name="android:textColor">@color/edt_hint_color</item>
     </style>
 
     <dimen name="button_height">50dp</dimen>

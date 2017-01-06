@@ -43,7 +43,8 @@
                 android:gravity="center"
                 android:text="@string/register_label"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_medium"
+                app:customFont="@string/font_bold" />
 
             <ImageView
                 android:id="@+id/register_iv_peg"
@@ -80,7 +81,8 @@
                 android:gravity="center"
                 android:text="@string/login_label"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_medium"
+                app:customFont="@string/font_bold" />
             />
 
             <ImageView
@@ -145,7 +147,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="10dp"
-                        android:drawableStart="@drawable/bubble_shadow"
+                        android:drawableStart="@drawable/ic_name"
                         android:hint="@string/email_label" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -169,7 +171,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="10dp"
-                        android:drawableStart="@drawable/bubble_shadow"
+                        android:drawableStart="@drawable/ic_password"
                         android:hint="@string/password_label" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -215,7 +217,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="@dimen/padding_drawable"
-                        android:drawableStart="@drawable/bubble_shadow"
+                        android:drawableStart="@drawable/ic_name"
                         android:hint="@string/name_label"
                         android:paddingTop="@dimen/padding_drawable"
                         android:textColor="@color/text_default_color" />
@@ -252,7 +254,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="@dimen/padding_drawable"
-                        android:drawableStart="@drawable/bubble_shadow"
+                        android:drawableStart="@drawable/ic_email"
                         android:hint="@string/email_label"
                         android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
@@ -277,7 +279,7 @@
                         android:layout_marginTop="@dimen/margin_19"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="@dimen/padding_drawable"
-                        android:drawableStart="@drawable/bubble_shadow"
+                        android:drawableStart="@drawable/ic_password"
                         android:hint="@string/password_label" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -306,7 +308,7 @@
                     android:layout_marginTop="@dimen/margin_19"
                     android:background="@drawable/bg_edit_text"
                     android:drawablePadding="@dimen/padding_drawable"
-                    android:drawableStart="@drawable/bubble_shadow"
+                    android:drawableStart="@drawable/ic_location"
                     android:hint="@string/preferred_location_label" />
                 <!--</android.support.design.widget.TextInputLayout>-->
 
@@ -314,7 +316,7 @@
                     style="@style/text_view_normal"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:drawablePadding="@dimen/padding_drawable"
-                    android:drawableStart="@drawable/bubble_shadow"
+                    android:drawableStart="@drawable/ic_help"
                     android:gravity="center"
                     android:text="@string/register_help_info"
                     android:textColor="@color/register_help_color" />
@@ -325,23 +327,21 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
-
                     android:layout_marginTop="@dimen/margin_19">
 
                     <ImageView
                         android:id="@+id/iv_accept_policy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_normal"
-                        android:src="@drawable/bubble_shadow" />
+                        android:src="@drawable/ic_check_empty" />
 
                     <com.appster.dentamatch.widget.CustomTextView
+                        android:id="@+id/tv_term_n_policy"
                         style="@style/text_view_normal"
-                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginLeft="@dimen/margin_medium"
                         android:layout_toRightOf="@+id/iv_accept_policy"
-                        android:gravity="center"
                         android:text="@string/label_accept_term_ncondition"
-                        android:textColor="@color/register_help_color" />
+                        android:textColor="@color/text_default_color" />
                 </RelativeLayout>
 
 
