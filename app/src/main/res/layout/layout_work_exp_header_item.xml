@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/cell_height">
+
+    <com.appster.dentamatch.widget.CustomTextView
+        style="@style/text_view_normal"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:text="Dentist"
+        android:textColor="@color/button_bg_color"
+        android:textSize="@dimen/text_size_normal"
+        app:customFont="@string/font_bold" />
+
+    <com.appster.dentamatch.widget.CustomTextView
+        style="@style/text_view_normal"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:drawableEnd="@drawable/ic_add_refrence"
+        android:drawablePadding="@dimen/padding_drawable"
+        android:text="2 year 5 month"
+        android:textColor="@color/button_bg_color"
+        android:textSize="@dimen/text_size_normal"
+        app:customFont="@string/font_bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/edt_boundry_color" />
+</RelativeLayout>

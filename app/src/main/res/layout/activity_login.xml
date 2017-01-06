@@ -318,6 +318,31 @@
                     android:text="@string/register_help_info"
                     android:textColor="@color/register_help_color" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+
+                    android:layout_marginTop="@dimen/margin_19">
+
+                    <ImageView
+                        android:id="@+id/iv_accept_policy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:src="@drawable/bubble_shadow" />
+
+                    <com.appster.dentamatch.widget.CustomTextView
+                        style="@style/text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_toRightOf="@+id/iv_accept_policy"
+                        android:gravity="center"
+                        android:text="@string/label_accept_term_ncondition"
+                        android:textColor="@color/register_help_color" />
+                </RelativeLayout>
+
 
             </LinearLayout>
         </LinearLayout>

@@ -35,4 +35,8 @@ public class Constants {
         int REQUEST_CODE_READ_PHONE_STATE = 202;
         int REQUEST_CODE_JOYRIDE = 203;
     }
+
+    public interface INTENT_KEY{
+        String FROM_WHERE="from_where";
+    }
 }

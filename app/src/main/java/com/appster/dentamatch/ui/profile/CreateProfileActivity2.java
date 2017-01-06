@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
@@ -31,9 +33,10 @@ import java.io.File;
  * Created by virender on 02/01/17.
  */
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
-    private ImageView ivProfile, ivUpload;
+    private ImageView ivProfile, ivUpload, ivToolbarLeft;
     private ImageSelectedListener imageSelectedListener;
     private ProgressBar mProgressBar;
+    private TextView tvToolbarLeft;
     private Button btnNext;
     private String mFilePath;
     private byte mSelectedImage;
@@ -46,14 +49,19 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private void initViews() {
+//        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_create_profile2);
         ivProfile = (ImageView) findViewById(R.id.create_profile_iv_profile_icon);
         ivUpload = (ImageView) findViewById(R.id.create_profile_iv_upoload_icon);
+        ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
         btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
+        tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
         ivUpload.setOnClickListener(this);
         ivProfile.setOnClickListener(this);
         btnNext.setOnClickListener(this);
         mProgressBar.setProgress(65);
+        tvToolbarLeft.setText(getString(R.string.header_create_profile));
+
     }
 
     @Override
@@ -62,6 +70,9 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             case R.id.create_profile_iv_upoload_icon:
                 mSelectedImage = 1;
                 callBottomSheet();
+                break;
+            case R.id.iv_tool_bar_left:
+                onBackPressed();
                 break;
             case R.id.create_profile_iv_profile_icon:
 //                mSelectedImage = 0;

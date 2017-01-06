@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_color"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_work_exp_list"
+            layout="@layout/toolbar_general" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar_work_exp_list">
+
+            <LinearLayout
+                android:id="@+id/layout_parent_scroll_work_exp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layout_exp_list_inflater"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <include layout="@layout/layout_work_exp" />
+
+                <include layout="@layout/layout_reference" />
+
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>

@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityTermsAndConditionBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Constants;
 
 /**
  * Created by virender on 03/01/17.
@@ -15,19 +16,30 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 public class TermsAndConditionActivity extends BaseActivity {
     //    private ActivityT mBinder;
     private ActivityTermsAndConditionBinding mBinder;
+    private boolean isPrivacyPolicy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_create_profile1);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_terms_and_condition);
-
+        if (getIntent() != null) {
+            isPrivacyPolicy = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
         initViews();
 
 
     }
 
     private void initViews() {
+        if(isPrivacyPolicy){
+            mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_privacy));
+
+        }else{
+            mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_term));
+
+
+        }
         mBinder.webviewTermAndCondition.post(new Runnable() {
             @Override
             public void run() {

@@ -44,7 +44,8 @@
         <activity
             android:name=".ui.common.SplashActivity"
 
-            android:screenOrientation="userPortrait">
+            android:screenOrientation="userPortrait"
+            android:theme="@style/NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -69,6 +70,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.appster.dentamatch.ui.auth.ForgotPasswordActivity"
+            android:theme="@style/NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.appster.dentamatch.ui.auth.ResetPasswordActivity"
@@ -78,13 +80,34 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.appster.dentamatch.ui.profile.CreateProfileActivity2"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+
+            android:theme="@style/NoActionBar" />
         <activity
             android:name="com.appster.dentamatch.ui.profile.WorkExperienceActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.ViewAndEditWorkExperienceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ui.profile.WorkExpListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.profile.WorkExperienceDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+
+            />
         <activity
             android:name=".ui.termsnprivacy.TermsAndConditionActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
     </application>
 
