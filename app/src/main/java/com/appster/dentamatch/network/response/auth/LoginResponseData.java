@@ -1,20 +1,20 @@
-package com.appster.dentamatch.commonstructure.network.response.auth;
+package com.appster.dentamatch.network.response.auth;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
- *
+ * Model class to hold Login response data.
  */
 public class LoginResponseData {
 
-   /* @SerializedName("serviceAccessParameter")
-    private ServiceAccessParams serviceAccessParams;
-    @SerializedName("appModuleMap")
-    private ModulePermissionModel modules;
+   @SerializedName("userDetails")
+    private UserDetail userDetail;
 
-    public ServiceAccessParams getServiceAccessParams() {
-        return serviceAccessParams;
+    public UserDetail getUserDetail() {
+        return userDetail;
     }
 
-    public ModulePermissionModel getModules() {
-        return modules;
-    }*/
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
+    }
 }

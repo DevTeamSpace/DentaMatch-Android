@@ -17,17 +17,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
+import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by virender on 13/12/16.
  */
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
+    private static final String TAG = "Login";
     private ImageView ivRegisterPeg, ivLoginPeg,ivPolicy;
     private LinearLayout layoutRegisterSelector, layoutLoginSelector, layoutOnlyRegister, layoutOnlyLogin;
     private TextView tvLogin, tvRegister, tvForgotPassword,tvTermNcondition;
@@ -69,6 +82,39 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         setPolicySpanString();
 
     }
+
+    private boolean validateInput() {
+        return true;
+    }
+
+    private LoginRequest prepareLoginRequest() {
+        LoginRequest loginRequest=new LoginRequest();
+        loginRequest.setDeviceId("12345");
+        loginRequest.setDeviceToken("fjkajkdfr8984393289jdsfksd");
+        loginRequest.setDeviceType("Android");
+        loginRequest.setEmail("ram@appster.in");
+        loginRequest.setPassword("qwerty");
+        return loginRequest;
+    }
+
+    private void signInApi(LoginRequest loginRequest) {
+        LogUtils.LOGD(TAG, "signInApi");
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        webServices.signIn(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
+            @Override
+            public void onSuccess(LoginResponse response) {
+                LogUtils.LOGD(TAG, "onSuccess");
+            }
+
+            @Override
+            public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "onFail");
+
+            }
+        });
+    }
+
     private void setPolicySpanString() {
         SpannableString spanString = new SpannableString(
                 getString(R.string.label_accept_term_ncondition));
@@ -133,8 +179,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.login_btn_register:
-                startActivity(new Intent(this, CreateProfileActivity1.class));
+//                startActivity(new Intent(this, CreateProfileActivity1.class));
+                if(validateInput()) {
+                    signInApi(prepareLoginRequest());
+                }
                 break;
+
             case R.id.login_tv_forgot_password:
                 startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
                 break;
@@ -172,5 +222,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             btnRegister.setText(getString(R.string.register_label));
 
         }
+    }
+
+    @Override
+    public String getActivityName() {
+        return null;
     }
 }
