@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import com.appster.dentamatch.model.LocationEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -23,6 +24,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  *
@@ -244,6 +247,9 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         //PreferenceUtils.setCurrentLocation(location);
         LogUtils.LOGD("Location", "Lat : " + location.getLatitude() + ", " + "Long : " + location.getLongitude());
         //Toast.makeText(getActivity(), "Location changed", Toast.LENGTH_SHORT).show();
+        // This method will be called when a HelloWorldEvent is posted
+        EventBus.getDefault().post(new LocationEvent(location));
+        Utils.showToast(getActivity(), "Latitude "+location.getLongitude());
     }
 
     @Override

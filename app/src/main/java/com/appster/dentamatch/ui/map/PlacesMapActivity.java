@@ -1,8 +1,10 @@
 package com.appster.dentamatch.ui.map;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -17,7 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.common.ConnectionResult;
@@ -36,6 +40,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
 
@@ -96,7 +103,15 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 null);
         mAutocompleteView.setAdapter(mAdapter);
 
-        check();
+//        check();
+
+
+        EventBus.getDefault().register(this);
+
+        LocationUtils.addFragment(this);
+
+//        Fragment fragmentLocationUtils = (Fragment) LocationUtils.newInstance();
+//        getFragmentManager().beginTransaction().add(fragmentLocationUtils, "").commit();
     }
 
     @Override
@@ -139,6 +154,22 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
             // other 'case' lines to check for other
             // permissions this app might request
+        }
+    }
+
+    // This method will be called when Event is posted.
+    @Subscribe
+    public void onEvent(LocationEvent locationEvent){
+        // your implementation
+        LogUtils.LOGD(TAG, "onEvent");
+        Toast.makeText(this, "recieved on sender "+locationEvent.getMessage().getLongitude(), Toast.LENGTH_SHORT).show();
+
+        Location location = locationEvent.getMessage();
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if(mMap!=null) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.addMarker(new MarkerOptions().position(latLng));
+
         }
     }
 
@@ -221,6 +252,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             return;
         }
         mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
 //        double latitude = mMap.getMyLocation().getLatitude();
 //        double longitude = mMap.getMyLocation().getLongitude();
