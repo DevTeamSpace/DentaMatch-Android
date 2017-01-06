@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
+import com.appster.dentamatch.ui.map.PlacesMapActivity;
+import com.appster.dentamatch.widget.CustomTextView;
 
 /**
  * Created by virender on 13/12/16.
@@ -22,6 +24,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private LinearLayout layoutRegisterSelector, layoutLoginSelector, layoutOnlyRegister, layoutOnlyLogin;
     private TextView tvLogin, tvRegister, tvForgotPassword;
     private Button btnRegister;
+    private CustomTextView tvPreferredJobLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +46,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         layoutLoginSelector = (LinearLayout) findViewById(R.id.login_view_login);
         layoutOnlyLogin = (LinearLayout) findViewById(R.id.login_layout_login_view);
         layoutOnlyRegister = (LinearLayout) findViewById(R.id.login_layout_register_view);
+        tvPreferredJobLocation = (CustomTextView) findViewById(R.id.tv_preferred_job_location);
+
         layoutLoginSelector.setOnClickListener(this);
         layoutRegisterSelector.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
+        tvPreferredJobLocation.setOnClickListener(this);
 
     }
 
@@ -65,7 +71,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.login_tv_forgot_password:
                 startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+                break;
 
+            case R.id.tv_preferred_job_location:
+                startActivity(new Intent(this, PlacesMapActivity.class));
                 break;
         }
     }

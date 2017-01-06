@@ -53,6 +53,7 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
         mBinder.createProfile1BtnNotNow.setOnClickListener(this);
         mBinder.createProfile1BtnNext.setOnClickListener(this);
         mBinder.createProfile1IvProfileIcon.setOnClickListener(this);
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, spinnerList);
 //        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)

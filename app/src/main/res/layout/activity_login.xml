@@ -296,6 +296,7 @@
 
 
                 <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_preferred_job_location"
                     style="@style/text_view_normal"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"

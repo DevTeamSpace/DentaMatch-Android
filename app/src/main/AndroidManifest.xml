@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.appster.dentamatch"
@@ -23,7 +24,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--<activity android:name=".MainActivity">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas"/>
+
+        <!--
+        <activity android:name=".MainActivity">
             <intent-filter>
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
@@ -39,53 +45,48 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
+        </activity>
+        -->
 
         <activity
             android:name=".ui.common.SplashActivity"
-
             android:screenOrientation="userPortrait">
-
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "www.vconnect.com" -->
-                <data
-                    android:host="www.vconnect.com"
-                    android:pathPrefix="/"
-                    android:scheme="http" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
-        <activity android:name="com.appster.dentamatch.ui.auth.AppIntroActivity" />
+        <activity android:name=".ui.auth.AppIntroActivity" />
         <activity
-            android:name="com.appster.dentamatch.ui.auth.LoginActivity"
+            android:name=".ui.auth.LoginActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
+        <activity
+            android:name=".ui.auth.ForgotPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.appster.dentamatch.ui.auth.ForgotPasswordActivity"
+            android:name=".ui.auth.ResetPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.appster.dentamatch.ui.auth.ResetPasswordActivity"
+            android:name=".ui.profile.CreateProfileActivity1"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.appster.dentamatch.ui.profile.CreateProfileActivity1"
+            android:name=".ui.profile.CreateProfileActivity2"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.appster.dentamatch.ui.profile.CreateProfileActivity2"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.appster.dentamatch.ui.profile.WorkExperienceActivity"
+            android:name=".ui.profile.WorkExperienceActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.termsnprivacy.TermsAndConditionActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ui.map.PlacesMapActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
