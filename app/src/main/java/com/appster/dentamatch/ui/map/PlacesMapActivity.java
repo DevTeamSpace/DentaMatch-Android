@@ -1,9 +1,13 @@
 package com.appster.dentamatch.ui.map;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -23,16 +28,24 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 
-public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     private static String TAG = "DentaPlaces";
+    private static final int MY_PERMISSION_ACCESS_LOCATION = 101;
     protected GoogleApiClient mGoogleApiClient;
 
+    private GoogleMap mMap;
     private PlaceAutocompleteAdapter mAdapter;
 
     private AutoCompleteTextView mAutocompleteView;
@@ -61,6 +74,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mAutocompleteView = (AutoCompleteTextView)
                 findViewById(R.id.autocomplete_places);
 
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
+        mapFragment.getMapAsync(this);
+
         // Register a listener that receives callbacks when a suggestion has been selected
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
 
@@ -80,11 +96,50 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 null);
         mAutocompleteView.setAdapter(mAdapter);
 
+        check();
     }
 
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        setMap();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_ACCESS_LOCATION: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do
+                    // contacts-related task you need to do.
+                    setMap();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Utils.showToast(this, "Permission denied for location");
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     /**
@@ -122,6 +177,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
                     Toast.LENGTH_SHORT).show();
             LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
+
+            hideKeyboard();
         }
     };
     /**
@@ -140,20 +197,11 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             }
             // Get the Place object from the buffer.
             final Place place = places.get(0);
+            LatLng latLng = place.getLatLng();
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.addMarker(new MarkerOptions().position(latLng));
 
-            // Format details of the place for display and show it in a TextView.
-            mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
-                    place.getId(), place.getAddress(), place.getPhoneNumber(),
-                    place.getWebsiteUri()));
-
-            // Display the third party attributions if set.
-            final CharSequence thirdPartyAttribution = places.getAttributions();
-            if (thirdPartyAttribution == null) {
-                mPlaceDetailsAttribution.setVisibility(View.GONE);
-            } else {
-                mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
-                mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
-            }
+            LogUtils.LOGD(TAG, latLng.toString());
 
             LogUtils.LOGD(TAG, "Place details received: " + place.getName());
 
@@ -161,17 +209,59 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         }
     };
 
-    private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
-                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
-        LogUtils.LOGD(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
-                websiteUri));
-        return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
-                websiteUri));
+    private void setMap() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+
+//        double latitude = mMap.getMyLocation().getLatitude();
+//        double longitude = mMap.getMyLocation().getLongitude();
+//        LatLng latLng =new LatLng(latitude, longitude);
+
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+//        mMap.addMarker(new MarkerOptions().position(latLng));
 
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    private void check() {
+        LogUtils.LOGD(TAG, "check...");
 
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                Utils.showToast(this, "Please enable location permission in App Settings.");
+//                verifyUserLoggedIn();
+                setMap();
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSION_ACCESS_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
     }
+
 }
