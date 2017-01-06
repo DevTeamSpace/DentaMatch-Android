@@ -39,6 +39,7 @@
     <string name="name_label">Name</string>
     <string name="register_help_info">Helps recruiters to find you easily</string>
     <string name="login_info_label">Login using your registered email</string>
+    <string name="label_accept_term_ncondition">I agree to the Terms and Conditions and Privacy Policy </string>
     <string name="forgot_password_title">Enter your email address below and we’ll send you the instructions on how to change your password.</string>
     <!--  Reset password string-->
 
@@ -75,14 +76,30 @@
     <string name="office_name">Office Name</string>
     <string name="office_address">Office Address</string>
     <string name="city">City</string>
+    <string name="reference">Reference</string>
+    <string name="reference_delete">Delete Reference</string>
     <string name="reference_name">Reference Name</string>
     <string name="reference_mobile">Reference Mobile No. (Optional)</string>
     <string name="reference_email">Reference Email (Optional)</string>
+    <string name="year">Year</string>
+    <string name="month">Month</string>
 
+
+    <!--Server error-->
     <string name="authentication_error">Authentication error , Please login again. </string>
     <string name="server_error">There is some issue connecting with server.</string>
     <string name="no_internet">Please check your Internet Connection.</string>
     <string name="unidentified_error">Oops, Something went wrong..</string>
+    <string name="add_more_refrence">Add More Refrences</string>
+    <string name="add_more_exp">Add More Experience</string>
+
+
+    <!--screen header text-->
+    <string name="header_work_exp">WORK EXPERIENCE</string>
+    <string name="header_create_profile">CREATE PROFILE</string>
+    <string name="header_privacy">PRIVACY POLICY</string>
+    <string name="header_term">TERMS &amp; CONDITIONS</string>
+    <string name="header_forgot_password">FORGOT PASSWORD</string>
 
     <string name="autocomplete_hint">Search places</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>

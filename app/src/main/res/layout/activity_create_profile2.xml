@@ -7,10 +7,15 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/toolbar_create_profile2"
+        layout="@layout/toolbar_general" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/create_profile2_btn_next">
+        android:layout_above="@+id/create_profile2_btn_next"
+        android:layout_below="@+id/toolbar_create_profile2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -147,6 +152,8 @@
                     android:background="@drawable/edit_text_selector"
                     android:hint="@string/lable_state" />
             </android.support.design.widget.TextInputLayout>
+
+
         </LinearLayout>
     </ScrollView>
 

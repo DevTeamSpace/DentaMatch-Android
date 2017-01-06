@@ -45,14 +45,17 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        -->
+        </activity>-->
 
         <activity
             android:name=".ui.common.SplashActivity"
-            android:screenOrientation="userPortrait">
+            android:screenOrientation="userPortrait"
+            android:theme="@style/NoActionBar">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+            android:screenOrientation="userPortrait"
+            android:theme="@style/NoActionBar">
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
@@ -63,30 +66,60 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "www.vconnect.com" -->
+                <data
+                    android:host="www.vconnect.com"
+                    android:pathPrefix="/"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.auth.ResetPasswordActivity"
+            android:theme="@style/NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profile.CreateProfileActivity1"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profile.CreateProfileActivity2"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui.profile.WorkExperienceActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.ViewAndEditWorkExperienceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ui.profile.WorkExpListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.profile.WorkExperienceDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            />
         <activity
             android:name=".ui.termsnprivacy.TermsAndConditionActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.map.PlacesMapActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
     </application>
 
 </manifest>
