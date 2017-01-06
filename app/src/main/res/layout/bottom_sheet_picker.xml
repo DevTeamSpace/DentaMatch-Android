@@ -43,7 +43,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/bottom_picker_tv_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/year"
+
+                android:textColor="@color/text_default_color"
+                android:textSize="@dimen/text_size_normal"
+                app:customFont="@string/font_bold" />
 
             <NumberPicker
                 android:id="@+id/bottom_sheet_picker_year"
@@ -56,7 +69,19 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/bottom_picker_tv_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/month"
+                android:textColor="@color/text_default_color"
+                android:textSize="@dimen/text_size_normal"
+                app:customFont="@string/font_bold" />
 
             <NumberPicker
                 android:id="@+id/bottom_sheet_picker_month"

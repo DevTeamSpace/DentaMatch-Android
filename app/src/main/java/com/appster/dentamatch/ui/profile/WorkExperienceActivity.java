@@ -27,6 +27,9 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
     }
 
     private void initViews() {
+        hideKeyboard();
+        hideKeyboard(mBinder.etOfficeName);
+
         mBinder.toolbarWorkExp.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
 
         mBinder.btnNextWorkExp.setOnClickListener(this);
@@ -45,6 +48,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
                 startActivity(new Intent(this, WorkExperienceDetailActivity.class));
                 break;
             case R.id.tv_experince_work_exp:
+                hideKeyboard();
                 new BottomSheetPicker(this, this, 0, 0);
                 break;
         }

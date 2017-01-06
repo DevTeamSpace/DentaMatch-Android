@@ -23,19 +23,34 @@
                 android:layout_height="@dimen/profile_header_height"
                 android:background="@drawable/bg_register">
 
-
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/create_profile1_iv_profile_icon"
+                <FrameLayout
+                    android:id="@+id/fl_profile_pic_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/profile_pic_placeholder" />
+
+                    >
+
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/create_profile1_iv_profile_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/profile_pic_placeholder" />
+
+                    <ImageView
+                        android:id="@+id/iv_profile_plus_icon_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|bottom"
+                        android:paddingBottom="@dimen/margin_small_3"
+                        android:src="@drawable/ic_profile_plus" />
+                </FrameLayout>
 
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/create_profile_tv_name"
                     style="@style/text_view_normal"
-                    android:layout_below="@+id/create_profile1_iv_profile_icon"
+                    android:layout_below="@+id/fl_profile_pic_id"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:text="@string/accept"
@@ -65,23 +80,24 @@
                 style="@style/text_view_normal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/cell_height"
-                android:layout_marginTop="@dimen/margin_36"
-                android:gravity="center"
                 android:layout_marginBottom="@dimen/margin_25"
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_36"
+                android:gravity="center"
                 android:text="@string/profile1_text"
                 android:textColor="@color/edt_hint_color"
                 android:textSize="@dimen/text_size_16"
                 app:customFont="@string/font_medium" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/cell_height"
-                android:orientation="vertical"
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
-                android:background="@drawable/bg_edit_text_highlight">
-            <!--<com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner-->
+                android:background="@drawable/bg_edit_text_highlight"
+                android:orientation="vertical">
+                <!--<com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner-->
                 <!--android:id="@+id/spinner_job_title_create_profile1"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="@dimen/edit_height"-->
@@ -100,22 +116,22 @@
 
             </LinearLayout>
             <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:id="@+id/create_profile1_input_layout_state"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/edit_height"-->
-                <!--android:layout_marginBottom="@dimen/margin_19"-->
-                <!--android:clipToPadding="false"-->
-                <!--android:gravity="bottom"-->
-                <!--android:paddingTop="@dimen/padding_input_layout"-->
-                <!--app:hintTextAppearance="@style/edit_input_layout">-->
+            <!--android:id="@+id/create_profile1_input_layout_state"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/edit_height"-->
+            <!--android:layout_marginBottom="@dimen/margin_19"-->
+            <!--android:clipToPadding="false"-->
+            <!--android:gravity="bottom"-->
+            <!--android:paddingTop="@dimen/padding_input_layout"-->
+            <!--app:hintTextAppearance="@style/edit_input_layout">-->
 
-                <!--<EditText-->
-                    <!--android:id="@+id/create_profile_et_job"-->
-                    <!--style="@style/edit_text_view_normal"-->
-                    <!--android:layout_marginLeft="@dimen/margin_normal"-->
-                    <!--android:layout_marginRight="@dimen/margin_normal"-->
-                    <!--android:background="@drawable/edit_text_selector"-->
-                    <!--android:hint="@string/lable_job_title" />-->
+            <!--<EditText-->
+            <!--android:id="@+id/create_profile_et_job"-->
+            <!--style="@style/edit_text_view_normal"-->
+            <!--android:layout_marginLeft="@dimen/margin_normal"-->
+            <!--android:layout_marginRight="@dimen/margin_normal"-->
+            <!--android:background="@drawable/edit_text_selector"-->
+            <!--android:hint="@string/lable_job_title" />-->
             <!--</android.support.design.widget.TextInputLayout>-->
         </LinearLayout>
 

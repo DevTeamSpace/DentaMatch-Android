@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,13 +39,16 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     private ProgressBar mProgressBar;
     private TextView tvToolbarLeft;
     private Button btnNext;
-    private String mFilePath;
+    private String mFilePath, profileImagePath;
     private byte mSelectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile2);
+        if (getIntent() != null) {
+            profileImagePath = getIntent().getStringExtra(Constants.INTENT_KEY.IMAGE_PATH);
+        }
         initViews();
     }
 
@@ -59,8 +63,13 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         ivUpload.setOnClickListener(this);
         ivProfile.setOnClickListener(this);
         btnNext.setOnClickListener(this);
-        mProgressBar.setProgress(65);
+        ivToolbarLeft.setOnClickListener(this);
+        mProgressBar.setProgress(25);
         tvToolbarLeft.setText(getString(R.string.header_create_profile));
+        if (!TextUtils.isEmpty(profileImagePath)) {
+            Picasso.with(getApplicationContext()).load(new File(profileImagePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
+
+        }
 
     }
 

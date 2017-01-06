@@ -52,7 +52,6 @@ public class BottomSheetPicker {
                     mBottomSheetDialog.dismiss();
 
                 }
-                Utils.showToast(context, "year is--" + pickerMonth.getValue());
                 mYearslYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
 
             }
