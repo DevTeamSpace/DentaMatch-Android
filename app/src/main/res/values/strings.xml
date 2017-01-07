@@ -78,6 +78,7 @@
     <string name="city">City</string>
     <string name="reference">Reference</string>
     <string name="reference_delete">Delete Reference</string>
+    <string name="experience_delete">Delete Experience</string>
     <string name="reference_name">Reference Name</string>
     <string name="reference_mobile">Reference Mobile No. (Optional)</string>
     <string name="reference_email">Reference Email (Optional)</string>
@@ -103,5 +104,6 @@
 
     <string name="autocomplete_hint">Search places</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
+    <string name="get_started">GET STARTED</string>
 
 </resources>

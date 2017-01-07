@@ -31,5 +31,6 @@
     <color name="cell_color">#f8f8f8</color>
     <color name="cell_text_color">#383838</color>
     <color name="progress_color">#a3d977</color>
+    <color name="get_started_color">#02bbd5</color>
 
 </resources>
