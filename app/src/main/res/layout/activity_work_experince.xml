@@ -7,12 +7,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white_color"
         android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_work_exp"
+            layout="@layout/toolbar_general" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btn_next_work_exp">
+            android:layout_above="@+id/btn_next_work_exp"
+            android:layout_below="@+id/toolbar_work_exp">
 
             <LinearLayout
                 android:id="@+id/layout_parent_scroll_work_exp"
@@ -27,23 +33,24 @@
                     android:layout_margin="@dimen/margin_25">
 
                     <ProgressBar
-                        android:id="@+id/create_profile_progress_bar"
+                        android:id="@+id/progress_bar"
                         style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="122dp"
-                        android:layout_height="122dp"
+                        android:layout_width="102dp"
+                        android:layout_height="102dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/circular_shape"
                         android:indeterminate="false"
                         android:max="100"
-                        android:progress="5"
+                        android:progress="25"
                         android:progressDrawable="@drawable/circuler_progress" />
 
                     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/create_profile_iv_profile_icon"
                         android:layout_width="@dimen/profile_image_height"
+                        android:visibility="invisible"
                         android:layout_height="@dimen/profile_image_height"
                         android:layout_centerInParent="true"
-                        android:src="@color/black_color" />
+                        android:src="@drawable/profile_pic_placeholder" />
                 </RelativeLayout>
 
                 <com.appster.dentamatch.widget.CustomTextView
@@ -65,9 +72,95 @@
                     android:textSize="@dimen/text_size_normal"
                     app:customFont="@string/font_regular" />
 
-                <include layout="@layout/layout_work_exp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cell_height"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_43"
+                    android:background="@drawable/bg_edit_text_highlight">
+                    <!--<com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner-->
+                    <!--android:id="@+id/spinner_job_title_create_profile1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="@dimen/edit_height"-->
+                    <!--android:hint="@string/lable_job_title"-->
+                    <!--android:background="@null"-->
 
-                <include layout="@layout/layout_reference" />
+
+                    <!--android:textColorHint="@color/edt_hint_color"-->
+                    <!--android:textSize="@dimen/text_size_normal"-->
+                    <!--app:met_floatingLabel="normal" />-->
+                    <Spinner
+                        android:id="@+id/spinner_job_title_work_exp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:prompt="@string/lable_job_title"></Spinner>
+                </LinearLayout>
+
+                <!--<com.appster.dentamatch.widget.CustomTextView-->
+                <!--android:id="@+id/tv_experince_work_exp"-->
+                <!--style="@style/text_view_normal"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/edit_height"-->
+
+                <!--android:layout_marginLeft="@dimen/margin_normal"-->
+                <!--android:layout_marginRight="@dimen/margin_normal"-->
+                <!--android:layout_marginTop="@dimen/margin_19"-->
+                <!--android:background="@drawable/bg_edit_text"-->
+                <!--android:hint="@string/year_of_experice" />-->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_work_exp"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:clipToPadding="false"
+
+                    android:gravity="bottom"
+                    android:paddingTop="@dimen/padding_input_layout"
+
+                    app:hintTextAppearance="@style/edit_input_layout">
+
+
+                    <EditText
+                        android:id="@+id/tv_experince_work_exp"
+                        style="@style/edit_text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:background="@drawable/edit_text_selector"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/year_of_experice"
+                        android:paddingTop="@dimen/padding_drawable" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_office_name"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:clipToPadding="false"
+
+                    android:gravity="bottom"
+                    android:paddingTop="@dimen/padding_input_layout"
+
+                    app:hintTextAppearance="@style/edit_input_layout">
+
+
+                    <EditText
+                        android:id="@+id/et_office_name"
+                        style="@style/edit_text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:background="@drawable/edit_text_selector"
+                        android:hint="@string/office_name"
+                        android:paddingTop="@dimen/padding_drawable" />
+                </android.support.design.widget.TextInputLayout>
+
+
             </LinearLayout>
 
         </ScrollView>
@@ -76,10 +169,10 @@
             android:id="@+id/btn_next_work_exp"
             style="@style/button_style"
             android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/margin_medium"
             android:background="@color/colorPrimary"
             android:text="@string/lable_next"
             android:textColor="@color/white_color"
-            android:layout_marginTop="@dimen/margin_medium"
             android:textSize="@dimen/text_size_normal" />
     </RelativeLayout>
 

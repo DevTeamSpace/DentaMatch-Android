@@ -7,6 +7,7 @@ import android.os.Handler;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.auth.LoginActivity;
+import com.appster.dentamatch.ui.onboardtutorial.OnBoardingActivity;
 
 /*
  * Written by Appster on 14/04/16.
@@ -49,7 +50,8 @@ public class SplashActivity extends Activity implements Runnable {
     @Override
     public void run() {
 
-        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+//        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        startActivity(new Intent(SplashActivity.this, OnBoardingActivity.class));
         finish();
     }
 }

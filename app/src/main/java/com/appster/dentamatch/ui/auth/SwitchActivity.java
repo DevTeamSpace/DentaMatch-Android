@@ -81,7 +81,7 @@ public class SwitchActivity extends BaseActivity implements SocialAuthListener<S
     }
 
     public void forwardToJoyRide() {
-        startActivityForResult(new Intent(this, AppIntroActivity.class), Constants.REQUEST_CODE.REQUEST_CODE_JOYRIDE);
+//        startActivityForResult(new Intent(this, AppIntroActivity.class), Constants.REQUEST_CODE.REQUEST_CODE_JOYRIDE);
     }
 
     public void forwardToHome(String data) {

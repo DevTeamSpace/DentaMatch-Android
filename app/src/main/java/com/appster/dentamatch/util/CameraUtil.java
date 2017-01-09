@@ -353,7 +353,8 @@ public class CameraUtil {
         if (!file.exists()) {
             file.mkdirs();
         }
-        String uriSting = (file.getAbsolutePath() + "/concierge_" + System.currentTimeMillis() + ".jpg");
+        String uriSting = (file.getAbsolutePath() + "/denta" + System.currentTimeMillis() + ".jpg");
+//        String uriSting = (file.getAbsolutePath() + "/denta0011" + ".jpg");
         return uriSting;
 
     }

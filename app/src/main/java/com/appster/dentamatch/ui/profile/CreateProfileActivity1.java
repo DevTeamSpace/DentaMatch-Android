@@ -13,8 +13,10 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.appster.dentamatch.R;
@@ -24,6 +26,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.PermissionUtils;
+import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.BottomSheetView;
 import com.squareup.picasso.Picasso;
 
@@ -36,8 +39,8 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
     private ImageSelectedListener imageSelectedListener;
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
-    private String[] spinnerList = {"Dev", "Qa", "Po", "Sm","tl","security"};
-
+    private String[] spinnerList = {"job title","dev", "Qa", "Po", "Sm", "tl", "security"};
+    private String fName,jobTitle;
 
 
     @Override
@@ -53,12 +56,31 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
         mBinder.createProfile1BtnNotNow.setOnClickListener(this);
         mBinder.createProfile1BtnNext.setOnClickListener(this);
         mBinder.createProfile1IvProfileIcon.setOnClickListener(this);
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, spinnerList);
 //        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
 //                findViewById(R.id.android_material_design_spinner);
         mBinder.spinnerJobTitleCreateProfile.setPrompt(getString(R.string.lable_job_title));
         mBinder.spinnerJobTitleCreateProfile.setAdapter(arrayAdapter);
+        if (getIntent() != null) {
+            fName=getIntent().getStringExtra(Constants.INTENT_KEY.F_NAME);
+            mBinder.createProfileTvName.setText("Hi "+fName);
+
+        }
+
+        mBinder.spinnerJobTitleCreateProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                jobTitle=spinnerList[i];
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -68,14 +90,22 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
                 callBottomSheet();
                 break;
             case R.id.create_profile1_btn_next:
-                startActivity(new Intent(this, CreateProfileActivity2.class));
+                if(!TextUtils.isEmpty(mFilePath)) {
+                    Intent intent = new Intent(this, CreateProfileActivity2.class);
+                    intent.putExtra(Constants.INTENT_KEY.IMAGE_PATH, mFilePath);
+                    intent.putExtra(Constants.INTENT_KEY.F_NAME, fName);
+                    intent.putExtra(Constants.INTENT_KEY.JOB_TITLE, jobTitle);
+                    startActivity(intent);
+                }else{
+                    Utils.showToast(getApplicationContext(),getString(R.string.blank_profile_photo_alert));
+                }
                 break;
             case R.id.create_profile1_btn_not_now:
 
                 Alert.createYesNoAlert(CreateProfileActivity1.this, getString(R.string.ok), getString(R.string.cancel), "", getString(R.string.alert_profile), new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {
-//                        Utils.showToast(CreateProfileActivity1.this,"Comming soon....");
+                        Utils.showToast(CreateProfileActivity1.this, "Comming soon....");
                     }
 
                     @Override
@@ -110,7 +140,7 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
                             }
                         }).show();
             } else {
-                PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},  Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+                PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
             }
         }
     }
@@ -155,14 +185,14 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        startActivityForResult(cameraIntent,  Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode ==  Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
+            if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
 
@@ -176,7 +206,7 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
             if (mFilePath != null) {
 
 //                ivProfile.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, 100, 100));
-                Picasso.with(CreateProfileActivity1.this).load(new File(mFilePath)).centerCrop().resize(102, 102).placeholder(R.drawable.profile_pic_placeholder).into(mBinder.createProfile1IvProfileIcon);
+                Picasso.with(CreateProfileActivity1.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(mBinder.createProfile1IvProfileIcon);
 
             }
         }

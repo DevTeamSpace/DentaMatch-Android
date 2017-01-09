@@ -1,13 +1,14 @@
 package com.appster.dentamatch.network.response.auth;
 
 import com.appster.dentamatch.network.BaseResponse;
+import com.google.gson.annotations.SerializedName;
 
 /**
  *
  */
 public class LoginResponse extends BaseResponse {
 
-    /*@SerializedName("data")
+    @SerializedName("result")
     private LoginResponseData loginResponseData;
 
     public LoginResponseData getLoginResponseData() {
@@ -16,5 +17,5 @@ public class LoginResponse extends BaseResponse {
 
     public void setLoginResponseData(LoginResponseData loginResponseData) {
         this.loginResponseData = loginResponseData;
-    }*/
+    }
 }
