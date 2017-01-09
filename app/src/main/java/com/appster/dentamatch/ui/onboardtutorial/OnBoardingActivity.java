@@ -85,7 +85,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
             mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_selected);
-            
+
         }
 
     }
@@ -100,6 +100,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.tv_skip_onboarding:
                 startActivity(new Intent(this, LoginActivity.class));
+                finish();
                 break;
 
         }

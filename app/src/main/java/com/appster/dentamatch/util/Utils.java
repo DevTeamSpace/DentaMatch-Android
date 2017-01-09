@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,6 +37,18 @@ public class Utils {
     public static final String TAG = "Utils";
 
     @Nullable
+    /*
+    * get device id
+    * */
+    public static String getDeviceID(Context context) {
+        return Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+    }
+
+    public static String getDeviceToken() {
+        return "agkj2899jhfj38ry3ry0yr0321y0yr";
+    }
+
     public static Drawable getDrawable(@NonNull Context context, @DrawableRes int drawableId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             return context.getDrawable(drawableId);
@@ -55,14 +68,14 @@ public class Utils {
         return isSimulator;
     }
 
-    public static Drawable getGalleryIcon(Context ct){
+    public static Drawable getGalleryIcon(Context ct) {
         Drawable galleryIcon = null;
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setType("image/*");
         List<ResolveInfo> allHandlers = ct.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 
-        for(int i = 0; i < allHandlers.size(); i++){
-            if(allHandlers.get(i).activityInfo.name.toLowerCase().contains("gallery")){
+        for (int i = 0; i < allHandlers.size(); i++) {
+            if (allHandlers.get(i).activityInfo.name.toLowerCase().contains("gallery")) {
                 galleryIcon = allHandlers.get(i).loadIcon(ct.getPackageManager());
                 break;
             }
@@ -71,13 +84,13 @@ public class Utils {
         return galleryIcon;
     }
 
-    public static Drawable getCameraIcon(Context ct){
+    public static Drawable getCameraIcon(Context ct) {
         Drawable cameraIcon = null;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         List<ResolveInfo> allHandlers = ct.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 
-        for(int i = 0; i < allHandlers.size(); i++){
-            if(allHandlers.get(i).activityInfo.name.toLowerCase().contains("camera")){
+        for (int i = 0; i < allHandlers.size(); i++) {
+            if (allHandlers.get(i).activityInfo.name.toLowerCase().contains("camera")) {
                 cameraIcon = allHandlers.get(i).loadIcon(ct.getPackageManager());
                 break;
             }

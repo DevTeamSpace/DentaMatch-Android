@@ -35,11 +35,12 @@ import java.io.File;
  */
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
     private ImageView ivProfile, ivUpload, ivToolbarLeft;
+    private TextView tvName,tvJobTitle;
     private ImageSelectedListener imageSelectedListener;
     private ProgressBar mProgressBar;
     private TextView tvToolbarLeft;
     private Button btnNext;
-    private String mFilePath, profileImagePath;
+    private String mFilePath, profileImagePath,fName,jobTitle;
     private byte mSelectedImage;
 
     @Override
@@ -48,6 +49,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_create_profile2);
         if (getIntent() != null) {
             profileImagePath = getIntent().getStringExtra(Constants.INTENT_KEY.IMAGE_PATH);
+            fName = getIntent().getStringExtra(Constants.INTENT_KEY.F_NAME);
+            jobTitle = getIntent().getStringExtra(Constants.INTENT_KEY.JOB_TITLE);
         }
         initViews();
     }
@@ -59,6 +62,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
         btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
         tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
+        tvName = (TextView) findViewById(R.id.create_profile_tv_name);
+        tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
         ivUpload.setOnClickListener(this);
         ivProfile.setOnClickListener(this);
@@ -69,6 +74,12 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         if (!TextUtils.isEmpty(profileImagePath)) {
             Picasso.with(getApplicationContext()).load(new File(profileImagePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
 
+        }
+        if(!TextUtils.isEmpty(jobTitle)){
+            tvJobTitle.setText(jobTitle);
+        }
+        if(!TextUtils.isEmpty(fName)){
+            tvName.setText(fName);
         }
 
     }
@@ -88,7 +99,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 //                callBottomSheet();
                 break;
             case R.id.create_profile2_btn_next:
-                startActivity(new Intent(this, WorkExperienceActivity.class));
+                startActivity(new Intent(this, WorkExperienceActivity.class).putExtra(Constants.INTENT_KEY.IMAGE_PATH,profileImagePath));
                 break;
         }
     }

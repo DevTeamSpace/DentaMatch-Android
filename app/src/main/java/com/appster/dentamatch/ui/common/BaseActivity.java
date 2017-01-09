@@ -16,6 +16,7 @@ import com.appster.dentamatch.R;
 
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -125,7 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    void processToShowDialog(String title, String msg, View view) {
+    public void processToShowDialog(String title, String msg, View view) {
         try {
             mProgressDialog = ProgressDialog.show(new ContextThemeWrapper(BaseActivity.this,
                     android.R.style.Theme_Holo_Light), title, msg, true, false);
@@ -135,7 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             /*else
                 mProgressDialog.setContentView(R.layout.progress_view);*/
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

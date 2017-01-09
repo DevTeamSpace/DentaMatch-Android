@@ -60,7 +60,7 @@
                 app:customFont="@string/font_light" />
 
             <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/create_profile_tv_specialization"
+                android:id="@+id/create_profile_tv_job_title"
                 style="@style/text_view_normal"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:text="@string/accept"

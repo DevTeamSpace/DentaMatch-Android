@@ -37,7 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.auth.LoginActivity" />
+        <activity android:name=".ui.auth.LoginActivity"
+            android:screenOrientation="userPortrait"
+            android:theme="@style/NoActionBar"/>
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -82,6 +84,11 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.termsnprivacy.TermsAndConditionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <activity
+            android:name=".ui.map.PlacesMapActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 

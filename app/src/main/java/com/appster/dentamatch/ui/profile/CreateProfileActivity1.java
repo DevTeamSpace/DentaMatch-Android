@@ -13,8 +13,10 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.appster.dentamatch.R;
@@ -37,7 +39,8 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
     private ImageSelectedListener imageSelectedListener;
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
-    private String[] spinnerList = {"job title,Dev", "Qa", "Po", "Sm", "tl", "security"};
+    private String[] spinnerList = {"job title","dev", "Qa", "Po", "Sm", "tl", "security"};
+    private String fName,jobTitle;
 
 
     @Override
@@ -60,6 +63,24 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
 //                findViewById(R.id.android_material_design_spinner);
         mBinder.spinnerJobTitleCreateProfile.setPrompt(getString(R.string.lable_job_title));
         mBinder.spinnerJobTitleCreateProfile.setAdapter(arrayAdapter);
+        if (getIntent() != null) {
+            fName=getIntent().getStringExtra(Constants.INTENT_KEY.F_NAME);
+            mBinder.createProfileTvName.setText("Hi "+fName);
+
+        }
+
+        mBinder.spinnerJobTitleCreateProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                jobTitle=spinnerList[i];
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -69,9 +90,15 @@ public class CreateProfileActivity1 extends Activity implements View.OnClickList
                 callBottomSheet();
                 break;
             case R.id.create_profile1_btn_next:
-                Intent intent = new Intent(this, CreateProfileActivity2.class);
-                intent.putExtra(Constants.INTENT_KEY.IMAGE_PATH, mFilePath);
-                startActivity(intent);
+                if(!TextUtils.isEmpty(mFilePath)) {
+                    Intent intent = new Intent(this, CreateProfileActivity2.class);
+                    intent.putExtra(Constants.INTENT_KEY.IMAGE_PATH, mFilePath);
+                    intent.putExtra(Constants.INTENT_KEY.F_NAME, fName);
+                    intent.putExtra(Constants.INTENT_KEY.JOB_TITLE, jobTitle);
+                    startActivity(intent);
+                }else{
+                    Utils.showToast(getApplicationContext(),getString(R.string.blank_profile_photo_alert));
+                }
                 break;
             case R.id.create_profile1_btn_not_now:
 

@@ -15,10 +15,11 @@
         android:maxLines="1" />
 
     <fragment
+        android:id="@+id/fragmentMap"
         class="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_below="@+id/autocomplete_places"
         android:layout_height="match_parent"
-        tools:layout="@layout/activity_places_map" />
+        />
 
 </RelativeLayout>

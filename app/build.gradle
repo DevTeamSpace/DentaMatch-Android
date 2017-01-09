@@ -73,15 +73,21 @@ android {
 
     flavorDimensions "environment"
     productFlavors {
+        Dev {
+            dimension "environment"
+            buildConfigField("String", "BASE_URL", '"http://52.8.112.211/api/"')
+            minSdkVersion 19
+            signingConfig signingConfigs.config
+        }
         QA {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://qa.dentamach/api/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
-        Dev {
+        Staging {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://dev.dentamach/api/"')
+            buildConfigField("String", "BASE_URL", '"https://staging.dentamach/api/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
@@ -89,12 +95,6 @@ android {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://production.dentamach/api/"')
             minSdkVersion 19
-        }
-        Staging {
-            dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://staging.dentamach/api/"')
-            minSdkVersion 19
-            signingConfig signingConfigs.config
         }
     }
 }
@@ -153,13 +153,13 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
-    compile 'com.squareup.okhttp3:okhttp:3.1.2'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+//    compile 'com.squareup.okhttp3:okhttp:3.1.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
-    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
-    compile 'io.reactivex:rxjava:1.1.8'
-    compile 'io.reactivex:rxandroid:1.2.1'
+//    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
+//    compile 'io.reactivex:rxjava:1.1.8'
+//    compile 'io.reactivex:rxandroid:1.2.1'
 
     testCompile 'junit:junit:4.12'
     compile 'de.hdodenhof:circleimageview:2.1.0'
