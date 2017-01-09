@@ -43,6 +43,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_tool_bar_left:
+                hideKeyboard();
                 onBackPressed();
                 break;
             case R.id.forgot_password_btn_save:

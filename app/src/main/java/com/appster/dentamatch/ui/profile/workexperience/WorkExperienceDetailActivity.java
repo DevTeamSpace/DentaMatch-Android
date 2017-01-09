@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityWorkExperinceDetailBinding;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.BottomSheetPicker;
 
@@ -37,6 +39,8 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         mBinder.btnNextDetailWorkExp.setOnClickListener(this);
         mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setOnClickListener(this);
         mBinder.toolbarWorkExpDetail.ivToolBarLeft.setOnClickListener(this);
+        mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
+        setSpinnerData();
     }
 
     private void inflateRefrence() {
@@ -83,13 +87,13 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 
                 break;
             case R.id.tv_experince_work_exp:
-                int year=0,month=0;
+                int year = 0, month = 0;
                 if (!TextUtils.isEmpty(mBinder.includeLayoutWorkExp.tvExperinceWorkExp.getText().toString())) {
-                    String split[]=mBinder.includeLayoutWorkExp.tvExperinceWorkExp.getText().toString().split(" ");
-                    year=Integer.parseInt(split[0]);
-                    month=Integer.parseInt(split[2]);
+                    String split[] = mBinder.includeLayoutWorkExp.tvExperinceWorkExp.getText().toString().split(" ");
+                    year = Integer.parseInt(split[0]);
+                    month = Integer.parseInt(split[2]);
                 }
-                new BottomSheetPicker(this, this,year,month);
+                new BottomSheetPicker(this, this, year, month);
 
                 break;
             case R.id.btn_next_detail_work_exp:
@@ -99,8 +103,24 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 
     }
 
+    private void setSpinnerData() {
+        String title[] = new String[PreferenceUtil.getJobTitleList().size()];
+
+        for (int i = 0; i < PreferenceUtil.getJobTitleList().size(); i++) {
+            title[i] = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(WorkExperienceDetailActivity.this,
+                android.R.layout.simple_dropdown_item_1line, title);
+//        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
+//                findViewById(R.id.android_material_design_spinner);
+        mBinder.includeLayoutWorkExp.spinnerJobTitleWorkExp.setPrompt(getString(R.string.lable_job_title));
+        mBinder.includeLayoutWorkExp.spinnerJobTitleWorkExp.setAdapter(arrayAdapter);
+    }
+
     @Override
     public void onExperienceSection(int year, int month) {
         mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
+        PreferenceUtil.setMonth(month);
+        PreferenceUtil.setYear(year);
     }
 }

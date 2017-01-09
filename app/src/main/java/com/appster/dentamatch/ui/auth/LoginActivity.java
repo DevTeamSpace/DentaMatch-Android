@@ -48,7 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private static final int REQUEST_CODE_LOCATION = 101;
     private ImageView ivRegisterPeg, ivLoginPeg, ivPolicy;
     private LinearLayout layoutRegisterSelector, layoutLoginSelector, layoutOnlyRegister, layoutOnlyLogin;
-    private TextView tvLogin, tvRegister, tvForgotPassword, tvTermNcondition;
+    private TextView tvLogin, tvRegister, tvForgotPassword, tvTermNcondition, tvLoginShowPassword, tvRegisterShowPassword;
     private EditText etRegisterFName, etRegisterLName, etRegisterPassword, etRegisterEmail, etLoginEmail, etLoginPassword;
     private Button btnRegister;
     private CustomTextView tvPreferredJobLocation;
@@ -58,6 +58,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String mPlaceName;
     private String mLatitude;
     private String mLongitude;
+    private boolean isLoginShow, isRegisterShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         tvRegister = (TextView) findViewById(R.id.register_tv_register);
         tvLogin = (TextView) findViewById(R.id.login_tv_login);
         tvTermNcondition = (TextView) findViewById(R.id.tv_term_n_policy);
+        tvLoginShowPassword = (TextView) findViewById(R.id.login_tv_show_password);
+        tvRegisterShowPassword = (TextView) findViewById(R.id.register_tv_show_password);
         tvForgotPassword = (TextView) findViewById(R.id.login_tv_forgot_password);
 
         etLoginEmail = (EditText) findViewById(R.id.login_et_email);
@@ -96,6 +99,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         tvForgotPassword.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
         tvPreferredJobLocation.setOnClickListener(this);
+        tvLoginShowPassword.setOnClickListener(this);
+        tvRegisterShowPassword.setOnClickListener(this);
         ivPolicy.setOnClickListener(this);
         setPolicySpanString();
         showSelectedView(isLogin);
@@ -166,8 +171,35 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 showSelectedView(false);
                 break;
+            case R.id.login_tv_show_password:
+                if (etLoginPassword.getText().toString().length() > 0) {
+
+                    if (isLoginShow) {
+                        Utils.showPassword(LoginActivity.this, etLoginPassword, isLoginShow, tvLoginShowPassword);
+                        isLoginShow = false;
+
+                    } else {
+                        Utils.showPassword(LoginActivity.this, etLoginPassword, isLoginShow, tvLoginShowPassword);
+                        isLoginShow = true;
+                    }
+                }
+                break;
+            case R.id.register_tv_show_password:
+                if (etRegisterPassword.getText().toString().length() > 0) {
+
+                    if (isRegisterShow) {
+                        Utils.showPassword(LoginActivity.this, etRegisterPassword, isRegisterShow, tvRegisterShowPassword);
+                        isRegisterShow = false;
+
+                    } else {
+                        Utils.showPassword(LoginActivity.this, etRegisterPassword, isRegisterShow, tvRegisterShowPassword);
+                        isRegisterShow = true;
+                    }
+                }
+                break;
 
             case R.id.login_btn_register:
+                hideKeyboard();
                 if (validateInput()) {
                     if (isLogin) {
                         signInApi(prepareLoginRequest());

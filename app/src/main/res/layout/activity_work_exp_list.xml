@@ -15,6 +15,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/btn_next_work_exp_lsit"
             android:layout_below="@+id/toolbar_work_exp_list">
 
             <LinearLayout
@@ -31,9 +32,13 @@
 
                 </LinearLayout>
 
-                <include layout="@layout/layout_work_exp" />
+                <include
+                    android:id="@+id/include_work_exp_list"
+                    layout="@layout/layout_work_exp" />
 
-                <!--<include layout="@layout/layout_reference" />-->
+                <include
+                    android:id="@+id/include_layout_refrence"
+                    layout="@layout/layout_reference" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_experience_delete"
@@ -81,7 +86,7 @@
             android:background="@color/button_bg_color"
             android:gravity="center"
             android:text="@string/lable_next"
-            android:textColor="@color/white_color_pacity"
+            android:textColor="@color/white_color"
             android:textSize="@dimen/text_size_large"
             app:customFont="@string/font_regular" />
     </RelativeLayout>

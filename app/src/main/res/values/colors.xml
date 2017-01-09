@@ -14,6 +14,7 @@
     <color name="center_color">#0e199f</color>
     <color name="white_color">#ffffff</color>
     <color name="black_color">#0f183e</color>
+    <color name="red_color">#FF7C0701</color>
     <color name="white_color_pacity">#50ffffff</color>
     <color name="edt_boundry_color">#e4e4e4</color>
     <color name="edt_boundry_highlight_color">#046dbb</color>

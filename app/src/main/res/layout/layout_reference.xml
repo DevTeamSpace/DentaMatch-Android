@@ -12,8 +12,6 @@
             style="@style/text_view_normal"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_12"
-            android:drawablePadding="@dimen/padding_drawable"
-            android:drawableStart="@drawable/ic_add_refrence"
             android:paddingLeft="@dimen/margin_medium"
             android:text="@string/reference"
             android:textColor="@color/color_forgot_pwd"
@@ -94,15 +92,12 @@
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_refrence_delete"
-
             style="@style/text_view_normal"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_12"
-            android:drawablePadding="@dimen/padding_drawable"
-            android:drawableStart="@drawable/ic_add_refrence"
             android:paddingLeft="@dimen/margin_medium"
             android:text="@string/reference_delete"
-            android:textColor="@color/color_forgot_pwd"
+            android:textColor="@color/red_color"
             android:textSize="@dimen/text_size_12"
             android:visibility="gone"
             app:customFont="@string/font_regular" />

@@ -120,7 +120,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     public void onNegative(DialogInterface dialog) {
                         dialog.dismiss();
                     }
-                }).show();
+                });
                 break;
         }
     }

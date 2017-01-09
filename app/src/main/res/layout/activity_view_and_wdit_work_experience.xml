@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/btn_next_work_exp_view_edit"
             android:layout_below="@+id/toolbar_work_exp_view">
 
             <LinearLayout
@@ -23,12 +25,30 @@
                 android:orientation="vertical">
 
 
-                <include layout="@layout/layout_work_exp" />
+                <include
+                    android:id="@+id/layout_work_exp_view_edit"
+                    layout="@layout/layout_work_exp" />
 
-                <include layout="@layout/layout_reference" />
+                <include
+                    android:id="@+id/layout_refrence_view_edit"
+
+                    layout="@layout/layout_reference" />
 
 
             </LinearLayout>
         </ScrollView>
+
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/btn_next_work_exp_view_edit"
+            style="@style/button_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/button_bg_color"
+            android:gravity="center"
+            android:text="@string/lable_next"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_size_large"
+            app:customFont="@string/font_regular" />
     </RelativeLayout>
 </layout>

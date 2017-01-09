@@ -84,7 +84,7 @@
             android:background="@color/button_bg_color"
             android:gravity="center"
             android:text="@string/lable_next"
-            android:textColor="@color/white_color_pacity"
+            android:textColor="@color/white_color"
             android:textSize="@dimen/text_size_large"
             app:customFont="@string/font_regular" />
     </RelativeLayout>
