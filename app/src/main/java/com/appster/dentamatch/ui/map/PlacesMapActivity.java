@@ -2,25 +2,33 @@ package com.appster.dentamatch.ui.map;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
@@ -44,7 +52,11 @@ import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
+import java.io.IOException;
+import java.util.List;
+
+public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,
+        OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener {
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -56,10 +68,13 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private PlaceAutocompleteAdapter mAdapter;
 
     private AutoCompleteTextView mAutocompleteView;
+    private ImageView mImgClear;
+    private RelativeLayout mLayout;
 
-    private TextView mPlaceDetailsText;
-
-    private TextView mPlaceDetailsAttribution;
+    private String mPostalCode;
+    private String mPlaceName;
+    private String mLatitude;
+    private String mLongitude;
 
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
@@ -78,20 +93,14 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
-        mAutocompleteView = (AutoCompleteTextView)
-                findViewById(R.id.autocomplete_places);
-
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
-        mapFragment.getMapAsync(this);
+        mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
+        mImgClear = (ImageView) findViewById(R.id.img_clear);
+        mLayout = (RelativeLayout) findViewById(R.id.layout_done);
 
         // Register a listener that receives callbacks when a suggestion has been selected
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
-
-        mAutocompleteView = (AutoCompleteTextView)
-                findViewById(R.id.autocomplete_places);
-
-        // Register a listener that receives callbacks when a suggestion has been selected
-        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+        mImgClear.setOnClickListener(this);
+        mLayout.setOnClickListener(this);
 
         // Retrieve the TextViews that will display details and attributions of the selected place.
 //        mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
@@ -103,15 +112,14 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 null);
         mAutocompleteView.setAdapter(mAdapter);
 
-//        check();
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
+        mapFragment.getMapAsync(this);
 
+//        check();
 
         EventBus.getDefault().register(this);
 
         LocationUtils.addFragment(this);
-
-//        Fragment fragmentLocationUtils = (Fragment) LocationUtils.newInstance();
-//        getFragmentManager().beginTransaction().add(fragmentLocationUtils, "").commit();
     }
 
     @Override
@@ -128,6 +136,27 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         setMap();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_clear:
+                mAutocompleteView.setText("");
+                break;
+
+            case R.id.layout_done:
+                hideKeyboard();
+                setResult(RESULT_OK, prepareIntent());
+                finish();
+                break;
+        }
     }
 
     @Override
@@ -159,18 +188,36 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
     // This method will be called when Event is posted.
     @Subscribe
-    public void onEvent(LocationEvent locationEvent){
+    public void onEvent(LocationEvent locationEvent) {
         // your implementation
-        LogUtils.LOGD(TAG, "onEvent");
-        Toast.makeText(this, "recieved on sender "+locationEvent.getMessage().getLongitude(), Toast.LENGTH_SHORT).show();
+        LogUtils.LOGD(TAG, "onEvent " + locationEvent.getMessage().getLongitude());
+//        Toast.makeText(this, "received on sender " + locationEvent.getMessage().getLongitude(), Toast.LENGTH_SHORT).show();
 
         Location location = locationEvent.getMessage();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        if(mMap!=null) {
+
+        if (mMap != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             mMap.addMarker(new MarkerOptions().position(latLng));
-
         }
+
+        Address address = getReverseGeoCode(latLng);
+        String localityName = convertAddressToString(address);
+        mAutocompleteView.setText(localityName);
+        mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
+        mAutocompleteView.clearListSelection();
+
+        mPlaceName = mAutocompleteView.getText().toString();
+        mPostalCode = address.getPostalCode();
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(latLng));
+
+        Address address = getReverseGeoCode(latLng);
+        mAutocompleteView.setText(convertAddressToString(address));
     }
 
     /**
@@ -205,13 +252,14 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
+//                    Toast.LENGTH_SHORT).show();
             LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
 
             hideKeyboard();
         }
     };
+
     /**
      * Callback for results from a Places Geo Data API query that shows the first place result in
      * the details view on screen.
@@ -230,15 +278,30 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.clear();
             mMap.addMarker(new MarkerOptions().position(latLng));
 
             LogUtils.LOGD(TAG, latLng.toString());
 
             LogUtils.LOGD(TAG, "Place details received: " + place.getName());
 
+            mPostalCode = getReverseGeoCode(latLng).getPostalCode();
+            mPlaceName = mAutocompleteView.getText().toString();
+            mLatitude = String.valueOf(latLng.latitude);
+            mLongitude = String.valueOf(latLng.longitude);
+
             places.release();
         }
     };
+
+    private Intent prepareIntent() {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.EXTRA_PLACE_NAME, mPlaceName);
+        intent.putExtra(Constants.EXTRA_POSTAL_CODE, mPostalCode);
+        intent.putExtra(Constants.EXTRA_LATITUDE, mLatitude);
+        intent.putExtra(Constants.EXTRA_LONGITUDE, mLongitude);
+        return intent;
+    }
 
     private void setMap() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -254,13 +317,28 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-//        double latitude = mMap.getMyLocation().getLatitude();
-//        double longitude = mMap.getMyLocation().getLongitude();
-//        LatLng latLng =new LatLng(latitude, longitude);
+        mMap.setOnMapClickListener(this);
+    }
 
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-//        mMap.addMarker(new MarkerOptions().position(latLng));
+    private String convertAddressToString(Address address) {
+        return address.getAddressLine(0) + ", " + address.getAddressLine(1) + ", "
+                + address.getSubAdminArea() + ", " + address.getAdminArea();
+    }
 
+    private Address getReverseGeoCode(LatLng latLng) {
+        Address address = null;
+
+        Geocoder geocoder = new Geocoder(this);
+        try {
+            List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            address = addressList.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        LogUtils.LOGD(TAG, "Postal Code " + address == null ? "address not found" : address.getPostalCode());
+
+        return address;
     }
 
     private void check() {
@@ -295,5 +373,4 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             }
         }
     }
-
 }

@@ -31,6 +31,8 @@ import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PermissionUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
@@ -43,6 +45,7 @@ import retrofit2.Response;
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Login";
+    private static final int REQUEST_CODE_LOCATION = 101;
     private ImageView ivRegisterPeg, ivLoginPeg, ivPolicy;
     private LinearLayout layoutRegisterSelector, layoutLoginSelector, layoutOnlyRegister, layoutOnlyLogin;
     private TextView tvLogin, tvRegister, tvForgotPassword, tvTermNcondition;
@@ -51,6 +54,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private CustomTextView tvPreferredJobLocation;
     private boolean isAccepted, isLogin;
 
+    private String mPostalCode;
+    private String mPlaceName;
+    private String mLatitude;
+    private String mLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +77,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         etLoginEmail = (EditText) findViewById(R.id.login_et_email);
         etLoginPassword = (EditText) findViewById(R.id.login_et_password);
         etRegisterEmail = (EditText) findViewById(R.id.register_et_email);
-        etRegisterFName = (EditText) findViewById(R.id.register_et_lname);
+        etRegisterFName = (EditText) findViewById(R.id.register_et_fname);
         etRegisterLName = (EditText) findViewById(R.id.register_et_lname);
         etRegisterPassword = (EditText) findViewById(R.id.register_et_password);
+
         btnRegister = (Button) findViewById(R.id.login_btn_register);
         ivRegisterPeg = (ImageView) findViewById(R.id.register_iv_peg);
         ivLoginPeg = (ImageView) findViewById(R.id.login_iv_peg);
@@ -132,18 +140,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         int tncEnd = getString(R.string.label_accept_term_ncondition).lastIndexOf("and") - 1;
         Utils.setSpannClickEvent(spanString, tncStart, tncEnd, termsAndCondition);
         Utils.setSpannColor(spanString, tncStart, tncEnd, getResources().getColor(R.color.button_bg_color));
-        Utils.setSpannTypeface(spanString, tncStart, tncEnd, Typeface.BOLD);
+//        Utils.setSpannTypeface(spanString, tncStart, tncEnd, Typeface.BOLD);
         Utils.setSpannUnderline(spanString, tncStart, tncEnd);
 
         int privacyStart = getString(R.string.label_accept_term_ncondition).indexOf("Privacy");
         Utils.setSpannClickEvent(spanString, privacyStart + 1, spanString.length(), privacy);
         Utils.setSpannColor(spanString, privacyStart, spanString.length(), getResources().getColor(R.color.button_bg_color));
         Utils.setSpannUnderline(spanString, privacyStart + 1, spanString.length());
-        Utils.setSpannTypeface(spanString, privacyStart, spanString.length(), Typeface.BOLD);
-
+//        Utils.setSpannTypeface(spanString, privacyStart, spanString.length(), Typeface.BOLD);
 
         Utils.setSpannCommanProperty(tvTermNcondition, spanString);
-
     }
 
     @Override
@@ -162,8 +168,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.login_btn_register:
-//                startActivity(new Intent(this, CreateProfileActivity1.class));
-
                 if (validateInput()) {
                     if (isLogin) {
                         signInApi(prepareLoginRequest());
@@ -184,14 +188,32 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 } else {
                     ivPolicy.setBackgroundResource(R.drawable.ic_check_fill);
                     isAccepted = true;
-
-
                 }
                 break;
 
             case R.id.tv_preferred_job_location:
-                startActivity(new Intent(this, PlacesMapActivity.class));
+                startActivityForResult(new Intent(this, PlacesMapActivity.class), REQUEST_CODE_LOCATION);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_CODE_LOCATION:
+                if (resultCode == RESULT_OK) {
+                    Bundle bundle = data.getExtras();
+
+                    if (bundle != null) {
+                        mLatitude = bundle.getString(Constants.EXTRA_LATITUDE);
+                        mLongitude = bundle.getString(Constants.EXTRA_LONGITUDE);
+                        mPlaceName = bundle.getString(Constants.EXTRA_PLACE_NAME);
+                        mPostalCode = bundle.getString(Constants.EXTRA_POSTAL_CODE);
+                        tvPreferredJobLocation.setText(data.getExtras().getString(Constants.EXTRA_PLACE_NAME));
+                    }
+                }
         }
     }
 
@@ -238,10 +260,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
-//            if (TextUtils.isEmpty(tvPreferredJobLocation.getText().toString())) {
-//                Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
-//                return false;
-//            }
+            if (TextUtils.isEmpty(tvPreferredJobLocation.getText().toString())) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
+                return false;
+            }
             if (!isAccepted) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_tnc_alert));
                 return false;
@@ -259,17 +281,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginRequest.setPassword(getTextFromEditText(etRegisterPassword));
         loginRequest.setFirstName(getTextFromEditText(etRegisterFName));
         loginRequest.setLastName(getTextFromEditText(etRegisterLName));
-        // TODO Auto-generated method stub
 
-        loginRequest.setLatitude("28.4992051");
-        loginRequest.setLongitude("77.0676317");
-        loginRequest.setZipCode("122008");
-        loginRequest.setPreferedLocation("Appster pvt. ltd, aricent lane,sector-18,gurgaon,haryana,india");
+        loginRequest.setLatitude(mLatitude);
+        loginRequest.setLongitude(mLongitude);
+        loginRequest.setZipCode(mPostalCode);
+        loginRequest.setPreferedLocation(mPlaceName);
         return loginRequest;
     }
 
     private void signUpApi(LoginRequest loginRequest) {
-        LogUtils.LOGD(TAG, "signupApi");
+        LogUtils.LOGD(TAG, "signUpApi");
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
@@ -277,10 +298,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onSuccess(LoginResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
+
                 if (response.getStatus() == 1) {
+                    PreferenceUtil.setIsLogined(true);
+                    PreferenceUtil.setFistName(getTextFromEditText(etRegisterFName));
+                    PreferenceUtil.setLastName(getTextFromEditText(etRegisterLName));
                     Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    intent.putExtra(Constants.INTENT_KEY.F_NAME, getTextFromEditText(etRegisterFName));
-                    intent.putExtra(Constants.INTENT_KEY.L_NAME, getTextFromEditText(etRegisterLName));
                     startActivity(intent);
                     finish();
                 } else {
@@ -291,7 +314,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
-
 
             }
         });
@@ -321,15 +343,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onSuccess(LoginResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
-
+                    PreferenceUtil.setIsLogined(true);
                     Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    intent.putExtra(Constants.INTENT_KEY.F_NAME, response.getLoginResponseData().getUserDetail().getFirstName());
-                    intent.putExtra(Constants.INTENT_KEY.L_NAME, response.getLoginResponseData().getUserDetail().getLastName());
+                    PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
+                    PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
                     startActivity(intent);
                     finish();
                 } else {
-                    Utils.showToast(getApplicationContext(), "success");
-
+                    Utils.showToast(getApplicationContext(), response.getMessage());
                 }
             }
 
@@ -337,12 +358,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
                 Utils.showToast(getApplicationContext(), baseResponse.getMessage());
-
-
             }
         });
     }
-
 
     private void showSelectedView(boolean isLogin) {
         if (isLogin) {
@@ -357,7 +375,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ivLoginPeg.setVisibility(View.INVISIBLE);
             layoutOnlyLogin.setVisibility(View.GONE);
             btnRegister.setText(getString(R.string.register_label));
-
         }
     }
 

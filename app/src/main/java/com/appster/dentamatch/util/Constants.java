@@ -5,6 +5,11 @@ package com.appster.dentamatch.util;
  */
 public class Constants {
 
+    public static final String EXTRA_PLACE_NAME = "place_name";
+    public static final String EXTRA_POSTAL_CODE = "postal_code";
+    public static final String EXTRA_LATITUDE = "latitude";
+    public static final String EXTRA_LONGITUDE = "longitude";
+
     private Constants() {
     }
 

@@ -2,10 +2,12 @@ package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.response.auth.JobTitleResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
@@ -21,6 +23,7 @@ public interface AuthWebServices {
     String SIGN_IN = "users/sign-in";
     String SIGN_UP = "users/sign-up";
     String FORGOT_APSSWORD = "users/forgot-password";
+    String JOB_TITLE_LIST = "list-jobtitle";
 
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
@@ -30,6 +33,9 @@ public interface AuthWebServices {
 
     @PUT(FORGOT_APSSWORD)
     Call<LoginResponse> forgotPassword(@Body LoginRequest loginRequest);
+
+    @GET(JOB_TITLE_LIST)
+    Call<JobTitleResponse> jobTitle();
 
     /*@POST(AUTHENTICATION_URL)
     Call<LoginResponse> userAuthenticate(@Body LoginRequest params);
