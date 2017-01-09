@@ -17,14 +17,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.PermissionUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.widget.BottomSheetView;
 import com.squareup.picasso.Picasso;
 
@@ -36,22 +37,17 @@ import java.io.File;
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
     private ImageView ivProfile, ivUpload, ivToolbarLeft;
     private TextView tvName,tvJobTitle;
-    private ImageSelectedListener imageSelectedListener;
     private ProgressBar mProgressBar;
     private TextView tvToolbarLeft;
     private Button btnNext;
-    private String mFilePath, profileImagePath,fName,jobTitle;
+    private String mFilePath;
     private byte mSelectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile2);
-        if (getIntent() != null) {
-            profileImagePath = getIntent().getStringExtra(Constants.INTENT_KEY.IMAGE_PATH);
-            fName = getIntent().getStringExtra(Constants.INTENT_KEY.F_NAME);
-            jobTitle = getIntent().getStringExtra(Constants.INTENT_KEY.JOB_TITLE);
-        }
+
         initViews();
     }
 
@@ -71,15 +67,15 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         ivToolbarLeft.setOnClickListener(this);
         mProgressBar.setProgress(25);
         tvToolbarLeft.setText(getString(R.string.header_create_profile));
-        if (!TextUtils.isEmpty(profileImagePath)) {
-            Picasso.with(getApplicationContext()).load(new File(profileImagePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
+        if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
+            Picasso.with(getApplicationContext()).load(new File(PreferenceUtil.getProfileImagePath())).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
 
         }
-        if(!TextUtils.isEmpty(jobTitle)){
-            tvJobTitle.setText(jobTitle);
+        if(!TextUtils.isEmpty(PreferenceUtil.getJobTitle())){
+            tvJobTitle.setText(PreferenceUtil.getJobTitle());
         }
-        if(!TextUtils.isEmpty(fName)){
-            tvName.setText(fName);
+        if(!TextUtils.isEmpty(PreferenceUtil.getFirstName())){
+            tvName.setText(PreferenceUtil.getFirstName());
         }
 
     }
@@ -99,13 +95,13 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 //                callBottomSheet();
                 break;
             case R.id.create_profile2_btn_next:
-                startActivity(new Intent(this, WorkExperienceActivity.class).putExtra(Constants.INTENT_KEY.IMAGE_PATH,profileImagePath));
+                startActivity(new Intent(this, WorkExperienceActivity.class));
                 break;
         }
     }
 
     private void callBottomSheet() {
-        BottomSheetView bottomSheetView = new BottomSheetView(this, this);
+        new BottomSheetView(this, this);
     }
 
     @Override

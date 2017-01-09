@@ -31,6 +31,8 @@ import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PermissionUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
@@ -278,9 +280,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onSuccess(LoginResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
+                    PreferenceUtil.setIsLogined(true);
+                    PreferenceUtil.setFistName(getTextFromEditText(etRegisterFName));
+                    PreferenceUtil.setLastName(getTextFromEditText(etRegisterLName));
                     Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    intent.putExtra(Constants.INTENT_KEY.F_NAME, getTextFromEditText(etRegisterFName));
-                    intent.putExtra(Constants.INTENT_KEY.L_NAME, getTextFromEditText(etRegisterLName));
                     startActivity(intent);
                     finish();
                 } else {
@@ -321,14 +324,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onSuccess(LoginResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
-
+                    PreferenceUtil.setIsLogined(true);
                     Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    intent.putExtra(Constants.INTENT_KEY.F_NAME, response.getLoginResponseData().getUserDetail().getFirstName());
-                    intent.putExtra(Constants.INTENT_KEY.L_NAME, response.getLoginResponseData().getUserDetail().getLastName());
+                    PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
+                    PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
                     startActivity(intent);
                     finish();
                 } else {
-                    Utils.showToast(getApplicationContext(), "success");
+                    Utils.showToast(getApplicationContext(), response.getMessage());
 
                 }
             }

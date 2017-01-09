@@ -1,15 +1,11 @@
-package com.appster.dentamatch.ui.profile;
+package com.appster.dentamatch.ui.profile.workexperience;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
@@ -18,11 +14,6 @@ import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.BottomSheetPicker;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by virender on 05/01/17.
