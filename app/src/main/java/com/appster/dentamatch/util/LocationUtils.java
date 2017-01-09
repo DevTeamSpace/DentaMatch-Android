@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -156,6 +157,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
      * Requests location updates from the FusedLocationApi.
      */
     protected void startLocationUpdates() {
+        LogUtils.LOGD(TAG, "startLocationUpdates");
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest,
@@ -166,6 +168,8 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
                 }
             });
         } else {
+            LogUtils.LOGD(TAG, "request permission");
+
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
     }
@@ -173,6 +177,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        LogUtils.LOGD(TAG, "onRequestPermissionsResult");
         if (requestCode == REQUEST_LOCATION_PERMISSION && !StringUtils.isNullOrEmpty(grantResults)
                 &&grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             LogUtils.LOGV(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);

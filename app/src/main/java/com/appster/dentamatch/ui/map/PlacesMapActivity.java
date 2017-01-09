@@ -198,7 +198,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
         if (mMap != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            mMap.addMarker(new MarkerOptions().position(latLng));
+//            mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
         Address address = getReverseGeoCode(latLng);
@@ -209,6 +209,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
         mPlaceName = mAutocompleteView.getText().toString();
         mPostalCode = address.getPostalCode();
+        mLatitude = String.valueOf(address.getLatitude());
+        mLongitude = String.valueOf(address.getLongitude());
     }
 
     @Override
@@ -217,7 +219,15 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mMap.addMarker(new MarkerOptions().position(latLng));
 
         Address address = getReverseGeoCode(latLng);
-        mAutocompleteView.setText(convertAddressToString(address));
+        String placeName = convertAddressToString(address);
+        mAutocompleteView.setText(placeName);
+
+        if (TextUtils.isEmpty(placeName)) {
+            mLongitude = "";
+            mLatitude = "";
+            mPlaceName = "";
+            mPostalCode = "";
+        }
     }
 
     /**
@@ -314,6 +324,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
@@ -321,8 +332,27 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     }
 
     private String convertAddressToString(Address address) {
-        return address.getAddressLine(0) + ", " + address.getAddressLine(1) + ", "
-                + address.getSubAdminArea() + ", " + address.getAdminArea();
+        if (address == null) return "";
+
+        StringBuilder sb = new StringBuilder();
+
+        if (address.getAddressLine(0) != null) {
+            sb.append(address.getAddressLine(0));
+        }
+        if (address.getAddressLine(1) != null) {
+            sb.append(", ");
+            sb.append(address.getAddressLine(1));
+        }
+        if (address.getSubAdminArea() != null) {
+            sb.append(", ");
+            sb.append(address.getSubAdminArea());
+        }
+        if (address.getAdminArea() != null) {
+            sb.append(", ");
+            sb.append(address.getAdminArea());
+        }
+
+        return sb.toString();
     }
 
     private Address getReverseGeoCode(LatLng latLng) {
@@ -334,9 +364,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             address = addressList.get(0);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (IndexOutOfBoundsException ex) {
+            ex.printStackTrace();
         }
-
-        LogUtils.LOGD(TAG, "Postal Code " + address == null ? "address not found" : address.getPostalCode());
 
         return address;
     }
@@ -357,7 +387,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
                 Utils.showToast(this, "Please enable location permission in App Settings.");
-//                verifyUserLoggedIn();
                 setMap();
             } else {
 

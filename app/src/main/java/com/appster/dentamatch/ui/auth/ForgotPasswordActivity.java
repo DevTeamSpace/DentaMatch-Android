@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.auth;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,7 +14,6 @@ import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
@@ -49,18 +47,20 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.forgot_password_btn_save:
                 if (validateInput()) {
-                    forgotPasswordApi(prepairForgotPasswordRequest());
+                    forgotPasswordApi(prepareForgotPasswordRequest());
                 }
                 break;
         }
-
     }
 
     private boolean validateInput() {
+        hideKeyboard();
+
         if (TextUtils.isEmpty(mBinder.forgotPasswordEtEmail.getText().toString())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
             return false;
         }
+
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mBinder.forgotPasswordEtEmail.getText().toString()).matches()) {
             Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
             return false;
@@ -68,7 +68,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
         return true;
     }
 
-    private LoginRequest prepairForgotPasswordRequest() {
+    private LoginRequest prepareForgotPasswordRequest() {
         processToShowDialog("", getString(R.string.please_wait), null);
 
         LoginRequest loginRequest = new LoginRequest();
@@ -78,7 +78,6 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
 
     private void forgotPasswordApi(LoginRequest loginRequest) {
         LogUtils.LOGD(TAG, "forgot password");
-        processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.forgotPassword(loginRequest).enqueue(new BaseCallback<LoginResponse>(ForgotPasswordActivity.this) {
             @Override
@@ -96,8 +95,6 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
-
-
             }
         });
     }
