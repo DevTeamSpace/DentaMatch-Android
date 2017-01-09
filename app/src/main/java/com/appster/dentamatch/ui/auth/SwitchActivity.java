@@ -29,13 +29,13 @@ public class SwitchActivity extends BaseActivity implements SocialAuthListener<S
     }
 
     void continueToNextScreen() {
-        if (!PreferenceUtil.isJoyRideComplete()) {
-            forwardToJoyRide();
-        }/*else if (!PreferenceUtil.isLogin() && !PreferenceUtil.isLoginAppeared() && !PreferenceUtil.isLoginSkipped()) {
+//        if (!PreferenceUtil.isJoyRideComplete()) {
+//            forwardToJoyRide();
+//        }/*else if (!PreferenceUtil.isLogin() && !PreferenceUtil.isLoginAppeared() && !PreferenceUtil.isLoginSkipped()) {
             forwardToLogin();
-        } else {
-            forwardToHome();
-        }*/
+//        } else {
+//            forwardToHome();
+//        }*/
     }
 
     void continueToNextService() {

@@ -37,9 +37,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.auth.LoginActivity"
+        <activity
+            android:name=".ui.auth.LoginActivity"
             android:screenOrientation="userPortrait"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -56,29 +57,30 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui.profile.CreateProfileActivity1"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui.profile.CreateProfileActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".ui.profile.WorkExperienceActivity"
+            android:name=".ui.profile.workexperience.WorkExperienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.profile.ViewAndEditWorkExperienceActivity"
+            android:name=".ui.profile.workexperience.ViewAndEditWorkExperienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.profile.WorkExpListActivity"
+            android:name=".ui.profile.workexperience.WorkExpListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.profile.WorkExperienceDetailActivity"
+            android:name=".ui.profile.workexperience.WorkExperienceDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />

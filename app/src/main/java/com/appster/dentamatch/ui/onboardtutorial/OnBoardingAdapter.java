@@ -17,7 +17,7 @@ import com.appster.dentamatch.R;
 public class OnBoardingAdapter extends PagerAdapter {
 
     private Context mContext;
-    private int images[] = {R.drawable.splash_bg, R.drawable.splash_bg, R.drawable.splash_bg, R.drawable.splash_bg};
+    private int images[] = {R.drawable.onboard_1, R.drawable.onboard_2, R.drawable.onboard_3, R.drawable.onboard_4};
     private String mTitle[], mDesc[];
 
     private LayoutInflater mLayoutInflater;
@@ -48,7 +48,7 @@ public class OnBoardingAdapter extends PagerAdapter {
         ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_bg_onboarding);
         TextView tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
         TextView tvDesc = (TextView) itemView.findViewById(R.id.tv_desc);
-        imageView.setImageResource(images[position]);
+        imageView.setBackgroundResource(images[position]);
         tvTitle.setText(mTitle[position]);
         tvDesc.setText(mDesc[0]);
 

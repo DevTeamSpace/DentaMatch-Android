@@ -224,5 +224,9 @@ public class Utils {
 //        }
         edtPassword.setSelection(edtPassword.length());
     }
+    public static void showNetowrkAlert(Context context){
+        showToast(context,context.getString(R.string.error_no_network_connection));
+
+    }
 
 }
