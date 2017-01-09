@@ -172,6 +172,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="10dp"
+                        android:inputType="textPassword"
                         android:drawableStart="@drawable/ic_password"
                         android:hint="@string/password_label" />
                 </android.support.design.widget.TextInputLayout>
@@ -300,6 +301,7 @@
                     android:gravity="bottom"
                     android:paddingTop="@dimen/padding_input_layout"
 
+
                     app:hintTextAppearance="@style/edit_input_layout">
 
                     <EditText
@@ -311,6 +313,7 @@
                         android:layout_marginTop="@dimen/margin_19"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="@dimen/padding_drawable"
+                        android:inputType="textPassword"
                         android:drawableStart="@drawable/ic_password"
                         android:hint="@string/password_label" />
                 </android.support.design.widget.TextInputLayout>
