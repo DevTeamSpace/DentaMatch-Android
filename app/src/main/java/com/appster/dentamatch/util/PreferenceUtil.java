@@ -19,6 +19,8 @@ public final class PreferenceUtil {
     private static final String KEY_IS_LOGIN = "IS_LOGIN";
     private static final String KEY_FIRST_NAME = "FIRST_NAME";
     private static final String KEY_LAST_NAME = "LAST_NAME";
+    private static final String KEY_YEAR = "YEAR";
+    private static final String KEY_MONTH = "MONTH";
     private static final String KEY_JOB_TITLE = "JOB_TITLE";
     private static final String KEY_JOB_TITLE_LIST = "JOB_TITLE_LIST";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
@@ -79,6 +81,24 @@ public final class PreferenceUtil {
 
     public static String getFirstName() {
         return Hawk.get(KEY_FIRST_NAME);
+    }
+
+    public static void setYear(int value) {
+
+        Hawk.put(KEY_YEAR, value);
+    }
+
+    public static int getYear() {
+        return Hawk.get(KEY_YEAR);
+    }
+
+    public static void setMonth(int value) {
+
+        Hawk.put(KEY_MONTH, value);
+    }
+
+    public static int getMonth() {
+        return Hawk.get(KEY_MONTH);
     }
 
     public static void setLastName(String value) {

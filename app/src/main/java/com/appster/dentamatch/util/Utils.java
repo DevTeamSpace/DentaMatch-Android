@@ -211,18 +211,21 @@ public class Utils {
      *
      * @param edtPassword
      * @param isShow
-     * @param eyeIcon
      */
-    public static void showPassword(EditText edtPassword, boolean isShow, ImageView eyeIcon) {
-//        if (isShow) {
-//            edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-//            eyeIcon.setImageResource(R.drawable.open_eye_blue);
-//        } else {
-//            edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-//            eyeIcon.setImageResource(R.drawable.close_eye_white);
-//
-//        }
-        edtPassword.setSelection(edtPassword.length());
+    public static void showPassword(Context context,EditText edtPassword, boolean isShow,TextView tvShowPwd) {
+        if(edtPassword.getText().toString().trim().length()>0) {
+            if (!isShow) {
+                edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                tvShowPwd.setText(context.getString(R.string.hide_password));
+
+            } else {
+                edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                tvShowPwd.setText(context.getString(R.string.show_password));
+
+
+            }
+            edtPassword.setSelection(edtPassword.length());
+        }
     }
     public static void showNetowrkAlert(Context context){
         showToast(context,context.getString(R.string.error_no_network_connection));

@@ -8,7 +8,7 @@
     <string name="font_bold" translatable="false">Roboto-Bold.ttf</string>
 
     <!--  Intro screen string-->
-    <string name="skip_button">Skip</string>
+    <string name="skip_button">SKIP</string>
     <string name="done_button">Done</string>
 
     <string name="joyride_page1_text1">Search</string>
@@ -31,10 +31,10 @@
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
     <string name="preferred_location_label">Preferred Job Location</string>
-    <string name="login_label">Login</string>
+    <string name="login_label">LOGIN</string>
     <string name="send_label">Send</string>
 
-    <string name="register_label">Register</string>
+    <string name="register_label">REGISTER</string>
     <string name="forgot_password_label">Forgot Password?</string>
     <string name="fname_label">First Name</string>
     <string name="lname_label">Last Name</string>
@@ -121,5 +121,7 @@
     <string name="blank_tnc_alert">Please accpet terms and conditions.</string>
     <string name="valid_email_alert">Please enter valid email.</string>
     <string name="password_min_length_alert">Password length should not less than 6 characters.</string>
+    <string name="show_password">Show</string>
+    <string name="hide_password">Hide</string>
 
 </resources>

@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityWorkExperinceBinding;
@@ -36,13 +37,28 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         hideKeyboard(mBinder.etOfficeName);
 
         mBinder.toolbarWorkExp.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
-        mBinder.progressBar.setProgress(55);
+        mBinder.progressBar.setProgress(45);
+        mBinder.toolbarWorkExp.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnNextWorkExp.setOnClickListener(this);
         mBinder.tvExperinceWorkExp.setOnClickListener(this);
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
             Picasso.with(getApplicationContext()).load(new File(PreferenceUtil.getProfileImagePath())).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(mBinder.createProfileIvProfileIcon);
 
         }
+        setSpinnerData();
+    }
+    private void setSpinnerData(){
+        String title[] = new String[PreferenceUtil.getJobTitleList().size()];
+
+        for (int i = 0; i < PreferenceUtil.getJobTitleList().size(); i++) {
+            title[i] = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(WorkExperienceActivity.this,
+                android.R.layout.simple_dropdown_item_1line, title);
+//        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
+//                findViewById(R.id.android_material_design_spinner);
+        mBinder.spinnerJobTitleWorkExp.setPrompt(getString(R.string.lable_job_title));
+        mBinder.spinnerJobTitleWorkExp.setAdapter(arrayAdapter);
     }
 
     @Override
@@ -69,5 +85,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
     @Override
     public void onExperienceSection(int year, int month) {
         mBinder.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
+        PreferenceUtil.setMonth(month);
+        PreferenceUtil.setYear(year);
     }
 }

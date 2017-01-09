@@ -167,7 +167,7 @@
                 android:background="@null"
                 android:gravity="center"
                 android:text="@string/lable_next"
-                android:textColor="@color/white_color_pacity"
+                android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_large" />
         </RelativeLayout>
 
