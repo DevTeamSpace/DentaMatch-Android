@@ -1,4 +1,4 @@
-package com.appster.dentamatch.ui.profile;
+package com.appster.dentamatch.ui.profile.workexperience;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

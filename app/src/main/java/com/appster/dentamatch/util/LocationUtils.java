@@ -227,6 +227,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     @Override
     public void onStop() {
         super.onStop();
+        LogUtils.LOGD(TAG, "onStop...");
         googleApiClient.disconnect();
     }
 
@@ -245,11 +246,11 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     public void onLocationChanged(Location location) {
         currentLocation = location;
         //PreferenceUtils.setCurrentLocation(location);
-        LogUtils.LOGD("Location", "Lat : " + location.getLatitude() + ", " + "Long : " + location.getLongitude());
+        LogUtils.LOGD(TAG, "Lat : " + location.getLatitude() + ", " + "Long : " + location.getLongitude());
         //Toast.makeText(getActivity(), "Location changed", Toast.LENGTH_SHORT).show();
         // This method will be called when a HelloWorldEvent is posted
         EventBus.getDefault().post(new LocationEvent(location));
-        Utils.showToast(getActivity(), "Latitude "+location.getLongitude());
+        stopLocationUpdates();
     }
 
     @Override

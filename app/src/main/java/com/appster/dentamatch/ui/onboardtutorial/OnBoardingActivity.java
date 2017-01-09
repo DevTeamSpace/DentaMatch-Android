@@ -12,6 +12,7 @@ import com.appster.dentamatch.databinding.ActivityOnboardingBinding;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 
 /**
  * Created by virender on 06/01/17.
@@ -42,19 +43,11 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onPageSelected(int position) {
-                LogUtils.LOGD("tag", "posiition-select---" + position);
 
             }
 
             @Override
             public void onPageScrollStateChanged(int position) {
-                LogUtils.LOGD("tag", "posiition--scroll state--" + position);
-//                if(position==4){
-//                    mBinder.tvSkipOnboarding.setText(getString(R.string.get_started));
-//                }else{
-//                    mBinder.tvSkipOnboarding.setText(getString(R.string.skip_button));
-//
-//                }
 
             }
         });
@@ -99,6 +92,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_skip_onboarding:
+                PreferenceUtil.setIsOnBoarding(true);
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
