@@ -317,13 +317,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-//        double latitude = mMap.getMyLocation().getLatitude();
-//        double longitude = mMap.getMyLocation().getLongitude();
-//        LatLng latLng =new LatLng(latitude, longitude);
-
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-//        mMap.addMarker(new MarkerOptions().position(latLng));
-
+        mMap.setOnMapClickListener(this);
     }
 
     private String convertAddressToString(Address address) {
