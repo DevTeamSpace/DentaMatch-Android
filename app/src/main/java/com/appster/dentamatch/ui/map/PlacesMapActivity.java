@@ -15,6 +15,8 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +46,7 @@ import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
+public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, View.OnClickListener {
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -56,10 +58,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private PlaceAutocompleteAdapter mAdapter;
 
     private AutoCompleteTextView mAutocompleteView;
-
-    private TextView mPlaceDetailsText;
-
-    private TextView mPlaceDetailsAttribution;
+    private ImageView mImgClear;
+    private RelativeLayout mLayout;
 
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
@@ -78,20 +78,14 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
-        mAutocompleteView = (AutoCompleteTextView)
-                findViewById(R.id.autocomplete_places);
-
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
-        mapFragment.getMapAsync(this);
+        mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
+        mImgClear = (ImageView) findViewById(R.id.img_clear);
+        mLayout = (RelativeLayout) findViewById(R.id.layout_done);
 
         // Register a listener that receives callbacks when a suggestion has been selected
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
-
-        mAutocompleteView = (AutoCompleteTextView)
-                findViewById(R.id.autocomplete_places);
-
-        // Register a listener that receives callbacks when a suggestion has been selected
-        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+        mImgClear.setOnClickListener(this);
+        mLayout.setOnClickListener(this);
 
         // Retrieve the TextViews that will display details and attributions of the selected place.
 //        mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
@@ -103,15 +97,14 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 null);
         mAutocompleteView.setAdapter(mAdapter);
 
-//        check();
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
+        mapFragment.getMapAsync(this);
 
+//        check();
 
         EventBus.getDefault().register(this);
 
         LocationUtils.addFragment(this);
-
-//        Fragment fragmentLocationUtils = (Fragment) LocationUtils.newInstance();
-//        getFragmentManager().beginTransaction().add(fragmentLocationUtils, "").commit();
     }
 
     @Override
@@ -128,6 +121,20 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         setMap();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_clear:
+                mAutocompleteView.setText("");
+                break;
+
+            case R.id.layout_done:
+                hideKeyboard();
+                finish();
+                break;
+        }
     }
 
     @Override
@@ -159,17 +166,16 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
     // This method will be called when Event is posted.
     @Subscribe
-    public void onEvent(LocationEvent locationEvent){
+    public void onEvent(LocationEvent locationEvent) {
         // your implementation
-        LogUtils.LOGD(TAG, "onEvent");
-        Toast.makeText(this, "recieved on sender "+locationEvent.getMessage().getLongitude(), Toast.LENGTH_SHORT).show();
+        LogUtils.LOGD(TAG, "onEvent " + locationEvent.getMessage().getLongitude());
+        Toast.makeText(this, "received on sender " + locationEvent.getMessage().getLongitude(), Toast.LENGTH_SHORT).show();
 
         Location location = locationEvent.getMessage();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        if(mMap!=null) {
+        if (mMap != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             mMap.addMarker(new MarkerOptions().position(latLng));
-
         }
     }
 
@@ -205,8 +211,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
+//                    Toast.LENGTH_SHORT).show();
             LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
 
             hideKeyboard();
@@ -230,6 +236,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.clear();
             mMap.addMarker(new MarkerOptions().position(latLng));
 
             LogUtils.LOGD(TAG, latLng.toString());
