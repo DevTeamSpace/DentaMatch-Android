@@ -148,7 +148,8 @@
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="10dp"
                         android:drawableStart="@drawable/ic_name"
-                        android:hint="@string/email_label" />
+                        android:hint="@string/email_label"
+                        android:inputType="textEmailAddress" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -199,7 +200,7 @@
                 android:visibility="gone">
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/register_input_layout_name"
+                    android:id="@+id/register_input_layout_fname"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"
 
@@ -212,13 +213,14 @@
 
 
                     <EditText
+                        android:id="@+id/register_et_fname"
                         style="@style/edit_text_view_normal"
                         android:layout_marginLeft="@dimen/margin_normal"
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="@dimen/padding_drawable"
                         android:drawableStart="@drawable/ic_name"
-                        android:hint="@string/name_label"
+                        android:hint="@string/fname_label"
                         android:paddingTop="@dimen/padding_drawable"
                         android:textColor="@color/text_default_color" />
                 </android.support.design.widget.TextInputLayout>
@@ -232,6 +234,32 @@
                 <!--android:layout_marginTop="@dimen/margin_55"-->
 
                 <!--/>-->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/register_input_layout_lname"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_height"
+
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_19"
+                    android:clipToPadding="false"
+                    android:gravity="bottom"
+                    android:paddingTop="@dimen/padding_input_layout"
+                    app:hintTextAppearance="@style/edit_input_layout">
+
+
+                    <EditText
+                        android:id="@+id/register_et_lname"
+
+                        style="@style/edit_text_view_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:background="@drawable/edit_text_selector"
+                        android:drawablePadding="@dimen/padding_drawable"
+                        android:drawableStart="@drawable/ic_name"
+                        android:hint="@string/lname_label"
+                        android:paddingTop="@dimen/padding_drawable"
+                        android:textColor="@color/text_default_color" />
+                </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/register_input_layout_email"
@@ -249,6 +277,7 @@
 
 
                     <EditText
+                        android:id="@+id/register_et_email"
                         style="@style/edit_text_view_normal"
                         android:layout_marginLeft="@dimen/margin_normal"
                         android:layout_marginRight="@dimen/margin_normal"
@@ -256,6 +285,7 @@
                         android:drawablePadding="@dimen/padding_drawable"
                         android:drawableStart="@drawable/ic_email"
                         android:hint="@string/email_label"
+                        android:inputType="textEmailAddress"
                         android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -273,6 +303,8 @@
                     app:hintTextAppearance="@style/edit_input_layout">
 
                     <EditText
+                        android:id="@+id/register_et_password"
+
                         style="@style/edit_text_view_normal"
                         android:layout_marginLeft="@dimen/margin_normal"
                         android:layout_marginRight="@dimen/margin_normal"
@@ -283,34 +315,20 @@
                         android:hint="@string/password_label" />
                 </android.support.design.widget.TextInputLayout>
 
-                <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:id="@+id/register_input_layout_job_location"-->
-
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="60dp"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="@dimen/margin_19"-->
-                <!--android:clipToPadding="false"-->
-
-                <!--android:gravity="bottom"-->
-                <!--android:paddingTop="4dp"-->
-                <!--app:hintTextAppearance="@style/edit_input_layout">-->
-
-
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_preferred_job_location"
                     style="@style/text_view_normal"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"
-
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_19"
                     android:background="@drawable/bg_edit_text"
                     android:drawablePadding="@dimen/padding_drawable"
+                    android:ellipsize="end"
                     android:drawableStart="@drawable/ic_location"
-                    android:hint="@string/preferred_location_label" />
-                <!--</android.support.design.widget.TextInputLayout>-->
+                    android:hint="@string/preferred_location_label"
+                    android:maxLines="1" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"

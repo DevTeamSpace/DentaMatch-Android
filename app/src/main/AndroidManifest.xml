@@ -37,8 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.auth.AppIntroActivity" />
-        <activity android:name=".ui.auth.LoginActivity" />
+        <activity android:name=".ui.auth.LoginActivity"
+            android:screenOrientation="userPortrait"
+            android:theme="@style/NoActionBar"/>
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -47,6 +48,10 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.ResetPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.onboardtutorial.OnBoardingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
         <activity

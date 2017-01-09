@@ -9,9 +9,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,13 +43,19 @@ import retrofit2.Response;
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Login";
-    private ImageView ivRegisterPeg, ivLoginPeg,ivPolicy;
+    private static final int REQUEST_CODE_LOCATION = 101;
+    private ImageView ivRegisterPeg, ivLoginPeg, ivPolicy;
     private LinearLayout layoutRegisterSelector, layoutLoginSelector, layoutOnlyRegister, layoutOnlyLogin;
-    private TextView tvLogin, tvRegister, tvForgotPassword,tvTermNcondition;
+    private TextView tvLogin, tvRegister, tvForgotPassword, tvTermNcondition;
+    private EditText etRegisterFName, etRegisterLName, etRegisterPassword, etRegisterEmail, etLoginEmail, etLoginPassword;
     private Button btnRegister;
     private CustomTextView tvPreferredJobLocation;
-    private boolean isAccepted;
+    private boolean isAccepted, isLogin;
 
+    private String mPostalCode;
+    private String mPlaceName;
+    private String mLatitude;
+    private String mLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +71,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         tvLogin = (TextView) findViewById(R.id.login_tv_login);
         tvTermNcondition = (TextView) findViewById(R.id.tv_term_n_policy);
         tvForgotPassword = (TextView) findViewById(R.id.login_tv_forgot_password);
+
+        etLoginEmail = (EditText) findViewById(R.id.login_et_email);
+        etLoginPassword = (EditText) findViewById(R.id.login_et_password);
+        etRegisterEmail = (EditText) findViewById(R.id.register_et_email);
+        etRegisterFName = (EditText) findViewById(R.id.register_et_fname);
+        etRegisterLName = (EditText) findViewById(R.id.register_et_lname);
+        etRegisterPassword = (EditText) findViewById(R.id.register_et_password);
+
         btnRegister = (Button) findViewById(R.id.login_btn_register);
         ivRegisterPeg = (ImageView) findViewById(R.id.register_iv_peg);
         ivLoginPeg = (ImageView) findViewById(R.id.login_iv_peg);
@@ -80,39 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         tvPreferredJobLocation.setOnClickListener(this);
         ivPolicy.setOnClickListener(this);
         setPolicySpanString();
-
-    }
-
-    private boolean validateInput() {
-        return true;
-    }
-
-    private LoginRequest prepareLoginRequest() {
-        LoginRequest loginRequest=new LoginRequest();
-        loginRequest.setDeviceId("12345");
-        loginRequest.setDeviceToken("fjkajkdfr8984393289jdsfksd");
-        loginRequest.setDeviceType("Android");
-        loginRequest.setEmail("ram@appster.in");
-        loginRequest.setPassword("qwerty");
-        return loginRequest;
-    }
-
-    private void signInApi(LoginRequest loginRequest) {
-        LogUtils.LOGD(TAG, "signInApi");
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        webServices.signIn(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
-            @Override
-            public void onSuccess(LoginResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
-            }
-
-            @Override
-            public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
-
-            }
-        });
+        showSelectedView(isLogin);
     }
 
     private void setPolicySpanString() {
@@ -163,25 +147,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         Utils.setSpannUnderline(spanString, privacyStart + 1, spanString.length());
         Utils.setSpannTypeface(spanString, privacyStart, spanString.length(), Typeface.BOLD);
 
-
         Utils.setSpannCommanProperty(tvTermNcondition, spanString);
-
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_view_login:
+                isLogin = true;
+                hideKeyboard();
                 showSelectedView(true);
                 break;
             case R.id.login_view_register:
+                isLogin = false;
+                hideKeyboard();
+
                 showSelectedView(false);
                 break;
 
             case R.id.login_btn_register:
-//                startActivity(new Intent(this, CreateProfileActivity1.class));
-                if(validateInput()) {
-                    signInApi(prepareLoginRequest());
+                if (validateInput()) {
+                    if (isLogin) {
+                        signInApi(prepareLoginRequest());
+                    } else {
+                        signUpApi(prepareSignUpRequest());
+                    }
                 }
                 break;
 
@@ -190,21 +180,183 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.iv_accept_policy:
-                if(isAccepted){
-                    isAccepted=false;
+                if (isAccepted) {
+                    isAccepted = false;
                     ivPolicy.setBackgroundResource(R.drawable.ic_check_empty);
-                }else{
+                } else {
                     ivPolicy.setBackgroundResource(R.drawable.ic_check_fill);
-                    isAccepted=true;
-
-
+                    isAccepted = true;
                 }
                 break;
 
             case R.id.tv_preferred_job_location:
-                startActivity(new Intent(this, PlacesMapActivity.class));
+                startActivityForResult(new Intent(this, PlacesMapActivity.class), REQUEST_CODE_LOCATION);
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_CODE_LOCATION:
+                if (resultCode == RESULT_OK) {
+                    Bundle bundle = data.getExtras();
+
+                    if (bundle != null) {
+                        mLatitude = bundle.getString(Constants.EXTRA_LATITUDE);
+                        mLongitude = bundle.getString(Constants.EXTRA_LONGITUDE);
+                        mPlaceName = bundle.getString(Constants.EXTRA_PLACE_NAME);
+                        mPostalCode = bundle.getString(Constants.EXTRA_POSTAL_CODE);
+                        tvPreferredJobLocation.setText(data.getExtras().getString(Constants.EXTRA_PLACE_NAME));
+                    }
+                }
+        }
+    }
+
+    private boolean validateInput() {
+        if (isLogin) {
+            if (TextUtils.isEmpty(getTextFromEditText(etLoginEmail))) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
+                return false;
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(etLoginEmail)).matches()) {
+                Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
+                return false;
+            }
+            if (TextUtils.isEmpty(getTextFromEditText(etLoginPassword))) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
+                return false;
+            }
+            if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH) {
+                Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
+                return false;
+            }
+        } else {
+            if (TextUtils.isEmpty(getTextFromEditText(etRegisterFName))) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_fname_alert));
+                return false;
+            }
+            if (TextUtils.isEmpty(getTextFromEditText(etRegisterLName))) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_lname_alert));
+                return false;
+            }
+            if (TextUtils.isEmpty(getTextFromEditText(etRegisterEmail))) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
+                return false;
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(etRegisterEmail)).matches()) {
+                Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
+                return false;
+            }
+            if (TextUtils.isEmpty(getTextFromEditText(etRegisterPassword))) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
+                return false;
+            }
+            if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH) {
+                Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
+                return false;
+            }
+            if (TextUtils.isEmpty(tvPreferredJobLocation.getText().toString())) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
+                return false;
+            }
+            if (!isAccepted) {
+                Utils.showToast(getApplicationContext(), getString(R.string.blank_tnc_alert));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private LoginRequest prepareSignUpRequest() {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setDeviceId(Utils.getDeviceID(getApplicationContext()));
+        loginRequest.setDeviceToken(Utils.getDeviceToken());
+        loginRequest.setDeviceType(Constants.DEVICE_TYPE);
+        loginRequest.setEmail(getTextFromEditText(etRegisterEmail));
+        loginRequest.setPassword(getTextFromEditText(etRegisterPassword));
+        loginRequest.setFirstName(getTextFromEditText(etRegisterFName));
+        loginRequest.setLastName(getTextFromEditText(etRegisterLName));
+
+        loginRequest.setLatitude(mLatitude);
+        loginRequest.setLongitude(mLongitude);
+        loginRequest.setZipCode(mPostalCode);
+        loginRequest.setPreferedLocation(mPlaceName);
+        return loginRequest;
+    }
+
+    private void signUpApi(LoginRequest loginRequest) {
+        LogUtils.LOGD(TAG, "signUpApi");
+        processToShowDialog("", getString(R.string.please_wait), null);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        webServices.signUp(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
+            @Override
+            public void onSuccess(LoginResponse response) {
+                LogUtils.LOGD(TAG, "onSuccess");
+
+                if (response.getStatus() == 1) {
+                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                    intent.putExtra(Constants.INTENT_KEY.F_NAME, getTextFromEditText(etRegisterFName));
+                    intent.putExtra(Constants.INTENT_KEY.L_NAME, getTextFromEditText(etRegisterLName));
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Utils.showToast(getApplicationContext(), response.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "onFail");
+
+            }
+        });
+    }
+
+    private LoginRequest prepareLoginRequest() {
+        processToShowDialog("", getString(R.string.please_wait), null);
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setDeviceId(Utils.getDeviceID(getApplicationContext()));
+        loginRequest.setDeviceToken(Utils.getDeviceToken());
+        loginRequest.setDeviceType(Constants.DEVICE_TYPE);
+        loginRequest.setEmail(getTextFromEditText(etLoginEmail));
+        loginRequest.setPassword(getTextFromEditText(etLoginPassword));
+        return loginRequest;
+    }
+
+    private String getTextFromEditText(EditText et) {
+        return et.getText().toString();
+    }
+
+    private void signInApi(LoginRequest loginRequest) {
+        LogUtils.LOGD(TAG, "signInApi");
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        webServices.signIn(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
+            @Override
+            public void onSuccess(LoginResponse response) {
+                LogUtils.LOGD(TAG, "onSuccess");
+                if (response.getStatus() == 1) {
+
+                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                    intent.putExtra(Constants.INTENT_KEY.F_NAME, response.getLoginResponseData().getUserDetail().getFirstName());
+                    intent.putExtra(Constants.INTENT_KEY.L_NAME, response.getLoginResponseData().getUserDetail().getLastName());
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Utils.showToast(getApplicationContext(), "success");
+                }
+            }
+
+            @Override
+            public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "onFail");
+                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
+            }
+        });
     }
 
     private void showSelectedView(boolean isLogin) {
@@ -220,7 +372,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ivLoginPeg.setVisibility(View.INVISIBLE);
             layoutOnlyLogin.setVisibility(View.GONE);
             btnRegister.setText(getString(R.string.register_label));
-
         }
     }
 

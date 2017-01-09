@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+
+    <string-array name="onbording_title">
+        <item>Find Jobs\nNear You</item>
+        <item>Set Your\nAvailability</item>
+        <item>Get Quick\nAssignments</item>
+        <item>Create\nYour Profile</item>
+    </string-array>
+    <string-array name="onbording_desc">
+        <item>Quis nostrud exercitullamco laboris nisi ut aliquip consequat.quis nostrud exercitullamco laboris nisi ut.</item>
+        <item>Choose from Gallery</item>
+    </string-array>
+</resources>

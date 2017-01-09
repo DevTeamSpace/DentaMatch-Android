@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.termsnprivacy;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 
 import com.appster.dentamatch.R;
@@ -13,7 +14,7 @@ import com.appster.dentamatch.util.Constants;
 /**
  * Created by virender on 03/01/17.
  */
-public class TermsAndConditionActivity extends BaseActivity {
+public class TermsAndConditionActivity extends BaseActivity implements View.OnClickListener {
     //    private ActivityT mBinder;
     private ActivityTermsAndConditionBinding mBinder;
     private boolean isPrivacyPolicy;
@@ -33,6 +34,7 @@ public class TermsAndConditionActivity extends BaseActivity {
     }
 
     private void initViews() {
+        mBinder.toolbarPrivacyPolicy.ivToolBarLeft.setOnClickListener(this);
         if(isPrivacyPolicy){
             url="http://52.8.112.211/api/privacy-policy";
 
@@ -61,6 +63,15 @@ public class TermsAndConditionActivity extends BaseActivity {
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.iv_tool_bar_left:
+                onBackPressed();
+                break;
+        }
     }
 
     public class WebViewClient extends android.webkit.WebViewClient {

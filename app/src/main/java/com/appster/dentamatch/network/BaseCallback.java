@@ -69,7 +69,7 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
 //                //  act.showSnakBarFromTop(act.getResources().getString(R.string.server_error), true);
 //                return;
 //            } else {
-//                onSuccess(response.body());
+                onSuccess(response.body());
 //            }
 
         } else {

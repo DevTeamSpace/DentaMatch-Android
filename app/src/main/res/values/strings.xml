@@ -36,7 +36,8 @@
 
     <string name="register_label">Register</string>
     <string name="forgot_password_label">Forgot Password?</string>
-    <string name="name_label">Name</string>
+    <string name="fname_label">First Name</string>
+    <string name="lname_label">Last Name</string>
     <string name="register_help_info">Helps recruiters to find you easily</string>
     <string name="login_info_label">Login using your registered email</string>
     <string name="label_accept_term_ncondition">I agree to the Terms and Conditions and Privacy Policy </string>
@@ -78,6 +79,7 @@
     <string name="city">City</string>
     <string name="reference">Reference</string>
     <string name="reference_delete">Delete Reference</string>
+    <string name="experience_delete">Delete Experience</string>
     <string name="reference_name">Reference Name</string>
     <string name="reference_mobile">Reference Mobile No. (Optional)</string>
     <string name="reference_email">Reference Email (Optional)</string>
@@ -90,7 +92,7 @@
     <string name="server_error">There is some issue connecting with server.</string>
     <string name="no_internet">Please check your Internet Connection.</string>
     <string name="unidentified_error">Oops, Something went wrong..</string>
-    <string name="add_more_refrence">Add More Refrences</string>
+    <string name="add_more_refrence">Add More References</string>
     <string name="add_more_exp">Add More Experience</string>
 
 
@@ -103,5 +105,21 @@
 
     <string name="autocomplete_hint">Search places</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
+    <string name="get_started">GET STARTED</string>
+
+
+
+    <!--aler/toast error messages-->
+    <string name="please_wait" >Please wait</string>
+
+    <string name="blank_email_alert">Please enter email.</string>
+    <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
+    <string name="blank_password_alert">Please enter password.</string>
+    <string name="blank_fname_alert">Please enter first name.</string>
+    <string name="blank_lname_alert">Please enter last name.</string>
+    <string name="blank_location_alert">Please select location.</string>
+    <string name="blank_tnc_alert">Please accpet terms and conditions.</string>
+    <string name="valid_email_alert">Please enter valid email.</string>
+    <string name="password_min_length_alert">Password length should not less than 6 characters.</string>
 
 </resources>

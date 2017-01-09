@@ -9,6 +9,38 @@ public class LoginRequest {
     private String deviceId;
     private String deviceType;
     private String deviceToken;
+    private String firstName;
+    private String lastName;
+    private String preferedLocation;
+    private String latitude;
+    private String longitude;
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPreferedLocation(String preferedLocation) {
+        this.preferedLocation = preferedLocation;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    private String zipCode;
+
 
     public String getEmail() {
         return email;

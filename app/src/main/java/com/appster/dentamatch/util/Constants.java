@@ -5,6 +5,11 @@ package com.appster.dentamatch.util;
  */
 public class Constants {
 
+    public static final String EXTRA_PLACE_NAME = "place_name";
+    public static final String EXTRA_POSTAL_CODE = "postal_code";
+    public static final String EXTRA_LATITUDE = "latitude";
+    public static final String EXTRA_LONGITUDE = "longitude";
+
     private Constants() {
     }
 
@@ -12,6 +17,7 @@ public class Constants {
     public static final int USER_NAME_MIN_LENGTH = 6;
     public static final int FIRST_NAME_MIN_LENGTH = 2;
     public static final int IMAGE_DIMEN = 102;
+    public static final String DEVICE_TYPE = "ANDROID";
 
 
 
@@ -41,5 +47,8 @@ public class Constants {
     public interface INTENT_KEY{
         String FROM_WHERE="from_where";
         String IMAGE_PATH="image_path";
+        String F_NAME="fname";
+        String L_NAME="lname";
+        String JOB_TITLE="job_title";
     }
 }
