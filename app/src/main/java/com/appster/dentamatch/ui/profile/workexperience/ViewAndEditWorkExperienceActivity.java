@@ -28,7 +28,12 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     private void initViews() {
         mBinder.toolbarWorkExpView.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarWorkExpView.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
-        mBinder.layoutWorkExpViewEdit.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
+        try{
+            mBinder.layoutWorkExpViewEdit.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         setSpinnerData();
     }

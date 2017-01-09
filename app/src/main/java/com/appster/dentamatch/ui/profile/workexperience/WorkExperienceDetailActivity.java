@@ -21,7 +21,7 @@ import com.appster.dentamatch.widget.BottomSheetPicker;
  * Created by virender on 05/01/17.
  */
 public class WorkExperienceDetailActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
-    private ActivityWorkExperinceDetailBinding mBinder;
+    private com.appster.dentamatch.databinding.ActivityWorkExperinceDetailBinding mBinder;
     //AtzTextBinding mBinder;
     private int count = 0;
 
@@ -39,7 +39,11 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         mBinder.btnNextDetailWorkExp.setOnClickListener(this);
         mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setOnClickListener(this);
         mBinder.toolbarWorkExpDetail.ivToolBarLeft.setOnClickListener(this);
-        mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
+        try {
+            mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
         setSpinnerData();
     }
 

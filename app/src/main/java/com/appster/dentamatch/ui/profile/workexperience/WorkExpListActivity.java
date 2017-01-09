@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivityWorkExpListBinding;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -20,7 +19,7 @@ import com.appster.dentamatch.widget.BottomSheetPicker;
  * Created by virender on 05/01/17.
  */
 public class WorkExpListActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
-    private ActivityWorkExpListBinding mBinder;
+    private com.appster.dentamatch.databinding.ActivityWorkExpListBinding mBinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +33,11 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.toolbarWorkExpList.ivToolBarLeft.setOnClickListener(this);
         mBinder.includeWorkExpList.tvExperinceWorkExp.setOnClickListener(this);
         mBinder.tvExperienceDelete.setOnClickListener(this);
-        mBinder.includeWorkExpList.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
+        try {
+            mBinder.includeWorkExpList.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
         setSpinnerData();
