@@ -1,4 +1,4 @@
-package com.appster.dentamatch.widget;
+package com.appster.dentamatch.widget.bottomsheet;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.CustomTextView;
 
 /**
  * Created by virender on 04/01/17.

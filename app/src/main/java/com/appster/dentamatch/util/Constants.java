@@ -17,6 +17,7 @@ public class Constants {
     public static final int USER_NAME_MIN_LENGTH = 6;
     public static final int FIRST_NAME_MIN_LENGTH = 2;
     public static final int IMAGE_DIMEN = 102;
+    public static final int IMAGE_DIME_CERTIFICATE = 142;
     public static final String DEVICE_TYPE = "ANDROID";
 
 

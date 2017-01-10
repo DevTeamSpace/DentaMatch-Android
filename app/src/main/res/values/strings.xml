@@ -33,7 +33,8 @@
     <string name="preferred_location_label">Preferred Job Location</string>
     <string name="login_label">LOGIN</string>
     <string name="send_label">Send</string>
-
+    <string name="show_password">Show</string>
+    <string name="hide_password">Hide</string>
     <string name="register_label">REGISTER</string>
     <string name="forgot_password_label">Forgot Password?</string>
     <string name="fname_label">First Name</string>
@@ -102,6 +103,8 @@
     <string name="header_privacy">PRIVACY POLICY</string>
     <string name="header_term">TERMS &amp; CONDITIONS</string>
     <string name="header_forgot_password">FORGOT PASSWORD</string>
+    <string name="header_certification">CERTIFICATIONS</string>
+
 
     <string name="autocomplete_hint">Search places</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
@@ -111,9 +114,9 @@
 
     <!--aler/toast error messages-->
     <string name="please_wait" >Please wait</string>
-
     <string name="blank_email_alert">Please enter email.</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
+    <string name="blank_job_title">Please select job title.</string>
     <string name="blank_password_alert">Please enter password.</string>
     <string name="blank_fname_alert">Please enter first name.</string>
     <string name="blank_lname_alert">Please enter last name.</string>
@@ -121,7 +124,16 @@
     <string name="blank_tnc_alert">Please accpet terms and conditions.</string>
     <string name="valid_email_alert">Please enter valid email.</string>
     <string name="password_min_length_alert">Password length should not less than 6 characters.</string>
-    <string name="show_password">Show</string>
-    <string name="hide_password">Hide</string>
+
+
+
+
+    <!--certification & About me string-->
+    <string name="valdity_date_string">Validity date</string>
+    <string name="cetification_title">Update Certifications</string>
+    <string name="about_me_title">Executive Summary </string>
+    <string name="alert_pervious_date">Please select a valid date.</string>
+    <string name="write_description">Write a brief introduction</string>
+    <string name="lable_complete_profile">Complete Profile</string>
 
 </resources>

@@ -85,12 +85,21 @@
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
+        android:name=".ui.profile.CertificateActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/NoActionBar"
+        android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ui.termsnprivacy.TermsAndConditionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".ui.map.PlacesMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.AboutMeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 

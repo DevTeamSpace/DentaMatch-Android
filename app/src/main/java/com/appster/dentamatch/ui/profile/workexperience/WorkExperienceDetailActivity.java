@@ -10,12 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivityWorkExperinceDetailBinding;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.BottomSheetPicker;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetPicker;
 
 /**
  * Created by virender on 05/01/17.

@@ -26,7 +26,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
-import com.appster.dentamatch.widget.BottomSheetView;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
