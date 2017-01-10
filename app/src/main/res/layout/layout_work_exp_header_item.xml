@@ -19,7 +19,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin_normal"
-        android:drawableEnd="@drawable/ic_add_refrence"
+        android:drawableEnd="@drawable/ic_arrow_right"
         android:drawablePadding="@dimen/padding_drawable"
         android:text="2 year 5 month"
         android:textColor="@color/button_bg_color"

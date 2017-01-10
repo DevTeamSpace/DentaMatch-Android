@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/btn_next_work_exp_lsit"
-            android:layout_below="@+id/toolbar_work_exp_list">
+            android:layout_below="@+id/toolbar_work_exp_list"
+            android:layout_marginBottom="@dimen/margin_medium">
 
             <LinearLayout
                 android:id="@+id/layout_parent_scroll_work_exp"
@@ -39,6 +40,24 @@
                 <include
                     android:id="@+id/include_layout_refrence"
                     layout="@layout/layout_reference" />
+                <LinearLayout
+                    android:id="@+id/layout_refrence_infalter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_add_more_reference"
+                    style="@style/text_view_normal"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:drawablePadding="@dimen/padding_drawable"
+                    android:drawableStart="@drawable/ic_add_refrence"
+                    android:paddingLeft="@dimen/margin_medium"
+                    android:text="@string/add_more_refrence"
+                    android:textColor="@color/color_forgot_pwd"
+                    android:textSize="@dimen/text_size_12"
+                    app:customFont="@string/font_regular" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_experience_delete"
@@ -51,6 +70,8 @@
                     android:textSize="@dimen/text_size_normal"
                     android:visibility="visible"
                     app:customFont="@string/font_bold" />
+
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"

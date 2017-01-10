@@ -37,10 +37,10 @@
                     android:layout_width="@dimen/profile_progress_dimen"
                     android:layout_height="@dimen/profile_progress_dimen"
                     android:layout_centerInParent="true"
-                    android:indeterminate="false"
                     android:background="@drawable/circular_shape"
-                    android:progress="25"
+                    android:indeterminate="false"
                     android:max="100"
+                    android:progress="25"
                     android:progressDrawable="@drawable/circuler_progress" />
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -165,5 +165,6 @@
         android:background="@color/button_bg_color"
         android:gravity="center"
         android:text="@string/lable_next"
-        android:textColor="@color/white_color" />
+        android:textColor="@color/white_color"
+        />
 </RelativeLayout>

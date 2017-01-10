@@ -8,8 +8,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.databinding.ActivityWorkExpListBinding;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -19,7 +21,8 @@ import com.appster.dentamatch.widget.BottomSheetPicker;
  * Created by virender on 05/01/17.
  */
 public class WorkExpListActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
-    private com.appster.dentamatch.databinding.ActivityWorkExpListBinding mBinder;
+    private ActivityWorkExpListBinding mBinder;
+    private int count=0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +36,8 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.toolbarWorkExpList.ivToolBarLeft.setOnClickListener(this);
         mBinder.includeWorkExpList.tvExperinceWorkExp.setOnClickListener(this);
         mBinder.tvExperienceDelete.setOnClickListener(this);
+        mBinder.tvAddMoreReference.setOnClickListener(this);
+
         try {
             mBinder.includeWorkExpList.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
         }catch (Exception ex) {
@@ -74,6 +79,10 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 hideKeyboard();
                 clearAllExpField();
                 break;
+            case R.id.tv_add_more_reference:
+                count++;
+                inflateRefrence();
+                break;
             case R.id.tv_experince_work_exp:
                 int year = 0, month = 0;
                 if (!TextUtils.isEmpty(mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString())) {
@@ -100,7 +109,28 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.includeWorkExpList.spinnerJobTitleWorkExp.setPrompt(getString(R.string.lable_job_title));
         mBinder.includeWorkExpList.spinnerJobTitleWorkExp.setAdapter(arrayAdapter);
     }
+    private void inflateRefrence() {
+        mBinder.layoutRefrenceInfalter.removeAllViews();
+        for (int i = 0; i < count; i++) {
+            final View refrenceView = getLayoutInflater().inflate(R.layout.layout_reference, mBinder.layoutRefrenceInfalter, false);
+            TextView tvRefrenceCount = (TextView) refrenceView.findViewById(R.id.tv_refrence_count);
+            TextView tvRefrenceDlt = (TextView) refrenceView.findViewById(R.id.tv_refrence_delete);
+            tvRefrenceCount.setText(getString(R.string.reference) + " " + (i+1));
+            tvRefrenceCount.setVisibility(View.VISIBLE);
+            tvRefrenceDlt.setVisibility(View.VISIBLE);
+            tvRefrenceDlt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    count--;
+                    inflateRefrence();
 
+                }
+            });
+// number.setTag(i);
+//            number.setText(Integer.toString(i));
+            mBinder.layoutRefrenceInfalter.addView(refrenceView);
+        }
+    }
     private void clearAllExpField() {
         mBinder.includeWorkExpList.tvExperinceWorkExp.setText("");
         mBinder.includeWorkExpList.etOfficeAddress.setText("");
@@ -110,6 +140,9 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.includeLayoutRefrence.etOfficeReferenceMobile.setText("");
         mBinder.includeLayoutRefrence.etOfficeReferenceMobile.setText("");
 //        mBinder.re.etOfficeName.setText("");
+        mBinder.layoutRefrenceInfalter.removeAllViews();
+        count=0;
+
     }
 
     @Override

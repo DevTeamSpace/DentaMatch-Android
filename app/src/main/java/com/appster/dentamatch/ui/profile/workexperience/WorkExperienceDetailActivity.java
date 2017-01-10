@@ -53,7 +53,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
             final View refrenceView = getLayoutInflater().inflate(R.layout.layout_reference, mBinder.layoutRefrenceInfalter, false);
             TextView tvRefrenceCount = (TextView) refrenceView.findViewById(R.id.tv_refrence_count);
             TextView tvRefrenceDlt = (TextView) refrenceView.findViewById(R.id.tv_refrence_delete);
-            tvRefrenceCount.setText(getString(R.string.reference) + " " + count);
+            tvRefrenceCount.setText(getString(R.string.reference) + " " + (i+1));
             tvRefrenceCount.setVisibility(View.VISIBLE);
             tvRefrenceDlt.setVisibility(View.VISIBLE);
             tvRefrenceDlt.setOnClickListener(new View.OnClickListener() {
