@@ -6,6 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActionBar">false</item>
+
     </style>
 
     <style name="CustomAlertDialogTitle">
@@ -38,6 +48,7 @@
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
 
+
     <!--<style name="TextViewLarge" parent="TextView">-->
     <!--<item name="android:textSize">@dimen/text_size_large</item>-->
     <!--</style>-->
@@ -46,7 +57,7 @@
     <!--Edit txt style-->
     <style name="edit_text" parent="@android:style/TextAppearance.Holo.Small">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_height">@dimen/edit_height</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:gravity">center_vertical</item>
         <!--<item businessName="android:textColor">@android:color/darker_gray</item>-->
@@ -64,13 +75,18 @@
         <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@color/button_bg_color</item>
+
         <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:textAlignment">center</item>
     </style>
 
     <style name="edit_input_layout" parent="@android:style/TextAppearance">
+        <item name="android:textSize">@dimen/text_size_11</item>
+        <item name="android:textColorHint">@color/edt_hint_color</item>
         <item name="android:textColor">@color/edt_hint_color</item>
     </style>
 
     <dimen name="button_height">50dp</dimen>
+    <color name="button_bg_color">#0470c0</color>
 </resources>

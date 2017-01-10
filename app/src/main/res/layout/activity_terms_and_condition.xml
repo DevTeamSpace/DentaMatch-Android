@@ -8,6 +8,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include
+            android:id="@+id/toolbar_privacy_policy"
+            layout="@layout/toolbar_general" />
+
         <WebView
             android:id="@+id/webview_term_and_condition"
             android:layout_width="match_parent"

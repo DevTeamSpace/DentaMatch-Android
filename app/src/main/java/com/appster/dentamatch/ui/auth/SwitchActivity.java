@@ -29,13 +29,13 @@ public class SwitchActivity extends BaseActivity implements SocialAuthListener<S
     }
 
     void continueToNextScreen() {
-        if (!PreferenceUtil.isJoyRideComplete()) {
-            forwardToJoyRide();
-        }/*else if (!PreferenceUtil.isLogin() && !PreferenceUtil.isLoginAppeared() && !PreferenceUtil.isLoginSkipped()) {
+//        if (!PreferenceUtil.isJoyRideComplete()) {
+//            forwardToJoyRide();
+//        }/*else if (!PreferenceUtil.isLogin() && !PreferenceUtil.isLoginAppeared() && !PreferenceUtil.isLoginSkipped()) {
             forwardToLogin();
-        } else {
-            forwardToHome();
-        }*/
+//        } else {
+//            forwardToHome();
+//        }*/
     }
 
     void continueToNextService() {
@@ -81,7 +81,7 @@ public class SwitchActivity extends BaseActivity implements SocialAuthListener<S
     }
 
     public void forwardToJoyRide() {
-        startActivityForResult(new Intent(this, AppIntroActivity.class), Constants.REQUEST_CODE.REQUEST_CODE_JOYRIDE);
+//        startActivityForResult(new Intent(this, AppIntroActivity.class), Constants.REQUEST_CODE.REQUEST_CODE_JOYRIDE);
     }
 
     public void forwardToHome(String data) {

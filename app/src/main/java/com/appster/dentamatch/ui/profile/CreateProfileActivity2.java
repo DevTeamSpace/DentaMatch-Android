@@ -10,18 +10,22 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.PermissionUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.widget.BottomSheetView;
 import com.squareup.picasso.Picasso;
 
@@ -31,9 +35,10 @@ import java.io.File;
  * Created by virender on 02/01/17.
  */
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
-    private ImageView ivProfile, ivUpload;
-    private ImageSelectedListener imageSelectedListener;
+    private ImageView ivProfile, ivUpload, ivToolbarLeft;
+    private TextView tvName,tvJobTitle;
     private ProgressBar mProgressBar;
+    private TextView tvToolbarLeft;
     private Button btnNext;
     private String mFilePath;
     private byte mSelectedImage;
@@ -42,18 +47,37 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile2);
+
         initViews();
     }
 
     private void initViews() {
+//        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_create_profile2);
         ivProfile = (ImageView) findViewById(R.id.create_profile_iv_profile_icon);
         ivUpload = (ImageView) findViewById(R.id.create_profile_iv_upoload_icon);
+        ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
         btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
+        tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
+        tvName = (TextView) findViewById(R.id.create_profile_tv_name);
+        tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
         ivUpload.setOnClickListener(this);
         ivProfile.setOnClickListener(this);
         btnNext.setOnClickListener(this);
-        mProgressBar.setProgress(65);
+        ivToolbarLeft.setOnClickListener(this);
+        mProgressBar.setProgress(25);
+        tvToolbarLeft.setText(getString(R.string.header_create_profile));
+        if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
+            Picasso.with(getApplicationContext()).load(new File(PreferenceUtil.getProfileImagePath())).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
+
+        }
+        if(!TextUtils.isEmpty(PreferenceUtil.getJobTitle())){
+            tvJobTitle.setText(PreferenceUtil.getJobTitle());
+        }
+        if(!TextUtils.isEmpty(PreferenceUtil.getFirstName())){
+            tvName.setText(PreferenceUtil.getFirstName());
+        }
+
     }
 
     @Override
@@ -62,6 +86,9 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             case R.id.create_profile_iv_upoload_icon:
                 mSelectedImage = 1;
                 callBottomSheet();
+                break;
+            case R.id.iv_tool_bar_left:
+                onBackPressed();
                 break;
             case R.id.create_profile_iv_profile_icon:
 //                mSelectedImage = 0;
@@ -74,7 +101,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private void callBottomSheet() {
-        BottomSheetView bottomSheetView = new BottomSheetView(this, this);
+        new BottomSheetView(this, this);
     }
 
     @Override

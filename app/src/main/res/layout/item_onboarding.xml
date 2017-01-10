@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_bg_onboarding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         />
+
+    <com.appster.dentamatch.widget.CustomTextView
+        android:id="@+id/tv_skip_onboarding"
+        style="@style/text_view_normal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/margin_normal"
+        android:text="@string/get_started"
+        android:textColor="@color/get_started_color"
+        android:textSize="@dimen/text_size_normal"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="@dimen/on_baording_text_layout_size"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_80"
+        android:layout_above="@+id/tv_skip_onboarding"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_title"
+            style="@style/text_view_normal"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_size_34"
+            app:customFont="@string/font_bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_desc"
+            style="@style/text_view_normal"
+            android:layout_marginTop="@dimen/margin_12"
+            android:textColor="@color/white_color_pacity"
+            android:textSize="@dimen/text_size_medium"
+            android:lineSpacingExtra="@dimen/margin_small_3"
+            app:customFont="@string/font_light" />
+
+    </LinearLayout>
+</RelativeLayout>

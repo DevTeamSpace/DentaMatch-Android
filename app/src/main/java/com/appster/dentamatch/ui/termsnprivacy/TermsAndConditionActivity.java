@@ -3,37 +3,55 @@ package com.appster.dentamatch.ui.termsnprivacy;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityTermsAndConditionBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Constants;
 
 /**
  * Created by virender on 03/01/17.
  */
-public class TermsAndConditionActivity extends BaseActivity {
+public class TermsAndConditionActivity extends BaseActivity implements View.OnClickListener {
     //    private ActivityT mBinder;
     private ActivityTermsAndConditionBinding mBinder;
+    private boolean isPrivacyPolicy;
+    private String url="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_create_profile1);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_terms_and_condition);
-
+        if (getIntent() != null) {
+            isPrivacyPolicy = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
         initViews();
 
 
     }
 
     private void initViews() {
+        mBinder.toolbarPrivacyPolicy.ivToolBarLeft.setOnClickListener(this);
+        if(isPrivacyPolicy){
+            url="http://52.8.112.211/api/privacy-policy";
+
+            mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_privacy));
+
+        }else{
+            url="http://52.8.112.211/api/term-condition";
+            mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_term));
+
+
+        }
         mBinder.webviewTermAndCondition.post(new Runnable() {
             @Override
             public void run() {
 //                if (NetWorkCheck.isNetworkAvailable(TNCActivity.this)) {
                 mBinder.webviewTermAndCondition.setWebViewClient(new WebViewClient());
-                mBinder.webviewTermAndCondition.loadUrl("");
+                mBinder.webviewTermAndCondition.loadUrl(url);
 
 //                } else {
 //                }
@@ -45,6 +63,15 @@ public class TermsAndConditionActivity extends BaseActivity {
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.iv_tool_bar_left:
+                onBackPressed();
+                break;
+        }
     }
 
     public class WebViewClient extends android.webkit.WebViewClient {

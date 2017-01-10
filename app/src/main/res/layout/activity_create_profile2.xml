@@ -7,10 +7,15 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/toolbar_create_profile2"
+        layout="@layout/toolbar_general" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/create_profile2_btn_next">
+        android:layout_above="@+id/create_profile2_btn_next"
+        android:layout_below="@+id/toolbar_create_profile2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,40 +29,39 @@
                 android:layout_height="wrap_content"
 
                 android:layout_margin="@dimen/margin_25">
+                <!--android:background="@drawable/circular_shape"-->
 
                 <ProgressBar
                     android:id="@+id/create_profile_progress_bar"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="122dp"
-                    android:layout_height="122dp"
+                    android:layout_width="@dimen/profile_progress_dimen"
+                    android:layout_height="@dimen/profile_progress_dimen"
                     android:layout_centerInParent="true"
                     android:background="@drawable/circular_shape"
                     android:indeterminate="false"
                     android:max="100"
-                    android:progress="5"
+                    android:progress="25"
                     android:progressDrawable="@drawable/circuler_progress" />
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/create_profile_iv_profile_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/profile_image_width"
+                    android:layout_height="@dimen/profile_image_height"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/profile_pic_placeholder" />
+                    android:src="@drawable/profile_pic_placeholder" />
             </RelativeLayout>
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_name"
                 style="@style/text_view_normal"
-                android:text="@string/accept"
                 android:textColor="@color/black_color"
                 android:textSize="@dimen/text_size_xlarge"
-                app:customFont="@string/font_light" />
+                app:customFont="@string/font_bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/create_profile_tv_specialization"
+                android:id="@+id/create_profile_tv_job_title"
                 style="@style/text_view_normal"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:text="@string/accept"
                 android:textColor="@color/edt_hint_color"
                 android:textSize="@dimen/text_size_xlarge"
                 app:customFont="@string/font_light" />
@@ -73,7 +77,7 @@
                 android:paddingBottom="@dimen/margin_medium"
                 android:paddingLeft="@dimen/margin_normal"
                 android:text="@string/dental_state_board"
-                android:textColor="@color/edt_hint_color"
+                android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_medium"
                 app:customFont="@string/font_medium" />
 
@@ -104,7 +108,7 @@
                 android:paddingBottom="@dimen/margin_medium"
                 android:paddingLeft="@dimen/margin_normal"
                 android:text="@string/lable_licence"
-                android:textColor="@color/edt_hint_color"
+                android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_medium"
                 app:customFont="@string/font_medium" />
 
@@ -147,6 +151,8 @@
                     android:background="@drawable/edit_text_selector"
                     android:hint="@string/lable_state" />
             </android.support.design.widget.TextInputLayout>
+
+
         </LinearLayout>
     </ScrollView>
 
@@ -156,8 +162,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/com_facebook_blue"
+        android:background="@color/button_bg_color"
         android:gravity="center"
         android:text="@string/lable_next"
-        android:textColor="@color/white_color_pacity" />
+        android:textColor="@color/white_color"
+        />
 </RelativeLayout>
