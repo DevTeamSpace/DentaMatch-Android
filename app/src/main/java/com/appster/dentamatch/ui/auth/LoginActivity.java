@@ -264,7 +264,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
-            if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH) {
+            if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
+                    getTextFromEditText(etLoginPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
@@ -289,7 +290,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
-            if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH) {
+            if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
+                    getTextFromEditText(etRegisterPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
