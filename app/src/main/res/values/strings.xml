@@ -112,15 +112,15 @@
     <!--aler/toast error messages-->
     <string name="please_wait" >Please wait</string>
 
-    <string name="blank_email_alert">Please enter email.</string>
+    <string name="blank_email_alert">Email Id can not be left blank.</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
-    <string name="blank_password_alert">Please enter password.</string>
-    <string name="blank_fname_alert">Please enter first name.</string>
-    <string name="blank_lname_alert">Please enter last name.</string>
-    <string name="blank_location_alert">Please select location.</string>
-    <string name="blank_tnc_alert">Please accpet terms and conditions.</string>
-    <string name="valid_email_alert">Please enter valid email.</string>
-    <string name="password_min_length_alert">Password length should not less than 6 characters.</string>
+    <string name="blank_password_alert">Password can not be left blank.</string>
+    <string name="blank_fname_alert">First Name text can not be left blank.</string>
+    <string name="blank_lname_alert">Last Name text can not be left blank.</string>
+    <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
+    <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
+    <string name="valid_email_alert">Please, provide a valid Email Id.</string>
+    <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
     <string name="show_password">Show</string>
     <string name="hide_password">Hide</string>
 

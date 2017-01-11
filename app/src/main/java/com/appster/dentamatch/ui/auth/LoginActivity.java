@@ -199,8 +199,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.login_btn_register:
-                hideKeyboard();
                 if (validateInput()) {
+                    hideKeyboard();
+
                     if (isLogin) {
                         signInApi(prepareLoginRequest());
                     } else {
