@@ -14,7 +14,6 @@ import retrofit2.http.PUT;
 
 public interface AuthWebServices {
 
-    String API_URL = BuildConfig.BASE_URL;
 
 //    String AUTHENTICATION_URL = BuildConfig.BASE_URL + "authenticateUser";
 //    String LOGOUT = BuildConfig.BASE_URL + "logout";

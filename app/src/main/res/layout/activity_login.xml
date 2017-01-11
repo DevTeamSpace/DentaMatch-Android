@@ -421,13 +421,13 @@
     <com.appster.dentamatch.widget.CustomButton
         android:id="@+id/login_btn_register"
         style="@style/button_style"
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
         android:layout_alignParentBottom="true"
         android:background="@color/button_bg_color"
         android:gravity="center"
         android:text="@string/login_label"
-        android:textColor="@color/white_color" />
+        android:textColor="@color/white_color"
+        app:customBackground="@string/font_bold"/>
 
 </RelativeLayout>

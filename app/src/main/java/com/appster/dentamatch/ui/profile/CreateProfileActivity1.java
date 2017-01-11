@@ -1,7 +1,6 @@
 package com.appster.dentamatch.ui.profile;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,9 +24,7 @@ import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.response.auth.JobTitleList;
 import com.appster.dentamatch.network.response.auth.JobTitleResponse;
-import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
@@ -38,12 +35,10 @@ import com.appster.dentamatch.util.NetworkMonitor;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.BottomSheetView;
-import com.orhanobut.hawk.Hawk;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import retrofit2.Call;
 
@@ -55,6 +50,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private ImageSelectedListener imageSelectedListener;
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
+    private String selectedJobtitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +59,11 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_create_profile1);
 
         initViews();
-        if (NetworkMonitor.isNetworkAvailable()) {
+//        if (NetworkMonitor.isNetworkAvailable()) {
             callJobListApi();
-        } else {
-            Utils.showNetowrkAlert(getApplicationContext());
-        }
+//        } else {
+//            Utils.showNetowrkAlert(getApplicationContext());
+//        }
 
     }
 
@@ -84,7 +80,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 PreferenceUtil.setJobTitle(PreferenceUtil.getJobTitleList().get(i).getJobTitle());
-
+                selectedJobtitle = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
             }
 
             @Override
@@ -101,12 +97,16 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 callBottomSheet();
                 break;
             case R.id.create_profile1_btn_next:
-                if (!TextUtils.isEmpty(mFilePath)) {
-                    Intent intent = new Intent(this, CreateProfileActivity2.class);
-                    startActivity(intent);
-                } else {
+                if (TextUtils.isEmpty(mFilePath)) {
                     Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_photo_alert));
+                    return;
                 }
+                if (TextUtils.isEmpty(selectedJobtitle)) {
+                    Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
+                    return;
+                }
+                Intent intent = new Intent(this, CreateProfileActivity2.class);
+                startActivity(intent);
                 break;
             case R.id.create_profile1_btn_not_now:
 
