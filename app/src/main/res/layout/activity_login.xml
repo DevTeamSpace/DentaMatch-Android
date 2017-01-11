@@ -243,6 +243,7 @@
                         android:drawableStart="@drawable/ic_name"
                         android:hint="@string/fname_label"
                         android:paddingTop="@dimen/padding_drawable"
+                        android:inputType="textCapWords"
                         android:textColor="@color/text_default_color" />
                 </android.support.design.widget.TextInputLayout>
                 <!--<include-->
@@ -279,6 +280,7 @@
                         android:drawableStart="@drawable/ic_name"
                         android:hint="@string/lname_label"
                         android:paddingTop="@dimen/padding_drawable"
+                        android:inputType="textCapWords"
                         android:textColor="@color/text_default_color" />
                 </android.support.design.widget.TextInputLayout>
 

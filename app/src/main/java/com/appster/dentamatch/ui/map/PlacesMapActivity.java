@@ -202,15 +202,21 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         }
 
         Address address = getReverseGeoCode(latLng);
-        String localityName = convertAddressToString(address);
-        mAutocompleteView.setText(localityName);
-        mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
-        mAutocompleteView.clearListSelection();
 
-        mPlaceName = mAutocompleteView.getText().toString();
-        mPostalCode = address.getPostalCode();
-        mLatitude = String.valueOf(address.getLatitude());
-        mLongitude = String.valueOf(address.getLongitude());
+        if (address != null) {
+            mPlaceName = convertAddressToString(address);
+            mAutocompleteView.setText(mPlaceName);
+            mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
+            mAutocompleteView.clearListSelection();
+            mPostalCode = address.getPostalCode();
+            mLatitude = String.valueOf(address.getLatitude());
+            mLongitude = String.valueOf(address.getLongitude());
+        } else {
+            mPlaceName = "";
+            mPostalCode = "";
+            mLatitude = "";
+            mLongitude = "";
+        }
     }
 
     @Override
