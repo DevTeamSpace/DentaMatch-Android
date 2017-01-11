@@ -48,6 +48,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.forgot_password_btn_save:
                 if (validateInput()) {
+                    hideKeyboard();
                     forgotPasswordApi(prepareForgotPasswordRequest());
                 }
                 break;
@@ -55,8 +56,6 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private boolean validateInput() {
-        hideKeyboard();
-
         if (TextUtils.isEmpty(mBinder.forgotPasswordEtEmail.getText().toString())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
             return false;
