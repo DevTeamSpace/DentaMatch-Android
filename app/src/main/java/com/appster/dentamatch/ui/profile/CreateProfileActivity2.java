@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.Picasso;
 
@@ -36,9 +38,10 @@ import java.io.File;
  */
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
     private ImageView ivProfile, ivUpload, ivToolbarLeft;
-    private TextView tvName,tvJobTitle;
+    private TextView tvName, tvJobTitle;
     private ProgressBar mProgressBar;
     private TextView tvToolbarLeft;
+    private EditText etLicenceNumber, etState;
     private Button btnNext;
     private String mFilePath;
     private byte mSelectedImage;
@@ -52,13 +55,14 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private void initViews() {
-//        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_create_profile2);
         ivProfile = (ImageView) findViewById(R.id.create_profile_iv_profile_icon);
         ivUpload = (ImageView) findViewById(R.id.create_profile_iv_upoload_icon);
         ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
         btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
         tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
         tvName = (TextView) findViewById(R.id.create_profile_tv_name);
+        etLicenceNumber = (EditText) findViewById(R.id.create_profile_et_licence);
+        etState = (EditText) findViewById(R.id.create_profile_et_state);
         tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
         ivUpload.setOnClickListener(this);
@@ -71,10 +75,10 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             Picasso.with(getApplicationContext()).load(new File(PreferenceUtil.getProfileImagePath())).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
 
         }
-        if(!TextUtils.isEmpty(PreferenceUtil.getJobTitle())){
+        if (!TextUtils.isEmpty(PreferenceUtil.getJobTitle())) {
             tvJobTitle.setText(PreferenceUtil.getJobTitle());
         }
-        if(!TextUtils.isEmpty(PreferenceUtil.getFirstName())){
+        if (!TextUtils.isEmpty(PreferenceUtil.getFirstName())) {
             tvName.setText(PreferenceUtil.getFirstName());
         }
 
@@ -95,9 +99,41 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 //                callBottomSheet();
                 break;
             case R.id.create_profile2_btn_next:
-                startActivity(new Intent(this, WorkExperienceActivity.class));
+                hideKeyboard();
+                if (checkInputValidator()) {
+
+                    startActivity(new Intent(this, WorkExperienceActivity.class));
+                }
                 break;
         }
+    }
+
+    private boolean checkInputValidator() {
+        if (TextUtils.isEmpty(etLicenceNumber.getText().toString().trim())) {
+            Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_licence_number));
+            return false;
+        }
+        if (etLicenceNumber.getText().toString().trim().length() > Constants.LICENCE_MAX_LENGTH) {
+            Utils.showToast(CreateProfileActivity2.this, getString(R.string.licence_number_length));
+
+            return false;
+        }
+        if (etLicenceNumber.getText().toString().trim().contains(" ")) {
+            Utils.showToast(CreateProfileActivity2.this, getString(R.string.licence_number_blnk_space_alert));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(etState.getText().toString().trim())) {
+            Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_state_alert));
+            return false;
+        }
+        if (etState.getText().toString().trim().length() >= Constants.DEFAULT_FIELD_LENGTH) {
+            Utils.showToast(CreateProfileActivity2.this, getString(R.string.state_max_length));
+            return false;
+        }
+
+        return true;
+
     }
 
     private void callBottomSheet() {

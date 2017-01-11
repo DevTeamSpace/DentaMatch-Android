@@ -28,7 +28,7 @@ public class DentaApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mAppContext = this.getApplicationContext();
-        NetworkMonitor.initialize(this);
+        NetworkMonitor.initialize(mAppContext);
 
 //        if (BuildConfig.DEBUG) {
 ////            LeakCanary.install(this);

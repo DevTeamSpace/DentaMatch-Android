@@ -53,7 +53,11 @@ public class BottomSheetPicker {
                     mBottomSheetDialog.dismiss();
 
                 }
-                mYearslYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
+                if (pickerYear.getValue() == 0 && pickerMonth.getValue() == 0) {
+                    Utils.showToast(context, context.getString(R.string.invalid_exp_selection));
+                } else {
+                    mYearslYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
+                }
 
             }
         });

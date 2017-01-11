@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 
+import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityTermsAndConditionBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -18,7 +19,7 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
     //    private ActivityT mBinder;
     private ActivityTermsAndConditionBinding mBinder;
     private boolean isPrivacyPolicy;
-    private String url="";
+    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +36,14 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
 
     private void initViews() {
         mBinder.toolbarPrivacyPolicy.ivToolBarLeft.setOnClickListener(this);
-        if(isPrivacyPolicy){
-            url="http://52.8.112.211/api/privacy-policy";
+        if (isPrivacyPolicy) {
+            url = BuildConfig.BASE_URL + Constants.APIS.PRIVACY_POLICY;
 
             mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_privacy));
 
-        }else{
-            url="http://52.8.112.211/api/term-condition";
+        } else {
+            url = BuildConfig.BASE_URL + Constants.APIS.TERM_CONDITION;
+
             mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_term));
 
 
@@ -67,7 +69,7 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_tool_bar_left:
                 onBackPressed();
                 break;

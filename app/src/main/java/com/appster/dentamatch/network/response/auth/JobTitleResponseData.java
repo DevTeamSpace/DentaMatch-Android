@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by virender on 09/01/17.
  */
 public class JobTitleResponseData {
-    @SerializedName("skillList")
+    @SerializedName("joblists")
     private ArrayList<JobTitleList> jobTitleList;
 
     public ArrayList<JobTitleList> getJobTitleList() {

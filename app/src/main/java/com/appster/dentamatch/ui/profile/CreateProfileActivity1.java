@@ -50,7 +50,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private ImageSelectedListener imageSelectedListener;
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
-    private String selectedJobtitle="";
+    private String selectedJobtitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +59,11 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_create_profile1);
 
         initViews();
-        if (NetworkMonitor.isNetworkAvailable()) {
+//        if (NetworkMonitor.isNetworkAvailable()) {
             callJobListApi();
-        } else {
-            Utils.showNetowrkAlert(getApplicationContext());
-        }
+//        } else {
+//            Utils.showNetowrkAlert(getApplicationContext());
+//        }
 
     }
 
@@ -80,7 +80,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 PreferenceUtil.setJobTitle(PreferenceUtil.getJobTitleList().get(i).getJobTitle());
-                selectedJobtitle=PreferenceUtil.getJobTitleList().get(i).getJobTitle();
+                selectedJobtitle = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
             }
 
             @Override
@@ -102,7 +102,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     return;
                 }
                 if (TextUtils.isEmpty(selectedJobtitle)) {
-                    Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_photo_alert));
+                    Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
                     return;
                 }
                 Intent intent = new Intent(this, CreateProfileActivity2.class);

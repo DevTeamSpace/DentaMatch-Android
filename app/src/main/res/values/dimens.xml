@@ -20,6 +20,7 @@
     <dimen name="text_size_xlarge">23sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_normal">15sp</dimen>

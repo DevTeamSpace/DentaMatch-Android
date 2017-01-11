@@ -11,12 +11,12 @@
             android:id="@+id/tv_refrence_count"
             style="@style/text_view_normal"
             android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_19"
             android:paddingLeft="@dimen/margin_medium"
             android:text="@string/reference"
             android:textColor="@color/color_forgot_pwd"
-            android:textSize="@dimen/text_size_12"
-            app:customFont="@string/font_regular" />
+            android:textSize="@dimen/text_size_16"
+            app:customFont="@string/font_bold" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_reference_name"
@@ -62,6 +62,7 @@
                 android:layout_marginRight="@dimen/margin_normal"
                 android:background="@drawable/edit_text_selector"
                 android:hint="@string/reference_mobile"
+                android:inputType="phone"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>
 
@@ -87,6 +88,7 @@
                 android:layout_marginRight="@dimen/margin_normal"
                 android:background="@drawable/edit_text_selector"
                 android:hint="@string/reference_email"
+                android:inputType="textEmailAddress"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>
 
@@ -98,7 +100,7 @@
             android:paddingLeft="@dimen/margin_medium"
             android:text="@string/reference_delete"
             android:textColor="@color/red_color"
-            android:textSize="@dimen/text_size_12"
+            android:textSize="@dimen/text_size_14"
             android:visibility="gone"
             app:customFont="@string/font_regular" />
     </LinearLayout>

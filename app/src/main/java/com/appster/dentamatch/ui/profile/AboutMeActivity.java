@@ -15,6 +15,7 @@ import com.appster.dentamatch.util.Utils;
  */
 public class AboutMeActivity extends BaseActivity {
     private ActivityAboutMeBinding mBinder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +24,8 @@ public class AboutMeActivity extends BaseActivity {
 
 
     }
-    private void initViews(){
+
+    private void initViews() {
         mBinder.layoutIncludeProfileHeader.tvTitle.setText(getString(R.string.about_me_title));
         mBinder.layoutIncludeProfileHeader.progressBar.setProgress(100);
     }

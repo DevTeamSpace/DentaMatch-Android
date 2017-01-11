@@ -53,7 +53,7 @@
 
     <string name="label_take_photo">Take photo</string>
     <string name="label_choose_gallary">Choose from gallery</string>
-    <string name="dental_state_board">DENTAL STATE BOARD</string>
+    <string name="dental_state_board">ADD DENTAL STATE BOARD</string>
     <string name="lable_licence">LICENSE</string>
     <string name="lable_licence_number">License Number</string>
     <string name="label_upload_photo">Upload Photo</string>
@@ -111,9 +111,8 @@
     <string name="get_started">GET STARTED</string>
 
 
-
     <!--aler/toast error messages-->
-    <string name="please_wait" >Please wait</string>
+    <string name="please_wait">Please wait</string>
     <string name="blank_email_alert">Please enter email.</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
     <string name="blank_job_title">Please select job title.</string>
@@ -126,8 +125,6 @@
     <string name="password_min_length_alert">Password length should not less than 6 characters.</string>
 
 
-
-
     <!--certification & About me string-->
     <string name="valdity_date_string">Validity date</string>
     <string name="cetification_title">Update Certifications</string>
@@ -135,5 +132,24 @@
     <string name="alert_pervious_date">Please select a valid date.</string>
     <string name="write_description">Write a brief introduction</string>
     <string name="lable_complete_profile">Complete Profile</string>
+    <string name="blank_licence_number">Licence number can not be blank.</string>
+    <string name="licence_number_length">Licence Number should not be exceed 15 characters.</string>
+    <string name="licence_number_blnk_space_alert">Licence number should not contain blank spaces</string>
+    <string name="blank_state_alert">State text can not be left blank.</string>
+    <string name="state_max_length">State can not be exceed 30 characters</string>
+    <string name="state_blank_space_alert">State can not contain blank spaces</string>
+    <string name="invalid_exp_selection">Experience can never be zero.</string>
+    <string name="blank_job_title_alert">Please selct job title</string>
+    <string name="blank_office_name_alert">Office name can never be blank</string>
+    <string name="blank_office_addrerss_alert">Office address can never be blank</string>
+    <string name="blank_city_alert">City can never be blank</string>
+    <string name="office_name_length_alert">Office name length can not exceed 30 characters</string>
+    <string name="office_address_length_alert">Office address length can not exceed 30 characters</string>
+    <string name="refrence_length_alert">Reference name length can not exceed 30 characters</string>
+    <string name="city_length_alert">City name length can not exceed 30 characters</string>
+    <string name="blank_year_alert">Please select experience.</string>
+    <string name="blank_refrence_name_alert">Refrence Name can never be blank.</string>
+    <string name="blank_phone_number_alert">Phone number can never be blank</string>
+    <string name="complete_reference">Please complete the reference.</string>
 
 </resources>
