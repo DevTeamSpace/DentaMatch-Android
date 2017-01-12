@@ -51,6 +51,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
     private String selectedJobtitle = "";
+    private byte imageSourceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +60,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_create_profile1);
 
         initViews();
-//        if (NetworkMonitor.isNetworkAvailable()) {
         callJobListApi();
-//        } else {
-//            Utils.showNetowrkAlert(getApplicationContext());
-//        }
 
     }
 
@@ -94,24 +91,24 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.create_profile1_iv_profile_icon:
-                if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
-                    callBottomSheet();
-
-                } else {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        Snackbar.make(mBinder.createProfile1IvProfileIcon, this.getResources().getString(R.string.text_camera_permision),
-                                Snackbar.LENGTH_INDEFINITE)
-                                .setAction(getString(R.string.accept), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-
-                                    }
-                                }).show();
-                    } else {
-                        PermissionUtils.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-                    }
-                }
+//                if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
+                callBottomSheet();
+//
+//                } else {
+//                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//                        Snackbar.make(mBinder.createProfile1IvProfileIcon, this.getResources().getString(R.string.text_camera_permision),
+//                                Snackbar.LENGTH_INDEFINITE)
+//                                .setAction(getString(R.string.accept), new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View view) {
+//                                        PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+//
+//                                    }
+//                                }).show();
+//                    } else {
+//                        PermissionUtils.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+//                    }
+//                }
 
                 break;
             case R.id.create_profile1_btn_next:
@@ -165,8 +162,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     }
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfileActivity1.this,
                             android.R.layout.simple_dropdown_item_1line, title);
-//        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
-//                findViewById(R.id.android_material_design_spinner);
                     mBinder.spinnerJobTitleCreateProfile.setPrompt(getString(R.string.lable_job_title));
                     mBinder.spinnerJobTitleCreateProfile.setAdapter(arrayAdapter);
                 } else {
@@ -186,13 +181,57 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
     @Override
     public void cameraClicked() {
-        takePhoto();
+//        takePhoto();
+
+        imageSourceType=0;
+        if (PermissionUtils.checkPermissionGranted(Manifest.permission.CAMERA, this) &&
+                PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this) &&
+                PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this)) {
+            takePhoto();
+
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                Snackbar.make(mBinder.createProfileTvName, getResources().getString(R.string.text_camera_permision),
+                        Snackbar.LENGTH_INDEFINITE)
+                        .setAction("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+
+                            }
+                        }).show();
+            } else {
+                PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+            }
+        }
+
 
     }
 
     @Override
     public void gallaryClicked() {
-        getImageFromGallery();
+//        getImageFromGallery();
+        imageSourceType=1;
+
+        if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
+            getImageFromGallery();
+
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Snackbar.make(mBinder.createProfileTvName, this.getResources().getString(R.string.text_camera_permision),
+                        Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Accept", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+
+                            }
+                        }).show();
+            } else {
+                PermissionUtils.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+            }
+        }
+
 
     }
 
@@ -207,8 +246,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     }
 
     public void takePhoto() {
-
-
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
@@ -249,6 +286,11 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             Log.d("Tag", "request permisison called if granted --");
+            if(imageSourceType==0){
+                takePhoto();
+            }else{
+                getImageFromGallery();
+            }
 
         }
 

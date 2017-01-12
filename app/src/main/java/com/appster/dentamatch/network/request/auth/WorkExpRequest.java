@@ -9,10 +9,24 @@ public class WorkExpRequest {
     private int id;
     private String jobTitle;
     private String exp;
+    private ArrayList<ReferenceRequest> referenceAerialist;
+
+
+    private int jobTitleId;
+    private int monthsOfExpereince;
     private String officeName;
     private String officeAddress;
     private String city;
-    private ArrayList<ReferenceRequest> referenceAerialist;
+    private String reference1Name;
+    private String reference2Name;
+    private String reference1Mobile;
+    private String reference2Mobile;
+    private String reference1Email;
+    private String reference2Email;
+    private String action;
+
+
+
 
     public int getId() {
         return id;
