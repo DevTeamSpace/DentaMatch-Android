@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +25,7 @@ import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.response.auth.FileUploadResponse;
 import com.appster.dentamatch.network.response.auth.JobTitleResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -40,6 +42,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 
 /**
@@ -80,6 +84,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 PreferenceUtil.setJobTitle(PreferenceUtil.getJobTitleList().get(i).getJobTitle());
+                PreferenceUtil.setJobTitleId(""+PreferenceUtil.getJobTitleList().get(i).getId());
                 selectedJobtitle = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
             }
 
@@ -115,16 +120,13 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
                 break;
             case R.id.create_profile1_btn_next:
-                if (TextUtils.isEmpty(mFilePath)) {
-                    Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_photo_alert));
-                    return;
+                if (checkValidation()) {
+//                    Intent intent = new Intent(this, CreateProfileActivity2.class);
+//                    startActivity(intent);
+                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                 }
-                if (TextUtils.isEmpty(selectedJobtitle)) {
-                    Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
-                    return;
-                }
-                Intent intent = new Intent(this, CreateProfileActivity2.class);
-                startActivity(intent);
+
+
                 break;
             case R.id.create_profile1_btn_not_now:
 
@@ -145,6 +147,48 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
     private void callBottomSheet() {
         new BottomSheetView(this, this);
+    }
+
+    private boolean checkValidation() {
+        if (TextUtils.isEmpty(mFilePath)) {
+            Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_photo_alert));
+            return false;
+        }
+        if (TextUtils.isEmpty(selectedJobtitle)) {
+            Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
+            return false;
+        }
+        return true;
+    }
+
+    private void uploadImageApi(String filePath, String imageType) {
+        showProgressBar(getString(R.string.please_wait));
+        File file = new File(filePath);
+        RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody uploadType = RequestBody.create(MediaType.parse("multipart/form-data"), imageType);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        Call<FileUploadResponse> response = webServices.uploadImage(uploadType, fbody);
+        response.enqueue(new BaseCallback<FileUploadResponse>(CreateProfileActivity1.this) {
+            @Override
+            public void onSuccess(FileUploadResponse response) {
+
+                if (response != null && response.getStatus() == 1) {
+                    // showSnackBarFromTop(response.getMessage(), false);
+                    PreferenceUtil.setProfileImagePath(response.getFileUploadResponseData().getImageUrl());
+                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
+                    Intent intent = new Intent(CreateProfileActivity1.this, CreateProfileActivity2.class);
+                    startActivity(intent);
+
+                }
+            }
+
+            @Override
+            public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGE(TAG, " ImageUpload failed!");
+
+            }
+        });
     }
 
     private void callJobListApi() {

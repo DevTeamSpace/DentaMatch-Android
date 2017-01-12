@@ -139,7 +139,7 @@
     <string name="state_max_length">State can not be exceed 30 characters</string>
     <string name="state_blank_space_alert">State can not contain blank spaces</string>
     <string name="invalid_exp_selection">Experience can never be zero.</string>
-    <string name="blank_job_title_alert">Please selct job title</string>
+    <string name="blank_job_title_alert">Please select job title</string>
     <string name="blank_office_name_alert">Office name can never be blank</string>
     <string name="blank_office_addrerss_alert">Office address can never be blank</string>
     <string name="blank_city_alert">City can never be blank</string>

@@ -235,4 +235,7 @@ public class Utils {
     public static String getStringFromEditText(EditText editText){
         return  editText.getText().toString().trim();
     }
+
+
+
 }

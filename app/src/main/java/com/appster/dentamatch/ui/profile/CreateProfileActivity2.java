@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,10 +22,21 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.auth.LicenceRequest;
+import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.response.auth.FileUploadResponse;
+import com.appster.dentamatch.network.response.auth.JobTitleResponse;
+import com.appster.dentamatch.network.response.auth.LicenceUpdateResponse;
+import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.CameraUtil;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -33,10 +45,15 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+
 /**
  * Created by virender on 02/01/17.
  */
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
+    private String TAG = "CreateProfileActivity2";
     private ImageView ivProfile, ivUpload, ivToolbarLeft;
     private TextView tvName, tvJobTitle;
     private ProgressBar mProgressBar;
@@ -45,6 +62,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     private Button btnNext;
     private String mFilePath;
     private byte mSelectedImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +84,15 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
         ivUpload.setOnClickListener(this);
-        ivProfile.setOnClickListener(this);
+//        ivProfile.setOnClickListener(this);
         btnNext.setOnClickListener(this);
         ivToolbarLeft.setOnClickListener(this);
         mProgressBar.setProgress(25);
         tvToolbarLeft.setText(getString(R.string.header_create_profile));
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-            Picasso.with(getApplicationContext()).load(new File(PreferenceUtil.getProfileImagePath())).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
+//            Picasso.with(getApplicationContext()).load(new File(PreferenceUtil.getProfileImagePath())).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
+            LogUtils.LOGD("pabd", "path is--=" + PreferenceUtil.getProfileImagePath());
+            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
 
         }
         if (!TextUtils.isEmpty(PreferenceUtil.getJobTitle())) {
@@ -101,8 +121,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             case R.id.create_profile2_btn_next:
                 hideKeyboard();
                 if (checkInputValidator()) {
-
-                    startActivity(new Intent(this, WorkExperienceActivity.class));
+                    callLicenceApi(prepareLicenceRequest());
                 }
                 break;
         }
@@ -134,6 +153,72 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
         return true;
 
+    }
+
+    private LicenceRequest prepareLicenceRequest() {
+        processToShowDialog("", getString(R.string.please_wait), null);
+        LicenceRequest licenceRequest = new LicenceRequest();
+        licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
+        licenceRequest.setLicense(etLicenceNumber.getText().toString());
+        licenceRequest.setState(etState.getText().toString());
+        return licenceRequest;
+    }
+
+    private void callLicenceApi(LicenceRequest licenceRequest) {
+        try {
+            LogUtils.LOGD(TAG, "Update Licence");
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+            webServices.updateLicence(licenceRequest).enqueue(new BaseCallback<LicenceUpdateResponse>(CreateProfileActivity2.this) {
+                @Override
+                public void onSuccess(LicenceUpdateResponse response) {
+                    LogUtils.LOGD(TAG, "onSuccess");
+                    if (response.getStatus() == 1) {
+                        startActivity(new Intent(CreateProfileActivity2.this, WorkExperienceActivity.class));
+
+                    } else {
+                        Utils.showToast(getApplicationContext(), response.getMessage());
+
+                    }
+                }
+
+                @Override
+                public void onFail(Call<LicenceUpdateResponse> call, BaseResponse baseResponse) {
+                    LogUtils.LOGD(TAG, "onFail");
+
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideProgressBar();
+        }
+    }
+
+    private void uploadImageApi(String filePath, String imageType) {
+        showProgressBar(getString(R.string.please_wait));
+        File file = new File(filePath);
+        RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody uploadType = RequestBody.create(MediaType.parse("multipart/form-data"), imageType);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        Call<FileUploadResponse> response = webServices.uploadImage(uploadType, fbody);
+        response.enqueue(new BaseCallback<FileUploadResponse>(CreateProfileActivity2.this) {
+            @Override
+            public void onSuccess(FileUploadResponse response) {
+
+                if (response != null && response.getStatus() == 1) {
+                    // showSnackBarFromTop(response.getMessage(), false);
+                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
+
+                }
+            }
+
+            @Override
+            public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGE(TAG, " ImageUpload failed!");
+
+            }
+        });
     }
 
     private void callBottomSheet() {
@@ -235,6 +320,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                     Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(102, 102).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
                 } else {
                     Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(142, 142).placeholder(R.drawable.ic_upload).into(ivUpload);
+                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
+
                 }
             }
         }

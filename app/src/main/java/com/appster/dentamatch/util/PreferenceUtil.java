@@ -25,6 +25,8 @@ public final class PreferenceUtil {
     private static final String KEY_JOB_TITLE = "JOB_TITLE";
     private static final String KEY_JOB_TITLE_LIST = "JOB_TITLE_LIST";
     private static final String KEY_WORK_EXP_LIST = "WORK_EXP_LIST";
+    private static final String KEY_USER_TOKEN = "USER_TOKEN";
+    private static final String KEY_JOB_TITLE_ID = "JOB_TITLE_ID";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
 
 
@@ -85,6 +87,14 @@ public final class PreferenceUtil {
         return Hawk.get(KEY_JOB_TITLE);
     }
 
+    public static void setJobTitleId(String value) {
+        Hawk.put(KEY_JOB_TITLE_ID, value);
+    }
+
+    public static String getJobTitleId() {
+        return Hawk.get(KEY_JOB_TITLE_ID);
+    }
+
     public static void setFistName(String value) {
         Hawk.put(KEY_FIRST_NAME, value);
     }
@@ -117,6 +127,14 @@ public final class PreferenceUtil {
 
     public static String getLastName() {
         return Hawk.get(KEY_LAST_NAME);
+    }
+
+    public static void setUserToken(String value) {
+        Hawk.put(KEY_USER_TOKEN, value);
+    }
+
+    public static String getKeyUserToken() {
+        return Hawk.get(KEY_USER_TOKEN);
     }
 
 
