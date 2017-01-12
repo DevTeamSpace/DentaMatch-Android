@@ -61,7 +61,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     private static String TAG = "DentaPlaces";
-    private static final int MY_PERMISSION_ACCESS_LOCATION = 101;
     protected GoogleApiClient mGoogleApiClient;
 
     private GoogleMap mMap;
@@ -159,32 +158,32 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSION_ACCESS_LOCATION: {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do
-                    // contacts-related task you need to do.
-                    setMap();
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Utils.showToast(this, "Permission denied for location");
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case MY_PERMISSION_ACCESS_LOCATION: {
+//
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                    // permission was granted, yay! Do
+//                    // contacts-related task you need to do.
+//                    setMap();
+//                } else {
+//
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission.
+//                    Utils.showToast(this, "Permission denied for location");
+//                }
+//                return;
+//            }
+//
+//            // other 'case' lines to check for other
+//            // permissions this app might request
+//        }
+//    }
 
     // This method will be called when Event is posted.
     @Subscribe
@@ -299,8 +298,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
             LogUtils.LOGD(TAG, latLng.toString());
 
-            LogUtils.LOGD(TAG, "Place details received: " + place.getName());
-
             mPostalCode = getReverseGeoCode(latLng).getPostalCode();
             mPlaceName = mAutocompleteView.getText().toString();
             mLatitude = String.valueOf(latLng.latitude);
@@ -316,6 +313,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         intent.putExtra(Constants.EXTRA_POSTAL_CODE, mPostalCode);
         intent.putExtra(Constants.EXTRA_LATITUDE, mLatitude);
         intent.putExtra(Constants.EXTRA_LONGITUDE, mLongitude);
+
+        LogUtils.LOGD(TAG, "Postal Code " + mPostalCode + ", Place " + mPlaceName);
+
         return intent;
     }
 
@@ -377,35 +377,35 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         return address;
     }
 
-    private void check() {
-        LogUtils.LOGD(TAG, "check...");
-
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                Utils.showToast(this, "Please enable location permission in App Settings.");
-                setMap();
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSION_ACCESS_LOCATION);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
-    }
+//    private void check() {
+//        LogUtils.LOGD(TAG, "check...");
+//
+//        // Here, thisActivity is the current activity
+//        if (ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            // Should we show an explanation?
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+//
+//                // Show an explanation to the user *asynchronously* -- don't block
+//                // this thread waiting for the user's response! After the user
+//                // sees the explanation, try again to request the permission.
+//                Utils.showToast(this, "Please enable location permission in App Settings.");
+//                setMap();
+//            } else {
+//
+//                // No explanation needed, we can request the permission.
+//
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                        BaseActivity.MY_PERMISSION_ACCESS_LOCATION);
+//
+//                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+//                // app-defined int constant. The callback method gets the
+//                // result of the request.
+//            }
+//        }
+//    }
 }

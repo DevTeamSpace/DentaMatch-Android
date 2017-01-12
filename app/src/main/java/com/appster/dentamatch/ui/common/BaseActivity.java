@@ -2,10 +2,13 @@ package com.appster.dentamatch.ui.common;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
@@ -23,13 +26,13 @@ import com.appster.dentamatch.util.LogUtils;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-
-    private final String TAG = "BASE_ACTIVITY";
+    private static final String TAG = "BASE_ACTIVITY";
+    protected static final int MY_PERMISSION_ACCESS_LOCATION = 101;
     protected boolean mAlive;
     private boolean mActive;
     private ProgressDialog mProgressDialog;
     private Toast mToast;
-
+    public static PermissionCallback permissionResult;
 
     public static BaseFragment getFragment(Constants.FRAGMENTS fragmentId) {
         BaseFragment fragment = null;
@@ -89,6 +92,37 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mAlive = true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != MY_PERMISSION_ACCESS_LOCATION) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        } else {
+            if (grantResults.length == 0) {
+                if (permissionResult != null) permissionResult.permissionsDenied();
+                return;
+            }
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    if (permissionResult != null) permissionResult.permissionsDenied();
+                    return;
+                }
+            }
+            if (permissionResult != null) permissionResult.permissionsGranted();
+        }
+    }
+
+    public boolean hasPermission(String permission) {
+        return PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, permission);
+    }
+
+    public interface PermissionCallback {
+
+        void permissionsGranted();
+
+        void permissionsDenied();
     }
 
     public void showProgressBar() {
