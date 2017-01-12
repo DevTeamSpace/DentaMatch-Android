@@ -78,7 +78,7 @@
                     android:layout_height="@dimen/cell_height"
                     android:layout_marginBottom="@dimen/margin_29"
                     android:layout_marginTop="@dimen/margin_29"
-                    android:background="@color/cell_color">
+                    android:background="@drawable/bg_cell">
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_add_more_experience"
@@ -88,6 +88,8 @@
                         android:layout_centerInParent="true"
                         android:background="@color/cell_color"
                         android:drawablePadding="@dimen/padding_drawable"
+                        android:layout_marginTop="@dimen/line_height"
+                        android:layout_marginBottom="@dimen/line_height"
                         android:drawableStart="@drawable/ic_profile_plus"
                         android:gravity="center"
                         android:text="@string/add_more_exp"

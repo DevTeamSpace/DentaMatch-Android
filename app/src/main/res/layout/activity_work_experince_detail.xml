@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar_work_exp_detail"
-            android:layout_marginBottom="@dimen/margin_29">
+            android:layout_above="@+id/btn_next_detail_work_exp"
+            android:layout_marginBottom="@dimen/margin_medium">
 
             <LinearLayout
                 android:id="@+id/layout_parent_scroll_work_exp"

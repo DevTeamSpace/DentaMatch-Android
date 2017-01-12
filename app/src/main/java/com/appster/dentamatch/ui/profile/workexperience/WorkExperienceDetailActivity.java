@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +34,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
     private int count = 0;
     private String selectedJobtitle = "";
     private ArrayList<ReferenceRequest> refrenceRequestArrayList = new ArrayList<>();
+    private ArrayList<WorkExpRequest> workExpRequestList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +55,23 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        mBinder.includeRefrence.etOfficeReferenceMobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+            }
+        });
         setSpinnerData();
     }
 
@@ -91,7 +111,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 
                 if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeRefrence.etOfficeReferenceEmail)) || TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeRefrence.etOfficeReferenceMobile)) || TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeRefrence.etOfficeReferenceName))) {
                     Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
-                }else{
+                } else {
 
                     count++;
                     inflateRefrence();
@@ -106,6 +126,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 
                 if (checkValidation()) {
                     hideKeyboard();
+                    PreferenceUtil.setWorkExpList(workExpRequestList);
                     startActivity(new Intent(getApplicationContext(), WorkExpListActivity.class));
                 }
 
@@ -135,7 +156,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         workExpRequest.setOfficeAddress(Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress));
         workExpRequest.setExp(Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.tvExperinceWorkExp));
         workExpRequest.setJobTitle(selectedJobtitle);
-        ReferenceRequest refrenceRequest=new ReferenceRequest();
+        ReferenceRequest refrenceRequest = new ReferenceRequest();
         refrenceRequest.setEmail(Utils.getStringFromEditText(mBinder.includeRefrence.etOfficeReferenceEmail));
         refrenceRequest.setPhoneNumber(Utils.getStringFromEditText(mBinder.includeRefrence.etOfficeReferenceMobile));
         refrenceRequest.setRefrenceName(Utils.getStringFromEditText(mBinder.includeRefrence.etOfficeReferenceName));
@@ -200,6 +221,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                 return false;
             }
         }
+        workExpRequestList.add(workExpRequest);
         return true;
     }
 
@@ -232,7 +254,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
     @Override
     public void onExperienceSection(int year, int month) {
         mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
-        PreferenceUtil.setMonth(month);
-        PreferenceUtil.setYear(year);
+//        PreferenceUtil.setMonth(month);
+//        PreferenceUtil.setYear(year);
     }
 }
