@@ -101,10 +101,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mImgClear.setOnClickListener(this);
         mLayout.setOnClickListener(this);
 
-        // Retrieve the TextViews that will display details and attributions of the selected place.
-//        mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
-//        mPlaceDetailsAttribution = (TextView) findViewById(R.id.place_attribution);
-
         // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
         // the entire world.
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
@@ -113,8 +109,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
         mapFragment.getMapAsync(this);
-
-//        check();
 
         EventBus.getDefault().register(this);
 
@@ -158,64 +152,42 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         }
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case MY_PERMISSION_ACCESS_LOCATION: {
-//
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    // permission was granted, yay! Do
-//                    // contacts-related task you need to do.
-//                    setMap();
-//                } else {
-//
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                    Utils.showToast(this, "Permission denied for location");
-//                }
-//                return;
-//            }
-//
-//            // other 'case' lines to check for other
-//            // permissions this app might request
-//        }
-//    }
-
     // This method will be called when Event is posted.
     @Subscribe
     public void onEvent(LocationEvent locationEvent) {
-        // your implementation
-        LogUtils.LOGD(TAG, "onEvent " + locationEvent.getMessage().getLongitude());
-//        Toast.makeText(this, "received on sender " + locationEvent.getMessage().getLongitude(), Toast.LENGTH_SHORT).show();
-
         Location location = locationEvent.getMessage();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         if (mMap != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-//            mMap.addMarker(new MarkerOptions().position(latLng));
+            mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
         Address address = getReverseGeoCode(latLng);
 
+        setData(address);
+    }
+
+    private void setData(Address address) {
         if (address != null) {
             mPlaceName = convertAddressToString(address);
-            mAutocompleteView.setText(mPlaceName);
-            mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
-            mAutocompleteView.clearListSelection();
-            mPostalCode = address.getPostalCode();
+            mPostalCode = address.getPostalCode() == null ? "" : address.getPostalCode();
             mLatitude = String.valueOf(address.getLatitude());
             mLongitude = String.valueOf(address.getLongitude());
+
+            mAutocompleteView.setOnClickListener(null);
+            mAutocompleteView.setText(mPlaceName);
+            mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
+            mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+
         } else {
             mPlaceName = "";
             mPostalCode = "";
             mLatitude = "";
             mLongitude = "";
         }
+
+        LogUtils.LOGD(TAG, "(Postal and Place) " + mPostalCode + ", " + mPlaceName);
     }
 
     @Override
@@ -224,15 +196,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mMap.addMarker(new MarkerOptions().position(latLng));
 
         Address address = getReverseGeoCode(latLng);
-        String placeName = convertAddressToString(address);
-        mAutocompleteView.setText(placeName);
 
-        if (TextUtils.isEmpty(placeName)) {
-            mLongitude = "";
-            mLatitude = "";
-            mPlaceName = "";
-            mPostalCode = "";
-        }
+        setData(address);
     }
 
     /**
@@ -298,10 +263,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
             LogUtils.LOGD(TAG, latLng.toString());
 
-            mPostalCode = getReverseGeoCode(latLng).getPostalCode();
-            mPlaceName = mAutocompleteView.getText().toString();
-            mLatitude = String.valueOf(latLng.latitude);
-            mLongitude = String.valueOf(latLng.longitude);
+            Address address = getReverseGeoCode(latLng);
+
+            setData(address);
 
             places.release();
         }
@@ -357,6 +321,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             sb.append(", ");
             sb.append(address.getAdminArea());
         }
+
+        LogUtils.LOGD(TAG, "convertAddressToString " + sb.toString());
 
         return sb.toString();
     }
