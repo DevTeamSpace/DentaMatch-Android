@@ -1,5 +1,6 @@
 package com.appster.dentamatch.util;
 
+import com.appster.dentamatch.network.request.auth.WorkExpRequest;
 import com.appster.dentamatch.network.response.auth.JobTitleList;
 import com.orhanobut.hawk.Hawk;
 
@@ -23,6 +24,7 @@ public final class PreferenceUtil {
     private static final String KEY_MONTH = "MONTH";
     private static final String KEY_JOB_TITLE = "JOB_TITLE";
     private static final String KEY_JOB_TITLE_LIST = "JOB_TITLE_LIST";
+    private static final String KEY_WORK_EXP_LIST = "WORK_EXP_LIST";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
 
 
@@ -65,6 +67,14 @@ public final class PreferenceUtil {
 
     public static ArrayList<JobTitleList> getJobTitleList() {
         return Hawk.get(KEY_JOB_TITLE_LIST);
+    }
+
+    public static void setWorkExpList(ArrayList<WorkExpRequest> value) {
+        Hawk.put(KEY_WORK_EXP_LIST, value);
+    }
+
+    public static ArrayList<WorkExpRequest> getWorkExpList() {
+        return Hawk.get(KEY_WORK_EXP_LIST);
     }
 
     public static void setJobTitle(String value) {

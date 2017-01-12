@@ -5,6 +5,7 @@
     android:layout_height="@dimen/cell_height">
 
     <com.appster.dentamatch.widget.CustomTextView
+        android:id="@+id/tv_title"
         style="@style/text_view_normal"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
@@ -15,6 +16,8 @@
         app:customFont="@string/font_bold" />
 
     <com.appster.dentamatch.widget.CustomTextView
+        android:id="@+id/tv_exp"
+
         style="@style/text_view_normal"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

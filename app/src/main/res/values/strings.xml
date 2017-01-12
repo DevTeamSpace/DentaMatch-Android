@@ -32,7 +32,7 @@
     <string name="blank_lname_alert">Last Name text can not be left blank.</string>
     <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
-    <string name="valid_email_alert">Please, provide a valid Email Id.</string>
+    <string name="valid_email_alert">Please provide a valid Email Id.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
     <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_unable_reterive_email">Unable to reterive email address from your social account.</string>
@@ -69,6 +69,7 @@
     <string name="label_upload_photo">Upload Photo</string>
     <string name="lable_state">State</string>
     <string name="lable_next">Next</string>
+    <string name="lable_update">UPDATE</string>
     <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
     <string name="decode_stream_alert">Unbale to parse this image.</string>
     <string name="lable_not_now">Not now</string>

@@ -57,6 +57,7 @@ public class Constants {
         String IMAGE_PATH="image_path";
         String F_NAME="fname";
         String L_NAME="lname";
+        String POSITION="position";
         String JOB_TITLE="job_title";
     }
 }

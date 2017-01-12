@@ -56,7 +56,7 @@ public class DentaApp extends MultiDexApplication {
 
         // Shared preference initialize
         Hawk.init(mAppContext).build();
-        Hawk.deleteAll();
+//        Hawk.deleteAll();
         NetworkMonitor.initialize(getApplicationContext());
 
         /*int buildVersion = PreferenceUtils.getBuildVersion();
