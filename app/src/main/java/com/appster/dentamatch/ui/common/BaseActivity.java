@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.common;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import com.appster.dentamatch.R;
 
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;
 
 /**
@@ -92,6 +94,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mAlive = true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case LocationUtils.REQUEST_CHECK_SETTINGS:
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(LocationUtils.TAG);
+                fragment.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
     }
 
     @Override

@@ -37,7 +37,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     public static final String TAG = LocationUtils.class.getSimpleName();
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
-    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    public static final int REQUEST_CHECK_SETTINGS = 0x1;
     private static final int REQUEST_LOCATION_PERMISSION = 1000;
     private static final float MINIMUM_DISPLACEMENT = 100;
     protected GoogleApiClient googleApiClient;

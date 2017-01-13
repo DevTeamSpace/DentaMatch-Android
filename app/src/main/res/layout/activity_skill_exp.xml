@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_color"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_work_exp_list"
+            layout="@layout/toolbar_general" />
+
+        <TextView
+            android:id="@+id/textDummy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Skills go here"
+            android:textSize="20sp" />
+
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/btn_next_work_exp_lsit"
+            style="@style/button_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/button_bg_color"
+            android:gravity="center"
+            android:text="@string/lable_next"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_size_large"
+            app:customFont="@string/font_regular" />
+    </RelativeLayout>
+</layout>

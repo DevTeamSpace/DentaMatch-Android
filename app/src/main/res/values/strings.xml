@@ -115,7 +115,7 @@
     <string name="header_term">TERMS &amp; CONDITIONS</string>
     <string name="header_forgot_password">FORGOT PASSWORD</string>
     <string name="header_certification">CERTIFICATIONS</string>
-
+    <string name="header_skills_exp">SKILLS &amp; EXPERIENCE</string>
 
     <string name="autocomplete_hint">Search places</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>

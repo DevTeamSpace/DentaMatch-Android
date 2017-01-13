@@ -1,6 +1,5 @@
 package com.appster.dentamatch.network.retrofit;
 
-import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.response.auth.JobTitleResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
@@ -23,6 +22,7 @@ public interface AuthWebServices {
     String SIGN_UP = "users/sign-up";
     String FORGOT_APSSWORD = "users/forgot-password";
     String JOB_TITLE_LIST = "list-jobtitle";
+    String SKILLS_LIST = "list-skills";
 
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
@@ -35,6 +35,9 @@ public interface AuthWebServices {
 
     @GET(JOB_TITLE_LIST)
     Call<JobTitleResponse> jobTitle();
+
+    @GET(SKILLS_LIST)
+    Call<LoginResponse> getSkillsList(@Body LoginRequest loginRequest);
 
     /*@POST(AUTHENTICATION_URL)
     Call<LoginResponse> userAuthenticate(@Body LoginRequest params);
