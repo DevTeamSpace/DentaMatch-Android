@@ -238,6 +238,7 @@ public class Utils {
         return editText.getText().toString().trim();
     }
 
+
     public static void setFontFaceRobotoLight(TextView view) {
         Typeface tf = Typeface.createFromAsset(view.getContext()
                 .getAssets(), "Roboto-Light.ttf");

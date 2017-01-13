@@ -1,5 +1,7 @@
 package com.appster.dentamatch.network.response.auth;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by ram on 06/01/17.
  */
@@ -10,6 +12,8 @@ public class UserDetail {
     private String email;
     private String zipCode;
     private String preferredJobLocation;
+
+    @SerializedName("accessToken")
     private String userToken;
 
     public String getFirstName() {

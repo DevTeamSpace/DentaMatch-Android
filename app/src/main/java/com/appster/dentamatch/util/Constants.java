@@ -40,6 +40,8 @@ public class Constants {
  public interface APIS{
         String PRIVACY_POLICY = "privacy-policy";
         String TERM_CONDITION = "term-condition";
+        String IMAGE_TYPE_PIC = "profile_pic";
+        String IMAGE_TYPE_STATE_BOARD= "dental_state_board";
     }
 
     public interface REQUEST_CODE {
