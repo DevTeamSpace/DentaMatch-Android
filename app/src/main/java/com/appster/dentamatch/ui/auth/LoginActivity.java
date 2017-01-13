@@ -407,12 +407,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ivLoginPeg.setVisibility(View.VISIBLE);
             layoutOnlyLogin.setVisibility(View.VISIBLE);
             btnRegister.setText(getString(R.string.login_label));
+            Utils.setFontFaceRobotoBold(tvLogin);
+            Utils.setFontFaceRobotoLight(tvRegister);
+
         } else {
             layoutOnlyRegister.setVisibility(View.VISIBLE);
             ivRegisterPeg.setVisibility(View.VISIBLE);
             ivLoginPeg.setVisibility(View.INVISIBLE);
             layoutOnlyLogin.setVisibility(View.GONE);
             btnRegister.setText(getString(R.string.register_label));
+            Utils.setFontFaceRobotoBold(tvRegister);
+            Utils.setFontFaceRobotoLight(tvLogin);
         }
     }
 

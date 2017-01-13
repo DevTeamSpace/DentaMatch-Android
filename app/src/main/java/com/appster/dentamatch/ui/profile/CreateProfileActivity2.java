@@ -61,7 +61,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     private EditText etLicenceNumber, etState;
     private Button btnNext;
     private String mFilePath;
-    private byte mSelectedImage;
+    private byte imageSourceType;
+
 
 
     @Override
@@ -108,7 +109,6 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.create_profile_iv_upoload_icon:
-                mSelectedImage = 1;
                 callBottomSheet();
                 break;
             case R.id.iv_tool_bar_left:
@@ -128,6 +128,10 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private boolean checkInputValidator() {
+        if (TextUtils.isEmpty(mFilePath)){
+            Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_satate_board_photo_alert));
+            return false;
+        }
         if (TextUtils.isEmpty(etLicenceNumber.getText().toString().trim())) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_licence_number));
             return false;
@@ -227,6 +231,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
     @Override
     public void cameraClicked() {
+
+        imageSourceType=0;
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.CAMERA, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this)) {
@@ -239,24 +245,20 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                         .setAction("OK", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                PermissionUtils.requestPermission(CreateProfileActivity2.this,
-                                        new String[]{Manifest.permission.CAMERA,
-                                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                        Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+                                PermissionUtils.requestPermission(CreateProfileActivity2.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
 
                             }
                         }).show();
             } else {
-                PermissionUtils.requestPermission(CreateProfileActivity2.this,
-                        new String[]{Manifest.permission.CAMERA,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+                PermissionUtils.requestPermission(CreateProfileActivity2.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
             }
         }
     }
 
     @Override
     public void gallaryClicked() {
+        imageSourceType=1;
+
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
             getImageFromGallery();
 
@@ -275,7 +277,6 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                 PermissionUtils.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
             }
         }
-
 
     }
 
@@ -315,14 +316,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
             if (mFilePath != null) {
 
-//                ivProfile.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, 100, 100));
-                if (mSelectedImage == 0) {
-                    Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(102, 102).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
-                } else {
-                    Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(142, 142).placeholder(R.drawable.ic_upload).into(ivUpload);
-                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
-
-                }
+                Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(142, 142).placeholder(R.drawable.ic_upload).into(ivUpload);
             }
         }
     }
@@ -330,13 +324,16 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d("Tag", "request permisison called --");
-        Log.d("Tag", "request permisison called --" + grantResults.length);
 
 
         if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
-            Log.d("Tag", "request permisison called if granted --");
+            LogUtils.LOGD("Tag", "request permisison called if granted --");
+            if(imageSourceType==0){
+                takePhoto();
+            }else{
+                getImageFromGallery();
+            }
 
         }
 

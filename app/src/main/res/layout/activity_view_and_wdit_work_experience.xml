@@ -31,14 +31,21 @@
                     layout="@layout/layout_work_exp" />
 
                 <include
-                    android:id="@+id/layout_refrence_view_edit"
+                    android:id="@+id/include_layout_refrence1"
 
                     layout="@layout/layout_reference" />
                 <LinearLayout
-                    android:id="@+id/layout_refrence_infalter"
+                    android:id="@+id/layout_refrence2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <include
+                        android:id="@+id/include_layout_refrence2"
+
+                        layout="@layout/layout_reference" />
+
+                </LinearLayout>
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_add_more_reference"

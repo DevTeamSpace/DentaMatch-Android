@@ -71,7 +71,7 @@
     <string name="lable_next">Next</string>
     <string name="lable_update">UPDATE</string>
     <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
-    <string name="decode_stream_alert">Unbale to parse this image.</string>
+    <string name="decode_stream_alert">Unable to parse this image.</string>
     <string name="lable_not_now">Not now</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="lable_job_title">Current Job Title</string>
@@ -89,7 +89,8 @@
     <string name="office_name">Office Name</string>
     <string name="office_address">Office Address</string>
     <string name="city">City</string>
-    <string name="reference">Reference</string>
+    <string name="reference">Reference 1</string>
+    <string name="reference2">Reference 2</string>
     <string name="reference_delete">Delete Reference</string>
     <string name="experience_delete">Delete Experience</string>
     <string name="reference_name">Reference Name</string>
@@ -133,7 +134,7 @@
     <string name="write_description">Write a brief introduction</string>
     <string name="lable_complete_profile">Complete Profile</string>
     <string name="blank_licence_number">Licence number can not be blank.</string>
-    <string name="licence_number_length">Licence Number should not be exceed 15 characters.</string>
+    <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
     <string name="licence_number_blnk_space_alert">Licence number should not contain blank spaces</string>
     <string name="blank_state_alert">State text can not be left blank.</string>
     <string name="state_max_length">State can not be exceed 30 characters</string>
@@ -151,9 +152,8 @@
     <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
     <string name="blank_phone_number_alert">Phone number can never be blank</string>
     <string name="complete_reference">Please complete the reference.</string>
-    <string name="please_wait" >Please wait</string>
-
-
+    <string name="please_wait" >Please wait...</string>
+    <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
 
 
 </resources>
