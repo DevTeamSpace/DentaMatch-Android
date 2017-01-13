@@ -242,8 +242,8 @@
                         android:drawablePadding="@dimen/padding_drawable"
                         android:drawableStart="@drawable/ic_name"
                         android:hint="@string/fname_label"
-                        android:paddingTop="@dimen/padding_drawable"
                         android:inputType="textCapWords"
+                        android:paddingTop="@dimen/padding_drawable"
                         android:textColor="@color/text_default_color" />
                 </android.support.design.widget.TextInputLayout>
                 <!--<include-->
@@ -279,8 +279,8 @@
                         android:drawablePadding="@dimen/padding_drawable"
                         android:drawableStart="@drawable/ic_name"
                         android:hint="@string/lname_label"
-                        android:paddingTop="@dimen/padding_drawable"
                         android:inputType="textCapWords"
+                        android:paddingTop="@dimen/padding_drawable"
                         android:textColor="@color/text_default_color" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -379,16 +379,17 @@
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:drawablePadding="@dimen/padding_drawable"
                     android:drawableStart="@drawable/ic_help"
-                    android:text="@string/register_help_info"
                     android:gravity="left"
-                    android:layout_gravity="left"
                     android:paddingLeft="@dimen/margin_medium"
-                    android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginRight="@dimen/margin_normal"
-                    android:textColor="@color/register_help_color" />
+                    android:text="@string/register_help_info"
+                    android:textColor="@color/register_help_color"
+                    android:textSize="@dimen/text_size_11" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -428,6 +429,6 @@
         android:gravity="center"
         android:text="@string/login_label"
         android:textColor="@color/white_color"
-        app:customBackground="@string/font_bold"/>
+        app:customBackground="@string/font_bold" />
 
 </RelativeLayout>

@@ -30,14 +30,19 @@
 
                 <include
 
-                    android:id="@+id/include_refrence"
+                    android:id="@+id/include_refrence1"
                     layout="@layout/layout_reference" />
-
                 <LinearLayout
-                    android:id="@+id/layout_refrence_infalter"
+                    android:id="@+id/layout_reference2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"></LinearLayout>
+                    android:visibility="gone">
+                <include
+
+                    android:id="@+id/include_refrence2"
+                    layout="@layout/layout_reference" />
+                </LinearLayout>
+
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_add_more_reference"

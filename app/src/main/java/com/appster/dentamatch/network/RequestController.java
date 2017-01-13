@@ -3,6 +3,9 @@ package com.appster.dentamatch.network;
 import android.text.TextUtils;
 
 import com.appster.dentamatch.BuildConfig;
+import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
 //import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.IOException;
@@ -49,10 +52,15 @@ public final class RequestController {
                 Request original = chain.request();
                 if (isAuth) {
 //                    String accessToken = PreferenceUtil.getAccessToken();
-                    String accessToken  ="9c917a5b2dc23c6abeddd7631871bcc6";
+//                    String accessToken  ="9c917a5b2dc23c6abeddd7631871bcc6";
+                    String accessToken  = PreferenceUtil.getKeyUserToken();
+                    LogUtils.LOGD("API_ToKEN","Access_ toke--="+accessToken);
+
                     if (!TextUtils.isEmpty(accessToken)) {
                         Request.Builder requestBuilder = original.newBuilder()
                                 .header("accessToken", accessToken)
+                                .header("Content-Type", "application/json")
+                                .header("accept", "application/json")
                                 .method(original.method(), original.body());
                         Request request = requestBuilder.build();
                         return chain.proceed(request);

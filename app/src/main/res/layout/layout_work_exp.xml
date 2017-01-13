@@ -49,10 +49,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_19"
             android:clipToPadding="false"
-
             android:gravity="bottom"
             android:paddingTop="@dimen/padding_input_layout"
-
             app:hintTextAppearance="@style/edit_input_layout">
 
 
@@ -61,7 +59,7 @@
                 style="@style/edit_text_view_normal"
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
-                android:background="@drawable/edit_text_selector"
+                android:background="@drawable/bg_slection_edit_text"
                 android:hint="@string/year_of_experice"
                 android:paddingTop="@dimen/padding_drawable"
                 android:focusable="false"

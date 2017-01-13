@@ -335,12 +335,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 LogUtils.LOGD(TAG, "onSuccess");
 
                 if (response.getStatus() == 1) {
-                    PreferenceUtil.setIsLogined(true);
                     PreferenceUtil.setFistName(getTextFromEditText(etRegisterFName));
                     PreferenceUtil.setLastName(getTextFromEditText(etRegisterLName));
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    startActivity(intent);
-                    finish();
+                    Utils.showToast(getApplicationContext(), response.getMessage());
+                    showSelectedView(true);
+
+//                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+//                    startActivity(intent);
+//                    finish();
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -379,9 +381,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
                     PreferenceUtil.setIsLogined(true);
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                    PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
+                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -404,12 +407,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ivLoginPeg.setVisibility(View.VISIBLE);
             layoutOnlyLogin.setVisibility(View.VISIBLE);
             btnRegister.setText(getString(R.string.login_label));
+            Utils.setFontFaceRobotoBold(tvLogin);
+            Utils.setFontFaceRobotoLight(tvRegister);
+
         } else {
             layoutOnlyRegister.setVisibility(View.VISIBLE);
             ivRegisterPeg.setVisibility(View.VISIBLE);
             ivLoginPeg.setVisibility(View.INVISIBLE);
             layoutOnlyLogin.setVisibility(View.GONE);
             btnRegister.setText(getString(R.string.register_label));
+            Utils.setFontFaceRobotoBold(tvRegister);
+            Utils.setFontFaceRobotoLight(tvLogin);
         }
     }
 
