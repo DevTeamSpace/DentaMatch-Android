@@ -29,10 +29,8 @@ import java.util.ArrayList;
  */
 public class WorkExpListActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
     private ActivityWorkExpListBinding mBinder;
-    private int count = 0;
-    private ArrayList<ReferenceRequest> refrenceRequestArrayList = new ArrayList<>();
     private ArrayList<WorkExpRequest> workExpRequestList = new ArrayList<>();
-    private String selectedJobtitle="";
+    private String selectedJobtitle = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +38,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_work_exp_list);
         initViews();
         inflateExpList();
+        hideKeyboard();
     }
 
     private void initViews() {
@@ -48,6 +47,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.tvAddMoreExperience.setOnClickListener(this);
         mBinder.tvExperienceDelete.setOnClickListener(this);
         mBinder.tvAddMoreReference.setOnClickListener(this);
+        mBinder.includeLayoutRefrence2.tvRefrenceDelete.setOnClickListener(this);
 
 //        try {
 //            mBinder.includeWorkExpList.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
@@ -94,9 +94,24 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 hideKeyboard();
                 clearAllExpField();
                 break;
+            case R.id.tv_refrence_delete:
+                mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
+
+                mBinder.layoutReference2.setVisibility(View.GONE);
+                mBinder.includeLayoutRefrence2.etOfficeReferenceEmail.setText("");
+                mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.setText("");
+                mBinder.includeLayoutRefrence2.etOfficeReferenceName.setText("");
+                break;
             case R.id.tv_add_more_reference:
-                count++;
-                inflateRefrence();
+                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName))) {
+                    Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
+                } else {
+                    mBinder.includeLayoutRefrence2.tvRefrenceDelete.setVisibility(View.VISIBLE);
+                    mBinder.tvAddMoreReference.setVisibility(View.GONE);
+                    mBinder.includeLayoutRefrence2.tvRefrenceCount.setText(getString(R.string.reference2));
+
+                    mBinder.layoutReference2.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.tv_add_more_experience:
                 if (checkValidation()) {
@@ -118,22 +133,22 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
-    private boolean checkValidation(){
+
+    private boolean checkValidation() {
         workExpRequestList.clear();
-        workExpRequestList=PreferenceUtil.getWorkExpList();
-        refrenceRequestArrayList.clear();
+        workExpRequestList = PreferenceUtil.getWorkExpList();
         WorkExpRequest workExpRequest = new WorkExpRequest();
         workExpRequest.setCity(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity));
         workExpRequest.setOfficeName(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName));
         workExpRequest.setOfficeAddress(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress));
         workExpRequest.setExp(Utils.getStringFromEditText(mBinder.includeWorkExpList.tvExperinceWorkExp));
         workExpRequest.setJobTitle(selectedJobtitle);
-        ReferenceRequest refrenceRequest = new ReferenceRequest();
-        refrenceRequest.setEmail(Utils.getStringFromEditText(mBinder.includeLayoutRefrence.etOfficeReferenceEmail));
-        refrenceRequest.setPhoneNumber(Utils.getStringFromEditText(mBinder.includeLayoutRefrence.etOfficeReferenceMobile));
-        refrenceRequest.setRefrenceName(Utils.getStringFromEditText(mBinder.includeLayoutRefrence.etOfficeReferenceName));
-        refrenceRequestArrayList.add(refrenceRequest);
-        workExpRequest.setReferenceAerialist(refrenceRequestArrayList);
+        workExpRequest.setReference1Email(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail));
+        workExpRequest.setReference1Mobile(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile));
+        workExpRequest.setReference1Name(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName));
+        workExpRequest.setReference2Email(Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail));
+        workExpRequest.setReference2Mobile(Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
+        workExpRequest.setReference2Name(Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
 
 
         if (TextUtils.isEmpty(workExpRequest.getJobTitle())) {
@@ -169,30 +184,27 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
             Utils.showToast(getApplicationContext(), getString(R.string.city_length_alert));
             return false;
         }
+        if (TextUtils.isEmpty(workExpRequest.getReference1Name())) {
+            Utils.showToast(getApplicationContext(), getString(R.string.blank_refrence_name_alert));
+            return false;
+        }
 
-
-        for (int i = 0; i < workExpRequest.getReferenceAerialist().size(); i++) {
-            if (TextUtils.isEmpty(workExpRequest.getReferenceAerialist().get(i).getRefrenceName())) {
+        if (!TextUtils.isEmpty(workExpRequest.getReference1Email()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(workExpRequest.getReference1Email()).matches()) {
+            Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
+            return false;
+        }
+        if (mBinder.layoutReference2.getVisibility() == View.VISIBLE) {
+            if (TextUtils.isEmpty(workExpRequest.getReference2Name())) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_refrence_name_alert));
                 return false;
             }
-            if (workExpRequest.getReferenceAerialist().get(i).getRefrenceName().length() > Constants.DEFAULT_FIELD_LENGTH) {
-                Utils.showToast(getApplicationContext(), getString(R.string.refrence_length_alert));
-                return false;
-            }
-            if (TextUtils.isEmpty(workExpRequest.getReferenceAerialist().get(i).getPhoneNumber())) {
-                Utils.showToast(getApplicationContext(), getString(R.string.blank_phone_number_alert));
-                return false;
-            }
-            if (TextUtils.isEmpty(workExpRequest.getReferenceAerialist().get(i).getEmail())) {
-                Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
-                return false;
-            }
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(workExpRequest.getReferenceAerialist().get(i).getEmail()).matches()) {
+            if (!TextUtils.isEmpty(workExpRequest.getReference1Email()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(workExpRequest.getReference2Email()).matches()) {
                 Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
                 return false;
             }
         }
+
+
         workExpRequestList.add(workExpRequest);
         return true;
     }
@@ -222,40 +234,19 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    private void inflateRefrence() {
-        mBinder.layoutRefrenceInfalter.removeAllViews();
-        for (int i = 0; i < count; i++) {
-            final View refrenceView = getLayoutInflater().inflate(R.layout.layout_reference, mBinder.layoutRefrenceInfalter, false);
-            TextView tvRefrenceCount = (TextView) refrenceView.findViewById(R.id.tv_refrence_count);
-            TextView tvRefrenceDlt = (TextView) refrenceView.findViewById(R.id.tv_refrence_delete);
-            tvRefrenceCount.setText(getString(R.string.reference) + " " + (i + 1));
-            tvRefrenceCount.setVisibility(View.VISIBLE);
-            tvRefrenceDlt.setVisibility(View.VISIBLE);
-            tvRefrenceDlt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    count--;
-                    inflateRefrence();
-
-                }
-            });
-// number.setTag(i);
-//            number.setText(Integer.toString(i));
-            mBinder.layoutRefrenceInfalter.addView(refrenceView);
-        }
-    }
 
     private void clearAllExpField() {
         mBinder.includeWorkExpList.tvExperinceWorkExp.setText("");
         mBinder.includeWorkExpList.etOfficeAddress.setText("");
         mBinder.includeWorkExpList.etOfficeCity.setText("");
         mBinder.includeWorkExpList.etOfficeName.setText("");
-        mBinder.includeLayoutRefrence.etOfficeReferenceEmail.setText("");
-        mBinder.includeLayoutRefrence.etOfficeReferenceMobile.setText("");
-        mBinder.includeLayoutRefrence.etOfficeReferenceName.setText("");
-//        mBinder.re.etOfficeName.setText("");
-        mBinder.layoutRefrenceInfalter.removeAllViews();
-        count = 0;
+        mBinder.includeLayoutRefrence1.etOfficeReferenceEmail.setText("");
+        mBinder.includeLayoutRefrence1.etOfficeReferenceMobile.setText("");
+        mBinder.includeLayoutRefrence1.etOfficeReferenceName.setText("");
+        mBinder.includeLayoutRefrence2.etOfficeReferenceEmail.setText("");
+        mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.setText("");
+        mBinder.includeLayoutRefrence2.etOfficeReferenceName.setText("");
+        mBinder.layoutReference2.setVisibility(View.GONE);
 
     }
 

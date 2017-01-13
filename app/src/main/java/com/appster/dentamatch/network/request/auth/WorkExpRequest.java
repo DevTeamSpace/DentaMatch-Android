@@ -9,7 +9,6 @@ public class WorkExpRequest {
     private int id;
     private String jobTitle;
     private String exp;
-    private ArrayList<ReferenceRequest> referenceAerialist;
 
 
     private int jobTitleId;
@@ -23,9 +22,80 @@ public class WorkExpRequest {
     private String reference2Mobile;
     private String reference1Email;
     private String reference2Email;
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public int getMonthsOfExpereince() {
+        return monthsOfExpereince;
+    }
+
+    public void setMonthsOfExpereince(int monthsOfExpereince) {
+        this.monthsOfExpereince = monthsOfExpereince;
+    }
+
+    public String getReference1Name() {
+        return reference1Name;
+    }
+
+    public void setReference1Name(String reference1Name) {
+        this.reference1Name = reference1Name;
+    }
+
+    public String getReference2Name() {
+        return reference2Name;
+    }
+
+    public void setReference2Name(String reference2Name) {
+        this.reference2Name = reference2Name;
+    }
+
+    public String getReference1Mobile() {
+        return reference1Mobile;
+    }
+
+    public void setReference1Mobile(String reference1Mobile) {
+        this.reference1Mobile = reference1Mobile;
+    }
+
+    public String getReference2Mobile() {
+        return reference2Mobile;
+    }
+
+    public void setReference2Mobile(String reference2Mobile) {
+        this.reference2Mobile = reference2Mobile;
+    }
+
+    public String getReference1Email() {
+        return reference1Email;
+    }
+
+    public void setReference1Email(String reference1Email) {
+        this.reference1Email = reference1Email;
+    }
+
+    public String getReference2Email() {
+        return reference2Email;
+    }
+
+    public void setReference2Email(String reference2Email) {
+        this.reference2Email = reference2Email;
+    }
+
+    public int getJobTitleId() {
+        return jobTitleId;
+    }
+
+    public void setJobTitleId(int jobTitleId) {
+        this.jobTitleId = jobTitleId;
+    }
+
     private String action;
-
-
 
 
     public int getId() {
@@ -76,13 +146,7 @@ public class WorkExpRequest {
         this.city = city;
     }
 
-    public ArrayList<ReferenceRequest> getReferenceAerialist() {
-        return referenceAerialist;
-    }
 
-    public void setReferenceAerialist(ArrayList<ReferenceRequest> referenceAerialist) {
-        this.referenceAerialist = referenceAerialist;
-    }
 
 
 }

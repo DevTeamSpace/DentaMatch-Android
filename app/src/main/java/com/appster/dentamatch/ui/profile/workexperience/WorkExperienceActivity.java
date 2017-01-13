@@ -60,14 +60,15 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(WorkExperienceActivity.this,
                 android.R.layout.simple_dropdown_item_1line, title);
-//        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
-//                findViewById(R.id.android_material_design_spinner);
         mBinder.spinnerJobTitleWorkExp.setPrompt(getString(R.string.lable_job_title));
         mBinder.spinnerJobTitleWorkExp.setAdapter(arrayAdapter);
+        mBinder.spinnerJobTitleWorkExp.setSelection(PreferenceUtil.getJobTitlePosition());
         mBinder.spinnerJobTitleWorkExp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 PreferenceUtil.setJobTitle(PreferenceUtil.getJobTitleList().get(i).getJobTitle());
+                PreferenceUtil.setJobTitlePosition(i);
+
                 selectedJobtitle = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
             }
 
@@ -88,6 +89,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         switch (view.getId()) {
             case R.id.btn_next_work_exp:
                 if (checkValidation()) {
+                    PreferenceUtil.setOfficeName(Utils.getStringFromEditText(mBinder.etOfficeName));
                     hideKeyboard();
                     startActivity(new Intent(this, WorkExperienceDetailActivity.class));
                 }
@@ -128,5 +130,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         mBinder.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
         PreferenceUtil.setMonth(month);
         PreferenceUtil.setYear(year);
+//        mBinder.tvExperinceWorkExp.setFocusable(true);
+//        hideKeyboard();
     }
 }

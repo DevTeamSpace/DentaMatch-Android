@@ -77,6 +77,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 PreferenceUtil.setJobTitle(PreferenceUtil.getJobTitleList().get(i).getJobTitle());
+                PreferenceUtil.setJobTitlePosition(i);
                 selectedJobtitle = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
             }
 
@@ -91,25 +92,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.create_profile1_iv_profile_icon:
-//                if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
                 callBottomSheet();
-//
-//                } else {
-//                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-//                        Snackbar.make(mBinder.createProfile1IvProfileIcon, this.getResources().getString(R.string.text_camera_permision),
-//                                Snackbar.LENGTH_INDEFINITE)
-//                                .setAction(getString(R.string.accept), new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-//
-//                                    }
-//                                }).show();
-//                    } else {
-//                        PermissionUtils.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-//                    }
-//                }
-
                 break;
             case R.id.create_profile1_btn_next:
                 if (TextUtils.isEmpty(mFilePath)) {
