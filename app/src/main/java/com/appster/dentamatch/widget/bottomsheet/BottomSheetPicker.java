@@ -1,4 +1,4 @@
-package com.appster.dentamatch.widget;
+package com.appster.dentamatch.widget.bottomsheet;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.CustomTextView;
 
 /**
  * Created by virender on 04/01/17.
@@ -52,7 +53,11 @@ public class BottomSheetPicker {
                     mBottomSheetDialog.dismiss();
 
                 }
-                mYearslYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
+                if (pickerYear.getValue() == 0 && pickerMonth.getValue() == 0) {
+                    Utils.showToast(context, context.getString(R.string.invalid_exp_selection));
+                } else {
+                    mYearslYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
+                }
 
             }
         });

@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar_work_exp_detail"
-            android:layout_marginBottom="@dimen/margin_29">
+            android:layout_above="@+id/btn_next_detail_work_exp"
+            android:layout_marginBottom="@dimen/margin_medium">
 
             <LinearLayout
                 android:id="@+id/layout_parent_scroll_work_exp"
@@ -28,26 +29,32 @@
                     layout="@layout/layout_work_exp" />
 
                 <include
-                    android:id="@+id/include_refrence"
-                    layout="@layout/layout_reference" />
 
+                    android:id="@+id/include_refrence1"
+                    layout="@layout/layout_reference" />
                 <LinearLayout
-                    android:id="@+id/layout_refrence_infalter"
+                    android:id="@+id/layout_reference2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"></LinearLayout>
+                    android:visibility="gone">
+                <include
+
+                    android:id="@+id/include_refrence2"
+                    layout="@layout/layout_reference" />
+                </LinearLayout>
+
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_add_more_reference"
                     style="@style/text_view_normal"
                     android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_12"
+                    android:layout_marginTop="@dimen/margin_normal"
                     android:drawablePadding="@dimen/padding_drawable"
                     android:drawableStart="@drawable/ic_add_refrence"
                     android:paddingLeft="@dimen/margin_medium"
                     android:text="@string/add_more_refrence"
                     android:textColor="@color/color_forgot_pwd"
-                    android:textSize="@dimen/text_size_12"
+                    android:textSize="@dimen/text_size_14"
                     app:customFont="@string/font_regular" />
 
                 <RelativeLayout
@@ -55,7 +62,7 @@
                     android:layout_height="@dimen/cell_height"
                     android:layout_marginBottom="@dimen/margin_29"
                     android:layout_marginTop="@dimen/margin_29"
-                    android:background="@color/cell_color">
+                    android:background="@drawable/bg_cell">
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_add_more_experience"
@@ -65,8 +72,10 @@
                         android:layout_centerInParent="true"
                         android:background="@color/cell_color"
                         android:drawablePadding="@dimen/padding_drawable"
-                        android:drawableStart="@drawable/ic_profile_plus"
+                        android:drawableStart="@drawable/ic_plus_exp"
                         android:gravity="center"
+                        android:layout_marginTop="@dimen/line_height"
+                        android:layout_marginBottom="@dimen/line_height"
                         android:text="@string/add_more_exp"
                         android:textColor="@color/cell_text_color"
                         android:textSize="@dimen/text_size_normal"
@@ -85,7 +94,7 @@
             android:gravity="center"
             android:text="@string/lable_next"
             android:textColor="@color/white_color"
-            android:textSize="@dimen/text_size_large"
-            app:customFont="@string/font_regular" />
+            android:textSize="@dimen/text_size_normal"
+            app:customBackground="@string/font_bold" />
     </RelativeLayout>
 </layout>

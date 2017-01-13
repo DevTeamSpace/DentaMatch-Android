@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -212,8 +213,8 @@ public class Utils {
      * @param edtPassword
      * @param isShow
      */
-    public static void showPassword(Context context,EditText edtPassword, boolean isShow,TextView tvShowPwd) {
-        if(edtPassword.getText().toString().trim().length()>0) {
+    public static void showPassword(Context context, EditText edtPassword, boolean isShow, TextView tvShowPwd) {
+        if (edtPassword.getText().toString().trim().length() > 0) {
             if (!isShow) {
                 edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 tvShowPwd.setText(context.getString(R.string.hide_password));
@@ -227,8 +228,29 @@ public class Utils {
             edtPassword.setSelection(edtPassword.length());
         }
     }
-    public static void showNetowrkAlert(Context context){
-        showToast(context,context.getString(R.string.error_no_network_connection));
+
+    public static void showNetowrkAlert(Context context) {
+        showToast(context, context.getString(R.string.error_no_network_connection));
+
+    }
+
+    public static String getStringFromEditText(EditText editText) {
+        return editText.getText().toString().trim();
+    }
+
+    public static void setFontFaceRobotoLight(TextView view) {
+        Typeface tf = Typeface.createFromAsset(view.getContext()
+                .getAssets(), "Roboto-Light.ttf");
+
+        view.setTypeface(tf);
+
+    }
+
+    public static void setFontFaceRobotoBold(TextView view) {
+        Typeface tf = Typeface.createFromAsset(view.getContext()
+                .getAssets(), "Roboto-Bold.ttf");
+
+        view.setTypeface(tf);
 
     }
 

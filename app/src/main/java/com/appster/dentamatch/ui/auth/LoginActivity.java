@@ -199,8 +199,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.login_btn_register:
-                hideKeyboard();
                 if (validateInput()) {
+                    hideKeyboard();
+
                     if (isLogin) {
                         signInApi(prepareLoginRequest());
                     } else {
@@ -263,7 +264,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
-            if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH) {
+            if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
+                    getTextFromEditText(etLoginPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
@@ -288,7 +290,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
-            if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH) {
+            if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
+                    getTextFromEditText(etRegisterPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
@@ -401,12 +404,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ivLoginPeg.setVisibility(View.VISIBLE);
             layoutOnlyLogin.setVisibility(View.VISIBLE);
             btnRegister.setText(getString(R.string.login_label));
+            Utils.setFontFaceRobotoBold(tvLogin);
+            Utils.setFontFaceRobotoLight(tvRegister);
+
         } else {
             layoutOnlyRegister.setVisibility(View.VISIBLE);
             ivRegisterPeg.setVisibility(View.VISIBLE);
             ivLoginPeg.setVisibility(View.INVISIBLE);
             layoutOnlyLogin.setVisibility(View.GONE);
             btnRegister.setText(getString(R.string.register_label));
+            Utils.setFontFaceRobotoBold(tvRegister);
+            Utils.setFontFaceRobotoLight(tvLogin);
         }
     }
 

@@ -106,6 +106,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
 
     @Override
     public void onResult(LocationSettingsResult locationSettingsResult) {
+        LogUtils.LOGI(TAG, "onResult");
         final Status status = locationSettingsResult.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:

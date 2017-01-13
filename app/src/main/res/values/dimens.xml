@@ -20,6 +20,7 @@
     <dimen name="text_size_xlarge">23sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_normal">15sp</dimen>
@@ -56,6 +57,7 @@
     <dimen name="margin_43">43dp</dimen>
     <dimen name="margin_50">50dp</dimen>
     <dimen name="edit_height">62dp</dimen>
+    <dimen name="edit_height_about_me">160dp</dimen>
     <dimen name="profile_header_height">250dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

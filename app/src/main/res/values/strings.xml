@@ -24,6 +24,16 @@
     <string name="joyride_page4_text2">Buy products and services spanning across multiple categories and track them with ease.</string>
 
     <!--  Error string-->
+
+    <string name="blank_email_alert">Email Id can not be left blank.</string>
+    <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
+    <string name="blank_password_alert">Password can not be left blank.</string>
+    <string name="blank_fname_alert">First Name text can not be left blank.</string>
+    <string name="blank_lname_alert">Last Name text can not be left blank.</string>
+    <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
+    <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
+    <string name="valid_email_alert">Please provide a valid Email Id.</string>
+    <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
     <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_unable_reterive_email">Unable to reterive email address from your social account.</string>
     <string name="error_unable_access_account">Unable to access to your account.</string>
@@ -33,7 +43,8 @@
     <string name="preferred_location_label">Preferred Job Location</string>
     <string name="login_label">LOGIN</string>
     <string name="send_label">Send</string>
-
+    <string name="show_password">Show</string>
+    <string name="hide_password">Hide</string>
     <string name="register_label">REGISTER</string>
     <string name="forgot_password_label">Forgot Password?</string>
     <string name="fname_label">First Name</string>
@@ -52,14 +63,15 @@
 
     <string name="label_take_photo">Take photo</string>
     <string name="label_choose_gallary">Choose from gallery</string>
-    <string name="dental_state_board">DENTAL STATE BOARD</string>
+    <string name="dental_state_board">ADD DENTAL STATE BOARD</string>
     <string name="lable_licence">LICENSE</string>
     <string name="lable_licence_number">License Number</string>
     <string name="label_upload_photo">Upload Photo</string>
     <string name="lable_state">State</string>
     <string name="lable_next">Next</string>
+    <string name="lable_update">UPDATE</string>
     <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
-    <string name="decode_stream_alert">Unbale to parse this image.</string>
+    <string name="decode_stream_alert">Unable to parse this image.</string>
     <string name="lable_not_now">Not now</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="lable_job_title">Current Job Title</string>
@@ -77,7 +89,8 @@
     <string name="office_name">Office Name</string>
     <string name="office_address">Office Address</string>
     <string name="city">City</string>
-    <string name="reference">Reference</string>
+    <string name="reference">Reference 1</string>
+    <string name="reference2">Reference 2</string>
     <string name="reference_delete">Delete Reference</string>
     <string name="experience_delete">Delete Experience</string>
     <string name="reference_name">Reference Name</string>
@@ -102,26 +115,45 @@
     <string name="header_privacy">PRIVACY POLICY</string>
     <string name="header_term">TERMS &amp; CONDITIONS</string>
     <string name="header_forgot_password">FORGOT PASSWORD</string>
+    <string name="header_certification">CERTIFICATIONS</string>
+
 
     <string name="autocomplete_hint">Search places</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="get_started">GET STARTED</string>
 
 
-
     <!--aler/toast error messages-->
-    <string name="please_wait" >Please wait</string>
 
-    <string name="blank_email_alert">Please enter email.</string>
-    <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
-    <string name="blank_password_alert">Please enter password.</string>
-    <string name="blank_fname_alert">Please enter first name.</string>
-    <string name="blank_lname_alert">Please enter last name.</string>
-    <string name="blank_location_alert">Please select location.</string>
-    <string name="blank_tnc_alert">Please accpet terms and conditions.</string>
-    <string name="valid_email_alert">Please enter valid email.</string>
-    <string name="password_min_length_alert">Password length should not less than 6 characters.</string>
-    <string name="show_password">Show</string>
-    <string name="hide_password">Hide</string>
+
+    <!--certification & About me string-->
+    <string name="valdity_date_string">Validity date</string>
+    <string name="cetification_title">Update Certifications</string>
+    <string name="about_me_title">Executive Summary </string>
+    <string name="alert_pervious_date">Please select a valid date.</string>
+    <string name="write_description">Write a brief introduction</string>
+    <string name="lable_complete_profile">Complete Profile</string>
+    <string name="blank_licence_number">Licence number can not be blank.</string>
+    <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
+    <string name="licence_number_blnk_space_alert">Licence number should not contain blank spaces</string>
+    <string name="blank_state_alert">State text can not be left blank.</string>
+    <string name="state_max_length">State can not be exceed 30 characters</string>
+    <string name="state_blank_space_alert">State can not contain blank spaces</string>
+    <string name="invalid_exp_selection">Experience can never be zero.</string>
+    <string name="blank_job_title_alert">Please select job title</string>
+    <string name="blank_office_name_alert">Office name can never be blank</string>
+    <string name="blank_office_addrerss_alert">Office address can never be blank</string>
+    <string name="blank_city_alert">City can never be blank</string>
+    <string name="office_name_length_alert">Office name length can not exceed 30 characters</string>
+    <string name="office_address_length_alert">Office address length can not exceed 30 characters</string>
+    <string name="refrence_length_alert">Reference name length can not exceed 30 characters</string>
+    <string name="city_length_alert">City name length can not exceed 30 characters</string>
+    <string name="blank_year_alert">Please select experience.</string>
+    <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
+    <string name="blank_phone_number_alert">Phone number can never be blank</string>
+    <string name="complete_reference">Please complete the reference.</string>
+    <string name="please_wait" >Please wait...</string>
+    <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
+
 
 </resources>

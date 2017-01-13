@@ -22,7 +22,7 @@ android {
     }
 
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.appster.dentamatch"
@@ -81,7 +81,7 @@ android {
         }
         QA {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://qa.dentamach/api/"')
+            buildConfigField("String", "BASE_URL", '"http://52.52.216.246/api/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }

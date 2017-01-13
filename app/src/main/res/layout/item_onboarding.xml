@@ -42,7 +42,7 @@
             android:id="@+id/tv_desc"
             style="@style/text_view_normal"
             android:layout_marginTop="@dimen/margin_12"
-            android:textColor="@color/white_color_pacity"
+            android:textColor="@color/white_color"
             android:textSize="@dimen/text_size_medium"
             android:lineSpacingExtra="@dimen/margin_small_3"
             app:customFont="@string/font_light" />

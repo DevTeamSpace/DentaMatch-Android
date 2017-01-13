@@ -1,7 +1,6 @@
 package com.appster.dentamatch.ui.profile;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,9 +24,7 @@ import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.response.auth.JobTitleList;
 import com.appster.dentamatch.network.response.auth.JobTitleResponse;
-import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
@@ -38,12 +35,10 @@ import com.appster.dentamatch.util.NetworkMonitor;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.BottomSheetView;
-import com.orhanobut.hawk.Hawk;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import retrofit2.Call;
 
@@ -55,6 +50,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private ImageSelectedListener imageSelectedListener;
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
+    private String selectedJobtitle = "";
+    private byte imageSourceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +60,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_create_profile1);
 
         initViews();
-        if (NetworkMonitor.isNetworkAvailable()) {
-            callJobListApi();
-        } else {
-            Utils.showNetowrkAlert(getApplicationContext());
-        }
+        callJobListApi();
 
     }
 
@@ -84,7 +77,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 PreferenceUtil.setJobTitle(PreferenceUtil.getJobTitleList().get(i).getJobTitle());
-
+                PreferenceUtil.setJobTitlePosition(i);
+                selectedJobtitle = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
             }
 
             @Override
@@ -101,12 +95,16 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 callBottomSheet();
                 break;
             case R.id.create_profile1_btn_next:
-                if (!TextUtils.isEmpty(mFilePath)) {
-                    Intent intent = new Intent(this, CreateProfileActivity2.class);
-                    startActivity(intent);
-                } else {
+                if (TextUtils.isEmpty(mFilePath)) {
                     Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_photo_alert));
+                    return;
                 }
+                if (TextUtils.isEmpty(selectedJobtitle)) {
+                    Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
+                    return;
+                }
+                Intent intent = new Intent(this, CreateProfileActivity2.class);
+                startActivity(intent);
                 break;
             case R.id.create_profile1_btn_not_now:
 
@@ -147,8 +145,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     }
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfileActivity1.this,
                             android.R.layout.simple_dropdown_item_1line, title);
-//        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
-//                findViewById(R.id.android_material_design_spinner);
                     mBinder.spinnerJobTitleCreateProfile.setPrompt(getString(R.string.lable_job_title));
                     mBinder.spinnerJobTitleCreateProfile.setAdapter(arrayAdapter);
                 } else {
@@ -168,6 +164,9 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
     @Override
     public void cameraClicked() {
+//        takePhoto();
+
+        imageSourceType=0;
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.CAMERA, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this)) {
@@ -175,31 +174,36 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                Snackbar.make(mBinder.createProfile1IvProfileIcon, getResources().getString(R.string.text_camera_permision),
+                Snackbar.make(mBinder.createProfileTvName, getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
                         .setAction("OK", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA
-                                );
+                                PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+
                             }
                         }).show();
             } else {
                 PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
             }
         }
+
+
     }
 
     @Override
     public void gallaryClicked() {
+//        getImageFromGallery();
+        imageSourceType=1;
+
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
             getImageFromGallery();
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Snackbar.make(mBinder.createProfile1IvProfileIcon, this.getResources().getString(R.string.text_camera_permision),
+                Snackbar.make(mBinder.createProfileTvName, this.getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction(getString(R.string.accept), new View.OnClickListener() {
+                        .setAction("Accept", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
@@ -225,8 +229,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     }
 
     public void takePhoto() {
-
-
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
@@ -267,6 +269,11 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             Log.d("Tag", "request permisison called if granted --");
+            if(imageSourceType==0){
+                takePhoto();
+            }else{
+                getImageFromGallery();
+            }
 
         }
 

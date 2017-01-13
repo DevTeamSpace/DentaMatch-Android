@@ -68,6 +68,7 @@
         <item name="android:textColorHint">@color/edt_hint_color</item>
         <item name="android:textColor">@color/text_default_color</item>
         <item name="android:singleLine">true</item>
+        <item name="android:inputType">textCapWords</item>
     </style>
 
 

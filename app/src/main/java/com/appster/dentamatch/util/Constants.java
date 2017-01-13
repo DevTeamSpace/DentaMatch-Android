@@ -14,9 +14,13 @@ public class Constants {
     }
 
     public static final int PASSWORD_MIN_LENGTH = 6;
+    public static final int LICENCE_MAX_LENGTH = 15;
+    public static final int DEFAULT_FIELD_LENGTH = 30;
+    public static final int PASSWORD_MAX_LENGTH = 25;
     public static final int USER_NAME_MIN_LENGTH = 6;
     public static final int FIRST_NAME_MIN_LENGTH = 2;
     public static final int IMAGE_DIMEN = 102;
+    public static final int IMAGE_DIME_CERTIFICATE = 142;
     public static final String DEVICE_TYPE = "ANDROID";
 
 
@@ -32,6 +36,10 @@ public class Constants {
     public interface BundleKey{
         String LAYOUT_ID = "layoutResId";
         String INDEX = "INDEX";
+    }
+ public interface APIS{
+        String PRIVACY_POLICY = "privacy-policy";
+        String TERM_CONDITION = "term-condition";
     }
 
     public interface REQUEST_CODE {
@@ -49,6 +57,7 @@ public class Constants {
         String IMAGE_PATH="image_path";
         String F_NAME="fname";
         String L_NAME="lname";
+        String POSITION="position";
         String JOB_TITLE="job_title";
     }
 }

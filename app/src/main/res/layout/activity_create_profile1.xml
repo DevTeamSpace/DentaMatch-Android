@@ -86,7 +86,7 @@
                 android:layout_marginTop="@dimen/margin_36"
                 android:gravity="center"
                 android:text="@string/profile1_text"
-                android:textColor="@color/edt_hint_color"
+                android:textColor="@color/black_color"
                 android:textSize="@dimen/text_size_16"
                 app:customFont="@string/font_medium" />
 
@@ -155,7 +155,8 @@
                 android:gravity="center"
                 android:text="@string/lable_not_now"
                 android:textColor="@color/white_color"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_normal"
+                app:customBackground="@string/font_bold"/>
 
             <com.appster.dentamatch.widget.CustomButton
                 android:id="@+id/create_profile1_btn_next"
@@ -168,7 +169,8 @@
                 android:gravity="center"
                 android:text="@string/lable_next"
                 android:textColor="@color/white_color"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_normal"
+                app:customBackground="@string/font_bold"/>
         </RelativeLayout>
 
     </RelativeLayout>
