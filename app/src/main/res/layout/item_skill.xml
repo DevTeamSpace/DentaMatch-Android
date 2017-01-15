@@ -16,7 +16,7 @@
 
             <RelativeLayout
                 android:id="@+id/layout_skills_inner"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:paddingTop="@dimen/margin_large"
                 android:paddingBottom="@dimen/margin_large"
                 android:layout_height="wrap_content">
@@ -42,24 +42,24 @@
 
             </RelativeLayout>
 
-            <LinearLayout
+            <!--<RelativeLayout
                 android:id="@+id/layout_skill_bricks"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layout_skills_inner"
-                android:orientation="horizontal"
                 android:layout_marginBottom="10dp"
-                android:visibility="gone">
+                android:layout_marginEnd="20dp"
+                android:visibility="visible">-->
 
-                <TextView
+                <!--&lt;!&ndash;<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/light_gray"
                     android:ellipsize="end"
                     android:padding="10dp"
-                    android:text="Motor management skills" />
+                    android:text="Motor management skills" />-->
 
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -68,13 +68,13 @@
                     android:maxLines="1"
                     android:padding="10dp"
                     android:text="Engineering foundation skills" />
-            </LinearLayout>
+            </RelativeLayout>-->
 
             <com.appster.dentamatch.widget.CustomEditText
                 android:id="@+id/et_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_skill_bricks"
+                android:layout_below="@+id/layout_skills_inner"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_selector"
                 android:layout_marginBottom="10dp"
