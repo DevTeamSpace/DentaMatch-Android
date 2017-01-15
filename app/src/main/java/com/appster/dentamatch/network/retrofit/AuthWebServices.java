@@ -6,6 +6,7 @@ import com.appster.dentamatch.network.response.auth.FileUploadResponse;
 import com.appster.dentamatch.network.response.auth.JobTitleResponse;
 import com.appster.dentamatch.network.response.auth.LicenceUpdateResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.response.skills.SkillsResponse;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -39,7 +40,7 @@ public interface AuthWebServices {
     Call<JobTitleResponse> jobTitle();
 
     @GET(SKILLS_LIST)
-    Call<LoginResponse> getSkillsList(@Body LoginRequest loginRequest);
+    Call<SkillsResponse> getSkillsList();
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);

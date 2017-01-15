@@ -10,12 +10,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityWorkExperinceDetailBinding;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
-import com.appster.dentamatch.network.request.auth.ReferenceRequest;
 import com.appster.dentamatch.network.request.auth.WorkExpRequest;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;

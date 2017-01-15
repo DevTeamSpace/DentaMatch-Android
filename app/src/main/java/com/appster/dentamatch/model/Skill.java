@@ -6,6 +6,7 @@ package com.appster.dentamatch.model;
 
 public class Skill {
     private int id;
+    private int parentId;
     private String skillName;
     private String subSkills[];
 }

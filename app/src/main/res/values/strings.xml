@@ -34,8 +34,9 @@
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
     <string name="valid_email_alert">Please provide a valid Email Id.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
+    <string name="error_something_wrong">Something went wrong!</string>
     <string name="error_no_network_connection">No Network Connection</string>
-    <string name="error_unable_reterive_email">Unable to reterive email address from your social account.</string>
+    <string name="error_unable_reterive_email">Unable to retrieve email address from your social account.</string>
     <string name="error_unable_access_account">Unable to access to your account.</string>
     <!--register & Login & Forgot password screen-->
     <string name="email_label">Email</string>

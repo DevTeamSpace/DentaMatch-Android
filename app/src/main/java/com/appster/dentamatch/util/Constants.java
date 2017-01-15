@@ -1,7 +1,7 @@
 package com.appster.dentamatch.util;
 
 /**
- *
+ * Class to hold constant values.
  */
 public class Constants {
 
@@ -9,9 +9,7 @@ public class Constants {
     public static final String EXTRA_POSTAL_CODE = "postal_code";
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
-
-    private Constants() {
-    }
+    public static final String EXTRA_SUB_SKILLS = "sub_skills";
 
     public static final int PASSWORD_MIN_LENGTH = 6;
     public static final int LICENCE_MAX_LENGTH = 15;
@@ -23,9 +21,7 @@ public class Constants {
     public static final int IMAGE_DIME_CERTIFICATE = 142;
     public static final String DEVICE_TYPE = "ANDROID";
 
-
-
-    public enum ACTIVITIES{
+    public enum ACTIVITIES {
         SWITCH_ACTIVITY
     }
 
@@ -33,15 +29,17 @@ public class Constants {
         TEST_FRAGMENT
     }
 
-    public interface BundleKey{
+    public interface BundleKey {
         String LAYOUT_ID = "layoutResId";
         String INDEX = "INDEX";
+        String SUB_SKILLS = "sub_skills";
     }
- public interface APIS{
+
+    public interface APIS {
         String PRIVACY_POLICY = "privacy-policy";
         String TERM_CONDITION = "term-condition";
         String IMAGE_TYPE_PIC = "profile_pic";
-        String IMAGE_TYPE_STATE_BOARD= "dental_state_board";
+        String IMAGE_TYPE_STATE_BOARD = "dental_state_board";
     }
 
     public interface REQUEST_CODE {
@@ -54,12 +52,12 @@ public class Constants {
         int REQUEST_CODE_JOYRIDE = 203;
     }
 
-    public interface INTENT_KEY{
-        String FROM_WHERE="from_where";
-        String IMAGE_PATH="image_path";
-        String F_NAME="fname";
-        String L_NAME="lname";
-        String POSITION="position";
-        String JOB_TITLE="job_title";
+    public interface INTENT_KEY {
+        String FROM_WHERE = "from_where";
+        String IMAGE_PATH = "image_path";
+        String F_NAME = "fname";
+        String L_NAME = "lname";
+        String POSITION = "position";
+        String JOB_TITLE = "job_title";
     }
 }

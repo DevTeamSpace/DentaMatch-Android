@@ -9,19 +9,27 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/toolbar_work_exp_list"
+            android:id="@+id/toolbar_skills"
             layout="@layout/toolbar_general" />
 
-        <TextView
-            android:id="@+id/textDummy"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/layout_profile_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Skills go here"
-            android:textSize="20sp" />
+            android:layout_below="@+id/toolbar_skills"
+            layout="@layout/layout_profile_header"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_profile_header"
+            android:layout_above="@+id/btn_next"
+            android:layout_marginTop="10dp"
+            />
 
         <com.appster.dentamatch.widget.CustomButton
-            android:id="@+id/btn_next_work_exp_lsit"
+            android:id="@+id/btn_next"
             style="@style/button_style"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"

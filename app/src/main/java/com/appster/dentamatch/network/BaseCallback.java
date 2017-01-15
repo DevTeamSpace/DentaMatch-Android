@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.LogUtils;
 
 import java.lang.ref.WeakReference;
 import java.net.ConnectException;
@@ -85,13 +86,14 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
     }
 
     public void onFailure(Call<T> call, Throwable t) {
-        //LogUtils.printStackTrace(t);
+        LogUtils.printStackTrace(t);
         BaseActivity act = ref.get();
         act.hideProgressBar();
+
         if (t instanceof ConnectException || t instanceof UnknownHostException) {
             act.showSnackBar(act.getResources().getString(R.string.no_internet));
-
         } else {
+            act.showSnackBar(act.getResources().getString(R.string.error_something_wrong));
             onFail(call, null);
         }
     }

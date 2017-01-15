@@ -1,10 +1,7 @@
 package com.appster.dentamatch.ui.auth;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -31,14 +28,11 @@ import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by virender on 13/12/16.

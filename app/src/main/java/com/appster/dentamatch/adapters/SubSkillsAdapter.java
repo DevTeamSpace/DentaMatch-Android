@@ -3,22 +3,21 @@ package com.appster.dentamatch.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemSkillBinding;
+import com.appster.dentamatch.databinding.ItemSubSkillBinding;
 import com.appster.dentamatch.model.ParentSkill;
-import com.appster.dentamatch.model.Skill;
-import com.appster.dentamatch.ui.profile.workexperience.SubSkillsActivity;
-import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.model.SubSkill;
 import com.appster.dentamatch.widget.CustomEditText;
 
 import java.util.List;
@@ -27,13 +26,13 @@ import java.util.List;
  * Created by ram on 12/01/17.
  */
 
-public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MyViewHolder> {
+public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyViewHolder> {
 
-    private List<ParentSkill> mSkillList;
-    private ItemSkillBinding mBinder;
+    private List<SubSkill> mSkillList;
+    private ItemSubSkillBinding mBinder;
     private Context mContext;
 
-    public SkillsAdapter(List<ParentSkill> skillList, Context context) {
+    public SubSkillsAdapter(List<SubSkill> skillList, Context context) {
         this.mSkillList = skillList;
         this.mContext = context;
     }
@@ -42,34 +41,27 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MyViewHold
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_skill, parent, false));
+                .inflate(R.layout.item_sub_skill, parent, false));
 
         return new MyViewHolder(mBinder.getRoot());
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        final ParentSkill skill = mSkillList.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final SubSkill skill = mSkillList.get(position);
 
-//        LogUtils.LOGD("SkillsAdapt", "Skill "+ skill.getSkillName());
         holder.tvSkillName.setText(skill.getSkillName());
 
-        if(skill.getSkillName().equals("Other")) {
-            holder.etOther.setVisibility(View.VISIBLE);
-            holder.ivArrow.setVisibility(View.GONE);
-        }else {
+        if (skill.getSkillName().equals("Other")) {
+            mBinder.etOther.setVisibility(View.VISIBLE);
+            mBinder.cbSelected.setVisibility(View.GONE);
+        } else {
             holder.layout.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
-
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(Constants.BundleKey.SUB_SKILLS, skill.getSubSkills());
-
-                    Intent intent = new Intent(mContext, SubSkillsActivity.class);
-                    intent.putExtra(Constants.EXTRA_SUB_SKILLS, bundle);
-
-                    mContext.startActivity(intent);
+                    boolean checked = mSkillList.get(position).getIsSelected() == 1;
+                    holder.cbSelected.setChecked(!checked);
+                    mSkillList.get(position).setIsSelected(!checked ? 1 : 0);
                 }
             });
         }
@@ -80,17 +72,18 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MyViewHold
         return mSkillList.size();
     }
 
+
     class MyViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout layout;
         TextView tvSkillName;
-        ImageView ivArrow;
+        CheckBox cbSelected;
         CustomEditText etOther;
 
         MyViewHolder(View view) {
             super(view);
-            layout=mBinder.layoutSkillsInner;
+            layout = mBinder.layoutTop;
             tvSkillName = mBinder.tvSkillName;
-            ivArrow = mBinder.ivRightArrow;
+            cbSelected = mBinder.cbSelected;
             etOther = mBinder.etOther;
         }
     }

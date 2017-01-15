@@ -6,16 +6,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityViewAndWditWorkExperienceBinding;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
-import com.appster.dentamatch.network.request.auth.ReferenceRequest;
 import com.appster.dentamatch.network.request.auth.WorkExpRequest;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
