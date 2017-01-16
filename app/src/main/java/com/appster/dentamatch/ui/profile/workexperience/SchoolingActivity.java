@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SkillsAdapter;
+import com.appster.dentamatch.databinding.ActivitySchoolingBinding;
 import com.appster.dentamatch.databinding.ActivitySkillsBinding;
 import com.appster.dentamatch.model.ParentSkill;
 import com.appster.dentamatch.network.BaseCallback;
@@ -27,20 +28,17 @@ import java.util.List;
 import retrofit2.Call;
 
 /**
- * Created by ram on 12/01/17.
+ * Created by ram on 15/01/17.
  */
-public class SkillsActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG = "Skills";
-    private ActivitySkillsBinding mBinder;
-//    private ResideMenu resideMenu;
-
-    private SkillsAdapter mSkillsAdapter;
+public class SchoolingActivity extends BaseActivity implements View.OnClickListener {
+    private static final String TAG = "Schooling";
+    private ActivitySchoolingBinding mBinder;
     private Button btnNext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_skills);
+        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_schooling);
         initViews();
 
         getSkillsListApi();
@@ -49,17 +47,10 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     private void initViews() {
         btnNext = mBinder.btnNext;
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
-        mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
-        mBinder.layoutProfileHeader.tvTitle.setText(getString(R.string.header_skills_exp));
-//        mBinder.recyclerSkills.setOnClickListener(this);
+        mBinder.toolbarSkills.txvToolbarGeneralCenter.setText(getString(R.string.header_schooling_exp));
         btnNext.setOnClickListener(this);
 
     }
-
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        return resideMenu.dispatchTouchEvent(ev);
-//    }
 
     @Override
     public String getActivityName() {
@@ -85,11 +76,11 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getSkillsList().enqueue(new BaseCallback<SkillsResponse>(SkillsActivity.this) {
+        webServices.getSkillsList().enqueue(new BaseCallback<SkillsResponse>(SchoolingActivity.this) {
             @Override
             public void onSuccess(SkillsResponse response) {
                 if (response.getStatus() == 1) {
-                    setAdapter(response.getSkillsResponseData().getSkillsList());
+//                    setAdapter(response.getSkillsResponseData().getSkillsList());
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -101,14 +92,5 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
 
             }
         });
-    }
-
-    private void setAdapter(List<ParentSkill> skillArrayList) {
-        mSkillsAdapter = new SkillsAdapter(skillArrayList, this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        mBinder.recyclerSkills.setLayoutManager(layoutManager);
-        mBinder.recyclerSkills.setItemAnimator(new DefaultItemAnimator());
-        mBinder.recyclerSkills.setAdapter(mSkillsAdapter);
-        mSkillsAdapter.notifyDataSetChanged();
     }
 }
