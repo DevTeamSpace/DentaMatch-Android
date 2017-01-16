@@ -1,16 +1,18 @@
 package com.appster.dentamatch.network.request.auth;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
  * Created by virender on 11/01/17.
  */
-public class WorkExpRequest {
-    private int id;
-    private String jobTitle;
+public class WorkExpRequest implements Parcelable {
+    private String id;
     private String exp;
-
-
+    private String action;
+    private String userId;
     private int jobTitleId;
     private int monthsOfExpereince;
     private String officeName;
@@ -22,6 +24,68 @@ public class WorkExpRequest {
     private String reference2Mobile;
     private String reference1Email;
     private String reference2Email;
+    private String createdAt;
+    private String jobtitleName;
+public WorkExpRequest(){
+
+}
+
+    protected WorkExpRequest(Parcel in) {
+        id = in.readString();
+        exp = in.readString();
+        action = in.readString();
+        userId = in.readString();
+        jobTitleId = in.readInt();
+        monthsOfExpereince = in.readInt();
+        officeName = in.readString();
+        officeAddress = in.readString();
+        city = in.readString();
+        reference1Name = in.readString();
+        reference2Name = in.readString();
+        reference1Mobile = in.readString();
+        reference2Mobile = in.readString();
+        reference1Email = in.readString();
+        reference2Email = in.readString();
+        createdAt = in.readString();
+        jobtitleName = in.readString();
+    }
+
+    public static final Creator<WorkExpRequest> CREATOR = new Creator<WorkExpRequest>() {
+        @Override
+        public WorkExpRequest createFromParcel(Parcel in) {
+            return new WorkExpRequest(in);
+        }
+
+        @Override
+        public WorkExpRequest[] newArray(int size) {
+            return new WorkExpRequest[size];
+        }
+    };
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getJobtitleName() {
+        return jobtitleName;
+    }
+
+    public void setJobtitleName(String jobtitleName) {
+        this.jobtitleName = jobtitleName;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
 
     public String getAction() {
         return action;
@@ -95,23 +159,13 @@ public class WorkExpRequest {
         this.jobTitleId = jobTitleId;
     }
 
-    private String action;
 
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
     }
 
     public String getExp() {
@@ -147,6 +201,29 @@ public class WorkExpRequest {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(exp);
+        parcel.writeString(action);
+        parcel.writeString(userId);
+        parcel.writeInt(jobTitleId);
+        parcel.writeInt(monthsOfExpereince);
+        parcel.writeString(officeName);
+        parcel.writeString(officeAddress);
+        parcel.writeString(city);
+        parcel.writeString(reference1Name);
+        parcel.writeString(reference2Name);
+        parcel.writeString(reference1Mobile);
+        parcel.writeString(reference2Mobile);
+        parcel.writeString(reference1Email);
+        parcel.writeString(reference2Email);
+        parcel.writeString(createdAt);
+        parcel.writeString(jobtitleName);
+    }
 }

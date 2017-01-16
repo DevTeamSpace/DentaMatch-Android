@@ -8,14 +8,14 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/toolbar_certificates"
+            android:id="@+id/toolbar_about_me"
             layout="@layout/toolbar_general" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/btn_next"
-            android:layout_below="@+id/toolbar_certificates"
+            android:layout_below="@+id/toolbar_about_me"
             android:layout_marginBottom="@dimen/margin_normal">
 
             <LinearLayout
@@ -35,7 +35,9 @@
                     android:background="@drawable/bg_edit_text"
                     android:gravity="top"
                     android:hint="@string/write_description"
-                    android:singleLine="false" />
+                    android:singleLine="false"
+
+                    />
             </LinearLayout>
         </ScrollView>
 

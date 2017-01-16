@@ -2,22 +2,31 @@ package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.request.auth.DeleteRequest;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.request.auth.WorkExpListRequest;
+import com.appster.dentamatch.network.request.auth.WorkExpRequest;
+import com.appster.dentamatch.network.response.auth.AffiliationResponse;
+import com.appster.dentamatch.network.response.auth.CertificateResponse;
 import com.appster.dentamatch.network.response.auth.FileUploadResponse;
 import com.appster.dentamatch.network.response.auth.JobTitleResponse;
 import com.appster.dentamatch.network.response.auth.LicenceUpdateResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.response.auth.WorkExpResponse;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 public interface AuthWebServices {
@@ -32,7 +41,13 @@ public interface AuthWebServices {
     String FORGOT_APSSWORD = "users/forgot-password";
     String UPDATE_LICENCE = "users/update-license";
     String JOB_TITLE_LIST = "list-jobtitle";
-    String IMAGE_UPLOAD="users/upload-image";
+    String CERTIFICATION_LIST = "list-certifications";
+    String IMAGE_UPLOAD = "users/upload-image";
+    String ADD_WORK_EXP = "users/work-experience-save";
+    String WORK_EXP_LIST = "users/work-experience-list";
+    //    String WORK_EXP_DELETE="users/work-experience-delete{id}";
+    String WORK_EXP_DELETE = "users/work-experience-delete";
+    String AFFILIATION_LIST = "users/affiliation-list";
 
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
@@ -43,8 +58,27 @@ public interface AuthWebServices {
     @PUT(FORGOT_APSSWORD)
     Call<LoginResponse> forgotPassword(@Body LoginRequest loginRequest);
 
+    @DELETE(WORK_EXP_DELETE)
+//    Call<BaseResponse> workExpDelete(@Path("id") int id);
+    Call<BaseResponse> workExpDelete(@Query("id") int id);
+
+    //    Call<BaseResponse> workExpDelete(DeleteRequest deleteRequest);
+//
+    @POST(ADD_WORK_EXP)
+    Call<WorkExpResponse> addWorkExp(@Body WorkExpRequest workExpRequest);
+
+    @POST(WORK_EXP_LIST)
+    Call<WorkExpResponse> workExpList(@Body WorkExpListRequest workExpListRequest);
+
+
     @GET(JOB_TITLE_LIST)
     Call<JobTitleResponse> jobTitle();
+
+    @GET(CERTIFICATION_LIST)
+    Call<CertificateResponse> getCertificationList();
+
+    @GET(AFFILIATION_LIST)
+    Call<AffiliationResponse> getAffiliationList();
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);

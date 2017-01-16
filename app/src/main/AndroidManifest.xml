@@ -29,7 +29,7 @@
             android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />
 
         <activity
-            android:name=".ui.common.SplashActivity"
+            android:name=".ui.profile.affiliation.AffiliationActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
@@ -41,7 +41,7 @@
             android:name=".ui.auth.LoginActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -76,20 +76,20 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.profile.workexperience.WorkExpListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+        android:name=".ui.profile.workexperience.WorkExpListActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/NoActionBar"
+        android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.profile.workexperience.WorkExperienceDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-        android:name=".ui.profile.CertificateActivity"
-        android:screenOrientation="portrait"
-        android:theme="@style/NoActionBar"
-        android:windowSoftInputMode="adjustResize" />
+            android:name=".ui.profile.CertificateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.termsnprivacy.TermsAndConditionActivity"
             android:screenOrientation="portrait"
@@ -103,6 +103,10 @@
             android:name=".ui.profile.AboutMeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+        <!--<activity-->
+            <!--android:name=".ui.profile.affiliation.AffiliationActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/NoActionBar" />-->
 
     </application>
 

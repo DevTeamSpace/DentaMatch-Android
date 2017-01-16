@@ -158,6 +158,8 @@
                     android:layout_marginRight="@dimen/margin_normal"
                     android:background="@drawable/edit_text_selector"
                     android:hint="@string/lable_licence_number"
+                    android:maxLength="15"
+                    android:digits="@string/digits_licence"
                     android:textColor="@color/text_default_color"/>
             </android.support.design.widget.TextInputLayout>
 

@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityCreateProfile1Binding;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
+import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -37,6 +38,7 @@ import com.appster.dentamatch.util.NetworkMonitor;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetJobTitle;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.Picasso;
 
@@ -49,7 +51,7 @@ import retrofit2.Call;
 /**
  * Created by virender on 03/01/17.
  */
-public class CreateProfileActivity1 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
+public class CreateProfileActivity1 extends BaseActivity implements View.OnClickListener, ImageSelectedListener,JobTitleSelectionListener {
     private String TAG = "CreateProfileActivity1";
     private ImageSelectedListener imageSelectedListener;
     private String mFilePath;
@@ -72,25 +74,12 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         mBinder.createProfile1BtnNotNow.setOnClickListener(this);
         mBinder.createProfile1BtnNext.setOnClickListener(this);
         mBinder.createProfile1IvProfileIcon.setOnClickListener(this);
+        mBinder.etJobTitle.setOnClickListener(this);
 
 
         mBinder.createProfileTvName.setText("Hi " + PreferenceUtil.getFirstName());
 
 
-        mBinder.spinnerJobTitleCreateProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                PreferenceUtil.setJobTitle(PreferenceUtil.getJobTitleList().get(i).getJobTitle());
-                PreferenceUtil.setJobTitleId(""+PreferenceUtil.getJobTitleList().get(i).getId());
-                PreferenceUtil.setJobTitlePosition(i);
-                selectedJobtitle = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     @Override
@@ -98,6 +87,10 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         switch (view.getId()) {
             case R.id.create_profile1_iv_profile_icon:
                 callBottomSheet();
+                break;
+            case R.id.et_job_title:
+                hideKeyboard();
+                new BottomSheetJobTitle(CreateProfileActivity1.this, this, 0);
                 break;
             case R.id.create_profile1_btn_next:
                 if (checkValidation()) {
@@ -152,11 +145,11 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         response.enqueue(new BaseCallback<FileUploadResponse>(CreateProfileActivity1.this) {
             @Override
             public void onSuccess(FileUploadResponse response) {
+                Utils.showToast(getApplicationContext(),  response.getMessage());
 
                 if (response != null && response.getStatus() == 1) {
                     // showSnackBarFromTop(response.getMessage(), false);
                     PreferenceUtil.setProfileImagePath(response.getFileUploadResponseData().getImageUrl());
-                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
                     Intent intent = new Intent(CreateProfileActivity1.this, CreateProfileActivity2.class);
                     startActivity(intent);
 
@@ -187,10 +180,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     for (int i = 0; i < response.getJobTitleResponseData().getJobTitleList().size(); i++) {
                         title[i] = response.getJobTitleResponseData().getJobTitleList().get(i).getJobTitle();
                     }
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfileActivity1.this,
-                            android.R.layout.simple_dropdown_item_1line, title);
-                    mBinder.spinnerJobTitleCreateProfile.setPrompt(getString(R.string.lable_job_title));
-                    mBinder.spinnerJobTitleCreateProfile.setAdapter(arrayAdapter);
+
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
 
@@ -326,6 +316,15 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    @Override
+    public void onJobTitleSelection(String title, int titleId, int position) {
+        PreferenceUtil.setJobTitle(title);
+        PreferenceUtil.setJobTitleId(titleId);
+        PreferenceUtil.setJobTitlePosition(position);
+        mBinder.etJobTitle.setText(title);
+        selectedJobtitle = title;
     }
 }
 

@@ -7,10 +7,10 @@ public class LicenceRequest {
 
     private String license;
     private String state;
-    private String jobTitleId;
+    private int jobTitleId;
 
 
-    public void setJobTitleId(String jobTitleId) {
+    public void setJobTitleId(int jobTitleId) {
         this.jobTitleId = jobTitleId;
     }
 

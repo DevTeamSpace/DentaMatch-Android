@@ -62,6 +62,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     private Button btnNext;
     private String mFilePath;
     private byte imageSourceType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +126,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private boolean checkInputValidator() {
-        if (TextUtils.isEmpty(mFilePath)){
+        if (TextUtils.isEmpty(mFilePath)) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_satate_board_photo_alert));
             return false;
         }
@@ -140,6 +141,10 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         }
         if (etLicenceNumber.getText().toString().trim().contains(" ")) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.licence_number_blnk_space_alert));
+            return false;
+        }
+        if (etLicenceNumber.getText().toString().trim().charAt(0) == '-' || etLicenceNumber.getText().toString().trim().charAt(etLicenceNumber.getText().toString().trim().length() - 1) == '-') {
+            Utils.showToast(CreateProfileActivity2.this, getString(R.string.licence_number_hyfen_alert));
             return false;
         }
 
@@ -229,7 +234,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     @Override
     public void cameraClicked() {
 
-        imageSourceType=0;
+        imageSourceType = 0;
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.CAMERA, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this)) {
@@ -254,7 +259,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
     @Override
     public void gallaryClicked() {
-        imageSourceType=1;
+        imageSourceType = 1;
 
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
             getImageFromGallery();
@@ -326,9 +331,9 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             LogUtils.LOGD("Tag", "request permisison called if granted --");
-            if(imageSourceType==0){
+            if (imageSourceType == 0) {
                 takePhoto();
-            }else{
+            } else {
                 getImageFromGallery();
             }
 

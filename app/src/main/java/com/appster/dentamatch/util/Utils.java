@@ -13,9 +13,11 @@ import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
@@ -27,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 
 import java.util.List;
@@ -253,6 +256,47 @@ public class Utils {
 
         view.setTypeface(tf);
 
+    }
+    public static String getExpYears(int month){
+
+        if(month!=0) {
+            return month / 12 + " " + DentaApp.getAppContext().getString(R.string.year) + " " + month % 12 + " " + DentaApp.getAppContext().getString(R.string.month);
+        }
+        return  "";
+    }
+    private void setPhoneNumberFomat(final EditText editText,final int count){
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,  int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (count <= editText.getText().toString().length()
+                        && (editText.getText().toString().length() == 4
+                        || editText.getText().toString().length() == 10
+                        || editText.getText().toString().length() == 15)) {
+                    editText.setText("("+editText.getText().toString() + " )");
+                    int pos = editText.getText().length();
+                    editText.setSelection(pos);
+                } else if (count >= editText.getText().toString().length()
+                        && (editText.getText().toString().length() == 4
+                        || editText.getText().toString().length() == 10
+                        || editText.getText().toString().length() == 15)) {
+                    editText.setText(editText.getText().toString().substring(0, editText.getText().toString().length() - 1));
+                    int pos = editText.getText().length();
+                    editText.setSelection(pos);
+                }
+//                count = editText.getText().toString().length();
+            }
+
+        });
     }
 
 }

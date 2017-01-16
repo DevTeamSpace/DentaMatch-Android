@@ -63,6 +63,7 @@
                 android:background="@drawable/edit_text_selector"
                 android:hint="@string/reference_mobile"
                 android:inputType="phone"
+                android:maxLength="13"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>
 
