@@ -71,6 +71,7 @@
         <item name="android:textColor">@color/text_default_color</item>
         <item name="android:singleLine">true</item>
         <item name="android:inputType">textCapWords</item>
+        <item name="android:maxLength">30</item>
     </style>
 
 

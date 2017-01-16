@@ -34,6 +34,7 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
         CustomTextView tvCancel = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
         CustomTextView tvDone = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_done);
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.bottom_sheet_date_picker);
+        datePicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         setPickerInfo(datePicker);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override

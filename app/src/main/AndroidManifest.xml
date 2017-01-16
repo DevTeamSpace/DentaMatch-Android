@@ -32,16 +32,16 @@
             android:name=".ui.common.SplashActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.auth.LoginActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -86,10 +86,10 @@
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.profile.CertificateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+        android:name=".ui.profile.CertificateActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/NoActionBar"
+        android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.termsnprivacy.TermsAndConditionActivity"
             android:screenOrientation="portrait"
@@ -103,15 +103,15 @@
             android:name=".ui.profile.AboutMeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.affiliation.AffiliationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".ui.profile.workexperience.SkillsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity

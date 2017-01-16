@@ -10,11 +10,13 @@ import android.widget.ArrayAdapter;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityWorkExperinceBinding;
+import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetJobTitle;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetPicker;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +25,7 @@ import java.io.File;
 /**
  * Created by virender on 04/01/17.
  */
-public class WorkExperienceActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
+public class WorkExperienceActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener, JobTitleSelectionListener {
     //    private ActivityT mBinder;
     private ActivityWorkExperinceBinding mBinder;
     private String selectedJobtitle = "";
@@ -43,41 +45,19 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarWorkExp.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
         mBinder.progressBar.setProgress(45);
         mBinder.toolbarWorkExp.ivToolBarLeft.setOnClickListener(this);
+        mBinder.etJobTitle.setOnClickListener(this);
         mBinder.btnNextWorkExp.setOnClickListener(this);
         mBinder.tvExperinceWorkExp.setOnClickListener(this);
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
             Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(mBinder.createProfileIvProfileIcon);
 
         }
-        setSpinnerData();
-    }
-
-    private void setSpinnerData() {
-        String title[] = new String[PreferenceUtil.getJobTitleList().size()];
-
-        for (int i = 0; i < PreferenceUtil.getJobTitleList().size(); i++) {
-            title[i] = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
+        selectedJobtitle=PreferenceUtil.getJobTitle();
+        if (!TextUtils.isEmpty(selectedJobtitle)) {
+            mBinder.etJobTitle.setText(selectedJobtitle);
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(WorkExperienceActivity.this,
-                android.R.layout.simple_dropdown_item_1line, title);
-        mBinder.spinnerJobTitleWorkExp.setPrompt(getString(R.string.lable_job_title));
-        mBinder.spinnerJobTitleWorkExp.setAdapter(arrayAdapter);
-        mBinder.spinnerJobTitleWorkExp.setSelection(PreferenceUtil.getJobTitlePosition());
-        mBinder.spinnerJobTitleWorkExp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                PreferenceUtil.setJobTitle(PreferenceUtil.getJobTitleList().get(i).getJobTitle());
-                PreferenceUtil.setJobTitlePosition(i);
-
-                selectedJobtitle = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
+
 
     @Override
     public String getActivityName() {
@@ -91,11 +71,15 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
                 if (checkValidation()) {
                     PreferenceUtil.setOfficeName(Utils.getStringFromEditText(mBinder.etOfficeName));
                     hideKeyboard();
-                    startActivity(new Intent(this, WorkExperienceDetailActivity.class));
+                    startActivity(new Intent(this, WorkExpListActivity.class));
                 }
                 break;
             case R.id.iv_tool_bar_left:
                 onBackPressed();
+                break;
+            case R.id.et_job_title:
+                hideKeyboard();
+                new BottomSheetJobTitle(WorkExperienceActivity.this, this, PreferenceUtil.getJobTitlePosition());
                 break;
             case R.id.tv_experince_work_exp:
                 hideKeyboard();
@@ -132,5 +116,15 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         PreferenceUtil.setYear(year);
 //        mBinder.tvExperinceWorkExp.setFocusable(true);
 //        hideKeyboard();
+    }
+
+    @Override
+    public void onJobTitleSelection(String title, int titleId, int position) {
+        selectedJobtitle = title;
+        PreferenceUtil.setJobTitle(title);
+        PreferenceUtil.setJobTitleId(titleId);
+        PreferenceUtil.setJobTitlePosition(position);
+        mBinder.etJobTitle.setText(title);
+
     }
 }

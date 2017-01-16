@@ -100,6 +100,8 @@
     <string name="year">Year</string>
     <string name="month">Month</string>
 
+    <!--digits to restrict soft keyboard-->
+<string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
 
     <!--Server error-->
     <string name="authentication_error">Authentication error , Please login again. </string>
@@ -117,6 +119,9 @@
     <string name="header_term">TERMS &amp; CONDITIONS</string>
     <string name="header_forgot_password">FORGOT PASSWORD</string>
     <string name="header_certification">CERTIFICATIONS</string>
+    <string name="header_affiliation">AFFILIATIONS</string>
+    <string name="title_affiliation">Affiliations </string>
+
     <string name="header_skills_exp">SKILLS &amp; EXPERIENCE</string>
     <string name="header_schooling_exp">SCHOOLING &amp; EXPERIENCE</string>
 
@@ -138,6 +143,7 @@
     <string name="blank_licence_number">Licence number can not be blank.</string>
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
     <string name="licence_number_blnk_space_alert">Licence number should not contain blank spaces</string>
+    <string name="licence_number_hyfen_alert">First and last character of can not "-"</string>
     <string name="blank_state_alert">State text can not be left blank.</string>
     <string name="state_max_length">State can not be exceed 30 characters</string>
     <string name="state_blank_space_alert">State can not contain blank spaces</string>
@@ -156,6 +162,7 @@
     <string name="complete_reference">Please complete the reference.</string>
     <string name="please_wait" >Please wait...</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
+    <string name="header_about_me">ABOUT ME</string>
 
 
 </resources>

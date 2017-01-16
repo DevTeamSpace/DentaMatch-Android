@@ -6,40 +6,46 @@ import android.content.DialogInterface;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.interfaces.ImageSelectedListener;
+import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
 /**
- * Created by virender on 04/01/17.
+ * Created by virender on 15/01/17.
  */
-public class BottomSheetPicker {
-    private BottomSheetDialog mBottomSheetDialog;
-    private YearSelectionListener mYearslYearSelectionListener;
+public class BottomSheetJobTitle {
 
-    public BottomSheetPicker(final Context context, YearSelectionListener yearSelectionListener, int year, int month) {
-        mYearslYearSelectionListener = yearSelectionListener;
+    private BottomSheetDialog mBottomSheetDialog;
+    private String jobTitle[];
+    private JobTitleSelectionListener mJobTitleSelectionListener;
+
+    public BottomSheetJobTitle(final Context context, JobTitleSelectionListener jobTitleSelectionListener, int postion) {
+        mJobTitleSelectionListener = jobTitleSelectionListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
-        View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_picker, null);
+        jobTitle = new String[PreferenceUtil.getJobTitleList().size()];
+        View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_job_title, null);
         CustomTextView tvCancel = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
         CustomTextView tvDone = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_done);
-        final NumberPicker pickerYear = (NumberPicker) view.findViewById(R.id.bottom_sheet_picker_year);
-        final NumberPicker pickerMonth = (NumberPicker) view.findViewById(R.id.bottom_sheet_picker_month);
-        pickerMonth.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        pickerYear.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        final NumberPicker pickerTitle = (NumberPicker) view.findViewById(R.id.bottom_sheet_picker_job_title);
+        pickerTitle.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
-        pickerYear.setMinValue(0);
-        pickerYear.setMaxValue(20);
-        pickerMonth.setMinValue(0);
-        pickerMonth.setMaxValue(11);
-        pickerMonth.setValue(month);
-        pickerYear.setValue(year);
-        pickerMonth.setWrapSelectorWheel(true);
-        pickerYear.setWrapSelectorWheel(true);
+        pickerTitle.setMinValue(0);
+        if (PreferenceUtil.getJobTitleList() != null) {
+            pickerTitle.setMaxValue(PreferenceUtil.getJobTitleList().size() - 1);
+            if (postion != -1) {
+                pickerTitle.setValue(postion);
+            }
+
+            for (int i = 0; i < PreferenceUtil.getJobTitleList().size(); i++) {
+                jobTitle[i] = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
+            }
+            pickerTitle.setDisplayedValues(jobTitle);
+        }
+        pickerTitle.setWrapSelectorWheel(true);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,11 +62,8 @@ public class BottomSheetPicker {
                     mBottomSheetDialog.dismiss();
 
                 }
-                if (pickerYear.getValue() == 0 && pickerMonth.getValue() == 0) {
-                    Utils.showToast(context, context.getString(R.string.invalid_exp_selection));
-                } else {
-                    mYearslYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
-                }
+
+                mJobTitleSelectionListener.onJobTitleSelection(PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getJobTitle(),PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getId(),pickerTitle.getValue());
 
             }
         });

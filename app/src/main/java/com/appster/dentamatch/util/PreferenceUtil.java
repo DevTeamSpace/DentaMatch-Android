@@ -24,9 +24,8 @@ public final class PreferenceUtil {
     private static final String KEY_YEAR = "YEAR";
     private static final String KEY_MONTH = "MONTH";
     private static final String KEY_JOB_TITLE = "JOB_TITLE";
-    private static final String KEY_JOB_TITLE_POSITION= "JOB_TITLE_POSITION";
+    private static final String KEY_JOB_TITLE_POSITION = "JOB_TITLE_POSITION";
     private static final String KEY_JOB_TITLE_LIST = "JOB_TITLE_LIST";
-    private static final String KEY_WORK_EXP_LIST = "WORK_EXP_LIST";
     private static final String KEY_USER_TOKEN = "USER_TOKEN";
     private static final String KEY_JOB_TITLE_ID = "JOB_TITLE_ID";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
@@ -73,13 +72,6 @@ public final class PreferenceUtil {
         return Hawk.get(KEY_JOB_TITLE_LIST);
     }
 
-    public static void setWorkExpList(ArrayList<WorkExpRequest> value) {
-        Hawk.put(KEY_WORK_EXP_LIST, value);
-    }
-
-    public static ArrayList<WorkExpRequest> getWorkExpList() {
-        return Hawk.get(KEY_WORK_EXP_LIST);
-    }
 
     public static void setJobTitle(String value) {
         Hawk.put(KEY_JOB_TITLE, value);
@@ -88,6 +80,7 @@ public final class PreferenceUtil {
     public static String getJobTitle() {
         return Hawk.get(KEY_JOB_TITLE);
     }
+
     public static void setJobTitlePosition(int value) {
         Hawk.put(KEY_JOB_TITLE_POSITION, value);
     }
@@ -95,13 +88,15 @@ public final class PreferenceUtil {
     public static int getJobTitlePosition() {
         return Hawk.get(KEY_JOB_TITLE_POSITION);
     }
-    public static void setJobTitleId(String value) {
+
+    public static void setJobTitleId(int value) {
         Hawk.put(KEY_JOB_TITLE_ID, value);
     }
 
-    public static String getJobTitleId() {
+    public static int getJobTitleId() {
         return Hawk.get(KEY_JOB_TITLE_ID);
     }
+
     public static void setFistName(String value) {
         Hawk.put(KEY_FIRST_NAME, value);
     }
@@ -134,7 +129,9 @@ public final class PreferenceUtil {
 
     public static String getLastName() {
         return Hawk.get(KEY_LAST_NAME);
-    } public static void setOfficeName(String value) {
+    }
+
+    public static void setOfficeName(String value) {
         Hawk.put(KEY_OFFICE_NAME, value);
     }
 
