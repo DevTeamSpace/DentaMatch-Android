@@ -12,19 +12,19 @@
             layout="@layout/toolbar_general" />
 
         <!--<include-->
-            <!--android:id="@+id/include_profile_header"-->
-            <!--layout="@layout/layout_profile_header"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!---->
-            <!--android:layout_below="@+id/toolbar_affiliation" />-->
+        <!--android:id="@+id/include_profile_header"-->
+        <!--layout="@layout/layout_profile_header"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!---->
+        <!--android:layout_below="@+id/toolbar_affiliation" />-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_affiliation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/btn_next"
-            android:layout_marginTop="@dimen/margin_21"
+            android:layout_below="@+id/toolbar_affiliation"
             android:layout_marginBottom="@dimen/margin_21"
             android:scrollbars="vertical" />
 

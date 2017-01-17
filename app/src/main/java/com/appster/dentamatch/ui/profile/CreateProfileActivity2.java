@@ -25,8 +25,8 @@ import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
-import com.appster.dentamatch.network.response.auth.FileUploadResponse;
-import com.appster.dentamatch.network.response.auth.LicenceUpdateResponse;
+import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
+import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
@@ -37,6 +37,7 @@ import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -87,7 +88,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
 //            Picasso.with(getApplicationContext()).load(new File(PreferenceUtil.getProfileImagePath())).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
             LogUtils.LOGD("pabd", "path is--=" + PreferenceUtil.getProfileImagePath());
-            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
+            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivProfile);
 
         }
         if (!TextUtils.isEmpty(PreferenceUtil.getJobTitle())) {
@@ -313,8 +314,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             Log.d("Tag", "file path" + mFilePath);
 
             if (mFilePath != null) {
-
-                Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(142, 142).placeholder(R.drawable.ic_upload).into(ivUpload);
+                Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(142, 142).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
             }
         }
     }

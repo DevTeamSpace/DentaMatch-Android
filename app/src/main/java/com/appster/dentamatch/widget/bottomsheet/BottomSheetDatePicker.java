@@ -26,7 +26,7 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
     private Context mContext;
     private final String[] monthArray = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-    public BottomSheetDatePicker(final Context context, final DateSelectedListener dateSelectedListener) {
+    public BottomSheetDatePicker(final Context context, final DateSelectedListener dateSelectedListener, final int position) {
         mDateSelectedListener = dateSelectedListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
         mContext = context;
@@ -55,10 +55,10 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
                         mBottomSheetDialog.dismiss();
 
                     }
-                    selectedDate(datePicker);
+                    selectedDate(datePicker, position);
 
                 } else if (currentYear == datePicker.getYear() && (currentMonth <= datePicker.getMonth())) {
-                    selectedDate(datePicker);
+                    selectedDate(datePicker, position);
 
 
                     if (mBottomSheetDialog != null) {
@@ -67,7 +67,7 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
                     }
 
                 } else if (currentYear == datePicker.getYear() && currentMonth <= datePicker.getMonth() && currentDay < datePicker.getDayOfMonth()) {
-                    selectedDate(datePicker);
+                    selectedDate(datePicker, position);
 
                     if (mBottomSheetDialog != null) {
                         mBottomSheetDialog.dismiss();
@@ -113,9 +113,11 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
 
     }
 
-    private void selectedDate(DatePicker datePicker) {
+    private void selectedDate(DatePicker datePicker, int pos) {
 
-        mDateSelectedListener.onDateSelection(datePicker.getDayOfMonth() + " " + monthArray[datePicker.getMonth()] + ", " + datePicker.getYear());
+//        mDateSelectedListener.onDateSelection(datePicker.getDayOfMonth() + " " + monthArray[datePicker.getMonth()] + ", " + datePicker.getYear());
+//        mDateSelectedListener.onDateSelection(datePicker.getDayOfMonth() + "-" + datePicker.getMonth() + ", " + datePicker.getYear());
+        mDateSelectedListener.onDateSelection(datePicker.getYear() + "-" + datePicker.getMonth() + 1 + "-" + datePicker.getDayOfMonth(), pos);
     }
 
     @Override

@@ -1,9 +1,7 @@
-package com.appster.dentamatch.network.request.auth;
+package com.appster.dentamatch.network.request.workexp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.ArrayList;
 
 /**
  * Created by virender on 11/01/17.

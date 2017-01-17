@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.auth;
+package com.appster.dentamatch.network.response.fileupload;
 
 import com.google.gson.annotations.SerializedName;
 

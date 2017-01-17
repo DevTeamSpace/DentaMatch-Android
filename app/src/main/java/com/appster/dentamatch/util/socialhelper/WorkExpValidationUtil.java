@@ -1,13 +1,11 @@
 package com.appster.dentamatch.util.socialhelper;
 
 import android.text.TextUtils;
-import android.view.View;
 
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.network.request.auth.WorkExpRequest;
+import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 /**

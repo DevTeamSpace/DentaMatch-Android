@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.auth;
+package com.appster.dentamatch.network.response.profile;
 
 import com.appster.dentamatch.network.BaseResponse;
 
