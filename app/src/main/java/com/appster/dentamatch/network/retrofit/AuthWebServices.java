@@ -13,6 +13,7 @@ import com.appster.dentamatch.network.response.auth.FileUploadResponse;
 import com.appster.dentamatch.network.response.auth.JobTitleResponse;
 import com.appster.dentamatch.network.response.auth.LicenceUpdateResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.response.skills.SkillsResponse;
 import com.appster.dentamatch.network.response.auth.WorkExpResponse;
 
@@ -36,6 +37,7 @@ public interface AuthWebServices {
     String UPDATE_LICENCE = "users/update-license";
     String JOB_TITLE_LIST = "list-jobtitle";
     String SKILLS_LIST = "list-skills";
+    String SCHOOL_LIST = "users/school-list";
     String CERTIFICATION_LIST = "list-certifications";
     String IMAGE_UPLOAD = "users/upload-image";
     String ADD_WORK_EXP = "users/work-experience-save";
@@ -71,6 +73,9 @@ public interface AuthWebServices {
 
     @GET(SKILLS_LIST)
     Call<SkillsResponse> getSkillsList();
+
+    @GET(SCHOOL_LIST)
+    Call<SchoolingResponse> getSchoolList();
 
     @GET(CERTIFICATION_LIST)
     Call<CertificateResponse> getCertificationList();

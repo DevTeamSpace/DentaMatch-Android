@@ -9,8 +9,10 @@
         <item>Get Quick\nAssignments</item>
         <item>Create\nYour Profile</item>
     </string-array>
+
     <string-array name="onbording_desc">
         <item>Quis nostrud exercitullamco laboris nisi ut aliquip consequat.quis nostrud exercitullamco laboris nisi ut.</item>
         <item>Choose from Gallery</item>
     </string-array>
+
 </resources>

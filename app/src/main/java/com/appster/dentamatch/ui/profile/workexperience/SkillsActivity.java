@@ -85,7 +85,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getSkillsList().enqueue(new BaseCallback<SkillsResponse>(SkillsActivity.this) {
+        webServices.getSkillsList().enqueue(new BaseCallback<SkillsResponse>(this) {
             @Override
             public void onSuccess(SkillsResponse response) {
                 if (response.getStatus() == 1) {

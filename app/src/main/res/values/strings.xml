@@ -128,6 +128,8 @@
     <string name="autocomplete_hint">Search places</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="get_started">GET STARTED</string>
+    <string name="hint_type_to_search">Type to search</string>
+    <string name="hint_year_of_graduation">Year of graduation</string>
 
 
     <!--aler/toast error messages-->
@@ -160,7 +162,7 @@
     <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
     <string name="blank_phone_number_alert">Phone number can never be blank</string>
     <string name="complete_reference">Please complete the reference.</string>
-    <string name="please_wait" >Please wait...</string>
+    <string name="please_wait" >Please wait&#8230;</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="header_about_me">ABOUT ME</string>
 

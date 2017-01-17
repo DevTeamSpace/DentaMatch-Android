@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_profile_header"
             android:layout_above="@+id/btn_next"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/margin_15"
             />
 
         <com.appster.dentamatch.widget.CustomButton
