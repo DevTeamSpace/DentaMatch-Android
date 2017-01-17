@@ -34,7 +34,7 @@ public class BottomSheetJobTitle {
         pickerTitle.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
         pickerTitle.setMinValue(0);
-        if (PreferenceUtil.getJobTitleList() != null) {
+        if (PreferenceUtil.getJobTitleList() != null&&PreferenceUtil.getJobTitleList().size()>0) {
             pickerTitle.setMaxValue(PreferenceUtil.getJobTitleList().size() - 1);
             if (postion != -1) {
                 pickerTitle.setValue(postion);

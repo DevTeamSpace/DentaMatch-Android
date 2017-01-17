@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.auth;
+package com.appster.dentamatch.network.response.affiliation;
 
 import com.appster.dentamatch.network.BaseResponse;
 import com.google.gson.annotations.SerializedName;
@@ -13,6 +13,7 @@ public class AffiliationResponse extends BaseResponse {
     public AffiliationResponseData getAffiliationResponseData() {
         return affiliationResponseData;
     }
+
 
 
 }

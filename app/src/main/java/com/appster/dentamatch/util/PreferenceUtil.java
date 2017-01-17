@@ -1,7 +1,6 @@
 package com.appster.dentamatch.util;
 
-import com.appster.dentamatch.network.request.auth.WorkExpRequest;
-import com.appster.dentamatch.network.response.auth.JobTitleList;
+import com.appster.dentamatch.network.response.profile.JobTitleList;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;

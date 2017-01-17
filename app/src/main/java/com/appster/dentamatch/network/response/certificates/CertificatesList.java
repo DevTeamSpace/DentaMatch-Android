@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.auth;
+package com.appster.dentamatch.network.response.certificates;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -8,9 +8,20 @@ import com.google.gson.annotations.SerializedName;
 public class CertificatesList {
     private int id;
     private String certificateName;
+    @SerializedName("imagePath")
     private String image;
-    @SerializedName("validity_date")
+    @SerializedName("validityDate")
     private String validityDate;
+    private boolean isImageUploaded;
+
+    public boolean isImageUploaded() {
+        return isImageUploaded;
+    }
+
+    public void setImageUploaded(boolean imageUploaded) {
+        isImageUploaded = imageUploaded;
+    }
+
     public String getValidityDate() {
         return validityDate;
     }

@@ -4,13 +4,8 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,9 +16,9 @@ import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.auth.WorkExpListRequest;
-import com.appster.dentamatch.network.request.auth.WorkExpRequest;
-import com.appster.dentamatch.network.response.auth.WorkExpResponse;
+import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
+import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
+import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
@@ -77,6 +72,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 new WeakReference<EditText>(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
         mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter2);
         selectedJobtitle = PreferenceUtil.getJobTitle();
+        jobTitleId = PreferenceUtil.getJobTitleId();
         if (!TextUtils.isEmpty(selectedJobtitle)) {
             mBinder.includeWorkExpList.etJobTitle.setText(selectedJobtitle);
         }
@@ -85,6 +81,11 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         }
         try {
             mBinder.includeWorkExpList.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
+//            selectedJobtitle = mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString();
+            if (!TextUtils.isEmpty(mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString())) {
+                String split[] = mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString().split(" ");
+                expMonth = Integer.parseInt(split[0]) * 12 + Integer.parseInt(split[2]);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,7 +125,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 new BottomSheetJobTitle(WorkExpListActivity.this, this, 0);
                 break;
             case R.id.btn_next_work_exp_lsit:
-                startActivity(new Intent(this, AffiliationActivity.class));
+                prepareRequestForAdd(true);
                 break;
             case R.id.tv_refrence_delete:
                 mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
@@ -146,26 +147,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.tv_add_more_experience:
-                boolean isMoveForward = false;
-                isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobtitle, expMonth,
-                        Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
-                        Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
-                        Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)
-                        , Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
-                if (isMoveForward) {
-                    hideKeyboard();
-                    callAddExpApi(WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(), Constants.APIS.ACTION_ADD, jobTitleId, expMonth,
-                            Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName), Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
-                            Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity), Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)
-                            , Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile), Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
-                            Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail), Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
-                            Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile)));
-
-//                    startActivity(new Intent(getApplicationContext(), WorkExpListActivity.class));
-                }
+                prepareRequestForAdd(false);
 
                 break;
             case R.id.tv_experince_work_exp:
@@ -181,6 +163,29 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    private void prepareRequestForAdd(boolean isNext) {
+        boolean isMoveForward = false;
+        isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobtitle, expMonth,
+                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
+                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
+                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)
+                , Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
+        if (isMoveForward) {
+            hideKeyboard();
+            WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(), Constants.APIS.ACTION_ADD, jobTitleId, expMonth,
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName), Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity), Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)
+                    , Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile), Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
+                    Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail), Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
+                    Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
+            callAddExpApi(request, isNext);
+
+//                    startActivity(new Intent(getApplicationContext(), WorkExpListActivity.class));
+        }
+    }
     //
 
 
@@ -198,6 +203,8 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.includeLayoutRefrence2.etOfficeReferenceName.setText("");
         mBinder.layoutReference2.setVisibility(View.GONE);
 
+        expMonth = 0;
+        selectedJobtitle = "";
     }
 
     private void callGetExpListApi(WorkExpListRequest workExpListRequest) {
@@ -231,7 +238,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-    private void callAddExpApi(WorkExpRequest workExpRequest) {
+    private void callAddExpApi(WorkExpRequest workExpRequest, final boolean isMoveNext) {
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
@@ -245,7 +252,12 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                         response.getWorkExpResponseData().getSaveList().get(0).setJobtitleName(selectedJobtitle);
                         workExpList.add(response.getWorkExpResponseData().getSaveList().get(0));
                     }
-                    inflateExpList(response.getWorkExpResponseData().getSaveList());
+                    if (isMoveNext) {
+                        startActivity(new Intent(WorkExpListActivity.this, AffiliationActivity.class));
+
+                    } else {
+                        inflateExpList(response.getWorkExpResponseData().getSaveList());
+                    }
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }

@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.request.auth;
+package com.appster.dentamatch.network.request.workexp;
 
 /**
  * Created by virender on 13/01/17.
