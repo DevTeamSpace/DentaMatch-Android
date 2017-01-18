@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.auth;
+package com.appster.dentamatch.network.response.certificates;
 
 import com.appster.dentamatch.network.BaseResponse;
 import com.google.gson.annotations.SerializedName;

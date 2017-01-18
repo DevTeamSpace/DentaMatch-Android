@@ -10,6 +10,7 @@ public class Constants {
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_SUB_SKILLS = "sub_skills";
+    public static final String OTHERS = "OTHER";
 
     public static final int PASSWORD_MIN_LENGTH = 6;
     public static final int WORK_EXP_LIST_LIMIT = 50;

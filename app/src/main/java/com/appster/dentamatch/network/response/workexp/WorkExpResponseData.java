@@ -1,6 +1,6 @@
-package com.appster.dentamatch.network.response.auth;
+package com.appster.dentamatch.network.response.workexp;
 
-import com.appster.dentamatch.network.request.auth.WorkExpRequest;
+import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
