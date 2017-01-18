@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_selector"
                     android:clickable="false"
-                    android:drawableEnd="@drawable/ic_drop_down"
+                    android:drawableEnd="@drawable/ic_down_arrow"
                     android:focusable="false"
                     app:customFont="@string/font_regular" />
             </android.support.design.widget.TextInputLayout>

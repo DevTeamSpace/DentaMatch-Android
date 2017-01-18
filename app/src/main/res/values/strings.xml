@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">DentaMatch</string>
 
+    <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
     <!-- font style name-->
     <string name="font_light" translatable="false">Roboto-Light.ttf</string>
     <string name="font_regular" translatable="false">Roboto-Regular.ttf</string>
@@ -83,8 +84,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <!--work experince-->
+    <!--work experience-->
     <string name="where_you_work">Where do you work?</string>
+    <string name="where_did_you_study">Where did you study?</string>
     <string name="lable_relevant_exp">Relevant work experience strengthens your profile</string>
     <string name="year_of_experice">Years Of Experience</string>
     <string name="office_name">Office Name</string>

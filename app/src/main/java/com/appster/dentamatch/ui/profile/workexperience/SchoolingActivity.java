@@ -18,6 +18,7 @@ import com.appster.dentamatch.model.SchoolType;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
 import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -50,16 +51,13 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
         btnNext = mBinder.btnNext;
         mBinder.toolbarSchooling.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_schooling_exp).toUpperCase());
-//        mBinder.layoutProfileHeader.tvTitle.setText(getString(R.string.header_schooling_exp));
         btnNext.setOnClickListener(this);
-
     }
 
     @Override
     public String getActivityName() {
         return null;
     }
-
 
     @Override
     public void onClick(View view) {
@@ -70,7 +68,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
                 break;
             case R.id.btn_next:
-//                getSchoolListApi();
+//                addSchoolListApi();
         }
     }
 
@@ -105,25 +103,30 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
-    private void addSchoolListApi() {
+    private void addSchoolListApi(AddSchoolRequest addSchoolRequest) {
         LogUtils.LOGD(TAG, "addSchoolListApi");
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getSchoolList().enqueue(new BaseCallback<SchoolingResponse>(this) {
+        webServices.addSchooling(addSchoolRequest).enqueue(new BaseCallback<BaseResponse>(this) {
             @Override
-            public void onSuccess(SchoolingResponse response) {
+            public void onSuccess(BaseResponse response) {
                 if (response.getStatus() == 1) {
-                    setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
+//                    setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
             }
 
             @Override
-            public void onFail(Call<SchoolingResponse> call, BaseResponse baseResponse) {
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
 
             }
         });
     }
+
+//    private AddSchoolRequest prepareAddSchoolRequest() {
+//        AddSchoolRequest request = new AddSchoolRequest();
+//        request.getSchoolingData();
+//    }
 }
