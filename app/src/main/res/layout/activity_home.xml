@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/profile_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+
+        <com.appster.dentamatch.ui.navigationtabbar.NavigationTabBar
+            android:id="@+id/ntb_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="0"
+            app:ntb_badge_gravity="top"
+            app:ntb_badge_title_color="@color/black_color"
+            app:ntb_badged="false"
+            app:ntb_bg_color="@color/colorPrimary"
+            app:ntb_icon_size_fraction="0.45"
+            app:ntb_scaled="false"
+            app:ntb_swiped="false"
+            app:ntb_tinted="true"
+            app:ntb_title_mode="all"
+            app:ntb_titled="true" />
+        <!--</RelativeLayout>-->
+    </LinearLayout>
+
+
+</RelativeLayout>
+

@@ -56,6 +56,9 @@ public class Constants {
         int REQUEST_CODE_JOYRIDE = 203;
         int REQUEST_CODE_PASS_INTENT = 5001;
     }
+    public interface FRAGMENT_NAME{
+        String PROFILE_FRAGMENT="Profile Fragment";
+    }
 
     public interface INTENT_KEY {
         String FROM_WHERE = "from_where";

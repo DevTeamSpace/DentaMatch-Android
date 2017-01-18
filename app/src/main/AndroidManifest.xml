@@ -29,7 +29,7 @@
             android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />
 
         <activity
-            android:name=".ui.common.SplashActivity"
+            android:name=".ui.common.HomeActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
@@ -41,7 +41,7 @@
             android:name=".ui.auth.LoginActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -86,10 +86,10 @@
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-        android:name=".ui.profile.CertificateActivity"
-        android:screenOrientation="portrait"
-        android:theme="@style/NoActionBar"
-        android:windowSoftInputMode="adjustResize" />
+            android:name=".ui.profile.CertificateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.termsnprivacy.TermsAndConditionActivity"
             android:screenOrientation="portrait"
@@ -111,8 +111,11 @@
         <activity
             android:name=".ui.profile.workexperience.SkillsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar">
-        </activity>
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".ui.settings.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"></activity>
 
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"

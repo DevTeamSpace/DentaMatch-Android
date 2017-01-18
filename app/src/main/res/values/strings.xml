@@ -83,6 +83,15 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <!--bootm navigation bar-->
+
+    <string name="nav_job">Jobs</string>
+    <string name="nav_tracks">Tracks</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_message">Messages</string>
+    <string name="nav_profile">Profile</string>
+
+
     <!--work experince-->
     <string name="where_you_work">Where do you work?</string>
     <string name="lable_relevant_exp">Relevant work experience strengthens your profile</string>
@@ -101,7 +110,7 @@
     <string name="month">Month</string>
 
     <!--digits to restrict soft keyboard-->
-<string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
+    <string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
 
     <!--Server error-->
     <string name="authentication_error">Authentication error , Please login again. </string>
@@ -162,7 +171,7 @@
     <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
     <string name="blank_phone_number_alert">Phone number can never be blank</string>
     <string name="complete_reference">Please complete the reference.</string>
-    <string name="please_wait" >Please wait...</string>
+    <string name="please_wait">Please wait...</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="blank_certificate_photo_alert">Please upload atleast one certificate</string>
     <string name="desc_about_me">Describe about your work and things you are passionate about.</string>
@@ -170,6 +179,15 @@
     <string name="blank_affiliation_selection">Please select atleast one affiliation.</string>
     <string name="blank_certificate_validity_date">Please enter certificate validation date of %1$s</string>
     <string name="blank_profile_summary_alert">Please write something about your profile.</string>
+    <!--setting -->
+    <string name="settings_reset_password">Reset Password</string>
+    <string name="settings_change_home_location">Change Home Location</string>
+    <string name="settings_logout">Logout</string>
+    <string name="settings_privacy">Privacy Policy</string>
+    <string name="settings_terms">Terms &amp; Conditions</string>
+    <string name="header_settings">SETTINGS</string>
+    <string name="alert_logout">Do you really want to logout?</string>
+    <string name="edit_label">Edit</string>
 
 
 </resources>

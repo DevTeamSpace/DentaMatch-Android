@@ -6,6 +6,10 @@
     <color name="colorAccent">#303F9F</color>
     <color name="toolbar_color">#0F183E</color>
 
+
+    <color name="profile_bg">#f5f5f5</color>
+    <color name="shadow">#22999999</color>
+
     <color name="semi_transparent_gray">#22000000</color>
     <color name="transparent">#00000000</color>
     <color name="light_gray">#cccccc</color>

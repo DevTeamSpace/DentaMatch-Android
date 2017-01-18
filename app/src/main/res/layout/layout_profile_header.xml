@@ -3,9 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/profile_main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layout_setting"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_height"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:src="@drawable/ic_gallary" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_edit"
+                style="@style/text_view_normal"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/margin_normal"
+                android:text="@string/send_label" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
