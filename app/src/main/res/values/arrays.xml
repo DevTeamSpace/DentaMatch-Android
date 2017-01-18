@@ -9,14 +9,15 @@
         <item>Get Quick\nAssignments</item>
         <item>Create\nYour Profile</item>
     </string-array>
+
     <string-array name="onbording_desc">
         <item>Quis nostrud exercitullamco laboris nisi ut aliquip consequat.quis nostrud exercitullamco laboris nisi ut.</item>
         <item>Choose from Gallery</item>
     </string-array>
 
     <string-array name="default_preview">
-        <item>#00000000</item>
-        <item>#dd6495</item>
+        <item>#b2b2b2</item>
+        <item>#00000</item>
         <item>#72d3b4</item>
     </string-array>
 </resources>

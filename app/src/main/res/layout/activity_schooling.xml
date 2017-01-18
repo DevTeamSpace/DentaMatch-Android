@@ -9,16 +9,16 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/toolbar_skills"
+            android:id="@+id/toolbar_schooling"
             layout="@layout/toolbar_general" />
 
-        <include
-            android:id="@+id/layout_profile_header"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_schools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar_skills"
-            layout="@layout/layout_profile_header"/>
-
+            android:layout_above="@+id/btn_next"
+            android:layout_below="@+id/toolbar_schooling"
+            android:layout_marginTop="@dimen/margin_25" />
 
         <com.appster.dentamatch.widget.CustomButton
             android:id="@+id/btn_next"

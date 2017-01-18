@@ -69,9 +69,11 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final static float DEFAULT_ICON_SIZE_FRACTION = 0.5F;
     private final static float DEFAULT_TITLE_ICON_SIZE_FRACTION = 0.5F;
 
-    private final static int DEFAULT_INACTIVE_COLOR = Color.parseColor("#9f90af");
-    private final static int DEFAULT_ACTIVE_COLOR = Color.WHITE;
-    private final static int DEFAULT_BG_COLOR = Color.parseColor("#605271");
+//    private final static int DEFAULT_INACTIVE_COLOR = Color.parseColor("#9f90af");
+    private final static int DEFAULT_INACTIVE_COLOR =Color.WHITE;
+    private final static int DEFAULT_ACTIVE_COLOR =Color.parseColor("#b2b2b2") ;
+//    private final static int DEFAULT_BG_COLOR = Color.parseColor("#605271");
+    private final static int DEFAULT_BG_COLOR = Color.parseColor("#b2b2b2");
 
     private final static float MIN_FRACTION = 0.0F;
     private final static float NON_SCALED_FRACTION = 0.35F;

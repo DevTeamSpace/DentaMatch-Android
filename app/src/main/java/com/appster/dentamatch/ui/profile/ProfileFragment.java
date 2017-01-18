@@ -54,10 +54,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initViews() {
-        profileBinding.profileHeader.layoutSetting.setVisibility(View.VISIBLE);
-        profileBinding.profileHeader.profileMainLayout.setBackgroundResource(R.drawable.bg_register);
-        profileBinding.profileHeader.ivSetting.setOnClickListener(this);
-        profileBinding.profileHeader.tvEdit.setOnClickListener(this);
+//        profileBinding.profileHeader.layoutSetting.setVisibility(View.VISIBLE);
+//        profileBinding.profileHeader.profileMainLayout.setBackgroundResource(R.drawable.bg_register);
+//        profileBinding.profileHeader.ivSetting.setOnClickListener(this);
+//        profileBinding.profileHeader.tvEdit.setOnClickListener(this);
+
+        profileBinding.cellDentalStateBoard.tvAddCertificates.setText(getString(R.string.add_dental_state_board));
+        profileBinding.cellAffiliation.tvAddCertificates.setText(getString(R.string.add_affilitaion));
+        profileBinding.cellExp.tvAddCertificates.setText(getString(R.string.add_more_exp));
+        profileBinding.cellKeySkill.tvAddCertificates.setText(getString(R.string.add_key_skill));
+        profileBinding.cellSchooling.tvAddCertificates.setText(getString(R.string.add_school));
+        profileBinding.cellLicence.tvAddCertificates.setText(getString(R.string.add_licence));
+        profileBinding.cellLicence.tvCertificatesName.setText(getString(R.string.lable_licence_number));
+        profileBinding.cellExp.tvCertificatesName.setText(getString(R.string.title_experience));
+        profileBinding.cellSchooling.tvCertificatesName.setText(getString(R.string.title_schooling));
+        profileBinding.cellDentalStateBoard.tvCertificatesName.setText(getString(R.string.dental_state_board));
+
+        profileBinding.cellAffiliation.tvCertificatesName.setText(getString(R.string.title_affiliation));
 
     }
 

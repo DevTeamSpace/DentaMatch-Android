@@ -10,109 +10,166 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/profile_main_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_register"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/layout_setting"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/edit_height"
-                android:layout_marginLeft="@dimen/margin_normal"
-                android:layout_marginRight="@dimen/margin_normal"
-                android:visibility="visible">
-
-                <ImageView
-                    android:id="@+id/iv_setting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_settings" />
-
-                <com.appster.dentamatch.widget.CustomTextView
-                    android:id="@+id/tv_edit"
-                    style="@style/text_view_normal"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/edit_label"
-                    android:textColor="@color/white_color"
-                    app:customFont="@string/font_regular" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/profile_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_register"
+                android:orientation="vertical">
 
-                android:layout_margin="@dimen/margin_25">
+                <RelativeLayout
+                    android:id="@+id/layout_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_height"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:visibility="visible">
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="@dimen/profile_progress_dimen"
-                    android:layout_height="@dimen/profile_progress_dimen"
-                    android:layout_centerInParent="true"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:progress="25"
-                    android:progressDrawable="@drawable/circuler_progress" />
+                    <ImageView
+                        android:id="@+id/iv_setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_settings" />
+
+                    <com.appster.dentamatch.widget.CustomTextView
+                        android:id="@+id/tv_edit"
+                        style="@style/text_view_normal"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/edit_label"
+                        android:textColor="@color/white_color"
+                        app:customFont="@string/font_regular" />
+
+                </RelativeLayout>
+
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/iv_profile_icon"
                     android:layout_width="@dimen/profile_image_height"
                     android:layout_height="@dimen/profile_image_height"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/margin_25"
+
                     android:src="@drawable/profile_pic_placeholder"
                     android:visibility="visible" />
-            </RelativeLayout>
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_name"
+                    style="@style/text_view_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="@string/where_you_work"
+                    android:textColor="@color/white_color"
+                    android:textSize="@dimen/text_size_xlarge"
+                    app:customFont="@string/font_bold" />
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_job_title"
+
+                    style="@style/text_view_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:gravity="center_horizontal"
+                    android:text="@string/lable_job_title"
+                    android:textColor="@color/white_color"
+                    android:textSize="@dimen/text_size_normal"
+                    app:customFont="@string/font_regular" />
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_location"
+                    style="@style/text_view_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:gravity="center_horizontal"
+                    android:text="@string/settings_change_home_location"
+                    android:textColor="@color/white_color"
+                    android:textSize="@dimen/text_size_normal"
+                    app:customFont="@string/font_regular" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+
+                    android:background="@drawable/ic_click_indicator" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/white_color"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_about_me"
                 style="@style/text_view_normal"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:text="@string/where_you_work"
-                android:textColor="@color/white_color"
-                android:textSize="@dimen/text_size_xlarge"
-                app:customFont="@string/font_bold" />
-
-            <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/tv_job_title"
-
-                style="@style/text_view_normal"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:gravity="center_horizontal"
-                android:text="@string/lable_job_title"
-                android:textColor="@color/white_color"
-                android:textSize="@dimen/text_size_normal"
-                app:customFont="@string/font_regular" />
-
-            <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/tv_location"
-                style="@style/text_view_normal"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:gravity="center_horizontal"
-                android:text="@string/settings_change_home_location"
-                android:textColor="@color/white_color"
-                android:textSize="@dimen/text_size_normal"
-                app:customFont="@string/font_regular" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ic_click_indicator" />
-
-            <View
                 android:layout_width="match_parent"
-                android:layout_height="21dp"
-                android:background="@color/white_color" />
-        </LinearLayout>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin_19"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_15"
+                android:gravity="center_horizontal"
+                android:text="@string/label_accept_term_ncondition"
+                android:textColor="@color/warm_gray_color"
+                android:textSize="@dimen/text_size_normal"
+                app:customFont="@string/font_regular" />
 
+            <include
+                android:id="@+id/cell_dental_state_board"
+                layout="@layout/layout_cell_certificates" />
+
+            <include
+                android:id="@+id/cell_exp"
+                layout="@layout/layout_cell_certificates" />
+
+            <LinearLayout
+                android:id="@+id/exp_inflater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <include
+                android:id="@+id/cell_schooling"
+                layout="@layout/layout_cell_certificates" />
+
+            <LinearLayout
+                android:id="@+id/school_inflater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <include
+                android:id="@+id/cell_key_skill"
+                layout="@layout/layout_cell_certificates" />
+
+            <LinearLayout
+                android:id="@+id/key_skill_inflater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <include
+                android:id="@+id/cell_affiliation"
+                layout="@layout/layout_cell_certificates" />
+
+            <include
+                android:id="@+id/cell_licence"
+                layout="@layout/layout_cell_certificates" />
+
+            <LinearLayout
+                android:id="@+id/certification_inflater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 </layout>

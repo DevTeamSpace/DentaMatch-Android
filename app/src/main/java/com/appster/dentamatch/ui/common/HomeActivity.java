@@ -51,35 +51,44 @@ public class HomeActivity extends BaseActivity {
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_camera),
+                        getResources().getDrawable(R.drawable.nav_job_selected),
                         Color.parseColor(colors[0]))
+                        .selectedIcon(getResources().getDrawable(R.drawable.nav_job_selected))
                         .title(getResources().getString(R.string.nav_job))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_camera),
+                        getResources().getDrawable(R.drawable.nav_track_selected),
                         Color.parseColor(colors[0]))
+                        .selectedIcon(getResources().getDrawable(R.drawable.nav_track_selected))
                         .title(getResources().getString(R.string.nav_tracks))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_camera),
+                        getResources().getDrawable(R.drawable.nav_calendar_selected),
                         Color.parseColor(colors[0]))
+                        .selectedIcon(getResources().getDrawable(R.drawable.nav_calendar_selected))
+
                         .title(getResources().getString(R.string.nav_calendar))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_camera),
+                        getResources().getDrawable(R.drawable.nav_message_selected),
                         Color.parseColor(colors[0]))
+                        .selectedIcon(getResources().getDrawable(R.drawable.nav_message_selected))
+
                         .title(getResources().getString(R.string.nav_message))
+                        .badgeTitle("bdb")
                         .build());
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_gallery),
+                        getResources().getDrawable(R.drawable.nav_profile),
                         Color.parseColor(colors[0]))
+                        .selectedIcon(getResources().getDrawable(R.drawable.nav_profile_slected))
+
                         .title(getResources().getString(R.string.nav_profile))
                         .build()
         );

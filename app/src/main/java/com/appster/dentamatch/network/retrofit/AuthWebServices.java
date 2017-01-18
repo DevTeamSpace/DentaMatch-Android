@@ -1,19 +1,21 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.request.certificates.CertificateRequest;
-import com.appster.dentamatch.network.request.profile.AboutMeRequest;
-import com.appster.dentamatch.network.response.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.request.certificates.CertificateRequest;
+import com.appster.dentamatch.network.request.profile.AboutMeRequest;
+import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
+import com.appster.dentamatch.network.response.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
+import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
-import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.response.skills.SkillsResponse;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 
@@ -36,6 +38,8 @@ public interface AuthWebServices {
     String UPDATE_LICENCE = "users/update-license";
     String JOB_TITLE_LIST = "list-jobtitle";
     String SKILLS_LIST = "list-skills";
+    String SCHOOL_LIST = "users/school-list";
+    String SCHOOL_ADD = "users/school-add";
     String CERTIFICATION_LIST = "list-certifications";
     String CERTIFICATION_UPDATE = "users/update-certificate-validity";
     String SAVE_ABOUT_ME = "users/about-me-save";
@@ -62,22 +66,30 @@ public interface AuthWebServices {
 
     @POST(ADD_WORK_EXP)
     Call<WorkExpResponse> addWorkExp(@Body WorkExpRequest workExpRequest);
+
     @POST(AFFILIATION_SAVE)
     Call<BaseResponse> saveAffiliation(@Body AffiliationPostRequest affiliationPostRequest);
+
     @POST(CERTIFICATION_UPDATE)
     Call<BaseResponse> saveCertificate(@Body CertificateRequest certificateRequest);
+
     @POST(SAVE_ABOUT_ME)
     Call<BaseResponse> saveAboutMe(@Body AboutMeRequest aboutMeRequest);
 
     @POST(WORK_EXP_LIST)
     Call<WorkExpResponse> workExpList(@Body WorkExpListRequest workExpListRequest);
 
-
     @GET(JOB_TITLE_LIST)
     Call<JobTitleResponse> jobTitle();
 
     @GET(SKILLS_LIST)
     Call<SkillsResponse> getSkillsList();
+
+    @GET(SCHOOL_LIST)
+    Call<SchoolingResponse> getSchoolList();
+
+    @GET(SCHOOL_ADD)
+    Call<BaseResponse> addSchooling(@Body AddSchoolRequest schoolRequest);
 
     @GET(CERTIFICATION_LIST)
     Call<CertificateResponse> getCertificationList();
@@ -87,13 +99,6 @@ public interface AuthWebServices {
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);
-
-
-
-
-
-
-
 
     @Multipart
     @POST(IMAGE_UPLOAD)

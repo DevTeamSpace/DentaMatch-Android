@@ -10,14 +10,16 @@ import android.view.View;
 import android.widget.Button;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.adapters.SchoolsAdapter;
 import com.appster.dentamatch.adapters.SkillsAdapter;
 import com.appster.dentamatch.databinding.ActivitySchoolingBinding;
-import com.appster.dentamatch.databinding.ActivitySkillsBinding;
 import com.appster.dentamatch.model.ParentSkill;
+import com.appster.dentamatch.model.SchoolType;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.response.skills.SkillsResponse;
+import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
+import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.LogUtils;
@@ -33,6 +35,7 @@ import retrofit2.Call;
 public class SchoolingActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Schooling";
     private ActivitySchoolingBinding mBinder;
+    private SchoolsAdapter mSchoolsAdapter;
     private Button btnNext;
 
     @Override
@@ -41,22 +44,20 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_schooling);
         initViews();
 
-        getSkillsListApi();
+        getSchoolListApi();
     }
 
     private void initViews() {
         btnNext = mBinder.btnNext;
-        mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
-        mBinder.toolbarSkills.txvToolbarGeneralCenter.setText(getString(R.string.header_schooling_exp));
+        mBinder.toolbarSchooling.ivToolBarLeft.setOnClickListener(this);
+        mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_schooling_exp).toUpperCase());
         btnNext.setOnClickListener(this);
-
     }
 
     @Override
     public String getActivityName() {
         return null;
     }
-
 
     @Override
     public void onClick(View view) {
@@ -67,30 +68,65 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
                 break;
             case R.id.btn_next:
-//                getSkillsListApi();
+//                addSchoolListApi();
         }
     }
 
-    private void getSkillsListApi() {
-        LogUtils.LOGD(TAG, "getSkillsListApi");
+    private void setAdapter(List<SchoolType> schoolTypeList) {
+        mSchoolsAdapter = new SchoolsAdapter(schoolTypeList, this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mBinder.recyclerSchools.setLayoutManager(layoutManager);
+        mBinder.recyclerSchools.setItemAnimator(new DefaultItemAnimator());
+        mBinder.recyclerSchools.setAdapter(mSchoolsAdapter);
+        mSchoolsAdapter.notifyDataSetChanged();
+    }
+
+    private void getSchoolListApi() {
+        LogUtils.LOGD(TAG, "getSchoolListApi");
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getSkillsList().enqueue(new BaseCallback<SkillsResponse>(SchoolingActivity.this) {
+        webServices.getSchoolList().enqueue(new BaseCallback<SchoolingResponse>(this) {
             @Override
-            public void onSuccess(SkillsResponse response) {
+            public void onSuccess(SchoolingResponse response) {
                 if (response.getStatus() == 1) {
-//                    setAdapter(response.getSkillsResponseData().getSkillsList());
+                    setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
             }
 
             @Override
-            public void onFail(Call<SkillsResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "getSkillsListApi onFail...");
+            public void onFail(Call<SchoolingResponse> call, BaseResponse baseResponse) {
 
             }
         });
     }
+
+    private void addSchoolListApi(AddSchoolRequest addSchoolRequest) {
+        LogUtils.LOGD(TAG, "addSchoolListApi");
+        processToShowDialog("", getString(R.string.please_wait), null);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.addSchooling(addSchoolRequest).enqueue(new BaseCallback<BaseResponse>(this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                if (response.getStatus() == 1) {
+//                    setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
+                } else {
+                    Utils.showToast(getApplicationContext(), response.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+
+            }
+        });
+    }
+
+//    private AddSchoolRequest prepareAddSchoolRequest() {
+//        AddSchoolRequest request = new AddSchoolRequest();
+//        request.getSchoolingData();
+//    }
 }
