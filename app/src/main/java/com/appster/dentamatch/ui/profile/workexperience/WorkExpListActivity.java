@@ -247,16 +247,16 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
             public void onSuccess(WorkExpResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
-                    clearAllExpField();
                     if (workExpList != null) {
                         response.getWorkExpResponseData().getSaveList().get(0).setJobtitleName(selectedJobtitle);
+                        clearAllExpField();
                         workExpList.add(response.getWorkExpResponseData().getSaveList().get(0));
                     }
                     if (isMoveNext) {
-                        startActivity(new Intent(WorkExpListActivity.this, AffiliationActivity.class));
+                        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
 
                     } else {
-                        inflateExpList(response.getWorkExpResponseData().getSaveList());
+                        inflateExpList(workExpList);
                     }
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());

@@ -208,10 +208,11 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         response.enqueue(new BaseCallback<FileUploadResponse>(CreateProfileActivity2.this) {
             @Override
             public void onSuccess(FileUploadResponse response) {
+                    Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response != null && response.getStatus() == 1) {
                     // showSnackBarFromTop(response.getMessage(), false);
-                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
+//                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
 
                 }
             }
@@ -314,7 +315,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             Log.d("Tag", "file path" + mFilePath);
 
             if (mFilePath != null) {
-                Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(142, 142).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
+                Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
             }
         }
     }

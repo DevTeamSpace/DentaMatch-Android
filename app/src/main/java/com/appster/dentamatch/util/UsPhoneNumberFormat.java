@@ -26,9 +26,12 @@ public class UsPhoneNumberFormat implements TextWatcher {
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count,
                                   int after) {
-        if (after == 0 && s.toString().equals("1 ")) {
+        if (after == 0 && s.toString().equals(" ")) {
             clearFlag = true;
         }
+//        if (after == 0) {
+//            clearFlag = true;
+//        }
         mLastStartLocation = start;
         mLastBeforeText = s.toString();
     }
@@ -94,15 +97,16 @@ public class UsPhoneNumberFormat implements TextWatcher {
         int alreadyPlacedDigitCount = 0;
         // Only '1' is remaining and user pressed backspace and so we clear
         // the edit text.
-        if (allDigitString.equals("1") && clearFlag) {
-            text.clear();
-            clearFlag = false;
-            return "";
-        }
-        if (allDigitString.startsWith("1")) {
-            formattedString.append("1 ");
-            alreadyPlacedDigitCount++;
-        }
+//         if (allDigitString.equals("1") && clearFlag) {
+//            text.clear();
+//            clearFlag = false;
+//            return "";
+//        }
+//        if (allDigitString.startsWith("1")) {
+////            formattedString.append("1 ");
+//            formattedString.append("1 ");
+//            alreadyPlacedDigitCount++;
+//        }
         // The first 3 numbers beyond '1' must be enclosed in brackets "()"
         if (totalDigitCount - alreadyPlacedDigitCount > 3) {
             formattedString.append("("

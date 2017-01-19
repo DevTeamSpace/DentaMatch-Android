@@ -28,7 +28,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_margin="@dimen/margin_25">
+                android:layout_marginBottom="@dimen/margin_15"
+                android:layout_marginTop="@dimen/margin_25">
                 <!--android:background="@drawable/circular_shape"-->
 
                 <ProgressBar
@@ -61,10 +62,11 @@
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_job_title"
                 style="@style/text_view_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:textColor="@color/edt_hint_color"
                 android:textSize="@dimen/text_size_xlarge"
-                app:customFont="@string/font_light" />
+                app:customFont="@string/font_regular" />
 
             <View
                 android:layout_width="match_parent"
@@ -157,10 +159,10 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:background="@drawable/edit_text_selector"
+                    android:digits="@string/digits_licence"
                     android:hint="@string/lable_licence_number"
                     android:maxLength="15"
-                    android:digits="@string/digits_licence"
-                    android:textColor="@color/text_default_color"/>
+                    android:textColor="@color/text_default_color" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout

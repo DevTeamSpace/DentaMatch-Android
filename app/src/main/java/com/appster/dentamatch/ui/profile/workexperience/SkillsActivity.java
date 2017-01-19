@@ -25,6 +25,7 @@ import com.appster.dentamatch.network.request.skills.SkillsUpdateRequest;
 import com.appster.dentamatch.network.response.skills.SkillsResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
@@ -198,6 +199,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 if (response.getStatus() == 1) {
                     LogUtils.LOGD(TAG, "updateSkillsListApi success");
                     Utils.showToast(SkillsActivity.this, response.getMessage());
+                    startActivity(new Intent(SkillsActivity.this, AffiliationActivity.class));
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }

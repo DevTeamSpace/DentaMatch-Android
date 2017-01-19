@@ -193,8 +193,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.login_btn_register:
+                hideKeyboard();
+
                 if (validateInput()) {
-                    hideKeyboard();
 
                     if (isLogin) {
                         signInApi(prepareLoginRequest());
@@ -332,6 +333,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setFistName(getTextFromEditText(etRegisterFName));
                     PreferenceUtil.setLastName(getTextFromEditText(etRegisterLName));
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    isLogin=true;
                     showSelectedView(true);
 
 //                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
