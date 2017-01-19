@@ -19,21 +19,30 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/margin_large"
-                android:layout_toStartOf="@+id/cb_selected"
+                android:layout_toStartOf="@+id/iv_selected"
                 android:ellipsize="end"
                 android:text="Sub Skill Item"
                 android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_large" />
 
-            <CheckBox
-                android:id="@+id/cb_selected"
+            <ImageView
+                android:id="@+id/iv_selected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_disclosure_indicator" />
+                android:src="@drawable/ic_check_unselected" />
         </RelativeLayout>
 
-        <com.appster.dentamatch.widget.CustomEditText
+        <!--<com.appster.dentamatch.widget.CustomEditText-->
+            <!--android:id="@+id/et_other"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="@dimen/margin_large"-->
+            <!--android:layout_marginEnd="@dimen/margin_large"-->
+            <!--android:background="@drawable/edit_text_selector_blue"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:visibility="gone" />-->
+        <EditText
             android:id="@+id/et_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,6 +50,9 @@
             android:layout_marginEnd="@dimen/margin_large"
             android:background="@drawable/edit_text_selector_blue"
             android:layout_marginBottom="10dp"
+            android:focusable="true"
+            android:textColor="@color/white_color"
             android:visibility="gone" />
+
     </LinearLayout>
 </layout>

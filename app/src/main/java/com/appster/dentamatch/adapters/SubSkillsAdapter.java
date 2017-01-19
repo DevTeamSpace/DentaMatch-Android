@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +21,8 @@ import com.appster.dentamatch.databinding.ItemSkillBinding;
 import com.appster.dentamatch.databinding.ItemSubSkillBinding;
 import com.appster.dentamatch.model.ParentSkill;
 import com.appster.dentamatch.model.SubSkill;
+import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.widget.CustomEditText;
 
 import java.util.List;
@@ -27,14 +32,18 @@ import java.util.List;
  */
 
 public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyViewHolder> {
-
+    private static String TAG = "SubSkillAdapter";
     private List<SubSkill> mSkillList;
     private ItemSubSkillBinding mBinder;
     private Context mContext;
+//    public EditText etOtherTemp;
 
     public SubSkillsAdapter(List<SubSkill> skillList, Context context) {
         this.mSkillList = skillList;
         this.mContext = context;
+    }
+    public  List<SubSkill> getList(){
+        return mSkillList;
     }
 
     @Override
@@ -52,19 +61,64 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
 
         holder.tvSkillName.setText(skill.getSkillName());
 
-        if (skill.getSkillName().equals("Other")) {
-            mBinder.etOther.setVisibility(View.VISIBLE);
-            mBinder.cbSelected.setVisibility(View.GONE);
+        boolean checked = mSkillList.get(position).getIsSelected() == 1;
+
+        if (checked) {
+            holder.ivSelected.setBackgroundResource(R.drawable.ic_check_selected);
+            if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                mBinder.etOther.setVisibility(View.VISIBLE);
+                mBinder.etOther.setText(mSkillList.get(position).getOtherText());
+//                etOtherTemp = mBinder.etOther;
+            }
         } else {
-            holder.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    boolean checked = mSkillList.get(position).getIsSelected() == 1;
-                    holder.cbSelected.setChecked(!checked);
-                    mSkillList.get(position).setIsSelected(!checked ? 1 : 0);
-                }
-            });
+            holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
+            if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                mBinder.etOther.setVisibility(View.GONE);
+            }
         }
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = mSkillList.get(position).getIsSelected() == 1;
+                LogUtils.LOGD(TAG, "checked " + checked);
+
+                if (!checked) {
+                    holder.ivSelected.setBackgroundResource(R.drawable.ic_check_selected);
+                } else {
+                    holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
+                }
+
+                if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                    if (!checked) {
+                        mBinder.etOther.setVisibility(View.VISIBLE);
+//                        etOtherTemp = mBinder.etOther;
+
+                    } else {
+                        mBinder.etOther.setVisibility(View.GONE);
+                    }
+                }
+
+                mSkillList.get(position).setIsSelected(!checked ? 1 : 0);
+            }
+        });
+
+        holder.etOther.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mSkillList.get(position).setOtherText(s.toString());
+            }
+        });
     }
 
     @Override
@@ -72,18 +126,17 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
         return mSkillList.size();
     }
 
-
     class MyViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout layout;
         TextView tvSkillName;
-        CheckBox cbSelected;
-        CustomEditText etOther;
+        ImageView ivSelected;
+        EditText etOther;
 
         MyViewHolder(View view) {
             super(view);
             layout = mBinder.layoutTop;
             tvSkillName = mBinder.tvSkillName;
-            cbSelected = mBinder.cbSelected;
+            ivSelected = mBinder.ivSelected;
             etOther = mBinder.etOther;
         }
     }

@@ -15,11 +15,13 @@ public class SubSkill implements Parcelable{
     private String skillName;
     @SerializedName("userSkill")
     private int isSelected;
+    private String otherSkill;
 
-    protected SubSkill(Parcel in) {
+    private SubSkill(Parcel in) {
         id = in.readInt();
         parentId = in.readInt();
         skillName = in.readString();
+        otherSkill = in.readString();
         isSelected = in.readInt();
     }
 
@@ -67,6 +69,14 @@ public class SubSkill implements Parcelable{
         this.isSelected = isSelected;
     }
 
+    public String getOtherText() {
+        return otherSkill;
+    }
+
+    public void setOtherText(String otherText) {
+        this.otherSkill = otherText;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -77,6 +87,7 @@ public class SubSkill implements Parcelable{
         dest.writeInt(id);
         dest.writeInt(parentId);
         dest.writeString(skillName);
+        dest.writeString(otherSkill);
         dest.writeInt(isSelected);
     }
 }

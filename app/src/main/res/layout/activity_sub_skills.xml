@@ -6,12 +6,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
-        android:paddingTop="20dp"
-        android:layout_marginStart="60dp"
+        android:paddingTop="@dimen/margin_29"
+        android:paddingBottom="@dimen/margin_20"
+        android:layout_marginStart="@dimen/margin_80"
         android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_skills"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

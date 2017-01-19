@@ -1,11 +1,14 @@
 package com.appster.dentamatch.ui.profile.workexperience;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +18,7 @@ import com.appster.dentamatch.databinding.ActivitySubSkillsBinding;
 import com.appster.dentamatch.model.SubSkill;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     private ActivitySubSkillsBinding mBinder;
 
     private SubSkillsAdapter mSkillsAdapter;
+    private ArrayList<SubSkill> subSkills;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,15 +39,32 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_sub_skills);
         initViews();
 
-        Bundle bundle = getIntent().getBundleExtra(Constants.EXTRA_SUB_SKILLS);
-        ArrayList<SubSkill> subSkills = null;
+//        Bundle bundle = getIntent().getBundleExtra(Constants.EXTRA_SUB_SKILLS);
 
-
-        if (bundle != null) {
-            subSkills = bundle.getParcelableArrayList(Constants.BundleKey.SUB_SKILLS);
+        if (getIntent() != null) {
+            subSkills = getIntent().getParcelableArrayListExtra(Constants.BundleKey.SUB_SKILLS);
         }
 
         setAdapter(subSkills);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelableArrayList(Constants.BundleKey.SUB_SKILLS, subSkills);
+//        if(!TextUtils.isEmpty(mSkillsAdapter.etOtherTemp.getText().toString())) {
+
+        Intent intent = new Intent();
+//        subSkills.get(subSkills.size() - 1).setOtherText(mSkillsAdapter.etOtherTemp.getText().toString());
+        intent.putExtra(Constants.EXTRA_SUB_SKILLS, subSkills);
+
+        setResult(901, intent);
+        finish();
+//        }else{
+//            Utils.showToast(SubSkillsActivity.this,getString(R.string.blank_other_alert));
+//        }
     }
 
     private void initViews() {
@@ -57,8 +79,6 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
 
-//            case R.id.btn_next:
-////                getSkillsListApi();
         }
     }
 

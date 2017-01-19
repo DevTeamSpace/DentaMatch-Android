@@ -29,7 +29,7 @@
             android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />
 
         <activity
-            android:name=".ui.common.SplashActivity"
+            android:name=".ui.profile.workexperience.SkillsActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
@@ -108,15 +108,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <activity
+        <!--<activity
             android:name=".ui.profile.workexperience.SkillsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"/>-->
+
+        <!--<activity-->
+            <!--android:name=".ui.profile.workexperience.SkillsActivity1"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/NoActionBar"/>-->
 
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar.LIGHT" />
+            android:theme="@style/NoActionBar.LIGHT"
+            android:windowSoftInputMode="stateHidden"/>
 
     </application>
 

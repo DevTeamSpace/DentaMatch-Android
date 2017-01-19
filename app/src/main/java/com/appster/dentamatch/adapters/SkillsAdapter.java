@@ -1,19 +1,18 @@
 package com.appster.dentamatch.adapters;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,7 +20,6 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemSkillBinding;
 import com.appster.dentamatch.model.ParentSkill;
 import com.appster.dentamatch.model.SubSkill;
-import com.appster.dentamatch.ui.profile.workexperience.SubSkillsActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.widget.CustomEditText;
@@ -40,10 +38,14 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MyViewHold
     private ItemSkillBinding mBinder;
     private Context mContext;
     private int windowWidth;
+    private Activity activity;
+    private OnSkillClick mListener;
+    public EditText etOtherTemp;
 
-    public SkillsAdapter(List<ParentSkill> skillList, Context context) {
+    public SkillsAdapter(List<ParentSkill> skillList, Context context, OnSkillClick listener) {
         this.mSkillList = skillList;
         this.mContext = context;
+        mListener = listener;
     }
 
     @Override
@@ -57,39 +59,66 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MyViewHold
         int height = displaymetrics.heightPixels;
         windowWidth = displaymetrics.widthPixels;
 
-        LogUtils.LOGD(TAG, "WIDTH " + windowWidth);
+//        LogUtils.LOGD(TAG, "WIDTH " + windowWidth);
 
         return new MyViewHolder(mBinder.getRoot());
     }
 
+    public List<ParentSkill> getmSkillList() {
+        return mSkillList;
+    }
+
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final ParentSkill skill = mSkillList.get(position);
 
 //        LogUtils.LOGD("SkillsAdapt", "Skill "+ skill.getSkillName());
         holder.tvSkillName.setText(skill.getSkillName());
+        holder.etOther.setText(skill.getOtherSkill());
+        holder.layoutSkills.setTag(position);
 
 //        holder.layoutSkills.measure(0, 0);
 
 //        LogUtils.LOGD(TAG, "Skills layout " + holder.layoutSkills.getMeasuredWidth());
 
-        if (skill.getSkillName().equals("Other")) {
+        if (skill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
             holder.etOther.setVisibility(View.VISIBLE);
             holder.ivArrow.setVisibility(View.GONE);
+            etOtherTemp=holder.etOther;
+
+            holder.etOther.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mSkillList.get(position).setOtherSkill(s.toString());
+                }
+            });
 
         } else {
+            holder.etOther.setVisibility(View.GONE);
+
             holder.layoutSkills.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(Constants.BundleKey.SUB_SKILLS, skill.getSubSkills());
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelableArrayList(Constants.BundleKey.SUB_SKILLS, skill.getSubSkills());
+//
+//                    Intent intent = new Intent(mContext, SubSkillsActivity.class);
+//                    intent.putExtra(Constants.EXTRA_SUB_SKILLS, bundle);
 
-                    Intent intent = new Intent(mContext, SubSkillsActivity.class);
-                    intent.putExtra(Constants.EXTRA_SUB_SKILLS, bundle);
-
-                    mContext.startActivity(intent);
+//                    ((SkillsActivity) mContext).startActivityForResult(intent, 901);
+                    mListener.onItemSelected(skill.getSubSkills(), (Integer) holder.layoutSkills.getTag());
                 }
             });
         }
@@ -97,7 +126,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MyViewHold
 //        if (position == 0) {
 
 //            setSkillsBricks(holder.layoutBricks, mSkillList.get(position).getSubSkills());
-            setSkillsBricks(holder.layoutSkills, holder.layoutSkillsInner, mSkillList.get(position).getSubSkills());
+//            setSkillsBricks(holder.layoutSkills, holder.layoutSkillsInner, mSkillList.get(position).getSubSkills());
 
 //        }
     }
@@ -198,6 +227,10 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MyViewHold
             ivArrow = mBinder.ivRightArrow;
             etOther = mBinder.etOther;
         }
+    }
+
+    public interface OnSkillClick {
+        public void onItemSelected(ArrayList<SubSkill> subSkillList, int position);
     }
 }
 
