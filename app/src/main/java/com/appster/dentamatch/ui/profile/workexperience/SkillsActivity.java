@@ -29,8 +29,8 @@ import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
-import com.special.ResideMenu.ResideMenu;
-import com.special.ResideMenu.ResideMenuItem;
+//import com.special.ResideMenu.ResideMenu;
+//import com.special.ResideMenu.ResideMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ import retrofit2.Call;
 public class SkillsActivity extends BaseActivity implements View.OnClickListener, SkillsAdapter.OnSkillClick {
     private static final String TAG = "Skills";
     private ActivitySkillsBinding mBinder;
-    private ResideMenu resideMenu;
+//    private ResideMenu resideMenu;
 
     private SkillsAdapter mSkillsAdapter;
     private Button btnNext;
@@ -212,35 +212,35 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    private void setResideMenu() {
-        // attach to current activity;
-        resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.gradient_shape_register);
-        resideMenu.attachToActivity(this);
-        resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
-
-//         create menu items;
-        String titles[] = {"Home", "Profile", "Calendar", "Settings"};
-//        int icon[] = { R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder,
-//                R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder };
-
-        int icon[] = {0};
-
-        View view = LayoutInflater.from(this).inflate(R.layout.item_school, null);
-        resideMenu.addView(view);
-
-        for (int i = 0; i < titles.length; i++) {
-//            ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
-            ResideMenuItem item = new ResideMenuItem(this, icon[0], titles[i]);
-            item.setOnClickListener(this);
-            resideMenu.addMenuItem(item, ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
-
-            item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LogUtils.LOGD(TAG, "Menu click");
-                }
-            });
-        }
-    }
+//    private void setResideMenu() {
+//        // attach to current activity;
+//        resideMenu = new ResideMenu(this);
+//        resideMenu.setBackground(R.drawable.gradient_shape_register);
+//        resideMenu.attachToActivity(this);
+//        resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
+//
+////         create menu items;
+//        String titles[] = {"Home", "Profile", "Calendar", "Settings"};
+////        int icon[] = { R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder,
+////                R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder };
+//
+//        int icon[] = {0};
+//
+//        View view = LayoutInflater.from(this).inflate(R.layout.item_school, null);
+//        resideMenu.addView(view);
+//
+//        for (int i = 0; i < titles.length; i++) {
+////            ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
+//            ResideMenuItem item = new ResideMenuItem(this, icon[0], titles[i]);
+//            item.setOnClickListener(this);
+//            resideMenu.addMenuItem(item, ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
+//
+//            item.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    LogUtils.LOGD(TAG, "Menu click");
+//                }
+//            });
+//        }
+//    }
 }
