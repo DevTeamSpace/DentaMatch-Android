@@ -10,21 +10,31 @@ public class LicenceRequest {
     private int jobTitleId;
 
 
-    public void setJobTitleId(int jobTitleId) {
-        this.jobTitleId = jobTitleId;
+
+
+    public String getLicense() {
+        return license;
     }
 
     public void setLicense(String license) {
         this.license = license;
     }
 
+    public String getState() {
+        return state;
+    }
+
     public void setState(String state) {
         this.state = state;
     }
 
+    public int getJobTitleId() {
+        return jobTitleId;
+    }
 
-
-
+    public void setJobTitleId(int jobTitleId) {
+        this.jobTitleId = jobTitleId;
+    }
 }
 
 

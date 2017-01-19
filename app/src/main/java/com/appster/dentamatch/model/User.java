@@ -10,7 +10,21 @@ public class User {
     public String firstName;
     public String lastName;
     public String profileImage;
+    public String profilePic;
     public String userName;
     public String accountID;
     public String accountType;
+    public String dentalStateBoard;
+    public String licenseNumber;
+    public String state;
+    public String aboutMe;
+    int id;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

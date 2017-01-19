@@ -81,7 +81,6 @@ public class HomeActivity extends BaseActivity {
                         .selectedIcon(getResources().getDrawable(R.drawable.nav_message_selected))
 
                         .title(getResources().getString(R.string.nav_message))
-                        .badgeTitle("bdb")
                         .build());
         models.add(
                 new NavigationTabBar.Model.Builder(

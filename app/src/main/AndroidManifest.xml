@@ -59,32 +59,35 @@
         <activity
             android:name=".ui.profile.CreateProfileActivity1"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ui.profile.CreateProfileActivity2"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar"
+            />
         <activity
             android:name=".ui.profile.workexperience.WorkExperienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.profile.workexperience.ViewAndEditWorkExperienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".ui.profile.workexperience.WorkExpListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.profile.workexperience.WorkExperienceDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateHidden"
+            />
         <activity
             android:name=".ui.profile.CertificateActivity"
             android:screenOrientation="portrait"
@@ -111,12 +114,13 @@
         <activity
             android:name=".ui.profile.workexperience.SkillsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar">
+
+        </activity>
         <activity
             android:name=".ui.settings.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"></activity>
-            android:theme="@style/NoActionBar"/>
 
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"

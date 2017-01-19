@@ -120,7 +120,18 @@
                 android:textColor="@color/warm_gray_color"
                 android:textSize="@dimen/text_size_normal"
                 app:customFont="@string/font_regular" />
-
+            <com.doodle.android.chips.ChipsView
+                android:id="@+id/chipsView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                app:cv_vertical_spacing="5dp"
+                app:cv_text_color="#199"
+                app:cv_text_color_clicked="#180"
+                app:cv_text_color_error_clicked="#000"
+                app:cv_icon_placeholder="@null"
+                app:cv_icon_delete="@null"
+                />
             <include
                 android:id="@+id/cell_dental_state_board"
                 layout="@layout/layout_cell_certificates" />

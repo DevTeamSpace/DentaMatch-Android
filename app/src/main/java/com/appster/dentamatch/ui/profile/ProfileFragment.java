@@ -25,6 +25,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private FragmentProfileBinding profileBinding;
     private String TAG = "ProfileFragment-";
 
+
     public static ProfileFragment newInstance() {
         ProfileFragment frag = new ProfileFragment();
         Bundle args = new Bundle();
@@ -71,6 +72,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profileBinding.cellDentalStateBoard.tvCertificatesName.setText(getString(R.string.dental_state_board));
 
         profileBinding.cellAffiliation.tvCertificatesName.setText(getString(R.string.title_affiliation));
+
+
+        profileBinding.chipsView.getEditText().setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
+        profileBinding.chipsView.getEditText().setFocusable(false);
+        profileBinding.chipsView.getEditText().setCursorVisible(false);
+        profileBinding.chipsView.getEditText().setFocusableInTouchMode(false);
+        profileBinding.chipsView.getEditText().setLongClickable(false);
+        profileBinding.chipsView.getEditText().setClickable(false);
+        profileBinding.chipsView.addChip("Ram kumar", null, null, true);
+        profileBinding.chipsView.addChip("Ram kumar", null, null, true);
+        profileBinding.chipsView.addChip("Ram kumar", null, null, true);
+        profileBinding.chipsView.addChip("Ram kumar", null, null, true);
+        profileBinding.chipsView.addChip("Ram kumar", null, null, true);
+        profileBinding.chipsView.addChip("Ram ", null, null, true);
+        profileBinding.chipsView.addChip("Ram ", null, null, true);
+        profileBinding.chipsView.addChip("Ram ", null, null, true);
+        profileBinding.chipsView.addChip("Ram ", null, null, true);
+        profileBinding.chipsView.addChip("Ram ", null, null, true);
+        profileBinding.chipsView.addChip("kqnfk safbkabfob ", null, null, true);
+        profileBinding.chipsView.addChip("Ram ", null, null, true);
+        profileBinding.chipsView.addChip("Ramknasfln ", null, null, true);
+        profileBinding.chipsView.addChip("Ram kabd kjsbafa kjasbfk kafbk ksafb", null, null, true);
 
     }
 
