@@ -63,12 +63,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         mBinder.layoutWorkExpViewEdit.tvExperinceWorkExp.setOnClickListener(this);
         mBinder.layoutWorkExpViewEdit.etJobTitle.setOnClickListener(this);
         mBinder.toolbarWorkExpView.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
-        try {
-            mBinder.layoutWorkExpViewEdit.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
-            expMonth = PreferenceUtil.getYear() * 12 + PreferenceUtil.getMonth();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         setViewData();
         if (position == 0) {
@@ -87,6 +82,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     }
 
     private void setViewData() {
+        selectedJobtitle = workExpList.get(position).getJobtitleName();
+        jobTitleId = workExpList.get(position).getJobTitleId();
+        expMonth = workExpList.get(position).getMonthsOfExpereince();
         mBinder.layoutWorkExpViewEdit.etOfficeCity.setText(workExpList.get(position).getCity());
         mBinder.layoutWorkExpViewEdit.etOfficeName.setText(workExpList.get(position).getOfficeName());
         mBinder.layoutWorkExpViewEdit.etJobTitle.setText(workExpList.get(position).getJobtitleName());
@@ -257,7 +255,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     }
 
     @Override
-    public void onJobTitleSelection(String title, int titleId,int postion) {
+    public void onJobTitleSelection(String title, int titleId, int postion) {
         selectedJobtitle = title;
         jobTitleId = titleId;
 

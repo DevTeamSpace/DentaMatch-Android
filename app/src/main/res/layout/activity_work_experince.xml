@@ -91,11 +91,15 @@
                         android:layout_marginLeft="@dimen/margin_normal"
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/bg_slection_edit_text"
-                        android:hint="@string/lable_job_title"
-                        android:paddingTop="@dimen/padding_drawable"
+                        android:drawablePadding="@dimen/padding_drawable"
+                        android:drawableRight="@drawable/ic_down_arrow"
                         android:focusable="false"
-                        android:focusableInTouchMode="false"/>
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/lable_job_title"
+                        android:longClickable="false"
+                        android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_work_exp"
                     android:layout_width="match_parent"
@@ -118,6 +122,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:hint="@string/year_of_experice"
+                        android:longClickable="false"
                         android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -143,6 +148,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:hint="@string/office_name"
+                        android:focusable="true"
                         android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
 

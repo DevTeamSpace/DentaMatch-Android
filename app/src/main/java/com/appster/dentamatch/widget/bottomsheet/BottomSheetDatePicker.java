@@ -117,7 +117,7 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
 
 //        mDateSelectedListener.onDateSelection(datePicker.getDayOfMonth() + " " + monthArray[datePicker.getMonth()] + ", " + datePicker.getYear());
 //        mDateSelectedListener.onDateSelection(datePicker.getDayOfMonth() + "-" + datePicker.getMonth() + ", " + datePicker.getYear());
-        mDateSelectedListener.onDateSelection(datePicker.getYear() + "-" + datePicker.getMonth() + 1 + "-" + datePicker.getDayOfMonth(), pos);
+        mDateSelectedListener.onDateSelection(datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth(), pos);
     }
 
     @Override

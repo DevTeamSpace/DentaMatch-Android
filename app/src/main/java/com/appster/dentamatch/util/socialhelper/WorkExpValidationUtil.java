@@ -51,20 +51,21 @@ public class WorkExpValidationUtil {
             return false;
         }
 
-
-        if (TextUtils.isEmpty(officeReference1Name)) {
-            Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.blank_refrence_name_alert));
-            return false;
-        }
+//
+//        if (TextUtils.isEmpty(officeReference1Name)) {
+//            Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.blank_refrence_name_alert));
+//            return false;
+//        }
         if (!TextUtils.isEmpty(reference1Email) && !android.util.Patterns.EMAIL_ADDRESS.matcher(reference1Email).matches()) {
             Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.valid_email_alert));
             return false;
         }
         if (isReference2==0) {
-            if (TextUtils.isEmpty(reference2Name)) {
-                Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.blank_refrence_name_alert));
-                return false;
-            }
+//            if (TextUtils.isEmpty(reference2Name)) {
+//                Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.blank_refrence_name_alert));
+//                return false;
+//            }
+
             if (!TextUtils.isEmpty(reference2Email) && !android.util.Patterns.EMAIL_ADDRESS.matcher(reference2Email).matches()) {
                 Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.valid_email_alert));
                 return false;

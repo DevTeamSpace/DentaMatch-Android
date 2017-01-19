@@ -146,7 +146,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
         }
         if (!isImageUploaded) {
             Utils.showToast(CertificateActivity.this, getString(R.string.blank_certificate_photo_alert));
-
+            return false;
         }
         return true;
     }
@@ -206,8 +206,8 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
             Log.d("Tag", "file path" + mFilePath);
 
             if (mFilePath != null) {
-//                ivProfile.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, 100, 100));
-                Picasso.with(CertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).into(ivTemp);
+                ivTemp.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE));
+//                Picasso.with(CertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).into(ivTemp);
                 uploadCertificateImageApi(mFilePath, certificateId);
 
             }

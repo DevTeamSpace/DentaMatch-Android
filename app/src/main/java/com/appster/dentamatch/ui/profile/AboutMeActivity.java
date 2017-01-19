@@ -66,6 +66,7 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                 onBackPressed();
                 break;
             case R.id.btn_next:
+                hideKeyboard();
                 if (checkValidation()) {
                     postboutMeAData(prepareRequest());
 
@@ -76,8 +77,9 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
     }
 
     private boolean checkValidation() {
-        if (!TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString())) {
+        if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_summary_alert));
+            return  false;
         }
 
         return true;
@@ -99,7 +101,7 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-                    startActivity(new Intent(AboutMeActivity.this, AboutMeActivity.class));
+//                    startActivity(new Intent(AboutMeActivity.this, AboutMeActivity.class));
 
                 }
             }
