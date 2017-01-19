@@ -63,7 +63,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         btnNext = mBinder.btnNext;
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
-        mBinder.layoutProfileHeader.tvTitle.setText(getString(R.string.header_skills_exp));
+//        mBinder.layoutProfileHeader.tvTitle.setText(getString(R.string.header_skills_exp));
 //        mBinder.recyclerSkills.setOnClickListener(this);
         btnNext.setOnClickListener(this);
 
@@ -105,6 +105,8 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
             LogUtils.LOGD(TAG, subSkills.size() + " items");
 
             mParentSkillList.get(mSkillPosition).setSubSkills(subSkills);
+
+            mSkillsAdapter.notifyDataSetChanged();
         }
     }
 
