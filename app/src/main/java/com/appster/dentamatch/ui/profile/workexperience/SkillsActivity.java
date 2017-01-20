@@ -29,8 +29,8 @@ import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
-import com.special.ResideMenu.ResideMenu;
-import com.special.ResideMenu.ResideMenuItem;
+//import com.special.ResideMenu.ResideMenu;
+//import com.special.ResideMenu.ResideMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ import retrofit2.Call;
 public class SkillsActivity extends BaseActivity implements View.OnClickListener, SkillsAdapter.OnSkillClick {
     private static final String TAG = "Skills";
     private ActivitySkillsBinding mBinder;
-    private ResideMenu resideMenu;
+//    private ResideMenu resideMenu;
 
     private SkillsAdapter mSkillsAdapter;
     private Button btnNext;
@@ -64,12 +64,8 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         btnNext = mBinder.btnNext;
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
-//        mBinder.layoutProfileHeader.tvTitle.setText(getString(R.string.header_skills_exp));
-//        mBinder.recyclerSkills.setOnClickListener(this);
         btnNext.setOnClickListener(this);
-
 //        setResideMenu();
-
     }
 
 //    @Override
@@ -89,10 +85,11 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
             case R.id.iv_tool_bar_left:
                 hideKeyboard();
                 onBackPressed();
-
                 break;
+
             case R.id.btn_next:
                 updateSkillsListApi(prepareSkillsUpdateRequest());
+                break;
         }
     }
 
@@ -212,7 +209,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    private void setResideMenu() {
+    /*private void setResideMenu() {
         // attach to current activity;
         resideMenu = new ResideMenu(this);
         resideMenu.setBackground(R.drawable.gradient_shape_register);
@@ -242,5 +239,5 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 }
             });
         }
-    }
+    }*/
 }

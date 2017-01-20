@@ -27,6 +27,7 @@ import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.widget.CustomEditText;
 import com.doodle.android.chips.views.ChipsEditText;
 import com.squareup.picasso.Picasso;
+import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,10 +58,10 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mContext = context;
         mListener = listener;
 
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int height = displaymetrics.heightPixels;
-        windowWidth = displaymetrics.widthPixels;
+//        DisplayMetrics displaymetrics = new DisplayMetrics();
+//        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//        int height = displaymetrics.heightPixels;
+//        windowWidth = displaymetrics.widthPixels;
     }
 
     @Override
@@ -70,11 +71,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             //inflate your layout and pass it to view holder
             mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_skill, parent, false));
-
-//            DisplayMetrics displaymetrics = new DisplayMetrics();
-//            ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//            int height = displaymetrics.heightPixels;
-//            windowWidth = displaymetrics.widthPixels;
 
             return new ViewHolderItem(mBinder.getRoot());
         } else if (viewType == TYPE_HEADER) {
@@ -86,23 +82,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
-
-
-//    mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
-//            .inflate(R.layout.item_skill, parent, false));
-//
-//    DisplayMetrics displaymetrics = new DisplayMetrics();
-//    ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//    int height = displaymetrics.heightPixels;
-//    windowWidth = displaymetrics.widthPixels;
-//
-////        LogUtils.LOGD(TAG, "WIDTH " + windowWidth);
-//
-//    return new MyViewHolder(mBinder.getRoot());
-    }
-
-    public List<ParentSkill> getmSkillList() {
-        return mSkillList;
     }
 
     @Override
@@ -128,10 +107,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             holder.etOther.setText(skill.getOtherSkill());
             holder.layoutSkills.setTag(position - 1);
 
-//        holder.layoutSkills.measure(0, 0);
-
-//        LogUtils.LOGD(TAG, "Skills layout " + holder.layoutSkills.getMeasuredWidth());
-
             if (skill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                 holder.etOther.setVisibility(View.VISIBLE);
                 holder.ivArrow.setVisibility(View.GONE);
@@ -154,6 +129,8 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 });
 
+                holder.flowLayout.setVisibility(View.GONE);
+
             } else {
                 holder.etOther.setVisibility(View.GONE);
 
@@ -173,90 +150,11 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 });
 
-                setSkillsBricks(holder.layoutSkills, holder.layoutSkillsInner, mSkillList.get(position - 1).getSubSkills());
+                holder.flowLayout.setVisibility(View.VISIBLE);
+                holder.flowLayout.removeAllViews();
+
+                setSkillsBricks(holder.flowLayout, mSkillList.get(position - 1).getSubSkills());
             }
-        }
-    }
-
-    private void setChips() {
-//        ChipsEditText chipsEditText = new ChipsEditText()
-    }
-
-    private void setSkillsBricks(RelativeLayout layoutSkills, RelativeLayout layoutSkillsInner, ArrayList<SubSkill> listSkills) {
-
-        RelativeLayout layoutBricks = new RelativeLayout(mContext);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMarginStart(10);
-        params.setMarginEnd(20);
-
-        layoutSkills.addView(layoutBricks, params);
-        params.addRule(RelativeLayout.BELOW, layoutSkillsInner.getId());
-
-        int prevId = 0, currentId = 0, upperId = 0;
-        int width = 0;
-
-//        layout.setVisibility(View.VISIBLE);
-//        layout.measure(0, 0);
-        layoutBricks.measure(0, 0);
-//        int totalWidth = layoutBricks.getMeasuredWidth();
-
-//            layoutBricks.removeAllViews();
-
-        for (int i = 0; i < listSkills.size() - 1; i++) {
-
-
-            if (listSkills.get(i).getIsSelected() == 1) {
-
-
-                prevId = currentId;
-
-                currentId = View.generateViewId();
-
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//            layoutParams.setMarginStart(10);
-//            layoutParams.setMarginEnd(10);
-                layoutParams.setMargins(10, 0, 10, 20);
-
-                TextView textView = new TextView(mContext);
-                textView.setId(currentId);
-                textView.setSingleLine();
-                textView.setEllipsize(TextUtils.TruncateAt.END);
-                textView.setBackgroundResource(R.drawable.edit_text_selector);
-                textView.setText(listSkills.get(i).getSkillName());
-                textView.measure(0, 0);
-
-                LogUtils.LOGD(TAG, windowWidth + " Width before " + width);
-
-                width += textView.getMeasuredWidth();
-
-                LogUtils.LOGD(TAG, "Width after " + width);
-
-                layoutBricks.addView(textView, layoutParams);
-
-//            if (i > 0) {
-                if (width < windowWidth) {
-                    layoutParams.addRule(RelativeLayout.BELOW, upperId);
-                    layoutParams.addRule(RelativeLayout.RIGHT_OF, prevId);
-                } else {
-                    layoutParams.addRule(RelativeLayout.BELOW, prevId);
-                    width = textView.getMeasuredWidth();
-                    upperId = prevId;
-                }
-            }
-//            }
-
-
-//            LogUtils.LOGD(TAG, "Width (W, T) " + width + ", " + windowWidth);
-        }
-    }
-
-    private int calculateRule(int totalWidth, int width) {
-        int half = totalWidth / 2;
-
-        if (width > totalWidth) {
-            return 0;
-        } else {
-            return 1;
         }
     }
 
@@ -277,6 +175,38 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return position == 0;
     }
 
+    private void setSkillsBricks(FlowLayout flowLayout, ArrayList<SubSkill> listSkills) {
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMarginStart(10);
+        params.setMarginEnd(20);
+
+        for (int i = 0; i < listSkills.size(); i++) {
+            if (listSkills.get(i).getIsSelected() == 1) {
+
+                FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
+                        FlowLayout.LayoutParams.WRAP_CONTENT);
+
+                layoutParams.setMargins(10, 0, 10, 20);
+
+                String text = listSkills.get(i).getSkillName();
+
+                if(text.equalsIgnoreCase(Constants.OTHERS)){
+                    text = Constants.OTHERS;
+                }
+
+                TextView textView = new TextView(mContext);
+                textView.setSingleLine();
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setBackgroundResource(R.drawable.edit_text_selector);
+                textView.setText(text);
+
+                flowLayout.addView(textView, layoutParams);
+            }
+        }
+    }
+
     private class ViewHolderHeader extends RecyclerView.ViewHolder {
         ViewHolderHeader(View view) {
             super(view);
@@ -286,6 +216,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private class ViewHolderItem extends RecyclerView.ViewHolder {
         RelativeLayout layoutSkills;
         RelativeLayout layoutSkillsInner;
+        FlowLayout flowLayout;
         //        RelativeLayout layoutBricks;
         TextView tvSkillName;
         ImageView ivArrow;
@@ -295,25 +226,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(view);
             layoutSkills = mBinder.layoutSkillsTop;
             layoutSkillsInner = mBinder.layoutSkillsInner;
-//            layoutBricks = mBinder.layoutSkillBricks;
-            tvSkillName = mBinder.tvSkillName;
-            ivArrow = mBinder.ivRightArrow;
-            etOther = mBinder.etOther;
-        }
-    }
-
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout layoutSkills;
-        RelativeLayout layoutSkillsInner;
-        //        RelativeLayout layoutBricks;
-        TextView tvSkillName;
-        ImageView ivArrow;
-        CustomEditText etOther;
-
-        MyViewHolder(View view) {
-            super(view);
-            layoutSkills = mBinder.layoutSkillsTop;
-            layoutSkillsInner = mBinder.layoutSkillsInner;
+            flowLayout=mBinder.flowLayoutChips;
 //            layoutBricks = mBinder.layoutSkillBricks;
             tvSkillName = mBinder.tvSkillName;
             ivArrow = mBinder.ivRightArrow;
@@ -323,6 +236,76 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public interface OnSkillClick {
         public void onItemSelected(ArrayList<SubSkill> subSkillList, int position);
+    }
+
+    /*private void setSkillsBricks(RelativeLayout layoutSkills, RelativeLayout layoutSkillsInner, ArrayList<SubSkill> listSkills) {
+
+        RelativeLayout layoutBricks = new RelativeLayout(mContext);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMarginStart(10);
+        params.setMarginEnd(20);
+
+        layoutSkills.addView(layoutBricks, params);
+        params.addRule(RelativeLayout.BELOW, layoutSkillsInner.getId());
+
+        int prevId = 0, currentId = 0, upperId = 0;
+        int width = 0;
+
+        layoutBricks.measure(0, 0);
+//        int totalWidth = layoutBricks.getMeasuredWidth();
+
+//        layoutBricks.removeAllViews();
+
+        for (int i = 0; i < listSkills.size() - 1; i++) {
+            if (listSkills.get(i).getIsSelected() == 1) {
+
+                prevId = currentId;
+
+                currentId = View.generateViewId();
+
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(10, 0, 10, 20);
+
+                TextView textView = new TextView(mContext);
+                textView.setId(currentId);
+                textView.setSingleLine();
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setBackgroundResource(R.drawable.edit_text_selector);
+                textView.setText(listSkills.get(i).getSkillName());
+                textView.measure(0, 0);
+
+                LogUtils.LOGD(TAG, windowWidth + " Width before " + width);
+
+                width += textView.getMeasuredWidth();
+
+                LogUtils.LOGD(TAG, "Width after " + width);
+
+                layoutBricks.addView(textView, layoutParams);
+
+                if (width < windowWidth) {
+                    layoutParams.addRule(RelativeLayout.BELOW, upperId);
+                    layoutParams.addRule(RelativeLayout.RIGHT_OF, prevId);
+                } else {
+                    layoutParams.addRule(RelativeLayout.BELOW, prevId);
+                    width = textView.getMeasuredWidth();
+                    upperId = prevId;
+                }
+            } else {
+//                layoutBricks.removeViewAt();
+            }
+        }
+    }*/
+
+    private int calculateRule(int totalWidth, int width) {
+        int half = totalWidth / 2;
+
+        if (width > totalWidth) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }
 
