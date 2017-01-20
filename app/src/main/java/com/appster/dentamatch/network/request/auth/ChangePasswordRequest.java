@@ -3,7 +3,7 @@ package com.appster.dentamatch.network.request.auth;
 /**
  * Created by virender on 20/01/17.
  */
-public class ChangePassowrdRequest {
+public class ChangePasswordRequest {
     private String oldPassword;
     private String newPassword;
     private String confirmNewPassword;

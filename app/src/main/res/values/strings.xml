@@ -208,6 +208,10 @@
     <string name="office_location">OFFICE LOCATION</string>
     <string name="contact_info">CONTACT INFORMATION</string>
     <string name="yrs">yrs</string>
+    <string name="blank_alert_old_password">Old password can never blank.</string>
+    <string name="blank_alert_new_password">New password can never blank.</string>
+    <string name="blank_alert_confirm_password">Confirm password can never blank.</string>
+    <string name="alert_reset_password_mismatch">New password and confirm password should same.</string>
 
 
 </resources>

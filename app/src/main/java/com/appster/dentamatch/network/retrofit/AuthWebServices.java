@@ -1,7 +1,7 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.request.auth.ChangePassowrdRequest;
+import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
@@ -80,7 +80,7 @@ public interface AuthWebServices {
     Call<BaseResponse> saveAffiliation(@Body AffiliationPostRequest affiliationPostRequest);
 
     @POST(CHANGE_PASSWORD)
-    Call<BaseResponse> changePassword(@Body ChangePassowrdRequest changePassowrdRequest);
+    Call<BaseResponse> changePassword(@Body ChangePasswordRequest changePassowrdRequest);
 
     @POST(CERTIFICATION_UPDATE)
     Call<BaseResponse> saveCertificate(@Body CertificateRequest certificateRequest);
