@@ -124,6 +124,10 @@ public class Utils {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    public static void showToastLong(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
     /**
      * to set underline on a specific string
      *

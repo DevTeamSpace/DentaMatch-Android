@@ -43,6 +43,7 @@
     <dimen name="margin_21">21dp</dimen>
     <dimen name="margin_19">19dp</dimen>
     <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
 
     <dimen name="padding_drawable">10dp</dimen>
     <dimen name="padding_input_layout">3dp</dimen>

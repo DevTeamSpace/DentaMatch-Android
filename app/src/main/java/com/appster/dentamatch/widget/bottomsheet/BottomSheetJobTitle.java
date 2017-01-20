@@ -45,7 +45,7 @@ public class BottomSheetJobTitle {
             }
             pickerTitle.setDisplayedValues(jobTitle);
         }
-        pickerTitle.setWrapSelectorWheel(true);
+        pickerTitle.setWrapSelectorWheel(false);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -260,6 +260,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
+            if (getTextFromEditText(etLoginPassword).contains(" ")) {
+                Utils.showToast(getApplicationContext(), getString(R.string.password_contains_space));
+                return false;
+            }
             if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
                     getTextFromEditText(etLoginPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
@@ -286,6 +290,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
+            if (getTextFromEditText(etRegisterPassword).contains(" ")) {
+                Utils.showToast(getApplicationContext(), getString(R.string.password_contains_space));
+                return false;
+            }
             if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
                     getTextFromEditText(etRegisterPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
@@ -293,6 +301,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             if (TextUtils.isEmpty(tvPreferredJobLocation.getText().toString())) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
+                return false;
+            }
+            if(mPostalCode.isEmpty()) {
+                Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
             if (!isAccepted) {
@@ -336,6 +348,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     Utils.showToast(getApplicationContext(), response.getMessage());
                     isLogin = true;
                     showSelectedView(true);
+                    clearRegistrationFields();
 
 //                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
 //                    startActivity(intent);
@@ -365,7 +378,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private String getTextFromEditText(EditText et) {
-        return et.getText().toString();
+        return et.getText().toString().trim();
     }
 
     private void signInApi(LoginRequest loginRequest) {
@@ -422,5 +435,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    private void clearRegistrationFields() {
+        etRegisterFName.getText().clear();
+        etRegisterLName.getText().clear();
+        etRegisterEmail.getText().clear();
+        etRegisterPassword.getText().clear();
+        tvPreferredJobLocation.setText("");
+        etRegisterFName.getText().clear();
+        ivPolicy.setBackgroundResource(R.drawable.ic_check_empty);
+    }
+
+    private void clearLoginFields() {
+        etLoginEmail.getText().clear();
+        etLoginPassword.getText().clear();
     }
 }

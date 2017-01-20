@@ -32,9 +32,11 @@
     <string name="blank_fname_alert">First Name text can not be left blank.</string>
     <string name="blank_lname_alert">Last Name text can not be left blank.</string>
     <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
+    <string name="blank_postal_code">Unable to find postal code in the address, please retry or choose near by location on map.</string>
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
     <string name="valid_email_alert">Please provide a valid Email Id.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
+    <string name="password_contains_space">Password can not contain spaces.</string>
     <string name="error_something_wrong">Something went wrong!</string>
     <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_unable_reterive_email">Unable to retrieve email address from your social account.</string>
