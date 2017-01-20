@@ -253,7 +253,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                         workExpList.add(response.getWorkExpResponseData().getSaveList().get(0));
                     }
                     if (isMoveNext) {
-                        startActivity(new Intent(WorkExpListActivity.this, AffiliationActivity.class));
+                        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
 
                     } else {
                         inflateExpList(workExpList);

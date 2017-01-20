@@ -1,10 +1,12 @@
 package com.appster.dentamatch.ui.common;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -109,6 +111,7 @@ public abstract class BaseFragment extends Fragment {
             if (isAlive() && getBaseActivity() != null)
                 getBaseActivity().showProgressBar(title, message, view, delayTime);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -127,6 +130,7 @@ public abstract class BaseFragment extends Fragment {
     public void showProgressBar(String msg, int delayTime) {
         showProgressBar(null, msg, null, delayTime);
     }
+
 
     /*public void hideHud() {
         try {

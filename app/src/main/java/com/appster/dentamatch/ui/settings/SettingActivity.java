@@ -31,7 +31,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initViews() {
-
+        settingsBinding.toolbarSetting.tvToolbarGeneralLeft.setText(getString(R.string.header_settings));
+        settingsBinding.toolbarSetting.ivToolBarLeft.setOnClickListener(this);
+        settingsBinding.tvChnageLocation.setOnClickListener(this);
+        settingsBinding.tvResetPassword.setOnClickListener(this);
+        settingsBinding.tvLogout.setOnClickListener(this);
+        settingsBinding.tvTermNCondition.setOnClickListener(this);
+        settingsBinding.tvPrivacyPolicy.setOnClickListener(this);
     }
 
     @Override
@@ -44,6 +50,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.tv_reset_password:
                 startActivity(new Intent(SettingActivity.this, ResetPasswordActivity.class));
+
+                break;
+            case R.id.iv_tool_bar_left:
+                finish();
 
                 break;
             case R.id.tv_chnage_location:

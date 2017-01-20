@@ -12,6 +12,14 @@ public class WorkExpResponse extends BaseResponse {
     @SerializedName("result")
     private WorkExpResponseData workExpResponseData;
 
+
+//    @SerializedName("workExperience")
+//    private WorkExpResponseData workExpericenceProfile;
+//
+//    public WorkExpResponseData getWorkExpericenceProfile() {
+//        return workExpericenceProfile;
+//    }
+
     public WorkExpResponseData getWorkExpResponseData() {
         return workExpResponseData;
     }

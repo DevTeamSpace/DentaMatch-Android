@@ -87,7 +87,7 @@
                 android:paddingLeft="@dimen/margin_normal"
                 android:text="@string/dental_state_board"
                 android:textColor="@color/text_default_color"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_13"
                 app:customFont="@string/font_medium" />
 
             <View
@@ -132,7 +132,7 @@
                 android:paddingLeft="@dimen/margin_normal"
                 android:text="@string/lable_licence"
                 android:textColor="@color/text_default_color"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_13"
                 app:customFont="@string/font_medium" />
 
             <View

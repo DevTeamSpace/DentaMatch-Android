@@ -9,4 +9,8 @@ import com.google.gson.annotations.SerializedName;
 public class ProfileResponse extends BaseResponse {
     @SerializedName("result")
     private ProfileResponseData profileResponseData;
+
+    public ProfileResponseData getProfileResponseData() {
+        return profileResponseData;
+    }
 }

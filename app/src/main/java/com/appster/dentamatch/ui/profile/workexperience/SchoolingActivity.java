@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.profile.workexperience;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -69,6 +70,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.btn_next:
 //                addSchoolListApi();
+                startActivity(new Intent(this, SkillsActivity.class));
         }
     }
 

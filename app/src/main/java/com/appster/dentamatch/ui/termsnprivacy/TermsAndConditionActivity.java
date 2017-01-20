@@ -52,6 +52,7 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
             @Override
             public void run() {
 //                if (NetWorkCheck.isNetworkAvailable(TNCActivity.this)) {
+                processToShowDialog("", getString(R.string.please_wait), null);
                 mBinder.webviewTermAndCondition.setWebViewClient(new WebViewClient());
                 mBinder.webviewTermAndCondition.loadUrl(url);
 
@@ -96,6 +97,7 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
             // TODO Auto-generated method stub
 
             super.onPageFinished(view, url);
+            hideProgressBar();
 
         }
 

@@ -115,30 +115,19 @@
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_15"
-                android:gravity="center_horizontal"
+                android:gravity="center_vertical"
                 android:text="@string/label_accept_term_ncondition"
                 android:textColor="@color/warm_gray_color"
                 android:textSize="@dimen/text_size_normal"
                 app:customFont="@string/font_regular" />
-            <com.doodle.android.chips.ChipsView
-                android:id="@+id/chipsView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_normal"
-                app:cv_vertical_spacing="5dp"
-                app:cv_text_color="#199"
-                app:cv_text_color_clicked="#180"
-                app:cv_text_color_error_clicked="#000"
-                app:cv_icon_placeholder="@null"
-                app:cv_icon_delete="@null"
-                />
+
             <include
                 android:id="@+id/cell_dental_state_board"
-                layout="@layout/layout_cell_certificates" />
+                layout="@layout/item_profile_cell_certificate" />
 
             <include
                 android:id="@+id/cell_exp"
-                layout="@layout/layout_cell_certificates" />
+                layout="@layout/layout_profile_cell_header" />
 
             <LinearLayout
                 android:id="@+id/exp_inflater"
@@ -148,7 +137,7 @@
 
             <include
                 android:id="@+id/cell_schooling"
-                layout="@layout/layout_cell_certificates" />
+                layout="@layout/layout_profile_cell_header" />
 
             <LinearLayout
                 android:id="@+id/school_inflater"
@@ -158,7 +147,7 @@
 
             <include
                 android:id="@+id/cell_key_skill"
-                layout="@layout/layout_cell_certificates" />
+                layout="@layout/layout_profile_cell_header" />
 
             <LinearLayout
                 android:id="@+id/key_skill_inflater"
@@ -168,11 +157,50 @@
 
             <include
                 android:id="@+id/cell_affiliation"
-                layout="@layout/layout_cell_certificates" />
+                layout="@layout/layout_profile_cell_header" />
+
+            <org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+               android:id="@+id/flow_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                app:layoutDirection="ltr"
+
+                >
+
+            </org.apmem.tools.layouts.FlowLayout>
 
             <include
                 android:id="@+id/cell_licence"
-                layout="@layout/layout_cell_certificates" />
+                layout="@layout/layout_profile_cell_header" />
+
+            <LinearLayout
+                android:id="@+id/layout_licence_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:orientation="vertical">
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_licence_number"
+                    style="@style/text_view_normal"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:textColor="@color/text_default_color"
+                    android:textSize="@dimen/text_size_13"
+                    app:customFont="@string/font_bold" />
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_licence_state"
+                    style="@style/text_view_normal"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/text_default_color"
+                    android:textSize="@dimen/text_size_13"
+                    app:customFont="@string/font_regular" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/certification_inflater"

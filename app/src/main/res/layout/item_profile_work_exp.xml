@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_job_title"
+                style="@style/text_view_normal"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="job title"
+                android:textColor="@color/text_default_color"
+                android:textSize="@dimen/text_size_17"
+                app:customFont="@string/font_medium" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_exp_duration"
+                style="@style/text_view_normal"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="3.5 yrs"
+                android:textColor="@color/text_default_color"
+                android:textSize="@dimen/text_size_12"
+                app:customFont="@string/font_bold" />
+        </RelativeLayout>
+
+        <com.appster.dentamatch.widget.CustomTextView
+            style="@style/text_view_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_12"
+            android:text="@string/office_location"
+            android:textColor="@color/dark_state_blue_color"
+            android:textSize="@dimen/text_size_12"
+            app:customFont="@string/font_medium" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_name"
+            style="@style/text_view_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="Dr nancy"
+            android:textColor="@color/text_default_color"
+            android:textSize="@dimen/text_size_13"
+            app:customFont="@string/font_bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_address"
+            style="@style/text_view_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="618 mall road"
+            android:textColor="@color/text_default_color"
+            android:textSize="@dimen/text_size_13"
+            app:customFont="@string/font_regular" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            style="@style/text_view_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_12"
+            android:text="@string/contact_info"
+            android:textColor="@color/dark_state_blue_color"
+            android:textSize="@dimen/text_size_12"
+            app:customFont="@string/font_medium" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_reference_name"
+            style="@style/text_view_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="Dr Nancy"
+            android:textColor="@color/graish_brown_color"
+            android:textSize="@dimen/text_size_12"
+            app:customFont="@string/font_medium" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_reference_phone_number"
+            style="@style/text_view_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="Dr Nancy"
+            android:textColor="@color/graish_brown_color"
+            android:textSize="@dimen/text_size_12"
+            app:customFont="@string/font_medium" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_reference_email"
+            style="@style/text_view_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="Dr Nancy"
+            android:textColor="@color/graish_brown_color"
+            android:textSize="@dimen/text_size_12"
+            app:customFont="@string/font_medium" />
+    </LinearLayout>
+</layout>

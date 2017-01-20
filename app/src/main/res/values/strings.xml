@@ -194,14 +194,20 @@
     <string name="settings_terms">Terms &amp; Conditions</string>
     <string name="header_settings">SETTINGS</string>
     <string name="alert_logout">Do you really want to logout?</string>
+
+    <!--profile-->
     <string name="edit_label">Edit</string>
     <string name="add_dental_state_board">Add dental state board</string>
     <string name="add_affilitaion">Add professional affiliations</string>
     <string name="add_key_skill">Add skills category</string>
     <string name="add_school">Add schooling and certification</string>
     <string name="add_licence">Add license details</string>
+    <string name="add_certificate">Add certificate</string>
     <string name="title_experience">EXPERIENCE</string>
     <string name="title_schooling">SCHOOLING AND CERTIFICATION</string>
+    <string name="office_location">OFFICE LOCATION</string>
+    <string name="contact_info">CONTACT INFORMATION</string>
+    <string name="yrs">yrs</string>
 
 
 </resources>

@@ -23,6 +23,7 @@ import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
@@ -333,7 +334,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setFistName(getTextFromEditText(etRegisterFName));
                     PreferenceUtil.setLastName(getTextFromEditText(etRegisterLName));
                     Utils.showToast(getApplicationContext(), response.getMessage());
-                    isLogin=true;
+                    isLogin = true;
                     showSelectedView(true);
 
 //                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
@@ -380,7 +381,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
                     finish();
                 } else {

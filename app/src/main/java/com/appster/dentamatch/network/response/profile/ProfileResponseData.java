@@ -5,6 +5,11 @@ import com.appster.dentamatch.model.SchoolType;
 import com.appster.dentamatch.model.Skill;
 import com.appster.dentamatch.model.User;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
+import com.appster.dentamatch.network.request.certificates.CertificateRequest;
+import com.appster.dentamatch.network.response.affiliation.AffiliationData;
+import com.appster.dentamatch.network.response.certificates.CertificatesList;
+import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
+import com.appster.dentamatch.network.response.workexp.WorkExpResponseData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -16,6 +21,8 @@ public class ProfileResponseData {
 
     @SerializedName("user")
     private User user;
+    @SerializedName("workExperience")
+    private WorkExpResponseData workExperience;
 
     @SerializedName("dentalStateBoard")
     private DentalStateBoard dentalStateBoard;
@@ -27,5 +34,39 @@ public class ProfileResponseData {
     @SerializedName("skills")
     private ArrayList<Skill> skillArrayList;
     @SerializedName("affiliations")
-    private ArrayList<Skill> affiliationList;
+    private ArrayList<AffiliationData> affiliationList;
+    @SerializedName("certifications")
+    private ArrayList<CertificatesList> certificatesLists;
+
+    public User getUser() {
+        return user;
+    }
+
+    public WorkExpResponseData getWorkExperience() {
+        return workExperience;
+    }
+
+    public DentalStateBoard getDentalStateBoard() {
+        return dentalStateBoard;
+    }
+
+    public LicenceRequest getLicence() {
+        return licence;
+    }
+
+    public ArrayList<School> getSchoolArrayList() {
+        return schoolArrayList;
+    }
+
+    public ArrayList<Skill> getSkillArrayList() {
+        return skillArrayList;
+    }
+
+    public ArrayList<AffiliationData> getAffiliationList() {
+        return affiliationList;
+    }
+
+    public ArrayList<CertificatesList> getCertificatesLists() {
+        return certificatesLists;
+    }
 }

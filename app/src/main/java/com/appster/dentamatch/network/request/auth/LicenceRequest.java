@@ -6,11 +6,18 @@ package com.appster.dentamatch.network.request.auth;
 public class LicenceRequest {
 
     private String license;
+    private String licenseNumber;
     private String state;
     private int jobTitleId;
 
 
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
 
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
 
     public String getLicense() {
         return license;

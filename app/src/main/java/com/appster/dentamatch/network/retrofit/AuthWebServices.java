@@ -1,11 +1,13 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.request.auth.ChangePassowrdRequest;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
+import com.appster.dentamatch.network.request.skills.SkillsUpdateRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationPostRequest;
@@ -15,6 +17,7 @@ import com.appster.dentamatch.network.response.certificates.CertificateResponse;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
+import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.response.skills.SkillsResponse;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
@@ -38,6 +41,7 @@ public interface AuthWebServices {
     String UPDATE_LICENCE = "users/update-license";
     String JOB_TITLE_LIST = "list-jobtitle";
     String SKILLS_LIST = "list-skills";
+    String SKILLS_UPDATE = "users/update-skill";
     String SCHOOL_LIST = "users/school-list";
     String SCHOOL_ADD = "users/school-add";
     String CERTIFICATION_LIST = "list-certifications";
@@ -50,7 +54,10 @@ public interface AuthWebServices {
     //    String WORK_EXP_DELETE="users/work-experience-delete{id}";
     String WORK_EXP_DELETE = "users/work-experience-delete";
     String AFFILIATION_LIST = "users/affiliation-list";
+    String GET_PROFILE = "users/user-profile";
     String AFFILIATION_SAVE = "users/affiliation-save";
+    String CHANGE_PASSWORD = "users/change-password";
+    String LOGOUT = "users/sign-out";
 
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
@@ -63,12 +70,17 @@ public interface AuthWebServices {
 
     @DELETE(WORK_EXP_DELETE)
     Call<BaseResponse> workExpDelete(@Query("id") int id);
+    @DELETE(LOGOUT)
+    Call<BaseResponse> logout();
 
     @POST(ADD_WORK_EXP)
     Call<WorkExpResponse> addWorkExp(@Body WorkExpRequest workExpRequest);
 
     @POST(AFFILIATION_SAVE)
     Call<BaseResponse> saveAffiliation(@Body AffiliationPostRequest affiliationPostRequest);
+
+    @POST(CHANGE_PASSWORD)
+    Call<BaseResponse> changePassword(@Body ChangePassowrdRequest changePassowrdRequest);
 
     @POST(CERTIFICATION_UPDATE)
     Call<BaseResponse> saveCertificate(@Body CertificateRequest certificateRequest);
@@ -85,6 +97,9 @@ public interface AuthWebServices {
     @GET(SKILLS_LIST)
     Call<SkillsResponse> getSkillsList();
 
+    @POST(SKILLS_UPDATE)
+    Call<BaseResponse> updateSkills(@Body SkillsUpdateRequest skillsUpdateRequest);
+
     @GET(SCHOOL_LIST)
     Call<SchoolingResponse> getSchoolList();
 
@@ -96,6 +111,8 @@ public interface AuthWebServices {
 
     @GET(AFFILIATION_LIST)
     Call<AffiliationResponse> getAffiliationList();
+    @GET(GET_PROFILE)
+    Call<ProfileResponse> getProfile();
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);

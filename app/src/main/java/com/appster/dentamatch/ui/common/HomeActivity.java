@@ -1,10 +1,11 @@
 package com.appster.dentamatch.ui.common;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.navigationtabbar.NavigationTabBar;
@@ -41,7 +42,7 @@ public class HomeActivity extends BaseActivity {
      */
     private void initUI() {
         count = 0;
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         final String[] colors = getResources().getStringArray(R.array.default_preview);
         navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
         navigationTabBar.setInactiveColor(getResources().getColor(R.color.white_color));
@@ -136,6 +137,7 @@ public class HomeActivity extends BaseActivity {
 //            textHeader.setText(ITEMS[viewPager.getCurrentItem()]);
 
     }
+
     private void launchProfileFragment() {
         fragmentTransaction = fragmentManager.beginTransaction();
         String fragTagName = Constants.FRAGMENT_NAME.PROFILE_FRAGMENT;
@@ -145,7 +147,9 @@ public class HomeActivity extends BaseActivity {
                 .commit();
     }
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

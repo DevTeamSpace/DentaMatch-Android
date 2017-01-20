@@ -14,6 +14,7 @@ public class ParentSkill {
     private String skillName;
     @SerializedName("children")
     private ArrayList<SubSkill> subSkills;
+    private String otherSkill;
 
     public int getId() {
         return id;
@@ -46,4 +47,13 @@ public class ParentSkill {
     public void setSubSkills(ArrayList<SubSkill> subSkills) {
         this.subSkills = subSkills;
     }
+
+    public String getOtherSkill() {
+        return otherSkill;
+    }
+
+    public void setOtherSkill(String otherSkill) {
+        this.otherSkill = otherSkill;
+    }
+
 }

@@ -60,6 +60,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     private TextView tvTemp;
     private byte imageSourceType;
     private String certificateId = "";
+    private int position;
     private ArrayList<CertificatesList> certificateList = new ArrayList<>();
 
 
@@ -335,6 +336,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 @Override
                 public void onClick(View view) {
                     ivTemp = (ImageView) view;
+                    position = (Integer) ivCertificate.getTag();
                     certificateId = "" + certificateList.get((Integer) ivCertificate.getTag()).getId();
                     callBottomSheet();
 
@@ -353,7 +355,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void uploadCertificateImageApi(String filePath, String certificateId) {
+    private void uploadCertificateImageApi(final String filePath, String certificateId) {
         showProgressBar(getString(R.string.please_wait));
         File file = new File(filePath);
         RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
@@ -368,7 +370,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
 
                 if (response != null && response.getStatus() == 1) {
                     // showSnackBarFromTop(response.getMessage(), false);
-
+                    certificateList.get(position).setImage(filePath);
                 }
             }
 

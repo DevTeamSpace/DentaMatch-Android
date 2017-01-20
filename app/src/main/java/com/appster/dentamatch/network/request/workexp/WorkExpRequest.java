@@ -24,9 +24,10 @@ public class WorkExpRequest implements Parcelable {
     private String reference2Email;
     private String createdAt;
     private String jobtitleName;
-public WorkExpRequest(){
 
-}
+    public WorkExpRequest() {
+
+    }
 
     protected WorkExpRequest(Parcel in) {
         id = in.readString();

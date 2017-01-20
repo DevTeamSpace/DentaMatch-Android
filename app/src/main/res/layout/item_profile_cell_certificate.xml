@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_color"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cell_height"
+            android:background="@color/cell_color">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_alignParentTop="true"
+                android:background="@color/line_divider" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_certificates_name"
+                style="@style/text_view_normal"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:text="@string/dental_state_board"
+                android:textAllCaps="true"
+                android:textColor="@color/cell_text_color"
+                android:textSize="@dimen/text_size_13"
+                app:customFont="@string/font_medium" />
+
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@id/tv_edit"
+                style="@style/text_view_normal"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:paddingBottom="@dimen/margin_medium"
+                android:paddingLeft="@dimen/margin_medium"
+                android:paddingTop="@dimen/margin_medium"
+                android:text="@string/edit_label"
+                android:textColor="@color/cerulean_color"
+                android:textSize="@dimen/text_size_13"
+                app:customFont="@string/font_medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_alignParentBottom="true"
+                android:background="@color/line_divider" />
+
+
+        </RelativeLayout>
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_add_certificates"
+            style="@style/text_view_normal"
+            android:layout_margin="@dimen/margin_normal"
+            android:drawableLeft="@drawable/ic_plus_exp"
+            android:drawablePadding="@dimen/padding_drawable"
+            android:gravity="center"
+            android:text="@string/add_certificate"
+            android:textColor="@color/cell_text_color"
+            android:textSize="@dimen/text_size_normal"
+            app:customFont="@string/font_regular" />
+
+        <ImageView
+            android:id="@+id/iv_certificate_image"
+            android:layout_width="@dimen/profile_image_height"
+            android:layout_height="@dimen/profile_image_height"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_normal"
+            android:background="@drawable/profile_pic_placeholder"
+            android:visibility="gone" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_certificate_image_name"
+            style="@style/text_view_normal"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:text="@string/header_certification"
+            android:textColor="@color/cerulean_color"
+            android:textSize="@dimen/text_size_13"
+            android:visibility="gone"
+            app:customFont="@string/font_medium" />
+    </LinearLayout>
+</layout>

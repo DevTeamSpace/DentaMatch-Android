@@ -45,5 +45,6 @@
     <color name="nav_text_default_color">#b2b2b2</color>
     <color name="cerulean_color">#0480dc</color>
     <color name="warm_gray_color">#939393</color>
+    <color name="dark_state_blue_color">#192866</color>
 
 </resources>

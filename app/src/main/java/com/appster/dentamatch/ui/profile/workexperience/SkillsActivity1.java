@@ -9,6 +9,8 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySkillsBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
+//import com.special.ResideMenu.ResideMenu;
+//import com.special.ResideMenu.ResideMenuItem;
 
 /**
  * Created by ram on 12/01/17.
@@ -33,22 +35,24 @@ public class SkillsActivity1 extends BaseActivity implements View.OnClickListene
 //        resideMenu = new ResideMenu(this);
 //        resideMenu.setBackground(R.drawable.gradient_shape_register);
 //        resideMenu.attachToActivity(this);
-
-        // create menu items;
-        String titles[] = { "Home", "Profile", "Calendar", "Settings" };
-        int icon[] = { R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder,
-                R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder };
-
+//        resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
+//
+//        // create menu items;
+//        String titles[] = { "Home", "Profile", "Calendar", "Settings" };
+//        int icon[] = { R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder,
+//                R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder };
+//
 //        for (int i = 0; i < titles.length; i++){
 //            ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
 //            item.setOnClickListener(this);
-//            resideMenu.addMenuItem(item,  ResideMenu.DIRECTION_LEFT); // or  ResideMenu.DIRECTION_RIGHT
+//            resideMenu.addMenuItem(item,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
 //        }
     }
 
 //    @Override
 //    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        return resideMenu.dispatchTouchEvent(ev);
+////        return resideMenu.dispatchTouchEvent(ev);
+//        return null;
 //    }
 
     @Override
