@@ -15,7 +15,9 @@ import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
+import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -79,7 +81,7 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
     private boolean checkValidation() {
         if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_summary_alert));
-            return  false;
+            return false;
         }
 
         return true;
@@ -101,7 +103,10 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-//                    startActivity(new Intent(AboutMeActivity.this, AboutMeActivity.class));
+                    Intent intent = new Intent(AboutMeActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
 
                 }
             }
