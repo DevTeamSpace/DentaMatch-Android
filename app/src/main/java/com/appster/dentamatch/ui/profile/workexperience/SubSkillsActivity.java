@@ -68,6 +68,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initViews() {
+        mBinder.ivLeft.setOnClickListener(this);
     }
 
     @Override
@@ -78,7 +79,10 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
+            case R.id.iv_left:
+//                hideKeyboard();
+                onBackPressed();
+                break;
         }
     }
 

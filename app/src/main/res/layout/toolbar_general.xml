@@ -20,7 +20,7 @@
                 style="@style/text_view_normal"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/margin_normal"
-                android:layout_toRightOf="@+id/iv_tool_bar_left"
+                android:layout_toEndOf="@+id/iv_tool_bar_left"
                 android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_16"
                 app:customFont="@string/font_medium" />

@@ -27,6 +27,14 @@
             android:layout_above="@+id/btn_next"
             />
 
+        <!--<com.appster.dentamatch.widget.CustomEditText
+            android:id="@+id/et_other"
+            android:layout_below="@id/recycler_skills"
+            android:layout_width="match_parent"
+            android:textColor="@color/white_color"
+            android:text="jkfdjskf"
+            android:layout_height="wrap_content" />-->
+
         <com.appster.dentamatch.widget.CustomButton
             android:id="@+id/btn_next"
             style="@style/button_style"

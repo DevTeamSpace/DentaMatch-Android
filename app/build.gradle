@@ -169,6 +169,7 @@ dependencies {
     compile 'org.apmem.tools:layouts:1.10@aar'
 //    compile 'com.specyci:residemenu:1.6+'
 //    compile 'com.doodle.android:android-material-chips:1.1.0'
+    compile 'com.wefika:flowlayout:0.4.1'
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'
