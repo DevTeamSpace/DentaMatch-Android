@@ -166,7 +166,7 @@ dependencies {
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
 //    compile 'com.specyci:residemenu:1.6+'
-    compile 'com.doodle.android:android-material-chips:1.1.0'
+//    compile 'com.doodle.android:android-material-chips:1.1.0'
     compile 'com.wefika:flowlayout:0.4.1'
 }
 // ADD THIS AT THE BOTTOM
