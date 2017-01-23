@@ -29,8 +29,8 @@
     <string name="blank_email_alert">Email Id can not be left blank.</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
     <string name="blank_password_alert">Password can not be left blank.</string>
-    <string name="blank_fname_alert">First Name text can not be left blank.</string>
-    <string name="blank_lname_alert">Last Name text can not be left blank.</string>
+    <string name="blank_fname_alert">First Name text field can not be left blank.</string>
+    <string name="blank_lname_alert">Last Name text field can not be left blank.</string>
     <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
     <string name="blank_postal_code">Unable to find postal code in the address, please retry or choose near by location on map.</string>
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
