@@ -38,7 +38,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
-        mBinder.tvShowOldPassword.setText(getString(R.string.settings_reset_password).toUpperCase());
+        mBinder.toolbarResetPassword.tvToolbarGeneralLeft.setText(getString(R.string.settings_reset_password).toUpperCase());
         mBinder.btnSave.setOnClickListener(this);
         mBinder.tvShowConfirmPassword.setOnClickListener(this);
         mBinder.tvShowNewPassword.setOnClickListener(this);

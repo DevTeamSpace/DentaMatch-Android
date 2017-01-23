@@ -133,6 +133,18 @@
             android:name=".ui.common.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.workexperience.UpdateCertificateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.UpdateProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.workexperience.UpdateLicenseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
     </application>
 

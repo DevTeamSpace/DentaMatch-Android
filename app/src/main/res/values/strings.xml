@@ -215,6 +215,9 @@
     <string name="blank_alert_new_password">New password can never blank.</string>
     <string name="blank_alert_confirm_password">Confirm password can never blank.</string>
     <string name="alert_reset_password_mismatch">New password and confirm password should same.</string>
+    <string name="header_edit_profile">EDIT PROFILE</string>
+    <string name="job_type">Job Type</string>
+    <string name="location">Location</string>
 
 
 </resources>

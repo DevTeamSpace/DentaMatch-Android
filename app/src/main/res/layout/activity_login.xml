@@ -243,16 +243,6 @@
                         android:paddingTop="@dimen/padding_drawable"
                         android:textColor="@color/text_default_color" />
                 </android.support.design.widget.TextInputLayout>
-                <!--<include-->
-                <!--android:id="@+id/et_name"-->
-                <!--layout="@layout/layout_edit_text"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="60dp"-->
-                <!--android:layout_marginLeft="@dimen/margin_normal"-->
-                <!--android:layout_marginRight="@dimen/margin_normal"-->
-                <!--android:layout_marginTop="@dimen/margin_55"-->
-
-                <!--/>-->
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/register_input_layout_lname"
                     android:layout_width="match_parent"

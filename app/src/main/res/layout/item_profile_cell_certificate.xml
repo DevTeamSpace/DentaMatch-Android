@@ -32,7 +32,7 @@
 
 
             <com.appster.dentamatch.widget.CustomTextView
-                android:id="@id/tv_edit"
+                android:id="@+id/tv_edit"
                 style="@style/text_view_normal"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"

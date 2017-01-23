@@ -55,16 +55,13 @@ public class SplashActivity extends Activity implements Runnable {
 //        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
         if (PreferenceUtil.getIsOnBoarding()) {
             if (PreferenceUtil.getIsLogined()) {
-                startActivity(new Intent(SplashActivity.this, CreateProfileActivity1.class));
-//                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-
+//                startActivity(new Intent(SplashActivity.this, CreateProfileActivity1.class));
+                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
             } else {
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-
             }
         } else {
             startActivity(new Intent(SplashActivity.this, OnBoardingActivity.class));
-
         }
         finish();
     }
