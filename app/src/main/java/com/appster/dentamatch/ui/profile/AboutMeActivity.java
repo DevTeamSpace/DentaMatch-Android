@@ -106,7 +106,7 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                     Intent intent = new Intent(AboutMeActivity.this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+//                    startActivity(intent);
 
                 }
             }

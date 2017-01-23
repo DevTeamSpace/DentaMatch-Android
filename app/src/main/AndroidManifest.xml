@@ -29,7 +29,7 @@
             android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />
 
         <activity
-            android:name=".ui.profile.affiliation.AffiliationActivity"
+            android:name=".ui.common.SplashActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -105,10 +105,10 @@
             android:name=".ui.profile.AboutMeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-        <!--<activity-->
-            <!--android:name=".ui.profile.affiliation.AffiliationActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/NoActionBar" />-->
+        <activity
+            android:name=".ui.profile.affiliation.AffiliationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".ui.profile.workexperience.SkillsActivity"
@@ -120,14 +120,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <!--<activity
+        <activity
             android:name=".ui.profile.workexperience.SchoolingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />-->
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"
             android:screenOrientation="portrait"
+
             android:theme="@style/NoActionBar.LIGHT" />
         <activity
             android:name=".ui.common.HomeActivity"
