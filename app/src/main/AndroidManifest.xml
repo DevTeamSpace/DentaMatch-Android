@@ -33,8 +33,10 @@
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan">
-
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.auth.LoginActivity"
@@ -106,10 +108,10 @@
             android:name=".ui.profile.AboutMeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-        <!--<activity-->
-            <!--android:name=".ui.profile.affiliation.AffiliationActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/NoActionBar" />-->
+        <activity
+            android:name=".ui.profile.affiliation.AffiliationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".ui.profile.workexperience.SkillsActivity"
@@ -129,7 +131,6 @@
             android:theme="@style/NoActionBar"/>
 
 
-
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"
             android:screenOrientation="portrait"
@@ -138,13 +139,7 @@
         <activity
             android:name=".ui.common.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-
-            </intent-filter>
-        </activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui.profile.workexperience.UpdateCertificateActivity"
             android:screenOrientation="portrait"

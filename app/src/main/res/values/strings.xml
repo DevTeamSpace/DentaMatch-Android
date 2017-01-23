@@ -29,8 +29,8 @@
     <string name="blank_email_alert">Email Id can not be left blank.</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
     <string name="blank_password_alert">Password can not be left blank.</string>
-    <string name="blank_fname_alert">First Name text can not be left blank.</string>
-    <string name="blank_lname_alert">Last Name text can not be left blank.</string>
+    <string name="blank_fname_alert">First Name text field can not be left blank.</string>
+    <string name="blank_lname_alert">Last Name text field can not be left blank.</string>
     <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
     <string name="blank_postal_code">Unable to find postal code in the address, please retry or choose near by location on map.</string>
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
@@ -97,9 +97,6 @@
 
 
     <!--work experince-->
-=======
-    <!--work experience-->
->>>>>>> c0913421b4d21aa2e88745c389d32f5e62ed29c5
     <string name="where_you_work">Where do you work?</string>
     <string name="where_did_you_study">Where did you study?</string>
     <string name="lable_relevant_exp">Relevant work experience strengthens your profile</string>
@@ -217,6 +214,7 @@
     <string name="blank_alert_new_password">New password can never blank.</string>
     <string name="blank_alert_confirm_password">Confirm password can never blank.</string>
     <string name="alert_reset_password_mismatch">New password and confirm password should same.</string>
+    <string name="header_edit_profile">EDIT PROFILE</string>
     <string name="job_type">Job Type</string>
     <string name="location">Location</string>
     <string name="error_no_first_name">First name cannot be empty</string>
@@ -224,6 +222,7 @@
     <string name="error_no_job_type">Job type  cannot be empty</string>
     <string name="error_no_location">Location cannot be empty</string>
     <string name="error_no_description">Description cannot be empty</string>
+    <string name="alert_upload_phot_first">Please upload your document first.</string>
 
 
 </resources>
