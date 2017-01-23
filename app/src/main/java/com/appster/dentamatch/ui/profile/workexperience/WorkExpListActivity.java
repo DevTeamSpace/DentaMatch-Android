@@ -259,6 +259,8 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                         response.getWorkExpResponseData().getSaveList().get(0).setJobtitleName(selectedJobtitle);
                         clearAllExpField();
                         workExpList.add(response.getWorkExpResponseData().getSaveList().get(0));
+                        inflateExpList(workExpList);
+
                     }
                     if (isMoveNext) {
                         launchNextActivity();

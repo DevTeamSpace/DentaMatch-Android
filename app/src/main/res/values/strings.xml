@@ -219,6 +219,7 @@
     <string name="header_edit_profile">EDIT PROFILE</string>
     <string name="job_type">Job Type</string>
     <string name="location">Location</string>
+    <string name="alert_upload_phot_first">Please upload your document first.</string>
 
 
 </resources>
