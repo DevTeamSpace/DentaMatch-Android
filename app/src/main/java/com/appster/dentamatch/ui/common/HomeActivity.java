@@ -34,6 +34,7 @@ public class HomeActivity extends BaseActivity {
         ITEMS = new String[]{getString(R.string.nav_job), getString(R.string.nav_tracks), getString(R.string.nav_calendar), getString(R.string.nav_message), getString(R.string.nav_profile)};
         initUI();
 
+
     }
 
 

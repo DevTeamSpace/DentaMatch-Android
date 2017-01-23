@@ -6,36 +6,36 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentProfileBinding;
 import com.appster.dentamatch.databinding.ItemProfileCellCertificateBinding;
 import com.appster.dentamatch.databinding.ItemProfileSchoolingBinding;
+import com.appster.dentamatch.databinding.ItemProfileSkillBinding;
 import com.appster.dentamatch.databinding.ItemProfileWorkExpBinding;
-import com.appster.dentamatch.databinding.ItemSchoolBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
-import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
-import com.appster.dentamatch.network.response.workexp.WorkExpSave;
+import com.appster.dentamatch.network.response.profile.ProfileSchool;
+import com.appster.dentamatch.network.response.profile.ProfileSkill;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
-import com.appster.dentamatch.ui.profile.workexperience.ViewAndEditWorkExperienceActivity;
+import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
+import com.appster.dentamatch.ui.profile.workexperience.SkillsActivity;
+import com.appster.dentamatch.ui.profile.workexperience.UpdateCertificateActivity;
+import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
 import com.appster.dentamatch.ui.settings.SettingActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 import com.squareup.picasso.MemoryPolicy;
@@ -76,7 +76,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         fragmentManager = getActivity().getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         initViews();
-        System.out.println("Profile fragment called");
 //        FlurryAgent.logEvent(getString(R.string.settings));
 
         return profileBinding.getRoot();
@@ -103,12 +102,30 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellAffiliation.tvCertificatesName.setText(getString(R.string.title_affiliation));
         profileBinding.ivSetting.setOnClickListener(this);
         profileBinding.tvEdit.setOnClickListener(this);
-//        profileBinding.chipsView.getEditText().setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-//        profileBinding.chipsView.getEditText().setFocusable(false);
-//        profileBinding.chipsView.getEditText().setCursorVisible(false);
-//        profileBinding.chipsView.getEditText().setFocusableInTouchMode(false);
-//        profileBinding.chipsView.getEditText().setLongClickable(false);
-//        profileBinding.chipsView.getEditText().setClickable(false);
+        profileBinding.cellLicence.tvEditCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent licenseIntent = new Intent(getActivity(), UpdateLicenseActivity.class);
+                startActivity(licenseIntent);
+            }
+        });
+
+        profileBinding.cellAffiliation.tvEditCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent affiliationIntent = new Intent(getActivity(), AffiliationActivity.class);
+                affiliationIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+                startActivity(affiliationIntent);
+            }
+        });
+        profileBinding.cellAffiliation.tvEditCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent skillIntent = new Intent(getActivity(), SkillsActivity.class);
+                skillIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+                startActivity(skillIntent);
+            }
+        });
     }
 
     @Override
@@ -116,6 +133,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         switch (v.getId()) {
             case R.id.tv_edit:
+                startActivity(new Intent(getActivity(), UpdateProfileActivity.class));
+
                 break;
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
@@ -160,15 +179,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.tvAboutMe.setText(response.getUser().getAboutMe());
             }
             if (response.getWorkExperience() != null && response.getWorkExperience().getSaveList().size() > 0) {
-                goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEdit);
+                goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
 
                 inflateExperience(response.getWorkExperience().getSaveList());
             } else {
-                visibleView(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEdit);
+                visibleView(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
 
             }
             if (response.getAffiliationList() != null && response.getAffiliationList().size() > 0) {
-                goneViews(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEdit);
+                goneViews(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
                 profileBinding.flowLayout.removeAllViews();
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
                     CustomTextView textView = new CustomTextView(getActivity());
@@ -182,11 +201,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 }
 
             } else {
-                visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEdit);
+                visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
             }
 
             if (response.getLicence() != null) {
-                goneViews(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEdit);
+                goneViews(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
                 profileBinding.layoutLicenceData.setVisibility(View.VISIBLE);
 
                 profileBinding.tvLicenceNumber.setText(response.getLicence().getLicenseNumber());
@@ -195,7 +214,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             } else {
                 profileBinding.layoutLicenceData.setVisibility(View.GONE);
-                visibleView(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEdit);
+                visibleView(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
 
             }
             if (response.getCertificatesLists() != null && response.getCertificatesLists().size() > 0) {
@@ -215,15 +234,56 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.GONE);
 
             }
+            if (response.getSchoolArrayList() != null && response.getSchoolArrayList().size() > 0) {
+                profileBinding.cellSchooling.tvAddCertificates.setVisibility(View.GONE);
+                profileBinding.cellSchooling.tvEditCell.setVisibility(View.VISIBLE);
+                inflateSchools(response.getSchoolArrayList());
+
+            } else {
+                profileBinding.cellSchooling.tvAddCertificates.setVisibility(View.VISIBLE);
+                profileBinding.cellSchooling.tvEditCell.setVisibility(View.GONE);
+            }
+            if (response.getSkillArrayList() != null && response.getSkillArrayList().size() > 0) {
+                profileBinding.cellKeySkill.tvAddCertificates.setVisibility(View.GONE);
+                profileBinding.cellKeySkill.tvEditCell.setVisibility(View.VISIBLE);
+                inflateSkill(response.getSkillArrayList());
+
+            } else {
+                profileBinding.cellKeySkill.tvAddCertificates.setVisibility(View.VISIBLE);
+                profileBinding.cellKeySkill.tvEditCell.setVisibility(View.GONE);
+            }
         }
     }
+
+    private void inflateSkill(ArrayList<ProfileSkill> skillArrayList) {
+        profileBinding.keySkillInflater.removeAllViews();
+        ItemProfileSkillBinding skillBinding;
+        for (int i = 0; i < skillArrayList.size(); i++) {
+            skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
+                    .inflate(R.layout.item_profile_skill, profileBinding.expInflater, false));
+            skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName());
+            for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
+                CustomTextView textView = new CustomTextView(getActivity());
+                FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(10, 10, 10, 10);
+                textView.setLayoutParams(lp);
+                textView.setBackgroundResource(R.drawable.bg_edit_text);
+                textView.setPadding(30, 10, 30, 10);
+                textView.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
+                skillBinding.skillFlowLayout.addView(textView, lp);
+
+            }
+            profileBinding.keySkillInflater.addView(skillBinding.getRoot());
+        }
+    }
+
 
     private void visibleView(TextView tvAdd, TextView tvEdit) {
         if (tvAdd != null)
             tvAdd.setVisibility(View.VISIBLE);
         if (tvEdit != null)
 
-            tvEdit.setVisibility(View.VISIBLE);
+            tvEdit.setVisibility(View.GONE);
 
     }
 
@@ -233,7 +293,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             tvAdd.setVisibility(View.GONE);
         if (tvEdit != null)
 
-            tvEdit.setVisibility(View.GONE);
+            tvEdit.setVisibility(View.VISIBLE);
     }
 
     private void inflateExperience(ArrayList<WorkExpRequest> expList) {
@@ -262,11 +322,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     .inflate(R.layout.item_profile_cell_certificate, profileBinding.expInflater, false));
             CertificatesList certificate = certificateList.get(i);
             cellCertificateBinding.tvCertificatesName.setText(certificate.getCertificateName());
-            if (!TextUtils.isEmpty(certificate.getImage())) {
+            if (!TextUtils.isEmpty(certificate.getImageUrl())) {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.GONE);
                 cellCertificateBinding.tvEdit.setVisibility(View.VISIBLE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.VISIBLE);
-                Picasso.with(getActivity()).load(certificate.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(cellCertificateBinding.ivCertificateImage);
+                Picasso.with(getActivity()).load(certificate.getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(cellCertificateBinding.ivCertificateImage);
 
             } else {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.VISIBLE);
@@ -274,19 +334,27 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.GONE);
 
             }
+
+            cellCertificateBinding.tvEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
+                    startActivity(intent);
+                }
+            });
             profileBinding.certificationInflater.addView(cellCertificateBinding.getRoot());
         }
 
     }
 
-    private void inflateSchools(ArrayList<String> schoolList) {
+    private void inflateSchools(ArrayList<ProfileSchool> schoolList) {
         profileBinding.schoolInflater.removeAllViews();
         ItemProfileSchoolingBinding schoolBinding;
         for (int i = 0; i < schoolList.size(); i++) {
             schoolBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.schoolInflater.getContext())
                     .inflate(R.layout.item_profile_schooling, profileBinding.schoolInflater, false));
-            schoolBinding.tvCourseName.setText("");
-            schoolBinding.tvCourseName.setText("");
+            schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
+            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
             profileBinding.schoolInflater.addView(schoolBinding.getRoot());
         }
 

@@ -6,12 +6,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <include
+            android:id="@+id/toolbar_update_certificate"
+            layout="@layout/toolbar_general"
+            />
 
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
-            android:layout_marginTop="@dimen/margin_36"
             android:background="@color/line_divider" />
 
         <com.appster.dentamatch.widget.CustomTextView

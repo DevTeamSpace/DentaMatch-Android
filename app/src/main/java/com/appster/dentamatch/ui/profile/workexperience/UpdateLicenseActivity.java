@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.profile.workexperience;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +17,6 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 import retrofit2.Call;
@@ -38,6 +36,7 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
+        mBinder.toolbarLicense.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
         mBinder.btnSave.setOnClickListener(this);
     }
 
@@ -94,7 +93,7 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
     private LicenceRequest prepareLicenceRequest() {
         processToShowDialog("", getString(R.string.please_wait), null);
         LicenceRequest licenceRequest = new LicenceRequest();
-        licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
+//        licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
         licenceRequest.setLicense(mBinder.etLicence.getText().toString());
         licenceRequest.setState(mBinder.etState.getText().toString());
         return licenceRequest;
@@ -109,8 +108,7 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
                 public void onSuccess(LicenceUpdateResponse response) {
                     LogUtils.LOGD(TAG, "onSuccess");
                     if (response.getStatus() == 1) {
-                        startActivity(new Intent(UpdateLicenseActivity.this, WorkExperienceActivity.class));
-
+                        finish();
                     } else {
                         Utils.showToast(getApplicationContext(), response.getMessage());
 

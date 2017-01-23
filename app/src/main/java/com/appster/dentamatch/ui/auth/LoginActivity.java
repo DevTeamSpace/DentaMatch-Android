@@ -381,8 +381,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
-//                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
                     startActivity(intent);
                     finish();
                 } else {

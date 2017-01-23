@@ -30,9 +30,9 @@ public class ProfileResponseData {
     @SerializedName("licence")
     private LicenceRequest licence;
     @SerializedName("school")
-    private ArrayList<School> schoolArrayList;
+    private ArrayList<ProfileSchool> schoolArrayList;
     @SerializedName("skills")
-    private ArrayList<Skill> skillArrayList;
+    private ArrayList<ProfileSkill> skillArrayList;
     @SerializedName("affiliations")
     private ArrayList<AffiliationData> affiliationList;
     @SerializedName("certifications")
@@ -54,11 +54,11 @@ public class ProfileResponseData {
         return licence;
     }
 
-    public ArrayList<School> getSchoolArrayList() {
+    public ArrayList<ProfileSchool> getSchoolArrayList() {
         return schoolArrayList;
     }
 
-    public ArrayList<Skill> getSkillArrayList() {
+    public ArrayList<ProfileSkill> getSkillArrayList() {
         return skillArrayList;
     }
 

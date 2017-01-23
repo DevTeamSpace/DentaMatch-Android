@@ -10,6 +10,7 @@ public class CertificatesList {
     private String certificateName;
     @SerializedName("imagePath")
     private String image;
+    private String imageUrl;
     @SerializedName("validityDate")
     private String validityDate;
     private boolean isImageUploaded;
@@ -54,5 +55,11 @@ public class CertificatesList {
         this.image = image;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

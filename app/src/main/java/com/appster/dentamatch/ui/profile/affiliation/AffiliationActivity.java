@@ -167,7 +167,12 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-                    startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));
+                    if (getIntent() != null && getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false)) {
+                        finish();
+                    } else {
+                        startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));
+                    }
+
 
                 }
             }

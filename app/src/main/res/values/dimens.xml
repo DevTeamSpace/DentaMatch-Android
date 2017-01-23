@@ -39,15 +39,15 @@
     <dimen name="margin_55">55dp</dimen>
     <dimen name="margin_80">80dp</dimen>
     <dimen name="margin_36">36dp</dimen>
+    <dimen name="margin_33">33dp</dimen>
+    <dimen name="margin_29">29dp</dimen>
     <dimen name="margin_25">25dp</dimen>
     <dimen name="margin_21">21dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
     <dimen name="margin_19">19dp</dimen>
     <dimen name="margin_15">15dp</dimen>
-
     <dimen name="padding_drawable">10dp</dimen>
     <dimen name="padding_input_layout">3dp</dimen>
-    <dimen name="margin_20">20dp</dimen>
-    <dimen name="margin_29">29dp</dimen>
     <dimen name="line_height">1dp</dimen>
     <dimen name="dot_dimen">8dp</dimen>
 
