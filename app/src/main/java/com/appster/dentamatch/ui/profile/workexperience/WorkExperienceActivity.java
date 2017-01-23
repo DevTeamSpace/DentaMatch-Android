@@ -57,6 +57,8 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         if (!TextUtils.isEmpty(selectedJobtitle)) {
             mBinder.etJobTitle.setText(selectedJobtitle);
         }
+
+        mBinder.layoutDummy.requestFocus();
     }
 
 

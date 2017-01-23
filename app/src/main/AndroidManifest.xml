@@ -120,10 +120,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <activity
+        <!--<activity
             android:name=".ui.profile.workexperience.SchoolingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar" />-->
 
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"
