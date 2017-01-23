@@ -56,6 +56,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
     private FragmentProfileBinding profileBinding;
+    private ProfileResponseData profileData;
     private String TAG = "ProfileFragment-";
 
 
@@ -76,8 +77,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         fragmentManager = getActivity().getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         initViews();
+        getProfileData();
 //        FlurryAgent.logEvent(getString(R.string.settings));
-
         return profileBinding.getRoot();
 
     }
@@ -85,7 +86,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getProfileData();
     }
 
     private void initViews() {
@@ -133,7 +133,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         switch (v.getId()) {
             case R.id.tv_edit:
-                startActivity(new Intent(getActivity(), UpdateProfileActivity.class));
+                startActivity(new Intent(getActivity(), UpdateProfileActivity.class)
+                .putExtra(Constants.EXTRA_PROFILE_DATA,profileData));
 
                 break;
             case R.id.iv_setting:
@@ -152,8 +153,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             public void onSuccess(ProfileResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
-
-                    setViewData(response.getProfileResponseData());
+                    profileData = response.getProfileResponseData();
+                    if(isActive()) {
+                        setViewData(response.getProfileResponseData());
+                    }
                 } else {
                     Utils.showToast(getActivity(), response.getMessage());
                 }

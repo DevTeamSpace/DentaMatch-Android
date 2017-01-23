@@ -24,8 +24,8 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.TypedValue;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -252,6 +252,11 @@ public class Utils {
 
         view.setTypeface(tf);
 
+    }
+
+    public static int convertSpToPixels(float sp, Context context) {
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+        return px;
     }
 
     public static void setFontFaceRobotoBold(TextView view) {

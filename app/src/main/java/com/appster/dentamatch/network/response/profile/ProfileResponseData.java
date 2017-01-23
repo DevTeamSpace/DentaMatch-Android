@@ -1,5 +1,8 @@
 package com.appster.dentamatch.network.response.profile;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.appster.dentamatch.model.School;
 import com.appster.dentamatch.model.SchoolType;
 import com.appster.dentamatch.model.Skill;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by virender on 19/01/17.
  */
-public class ProfileResponseData {
+public class ProfileResponseData implements Parcelable {
 
     @SerializedName("user")
     private User user;
@@ -37,6 +40,23 @@ public class ProfileResponseData {
     private ArrayList<AffiliationData> affiliationList;
     @SerializedName("certifications")
     private ArrayList<CertificatesList> certificatesLists;
+
+
+    protected ProfileResponseData(Parcel in) {
+        user = in.readParcelable(User.class.getClassLoader());
+    }
+
+    public static final Creator<ProfileResponseData> CREATOR = new Creator<ProfileResponseData>() {
+        @Override
+        public ProfileResponseData createFromParcel(Parcel in) {
+            return new ProfileResponseData(in);
+        }
+
+        @Override
+        public ProfileResponseData[] newArray(int size) {
+            return new ProfileResponseData[size];
+        }
+    };
 
     public User getUser() {
         return user;
@@ -68,5 +88,15 @@ public class ProfileResponseData {
 
     public ArrayList<CertificatesList> getCertificatesLists() {
         return certificatesLists;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(user, flags);
     }
 }

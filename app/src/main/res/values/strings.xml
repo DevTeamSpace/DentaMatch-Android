@@ -138,6 +138,7 @@
     <string name="header_certification">CERTIFICATIONS</string>
     <string name="header_affiliation">AFFILIATIONS</string>
     <string name="header_about_me">ABOUT ME</string>
+    <string name="header_edit_profile">EDIT PROFILE</string>
 
     <string name="title_affiliation">Affiliations </string>
 
@@ -216,9 +217,13 @@
     <string name="blank_alert_new_password">New password can never blank.</string>
     <string name="blank_alert_confirm_password">Confirm password can never blank.</string>
     <string name="alert_reset_password_mismatch">New password and confirm password should same.</string>
-    <string name="header_edit_profile">EDIT PROFILE</string>
     <string name="job_type">Job Type</string>
     <string name="location">Location</string>
+    <string name="error_no_first_name">First name cannot be empty</string>
+    <string name="error_no_last_name">Last name cannot be empty</string>
+    <string name="error_no_job_type">Job type  cannot be empty</string>
+    <string name="error_no_location">Location cannot be empty</string>
+    <string name="error_no_description">Description cannot be empty</string>
 
 
 </resources>
