@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemSchoolBinding;
 import com.appster.dentamatch.databinding.LayoutProfileHeaderBinding;
+import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.model.School;
 import com.appster.dentamatch.model.SchoolType;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -47,8 +49,9 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private LayoutProfileHeaderBinding mBinderHeader;
     private Context mContext;
     private final ArrayList<String> mYearsList;
+    private EditTextSelected mNameSelectedListener;
 
-    public SchoolsAdapter(List<SchoolType> schoolTypeList, Context context) {
+    public SchoolsAdapter(List<SchoolType> schoolTypeList, Context context, EditTextSelected nameSelectedListener) {
         this.mSchoolList = schoolTypeList;
         this.mContext = context;
 
@@ -58,6 +61,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         for (int i = 1970; i < 2010; i++) {
             mYearsList.add(String.valueOf(i));
         }
+        mNameSelectedListener = nameSelectedListener;
     }
 
     @Override
@@ -81,7 +85,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder1, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder1, final int position) {
 
         List<String> listSchools = new ArrayList<String>();
 
@@ -120,6 +124,17 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
 
+                }
+            });
+
+            holder.autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    /**
+                     * we scroll the autocomplete textview to center in order for it to take focus
+                     */
+                    mNameSelectedListener.onEditTextSelected(position);
+                    return false;
                 }
             });
 
