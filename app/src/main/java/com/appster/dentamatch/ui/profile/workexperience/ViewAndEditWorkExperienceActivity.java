@@ -138,7 +138,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                         Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)
                         , Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
                         Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
+                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
+                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile),
+                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
                 if (isMoveForward) {
                     hideKeyboard();
                     WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutRefrence2.getVisibility(), Constants.APIS.ACTION_EDIT, jobTitleId, expMonth,

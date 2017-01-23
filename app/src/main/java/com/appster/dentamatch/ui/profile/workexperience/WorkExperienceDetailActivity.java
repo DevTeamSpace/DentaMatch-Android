@@ -120,7 +120,9 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                         Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceName)
                         , Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceEmail),
                         Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName));
+                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName),
+                        Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceMobile),
+                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceMobile));
                 if (isMoveForward) {
                     hideKeyboard();
                     callAddExpApi(WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(), Constants.APIS.ACTION_ADD, jobTitleId, expMonth,

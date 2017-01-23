@@ -250,56 +250,69 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (isLogin) {
             if (TextUtils.isEmpty(getTextFromEditText(etLoginEmail))) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
+                etLoginEmail.requestFocus();
                 return false;
             }
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(etLoginEmail)).matches()) {
+                etLoginEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
                 return false;
             }
             if (TextUtils.isEmpty(getTextFromEditText(etLoginPassword))) {
+                etLoginPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
             if (getTextFromEditText(etLoginPassword).contains(" ")) {
+                etLoginPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_contains_space));
                 return false;
             }
             if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
                     getTextFromEditText(etLoginPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
+                etLoginPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
         } else {
             if (TextUtils.isEmpty(getTextFromEditText(etRegisterFName))) {
+                etRegisterFName.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_fname_alert));
                 return false;
             }
             if (TextUtils.isEmpty(getTextFromEditText(etRegisterLName))) {
+                etRegisterLName.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_lname_alert));
                 return false;
             }
             if (TextUtils.isEmpty(getTextFromEditText(etRegisterEmail))) {
+                etRegisterEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
                 return false;
             }
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(etRegisterEmail)).matches()) {
+                etRegisterEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
                 return false;
             }
             if (TextUtils.isEmpty(getTextFromEditText(etRegisterPassword))) {
+                etRegisterPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
             if (getTextFromEditText(etRegisterPassword).contains(" ")) {
+                etRegisterPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_contains_space));
                 return false;
             }
             if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
                     getTextFromEditText(etRegisterPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
+                etRegisterPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
             if (TextUtils.isEmpty(tvPreferredJobLocation.getText().toString())) {
+                tvPreferredJobLocation.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
                 return false;
             }

@@ -35,6 +35,7 @@
     <string name="blank_postal_code">Unable to find postal code in the address, please retry or choose near by location on map.</string>
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
     <string name="valid_email_alert">Please provide a valid Email Id.</string>
+    <string name="valid_mobile_alert">Please provide a valid mobile number.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
     <string name="password_contains_space">Password can not contain spaces.</string>
     <string name="error_something_wrong">Something went wrong!</string>

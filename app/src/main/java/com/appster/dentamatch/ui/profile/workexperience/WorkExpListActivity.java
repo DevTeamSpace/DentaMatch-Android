@@ -125,7 +125,11 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 new BottomSheetJobTitle(WorkExpListActivity.this, this, 0);
                 break;
             case R.id.btn_next_work_exp_lsit:
-                prepareRequestForAdd(true);
+//                if (workExpList.size() == 0) {
+                    prepareRequestForAdd(true);
+//                } else {
+//                    launchNextActivity();
+//                }
                 break;
             case R.id.tv_refrence_delete:
                 mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
@@ -172,7 +176,9 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)
                 , Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
                 Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
-                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
         if (isMoveForward) {
             hideKeyboard();
             WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(), Constants.APIS.ACTION_ADD, jobTitleId, expMonth,
@@ -253,8 +259,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                         workExpList.add(response.getWorkExpResponseData().getSaveList().get(0));
                     }
                     if (isMoveNext) {
-                        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
-
+                        launchNextActivity();
                     } else {
                         inflateExpList(workExpList);
                     }
@@ -336,5 +341,9 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         jobTitlePosition = position;
         mBinder.includeWorkExpList.etJobTitle.setText(title);
 
+    }
+
+    private void launchNextActivity() {
+        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
     }
 }
