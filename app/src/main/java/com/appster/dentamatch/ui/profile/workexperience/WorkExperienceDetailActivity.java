@@ -80,6 +80,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
             }
         });
         mBinder.includeLayoutWorkExp.etOfficeName.setText(PreferenceUtil.getOfficeName());
+        mBinder.includeLayoutWorkExp.etOfficeAddress.requestFocus();
     }
 
 

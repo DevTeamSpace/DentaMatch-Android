@@ -107,6 +107,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                 callBottomSheet();
                 break;
             case R.id.iv_tool_bar_left:
+                hideKeyboard();
                 onBackPressed();
                 break;
             case R.id.create_profile_iv_profile_icon:
