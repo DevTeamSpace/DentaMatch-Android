@@ -7,15 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SkillsAdapter;
 import com.appster.dentamatch.databinding.ActivitySkillsBinding;
+import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.model.ParentSkill;
-import com.appster.dentamatch.model.Skill;
 import com.appster.dentamatch.model.SubSkill;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -29,18 +29,19 @@ import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
-//import com.special.ResideMenu.ResideMenu;
-//import com.special.ResideMenu.ResideMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 
+//import com.special.ResideMenu.ResideMenu;
+//import com.special.ResideMenu.ResideMenuItem;
+
 /**
  * Created by ram on 12/01/17.
  */
-public class SkillsActivity extends BaseActivity implements View.OnClickListener, SkillsAdapter.OnSkillClick {
+public class SkillsActivity extends BaseActivity implements View.OnClickListener, SkillsAdapter.OnSkillClick, EditTextSelected {
     private static final String TAG = "Skills";
     private ActivitySkillsBinding mBinder;
 //    private ResideMenu resideMenu;
@@ -56,7 +57,6 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_skills);
         initViews();
-
         getSkillsListApi();
     }
 
@@ -109,7 +109,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void setAdapter(List<ParentSkill> skillArrayList) {
-        mSkillsAdapter = new SkillsAdapter(skillArrayList, this, this);
+        mSkillsAdapter = new SkillsAdapter(skillArrayList, this, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSkills.setLayoutManager(layoutManager);
         mBinder.recyclerSkills.setItemAnimator(new DefaultItemAnimator());
@@ -207,6 +207,11 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 LogUtils.LOGD(TAG, "updateSkillsListApi onFail...");
             }
         });
+    }
+
+    @Override
+    public void onEditTextSelected(int position) {
+        mBinder.recyclerSkills.smoothScrollToPosition(position);
     }
 
     /*private void setResideMenu() {

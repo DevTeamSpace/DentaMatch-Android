@@ -38,6 +38,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_sub_skills);
         initViews();
+        overridePendingTransition(R.anim.pull_in, R.anim.hold_still);
 
 //        Bundle bundle = getIntent().getBundleExtra(Constants.EXTRA_SUB_SKILLS);
 
@@ -84,6 +85,12 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
                 onBackPressed();
                 break;
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.hold_still, R.anim.pull_out);
     }
 
     private void setAdapter(List<SubSkill> skillArrayList) {
