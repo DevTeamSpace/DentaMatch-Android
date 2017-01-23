@@ -70,10 +70,6 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-//        if (isPositionOther(position)) {
-//            return TYPE_ITEM_OTHER;
-//        }
-//        else
         if (isPositionProfileHeader(position)) {
             return TYPE_ITEM_PROFILE;
         }
@@ -88,9 +84,7 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private boolean isPositionOther(int position) {
 
-//        return position == mAffiliationList.size() - 1;
         return position == mAffiliationList.size();
-//        return position == 9;
 
 
     }
@@ -104,13 +98,6 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        if (viewType == TYPE_ITEM_OTHER) {
-//            View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_affiliations_other, parent, false);
-////            mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
-////                    .inflate(R.layout.item_affiliations_other, parent, false));
-//
-//            return new ViewHolderOther(rowView);
-//        } else
         if (viewType == TYPE_ITEM_PROFILE) {
             View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_profile_header, parent, false);
             return new ViewHolderProfile(rowView);
@@ -125,22 +112,6 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//        if (holder instanceof ViewHolderOther) {
-//            ViewHolderOther itemOtherHolder = (ViewHolderOther) holder;
-//            Log.d("tag", "psiton is--" + position);
-//            final AffiliationData currentItem = getItem(position-1);
-//            itemOtherHolder.tvType.setText(currentItem.getAffiliationName());
-//            if (currentItem.getJobSeekerAffiliationStatus() == 0) {
-//                itemOtherHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
-//            } else {
-//                itemOtherHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
-//
-//            }
-//            if (!TextUtils.isEmpty(currentItem.getOtherAffiliation())) {
-//                itemOtherHolder.etOther.setText(currentItem.getOtherAffiliation());
-//            }
-//
-//        } else
         if (holder instanceof ViewHolderProfile) {
             ViewHolderProfile itemProfileHolder = (ViewHolderProfile) holder;
             itemProfileHolder.progressBar.setProgress(80);

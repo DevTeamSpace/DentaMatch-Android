@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.profile.workexperience;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
+import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -125,11 +127,11 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 new BottomSheetJobTitle(WorkExpListActivity.this, this, 0);
                 break;
             case R.id.btn_next_work_exp_lsit:
-//                if (workExpList.size() == 0) {
+                if (workExpList.size() == 0) {
                     prepareRequestForAdd(true);
-//                } else {
-//                    launchNextActivity();
-//                }
+                } else {
+                    launchNextActivity();
+                }
                 break;
             case R.id.tv_refrence_delete:
                 mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
@@ -344,6 +346,40 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void launchNextActivity() {
-        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+
+        if (selectedJobtitle.equalsIgnoreCase("") && expMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
+                && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("")
+                && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) {
+            startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+
+
+        } else {
+            if ((selectedJobtitle.equalsIgnoreCase("") || expMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
+                    || Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("")
+                    || Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")
+            ) || (!TextUtils.isEmpty(selectedJobtitle) && expMonth != 0 && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName))
+                    && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress))
+                    && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity))
+            )) {
+
+
+                Alert.createYesNoAlert(WorkExpListActivity.this, getString(R.string.ok), getString(R.string.cancel), "", getString(R.string.alert_discard_exp), new Alert.OnAlertClickListener() {
+                    @Override
+                    public void onPositive(DialogInterface dialog) {
+
+                        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+
+                    }
+
+                    @Override
+                    public void onNegative(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
+            } else {
+                startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+
+            }
+        }
     }
 }
