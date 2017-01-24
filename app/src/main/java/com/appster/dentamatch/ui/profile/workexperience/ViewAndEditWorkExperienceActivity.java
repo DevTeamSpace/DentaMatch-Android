@@ -93,13 +93,17 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         mBinder.includeLayoutRefrence1.etOfficeReferenceMobile.setText(workExpList.get(position).getReference1Mobile());
         mBinder.includeLayoutRefrence1.etOfficeReferenceName.setText(workExpList.get(position).getReference1Name());
         mBinder.includeLayoutRefrence1.etOfficeReferenceEmail.setText(workExpList.get(position).getReference1Email());
-        if (!TextUtils.isEmpty(workExpList.get(position).getReference2Name())) {
+        if (!TextUtils.isEmpty(workExpList.get(position).getReference2Name())||!TextUtils.isEmpty(workExpList.get(position).getReference2Email())||!TextUtils.isEmpty(workExpList.get(position).getReference2Mobile())) {
             mBinder.layoutRefrence2.setVisibility(View.VISIBLE);
+            mBinder.tvAddMoreReference.setVisibility(View.GONE);
             mBinder.includeLayoutRefrence2.tvRefrenceCount.setText(getString(R.string.reference2));
             mBinder.includeLayoutRefrence2.tvRefrenceDelete.setVisibility(View.VISIBLE);
             mBinder.includeLayoutRefrence2.etOfficeReferenceEmail.setText(workExpList.get(position).getReference2Email());
             mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.setText(workExpList.get(position).getReference2Mobile());
             mBinder.includeLayoutRefrence2.etOfficeReferenceName.setText(workExpList.get(position).getReference2Name());
+
+        }else{
+            mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
 
         }
 

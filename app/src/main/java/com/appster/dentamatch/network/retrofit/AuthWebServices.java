@@ -58,6 +58,7 @@ public interface AuthWebServices {
     String AFFILIATION_SAVE = "users/affiliation-save";
     String CHANGE_PASSWORD = "users/change-password";
     String LOGOUT = "users/sign-out";
+//    String UPDATE_PROFILE = "users/sign-out";
 
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);

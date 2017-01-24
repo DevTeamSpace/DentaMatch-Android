@@ -16,7 +16,8 @@
     </string-array>
 
     <string-array name="default_preview">
-        <item>#b2b2b2</item>
+        <item>#aaafb8</item>
+        <!--<item>#FFFFFF</item>-->
         <item>#00000</item>
         <item>#72d3b4</item>
     </string-array>

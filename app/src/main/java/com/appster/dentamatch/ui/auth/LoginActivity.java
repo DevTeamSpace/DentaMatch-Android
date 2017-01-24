@@ -24,6 +24,7 @@ import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.profile.CertificateActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
@@ -408,7 +409,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
 //                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+//                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                    Intent intent = new Intent(getApplicationContext(), CertificateActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
