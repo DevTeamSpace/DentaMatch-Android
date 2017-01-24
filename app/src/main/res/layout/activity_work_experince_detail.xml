@@ -5,7 +5,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white_color">
+        android:background="@color/white_color"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
 
         <include
             android:id="@+id/toolbar_work_exp_detail"

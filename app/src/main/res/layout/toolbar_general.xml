@@ -40,6 +40,7 @@
             <TextView
                 android:id="@+id/txv_toolbar_general_center"
                 style="@style/text_view_normal"
+                android:textColor="@color/white_color"
                 android:layout_centerInParent="true" />
 
             <ImageView

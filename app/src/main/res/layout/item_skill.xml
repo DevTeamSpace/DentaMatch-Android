@@ -87,6 +87,7 @@
                 android:background="@drawable/edit_text_selector"
                 android:layout_marginBottom="10dp"
                 android:inputType="text"
+                android:digits="@string/digits_alpha_numeric_only"
                 android:focusableInTouchMode="true"
                 android:imeOptions="actionDone"
                 android:visibility="gone" />

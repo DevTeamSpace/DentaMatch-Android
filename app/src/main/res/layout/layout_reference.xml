@@ -37,6 +37,7 @@
                 android:layout_marginRight="@dimen/margin_normal"
                 android:background="@drawable/edit_text_selector"
                 android:hint="@string/reference_name"
+                android:digits="@string/digits_alpha_numeric_only"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>
 
@@ -90,6 +91,7 @@
                 android:background="@drawable/edit_text_selector"
                 android:hint="@string/reference_email"
                 android:inputType="textEmailAddress"
+                android:digits="@string/digits_alpha_numeric_email"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>
 

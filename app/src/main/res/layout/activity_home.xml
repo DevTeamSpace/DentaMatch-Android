@@ -20,24 +20,11 @@
             android:layout_weight="1" />
 
 
-        <com.appster.dentamatch.ui.navigationtabbar.NavigationTabBar
+        <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
             android:id="@+id/ntb_horizontal"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_weight="0"
-            app:ntb_badge_gravity="top"
-            app:ntb_badge_title_color="@color/edt_hint_color"
-            app:ntb_active_color="@color/white_color"
-            app:ntb_inactive_color="@color/edt_hint_color"
-            app:ntb_title_size="@dimen/text_size_11"
-            app:ntb_badged="false"
-            app:ntb_bg_color="@color/nav_bg_color"
-            app:ntb_icon_size_fraction="0.45"
-            app:ntb_scaled="false"
-            app:ntb_swiped="false"
-            app:ntb_tinted="false"
-            app:ntb_title_mode="all"
-            app:ntb_titled="true" />
+            />
         <!--</RelativeLayout>-->
     </LinearLayout>
 

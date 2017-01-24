@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-
+                android:descendantFocusability="beforeDescendants"
+                android:focusableInTouchMode="true"
                 android:orientation="vertical">
 
 
@@ -123,11 +124,12 @@
                         android:paddingTop="@dimen/padding_drawable"
                         android:textColor="@color/text_default_color" />
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_location"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"
-
+                    android:focusable="false"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_20"
                     android:clipToPadding="false"
@@ -143,6 +145,8 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:hint="@string/location"
+                        android:scrollHorizontally="true"
+                        android:maxLines="1"
                         android:inputType="textCapWords"
                         android:paddingTop="@dimen/padding_drawable"
                         android:textColor="@color/text_default_color" />
