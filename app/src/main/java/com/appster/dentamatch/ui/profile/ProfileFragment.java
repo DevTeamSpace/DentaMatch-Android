@@ -57,6 +57,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private FragmentManager fragmentManager;
     private FragmentProfileBinding profileBinding;
     private String TAG = "ProfileFragment-";
+    private int tempValue = 0;
+    private ProfileResponseData profileResponseData;
 
 
     public static ProfileFragment newInstance() {
@@ -105,8 +107,19 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellLicence.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent licenseIntent = new Intent(getActivity(), UpdateLicenseActivity.class);
-                startActivity(licenseIntent);
+//                Intent licenseIntent = new Intent(getActivity(), UpdateLicenseActivity.class);
+//                startActivity(licenseIntent);
+//                licenseintent.putExtra(Constants.INTENT_KEY.DATA,profileResponseData.getLicence());
+                profileBinding.cellLicence.tvAddCertificates.performClick();
+
+            }
+        });
+        profileBinding.cellLicence.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent licenseintent = new Intent(getActivity(), UpdateLicenseActivity.class);
+                licenseintent.putExtra(Constants.INTENT_KEY.DATA,profileResponseData.getLicence());
+                startActivity(licenseintent);
             }
         });
 
@@ -126,6 +139,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(skillIntent);
             }
         });
+
     }
 
     @Override
@@ -152,7 +166,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             public void onSuccess(ProfileResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
-
+                  profileResponseData = response.getProfileResponseData();
                     setViewData(response.getProfileResponseData());
                 } else {
                     Utils.showToast(getActivity(), response.getMessage());
@@ -314,12 +328,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    private void inflateCertification(ArrayList<CertificatesList> certificateList) {
+    private void inflateCertification(final ArrayList<CertificatesList> certificateList) {
         profileBinding.certificationInflater.removeAllViews();
         ItemProfileCellCertificateBinding cellCertificateBinding;
+
         for (int i = 0; i < certificateList.size(); i++) {
             cellCertificateBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.certificationInflater.getContext())
                     .inflate(R.layout.item_profile_cell_certificate, profileBinding.expInflater, false));
+            tempValue = i;
+            cellCertificateBinding.tvEdit.setTag(i);
+            cellCertificateBinding.tvAddCertificates.setTag(i);
             CertificatesList certificate = certificateList.get(i);
             cellCertificateBinding.tvCertificatesName.setText(certificate.getCertificateName());
             if (!TextUtils.isEmpty(certificate.getImageUrl())) {
@@ -339,6 +357,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
+                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get(tempValue));
+                    startActivity(intent);
+                }
+            });
+            cellCertificateBinding.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
+                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get(tempValue));
+
                     startActivity(intent);
                 }
             });

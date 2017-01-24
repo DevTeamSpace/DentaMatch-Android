@@ -26,18 +26,29 @@ import retrofit2.Call;
  */
 public class UpdateLicenseActivity extends BaseActivity implements View.OnClickListener {
     private String TAG = "UpdateLicenseActivity";
-    ActivityUpdateLicenseBinding mBinder;
+    private ActivityUpdateLicenseBinding mBinder;
+    private LicenceRequest data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_update_license);
         initView();
+
     }
 
     private void initView() {
         mBinder.toolbarLicense.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
         mBinder.btnSave.setOnClickListener(this);
+        if(getIntent()!=null){
+            data=(LicenceRequest)getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
+            setViewData();
+        }
+    }
+
+    private void setViewData() {
+        mBinder.etState.setText(data.getState());
+        mBinder.etLicence.setText(data.getLicenseNumber());
     }
 
     @Override
@@ -127,5 +138,4 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
             hideProgressBar();
         }
     }
-
 }

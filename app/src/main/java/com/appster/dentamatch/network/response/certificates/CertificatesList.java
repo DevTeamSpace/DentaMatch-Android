@@ -1,11 +1,14 @@
 package com.appster.dentamatch.network.response.certificates;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by virender on 14/01/17.
  */
-public class CertificatesList {
+public class CertificatesList  implements Parcelable{
     private int id;
     private String certificateName;
     @SerializedName("imagePath")
@@ -14,6 +17,27 @@ public class CertificatesList {
     @SerializedName("validityDate")
     private String validityDate;
     private boolean isImageUploaded;
+
+    protected CertificatesList(Parcel in) {
+        id = in.readInt();
+        certificateName = in.readString();
+        image = in.readString();
+        imageUrl = in.readString();
+        validityDate = in.readString();
+        isImageUploaded = in.readByte() != 0;
+    }
+
+    public static final Creator<CertificatesList> CREATOR = new Creator<CertificatesList>() {
+        @Override
+        public CertificatesList createFromParcel(Parcel in) {
+            return new CertificatesList(in);
+        }
+
+        @Override
+        public CertificatesList[] newArray(int size) {
+            return new CertificatesList[size];
+        }
+    };
 
     public boolean isImageUploaded() {
         return isImageUploaded;
@@ -61,5 +85,20 @@ public class CertificatesList {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(certificateName);
+        parcel.writeString(image);
+        parcel.writeString(imageUrl);
+        parcel.writeString(validityDate);
+        parcel.writeByte((byte) (isImageUploaded ? 1 : 0));
     }
 }
