@@ -32,7 +32,7 @@
 
 
             <com.appster.dentamatch.widget.CustomTextView
-                android:id="@id/tv_edit"
+                android:id="@+id/tv_edit_cell"
                 style="@style/text_view_normal"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -67,26 +67,6 @@
             android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_regular" />
 
-        <ImageView
-            android:layout_width="@dimen/profile_image_height"
-            android:layout_height="@dimen/profile_image_height"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/margin_normal"
-            android:visibility="gone"
 
-            android:background="@drawable/profile_pic_placeholder" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@id/tv_edit"
-            style="@style/text_view_normal"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:text="@string/header_certification"
-            android:textColor="@color/cerulean_color"
-            android:visibility="gone"
-            android:textSize="@dimen/text_size_13"
-            app:customFont="@string/font_medium" />
     </LinearLayout>
 </layout>

@@ -24,6 +24,7 @@ import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.profile.CertificateActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
@@ -250,49 +251,74 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (isLogin) {
             if (TextUtils.isEmpty(getTextFromEditText(etLoginEmail))) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
+                etLoginEmail.requestFocus();
                 return false;
             }
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(etLoginEmail)).matches()) {
+                etLoginEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
                 return false;
             }
             if (TextUtils.isEmpty(getTextFromEditText(etLoginPassword))) {
+                etLoginPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
+                return false;
+            }
+            if (getTextFromEditText(etLoginPassword).contains(" ")) {
+                etLoginPassword.requestFocus();
+                Utils.showToast(getApplicationContext(), getString(R.string.password_contains_space));
                 return false;
             }
             if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
                     getTextFromEditText(etLoginPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
+                etLoginPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
         } else {
             if (TextUtils.isEmpty(getTextFromEditText(etRegisterFName))) {
+                etRegisterFName.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_fname_alert));
                 return false;
             }
             if (TextUtils.isEmpty(getTextFromEditText(etRegisterLName))) {
+                etRegisterLName.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_lname_alert));
                 return false;
             }
             if (TextUtils.isEmpty(getTextFromEditText(etRegisterEmail))) {
+                etRegisterEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
                 return false;
             }
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(etRegisterEmail)).matches()) {
+                etRegisterEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
                 return false;
             }
             if (TextUtils.isEmpty(getTextFromEditText(etRegisterPassword))) {
+                etRegisterPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
+                return false;
+            }
+            if (getTextFromEditText(etRegisterPassword).contains(" ")) {
+                etRegisterPassword.requestFocus();
+                Utils.showToast(getApplicationContext(), getString(R.string.password_contains_space));
                 return false;
             }
             if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
                     getTextFromEditText(etRegisterPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
+                etRegisterPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
             if (TextUtils.isEmpty(tvPreferredJobLocation.getText().toString())) {
+                tvPreferredJobLocation.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
+                return false;
+            }
+            if(mPostalCode.isEmpty()) {
+                Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
             if (!isAccepted) {
@@ -336,6 +362,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     Utils.showToast(getApplicationContext(), response.getMessage());
                     isLogin = true;
                     showSelectedView(true);
+                    clearRegistrationFields();
 
 //                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
 //                    startActivity(intent);
@@ -365,7 +392,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private String getTextFromEditText(EditText et) {
-        return et.getText().toString();
+        return et.getText().toString().trim();
     }
 
     private void signInApi(LoginRequest loginRequest) {
@@ -382,7 +409,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
 //                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+//                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                    Intent intent = new Intent(getApplicationContext(), CertificateActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -422,5 +450,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    private void clearRegistrationFields() {
+        etRegisterFName.getText().clear();
+        etRegisterLName.getText().clear();
+        etRegisterEmail.getText().clear();
+        etRegisterPassword.getText().clear();
+        tvPreferredJobLocation.setText("");
+        etRegisterFName.getText().clear();
+        ivPolicy.setBackgroundResource(R.drawable.ic_check_empty);
+    }
+
+    private void clearLoginFields() {
+        etLoginEmail.getText().clear();
+        etLoginPassword.getText().clear();
     }
 }

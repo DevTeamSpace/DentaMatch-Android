@@ -1,8 +1,11 @@
 package com.appster.dentamatch.ui.profile.affiliation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.network.response.affiliation.AffiliationData;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
+import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.squareup.picasso.MemoryPolicy;
@@ -70,10 +74,6 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-//        if (isPositionOther(position)) {
-//            return TYPE_ITEM_OTHER;
-//        }
-//        else
         if (isPositionProfileHeader(position)) {
             return TYPE_ITEM_PROFILE;
         }
@@ -88,9 +88,7 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private boolean isPositionOther(int position) {
 
-//        return position == mAffiliationList.size() - 1;
         return position == mAffiliationList.size();
-//        return position == 9;
 
 
     }
@@ -104,13 +102,6 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        if (viewType == TYPE_ITEM_OTHER) {
-//            View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_affiliations_other, parent, false);
-////            mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
-////                    .inflate(R.layout.item_affiliations_other, parent, false));
-//
-//            return new ViewHolderOther(rowView);
-//        } else
         if (viewType == TYPE_ITEM_PROFILE) {
             View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_profile_header, parent, false);
             return new ViewHolderProfile(rowView);
@@ -125,22 +116,6 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//        if (holder instanceof ViewHolderOther) {
-//            ViewHolderOther itemOtherHolder = (ViewHolderOther) holder;
-//            Log.d("tag", "psiton is--" + position);
-//            final AffiliationData currentItem = getItem(position-1);
-//            itemOtherHolder.tvType.setText(currentItem.getAffiliationName());
-//            if (currentItem.getJobSeekerAffiliationStatus() == 0) {
-//                itemOtherHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
-//            } else {
-//                itemOtherHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
-//
-//            }
-//            if (!TextUtils.isEmpty(currentItem.getOtherAffiliation())) {
-//                itemOtherHolder.etOther.setText(currentItem.getOtherAffiliation());
-//            }
-//
-//        } else
         if (holder instanceof ViewHolderProfile) {
             ViewHolderProfile itemProfileHolder = (ViewHolderProfile) holder;
             itemProfileHolder.progressBar.setProgress(80);
@@ -163,6 +138,25 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
 
                 }
+
+                itemHolder.etOther.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (currentItem.getJobSeekerAffiliationStatus() == 1) {
+                            mAffiliationList.get((Integer) itemHolder.ivCheckBox.getTag() - 1).setOtherAffiliation(charSequence.toString());
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
                 if (currentItem.getAffiliationName().equalsIgnoreCase(Constants.OTHERS)) {
                     itemHolder.viewUnderLine.setVisibility(View.GONE);
 
@@ -188,6 +182,8 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
 
                         } else {
+                            ((BaseActivity) mContext).hideKeyboard();
+                            mAffiliationList.get((Integer) itemHolder.ivCheckBox.getTag() - 1).setOtherAffiliation("");
                             currentItem.setJobSeekerAffiliationStatus(0);
                             itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
 

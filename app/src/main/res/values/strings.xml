@@ -24,17 +24,28 @@
     <string name="joyride_page4_text1">Shop</string>
     <string name="joyride_page4_text2">Buy products and services spanning across multiple categories and track them with ease.</string>
 
+    <!--Input digits-->
+
+    <string name="digits_numeric_only">0123456789</string>
+    <string name="digits_alpha_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="digits_alpha_numeric_only">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="digits_alpha_numeric_email">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
+    <string name="digits_alpha_numeric_special">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_./:;,&amp;amp;</string>
+    <string name="digits_address">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
     <!--  Error string-->
 
     <string name="blank_email_alert">Email Id can not be left blank.</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
     <string name="blank_password_alert">Password can not be left blank.</string>
-    <string name="blank_fname_alert">First Name text can not be left blank.</string>
-    <string name="blank_lname_alert">Last Name text can not be left blank.</string>
+    <string name="blank_fname_alert">First Name text field can not be left blank.</string>
+    <string name="blank_lname_alert">Last Name text field can not be left blank.</string>
     <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
+    <string name="blank_postal_code">Unable to find postal code in the address, please retry or choose near by location on map.</string>
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
     <string name="valid_email_alert">Please provide a valid Email Id.</string>
+    <string name="valid_mobile_alert">Please provide a valid mobile number.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
+    <string name="password_contains_space">Password can not contain spaces.</string>
     <string name="error_something_wrong">Something went wrong!</string>
     <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_unable_reterive_email">Unable to retrieve email address from your social account.</string>
@@ -92,11 +103,7 @@
     <string name="nav_message">Messages</string>
     <string name="nav_profile">Profile</string>
 
-
     <!--work experince-->
-=======
-    <!--work experience-->
->>>>>>> c0913421b4d21aa2e88745c389d32f5e62ed29c5
     <string name="where_you_work">Where do you work?</string>
     <string name="where_did_you_study">Where did you study?</string>
     <string name="lable_relevant_exp">Relevant work experience strengthens your profile</string>
@@ -194,6 +201,7 @@
     <string name="settings_terms">Terms &amp; Conditions</string>
     <string name="header_settings">SETTINGS</string>
     <string name="alert_logout">Do you really want to logout?</string>
+    <string name="alert_discard_exp">You have to discard this experience if you want to move further.</string>
 
     <!--profile-->
     <string name="edit_label">Edit</string>
@@ -212,6 +220,14 @@
     <string name="blank_alert_new_password">New password can never blank.</string>
     <string name="blank_alert_confirm_password">Confirm password can never blank.</string>
     <string name="alert_reset_password_mismatch">New password and confirm password should same.</string>
+    <string name="job_type">Job Type</string>
+    <string name="location">Location</string>
+    <string name="error_no_first_name">First name cannot be empty</string>
+    <string name="error_no_last_name">Last name cannot be empty</string>
+    <string name="error_no_job_type">Job type  cannot be empty</string>
+    <string name="error_no_location">Location cannot be empty</string>
+    <string name="error_no_description">Description cannot be empty</string>
+    <string name="alert_upload_phot_first">Please upload your document first.</string>
 
 
 </resources>

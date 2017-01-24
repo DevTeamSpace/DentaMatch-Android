@@ -91,11 +91,12 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             }
 
             if (affiliationAdapter.getList().get(i).getAffiliationName().equalsIgnoreCase(Constants.OTHERS) && affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
-                if (TextUtils.isEmpty(affiliationAdapter.getOtherData())) {
+//                if (TextUtils.isEmpty(affiliationAdapter.getOtherData())) {
+                if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation())) {
                     Utils.showToast(AffiliationActivity.this, getString(R.string.blank_other_alert));
                     return false;
                 } else {
-                    affiliationAdapter.getList().get(i).setOtherAffiliation(affiliationAdapter.getOtherData());
+                    affiliationAdapter.getList().get(i).setOtherAffiliation(affiliationAdapter.getList().get(i).getOtherAffiliation());
                 }
 
             }
@@ -126,7 +127,6 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             @Override
             public void onFail(Call<AffiliationResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
 
@@ -167,7 +167,12 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-                    startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));
+                    if (getIntent() != null && getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false)) {
+                        finish();
+                    } else {
+                        startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));
+                    }
+
 
                 }
             }
@@ -175,7 +180,6 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
 

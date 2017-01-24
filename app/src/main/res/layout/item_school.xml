@@ -27,19 +27,7 @@
             android:textSize="@dimen/text_size_large"
             app:customFont="@string/font_bold" />
 
-        <AutoCompleteTextView
-            android:id="@+id/et_school_name"
-            style="@style/TextInputEditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_school_type_name"
-            android:background="@drawable/edit_text_selector"
-            android:ellipsize="end"
-            android:hint="@string/hint_type_to_search"
-            android:paddingBottom="@dimen/margin_15"
-            app:customFont="@string/font_regular" />
-
-        <RelativeLayout
+            <RelativeLayout
             android:id="@+id/relative_state_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,6 +59,20 @@
                 android:layout_marginTop="@dimen/margin_15"
                 android:background="@null" />
             </RelativeLayout>
+
+            <AutoCompleteTextView
+                android:id="@+id/et_school_name"
+                style="@style/TextInputEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_selector"
+                android:ellipsize="end"
+                android:hint="@string/hint_type_to_search"
+                android:paddingBottom="@dimen/margin_15"
+                app:customFont="@string/font_regular"
+                android:digits="@string/digits_alpha_numeric_only"
+                android:layout_below="@+id/tv_school_type_name"
+                android:layout_alignParentStart="true" />
 
         </RelativeLayout>
 

@@ -1,15 +1,40 @@
 package com.appster.dentamatch.network.request.auth;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by virender on 12/01/17.
  */
-public class LicenceRequest {
+public class LicenceRequest implements Parcelable {
 
     private String license;
     private String licenseNumber;
     private String state;
     private int jobTitleId;
 
+    public LicenceRequest() {
+
+    }
+
+    protected LicenceRequest(Parcel in) {
+        license = in.readString();
+        licenseNumber = in.readString();
+        state = in.readString();
+        jobTitleId = in.readInt();
+    }
+
+    public static final Creator<LicenceRequest> CREATOR = new Creator<LicenceRequest>() {
+        @Override
+        public LicenceRequest createFromParcel(Parcel in) {
+            return new LicenceRequest(in);
+        }
+
+        @Override
+        public LicenceRequest[] newArray(int size) {
+            return new LicenceRequest[size];
+        }
+    };
 
     public String getLicenseNumber() {
         return licenseNumber;
@@ -41,6 +66,19 @@ public class LicenceRequest {
 
     public void setJobTitleId(int jobTitleId) {
         this.jobTitleId = jobTitleId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(license);
+        parcel.writeString(licenseNumber);
+        parcel.writeString(state);
+        parcel.writeInt(jobTitleId);
     }
 }
 

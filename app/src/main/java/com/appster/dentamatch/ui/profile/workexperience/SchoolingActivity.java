@@ -12,9 +12,8 @@ import android.widget.Button;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SchoolsAdapter;
-import com.appster.dentamatch.adapters.SkillsAdapter;
 import com.appster.dentamatch.databinding.ActivitySchoolingBinding;
-import com.appster.dentamatch.model.ParentSkill;
+import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.model.SchoolType;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -33,7 +32,7 @@ import retrofit2.Call;
 /**
  * Created by ram on 15/01/17.
  */
-public class SchoolingActivity extends BaseActivity implements View.OnClickListener {
+public class SchoolingActivity extends BaseActivity implements View.OnClickListener, EditTextSelected {
     private static final String TAG = "Schooling";
     private ActivitySchoolingBinding mBinder;
     private SchoolsAdapter mSchoolsAdapter;
@@ -75,7 +74,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void setAdapter(List<SchoolType> schoolTypeList) {
-        mSchoolsAdapter = new SchoolsAdapter(schoolTypeList, this);
+        mSchoolsAdapter = new SchoolsAdapter(schoolTypeList, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSchools.setLayoutManager(layoutManager);
         mBinder.recyclerSchools.setItemAnimator(new DefaultItemAnimator());
@@ -125,6 +124,11 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
             }
         });
+    }
+
+    @Override
+    public void onEditTextSelected(int position) {
+        mBinder.recyclerSchools.smoothScrollToPosition(position);
     }
 
 //    private AddSchoolRequest prepareAddSchoolRequest() {

@@ -48,6 +48,7 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
             @Override
             public void onClick(View v) {
 
+                int dayPickerDay = datePicker.getDayOfMonth();
 
                 if (currentYear < datePicker.getYear()) {
 
@@ -57,7 +58,7 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
                     }
                     selectedDate(datePicker, position);
 
-                } else if (currentYear == datePicker.getYear() && (currentMonth <= datePicker.getMonth())) {
+                } else if (currentYear == datePicker.getYear() && (currentMonth < datePicker.getMonth())) {
                     selectedDate(datePicker, position);
 
 
@@ -66,7 +67,7 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
 
                     }
 
-                } else if (currentYear == datePicker.getYear() && currentMonth <= datePicker.getMonth() && currentDay < datePicker.getDayOfMonth()) {
+                } else if (currentYear == datePicker.getYear() && currentMonth == datePicker.getMonth() && currentDay < dayPickerDay) {
                     selectedDate(datePicker, position);
 
                     if (mBottomSheetDialog != null) {

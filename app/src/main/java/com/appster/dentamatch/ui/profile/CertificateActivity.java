@@ -271,7 +271,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
 
 
     @Override
-    public void onDateSelection(String date, int position) {
+    public void onDateSelection(String date, int pos) {
         tvTemp.setText(date);
         certificateList.get(position).setValidityDate(date);
     }
@@ -347,8 +347,15 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 @Override
                 public void onClick(View view) {
                     tvTemp = (TextView) view;
+                    position = (Integer) ivCertificate.getTag();
+
+
                     hideKeyboard();
-                    callBottomSheetDate((Integer) ivCertificate.getTag());
+                    if(certificateList.get(position).isImageUploaded()) {
+                        callBottomSheetDate((Integer) ivCertificate.getTag());
+                    }else{
+                        Utils.showToast(getApplicationContext(),getString(R.string.alert_upload_phot_first));
+                    }
                 }
             });
             mBinder.layoutCertificatesInflater.addView(certificatesView);
@@ -371,6 +378,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 if (response != null && response.getStatus() == 1) {
                     // showSnackBarFromTop(response.getMessage(), false);
                     certificateList.get(position).setImage(filePath);
+                    certificateList.get(position).setImageUploaded(true);
                 }
             }
 

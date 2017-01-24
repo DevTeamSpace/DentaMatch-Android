@@ -1,9 +1,12 @@
 package com.appster.dentamatch.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Appster on 23/05/16.
  */
-public class User {
+public class User implements Parcelable{
     private  String email;
     private String status;
     private Integer userId;
@@ -19,6 +22,35 @@ public class User {
     private String state;
     private String aboutMe;
     private int id;
+
+    protected User(Parcel in) {
+        email = in.readString();
+        status = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        profileImage = in.readString();
+        profilePic = in.readString();
+        userName = in.readString();
+        accountID = in.readString();
+        accountType = in.readString();
+        dentalStateBoard = in.readString();
+        licenseNumber = in.readString();
+        state = in.readString();
+        aboutMe = in.readString();
+        id = in.readInt();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getStatus() {
         return status;
@@ -138,5 +170,28 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(status);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(profileImage);
+        dest.writeString(profilePic);
+        dest.writeString(userName);
+        dest.writeString(accountID);
+        dest.writeString(accountType);
+        dest.writeString(dentalStateBoard);
+        dest.writeString(licenseNumber);
+        dest.writeString(state);
+        dest.writeString(aboutMe);
+        dest.writeInt(id);
     }
 }

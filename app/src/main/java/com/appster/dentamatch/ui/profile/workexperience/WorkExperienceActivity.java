@@ -57,6 +57,8 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         if (!TextUtils.isEmpty(selectedJobtitle)) {
             mBinder.etJobTitle.setText(selectedJobtitle);
         }
+
+        mBinder.layoutDummy.requestFocus();
     }
 
 
@@ -76,6 +78,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
                 }
                 break;
             case R.id.iv_tool_bar_left:
+                hideKeyboard();
                 onBackPressed();
                 break;
             case R.id.et_job_title:

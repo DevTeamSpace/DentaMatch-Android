@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar_update_certificate"
+                layout="@layout/toolbar_general" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_divider" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_certificates_name"
+                style="@style/text_view_normal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/cell_height"
+                android:background="@color/cell_color"
+                android:gravity="left|bottom"
+                android:paddingBottom="@dimen/margin_medium"
+                android:paddingLeft="@dimen/margin_normal"
+                android:text="Name"
+                android:textColor="@color/text_default_color"
+                android:textSize="@dimen/text_size_13"
+                app:customFont="@string/font_medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_divider" />
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/iv_certificate_upoload_icon"
+                android:layout_width="@dimen/camera_image_size"
+                android:layout_height="@dimen/camera_image_size"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/margin_25"
+                android:src="@drawable/ic_upload" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_upload_photo"
+                style="@style/text_view_normal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:text="@string/label_upload_photo"
+                android:textColor="@color/edt_hint_color"
+                android:textSize="@dimen/text_size_xlarge"
+                app:customFont="@string/font_regular" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_validity_date_picker"
+                style="@style/text_view_normal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/cell_height"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@drawable/bg_edit_text"
+                android:gravity="center_vertical"
+                android:hint="@string/valdity_date_string"
+                android:paddingBottom="@dimen/margin_medium"
+                android:paddingLeft="@dimen/margin_medium"
+                android:textColor="@color/text_default_color"
+                android:textColorHint="@color/edt_hint_color"
+                android:textSize="@dimen/text_size_13"
+                app:customFont="@string/font_medium" />
+
+        </LinearLayout>
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/btn_save"
+            style="@style/button_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/button_bg_color"
+            android:gravity="center"
+            android:text="@string/save_label"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_size_normal"
+            app:customFont="@string/font_regular" />
+    </RelativeLayout>
+</layout>

@@ -7,18 +7,20 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemSkillBinding;
 import com.appster.dentamatch.databinding.LayoutProfileHeaderBinding;
+import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.model.ParentSkill;
 import com.appster.dentamatch.model.SubSkill;
 import com.appster.dentamatch.util.Constants;
@@ -51,12 +53,13 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Activity activity;
     private OnSkillClick mListener;
     public EditText etOtherTemp;
+    private EditTextSelected mOthersSelectedListener;
 
-    public SkillsAdapter(List<ParentSkill> skillList, Context context, OnSkillClick listener) {
+    public SkillsAdapter(List<ParentSkill> skillList, Context context, OnSkillClick listener, EditTextSelected othersSelectedListener) {
         this.mSkillList = skillList;
         this.mContext = context;
         mListener = listener;
-
+        mOthersSelectedListener = othersSelectedListener;
 //        DisplayMetrics displaymetrics = new DisplayMetrics();
 //        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 //        int height = displaymetrics.heightPixels;
@@ -109,7 +112,23 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (skill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                 holder.etOther.setVisibility(View.VISIBLE);
                 holder.ivArrow.setVisibility(View.GONE);
-                etOtherTemp = holder.etOther;
+                holder.flowLayout.setVisibility(View.GONE);
+//                etOtherTemp = holder.etOther;
+
+
+                holder.etOther.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        v.requestFocus();
+                        if(hasFocus) {
+                            mOthersSelectedListener.onEditTextSelected(position);
+                        }
+
+                    }
+                });
+
+                InputMethodManager inputManager = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.restartInput(mBinder.etOther);
 
                 holder.etOther.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -124,11 +143,11 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        mSkillList.get(position - 1).setOtherSkill(s.toString());
+//                        mSkillList.get(position - 1).setOtherSkill(s.toString());
                     }
                 });
 
-                holder.flowLayout.setVisibility(View.GONE);
+
 
             } else {
                 holder.etOther.setVisibility(View.GONE);
@@ -213,13 +232,15 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private class ViewHolderItem extends RecyclerView.ViewHolder {
-        RelativeLayout layoutSkills;
+//        RelativeLayout layoutSkills;
+        LinearLayout layoutSkills;
         RelativeLayout layoutSkillsInner;
         FlowLayout flowLayout;
         //        RelativeLayout layoutBricks;
         TextView tvSkillName;
         ImageView ivArrow;
         CustomEditText etOther;
+//        EditText etOther;
 
         ViewHolderItem(View view) {
             super(view);

@@ -6,6 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white_color"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <include
@@ -18,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/btn_next"
             android:layout_below="@+id/toolbar_schooling"
-            android:layout_marginBottom="@dimen/margin_25"/>
+            android:layout_marginBottom="@dimen/margin_25" />
 
         <com.appster.dentamatch.widget.CustomButton
             android:id="@+id/btn_next"

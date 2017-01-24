@@ -49,13 +49,14 @@ import retrofit2.Call;
 /**
  * Created by virender on 03/01/17.
  */
-public class CreateProfileActivity1 extends BaseActivity implements View.OnClickListener, ImageSelectedListener,JobTitleSelectionListener {
+public class CreateProfileActivity1 extends BaseActivity implements View.OnClickListener, ImageSelectedListener, JobTitleSelectionListener {
     private String TAG = "CreateProfileActivity1";
     private ImageSelectedListener imageSelectedListener;
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
     private String selectedJobtitle = "";
     private byte imageSourceType;
+    private boolean mImageUploaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +92,15 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 new BottomSheetJobTitle(CreateProfileActivity1.this, this, 0);
                 break;
             case R.id.create_profile1_btn_next:
-                if (checkValidation()) {
+                if (mImageUploaded) {
+                    launchNextActivity();
+                } else {
+                    if (checkValidation()) {
 //                    Intent intent = new Intent(this, CreateProfileActivity2.class);
 //                    startActivity(intent);
-                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
+                        uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
+                    }
                 }
-
 
                 break;
             case R.id.create_profile1_btn_not_now:
@@ -143,13 +147,13 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         response.enqueue(new BaseCallback<FileUploadResponse>(CreateProfileActivity1.this) {
             @Override
             public void onSuccess(FileUploadResponse response) {
-                Utils.showToast(getApplicationContext(),  response.getMessage());
+                Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response != null && response.getStatus() == 1) {
                     // showSnackBarFromTop(response.getMessage(), false);
+                    mImageUploaded = true;
                     PreferenceUtil.setProfileImagePath(response.getFileUploadResponseData().getImageUrl());
-                    Intent intent = new Intent(CreateProfileActivity1.this, CreateProfileActivity2.class);
-                    startActivity(intent);
+                    launchNextActivity();
 
                 }
             }
@@ -198,7 +202,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     public void cameraClicked() {
 //        takePhoto();
 
-        imageSourceType=0;
+        imageSourceType = 0;
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.CAMERA, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this)) {
@@ -226,7 +230,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     @Override
     public void gallaryClicked() {
 //        getImageFromGallery();
-        imageSourceType=1;
+        imageSourceType = 1;
 
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
             getImageFromGallery();
@@ -248,6 +252,11 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         }
 
 
+    }
+
+    private void launchNextActivity() {
+        Intent intent = new Intent(CreateProfileActivity1.this, CreateProfileActivity2.class);
+        startActivity(intent);
     }
 
     public void getImageFromGallery() {
@@ -301,9 +310,9 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             Log.d("Tag", "request permisison called if granted --");
-            if(imageSourceType==0){
+            if (imageSourceType == 0) {
                 takePhoto();
-            }else{
+            } else {
                 getImageFromGallery();
             }
 
