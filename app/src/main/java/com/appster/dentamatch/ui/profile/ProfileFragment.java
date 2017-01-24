@@ -100,7 +100,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellLicence.tvCertificatesName.setText(getString(R.string.lable_licence_number));
         profileBinding.cellExp.tvCertificatesName.setText(getString(R.string.title_experience));
         profileBinding.cellSchooling.tvCertificatesName.setText(getString(R.string.title_schooling));
-        profileBinding.cellDentalStateBoard.tvCertificatesName.setText(getString(R.string.dental_state_board));
+        profileBinding.cellKeySkill.tvCertificatesName.setText(getString(R.string.title_skill));
         profileBinding.cellAffiliation.tvCertificatesName.setText(getString(R.string.title_affiliation));
         profileBinding.ivSetting.setOnClickListener(this);
         profileBinding.tvEdit.setOnClickListener(this);
@@ -111,6 +111,22 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 //                startActivity(licenseIntent);
 //                licenseintent.putExtra(Constants.INTENT_KEY.DATA,profileResponseData.getLicence());
                 profileBinding.cellLicence.tvAddCertificates.performClick();
+
+            }
+        });
+        profileBinding.cellDentalStateBoard.tvEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
+//                intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get(tempValue));
+                startActivity(intent);
+
+            }
+        });
+        profileBinding.cellDentalStateBoard.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellDentalStateBoard.tvEdit.performClick();
 
             }
         });

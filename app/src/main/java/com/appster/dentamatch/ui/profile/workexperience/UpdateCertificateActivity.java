@@ -59,6 +59,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     private String mFilePath;
     private byte imageSourceType;
     private CertificatesList data;
+    private boolean isFromDentalStateBoard;
 
 
     @Override
@@ -81,6 +82,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         mBinder.btnSave.setOnClickListener(this);
         mBinder.tvValidityDatePicker.setOnClickListener(this);
         if (getIntent() != null) {
+            isFromDentalStateBoard = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
             data = (CertificatesList) getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             setViewData();
         }
@@ -93,7 +95,14 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 Picasso.with(UpdateCertificateActivity.this).load(data.getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
 
             }
+            if (isFromDentalStateBoard) {
+                mBinder.tvValidityDatePicker.setVisibility(View.GONE);
+            } else {
+                mBinder.tvValidityDatePicker.setVisibility(View.VISIBLE);
+
+            }
             mBinder.tvValidityDatePicker.setText(data.getValidityDate());
+
         }
 
     }

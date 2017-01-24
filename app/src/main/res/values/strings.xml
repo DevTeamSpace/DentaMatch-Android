@@ -169,7 +169,7 @@
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
     <string name="licence_number_blnk_space_alert">Licence number should not contain blank spaces</string>
     <string name="licence_number_hyfen_alert">Licence number can not begin or end with the hyphen (-) </string>
-    <string name="blank_state_alert">State text can not be left blank.</string>
+    <string name="blank_state_alert">State text field can not be left blank.</string>
     <string name="state_max_length">State can not be exceed 30 characters</string>
     <string name="state_blank_space_alert">State can not contain blank spaces</string>
     <string name="invalid_exp_selection">Experience can never be zero.</string>
@@ -185,7 +185,7 @@
     <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
     <string name="blank_phone_number_alert">Phone number can never be blank</string>
     <string name="complete_reference">Please complete the reference.</string>
-    <string name="please_wait" >Please wait&#8230;</string>
+    <string name="please_wait">Please wait&#8230;</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="blank_certificate_photo_alert">Please upload atleast one certificate</string>
     <string name="desc_about_me">Describe about your work and things you are passionate about.</string>
@@ -214,6 +214,7 @@
     <string name="add_certificate">Add certificate</string>
     <string name="title_experience">EXPERIENCE</string>
     <string name="title_schooling">SCHOOLING AND CERTIFICATION</string>
+    <string name="title_skill">KEY SKILL</string>
     <string name="office_location">OFFICE LOCATION</string>
     <string name="contact_info">CONTACT INFORMATION</string>
     <string name="yrs">yrs</string>

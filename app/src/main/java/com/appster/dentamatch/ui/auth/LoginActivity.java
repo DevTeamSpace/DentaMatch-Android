@@ -27,6 +27,7 @@ import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.profile.CertificateActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
+import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
@@ -409,8 +410,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
 //                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), SchoolingActivity.class);
 //                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    Intent intent = new Intent(getApplicationContext(), CertificateActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -421,7 +422,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
+//                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
     }

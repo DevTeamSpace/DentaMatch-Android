@@ -9,6 +9,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.onboardtutorial.OnBoardingActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
+import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 /*
@@ -55,8 +56,9 @@ public class SplashActivity extends Activity implements Runnable {
 //        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
         if (PreferenceUtil.getIsOnBoarding()) {
             if (PreferenceUtil.getIsLogined()) {
-                startActivity(new Intent(SplashActivity.this, CreateProfileActivity1.class));
+//                startActivity(new Intent(SplashActivity.this, CreateProfileActivity1.class));
 //                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                startActivity(new Intent(SplashActivity.this, SchoolingActivity.class));
             } else {
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             }
