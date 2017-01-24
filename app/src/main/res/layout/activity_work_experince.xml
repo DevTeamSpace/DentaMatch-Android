@@ -151,6 +151,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:focusable="true"
+                        android:digits="@string/digits_alpha_numeric_only"
                         android:hint="@string/office_name"
                         android:paddingTop="@dimen/padding_drawable"
                         />

@@ -41,6 +41,7 @@
             android:gravity="top"
             android:textColor="@color/graish_brown_color"
             android:textSize="@dimen/text_size_normal"
+            android:digits="@string/digits_alpha_numeric_only"
             android:visibility="gone" />
 
         <View

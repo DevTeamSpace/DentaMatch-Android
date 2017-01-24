@@ -24,6 +24,14 @@
     <string name="joyride_page4_text1">Shop</string>
     <string name="joyride_page4_text2">Buy products and services spanning across multiple categories and track them with ease.</string>
 
+    <!--Input digits-->
+
+    <string name="digits_numeric_only">0123456789</string>
+    <string name="digits_alpha_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="digits_alpha_numeric_only">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="digits_alpha_numeric_email">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
+    <string name="digits_alpha_numeric_special">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_./:;,&amp;amp;</string>
+    <string name="digits_address">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
     <!--  Error string-->
 
     <string name="blank_email_alert">Email Id can not be left blank.</string>
@@ -94,7 +102,6 @@
     <string name="nav_calendar">Calendar</string>
     <string name="nav_message">Messages</string>
     <string name="nav_profile">Profile</string>
-
 
     <!--work experince-->
     <string name="where_you_work">Where do you work?</string>
@@ -194,7 +201,7 @@
     <string name="settings_terms">Terms &amp; Conditions</string>
     <string name="header_settings">SETTINGS</string>
     <string name="alert_logout">Do you really want to logout?</string>
-    <string name="alert_discard_exp">You have to discard this experience if you want move further.</string>
+    <string name="alert_discard_exp">You have to discard this experience if you want to move further.</string>
 
     <!--profile-->
     <string name="edit_label">Edit</string>
@@ -213,7 +220,6 @@
     <string name="blank_alert_new_password">New password can never blank.</string>
     <string name="blank_alert_confirm_password">Confirm password can never blank.</string>
     <string name="alert_reset_password_mismatch">New password and confirm password should same.</string>
-    <string name="header_edit_profile">EDIT PROFILE</string>
     <string name="job_type">Job Type</string>
     <string name="location">Location</string>
     <string name="error_no_first_name">First name cannot be empty</string>

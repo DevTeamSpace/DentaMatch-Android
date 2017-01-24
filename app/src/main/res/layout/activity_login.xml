@@ -148,7 +148,7 @@
                         android:drawableStart="@drawable/ic_name"
                         android:maxLength="100"
                         android:hint="@string/email_label"
-                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_."
+                        android:digits="@string/digits_alpha_numeric_email"
                         android:inputType="textEmailAddress" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -236,7 +236,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
                         android:drawablePadding="@dimen/padding_drawable"
-                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:digits="@string/digits_alpha_numeric_only"
                         android:drawableStart="@drawable/ic_name"
                         android:hint="@string/fname_label"
                         android:inputType="textCapWords"
@@ -266,7 +266,7 @@
                         android:drawablePadding="@dimen/padding_drawable"
                         android:drawableStart="@drawable/ic_name"
                         android:hint="@string/lname_label"
-                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:digits="@string/digits_alpha_numeric_only"
                         android:inputType="textCapWords"
                         android:paddingTop="@dimen/padding_drawable"
                         android:textColor="@color/text_default_color" />
@@ -296,7 +296,7 @@
                         android:drawablePadding="@dimen/padding_drawable"
                         android:drawableStart="@drawable/ic_email"
                         android:hint="@string/email_label"
-                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_."
+                        android:digits="@string/digits_alpha_numeric_email"
                         android:inputType="textEmailAddress"
                         android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
