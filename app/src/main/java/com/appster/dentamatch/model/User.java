@@ -12,6 +12,8 @@ public class User implements Parcelable{
     private Integer userId;
     private String firstName;
     private String lastName;
+    private String jobTitle;
+    private int jobTitileId;
     private String profileImage;
     private String profilePic;
     private String userName;
@@ -21,13 +23,19 @@ public class User implements Parcelable{
     private String licenseNumber;
     private String state;
     private String aboutMe;
+    private String latitude;
+    private String longitude;
+    private String preferredJobLocation;
     private int id;
+
 
     protected User(Parcel in) {
         email = in.readString();
         status = in.readString();
         firstName = in.readString();
         lastName = in.readString();
+        jobTitle = in.readString();
+        jobTitileId = in.readInt();
         profileImage = in.readString();
         profilePic = in.readString();
         userName = in.readString();
@@ -37,6 +45,9 @@ public class User implements Parcelable{
         licenseNumber = in.readString();
         state = in.readString();
         aboutMe = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        preferredJobLocation = in.readString();
         id = in.readInt();
     }
 
@@ -51,6 +62,18 @@ public class User implements Parcelable{
             return new User[size];
         }
     };
+
+    public int getJobTitileId() {
+        return jobTitileId;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
 
     public String getStatus() {
         return status;
@@ -172,6 +195,19 @@ public class User implements Parcelable{
         this.email = email;
     }
 
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public int getJobTitleID() {
+        return jobTitileId;
+    }
+
+    public String getPreferredJobLocation() {
+        return preferredJobLocation;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -183,6 +219,8 @@ public class User implements Parcelable{
         dest.writeString(status);
         dest.writeString(firstName);
         dest.writeString(lastName);
+        dest.writeString(jobTitle);
+        dest.writeInt(jobTitileId);
         dest.writeString(profileImage);
         dest.writeString(profilePic);
         dest.writeString(userName);
@@ -192,6 +230,9 @@ public class User implements Parcelable{
         dest.writeString(licenseNumber);
         dest.writeString(state);
         dest.writeString(aboutMe);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(preferredJobLocation);
         dest.writeInt(id);
     }
 }

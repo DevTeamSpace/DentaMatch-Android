@@ -138,6 +138,8 @@
             android:name=".ui.common.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
+
         <activity
             android:name=".ui.profile.workexperience.UpdateCertificateActivity"
             android:screenOrientation="portrait"

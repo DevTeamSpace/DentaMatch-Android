@@ -292,7 +292,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             Log.d("Tag", "file path" + mFilePath);
 
             if (mFilePath != null) {
-                PreferenceUtil.setProfileImagePath(mFilePath);
 //                mBinder.createProfile1IvProfileIcon.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN));
                 Picasso.with(CreateProfileActivity1.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.createProfile1IvProfileIcon);
 
