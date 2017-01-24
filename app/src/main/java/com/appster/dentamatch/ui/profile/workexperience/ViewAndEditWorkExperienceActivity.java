@@ -264,6 +264,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     public void onJobTitleSelection(String title, int titleId, int postion) {
         selectedJobtitle = title;
         jobTitleId = titleId;
+        mBinder.layoutWorkExpViewEdit.etJobTitle.setText(title);
 
 
     }

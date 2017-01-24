@@ -21,8 +21,10 @@ import com.appster.dentamatch.databinding.ItemSkillBinding;
 import com.appster.dentamatch.databinding.ItemSubSkillBinding;
 import com.appster.dentamatch.model.ParentSkill;
 import com.appster.dentamatch.model.SubSkill;
+import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomEditText;
 
 import java.util.List;
@@ -36,7 +38,6 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
     private List<SubSkill> mSkillList;
     private ItemSubSkillBinding mBinder;
     private Context mContext;
-//    public EditText etOtherTemp;
 
     public SubSkillsAdapter(List<SubSkill> skillList, Context context) {
         this.mSkillList = skillList;
@@ -68,7 +69,6 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
             if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                 mBinder.etOther.setVisibility(View.VISIBLE);
                 mBinder.etOther.setText(mSkillList.get(position).getOtherText());
-//                etOtherTemp = mBinder.etOther;
             }
         } else {
             holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
@@ -92,10 +92,10 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
                 if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                     if (!checked) {
                         mBinder.etOther.setVisibility(View.VISIBLE);
-//                        etOtherTemp = mBinder.etOther;
-
                     } else {
                         mBinder.etOther.setVisibility(View.GONE);
+                        ((BaseActivity)mContext).hideKeyboard();
+                        mBinder.etOther.setText("");
                     }
                 }
 

@@ -37,9 +37,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            >
-
         </activity>
+
         <activity
             android:name=".ui.auth.LoginActivity"
             android:screenOrientation="userPortrait"
@@ -48,6 +47,7 @@
 
         <activity
             android:name=".ui.profile.affiliation.AffiliationActivity"
+            android:theme="@style/NoActionBar"
             android:screenOrientation="portrait" />
 
         <activity
@@ -128,7 +128,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
 
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"

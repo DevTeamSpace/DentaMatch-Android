@@ -162,7 +162,6 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 UpdateCertificates obj = new UpdateCertificates();
                 obj.setId(parentSkill.getId());
                 obj.setValue(parentSkill.getOtherSkill());
-//                obj.setValue(mSkillsAdapter.etOtherTemp.getText().toString());
                 othersList.add(obj);
             }
             for (SubSkill subSkill : parentSkill.getSubSkills()) {
@@ -213,36 +212,4 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     public void onEditTextSelected(int position) {
         mBinder.recyclerSkills.smoothScrollToPosition(position);
     }
-
-    /*private void setResideMenu() {
-        // attach to current activity;
-        resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.gradient_shape_register);
-        resideMenu.attachToActivity(this);
-        resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
-
-//         create menu items;
-        String titles[] = {"Home", "Profile", "Calendar", "Settings"};
-//        int icon[] = { R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder,
-//                R.drawable.profile_pic_placeholder, R.drawable.profile_pic_placeholder };
-
-        int icon[] = {0};
-
-        View view = LayoutInflater.from(this).inflate(R.layout.item_school, null);
-        resideMenu.addView(view);
-
-        for (int i = 0; i < titles.length; i++) {
-//            ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
-            ResideMenuItem item = new ResideMenuItem(this, icon[0], titles[i]);
-            item.setOnClickListener(this);
-            resideMenu.addMenuItem(item, ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
-
-            item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LogUtils.LOGD(TAG, "Menu click");
-                }
-            });
-        }
-    }*/
 }

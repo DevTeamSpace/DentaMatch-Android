@@ -60,10 +60,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mContext = context;
         mListener = listener;
         mOthersSelectedListener = othersSelectedListener;
-//        DisplayMetrics displaymetrics = new DisplayMetrics();
-//        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//        int height = displaymetrics.heightPixels;
-//        windowWidth = displaymetrics.widthPixels;
     }
 
     @Override
@@ -89,6 +85,8 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder1, final int position) {
 
+
+
         if (holder1 instanceof ViewHolderHeader) {
             if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
                 LogUtils.LOGD("pabd", "path is--=" + PreferenceUtil.getProfileImagePath());
@@ -106,12 +104,15 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 //        LogUtils.LOGD("SkillsAdapt", "Skill "+ skill.getSkillName());
             holder.tvSkillName.setText(skill.getSkillName());
-            holder.etOther.setText(skill.getOtherSkill());
+
             holder.layoutSkills.setTag(position - 1);
 
             if (skill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                holder.layoutSkills.setOnClickListener(null);
                 holder.etOther.setVisibility(View.VISIBLE);
                 holder.ivArrow.setVisibility(View.GONE);
+                holder.etOther.setText(skill.getOtherSkill());
+
                 holder.flowLayout.setVisibility(View.GONE);
 //                etOtherTemp = holder.etOther;
 
@@ -127,8 +128,8 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 });
 
-                InputMethodManager inputManager = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.restartInput(mBinder.etOther);
+//                InputMethodManager inputManager = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputManager.restartInput(mBinder.etOther);
 
                 holder.etOther.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -143,7 +144,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     @Override
                     public void afterTextChanged(Editable s) {
-//                        mSkillList.get(position - 1).setOtherSkill(s.toString());
+                        mSkillList.get(position - 1).setOtherSkill(s.toString());
                     }
                 });
 
@@ -151,6 +152,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             } else {
                 holder.etOther.setVisibility(View.GONE);
+                holder.ivArrow.setVisibility(View.VISIBLE);
 
                 holder.layoutSkills.setOnClickListener(new View.OnClickListener() {
 
