@@ -73,18 +73,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -218,9 +206,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     Picasso.with(getActivity()).load(response.getUser().getProfilePic()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.ivProfileIcon);
 
                 }
+
                 profileBinding.tvName.setText(response.getUser().getFirstName() + " " + response.getUser().getLastName());
-//                profileBinding.tvJobTitle.setText(response.getUser().get);
                 profileBinding.tvAboutMe.setText(response.getUser().getAboutMe());
+                profileBinding.tvJobTitle.setText(response.getUser().getJobTitle());
+                profileBinding.tvLocation.setText(response.getUser().getPreferredJobLocation());
+
             }
             if (response.getWorkExperience() != null && response.getWorkExperience().getSaveList().size() > 0) {
                 goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
