@@ -118,7 +118,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-//                intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get(tempValue));
+                CertificatesList data = new CertificatesList();
+                data.setImageUrl(profileData.getDentalStateBoard().getImageUrl());
+                intent.putExtra(Constants.INTENT_KEY.DATA, data);
                 startActivity(intent);
 
             }
@@ -210,7 +212,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
                 }
                 profileBinding.tvName.setText(response.getUser().getFirstName() + " " + response.getUser().getLastName());
-//                profileBinding.tvJobTitle.setText(response.getUser().get);
+//                profileBinding.tvJobTitle.setText(response.getUser().getT);
                 profileBinding.tvAboutMe.setText(response.getUser().getAboutMe());
             }
             if (response.getWorkExperience() != null && response.getWorkExperience().getSaveList().size() > 0) {
@@ -255,7 +257,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             if (response.getCertificatesLists() != null && response.getCertificatesLists().size() > 0) {
                 inflateCertification(response.getCertificatesLists());
             }
-            if (response.getDentalStateBoard() != null) {
+            if (response.getDentalStateBoard() != null && !TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
                 profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);

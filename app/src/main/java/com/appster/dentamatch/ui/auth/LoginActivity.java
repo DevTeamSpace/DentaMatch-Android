@@ -318,7 +318,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
                 return false;
             }
-            if(mPostalCode.isEmpty()) {
+            if (mPostalCode.isEmpty()) {
                 Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
@@ -409,8 +409,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
-//                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    Intent intent = new Intent(getApplicationContext(), SchoolingActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
 //                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
                     startActivity(intent);
                     finish();
