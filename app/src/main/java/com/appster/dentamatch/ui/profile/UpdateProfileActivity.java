@@ -27,7 +27,6 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.CropCircleTransformation;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -76,7 +75,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
     private void setViewData() {
         if (mProfileData != null) {
-            mBinding.toolbarProfile.txvToolbarGeneralCenter.setText(R.string.header_edit_profile);
+            mBinding.toolbarProfile.tvToolbarGeneralLeft.setText(R.string.header_edit_profile);
             mBinding.etFname.setText(mProfileData.getUser().getFirstName());
             mBinding.etLname.setText(mProfileData.getUser().getLastName());
             mBinding.etJobTitle.setText(mProfileData.getUser().getAboutMe());

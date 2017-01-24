@@ -17,11 +17,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
-
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
-import com.appster.dentamatch.util.LogUtils;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -224,10 +222,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack, boolean shouldAdd, ANIMATION_TYPE animationType) {
+    public void pushFragment(BaseFragment fragment, Bundle args, ANIMATION_TYPE animationType) {
         try {
-            BaseFragment fragment = getFragment(fragmentId);
-            if (fragment == null) return null;
+            if (fragment == null) return;
             if (args != null)
                 fragment.setArguments(args);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -242,53 +239,17 @@ public abstract class BaseActivity extends AppCompatActivity {
                 case NONE:
                     break;
             }
-            if (shouldAdd)
-                ft.add(containerViewId, fragment, fragment.getFragmentName());
-            else
-                ft.replace(containerViewId, fragment, fragment.getFragmentName());
-            if (addToBackStack)
-                ft.addToBackStack(fragment.getFragmentName());
-            if (shouldAdd)
-                ft.commit();
-            else
+            if (fragment.isAdded()) {
+                return;
+            } else {
+                ft.replace(R.id.fragment_container, fragment);
                 ft.commitAllowingStateLoss();
-            return fragment;
+            }
         } catch (Exception x) {
         }
-        return null;
     }
 
-    public void pushFragment(Constants.FRAGMENTS fragmentId) {
-        pushFragment(fragmentId, null, ANIMATION_TYPE.DEFAULT);
-    }
 
-    public void pushFragment(Constants.FRAGMENTS fragmentId, ANIMATION_TYPE animationType) {
-        pushFragment(fragmentId, null, animationType);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args) {
-        return pushFragment(fragmentId, args, R.id.frg_container, true, ANIMATION_TYPE.DEFAULT);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, ANIMATION_TYPE animationType) {
-        return pushFragment(fragmentId, args, R.id.frg_container, true, animationType);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, boolean addToBackStack) {
-        return pushFragment(fragmentId, args, R.id.frg_container, addToBackStack, ANIMATION_TYPE.DEFAULT);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, boolean addToBackStack, ANIMATION_TYPE animationType) {
-        return pushFragment(fragmentId, args, R.id.frg_container, addToBackStack, animationType);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack) {
-        return pushFragment(fragmentId, args, containerViewId, addToBackStack, false, ANIMATION_TYPE.DEFAULT);
-    }
-
-    private Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack, ANIMATION_TYPE animationType) {
-        return pushFragment(fragmentId, args, containerViewId, addToBackStack, false, animationType);
-    }
 
     private void doLogin(String email, String password) {
         showProgressBar();

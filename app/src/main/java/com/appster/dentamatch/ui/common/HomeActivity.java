@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.common;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,11 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.ui.calendar.CalendarFragment;
+import com.appster.dentamatch.ui.jobs.JobsFragment;
+import com.appster.dentamatch.ui.messages.MessagesFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
+import com.appster.dentamatch.ui.tracks.TrackFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -29,6 +32,12 @@ public class HomeActivity extends BaseActivity {
     private AHBottomNavigation bottomBar;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
+
+    private ProfileFragment mProfileFragment;
+    private JobsFragment mJobsFragment;
+    private MessagesFragment mMessagesFragment;
+    private CalendarFragment mCalendarFragment;
+    private TrackFragment mTrackFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,25 +75,50 @@ public class HomeActivity extends BaseActivity {
             public boolean onTabSelected(int position, boolean wasSelected) {
                 switch (position) {
                     case 0:
-                        showToast("Under Development");
+                        if (mJobsFragment != null) {
+                            pushFragment(mJobsFragment, null, ANIMATION_TYPE.FADE);
+                        } else {
+                            mJobsFragment = JobsFragment.newInstance();
+                            pushFragment(mJobsFragment, null, ANIMATION_TYPE.FADE);
+                        }
                         break;
 
                     case 1:
-                        showToast("Under Development");
+                        if (mTrackFragment != null) {
+                            pushFragment(mTrackFragment, null, ANIMATION_TYPE.FADE);
+                        } else {
+                            mTrackFragment = TrackFragment.newInstance();
+                            pushFragment(mTrackFragment, null, ANIMATION_TYPE.FADE);
+                        }
 
                         break;
 
                     case 2:
-                        showToast("Under Development");
+                        if (mCalendarFragment != null) {
+                            pushFragment(mCalendarFragment, null, ANIMATION_TYPE.FADE);
+                        } else {
+                            mCalendarFragment = CalendarFragment.newInstance();
+                            pushFragment(mCalendarFragment, null, ANIMATION_TYPE.FADE);
+                        }
 
                         break;
 
                     case 3:
-                        showToast("Under Development");
+                        if (mMessagesFragment != null) {
+                            pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
+                        } else {
+                            mMessagesFragment = MessagesFragment.newInstance();
+                            pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
+                        }
                         break;
 
                     case 4:
-                        launchProfileFragment();
+                        if (mProfileFragment != null) {
+                            pushFragment(mProfileFragment, null, ANIMATION_TYPE.FADE);
+                        } else {
+                            mProfileFragment = ProfileFragment.newInstance();
+                            pushFragment(mProfileFragment, null, ANIMATION_TYPE.FADE);
+                        }
                         break;
                 }
                 return true;

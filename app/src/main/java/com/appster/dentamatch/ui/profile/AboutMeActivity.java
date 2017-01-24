@@ -12,10 +12,8 @@ import com.appster.dentamatch.databinding.ActivityAboutMeBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.util.Constants;
@@ -38,7 +36,6 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_about_me);
         initViews();
-
 
     }
 
@@ -106,7 +103,7 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                     Intent intent = new Intent(AboutMeActivity.this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
+                    startActivity(intent);
 
                 }
             }
