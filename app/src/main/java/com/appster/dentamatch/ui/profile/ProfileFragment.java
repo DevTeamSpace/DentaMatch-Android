@@ -1,6 +1,6 @@
 package com.appster.dentamatch.ui.profile;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.appster.dentamatch.databinding.ItemProfileCellCertificateBinding;
 import com.appster.dentamatch.databinding.ItemProfileSchoolingBinding;
 import com.appster.dentamatch.databinding.ItemProfileSkillBinding;
 import com.appster.dentamatch.databinding.ItemProfileWorkExpBinding;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -42,7 +43,9 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.apmem.tools.layouts.FlowLayout;
-import org.w3c.dom.Text;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -56,7 +59,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
     private FragmentProfileBinding profileBinding;
-    private ProfileResponseData profileData;
     private String TAG = "ProfileFragment-";
     private int tempValue = 0;
     private ProfileResponseData profileResponseData;
@@ -68,6 +70,17 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         args.putInt("instanceCount", instanceCount);
         instanceCount++;
         return frag;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
 
@@ -83,6 +96,20 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 //        FlurryAgent.logEvent(getString(R.string.settings));
         return profileBinding.getRoot();
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+       if( !EventBus.getDefault().isRegistered(this)){
+           EventBus.getDefault().register(this);
+       }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -148,7 +175,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.tv_edit:
                 startActivity(new Intent(getActivity(), UpdateProfileActivity.class)
-                        .putExtra(Constants.EXTRA_PROFILE_DATA, profileData));
+                        .putExtra(Constants.EXTRA_PROFILE_DATA, profileResponseData));
 
                 break;
             case R.id.iv_setting:
@@ -168,8 +195,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
                     profileResponseData = response.getProfileResponseData();
-                    setViewData(response.getProfileResponseData());
-                    profileData = response.getProfileResponseData();
                     if (isActive()) {
                         setViewData(response.getProfileResponseData());
                     }
@@ -398,9 +423,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         return null;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProfileUpdatedEvent(ProfileUpdatedEvent profileUpdatedEvent){
+        if(profileUpdatedEvent.ismIsProfileUpdated()) {
+            getProfileData();
+        }
+    }
 
-//    @Override
-//    public String getFragmentName() {
-//        return null;
-//    }
+
 }

@@ -19,27 +19,40 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateProfileBinding;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
+import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.profile.ProfileUpdateRequest;
+import com.appster.dentamatch.network.request.profile.UpdateUserProfileRequest;
+import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetJobTitle;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
 
 /**
  * Created by virender on 21/01/17.
  */
-public class UpdateProfileActivity extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
+public class UpdateProfileActivity extends BaseActivity implements View.OnClickListener, ImageSelectedListener, JobTitleSelectionListener {
     private static final int REQUEST_CODE_LOCATION = 102;
 
     private byte imageSourceType;
@@ -49,7 +62,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     private String mFilePath;
     private String mSelectedLat;
     private String mSelectedLng;
-    private boolean mIsImageSelected;
+    private int mSelectedJobTitleID;
 
 
     @Override
@@ -61,10 +74,15 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mProfileData = getIntent().getParcelableExtra(Constants.EXTRA_PROFILE_DATA);
         }
 
-        mBinding.inputLayoutLocation.setHintEnabled(false);
-        mBinding.inputLayoutLocation.setHintAnimationEnabled(false);
+        mSelectedLat = mProfileData.getUser().getLatitude();
+        mSelectedLng = mProfileData.getUser().getLongitude();
+        mSelectedJobTitleID = mProfileData.getUser().getJobTitileId();
+
         mBinding.etLocation.setFocusableInTouchMode(false);
         mBinding.etLocation.setCursorVisible(false);
+
+        mBinding.etJobTitle.setFocusableInTouchMode(false);
+        mBinding.etJobTitle.setCursorVisible(false);
         setViewData();
 
     }
@@ -79,9 +97,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mBinding.toolbarProfile.tvToolbarGeneralLeft.setText(R.string.header_edit_profile);
             mBinding.etFname.setText(mProfileData.getUser().getFirstName());
             mBinding.etLname.setText(mProfileData.getUser().getLastName());
-            mBinding.etJobTitle.setText(mProfileData.getUser().getAboutMe());
+            mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
             mBinding.etDesc.setText(mProfileData.getUser().getAboutMe());
-            mBinding.toolbarProfile.ivToolBarLeft.setOnClickListener(this);
+            mBinding.etLocation.setText(mProfileData.getUser().getPreferredJobLocation());
 
             if (!TextUtils.isEmpty(mProfileData.getUser().getProfilePic())) {
                 Picasso.with(this).load(mProfileData.getUser().getProfilePic())
@@ -93,6 +111,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mBinding.etLocation.setOnClickListener(this);
             mBinding.createProfile1IvProfileIcon.setOnClickListener(this);
             mBinding.btnSave.setOnClickListener(this);
+            mBinding.etJobTitle.setOnClickListener(this);
+            mBinding.toolbarProfile.ivToolBarLeft.setOnClickListener(this);
+
         }
     }
 
@@ -104,6 +125,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
+            case R.id.et_job_title:
+                new BottomSheetJobTitle(UpdateProfileActivity.this, this, PreferenceUtil.getJobTitlePosition());
+                break;
 
             case R.id.iv_tool_bar_left:
                 onBackPressed();
@@ -145,14 +170,12 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                     }
                 }
             }
+
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
             if(resultCode == RESULT_OK) {
-                mIsImageSelected = true;
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
                 if (mFilePath != null) {
-                    PreferenceUtil.setProfileImagePath(mFilePath);
-//                mBinder.createProfile1IvProfileIcon.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN));
 
                     Picasso.with(UpdateProfileActivity.this)
                             .load(new File(mFilePath)).centerCrop()
@@ -162,19 +185,18 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .into(mBinding.createProfile1IvProfileIcon);
 
+                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
+
                 }
             }
 
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
             if(resultCode == RESULT_OK) {
-                mIsImageSelected = true;
                 Uri selectedImageUri = data.getData();
                 mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
 
                 if (mFilePath != null) {
-                    PreferenceUtil.setProfileImagePath(mFilePath);
-//                mBinder.createProfile1IvProfileIcon.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN));
 
                     Picasso.with(UpdateProfileActivity.this)
                             .load(new File(mFilePath)).centerCrop()
@@ -183,6 +205,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .into(mBinding.createProfile1IvProfileIcon);
 
+                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                 }
             }
         }
@@ -213,14 +236,68 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     }
 
     private void updateProfileData() {
-        ProfileUpdateRequest request = new ProfileUpdateRequest();
-        request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
+
+        UpdateUserProfileRequest request = new UpdateUserProfileRequest();
         request.setFirstName(Utils.getStringFromEditText(mBinding.etFname));
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
         request.setPreferredJobLocation(Utils.getStringFromEditText(mBinding.etLocation));
+        request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
+        request.setLatitude(mSelectedLat);
+        request.setLongitude(mSelectedLng);
+        request.setJobTitleID(mSelectedJobTitleID);
+        showProgressBar(getString(R.string.please_wait));
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.updateUserProfile(request).enqueue(new BaseCallback<BaseResponse>(this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                hideProgressBar();
+                if(!TextUtils.isEmpty(response.getMessage())){
+                    showToast(response.getMessage());
+                }
 
+                if(response.getStatus() == 1){
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+                hideProgressBar();
+                LogUtils.LOGE(TAG, " UPDATE PROFILE API failed!");
+            }
+        });
+
+    }
+
+    private void uploadImageApi(String filePath, String imageType) {
+        showProgressBar(getString(R.string.please_wait));
+        File file = new File(filePath);
+        RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody uploadType = RequestBody.create(MediaType.parse("multipart/form-data"), imageType);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        Call<FileUploadResponse> response = webServices.uploadImage(uploadType, fbody);
+        response.enqueue(new BaseCallback<FileUploadResponse>(UpdateProfileActivity.this) {
+            @Override
+            public void onSuccess(FileUploadResponse response) {
+                Utils.showToast(getApplicationContext(), response.getMessage());
+
+                if (response != null && response.getStatus() == 1) {
+                    // showSnackBarFromTop(response.getMessage(), false);
+                    PreferenceUtil.setProfileImagePath(response.getFileUploadResponseData().getImageUrl());
+                    showToast(response.getMessage());
+
+                }
+            }
+
+            @Override
+            public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGE(TAG, " ImageUpload failed!");
+
+            }
+        });
     }
 
     private void callBottomSheet() {
@@ -306,5 +383,11 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+    }
+
+    @Override
+    public void onJobTitleSelection(String title, int titleId, int position) {
+        mBinding.etJobTitle.setText(title);
+        mSelectedJobTitleID = titleId;
     }
 }
