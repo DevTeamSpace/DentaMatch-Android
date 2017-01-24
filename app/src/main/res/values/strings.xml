@@ -205,6 +205,7 @@
 
     <!--profile-->
     <string name="edit_label">Edit</string>
+    <string name="header_edit_profile">EDIT PROFILE</string>
     <string name="add_dental_state_board">Add dental state board</string>
     <string name="add_affilitaion">Add professional affiliations</string>
     <string name="add_key_skill">Add skills category</string>

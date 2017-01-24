@@ -49,6 +49,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     private String mFilePath;
     private String mSelectedLat;
     private String mSelectedLng;
+    private boolean mIsImageSelected;
 
 
     @Override
@@ -146,7 +147,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             }
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
             if(resultCode == RESULT_OK) {
-
+                mIsImageSelected = true;
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
                 if (mFilePath != null) {
@@ -166,6 +167,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
             if(resultCode == RESULT_OK) {
+                mIsImageSelected = true;
                 Uri selectedImageUri = data.getData();
                 mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
