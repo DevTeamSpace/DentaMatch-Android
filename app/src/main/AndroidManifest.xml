@@ -29,7 +29,7 @@
             android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />
 
         <activity
-            android:name=".ui.profile.workexperience.SchoolingActivity"
+            android:name=".ui.common.SplashActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -121,12 +121,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-        <!--<activity
+        <activity
             android:name=".ui.profile.workexperience.SchoolingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/NoActionBar" >
-        </activity>-->
+        </activity>
 
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"
