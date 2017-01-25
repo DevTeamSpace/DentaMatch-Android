@@ -50,34 +50,6 @@
                 android:layout_below="@+id/layout_skills_inner">
                 </com.wefika.flowlayout.FlowLayout>
 
-            <!--<RelativeLayout
-                android:id="@+id/layout_skill_bricks"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/layout_skills_inner"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="20dp"
-                android:visibility="visible">-->
-
-                <!--&lt;!&ndash;<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/light_gray"
-                    android:ellipsize="end"
-                    android:padding="10dp"
-                    android:text="Motor management skills" />-->
-
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:background="@color/light_gray"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:padding="10dp"
-                    android:text="Engineering foundation skills" />
-            </RelativeLayout>-->
-
             <com.appster.dentamatch.widget.CustomEditText
                 android:id="@+id/et_other"
                 android:layout_width="match_parent"
@@ -86,11 +58,11 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_selector"
                 android:layout_marginBottom="10dp"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:digits="@string/digits_alpha_numeric_only"
                 android:focusableInTouchMode="true"
                 android:imeOptions="actionDone"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 

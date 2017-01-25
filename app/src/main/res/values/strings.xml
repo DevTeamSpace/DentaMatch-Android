@@ -189,7 +189,7 @@
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="blank_certificate_photo_alert">Please upload atleast one certificate</string>
     <string name="desc_about_me">Describe about your work and things you are passionate about.</string>
-    <string name="blank_other_alert">Please write some text in other</string>
+    <string name="blank_other_alert">Please write some text in other field in order to save it.</string>
     <string name="blank_affiliation_selection">Please select atleast one affiliation.</string>
     <string name="blank_certificate_validity_date">Please enter certificate validation date of %1$s</string>
     <string name="blank_profile_summary_alert">Please write something about your profile.</string>

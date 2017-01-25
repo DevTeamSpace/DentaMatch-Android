@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,6 +19,7 @@ import com.appster.dentamatch.databinding.ActivitySubSkillsBinding;
 import com.appster.dentamatch.model.SubSkill;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.StringUtils;
 import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
@@ -40,8 +42,6 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         initViews();
         overridePendingTransition(R.anim.pull_in, R.anim.hold_still);
 
-//        Bundle bundle = getIntent().getBundleExtra(Constants.EXTRA_SUB_SKILLS);
-
         if (getIntent() != null) {
             subSkills = getIntent().getParcelableArrayListExtra(Constants.BundleKey.SUB_SKILLS);
         }
@@ -51,21 +51,29 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
 
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList(Constants.BundleKey.SUB_SKILLS, subSkills);
-//        if(!TextUtils.isEmpty(mSkillsAdapter.etOtherTemp.getText().toString())) {
+        if(validate()) {
+            Intent intent = new Intent();
+            intent.putExtra(Constants.EXTRA_SUB_SKILLS, subSkills);
 
-        Intent intent = new Intent();
-//        subSkills.get(subSkills.size() - 1).setOtherText(mSkillsAdapter.etOtherTemp.getText().toString());
-        intent.putExtra(Constants.EXTRA_SUB_SKILLS, subSkills);
+            setResult(901, intent);
+            finish();
+        }
+    }
 
-        setResult(901, intent);
-        finish();
-//        }else{
-//            Utils.showToast(SubSkillsActivity.this,getString(R.string.blank_other_alert));
-//        }
+    private boolean validate() {
+        hideKeyboard();
+        int position = subSkills.size() - 1;
+        boolean checked = subSkills.get(position).getIsSelected() == 1;
+        String skillName = subSkills.get(position).getSkillName();
+        boolean otherTextEmpty = TextUtils.isEmpty(subSkills.get(position).getOtherText());
+
+        if (checked && skillName.equalsIgnoreCase(Constants.OTHERS) && otherTextEmpty) {
+            Utils.showToastLong(this, getString(R.string.blank_other_alert));
+            return false;
+        }
+
+        return true;
     }
 
     private void initViews() {
@@ -81,7 +89,6 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_left:
-//                hideKeyboard();
                 onBackPressed();
                 break;
         }
@@ -102,5 +109,28 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         mBinder.recyclerSkills.setItemAnimator(new DefaultItemAnimator());
         mBinder.recyclerSkills.setAdapter(mSkillsAdapter);
         mSkillsAdapter.notifyDataSetChanged();
+
+
+        mBinder.recyclerSkills.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                if (dy < 0) {
+                    // Recycle view scrolling up...
+                    hideKeyboard();
+
+
+                } else if (dy > 0) {
+                    // Recycle view scrolling down...
+
+                }
+            }
+        });
     }
 }

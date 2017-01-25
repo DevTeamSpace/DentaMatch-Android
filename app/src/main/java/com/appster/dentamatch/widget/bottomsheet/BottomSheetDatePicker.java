@@ -67,7 +67,7 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
 
                     }
 
-                } else if (currentYear == datePicker.getYear() && currentMonth == datePicker.getMonth() && currentDay < dayPickerDay) {
+                } else if (currentYear == datePicker.getYear() && currentMonth == datePicker.getMonth() && currentDay <=dayPickerDay) {
                     selectedDate(datePicker, position);
 
                     if (mBottomSheetDialog != null) {

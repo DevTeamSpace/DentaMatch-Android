@@ -162,7 +162,6 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 UpdateCertificates obj = new UpdateCertificates();
                 obj.setId(parentSkill.getId());
                 obj.setValue(parentSkill.getOtherSkill());
-//                obj.setValue(mSkillsAdapter.etOtherTemp.getText().toString());
                 othersList.add(obj);
             }
             for (SubSkill subSkill : parentSkill.getSubSkills()) {
@@ -213,5 +212,4 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     public void onEditTextSelected(int position) {
         mBinder.recyclerSkills.smoothScrollToPosition(position);
     }
-
 }

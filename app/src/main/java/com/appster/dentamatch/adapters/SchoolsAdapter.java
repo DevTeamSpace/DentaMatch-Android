@@ -58,7 +58,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mYearsList = new ArrayList<String>();
         mYearsList.add(context.getString(R.string.hint_year_of_graduation));
 
-        for (int i = 1970; i < 2010; i++) {
+        for (int i = 1970; i < 2018; i++) {
             mYearsList.add(String.valueOf(i));
         }
         mNameSelectedListener = nameSelectedListener;

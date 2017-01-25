@@ -310,7 +310,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.includeWorkExpList.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
 //        PreferenceUtil.setMonth(month);
 //        PreferenceUtil.setYear(year);
-        expMonth = PreferenceUtil.getYear() * 12 + PreferenceUtil.getMonth();
+        expMonth = year * 12 + month;
 
     }
 

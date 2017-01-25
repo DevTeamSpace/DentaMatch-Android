@@ -47,7 +47,8 @@
 
         <activity
             android:name=".ui.profile.affiliation.AffiliationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -128,11 +129,10 @@
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
-
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar.LIGHT"
+            android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.common.HomeActivity"
