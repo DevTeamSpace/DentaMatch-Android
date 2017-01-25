@@ -317,6 +317,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
             if (mFilePath != null) {
                 Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
+                uploadImageApi(mFilePath,Constants.APIS.IMAGE_TYPE_STATE_BOARD);
             }
         }
     }

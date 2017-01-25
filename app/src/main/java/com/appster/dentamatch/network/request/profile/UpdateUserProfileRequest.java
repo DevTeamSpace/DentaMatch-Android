@@ -1,25 +1,25 @@
 package com.appster.dentamatch.network.request.profile;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
- * Created by virender on 21/01/17.
+ * Created by Appster on 24/01/17.
  */
-public class ProfileUpdateRequest {
-    private int zipcode;
-    private int jobTitileId;
+
+public class UpdateUserProfileRequest {
     private String firstName;
     private String lastName;
+
+    @SerializedName("zipcode")
+    private int zipCode;
     private String latitude;
     private String longitude;
     private String preferredJobLocation;
+
+    @SerializedName("jobTitileId")
+    private int jobTitleID;
     private String aboutMe;
 
-    public void setZipcode(int zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public void setJobTitileId(int jobTitileId) {
-        this.jobTitileId = jobTitileId;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -27,6 +27,10 @@ public class ProfileUpdateRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
     }
 
     public void setLatitude(String latitude) {
@@ -41,7 +45,12 @@ public class ProfileUpdateRequest {
         this.preferredJobLocation = preferredJobLocation;
     }
 
+    public void setJobTitleID(int jobTitleID) {
+        this.jobTitleID = jobTitleID;
+    }
+
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
     }
+
 }

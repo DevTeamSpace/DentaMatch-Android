@@ -50,7 +50,6 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-
     /**
      * initUI is used to initialize this view at app launch
      */
@@ -137,86 +136,6 @@ public class HomeActivity extends BaseActivity {
             }
         }, 1000);
 
-//        final String[] colors = getResources().getStringArray(R.array.default_preview);
-//        navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
-//        navigationTabBar.setInactiveColor(ContextCompat.getColor(this,R.color.gray_nav_bottom_unselected));
-//        navigationTabBar.setActiveColor(ContextCompat.getColor(this,R.color.cerulean_color));
-//        int spSize = (int) (11 * getApplicationContext().getResources().getDisplayMetrics().density);
-//        navigationTabBar.setTitleSize(spSize);
-//        navigationTabBar.setBackgroundColor(ContextCompat.getColor(this,R.color.black_color));
-//        final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-//        models.add(
-//                new NavigationTabBar.Model.Builder(
-//                        getResources().getDrawable(R.drawable.img_nav_jobs),
-//                        Color.parseColor(colors[0]))
-//                        .selectedIcon(getResources().getDrawable(R.drawable.nav_job_selected))
-//                        .title(getResources().getString(R.string.nav_job))
-//                        .build()
-//        );
-//        models.add(
-//                new NavigationTabBar.Model.Builder(
-//                        getResources().getDrawable(R.drawable.img_nav_track),
-//                        Color.parseColor(colors[0]))
-//                        .selectedIcon(getResources().getDrawable(R.drawable.nav_track_selected))
-//                        .title(getResources().getString(R.string.nav_tracks))
-//                        .build()
-//        );
-//        models.add(
-//                new NavigationTabBar.Model.Builder(
-//                        getResources().getDrawable(R.drawable.img_nav_calendar),
-//                        Color.parseColor(colors[0]))
-//                        .selectedIcon(getResources().getDrawable(R.drawable.nav_calendar_selected))
-//
-//                        .title(getResources().getString(R.string.nav_calendar))
-//                        .build()
-//        );
-//        models.add(
-//                new NavigationTabBar.Model.Builder(
-//                        getResources().getDrawable(R.drawable.img_nav_messages),
-//                        Color.parseColor(colors[0]))
-//                        .selectedIcon(getResources().getDrawable(R.drawable.nav_message_selected))
-//
-//                        .title(getResources().getString(R.string.nav_message))
-//                        .build());
-//        models.add(
-//                new NavigationTabBar.Model.Builder(
-//                        getResources().getDrawable(R.drawable.img_nav_profile),
-//                        Color.parseColor(colors[0]))
-//                        .selectedIcon(getResources().getDrawable(R.drawable.nav_profile_slected))
-//
-//                        .title(getResources().getString(R.string.nav_profile))
-//                        .build()
-//        );
-//
-//        navigationTabBar.setModels(models);
-
-
-//        //IMPORTANT: ENABLE SCROLL BEHAVIOUR IN COORDINATOR LAYOUT
-//        navigationTabBar.setBehaviorEnabled(false);
-//
-//        navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
-//            @Override
-//            public void onStartTabSelected(NavigationTabBar.Model model, int index) {
-////                textHeader.setText(ITEMS[index]);
-//                if (index == 0) {
-////                    viewShadow.setVisibility(View.GONE);
-////                    adapterViewPager.notifyDataSetChanged();
-//                } else {
-////                    viewShadow.setVisibility(View.VISIBLE);
-//                }
-////                mTxvToolbarCenter.setText(ITEMS[index]);
-//                navigationTabBar.getModels().get(index).hideBadge();
-////                mTxvToolbarCenter.setText(ITEMS[position]);
-////
-//            }
-//
-//            @Override
-//            public void onEndTabSelected(NavigationTabBar.Model model, int index) {
-//
-//            }
-//        });
-
-
     }
 
     private void setTitleMargins(int bottomBarPosition) {
@@ -287,4 +206,7 @@ public class HomeActivity extends BaseActivity {
         super.onBackPressed();
         finish();
     }
+
+
+
 }

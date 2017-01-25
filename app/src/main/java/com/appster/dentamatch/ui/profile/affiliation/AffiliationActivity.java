@@ -35,12 +35,14 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
     private ActivityAffiliationBinding mBinder;
     private LinearLayoutManager mLayoutManager;
     private AffiliationAdapter affiliationAdapter;
+    private boolean isFromEditProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_affiliation);
         initViews();
+
         getAffiliation();
     }
 

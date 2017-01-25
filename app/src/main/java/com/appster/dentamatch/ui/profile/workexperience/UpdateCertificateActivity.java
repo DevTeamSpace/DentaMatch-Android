@@ -43,6 +43,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.params.CoreConnectionPNames;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -119,11 +120,21 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
                 break;
             case R.id.btn_save:
-                if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
-                    Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date));
-                    return;
+                if (isFromDentalStateBoard) {
+                    if (TextUtils.isEmpty(mFilePath)) {
+                        Utils.showToast(getApplicationContext(), getString(R.string.blank_satate_board_photo_alert));
+                        return;
+                    }
+                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
+                } else {
+
+
+                    if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
+                        Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date));
+                        return;
+                    }
+                    postCertificateData(preparePostValidation());
                 }
-                postCertificateData(preparePostValidation());
                 break;
             case R.id.iv_tool_bar_left:
                 finish();
@@ -288,6 +299,34 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
                 if (response != null && response.getStatus() == 1) {
                     // showSnackBarFromTop(response.getMessage(), false);
+
+                }
+            }
+
+            @Override
+            public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGE(TAG, " ImageUpload failed!");
+
+            }
+        });
+    }
+
+    private void uploadImageApi(String filePath, String imageType) {
+        showProgressBar(getString(R.string.please_wait));
+        File file = new File(filePath);
+        RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody uploadType = RequestBody.create(MediaType.parse("multipart/form-data"), imageType);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        Call<FileUploadResponse> response = webServices.uploadImage(uploadType, fbody);
+        response.enqueue(new BaseCallback<FileUploadResponse>(UpdateCertificateActivity.this) {
+            @Override
+            public void onSuccess(FileUploadResponse response) {
+                Utils.showToast(getApplicationContext(), response.getMessage());
+
+                if (response != null && response.getStatus() == 1) {
+                    // showSnackBarFromTop(response.getMessage(), false);
+//                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
 
                 }
             }

@@ -1,6 +1,6 @@
 package com.appster.dentamatch.ui.profile;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.appster.dentamatch.databinding.ItemProfileCellCertificateBinding;
 import com.appster.dentamatch.databinding.ItemProfileSchoolingBinding;
 import com.appster.dentamatch.databinding.ItemProfileSkillBinding;
 import com.appster.dentamatch.databinding.ItemProfileWorkExpBinding;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -30,6 +31,7 @@ import com.appster.dentamatch.network.response.profile.ProfileSkill;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
+import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
 import com.appster.dentamatch.ui.profile.workexperience.SkillsActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateCertificateActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
@@ -42,7 +44,9 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.apmem.tools.layouts.FlowLayout;
-import org.w3c.dom.Text;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -56,7 +60,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
     private FragmentProfileBinding profileBinding;
-    private ProfileResponseData profileData;
     private String TAG = "ProfileFragment-";
     private int tempValue = 0;
     private ProfileResponseData profileResponseData;
@@ -70,7 +73,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         return frag;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,6 +85,20 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 //        FlurryAgent.logEvent(getString(R.string.settings));
         return profileBinding.getRoot();
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -107,28 +123,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellLicence.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent licenseIntent = new Intent(getActivity(), UpdateLicenseActivity.class);
-//                startActivity(licenseIntent);
-//                licenseintent.putExtra(Constants.INTENT_KEY.DATA,profileResponseData.getLicence());
                 profileBinding.cellLicence.tvAddCertificates.performClick();
-
-            }
-        });
-        profileBinding.cellDentalStateBoard.tvEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-                CertificatesList data = new CertificatesList();
-                data.setImageUrl(profileData.getDentalStateBoard().getImageUrl());
-                intent.putExtra(Constants.INTENT_KEY.DATA, data);
-                startActivity(intent);
-
-            }
-        });
-        profileBinding.cellDentalStateBoard.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                profileBinding.cellDentalStateBoard.tvEdit.performClick();
 
             }
         });
@@ -140,6 +135,26 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(licenseintent);
             }
         });
+        profileBinding.cellDentalStateBoard.tvEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
+                CertificatesList data = new CertificatesList();
+                data.setImageUrl(profileResponseData.getDentalStateBoard().getImageUrl());
+                data.setCertificateName(getString(R.string.dental_state_board));
+                intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+                intent.putExtra(Constants.INTENT_KEY.DATA, data);
+                startActivity(intent);
+            }
+        });
+        profileBinding.cellDentalStateBoard.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellDentalStateBoard.tvEdit.performClick();
+
+            }
+        });
+
 
         profileBinding.cellAffiliation.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +164,33 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(affiliationIntent);
             }
         });
-        profileBinding.cellAffiliation.tvEditCell.setOnClickListener(new View.OnClickListener() {
+        profileBinding.cellAffiliation.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellAffiliation.tvEditCell.performClick();
+            }
+        });
+        profileBinding.cellSchooling.tvEditCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellSchooling.tvAddCertificates.performClick();
+            }
+        });
+        profileBinding.cellSchooling.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent skillIntent = new Intent(getActivity(), SchoolingActivity.class);
+                skillIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+                startActivity(skillIntent);
+            }
+        });
+        profileBinding.cellKeySkill.tvEditCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellKeySkill.tvAddCertificates.performClick();
+            }
+        });
+        profileBinding.cellKeySkill.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent skillIntent = new Intent(getActivity(), SkillsActivity.class);
@@ -166,7 +207,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.tv_edit:
                 startActivity(new Intent(getActivity(), UpdateProfileActivity.class)
-                        .putExtra(Constants.EXTRA_PROFILE_DATA, profileData));
+                        .putExtra(Constants.EXTRA_PROFILE_DATA, profileResponseData));
 
                 break;
             case R.id.iv_setting:
@@ -186,8 +227,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
                     profileResponseData = response.getProfileResponseData();
-                    setViewData(response.getProfileResponseData());
-                    profileData = response.getProfileResponseData();
                     if (isActive()) {
                         setViewData(response.getProfileResponseData());
                     }
@@ -211,9 +250,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     Picasso.with(getActivity()).load(response.getUser().getProfilePic()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.ivProfileIcon);
 
                 }
+
                 profileBinding.tvName.setText(response.getUser().getFirstName() + " " + response.getUser().getLastName());
-//                profileBinding.tvJobTitle.setText(response.getUser().getT);
                 profileBinding.tvAboutMe.setText(response.getUser().getAboutMe());
+                profileBinding.tvJobTitle.setText(response.getUser().getJobTitle());
+                profileBinding.tvLocation.setText(response.getUser().getPreferredJobLocation());
+
             }
             if (response.getWorkExperience() != null && response.getWorkExperience().getSaveList().size() > 0) {
                 goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
@@ -231,6 +273,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
                     lp.setMargins(10, 10, 10, 10);
                     textView.setLayoutParams(lp);
+                    textView.setSingleLine(true);
+
                     textView.setBackgroundResource(R.drawable.bg_edit_text);
                     textView.setPadding(30, 10, 30, 10);
                     textView.setText(response.getAffiliationList().get(i).getAffiliationName());
@@ -363,11 +407,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             cellCertificateBinding.tvAddCertificates.setTag(i);
             CertificatesList certificate = certificateList.get(i);
             cellCertificateBinding.tvCertificatesName.setText(certificate.getCertificateName());
-            if (!TextUtils.isEmpty(certificate.getImageUrl())) {
+            if (!TextUtils.isEmpty(certificate.getImage())) {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.GONE);
                 cellCertificateBinding.tvEdit.setVisibility(View.VISIBLE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.VISIBLE);
-                Picasso.with(getActivity()).load(certificate.getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(cellCertificateBinding.ivCertificateImage);
+                Picasso.with(getActivity()).load(certificate.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(cellCertificateBinding.ivCertificateImage);
 
             } else {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.VISIBLE);
@@ -416,9 +460,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         return null;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProfileUpdatedEvent(ProfileUpdatedEvent profileUpdatedEvent) {
+        if (profileUpdatedEvent.ismIsProfileUpdated()) {
+            getProfileData();
+        }
+    }
 
-//    @Override
-//    public String getFragmentName() {
-//        return null;
-//    }
+
 }

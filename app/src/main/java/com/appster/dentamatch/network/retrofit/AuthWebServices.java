@@ -6,6 +6,7 @@ import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
+import com.appster.dentamatch.network.request.profile.UpdateUserProfileRequest;
 import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
 import com.appster.dentamatch.network.request.skills.SkillsUpdateRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
@@ -58,7 +59,7 @@ public interface AuthWebServices {
     String AFFILIATION_SAVE = "users/affiliation-save";
     String CHANGE_PASSWORD = "users/change-password";
     String LOGOUT = "users/sign-out";
-//    String UPDATE_PROFILE = "users/sign-out";
+    String UPDATE_PROFILE = "users/user-profile-update";
 
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
@@ -117,6 +118,9 @@ public interface AuthWebServices {
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);
+
+    @PUT(UPDATE_PROFILE)
+    Call<BaseResponse> updateUserProfile(@Body UpdateUserProfileRequest request);
 
     @Multipart
     @POST(IMAGE_UPLOAD)

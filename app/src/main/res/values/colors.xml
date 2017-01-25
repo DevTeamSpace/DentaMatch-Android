@@ -33,6 +33,7 @@
     <color name="bottom_sheet_start_color">#80ffffff</color>
     <color name="bottom_sheet_center_color">#40ffffff</color>
     <color name="bottom_sheet_end_color">#ffffff</color>
+    <color name="pale_blue_color">#e7f4fd</color>
     <!--create profile-->
     <color name="cell_color">#f8f8f8</color>
     <color name="cell_text_color">#383838</color>
