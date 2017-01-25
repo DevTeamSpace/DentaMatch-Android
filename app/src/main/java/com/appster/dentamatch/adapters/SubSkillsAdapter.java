@@ -112,6 +112,9 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
                         holder.etOther.setText("");
                         ((BaseActivity) mContext).hideKeyboard();
                     }
+                }else{
+                    ((BaseActivity) mContext).hideKeyboard();
+
                 }
 
                 mSkillList.get(position).setIsSelected(!checked ? 1 : 0);
