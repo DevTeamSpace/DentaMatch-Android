@@ -89,6 +89,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 break;
             case R.id.et_job_title:
                 hideKeyboard();
+                if(PreferenceUtil.getJobTitleList()!=null&&PreferenceUtil.getJobTitleList().size()>0)
                 new BottomSheetJobTitle(CreateProfileActivity1.this, this, 0);
                 break;
             case R.id.create_profile1_btn_next:

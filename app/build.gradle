@@ -75,19 +75,19 @@ android {
     productFlavors {
         Dev {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"http://52.8.112.211/api/"')
+            buildConfigField("String", "BASE_URL", '" http://dev.dentamatch.coapi/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
         QA {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"http://52.52.216.246/api/"')
+            buildConfigField("String", "BASE_URL", '" http://qa.dentamatch.co/api/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
         Staging {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://staging.dentamach/api/"')
+            buildConfigField("String", "BASE_URL", '"http://staging.dentamatch.co/api/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }

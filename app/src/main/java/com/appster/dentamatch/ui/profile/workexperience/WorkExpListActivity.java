@@ -127,6 +127,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 new BottomSheetJobTitle(WorkExpListActivity.this, this, 0);
                 break;
             case R.id.btn_next_work_exp_lsit:
+                hideKeyboard();
                 if (workExpList.size() == 0) {
                     prepareRequestForAdd(true);
                 } else {
