@@ -1,7 +1,10 @@
 package com.appster.dentamatch.ui.jobs;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentJobsMapBinding;
 import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.util.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,10 +30,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
     private final int MARKER_PADDING = 5;
+    private final int REQ_MY_LOCATION = 5;
 
     private BottomSheetBehavior mBottomSheetBehavior;
     private FragmentJobsMapBinding mMapBinding;
     private GoogleMap mGoogleMap;
+
     @Override
     public String getFragmentName() {
         return null;
@@ -63,7 +69,24 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnMapClickListener(this);
 
+        if (PermissionUtils.checkPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION, getActivity())) {
+            mGoogleMap.setMyLocationEnabled(true);
+        }else{
+            PermissionUtils.requestPermission(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQ_MY_LOCATION);
+        }
+
         addMarker(45.02695045318545, -98.0859375, true);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == REQ_MY_LOCATION) {
+            if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                mGoogleMap.setMyLocationEnabled(true);
+            }
+        }
     }
 
     @Override
