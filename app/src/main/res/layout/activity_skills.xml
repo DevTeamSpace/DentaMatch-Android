@@ -45,7 +45,7 @@
             android:gravity="center"
             android:text="@string/lable_next"
             android:textColor="@color/white_color"
-            android:textSize="@dimen/text_size_large"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_regular" />
     </RelativeLayout>
 </layout>

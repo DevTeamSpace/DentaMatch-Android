@@ -231,21 +231,6 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-//    public static class ViewHolderOther extends RecyclerView.ViewHolder {
-//
-//        public TextView tvType;
-//        public ImageView ivCheckBox;
-//        public EditText etOther;
-//
-//        public ViewHolderOther(View itemLayoutView) {
-//            super(itemLayoutView);
-//            tvType = (TextView) itemLayoutView.findViewById(R.id.tv_affiliation_type);
-//            ivCheckBox = (ImageView) itemLayoutView.findViewById(R.id.iv_check_box);
-//            etOther = (EditText) itemLayoutView.findViewById(R.id.et_other);
-//
-//        }
-//    }
-
     public static class ViewHolderProfile extends RecyclerView.ViewHolder {
 
         public TextView tvTitle;

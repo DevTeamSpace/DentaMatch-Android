@@ -43,7 +43,8 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
         this.mSkillList = skillList;
         this.mContext = context;
     }
-    public  List<SubSkill> getList(){
+
+    public List<SubSkill> getList() {
         return mSkillList;
     }
 
@@ -61,19 +62,32 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
         final SubSkill skill = mSkillList.get(position);
 
         holder.tvSkillName.setText(skill.getSkillName());
+        holder.etOther.setVisibility(View.GONE);
+//        holder.layout.setTag(position);
 
-        boolean checked = mSkillList.get(position).getIsSelected() == 1;
+//        boolean checked = mSkillList.get(position).getIsSelected() == 1;
 
-        if (checked) {
+        if (mSkillList.get(position).getIsSelected() == 1) {
             holder.ivSelected.setBackgroundResource(R.drawable.ic_check_selected);
-            if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
-                mBinder.etOther.setVisibility(View.VISIBLE);
-                mBinder.etOther.setText(mSkillList.get(position).getOtherText());
-            }
+//            if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+//                mBinder.etOther.setVisibility(View.VISIBLE);
+//                mBinder.etOther.setText(mSkillList.get(position).getOtherText());
+//            }
         } else {
             holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
-            if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
-                mBinder.etOther.setVisibility(View.GONE);
+//            if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+//                mBinder.etOther.setVisibility(View.GONE);
+//            }
+        }
+        if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+            if (mSkillList.get(position).getIsSelected() == 1) {
+
+                holder.etOther.setVisibility(View.VISIBLE);
+                holder.etOther.setText(mSkillList.get(position).getOtherText());
+
+            } else {
+                holder.etOther.setVisibility(View.GONE);
+
             }
         }
 
@@ -91,15 +105,17 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
 
                 if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                     if (!checked) {
-                        mBinder.etOther.setVisibility(View.VISIBLE);
+                        holder.etOther.setVisibility(View.VISIBLE);
+
                     } else {
-                        mBinder.etOther.setVisibility(View.GONE);
-                        ((BaseActivity)mContext).hideKeyboard();
-                        mBinder.etOther.setText("");
+                        holder.etOther.setVisibility(View.GONE);
+                        holder.etOther.setText("");
+                        ((BaseActivity) mContext).hideKeyboard();
                     }
                 }
 
                 mSkillList.get(position).setIsSelected(!checked ? 1 : 0);
+                notifyDataSetChanged();
             }
         });
 
