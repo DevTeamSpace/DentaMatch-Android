@@ -14,6 +14,8 @@ public class LoginRequest {
     private String preferedLocation;
     private String latitude;
     private String longitude;
+    private String zipCode;
+
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
@@ -39,7 +41,6 @@ public class LoginRequest {
         this.longitude = longitude;
     }
 
-    private String zipCode;
 
 
     public String getEmail() {

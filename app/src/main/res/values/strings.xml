@@ -142,6 +142,7 @@
     <string name="header_certification">CERTIFICATIONS</string>
     <string name="header_affiliation">AFFILIATIONS</string>
     <string name="header_about_me">ABOUT ME</string>
+    <string name="header_job_detail">JOB DETAILS</string>
 
     <string name="title_affiliation">Affiliations </string>
 
@@ -222,6 +223,8 @@
     <string name="blank_alert_confirm_password">Confirm password can never blank.</string>
     <string name="alert_reset_password_mismatch">New password and confirm password should same.</string>
     <string name="job_type">Job Type</string>
+    <string name="header_list_view">List View</string>
+    <string name="header_map_view">Map View</string>
     <string name="location">Location</string>
     <string name="error_no_first_name">First name cannot be empty</string>
     <string name="error_no_last_name">Last name cannot be empty</string>
@@ -229,6 +232,17 @@
     <string name="error_no_location">Location cannot be empty</string>
     <string name="error_no_description">Description cannot be empty</string>
     <string name="alert_upload_phot_first">Please upload your document first.</string>
+    <string name="label_about">ABOUT</string>
+    <string name="label_office_location">OFFICE LOCATION</string>
+    <string name="office_type_label">OFFICE TYPE</string>
+    <string name="total_job_openings_label">TOTAL JOB OPENINGS</string>
+    <string name="job_description_label">JOB DESCRIPTION</string>
+    <string name="office_description_label">OFFICE DESCRIPTION</string>
+    <string name="working_hours_label">WORKING HOURS</string>
+    <string name="dress_code_label">DRESS CODE</string>
+    <string name="parking_availability_label">PARKING AVAILABILITY</string>
+    <string name="map_label">MAP</string>
+    <string name="button_apply_for_job">APPLY FOR JOB</string>
 
 
 </resources>
