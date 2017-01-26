@@ -9,14 +9,13 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@android:color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:gravity="bottom"
         android:orientation="vertical">
 
@@ -35,7 +34,7 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="start"
                 android:layout_weight="0.2"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:text="@string/skip_button"
                 android:textColor="@android:color/white"
                 app:customBackground="@drawable/intro_button_selector"
@@ -64,7 +63,7 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="start"
                 android:layout_weight="0.2"
-                android:paddingRight="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/done_button"
                 android:textColor="@android:color/white"
                 android:visibility="gone"

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class CertificateRequest {
 
     @SerializedName("certificateValidition")
-    ArrayList<UpdateCertificates> updateCertificatesList;
+    private ArrayList<UpdateCertificates> updateCertificatesList;
 
     public void setUpdateCertificatesList(ArrayList<UpdateCertificates> updateCertificatesList) {
         this.updateCertificatesList = updateCertificatesList;

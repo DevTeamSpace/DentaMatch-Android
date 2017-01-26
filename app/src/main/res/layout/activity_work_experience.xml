@@ -10,8 +10,7 @@
         android:background="@color/white_color"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar_work_exp"
@@ -74,19 +73,15 @@
                     android:textSize="@dimen/text_size_normal"
                     app:customFont="@string/font_regular" />
 
-
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_job_title"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_43"
-
                     android:clipToPadding="false"
                     android:gravity="bottom"
                     android:paddingTop="@dimen/padding_input_layout"
                     app:hintTextAppearance="@style/edit_input_layout">
-
 
                     <EditText
                         android:id="@+id/et_job_title"
@@ -95,7 +90,7 @@
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/bg_slection_edit_text"
                         android:drawablePadding="@dimen/padding_drawable"
-                        android:drawableRight="@drawable/ic_down_arrow"
+                        android:drawableEnd="@drawable/ic_down_arrow"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:hint="@string/lable_job_title"
@@ -106,15 +101,12 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_work_exp"
                     android:layout_width="match_parent"
-
                     android:layout_height="@dimen/edit_height"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_19"
                     android:clipToPadding="false"
                     android:gravity="bottom"
                     android:paddingTop="@dimen/padding_input_layout"
                     app:hintTextAppearance="@style/edit_input_layout">
-
 
                     <EditText
                         android:id="@+id/tv_experince_work_exp"
@@ -132,17 +124,12 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_office_name"
                     android:layout_width="match_parent"
-
                     android:layout_height="@dimen/edit_height"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_19"
                     android:clipToPadding="false"
-
                     android:gravity="bottom"
                     android:paddingTop="@dimen/padding_input_layout"
-
                     app:hintTextAppearance="@style/edit_input_layout">
-
 
                     <EditText
                         android:id="@+id/et_office_name"
@@ -150,11 +137,10 @@
                         android:layout_marginLeft="@dimen/margin_normal"
                         android:layout_marginRight="@dimen/margin_normal"
                         android:background="@drawable/edit_text_selector"
-                        android:focusable="true"
                         android:digits="@string/digits_alpha_numeric_only"
+                        android:focusable="true"
                         android:hint="@string/office_name"
-                        android:paddingTop="@dimen/padding_drawable"
-                        />
+                        android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
 
 

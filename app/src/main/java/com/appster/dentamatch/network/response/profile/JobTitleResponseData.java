@@ -1,5 +1,6 @@
 package com.appster.dentamatch.network.response.profile;
 
+import com.appster.dentamatch.model.JobTitleList;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

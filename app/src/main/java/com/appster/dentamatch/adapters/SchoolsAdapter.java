@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +30,7 @@ import com.appster.dentamatch.util.PreferenceUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -58,9 +58,13 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mYearsList = new ArrayList<String>();
         mYearsList.add(context.getString(R.string.hint_year_of_graduation));
 
-        for (int i = 1970; i < 2018; i++) {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int minimumYear = currentYear - Constants.EDUCATION_HISTORY_YEARS;
+
+        for (int i = currentYear; i > minimumYear; i++) {
             mYearsList.add(String.valueOf(i));
         }
+
         mNameSelectedListener = nameSelectedListener;
     }
 
@@ -91,19 +95,19 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if(holder1 instanceof ViewHolderHeader){
             if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-                LogUtils.LOGD("pabd", "path is--=" + PreferenceUtil.getProfileImagePath());
+                LogUtils.LOGD(TAG, "path is--=" + PreferenceUtil.getProfileImagePath());
                 Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().
                         resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).
                         placeholder(R.drawable.profile_pic_placeholder).into(mBinderHeader.ivProfileIcon);
             }
 
-            mBinderHeader.progressBar.setProgress(50);
+            mBinderHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.SCHOOLING);
             mBinderHeader.tvTitle.setText(mContext.getString(R.string.where_did_you_study));
             mBinderHeader.tvDescription.setText(mContext.getString(R.string.lorem_ipsum));
         }else {
             final ViewHolderItem holder = (ViewHolderItem) holder1;
             final SchoolType schoolType = mSchoolList.get(position-1);
-            LogUtils.LOGD(TAG, "SchoolType " + schoolType.getSchoolTypeName());
+//            LogUtils.LOGD(TAG, "SchoolType " + schoolType.getSchoolTypeName());
 
             holder.tvSchoolTypeName.setText(schoolType.getSchoolTypeName());
 
@@ -145,7 +149,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             holder.spinnerYears.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    TextView text = (TextView) ((LinearLayout) view).findViewById(R.id.text_spinner);
+                    TextView text = (TextView)  view.findViewById(R.id.text_spinner);
                     text.setText("");
                     holder.etYearOfGraduation.setText(mYearsList.get(position));
                 }

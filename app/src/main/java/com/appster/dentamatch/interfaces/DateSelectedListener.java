@@ -5,6 +5,6 @@ package com.appster.dentamatch.interfaces;
  */
 public interface DateSelectedListener {
 
-    public void onDateSelection(String date,int position);
+    void onDateSelection(String date,int position);
 
 }

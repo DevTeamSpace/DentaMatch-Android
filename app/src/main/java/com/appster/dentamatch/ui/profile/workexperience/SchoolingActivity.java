@@ -91,7 +91,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onSuccess(SchoolingResponse response) {
                 if (response.getStatus() == 1) {
-                    setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
+                    //setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }

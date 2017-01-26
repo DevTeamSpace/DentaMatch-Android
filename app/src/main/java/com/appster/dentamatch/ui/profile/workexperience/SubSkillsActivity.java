@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SubSkillsAdapter;
@@ -18,7 +16,6 @@ import com.appster.dentamatch.databinding.ActivitySubSkillsBinding;
 import com.appster.dentamatch.model.SubSkill;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.StringUtils;
 import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
@@ -55,7 +52,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
             Intent intent = new Intent();
             intent.putExtra(Constants.EXTRA_SUB_SKILLS, subSkills);
 
-            setResult(901, intent);
+            setResult(Constants.REQUEST_CODE.REQUEST_CODE_SKILLS, intent);
             finish();
         }
     }

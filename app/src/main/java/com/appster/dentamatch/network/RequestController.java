@@ -5,8 +5,6 @@ import android.text.TextUtils;
 import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
-import com.appster.dentamatch.util.Utils;
-//import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -17,14 +15,16 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+//import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 /**
  * Controller class for handling all network calls.
  */
 public final class RequestController {
 
+    private static String TAG = "RequestController";
     private static Retrofit retrofit;
     private static HttpLoggingInterceptor logger = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -33,7 +33,6 @@ public final class RequestController {
             .readTimeout(1, TimeUnit.MINUTES)
             .connectTimeout(1, TimeUnit.MINUTES);
 
-
     private static Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create());
@@ -41,8 +40,9 @@ public final class RequestController {
     public static <S> S createService(Class<S> serviceClass) {
         return createService(serviceClass, false);
     }
-    public static Retrofit getRetrofit(){
-        return  retrofit;
+
+    public static Retrofit getRetrofit() {
+        return retrofit;
     }
 
     public static <S> S createService(Class<S> serviceClass, final boolean isAuth) {
@@ -51,10 +51,8 @@ public final class RequestController {
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
                 if (isAuth) {
-//                    String accessToken = PreferenceUtil.getAccessToken();
-//                    String accessToken  ="9c917a5b2dc23c6abeddd7631871bcc6";
-                    String accessToken  = PreferenceUtil.getKeyUserToken();
-                    LogUtils.LOGD("API_ToKEN","Access_ toke--="+accessToken);
+                    String accessToken = PreferenceUtil.getKeyUserToken();
+                    LogUtils.LOGD(TAG, "Access_ toke--=" + accessToken);
 
                     if (!TextUtils.isEmpty(accessToken)) {
                         Request.Builder requestBuilder = original.newBuilder()

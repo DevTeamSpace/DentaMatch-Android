@@ -7,15 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityAffiliationBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.response.affiliation.AffiliationPostRequest;
-import com.appster.dentamatch.network.response.affiliation.OtherAffiliationRequest;
+import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
+import com.appster.dentamatch.network.request.affiliation.OtherAffiliationRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -51,21 +50,13 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
 
     private void initViews() {
         mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_affiliation));
-//        mBinder.includeProfileHeader.tvTitle.setText(getString(R.string.title_affiliation));
         mLayoutManager = new LinearLayoutManager(this);
-//
+
         mBinder.recyclerAffiliation.setLayoutManager(mLayoutManager);
-//        mBinder.recyclerAffiliation.addItemDecoration(new SimpleDividerItemDecoration(this));
         affiliationAdapter = new AffiliationAdapter(this);
         mBinder.recyclerAffiliation.setAdapter(affiliationAdapter);
-//        if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-//            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(mBinder.includeProfileHeader.ivProfileIcon);
-//
-//        }
-//        mBinder.includeProfileHeader.progressBar.setProgress(80);
         mBinder.toolbarAffiliation.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnNext.setOnClickListener(this);
-
     }
 
     @Override
@@ -91,17 +82,13 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             }
 
             if (affiliationAdapter.getList().get(i).getAffiliationName().equalsIgnoreCase(Constants.OTHERS) && affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
-//                if (TextUtils.isEmpty(affiliationAdapter.getOtherData())) {
                 if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation())) {
                     Utils.showToast(AffiliationActivity.this, getString(R.string.blank_other_alert));
                     return false;
                 } else {
                     affiliationAdapter.getList().get(i).setOtherAffiliation(affiliationAdapter.getList().get(i).getOtherAffiliation());
                 }
-
             }
-
-
         }
         if (!isSelected) {
             Utils.showToast(AffiliationActivity.this, getString(R.string.blank_affiliation_selection));
@@ -145,16 +132,13 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                     otherAffiliationRequest.setAffiliationId(affiliationAdapter.getList().get(i).getAffiliationId());
                     otherAffiliationRequest.setOtherAffiliation(affiliationAdapter.getList().get(i).getOtherAffiliation());
                     otherList.add(otherAffiliationRequest);
-
                 }
             }
-
         }
         postRequest.setIdList(idlist);
         postRequest.setOtherAffiliationList(otherList);
 
         return postRequest;
-
     }
 
     private void postAffiliationData(AffiliationPostRequest affiliationPostRequest) {
@@ -172,8 +156,6 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                     } else {
                         startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));
                     }
-
-
                 }
             }
 
@@ -182,6 +164,5 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                 LogUtils.LOGD(TAG, "onFail");
             }
         });
-
     }
 }

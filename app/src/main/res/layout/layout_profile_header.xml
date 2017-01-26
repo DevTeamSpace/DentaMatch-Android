@@ -19,14 +19,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:src="@drawable/ic_gallary" />
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/tv_edit"
                 style="@style/text_view_normal"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/margin_normal"
                 android:text="@string/send_label" />

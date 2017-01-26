@@ -13,11 +13,9 @@ public class LicenceRequest implements Parcelable {
     private String state;
     private int jobTitleId;
 
-    public LicenceRequest() {
+    public LicenceRequest() { }
 
-    }
-
-    protected LicenceRequest(Parcel in) {
+    private LicenceRequest(Parcel in) {
         license = in.readString();
         licenseNumber = in.readString();
         state = in.readString();

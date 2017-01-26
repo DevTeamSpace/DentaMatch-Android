@@ -39,7 +39,7 @@
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_edit"
                         style="@style/text_view_normal"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:text="@string/edit_label"
                         android:textColor="@color/white_color"
@@ -184,8 +184,6 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_licence_number"
                     style="@style/text_view_normal"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:textColor="@color/text_default_color"
                     android:textSize="@dimen/text_size_13"
@@ -194,8 +192,6 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_licence_state"
                     style="@style/text_view_normal"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:textColor="@color/text_default_color"
                     android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_regular" />

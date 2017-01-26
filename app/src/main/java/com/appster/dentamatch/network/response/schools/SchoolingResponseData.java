@@ -1,6 +1,5 @@
 package com.appster.dentamatch.network.response.schools;
 
-import com.appster.dentamatch.model.ParentSkill;
 import com.appster.dentamatch.model.SchoolType;
 import com.google.gson.annotations.SerializedName;
 

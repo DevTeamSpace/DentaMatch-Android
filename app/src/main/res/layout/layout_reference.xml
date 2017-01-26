@@ -10,9 +10,9 @@
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_refrence_count"
             style="@style/text_view_normal"
-            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_19"
-            android:paddingLeft="@dimen/margin_medium"
+            android:paddingStart="@dimen/margin_medium"
             android:text="@string/reference"
             android:textColor="@color/color_forgot_pwd"
             android:textSize="@dimen/text_size_16"
@@ -22,7 +22,6 @@
             android:id="@+id/input_layout_reference_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_height"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_19"
             android:clipToPadding="false"
             android:gravity="bottom"
@@ -36,25 +35,20 @@
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
                 android:background="@drawable/edit_text_selector"
-                android:hint="@string/reference_name"
                 android:digits="@string/digits_alpha_numeric_only"
+                android:hint="@string/reference_name"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_reference_mobile"
             android:layout_width="match_parent"
-
             android:layout_height="@dimen/edit_height"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_19"
             android:clipToPadding="false"
-
             android:gravity="bottom"
             android:paddingTop="@dimen/padding_input_layout"
-
             app:hintTextAppearance="@style/edit_input_layout">
-
 
             <EditText
                 android:id="@+id/et_office_reference_mobile"
@@ -71,17 +65,12 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_reference_email"
             android:layout_width="match_parent"
-
             android:layout_height="@dimen/edit_height"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_19"
             android:clipToPadding="false"
-
             android:gravity="bottom"
             android:paddingTop="@dimen/padding_input_layout"
-
             app:hintTextAppearance="@style/edit_input_layout">
-
 
             <EditText
                 android:id="@+id/et_office_reference_email"
@@ -89,18 +78,18 @@
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
                 android:background="@drawable/edit_text_selector"
+                android:digits="@string/digits_alpha_numeric_email"
                 android:hint="@string/reference_email"
                 android:inputType="textEmailAddress"
-                android:digits="@string/digits_alpha_numeric_email"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_refrence_delete"
             style="@style/text_view_normal"
-            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_12"
-            android:paddingLeft="@dimen/margin_medium"
+            android:paddingStart="@dimen/margin_medium"
             android:text="@string/reference_delete"
             android:textColor="@color/red_color"
             android:textSize="@dimen/text_size_14"

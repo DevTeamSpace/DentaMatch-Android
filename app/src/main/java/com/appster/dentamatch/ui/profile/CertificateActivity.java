@@ -54,6 +54,7 @@ import retrofit2.Call;
  * Created by virender on 10/01/17.
  */
 public class CertificateActivity extends BaseActivity implements View.OnClickListener, ImageSelectedListener, DateSelectedListener {
+    private static final String TAG = "CertificateActivity";
     private ActivityCertificateBinding mBinder;
     private String mFilePath;
     private ImageView ivTemp;
@@ -63,7 +64,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     private int position;
     private ArrayList<CertificatesList> certificateList = new ArrayList<>();
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +72,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
         initViews();
 
         callCertificateListApi();
-
     }
 
     private void initViews() {
@@ -85,7 +84,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
             Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(mBinder.layoutCertificatesHeader.ivProfileIcon);
 
         }
-        mBinder.layoutCertificatesHeader.progressBar.setProgress(90);
+        mBinder.layoutCertificatesHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.CERTIFICATE);
         mBinder.btnNext.setOnClickListener(this);
     }
 
@@ -94,7 +93,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
         new BottomSheetDatePicker(CertificateActivity.this, this, pos);
 
     }
-
 
     @Override
     public String getActivityName() {
@@ -113,7 +111,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 onBackPressed();
                 break;
         }
-
     }
 
     private CertificateRequest prepareCertificateSaveRequest() {
@@ -141,10 +138,9 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     Utils.showToast(CertificateActivity.this, getString(R.string.blank_certificate_validity_date, certificateList.get(i).getCertificateName()));
                     return false;
                 }
-
             }
-
         }
+
         if (!isImageUploaded) {
             Utils.showToast(CertificateActivity.this, getString(R.string.blank_certificate_photo_alert));
             return false;
@@ -163,8 +159,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void takePhoto() {
-
-
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
@@ -172,9 +166,9 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d("Tag", "request permisison called --");
+        Log.d(TAG, "request permisison called --");
         Log.d("Tag", "request permisison called --" + grantResults.length);
 
 
@@ -245,7 +239,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void gallaryClicked() {
+    public void galleryClicked() {
         imageSourceType = 1;
 
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
@@ -326,12 +320,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
             tvUplodPhoto.setTag(i);
             ivCertificate.setTag(i);
             tvDatePicker.setTag(i);
-//            tvUplodPhoto.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                }
-//            });
+
             ivCertificate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -343,6 +332,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
 
                 }
             });
+
             tvDatePicker.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -358,6 +348,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
             });
+
             mBinder.layoutCertificatesInflater.addView(certificatesView);
         }
     }
@@ -376,7 +367,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response != null && response.getStatus() == 1) {
-                    // showSnackBarFromTop(response.getMessage(), false);
                     certificateList.get(position).setImage(filePath);
                     certificateList.get(position).setImageUploaded(true);
                 }
@@ -401,7 +391,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
 
                 if (response.getStatus() == 1) {
                     startActivity(new Intent(CertificateActivity.this, AboutMeActivity.class));
-
                 }
             }
 
@@ -411,6 +400,5 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
-
     }
 }

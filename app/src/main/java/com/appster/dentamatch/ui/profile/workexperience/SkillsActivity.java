@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.appster.dentamatch.R;
@@ -35,16 +34,12 @@ import java.util.List;
 
 import retrofit2.Call;
 
-//import com.special.ResideMenu.ResideMenu;
-//import com.special.ResideMenu.ResideMenuItem;
-
 /**
  * Created by ram on 12/01/17.
  */
 public class SkillsActivity extends BaseActivity implements View.OnClickListener, SkillsAdapter.OnSkillClick, EditTextSelected {
     private static final String TAG = "Skills";
     private ActivitySkillsBinding mBinder;
-//    private ResideMenu resideMenu;
 
     private SkillsAdapter mSkillsAdapter;
     private Button btnNext;
@@ -65,13 +60,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
         btnNext.setOnClickListener(this);
-//        setResideMenu();
     }
-
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        return resideMenu.dispatchTouchEvent(ev);
-//    }
 
     @Override
     public String getActivityName() {
@@ -123,7 +112,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         Intent intent = new Intent(SkillsActivity.this, SubSkillsActivity.class);
         intent.putExtra(Constants.BundleKey.SUB_SKILLS, subSkillList);
 
-        startActivityForResult(intent, 901);
+        startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_SKILLS);
         mSkillPosition = position;
     }
 

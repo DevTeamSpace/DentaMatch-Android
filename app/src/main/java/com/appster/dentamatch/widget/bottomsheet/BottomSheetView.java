@@ -39,7 +39,7 @@ public class BottomSheetView {
 
                 if (mBottomSheetDialog != null) {
                     mBottomSheetDialog.dismiss();
-                    mImageSelectedListener.gallaryClicked();
+                    mImageSelectedListener.galleryClicked();
 
                 }
 

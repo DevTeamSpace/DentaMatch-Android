@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +20,6 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_toStartOf="@+id/iv_selected"
                 android:ellipsize="end"
-                android:text="Sub Skill Item"
                 android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_large" />
 
@@ -33,23 +31,14 @@
                 android:src="@drawable/ic_check_unselected" />
         </RelativeLayout>
 
-        <!--<com.appster.dentamatch.widget.CustomEditText-->
-            <!--android:id="@+id/et_other"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="@dimen/margin_large"-->
-            <!--android:layout_marginEnd="@dimen/margin_large"-->
-            <!--android:background="@drawable/edit_text_selector_blue"-->
-            <!--android:layout_marginBottom="10dp"-->
-            <!--android:visibility="gone" />-->
         <EditText
             android:id="@+id/et_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginEnd="@dimen/margin_large"
-            android:background="@drawable/edit_text_selector_blue"
             android:layout_marginBottom="10dp"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:background="@drawable/edit_text_selector_blue"
             android:digits="@string/digits_alpha_numeric_only"
             android:focusable="true"
             android:textColor="@color/white_color"

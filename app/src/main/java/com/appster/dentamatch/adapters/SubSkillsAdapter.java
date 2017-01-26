@@ -1,7 +1,6 @@
 package com.appster.dentamatch.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -9,23 +8,17 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ItemSkillBinding;
 import com.appster.dentamatch.databinding.ItemSubSkillBinding;
-import com.appster.dentamatch.model.ParentSkill;
 import com.appster.dentamatch.model.SubSkill;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.CustomEditText;
 
 import java.util.List;
 
