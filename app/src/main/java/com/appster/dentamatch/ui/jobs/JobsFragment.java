@@ -39,7 +39,9 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
          * Load list job fragment as the default fragment.
          */
         getActivity().getSupportFragmentManager()
-                .beginTransaction().replace(R.id.lay_container, JobListFragment.newInstance()).commit();
+                .beginTransaction()
+                .replace(R.id.lay_container, JobListFragment.newInstance())
+                .commit();
         mIsList = true;
         return mJobsBinding.getRoot();
     }
@@ -54,14 +56,18 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                     mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setImageResource(R.drawable.img_map);
                     mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_map_view));
                     getActivity().getSupportFragmentManager()
-                            .beginTransaction().replace(R.id.lay_container, JobMapFragment.newInstance()).commit();
+                            .beginTransaction()
+                            .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left)
+                            .replace(R.id.lay_container, JobMapFragment.newInstance()).commit();
                     mIsList = false;
 
                 }else{
                     mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setImageResource(R.drawable.img_list);
                     mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_list_view));
                     getActivity().getSupportFragmentManager()
-                            .beginTransaction().replace(R.id.lay_container, JobListFragment.newInstance()).commit();
+                            .beginTransaction()
+                            .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
+                            .replace(R.id.lay_container, JobListFragment.newInstance()).commit();
                     mIsList = true;
                 }
 

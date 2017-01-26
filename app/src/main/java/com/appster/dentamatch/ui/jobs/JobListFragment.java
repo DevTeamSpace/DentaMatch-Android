@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.jobs;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.appster.dentamatch.ui.common.BaseFragment;
  * Created by Appster on 24/01/17.
  */
 
-public class JobListFragment extends BaseFragment {
+public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private FragmentJobListBinding mJobListBinding;
 
     public static JobListFragment newInstance() {
@@ -35,6 +36,13 @@ public class JobListFragment extends BaseFragment {
         mJobListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_job_list, container, false);
         mJobListBinding.rvJobs.setLayoutManager(new LinearLayoutManager(getActivity()));
         mJobListBinding.rvJobs.setAdapter(new JobListAdapter(getActivity()));
+        mJobListBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
+        mJobListBinding.swipeRefreshJobList.setOnRefreshListener(this);
         return mJobListBinding.getRoot();
+    }
+
+    @Override
+    public void onRefresh() {
+
     }
 }
