@@ -2,6 +2,14 @@
     <string name="app_name">DentaMatch</string>
 
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</string>
     <!-- font style name-->
     <string name="font_light" translatable="false">Roboto-Light.ttf</string>
     <string name="font_regular" translatable="false">Roboto-Regular.ttf</string>
@@ -25,6 +33,7 @@
     <string name="joyride_page4_text2">Buy products and services spanning across multiple categories and track them with ease.</string>
 
     <!--Input digits-->
+
 
     <string name="digits_numeric_only">0123456789</string>
     <string name="digits_alpha_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
@@ -186,7 +195,7 @@
     <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
     <string name="blank_phone_number_alert">Phone number can never be blank</string>
     <string name="complete_reference">Please complete the reference.</string>
-    <string name="please_wait" >Please wait&#8230;</string>
+    <string name="please_wait">Please wait&#8230;</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="blank_certificate_photo_alert">Please upload atleast one certificate</string>
     <string name="desc_about_me">Describe about your work and things you are passionate about.</string>

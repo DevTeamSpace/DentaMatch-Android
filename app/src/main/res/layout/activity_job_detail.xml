@@ -256,7 +256,7 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
                     android:id="@+id/tv_job_detail_doc_description"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    android:text="@string/lorem_ipsum_medium"
                     android:ellipsize="end"
                     android:maxLength="500"
                     android:layout_marginStart="@dimen/margin_normal"
@@ -264,7 +264,7 @@
                     android:layout_marginTop="@dimen/margin_10"
                     android:paddingTop="@dimen/margin_small"
                     android:paddingBottom="@dimen/margin_small"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:customFont="@string/font_regular"
                     />

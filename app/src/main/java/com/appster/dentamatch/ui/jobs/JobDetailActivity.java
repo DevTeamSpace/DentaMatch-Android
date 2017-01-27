@@ -37,6 +37,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         setData();
         mBinding.mapJobDetail.onCreate(savedInstanceState);
         mBinding.mapJobDetail.getMapAsync(this);
+        mBinding.tvJobDetailDocReadMore.setOnClickListener(this);
     }
 
     private void setData() {
@@ -100,9 +101,14 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 onBackPressed();
                 break;
 
+            case R.id.tv_job_detail_doc_read_more:
+                break;
+
             default: break;
         }
     }
+
+
 
     private void addMarker(double lat, double lng, boolean isSelected) {
         MarkerOptions options = new MarkerOptions();
