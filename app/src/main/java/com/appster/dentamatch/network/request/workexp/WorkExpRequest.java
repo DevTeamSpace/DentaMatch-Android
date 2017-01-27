@@ -3,6 +3,8 @@ package com.appster.dentamatch.network.request.workexp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by virender on 11/01/17.
  */
@@ -23,6 +25,7 @@ public class WorkExpRequest implements Parcelable {
     private String reference1Email;
     private String reference2Email;
     private String createdAt;
+    @SerializedName("jobtitleName")
     private String jobTitleName;
 
     public WorkExpRequest() { }

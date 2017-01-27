@@ -61,7 +61,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int minimumYear = currentYear - Constants.EDUCATION_HISTORY_YEARS;
 
-        for (int i = currentYear; i > minimumYear; i++) {
+        for (int i = currentYear; i > minimumYear; i--) {
             mYearsList.add(String.valueOf(i));
         }
 

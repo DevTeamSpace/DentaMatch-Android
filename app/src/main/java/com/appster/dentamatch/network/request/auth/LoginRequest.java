@@ -1,5 +1,7 @@
 package com.appster.dentamatch.network.request.auth;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Model class to hold Login request data.
  */
@@ -11,6 +13,7 @@ public class LoginRequest {
     private String deviceToken;
     private String firstName;
     private String lastName;
+    @SerializedName("preferedLocation")
     private String preferredLocation;
     private String latitude;
     private String longitude;
