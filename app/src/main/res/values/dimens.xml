@@ -31,6 +31,7 @@
     <!--Default Margin-->
     <dimen name="margin_small_3">3dp</dimen>
     <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_6">5dp</dimen>
     <dimen name="margin_medium">8dp</dimen>
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_normal">26dp</dimen>
@@ -68,6 +69,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="on_baording_text_layout_size">220dp</dimen>
+    <dimen name="margin_17">17dp</dimen>
+    <dimen name="margin_74">74dp</dimen>
+    <dimen name="circular_text_dimen">40dp</dimen>
 
 
 </resources>

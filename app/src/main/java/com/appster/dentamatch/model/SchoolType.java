@@ -15,6 +15,16 @@ public class SchoolType {
     private String schoolTypeName;
     @SerializedName("schoolCategory")
     private ArrayList<School> schoolList;
+    @SerializedName("other")
+    private ArrayList<School> otherList;
+
+    public ArrayList<School> getOtherList() {
+        return otherList;
+    }
+
+    public void setOtherList(ArrayList<School> otherList) {
+        this.otherList = otherList;
+    }
 
     public int getSchoolTypeId() {
         return schoolTypeId;

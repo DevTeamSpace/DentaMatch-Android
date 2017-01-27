@@ -29,7 +29,7 @@
             android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />
 
         <activity
-            android:name=".ui.common.SplashActivity"
+            android:name=".ui.searchjob.SearchJobActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -150,6 +150,14 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui.profile.workexperience.UpdateLicenseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <!--<activity-->
+            <!--android:name=".ui.searchjob.SearchJobActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/NoActionBar" />-->
+        <activity
+            android:name=".ui.searchjob.SelectJobTitleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 

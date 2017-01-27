@@ -11,6 +11,16 @@ public class JobTitleList {
     private int id;
     @SerializedName("jobtitle_name")
     private String jobTitle;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public int getId() {
         return id;
     }

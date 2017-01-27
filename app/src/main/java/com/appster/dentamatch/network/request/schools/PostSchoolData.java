@@ -1,26 +1,28 @@
-package com.appster.dentamatch.model;
+package com.appster.dentamatch.network.request.schools;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-
 /**
- * Created by ramkumar on 16/01/17.
+ * Created by virender on 25/01/17.
  */
+public class PostSchoolData {
 
-public class School {
     @SerializedName("schoolingChildId")
     private int schoolId;
     @SerializedName("schoolChildName")
     private String schoolName;
-    @SerializedName("schoolingId")
-    private int schoolTypeId;
-    @SerializedName("jobSeekerStatus")
-    private int isSelected;
     private String yearOfGraduation;
+
     private String otherSchooling;
+    private String otherId;
 
+    public String getOtherId() {
+        return otherId;
+    }
 
+    public void setOtherId(String otherId) {
+        this.otherId = otherId;
+    }
 
     public int getSchoolId() {
         return schoolId;
@@ -38,21 +40,6 @@ public class School {
         this.schoolName = schoolName;
     }
 
-    public int getSchoolTypeId() {
-        return schoolTypeId;
-    }
-
-    public void setSchoolTypeId(int schoolTypeId) {
-        this.schoolTypeId = schoolTypeId;
-    }
-
-    public int getIsSelected() {
-        return isSelected;
-    }
-
-    public void setIsSelected(int isSelected) {
-        this.isSelected = isSelected;
-    }
 
     public String getYearOfGraduation() {
         return yearOfGraduation;
@@ -70,3 +57,5 @@ public class School {
         this.otherSchooling = otherSchooling;
     }
 }
+
+

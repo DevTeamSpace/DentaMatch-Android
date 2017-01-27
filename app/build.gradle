@@ -75,7 +75,7 @@ android {
     productFlavors {
         Dev {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '" http://dev.dentamatch.coapi/"')
+            buildConfigField("String", "BASE_URL", '" http://dev.dentamatch.co/api/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
