@@ -10,6 +10,7 @@ public class Constants {
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_SUB_SKILLS = "sub_skills";
+    public static final String EXTRA_CHOSEN_JOB_TITLES = "EXTRA_CHOSEN_JOB_TITLES";
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";
 
@@ -30,6 +31,22 @@ public class Constants {
 
     public enum FRAGMENTS {
         TEST_FRAGMENT
+    }
+
+    public enum JOBTYPE {
+        FULL_TIME(1),
+        PART_TIME(2),
+        TEMPORARY(3);
+
+        private int value;
+
+        JOBTYPE(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     public interface BundleKey {
@@ -54,11 +71,13 @@ public class Constants {
         int REQUEST_CODE_WRITE_SD_CARD = 200;
         int REQUEST_CODE_LOCATION_ACCESS = 201;
         int REQUEST_CODE_READ_PHONE_STATE = 202;
+        int REQUEST_CODE_JOB_TITLE = 210;
         int REQUEST_CODE_JOYRIDE = 203;
         int REQUEST_CODE_PASS_INTENT = 5001;
     }
-    public interface FRAGMENT_NAME{
-        String PROFILE_FRAGMENT="Profile Fragment";
+
+    public interface FRAGMENT_NAME {
+        String PROFILE_FRAGMENT = "Profile Fragment";
     }
 
     public interface INTENT_KEY {

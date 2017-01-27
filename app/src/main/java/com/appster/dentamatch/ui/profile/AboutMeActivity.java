@@ -8,14 +8,13 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivityAboutMeBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -29,7 +28,7 @@ import retrofit2.Call;
  * Created by virender on 10/01/17.
  */
 public class AboutMeActivity extends BaseActivity implements View.OnClickListener {
-    private ActivityAboutMeBinding mBinder;
+    private com.appster.dentamatch.databinding.ActivityAboutMeBinding mBinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,10 +99,10 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-//                    Intent intent = new Intent(AboutMeActivity.this, HomeActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
+                    Intent intent = new Intent(AboutMeActivity.this, SearchJobActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
 
                 }
             }

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white5_color"
@@ -13,6 +13,8 @@
             layout="@layout/toolbar_general" />
 
         <ScrollView
+            android:layout_below="@+id/toolbar_search_job"
+            android:layout_above="@+id/btn_job_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -42,9 +44,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginRight="@dimen/margin_normal">
-
-                </org.apmem.tools.layouts.FlowLayout>
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_normal"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -173,6 +174,7 @@
 
                 <LinearLayout
                     android:id="@+id/day_layout"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_74"
                     android:layout_marginLeft="@dimen/margin_medium"
@@ -333,13 +335,23 @@
                     android:layout_marginBottom="@dimen/margin_15"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
-                    android:text="@string/location"
                     android:textAllCaps="true"
+                    android:visibility="gone"
                     android:textColor="@color/greyish_color"
                     android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_medium" />
 
             </LinearLayout>
         </ScrollView>
-    </LinearLayout>
+
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/btn_job_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white_color"
+            app:customFont="@string/font_bold"
+            android:text="@string/button_search"/>
+    </RelativeLayout>
 </layout>

@@ -2,45 +2,39 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.network.response.affiliation.AffiliationData;
+import com.appster.dentamatch.interfaces.JobTitleSelected;
 import com.appster.dentamatch.network.response.profile.JobTitleList;
-import com.appster.dentamatch.network.response.profile.JobTitleResponseData;
-import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.PreferenceUtil;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 /**
  * Created by virender on 27/01/17.
  */
-public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
     private Context mContext;
     private ArrayList<JobTitleList> mAffiliationList = new ArrayList<>();
+    private ArrayList<JobTitleList> mSelectedJobTitles = new ArrayList<>();
+    private JobTitleSelected mListener;
 
-    public JobTitleAdapter(Context context) {
+    public JobTitleAdapter(Context context, JobTitleSelected listener) {
         mContext = context;
+        mListener = listener;
     }
 
     public void addList(ArrayList<JobTitleList> list) {
         if (mAffiliationList != null) {
             mAffiliationList.clear();
+            mAffiliationList.addAll(list);
         }
-        mAffiliationList.addAll(list);
+
         notifyDataSetChanged();
     }
 
@@ -51,8 +45,6 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-
-
         return mAffiliationList != null ? mAffiliationList.size() : 0;
     }
 
@@ -85,23 +77,36 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
             }
+            itemHolder.ivCheckBox.setTag(position);
+            itemHolder.ivCheckBox.setOnClickListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
 
-            itemHolder.ivCheckBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (currentItem.isSelected()) {
-                        currentItem.setSelected(false);
-                        itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
-                    } else {
-                        currentItem.setSelected(true);
-                        itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
+    @Override
+    public void onClick(View v) {
+        int position = (int) v.getTag();
+        try {
+            final JobTitleList currentItem = getItem(position);
+            if (currentItem.isSelected()) {
 
-
+                for (JobTitleList i : mSelectedJobTitles) {
+                    if (i.getId() == currentItem.getId()) {
+                        mSelectedJobTitles.remove(i);
+                        break;
                     }
-
                 }
-            });
+                currentItem.setSelected(false);
+
+            } else {
+                mSelectedJobTitles.add(currentItem);
+                currentItem.setSelected(true);
+            }
+
+            mListener.onJobTitleSelected(mSelectedJobTitles);
+            notifyItemChanged(position);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -125,6 +130,4 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
     }
-
-
 }

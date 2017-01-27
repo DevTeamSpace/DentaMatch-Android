@@ -29,6 +29,7 @@ public final class PreferenceUtil {
     private static final String KEY_USER_TOKEN = "USER_TOKEN";
     private static final String KEY_JOB_TITLE_ID = "JOB_TITLE_ID";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
+    private static final String KEY_JOB_FILTER_SET = "KEY_JOB_FILTER_SET";
 
 
     public static void saveAppState(Object state) {
@@ -58,6 +59,14 @@ public final class PreferenceUtil {
 
     public static void setProfileImagePath(String value) {
         Hawk.put(KEY_PROFILE_IMAGE_PATH, value);
+    }
+
+    public static void setJobFilter(boolean value) {
+        Hawk.put(KEY_JOB_FILTER_SET, value);
+    }
+
+    public static boolean isJobFilterSet() {
+        return Hawk.get(KEY_JOB_FILTER_SET, false);
     }
 
     public static String getProfileImagePath() {

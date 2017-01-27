@@ -245,6 +245,7 @@
     <string name="saturday">Sa</string>
     <string name="header_search_job">SEARCH JOBS</string>
     <string name="job_tile_search">You can select more than one job title.</string>
+    <string name="button_search">SEARCH</string>
 
 
 </resources>

@@ -28,6 +28,7 @@ import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.CameraUtil;
@@ -109,7 +110,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 Alert.createYesNoAlert(CreateProfileActivity1.this, getString(R.string.ok), getString(R.string.cancel), "", getString(R.string.alert_profile), new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {
-                        Utils.showToast(CreateProfileActivity1.this, "Comming soon....");
+                        startActivity(new Intent(CreateProfileActivity1.this, SearchJobActivity.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
 
                     @Override
