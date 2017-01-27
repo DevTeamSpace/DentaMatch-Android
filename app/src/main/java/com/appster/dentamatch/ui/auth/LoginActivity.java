@@ -23,17 +23,17 @@ import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.HomeActivity;
-import com.appster.dentamatch.ui.profile.CertificateActivity;
-import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
+import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.SweetAlertHelper;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 
 /**
@@ -348,32 +348,36 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void signUpApi(LoginRequest loginRequest) {
         LogUtils.LOGD(TAG, "signUpApi");
-        processToShowDialog("", getString(R.string.please_wait), null);
-
+        SweetAlertHelper.getInstance().showProgressAlert(this);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.signUp(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
             @Override
             public void onSuccess(LoginResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
-
                 if (response.getStatus() == 1) {
-                    PreferenceUtil.setFistName(getTextFromEditText(etRegisterFName));
-                    PreferenceUtil.setLastName(getTextFromEditText(etRegisterLName));
-                    Utils.showToast(getApplicationContext(), response.getMessage());
-                    isLogin = true;
-                    showSelectedView(true);
-                    clearRegistrationFields();
+                    SweetAlertHelper.getInstance().progressToSuccessAlert(response.getMessage(), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            PreferenceUtil.setFistName(getTextFromEditText(etRegisterFName));
+                            PreferenceUtil.setLastName(getTextFromEditText(etRegisterLName));
+                            isLogin = true;
+                            showSelectedView(true);
+                            clearRegistrationFields();
+                            SweetAlertHelper.getInstance().dismissAlert();
+                        }
+                    });
 
 //                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
 //                    startActivity(intent);
 //                    finish();
                 } else {
-                    Utils.showToast(getApplicationContext(), response.getMessage());
+                    SweetAlertHelper.getInstance().progressToFailureAlert(response.getMessage(),null);
                 }
             }
 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
+                SweetAlertHelper.getInstance().dismissAlert();
                 LogUtils.LOGD(TAG, "onFail");
 
             }
