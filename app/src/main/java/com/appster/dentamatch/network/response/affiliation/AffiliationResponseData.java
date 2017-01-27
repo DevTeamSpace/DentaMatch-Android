@@ -1,5 +1,6 @@
 package com.appster.dentamatch.network.response.affiliation;
 
+import com.appster.dentamatch.model.LocationEvent;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -10,9 +11,9 @@ import java.util.ArrayList;
 public class AffiliationResponseData {
 
     @SerializedName("list")
-    private ArrayList<AffiliationData> affiliationList;
+    private ArrayList<LocationEvent.Affiliation> affiliationList;
 
-    public ArrayList<AffiliationData> getAffiliationList() {
+    public ArrayList<LocationEvent.Affiliation> getAffiliationList() {
         return affiliationList;
     }
 

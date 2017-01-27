@@ -26,8 +26,8 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
-import com.appster.dentamatch.network.response.profile.ProfileSchool;
-import com.appster.dentamatch.network.response.profile.ProfileSkill;
+import com.appster.dentamatch.model.ProfileSchool;
+import com.appster.dentamatch.model.ProfileSkill;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
@@ -63,7 +63,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private int tempValue = 0;
     private ProfileResponseData profileResponseData;
 
-
     public static ProfileFragment newInstance() {
         ProfileFragment frag = new ProfileFragment();
         Bundle args = new Bundle();
@@ -75,13 +74,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         profileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         fragmentManager = getActivity().getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         initViews();
         getProfileData();
-//        FlurryAgent.logEvent(getString(R.string.settings));
         return profileBinding.getRoot();
 
     }
@@ -122,11 +119,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellLicence.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent licenseIntent = new Intent(getActivity(), UpdateLicenseActivity.class);
-//                startActivity(licenseIntent);
-//                licenseintent.putExtra(Constants.INTENT_KEY.DATA,profileResponseData.getLicence());
                 profileBinding.cellLicence.tvAddCertificates.performClick();
-
             }
         });
         profileBinding.cellLicence.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +147,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(skillIntent);
             }
         });
-
     }
 
     @Override
@@ -169,9 +161,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
-
         }
-
     }
 
     private void getProfileData() {
@@ -224,6 +214,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             if (response.getAffiliationList() != null && response.getAffiliationList().size() > 0) {
                 goneViews(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
                 profileBinding.flowLayout.removeAllViews();
+
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
                     CustomTextView textView = new CustomTextView(getActivity());
                     FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
@@ -259,6 +250,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
+
                 if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
                     Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.cellDentalStateBoard.ivCertificateImage);
 
@@ -312,22 +304,17 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
-
     private void visibleView(TextView tvAdd, TextView tvEdit) {
         if (tvAdd != null)
             tvAdd.setVisibility(View.VISIBLE);
         if (tvEdit != null)
-
             tvEdit.setVisibility(View.GONE);
-
     }
 
     private void goneViews(TextView tvAdd, TextView tvEdit) {
         if (tvAdd != null)
-
             tvAdd.setVisibility(View.GONE);
         if (tvEdit != null)
-
             tvEdit.setVisibility(View.VISIBLE);
     }
 
@@ -337,7 +324,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < expList.size(); i++) {
             expBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
                     .inflate(R.layout.item_profile_work_exp, profileBinding.expInflater, false));
-            expBinding.tvJobTitle.setText(expList.get(i).getJobtitleName());
+            expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
             expBinding.tvAddress.setText(expList.get(i).getOfficeAddress());
             expBinding.tvReferenceEmail.setText(expList.get(i).getReference1Email());
@@ -409,7 +396,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    //    @Override
     public String getFragmentName() {
         return null;
     }

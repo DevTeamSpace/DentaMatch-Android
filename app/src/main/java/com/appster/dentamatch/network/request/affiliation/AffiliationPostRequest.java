@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.affiliation;
+package com.appster.dentamatch.network.request.affiliation;
 
 import com.google.gson.annotations.SerializedName;
 

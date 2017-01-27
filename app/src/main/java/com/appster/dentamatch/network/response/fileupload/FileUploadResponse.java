@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class FileUploadResponse extends BaseResponse {
 
     @SerializedName("result")
-    FileUploadResponseData fileUploadResponseData;
+    private FileUploadResponseData fileUploadResponseData;
 
     public FileUploadResponseData getFileUploadResponseData() {
         return fileUploadResponseData;

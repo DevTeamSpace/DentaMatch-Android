@@ -1,13 +1,9 @@
 package com.appster.dentamatch.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.EditText;
-
-import com.appster.dentamatch.R;
-
 
 public class CustomEditText extends EditText {
 

@@ -9,8 +9,6 @@ import android.support.v4.content.ContextCompat;
  * Created by Virender on 26/04/16.
  */
 public class PermissionUtils {
-        public static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 001 ;
-
     public static boolean checkPermissionGranted(String permission, Activity mActivity) {
         boolean Status = false;
         Status = ContextCompat.checkSelfPermission(mActivity, permission) == PackageManager.PERMISSION_GRANTED;

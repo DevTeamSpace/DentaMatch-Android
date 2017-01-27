@@ -7,7 +7,7 @@ public class ReferenceRequest {
     private String refrenceName;
     private String phoneNumber;
     private String email;
-    public String getRefrenceName() {
+    public String getReferenceName() {
         return refrenceName;
     }
 

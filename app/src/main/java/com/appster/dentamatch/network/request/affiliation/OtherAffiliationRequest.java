@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.affiliation;
+package com.appster.dentamatch.network.request.affiliation;
 
 /**
  * Created by virender on 16/01/17.

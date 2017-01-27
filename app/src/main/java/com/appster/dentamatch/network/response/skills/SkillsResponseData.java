@@ -1,8 +1,6 @@
 package com.appster.dentamatch.network.response.skills;
 
 import com.appster.dentamatch.model.ParentSkill;
-import com.appster.dentamatch.model.Skill;
-import com.appster.dentamatch.network.response.auth.UserDetail;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

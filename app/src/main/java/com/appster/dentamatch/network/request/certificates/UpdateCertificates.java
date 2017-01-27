@@ -1,7 +1,5 @@
 package com.appster.dentamatch.network.request.certificates;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by virender on 16/01/17.
  */

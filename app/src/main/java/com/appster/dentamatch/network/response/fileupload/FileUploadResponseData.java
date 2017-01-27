@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class FileUploadResponseData {
     @SerializedName("img_url")
-    String imageUrl;
+    private String imageUrl;
 
     public String getImageUrl() {
         return imageUrl;

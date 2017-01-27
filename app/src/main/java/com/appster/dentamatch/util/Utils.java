@@ -32,13 +32,14 @@ import android.widget.Toast;
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Utils for app
  */
 public class Utils {
-    public static final String TAG = "Utils";
+    private static final String TAG = "Utils";
 
     @Nullable
     /*
@@ -255,8 +256,7 @@ public class Utils {
     }
 
     public static int convertSpToPixels(float sp, Context context) {
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
-        return px;
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
     }
 
     public static void setFontFaceRobotoBold(TextView view) {
@@ -266,14 +266,20 @@ public class Utils {
         view.setTypeface(tf);
 
     }
-    public static String getExpYears(int month){
 
-        if(month!=0) {
+    public static String getExpYears(int month) {
+
+        if (month != 0) {
             return month / 12 + " " + DentaApp.getAppContext().getString(R.string.year) + " " + month % 12 + " " + DentaApp.getAppContext().getString(R.string.month);
         }
-        return  "";
+        return "";
     }
-    private void setPhoneNumberFomat(final EditText editText,final int count){
+
+    public static int getCurrentYear() {
+        return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    private void setPhoneNumberFormat(final EditText editText, final int count) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -281,7 +287,7 @@ public class Utils {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,  int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
@@ -291,7 +297,7 @@ public class Utils {
                         && (editText.getText().toString().length() == 4
                         || editText.getText().toString().length() == 10
                         || editText.getText().toString().length() == 15)) {
-                    editText.setText("("+editText.getText().toString() + " )");
+                    editText.setText("(" + editText.getText().toString() + " )");
                     int pos = editText.getText().length();
                     editText.setSelection(pos);
                 } else if (count >= editText.getText().toString().length()

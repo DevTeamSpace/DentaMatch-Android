@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.auth;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -9,13 +10,10 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.databinding.ActivityLoginBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -23,31 +21,24 @@ import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.HomeActivity;
-import com.appster.dentamatch.ui.profile.CertificateActivity;
-import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
+import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.CustomTextView;
 
 import retrofit2.Call;
+
+import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LOCATION;
 
 /**
  * Created by virender on 13/12/16.
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Login";
-    private static final int REQUEST_CODE_LOCATION = 101;
-    private ImageView ivRegisterPeg, ivLoginPeg, ivPolicy;
-    private LinearLayout layoutRegisterSelector, layoutLoginSelector, layoutOnlyRegister, layoutOnlyLogin;
-    private TextView tvLogin, tvRegister, tvForgotPassword, tvTermNcondition, tvLoginShowPassword, tvRegisterShowPassword;
-    private EditText etRegisterFName, etRegisterLName, etRegisterPassword, etRegisterEmail, etLoginEmail, etLoginPassword;
-    private Button btnRegister;
-    private CustomTextView tvPreferredJobLocation;
+    private ActivityLoginBinding mBinder;
     private boolean isAccepted, isLogin;
 
     private String mPostalCode;
@@ -59,45 +50,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_login);
+
         initViews();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private void initViews() {
+        mBinder.loginViewLogin.setOnClickListener(this);
+        mBinder.loginViewRegister.setOnClickListener(this);
+        mBinder.loginTvForgotPassword.setOnClickListener(this);
+        mBinder.loginBtnRegister.setOnClickListener(this);
+        mBinder.tvPreferredJobLocation.setOnClickListener(this);
+        mBinder.loginTvShowPassword.setOnClickListener(this);
+        mBinder.registerTvShowPassword.setOnClickListener(this);
+        mBinder.ivAcceptPolicy.setOnClickListener(this);
 
-        tvRegister = (TextView) findViewById(R.id.register_tv_register);
-        tvLogin = (TextView) findViewById(R.id.login_tv_login);
-        tvTermNcondition = (TextView) findViewById(R.id.tv_term_n_policy);
-        tvLoginShowPassword = (TextView) findViewById(R.id.login_tv_show_password);
-        tvRegisterShowPassword = (TextView) findViewById(R.id.register_tv_show_password);
-        tvForgotPassword = (TextView) findViewById(R.id.login_tv_forgot_password);
-
-        etLoginEmail = (EditText) findViewById(R.id.login_et_email);
-        etLoginPassword = (EditText) findViewById(R.id.login_et_password);
-        etRegisterEmail = (EditText) findViewById(R.id.register_et_email);
-        etRegisterFName = (EditText) findViewById(R.id.register_et_fname);
-        etRegisterLName = (EditText) findViewById(R.id.register_et_lname);
-        etRegisterPassword = (EditText) findViewById(R.id.register_et_password);
-
-        btnRegister = (Button) findViewById(R.id.login_btn_register);
-        ivRegisterPeg = (ImageView) findViewById(R.id.register_iv_peg);
-        ivLoginPeg = (ImageView) findViewById(R.id.login_iv_peg);
-        ivPolicy = (ImageView) findViewById(R.id.iv_accept_policy);
-        layoutRegisterSelector = (LinearLayout) findViewById(R.id.login_view_register);
-        layoutLoginSelector = (LinearLayout) findViewById(R.id.login_view_login);
-        layoutOnlyLogin = (LinearLayout) findViewById(R.id.login_layout_login_view);
-        layoutOnlyRegister = (LinearLayout) findViewById(R.id.login_layout_register_view);
-        tvPreferredJobLocation = (CustomTextView) findViewById(R.id.tv_preferred_job_location);
-
-        layoutLoginSelector.setOnClickListener(this);
-        layoutRegisterSelector.setOnClickListener(this);
-        tvForgotPassword.setOnClickListener(this);
-        btnRegister.setOnClickListener(this);
-        tvPreferredJobLocation.setOnClickListener(this);
-        tvLoginShowPassword.setOnClickListener(this);
-        tvRegisterShowPassword.setOnClickListener(this);
-        ivPolicy.setOnClickListener(this);
         setPolicySpanString();
         showSelectedView(isLogin);
     }
@@ -127,7 +95,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Intent mIntent = new Intent(LoginActivity.this, TermsAndConditionActivity.class);
                 mIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
                 startActivity(mIntent);
-
             }
 
             @Override
@@ -141,16 +108,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         int tncEnd = getString(R.string.label_accept_term_ncondition).lastIndexOf("and") - 1;
         Utils.setSpannClickEvent(spanString, tncStart, tncEnd, termsAndCondition);
         Utils.setSpannColor(spanString, tncStart, tncEnd, getResources().getColor(R.color.button_bg_color));
-//        Utils.setSpannTypeface(spanString, tncStart, tncEnd, Typeface.BOLD);
         Utils.setSpannUnderline(spanString, tncStart, tncEnd);
 
         int privacyStart = getString(R.string.label_accept_term_ncondition).indexOf("Privacy");
         Utils.setSpannClickEvent(spanString, privacyStart + 1, spanString.length(), privacy);
         Utils.setSpannColor(spanString, privacyStart, spanString.length(), getResources().getColor(R.color.button_bg_color));
         Utils.setSpannUnderline(spanString, privacyStart + 1, spanString.length());
-//        Utils.setSpannTypeface(spanString, privacyStart, spanString.length(), Typeface.BOLD);
-
-        Utils.setSpannCommanProperty(tvTermNcondition, spanString);
+        Utils.setSpannCommanProperty(mBinder.tvTermNPolicy, spanString);
     }
 
     @Override
@@ -168,27 +132,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 showSelectedView(false);
                 break;
             case R.id.login_tv_show_password:
-                if (etLoginPassword.getText().toString().length() > 0) {
+                if (mBinder.loginEtPassword.getText().toString().length() > 0) {
 
                     if (isLoginShow) {
-                        Utils.showPassword(LoginActivity.this, etLoginPassword, isLoginShow, tvLoginShowPassword);
+                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, isLoginShow, mBinder.loginTvShowPassword);
                         isLoginShow = false;
 
                     } else {
-                        Utils.showPassword(LoginActivity.this, etLoginPassword, isLoginShow, tvLoginShowPassword);
+                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, isLoginShow, mBinder.loginTvShowPassword);
                         isLoginShow = true;
                     }
                 }
                 break;
             case R.id.register_tv_show_password:
-                if (etRegisterPassword.getText().toString().length() > 0) {
+                if (mBinder.registerEtPassword.getText().toString().length() > 0) {
 
                     if (isRegisterShow) {
-                        Utils.showPassword(LoginActivity.this, etRegisterPassword, isRegisterShow, tvRegisterShowPassword);
+                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, isRegisterShow, mBinder.registerTvShowPassword);
                         isRegisterShow = false;
 
                     } else {
-                        Utils.showPassword(LoginActivity.this, etRegisterPassword, isRegisterShow, tvRegisterShowPassword);
+                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, isRegisterShow, mBinder.registerTvShowPassword);
                         isRegisterShow = true;
                     }
                 }
@@ -214,9 +178,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.iv_accept_policy:
                 if (isAccepted) {
                     isAccepted = false;
-                    ivPolicy.setBackgroundResource(R.drawable.ic_check_empty);
+                    mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
                 } else {
-                    ivPolicy.setBackgroundResource(R.drawable.ic_check_fill);
+                    mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_fill);
                     isAccepted = true;
                 }
                 break;
@@ -241,7 +205,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         mLongitude = bundle.getString(Constants.EXTRA_LONGITUDE);
                         mPlaceName = bundle.getString(Constants.EXTRA_PLACE_NAME);
                         mPostalCode = bundle.getString(Constants.EXTRA_POSTAL_CODE);
-                        tvPreferredJobLocation.setText(data.getExtras().getString(Constants.EXTRA_PLACE_NAME));
+                        mBinder.tvPreferredJobLocation.setText(data.getExtras().getString(Constants.EXTRA_PLACE_NAME));
                     }
                 }
         }
@@ -249,75 +213,75 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private boolean validateInput() {
         if (isLogin) {
-            if (TextUtils.isEmpty(getTextFromEditText(etLoginEmail))) {
+            if (TextUtils.isEmpty(getTextFromEditText(mBinder.loginEtEmail))) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
-                etLoginEmail.requestFocus();
+                mBinder.loginEtEmail.requestFocus();
                 return false;
             }
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(etLoginEmail)).matches()) {
-                etLoginEmail.requestFocus();
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(mBinder.loginEtEmail)).matches()) {
+                mBinder.loginEtEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
                 return false;
             }
-            if (TextUtils.isEmpty(getTextFromEditText(etLoginPassword))) {
-                etLoginPassword.requestFocus();
+            if (TextUtils.isEmpty(getTextFromEditText(mBinder.loginEtPassword))) {
+                mBinder.loginEtPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
-            if (getTextFromEditText(etLoginPassword).contains(" ")) {
-                etLoginPassword.requestFocus();
+            if (getTextFromEditText(mBinder.loginEtPassword).contains(" ")) {
+                mBinder.loginEtPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_contains_space));
                 return false;
             }
-            if (getTextFromEditText(etLoginPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
-                    getTextFromEditText(etLoginPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
-                etLoginPassword.requestFocus();
+            if (getTextFromEditText(mBinder.loginEtPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
+                    getTextFromEditText(mBinder.loginEtPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
+                mBinder.loginEtPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
         } else {
-            if (TextUtils.isEmpty(getTextFromEditText(etRegisterFName))) {
-                etRegisterFName.requestFocus();
+            if (TextUtils.isEmpty(getTextFromEditText(mBinder.registerEtFname))) {
+                mBinder.registerEtFname.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_fname_alert));
                 return false;
             }
-            if (TextUtils.isEmpty(getTextFromEditText(etRegisterLName))) {
-                etRegisterLName.requestFocus();
+            if (TextUtils.isEmpty(getTextFromEditText(mBinder.registerEtLname))) {
+                mBinder.registerEtLname.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_lname_alert));
                 return false;
             }
-            if (TextUtils.isEmpty(getTextFromEditText(etRegisterEmail))) {
-                etRegisterEmail.requestFocus();
+            if (TextUtils.isEmpty(getTextFromEditText(mBinder.registerEtEmail))) {
+                mBinder.registerEtEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
                 return false;
             }
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(etRegisterEmail)).matches()) {
-                etRegisterEmail.requestFocus();
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(getTextFromEditText(mBinder.registerEtEmail)).matches()) {
+                mBinder.registerEtEmail.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
                 return false;
             }
-            if (TextUtils.isEmpty(getTextFromEditText(etRegisterPassword))) {
-                etRegisterPassword.requestFocus();
+            if (TextUtils.isEmpty(getTextFromEditText(mBinder.registerEtPassword))) {
+                mBinder.registerEtPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_password_alert));
                 return false;
             }
-            if (getTextFromEditText(etRegisterPassword).contains(" ")) {
-                etRegisterPassword.requestFocus();
+            if (getTextFromEditText(mBinder.registerEtPassword).contains(" ")) {
+                mBinder.registerEtPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_contains_space));
                 return false;
             }
-            if (getTextFromEditText(etRegisterPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
-                    getTextFromEditText(etRegisterPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
-                etRegisterPassword.requestFocus();
+            if (getTextFromEditText(mBinder.registerEtPassword).length() < Constants.PASSWORD_MIN_LENGTH ||
+                    getTextFromEditText(mBinder.registerEtPassword).length() > Constants.PASSWORD_MAX_LENGTH) {
+                mBinder.registerEtPassword.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.password_min_length_alert));
                 return false;
             }
-            if (TextUtils.isEmpty(tvPreferredJobLocation.getText().toString())) {
-                tvPreferredJobLocation.requestFocus();
+            if (TextUtils.isEmpty(mBinder.tvPreferredJobLocation.getText().toString())) {
+                mBinder.tvPreferredJobLocation.requestFocus();
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
                 return false;
             }
-            if(mPostalCode.isEmpty()) {
+            if (mPostalCode.isEmpty()) {
                 Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
@@ -334,15 +298,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginRequest.setDeviceId(Utils.getDeviceID(getApplicationContext()));
         loginRequest.setDeviceToken(Utils.getDeviceToken());
         loginRequest.setDeviceType(Constants.DEVICE_TYPE);
-        loginRequest.setEmail(getTextFromEditText(etRegisterEmail));
-        loginRequest.setPassword(getTextFromEditText(etRegisterPassword));
-        loginRequest.setFirstName(getTextFromEditText(etRegisterFName));
-        loginRequest.setLastName(getTextFromEditText(etRegisterLName));
+        loginRequest.setEmail(getTextFromEditText(mBinder.registerEtEmail));
+        loginRequest.setPassword(getTextFromEditText(mBinder.registerEtPassword));
+        loginRequest.setFirstName(getTextFromEditText(mBinder.registerEtFname));
+        loginRequest.setLastName(getTextFromEditText(mBinder.registerEtLname));
 
         loginRequest.setLatitude(mLatitude);
         loginRequest.setLongitude(mLongitude);
         loginRequest.setZipCode(mPostalCode);
-        loginRequest.setPreferedLocation(mPlaceName);
+        loginRequest.setPreferredLocation(mPlaceName);
         return loginRequest;
     }
 
@@ -357,8 +321,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 LogUtils.LOGD(TAG, "onSuccess");
 
                 if (response.getStatus() == 1) {
-                    PreferenceUtil.setFistName(getTextFromEditText(etRegisterFName));
-                    PreferenceUtil.setLastName(getTextFromEditText(etRegisterLName));
+                    PreferenceUtil.setFistName(getTextFromEditText(mBinder.registerEtFname));
+                    PreferenceUtil.setLastName(getTextFromEditText(mBinder.registerEtLname));
                     Utils.showToast(getApplicationContext(), response.getMessage());
                     isLogin = true;
                     showSelectedView(true);
@@ -386,8 +350,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginRequest.setDeviceId(Utils.getDeviceID(getApplicationContext()));
         loginRequest.setDeviceToken(Utils.getDeviceToken());
         loginRequest.setDeviceType(Constants.DEVICE_TYPE);
-        loginRequest.setEmail(getTextFromEditText(etLoginEmail));
-        loginRequest.setPassword(getTextFromEditText(etLoginPassword));
+        loginRequest.setEmail(getTextFromEditText(mBinder.loginEtEmail));
+        loginRequest.setPassword(getTextFromEditText(mBinder.loginEtPassword));
         return loginRequest;
     }
 
@@ -408,7 +372,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
-//                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
                     startActivity(intent);
                     finish();
@@ -427,22 +390,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void showSelectedView(boolean isLogin) {
         if (isLogin) {
-            layoutOnlyRegister.setVisibility(View.GONE);
-            ivRegisterPeg.setVisibility(View.INVISIBLE);
-            ivLoginPeg.setVisibility(View.VISIBLE);
-            layoutOnlyLogin.setVisibility(View.VISIBLE);
-            btnRegister.setText(getString(R.string.login_label));
-            Utils.setFontFaceRobotoBold(tvLogin);
-            Utils.setFontFaceRobotoLight(tvRegister);
+            mBinder.loginLayoutRegisterView.setVisibility(View.GONE);
+            mBinder.registerIvPeg.setVisibility(View.INVISIBLE);
+            mBinder.ivPeg.setVisibility(View.VISIBLE);
+            mBinder.loginLayoutLoginView.setVisibility(View.VISIBLE);
+            mBinder.loginBtnRegister.setText(getString(R.string.login_label));
+            Utils.setFontFaceRobotoBold(mBinder.tvLogin);
+            Utils.setFontFaceRobotoLight(mBinder.registerTvRegister);
 
         } else {
-            layoutOnlyRegister.setVisibility(View.VISIBLE);
-            ivRegisterPeg.setVisibility(View.VISIBLE);
-            ivLoginPeg.setVisibility(View.INVISIBLE);
-            layoutOnlyLogin.setVisibility(View.GONE);
-            btnRegister.setText(getString(R.string.register_label));
-            Utils.setFontFaceRobotoBold(tvRegister);
-            Utils.setFontFaceRobotoLight(tvLogin);
+            mBinder.loginLayoutRegisterView.setVisibility(View.VISIBLE);
+            mBinder.registerIvPeg.setVisibility(View.VISIBLE);
+            mBinder.ivPeg.setVisibility(View.INVISIBLE);
+            mBinder.loginLayoutLoginView.setVisibility(View.GONE);
+            mBinder.loginBtnRegister.setText(getString(R.string.register_label));
+            Utils.setFontFaceRobotoBold(mBinder.registerTvRegister);
+            Utils.setFontFaceRobotoLight(mBinder.tvLogin);
         }
     }
 
@@ -452,17 +415,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void clearRegistrationFields() {
-        etRegisterFName.getText().clear();
-        etRegisterLName.getText().clear();
-        etRegisterEmail.getText().clear();
-        etRegisterPassword.getText().clear();
-        tvPreferredJobLocation.setText("");
-        etRegisterFName.getText().clear();
-        ivPolicy.setBackgroundResource(R.drawable.ic_check_empty);
+        mBinder.registerEtFname.getText().clear();
+        mBinder.registerEtLname.getText().clear();
+        mBinder.registerEtEmail.getText().clear();
+        mBinder.registerEtPassword.getText().clear();
+        mBinder.tvPreferredJobLocation.setText("");
+        mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
     }
 
     private void clearLoginFields() {
-        etLoginEmail.getText().clear();
-        etLoginPassword.getText().clear();
+        mBinder.loginEtEmail.getText().clear();
+        mBinder.loginEtPassword.getText().clear();
     }
 }

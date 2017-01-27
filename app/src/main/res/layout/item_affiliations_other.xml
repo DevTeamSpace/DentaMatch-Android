@@ -10,7 +10,7 @@
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_affiliation_type"
             style="@style/text_view_normal"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginBottom="@dimen/margin_15"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
@@ -24,9 +24,9 @@
             android:id="@+id/iv_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="@dimen/margin_15"
-            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_15"
             android:src="@drawable/ic_check_empty" />
 

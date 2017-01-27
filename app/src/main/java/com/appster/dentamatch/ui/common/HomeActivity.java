@@ -26,7 +26,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
  */
 public class HomeActivity extends BaseActivity {
 
-    public int count;
+    private int count;
     private String[] ITEMS;
     //   categoryId valid for maximum 6 level
     private AHBottomNavigation bottomBar;
@@ -45,15 +45,14 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
 
         ITEMS = new String[]{getString(R.string.nav_job), getString(R.string.nav_tracks), getString(R.string.nav_calendar), getString(R.string.nav_message), getString(R.string.nav_profile)};
-        initUI();
 
-
+        initViews();
     }
 
     /**
-     * initUI is used to initialize this view at app launch
+     * initViews is used to initialize this view at app launch
      */
-    private void initUI() {
+    private void initViews() {
         count = 0;
         fragmentManager = getSupportFragmentManager();
         bottomBar = (AHBottomNavigation) findViewById(R.id.ntb_horizontal);

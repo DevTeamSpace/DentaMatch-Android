@@ -1,7 +1,6 @@
 package com.appster.dentamatch.network.response.skills;
 
 import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.response.auth.LoginResponseData;
 import com.google.gson.annotations.SerializedName;
 
 /**

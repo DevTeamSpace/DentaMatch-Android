@@ -1,29 +1,20 @@
 package com.appster.dentamatch.ui.map;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.model.LocationEvent;
@@ -31,7 +22,6 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -47,7 +37,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,10 +47,8 @@ import java.util.List;
 public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener {
 
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-
     private static String TAG = "DentaPlaces";
-    protected GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
 
     private GoogleMap mMap;
     private PlaceAutocompleteAdapter mAdapter;
@@ -342,36 +329,4 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
         return address;
     }
-
-//    private void check() {
-//        LogUtils.LOGD(TAG, "check...");
-//
-//        // Here, thisActivity is the current activity
-//        if (ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            // Should we show an explanation?
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-//
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//                Utils.showToast(this, "Please enable location permission in App Settings.");
-//                setMap();
-//            } else {
-//
-//                // No explanation needed, we can request the permission.
-//
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                        BaseActivity.MY_PERMISSION_ACCESS_LOCATION);
-//
-//                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-//                // app-defined int constant. The callback method gets the
-//                // result of the request.
-//            }
-//        }
-//    }
 }

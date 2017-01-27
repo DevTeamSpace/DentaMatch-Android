@@ -82,9 +82,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/cell_height"
                 android:background="@color/cell_color"
-                android:gravity="left|bottom"
+                android:gravity="start|bottom"
                 android:paddingBottom="@dimen/margin_medium"
-                android:paddingLeft="@dimen/margin_normal"
+                android:paddingStart="@dimen/margin_normal"
                 android:text="@string/dental_state_board"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_13"
@@ -93,9 +93,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_height"
-                android:background="@color/cell_boundry_color"
-
-                />
+                android:background="@color/cell_boundry_color" />
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/create_profile_iv_upoload_icon"
@@ -117,9 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_height"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:background="@color/cell_boundry_color"
-
-                />
+                android:background="@color/cell_boundry_color" />
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_licence"
@@ -127,9 +123,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/cell_height"
                 android:background="@color/cell_color"
-                android:gravity="left|bottom"
+                android:gravity="start|bottom"
                 android:paddingBottom="@dimen/margin_medium"
-                android:paddingLeft="@dimen/margin_normal"
+                android:paddingStart="@dimen/margin_normal"
                 android:text="@string/lable_licence"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_13"
@@ -138,15 +134,12 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_height"
-                android:background="@color/cell_boundry_color"
-
-                />
+                android:background="@color/cell_boundry_color" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/create_profile_input_layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edit_height"
-
                 android:layout_marginTop="@dimen/margin_43"
                 android:clipToPadding="false"
                 android:gravity="bottom"

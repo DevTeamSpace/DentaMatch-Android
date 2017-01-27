@@ -3,8 +3,6 @@ package com.appster.dentamatch.widget.bottomsheet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.os.Build;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.widget.DatePicker;
@@ -12,7 +10,6 @@ import android.widget.NumberPicker;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
-import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 

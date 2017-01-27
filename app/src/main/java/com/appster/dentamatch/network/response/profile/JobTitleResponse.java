@@ -14,8 +14,4 @@ public class JobTitleResponse extends BaseResponse {
     public JobTitleResponseData getJobTitleResponseData() {
         return jobTitleResponseData;
     }
-//
-//    public void setLoginResponseData(LoginResponseData jobTitleList) {
-//        this.jobTitleList = jobTitleList;
-//    }
 }

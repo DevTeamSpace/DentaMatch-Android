@@ -18,9 +18,6 @@ public class School {
     private String yearOfGraduation;
     private String otherSchooling;
 
-
-
-
     public int getSchoolId() {
         return schoolId;
     }

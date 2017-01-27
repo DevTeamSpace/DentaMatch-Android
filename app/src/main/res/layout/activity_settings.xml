@@ -16,9 +16,9 @@
             style="@style/text_view_normal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_height"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:drawableLeft="@drawable/ic_location"
+            android:layout_marginStart="@dimen/margin_normal"
             android:drawablePadding="@dimen/margin_20"
+            android:drawableStart="@drawable/ic_location"
             android:text="@string/settings_change_home_location"
             android:textColor="@color/edt_hint_color" />
 
@@ -32,9 +32,9 @@
             style="@style/text_view_normal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_height"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:drawableLeft="@drawable/ic_password"
+            android:layout_marginStart="@dimen/margin_normal"
             android:drawablePadding="@dimen/margin_20"
+            android:drawableStart="@drawable/ic_password"
             android:text="@string/settings_reset_password"
             android:textColor="@color/edt_hint_color" />
 
@@ -48,9 +48,9 @@
             style="@style/text_view_normal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_height"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:drawableLeft="@drawable/ic_help"
+            android:layout_marginStart="@dimen/margin_normal"
             android:drawablePadding="@dimen/margin_20"
+            android:drawableStart="@drawable/ic_help"
             android:text="@string/header_term"
             android:textColor="@color/edt_hint_color" />
 
@@ -64,8 +64,8 @@
             style="@style/text_view_normal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_height"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:drawableLeft="@drawable/ic_help"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:drawableStart="@drawable/ic_help"
             android:drawablePadding="@dimen/margin_20"
             android:text="@string/header_privacy"
             android:textColor="@color/edt_hint_color" />
@@ -80,8 +80,8 @@
             style="@style/text_view_normal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_height"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:drawableLeft="@drawable/ic_password"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:drawableStart="@drawable/ic_password"
             android:drawablePadding="@dimen/margin_20"
             android:text="@string/settings_logout"
             android:textColor="@color/edt_hint_color" />

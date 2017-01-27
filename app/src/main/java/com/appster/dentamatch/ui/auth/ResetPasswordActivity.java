@@ -4,8 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityResetPasswordBinding;
@@ -32,7 +30,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_reset_password);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_reset_password);
         initView();
     }
@@ -43,7 +40,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
         mBinder.tvShowConfirmPassword.setOnClickListener(this);
         mBinder.tvShowNewPassword.setOnClickListener(this);
         mBinder.tvShowOldPassword.setOnClickListener(this);
-
     }
 
     @Override

@@ -7,6 +7,10 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>-->
 
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
     <!--Animation Duration-->
     <integer name="duration">400</integer>
 
@@ -14,7 +18,7 @@
     <dimen name="default_padding">10dp</dimen>
     <dimen name="default_padding_20">20dp</dimen>
 
-
+    <!--Text sizes-->
     <dimen name="text_size_34">34sp</dimen>
     <dimen name="text_size_header">29sp</dimen>
     <dimen name="text_size_xlarge">23sp</dimen>
@@ -27,8 +31,7 @@
     <dimen name="text_size_normal">15sp</dimen>
     <dimen name="text_size_13">13sp</dimen>
 
-
-    <!--Default Margin-->
+    <!--Margins-->
     <dimen name="margin_small_3">3dp</dimen>
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_medium">8dp</dimen>
@@ -39,6 +42,8 @@
     <dimen name="margin_55">55dp</dimen>
     <dimen name="margin_80">80dp</dimen>
     <dimen name="margin_36">36dp</dimen>
+    <dimen name="margin_43">43dp</dimen>
+    <dimen name="margin_50">50dp</dimen>
     <dimen name="margin_33">33dp</dimen>
     <dimen name="margin_29">29dp</dimen>
     <dimen name="margin_25">25dp</dimen>
@@ -48,10 +53,16 @@
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_10">10dp</dimen>
 
+    <dimen name="margin_chips_layout_left">10dp</dimen>
+    <dimen name="margin_chips_layout_right">20dp</dimen>
     <dimen name="padding_drawable">10dp</dimen>
     <dimen name="padding_input_layout">3dp</dimen>
     <dimen name="line_height">1dp</dimen>
     <dimen name="dot_dimen">8dp</dimen>
+
+    <!--Register/login-->
+    <dimen name="login_header_height">180dp</dimen>
+    <dimen name="on_boarding_text_layout_size">220dp</dimen>
 
     <!--profile-->
     <dimen name="camera_image_size">142dp</dimen>
@@ -59,15 +70,8 @@
     <dimen name="profile_image_height">102dp</dimen>
     <dimen name="profile_progress_dimen">119dp</dimen>
     <dimen name="cell_height">55dp</dimen>
-    <dimen name="margin_43">43dp</dimen>
-    <dimen name="margin_50">50dp</dimen>
     <dimen name="edit_height">62dp</dimen>
     <dimen name="edit_height_about_me">160dp</dimen>
     <dimen name="profile_header_height">280dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="on_baording_text_layout_size">220dp</dimen>
-
 
 </resources>

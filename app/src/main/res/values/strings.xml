@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">DentaMatch</string>
-
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
-    <!-- font style name-->
+
+    <!-- font styles-->
     <string name="font_light" translatable="false">Roboto-Light.ttf</string>
     <string name="font_regular" translatable="false">Roboto-Regular.ttf</string>
     <string name="font_medium" translatable="false">Roboto-Medium.ttf</string>
@@ -25,15 +25,15 @@
     <string name="joyride_page4_text2">Buy products and services spanning across multiple categories and track them with ease.</string>
 
     <!--Input digits-->
-
     <string name="digits_numeric_only">0123456789</string>
     <string name="digits_alpha_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_only">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_email">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
     <string name="digits_alpha_numeric_special">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_./:;,&amp;amp;</string>
     <string name="digits_address">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
-    <!--  Error string-->
+    <string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
 
+    <!--  Error string-->
     <string name="blank_email_alert">Email Id can not be left blank.</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
     <string name="blank_password_alert">Password can not be left blank.</string>
@@ -50,6 +50,7 @@
     <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_unable_reterive_email">Unable to retrieve email address from your social account.</string>
     <string name="error_unable_access_account">Unable to access to your account.</string>
+
     <!--register & Login & Forgot password screen-->
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
@@ -66,14 +67,14 @@
     <string name="login_info_label">Login using your registered email</string>
     <string name="label_accept_term_ncondition">I agree to the Terms and Conditions and Privacy Policy </string>
     <string name="forgot_password_title">Enter your email address below and we’ll send you the instructions on how to change your password.</string>
-    <!--  Reset password string-->
 
+    <!--  Reset password string-->
     <string name="old_password_label">Old Password</string>
     <string name="new_password_label">New Password</string>
     <string name="confirm_password_label">Confirm Password</string>
     <string name="save_label">save</string>
-    <!--  Bottom sheet string-->
 
+    <!--  Bottom sheet string-->
     <string name="label_take_photo">Take photo</string>
     <string name="label_choose_gallary">Choose from gallery</string>
     <string name="dental_state_board">ADD DENTAL STATE BOARD</string>
@@ -89,21 +90,21 @@
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="lable_job_title">Current Job Title</string>
     <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
+
     <!--alert button-->
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <!--bootm navigation bar-->
-
+    <!--bottom navigation bar-->
     <string name="nav_job">Jobs</string>
     <string name="nav_tracks">Tracks</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_message">Messages</string>
     <string name="nav_profile">Profile</string>
 
-    <!--work experince-->
+    <!--work experience-->
     <string name="where_you_work">Where do you work?</string>
     <string name="where_did_you_study">Where did you study?</string>
     <string name="lable_relevant_exp">Relevant work experience strengthens your profile</string>
@@ -121,9 +122,6 @@
     <string name="year">Year</string>
     <string name="month">Month</string>
 
-    <!--digits to restrict soft keyboard-->
-    <string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
-
     <!--Server error-->
     <string name="authentication_error">Authentication error , Please login again. </string>
     <string name="server_error">There is some issue connecting with server.</string>
@@ -131,7 +129,6 @@
     <string name="unidentified_error">Oops, Something went wrong..</string>
     <string name="add_more_refrence">Add More References</string>
     <string name="add_more_exp">Add More Experience</string>
-
 
     <!--screen header text-->
     <string name="header_work_exp">WORK EXPERIENCE</string>
@@ -143,7 +140,6 @@
     <string name="header_affiliation">AFFILIATIONS</string>
     <string name="header_about_me">ABOUT ME</string>
 
-    <string name="title_affiliation">Affiliations </string>
 
     <string name="header_skills_exp">SKILLS &amp; EXPERIENCE</string>
     <string name="header_schooling_exp">SCHOOLING &amp; EXPERIENCE</string>
@@ -159,6 +155,7 @@
 
 
     <!--certification & About me string-->
+    <string name="hi_user">Hi %1$s</string>
     <string name="valdity_date_string">Validity date</string>
     <string name="cetification_title">Update Certifications</string>
     <string name="about_me_title">Executive Summary </string>
@@ -204,6 +201,7 @@
     <string name="alert_discard_exp">You have to discard this experience if you want to move further.</string>
 
     <!--profile-->
+    <string name="title_affiliation">Affiliations</string>
     <string name="edit_label">Edit</string>
     <string name="header_edit_profile">EDIT PROFILE</string>
     <string name="add_dental_state_board">Add dental state board</string>
@@ -217,10 +215,10 @@
     <string name="office_location">OFFICE LOCATION</string>
     <string name="contact_info">CONTACT INFORMATION</string>
     <string name="yrs">yrs</string>
-    <string name="blank_alert_old_password">Old password can never blank.</string>
-    <string name="blank_alert_new_password">New password can never blank.</string>
-    <string name="blank_alert_confirm_password">Confirm password can never blank.</string>
-    <string name="alert_reset_password_mismatch">New password and confirm password should same.</string>
+    <string name="blank_alert_old_password">Old password can never be blank.</string>
+    <string name="blank_alert_new_password">New password can never be blank.</string>
+    <string name="blank_alert_confirm_password">Confirm password can never be blank.</string>
+    <string name="alert_reset_password_mismatch">New password and confirm password should be same.</string>
     <string name="job_type">Job Type</string>
     <string name="location">Location</string>
     <string name="error_no_first_name">First name cannot be empty</string>
@@ -229,6 +227,5 @@
     <string name="error_no_location">Location cannot be empty</string>
     <string name="error_no_description">Description cannot be empty</string>
     <string name="alert_upload_phot_first">Please upload your document first.</string>
-
 
 </resources>

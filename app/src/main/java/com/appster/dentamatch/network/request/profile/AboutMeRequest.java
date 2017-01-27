@@ -9,7 +9,4 @@ public class AboutMeRequest {
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
     }
-
-
-
 }
