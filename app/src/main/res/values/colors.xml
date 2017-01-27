@@ -38,6 +38,9 @@
     <color name="cell_color">#f8f8f8</color>
     <color name="cell_text_color">#383838</color>
     <color name="progress_color">#a3d977</color>
+    <color name="job_type_background_part_time">#8ecf7e</color>
+    <color name="job_type_background_full_time">#45b1b2</color>
+    <color name="job_type_background_temporary">#f1b85a</color>
     <color name="get_started_color">#02bbd5</color>
     <color name="cell_boundry_color">#e4e4e4</color>
     <color name="graish_brown_color">#515151</color>

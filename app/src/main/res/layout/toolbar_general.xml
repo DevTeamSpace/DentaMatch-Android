@@ -47,10 +47,10 @@
                 android:id="@+id/iv_tool_bar_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/margin_normal"
-                android:background="@drawable/ic_gallary"
+                android:layout_marginEnd="@dimen/margin_29"
+                android:src="@drawable/img_list"
+                android:layout_toStartOf="@+id/txv_toolbar_general_right"
                 android:visibility="gone" />
 
             <TextView
@@ -60,7 +60,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/margin_normal"
+                android:drawableRight="@drawable/img_search"
                 android:gravity="end"
+                android:visibility="gone"
                 android:textColor="@android:color/white" />
 
         </RelativeLayout>
