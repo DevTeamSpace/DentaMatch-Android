@@ -55,10 +55,12 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final ArrayList<String> mYearsList;
     private EditTextSelected mNameSelectedListener;
     private HashMap<Integer, PostSchoolData> mHashMap = new HashMap<>();
+    private boolean mIsFromEditProfile;
 
-    public SchoolsAdapter(List<SchoolType> schoolTypeList, Context context, EditTextSelected nameSelectedListener) {
+    public SchoolsAdapter(List<SchoolType> schoolTypeList, Context context, EditTextSelected nameSelectedListener, boolean isFromEditProfile) {
         this.mSchoolList = schoolTypeList;
         this.mContext = context;
+        mIsFromEditProfile = isFromEditProfile;
 
         mYearsList = new ArrayList<String>();
         mYearsList.add(context.getString(R.string.hint_year_of_graduation));
@@ -103,16 +105,27 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final List<String> listSchools = new ArrayList<String>();
 
         if (holder1 instanceof ViewHolderHeader) {
-            if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-                LogUtils.LOGD("pabd", "path is--=" + PreferenceUtil.getProfileImagePath());
-                Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().
-                        resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).
-                        placeholder(R.drawable.profile_pic_placeholder).into(mBinderHeader.ivProfileIcon);
+
+            if (mIsFromEditProfile) {
+                mBinderHeader.tvTitleScreen.setVisibility(View.VISIBLE);
+                mBinderHeader.tvTitleScreen.setText(mContext.getString(R.string.header_schooling_exp));
+                mBinderHeader.progressLayout.setVisibility(View.GONE);
+                mBinderHeader.tvTitle.setVisibility(View.GONE);
+                mBinderHeader.tvDescription.setVisibility(View.GONE);
+
+
+            } else {
+                if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
+                    LogUtils.LOGD("pabd", "path is--=" + PreferenceUtil.getProfileImagePath());
+                    Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().
+                            resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).
+                            placeholder(R.drawable.profile_pic_placeholder).into(mBinderHeader.ivProfileIcon);
+                }
+                mBinderHeader.progressBar.setProgress(50);
+                mBinderHeader.tvTitle.setText(mContext.getString(R.string.where_did_you_study));
+                mBinderHeader.tvDescription.setText(mContext.getString(R.string.lorem_ipsum));
             }
 
-            mBinderHeader.progressBar.setProgress(50);
-            mBinderHeader.tvTitle.setText(mContext.getString(R.string.where_did_you_study));
-            mBinderHeader.tvDescription.setText(mContext.getString(R.string.lorem_ipsum));
         } else {
             final ViewHolderItem holder = (ViewHolderItem) holder1;
             final SchoolType schoolType = mSchoolList.get(position - 1);

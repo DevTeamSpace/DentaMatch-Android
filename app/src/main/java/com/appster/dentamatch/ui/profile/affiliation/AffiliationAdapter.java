@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
@@ -35,13 +36,12 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context mContext;
     private ArrayList<AffiliationData> mAffiliationList = new ArrayList<>();
     private EditText etOtherTemp;
+    private boolean mIsFromEditProfile;
 
-//    private ItemAffiliationBinding mDefaultBinder;
-//    private ItemAffiliationsOtherBinding mBinderOther;
-//    private LayoutProfileHeaderBinding mBinderProfileHeader;
 
-    public AffiliationAdapter(Context context) {
+    public AffiliationAdapter(Context context,boolean isFromEditProfile) {
         mContext = context;
+        mIsFromEditProfile=isFromEditProfile;
     }
 
     public void addList(ArrayList<AffiliationData> list) {
@@ -118,13 +118,22 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderProfile) {
             ViewHolderProfile itemProfileHolder = (ViewHolderProfile) holder;
-            itemProfileHolder.progressBar.setProgress(80);
-            itemProfileHolder.tvTitle.setText(mContext.getString(R.string.title_affiliation));
-            if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-                Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(itemProfileHolder.ivProfile);
+            if(mIsFromEditProfile){
+                itemProfileHolder.tvTitleScreen.setVisibility(View.VISIBLE);
+                itemProfileHolder.tvTitleScreen.setText(mContext.getString(R.string.header_work_exp));
+                itemProfileHolder.progressLayout.setVisibility(View.GONE);
+                itemProfileHolder.tvTitle.setVisibility(View.GONE);
+                itemProfileHolder.tvDesc.setVisibility(View.GONE);
 
+
+            }else {
+                itemProfileHolder.progressBar.setProgress(80);
+                itemProfileHolder.tvTitle.setText(mContext.getString(R.string.title_affiliation));
+                if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
+                    Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(itemProfileHolder.ivProfile);
+
+                }
             }
-
 
         } else if (holder instanceof ViewHolder) {
             try {
@@ -234,16 +243,19 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static class ViewHolderProfile extends RecyclerView.ViewHolder {
 
         public TextView tvTitle;
-        public TextView tvDesc;
+        public TextView tvDesc,tvTitleScreen;
         public ImageView ivProfile;
         public ProgressBar progressBar;
+        public RelativeLayout progressLayout;
 
         public ViewHolderProfile(View itemLayoutView) {
             super(itemLayoutView);
             tvTitle = (TextView) itemLayoutView.findViewById(R.id.tv_title);
             tvDesc = (TextView) itemLayoutView.findViewById(R.id.tv_description);
+            tvTitleScreen = (TextView) itemLayoutView.findViewById(R.id.tv_title_screen);
             ivProfile = (ImageView) itemLayoutView.findViewById(R.id.iv_profile_icon);
             progressBar = (ProgressBar) itemLayoutView.findViewById(R.id.progress_bar);
+            progressLayout = (RelativeLayout) itemLayoutView.findViewById(R.id.progress_layout);
 
 
         }

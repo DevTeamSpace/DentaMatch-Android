@@ -46,11 +46,15 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     private String selectedJobtitle = "";
     private int jobTitleId, expMonth, jobTitlePosition;
     private ArrayList<WorkExpRequest> workExpList = new ArrayList<>();
+    private boolean isFromProfile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_work_exp_list);
+        if (getIntent() != null) {
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
         initViews();
         hideKeyboard();
         callGetExpListApi(prepareListRequest());
@@ -75,6 +79,10 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter2);
         selectedJobtitle = PreferenceUtil.getJobTitle();
         jobTitleId = PreferenceUtil.getJobTitleId();
+        if (isFromProfile) {
+            mBinder.btnNextWorkExpLsit.setText(getString(R.string.save_label));
+            mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
+        }
         if (!TextUtils.isEmpty(selectedJobtitle)) {
             mBinder.includeWorkExpList.etJobTitle.setText(selectedJobtitle);
         }
@@ -299,6 +307,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     Intent intent = new Intent(WorkExpListActivity.this, ViewAndEditWorkExperienceActivity.class);
                     intent.putExtra(Constants.INTENT_KEY.POSITION, (Integer) referenceView.getTag());
                     intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
+                    intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, workExpList);
                     startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT);
                 }
             });

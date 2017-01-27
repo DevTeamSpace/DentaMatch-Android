@@ -41,6 +41,9 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_affiliation);
+        if (getIntent() != null) {
+            isFromEditProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
         initViews();
 
         getAffiliation();
@@ -53,12 +56,16 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
 
     private void initViews() {
         mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_affiliation));
+        if (isFromEditProfile) {
+            mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
+
+        }
 //        mBinder.includeProfileHeader.tvTitle.setText(getString(R.string.title_affiliation));
         mLayoutManager = new LinearLayoutManager(this);
 //
         mBinder.recyclerAffiliation.setLayoutManager(mLayoutManager);
 //        mBinder.recyclerAffiliation.addItemDecoration(new SimpleDividerItemDecoration(this));
-        affiliationAdapter = new AffiliationAdapter(this);
+        affiliationAdapter = new AffiliationAdapter(this, isFromEditProfile);
         mBinder.recyclerAffiliation.setAdapter(affiliationAdapter);
 //        if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
 //            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(mBinder.includeProfileHeader.ivProfileIcon);

@@ -79,11 +79,8 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemHolder.ivCheckBox.setTag(position);
             if (currentItem.isSelected()) {
                 itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
-
             } else {
                 itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
-
-
             }
 
 

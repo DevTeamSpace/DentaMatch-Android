@@ -35,6 +35,7 @@ import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
 import com.appster.dentamatch.ui.profile.workexperience.SkillsActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateCertificateActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
+import com.appster.dentamatch.ui.profile.workexperience.WorkExpListActivity;
 import com.appster.dentamatch.ui.settings.SettingActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
@@ -198,7 +199,20 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(skillIntent);
             }
         });
-
+        profileBinding.cellExp.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent workIntent = new Intent(getActivity(), WorkExpListActivity.class);
+                workIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+                startActivity(workIntent);
+            }
+        });
+        profileBinding.cellExp.tvEditCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellExp.tvAddCertificates.performClick();
+            }
+        });
     }
 
     @Override
