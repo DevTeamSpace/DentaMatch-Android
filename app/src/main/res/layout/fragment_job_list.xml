@@ -2,13 +2,14 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <com.appster.dentamatch.widget.CustomTextView
             style="@style/text_view_normal"
+            android:id="@+id/tv_job_result_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_gray"
@@ -21,6 +22,8 @@
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_job_list"
+            android:layout_below="@+id/tv_job_result_count"
+            android:layout_above="@+id/lay_job_list_pagination"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -29,6 +32,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.v4.widget.SwipeRefreshLayout>
-    </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white3_color"
+            android:id="@+id/lay_job_list_pagination"
+            android:visibility="gone"
+            android:layout_height="@dimen/pagination_view_height">
+
+            <ProgressBar
+                android:padding="@dimen/default_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                />
+
+        </RelativeLayout>
+    </RelativeLayout>
 
 </layout>

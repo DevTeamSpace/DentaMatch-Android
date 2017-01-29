@@ -1,12 +1,15 @@
 package com.appster.dentamatch.network.response.jobs;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Appster on 27/01/17.
  */
 
-public class SearchJobModel {
+public class SearchJobModel implements Parcelable{
     private int id;
     private int jobType;
     private int isMonday;
@@ -28,6 +31,40 @@ public class SearchJobModel {
     private int days;
     private int isSaved;
     private double distance;
+
+    protected SearchJobModel(Parcel in) {
+        id = in.readInt();
+        jobType = in.readInt();
+        isMonday = in.readInt();
+        isTuesday = in.readInt();
+        isWednesday = in.readInt();
+        isThursday = in.readInt();
+        isFriday = in.readInt();
+        isSaturday = in.readInt();
+        isSunday = in.readInt();
+        jobTitleName = in.readString();
+        officeName = in.readString();
+        address = in.readString();
+        zipCode = in.readInt();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        createdAt = in.readString();
+        days = in.readInt();
+        isSaved = in.readInt();
+        distance = in.readDouble();
+    }
+
+    public static final Creator<SearchJobModel> CREATOR = new Creator<SearchJobModel>() {
+        @Override
+        public SearchJobModel createFromParcel(Parcel in) {
+            return new SearchJobModel(in);
+        }
+
+        @Override
+        public SearchJobModel[] newArray(int size) {
+            return new SearchJobModel[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -103,5 +140,33 @@ public class SearchJobModel {
 
     public double getDistance() {
         return distance;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(jobType);
+        dest.writeInt(isMonday);
+        dest.writeInt(isTuesday);
+        dest.writeInt(isWednesday);
+        dest.writeInt(isThursday);
+        dest.writeInt(isFriday);
+        dest.writeInt(isSaturday);
+        dest.writeInt(isSunday);
+        dest.writeString(jobTitleName);
+        dest.writeString(officeName);
+        dest.writeString(address);
+        dest.writeInt(zipCode);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(createdAt);
+        dest.writeInt(days);
+        dest.writeInt(isSaved);
+        dest.writeDouble(distance);
     }
 }

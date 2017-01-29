@@ -60,7 +60,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/margin_normal"
-                android:drawableRight="@drawable/img_search"
                 android:gravity="end"
                 android:visibility="gone"
                 android:textColor="@android:color/white" />

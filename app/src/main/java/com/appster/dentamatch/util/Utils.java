@@ -24,6 +24,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -70,6 +71,11 @@ public class Utils {
                 + isSimulator);
 
         return isSimulator;
+    }
+
+    public static int dpToPx(Context ct, int dp) {
+        DisplayMetrics displayMetrics = ct.getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static Drawable getGalleryIcon(Context ct) {

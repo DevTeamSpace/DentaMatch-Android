@@ -11,6 +11,10 @@ public class Constants {
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_SUB_SKILLS = "sub_skills";
     public static final String EXTRA_CHOSEN_JOB_TITLES = "EXTRA_CHOSEN_JOB_TITLES";
+    public static final String EXTRA_SEARCH_JOB = "EXTRA_SEARCH_JOB";
+    public static final String EXTRA_JOB_LIST = "EXTRA_JOB_LIST";
+    public static final String EXTRA_JOB_DETAIL_ID = "EXTRA_JOB_DETAIL_ID";
+
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";
 

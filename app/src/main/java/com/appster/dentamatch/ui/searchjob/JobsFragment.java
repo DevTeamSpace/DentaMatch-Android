@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.searchjob;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,19 +11,7 @@ import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentJobsBinding;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
-import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
-import com.appster.dentamatch.network.response.jobs.SearchJobResponseData;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
-import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.PreferenceUtil;
-
-import retrofit2.Call;
 
 /**
  * Created by Appster on 23/01/17.
@@ -31,8 +20,6 @@ import retrofit2.Call;
 public class JobsFragment extends BaseFragment implements View.OnClickListener {
     private FragmentJobsBinding mJobsBinding;
     private boolean mIsList;
-    private SearchJobResponseData jobData;
-    private int mPageNumber = 1;
     private JobListFragment mJobListFragment;
     private JobMapFragment mJobMapFragment;
 
@@ -52,11 +39,13 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
         initViews();
 
         /**
-         * Search for the selected job using saved job filters.
+         * Load list job fragment as the default fragment.
          */
-        if (PreferenceUtil.getJobFilter() != null) {
-            searchJob(mPageNumber, false);
-        }
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.lay_container, mJobListFragment)
+                .commit();
+        mIsList = true;
 
         return mJobsBinding.getRoot();
     }
@@ -70,11 +59,6 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                 if (mIsList) {
                     mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setImageResource(R.drawable.img_map);
                     mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_map_view));
-
-                    mJobMapFragment =  JobMapFragment.newInstance();
-                    Bundle arguments = new Bundle();
-                    arguments.putParcelable(Constants.EXTRA_JOB_LIST,jobData);
-                    mJobMapFragment.setArguments(arguments);
 
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
@@ -94,6 +78,10 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
 
                 break;
 
+            case R.id.txv_toolbar_general_right:
+                startActivity(new Intent(getActivity(),SearchJobActivity.class));
+                break;
+
             default:
                 break;
         }
@@ -111,41 +99,8 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
         mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setImageResource(R.drawable.img_list);
 
         mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setOnClickListener(this);
+        mJobsBinding.toolbarFragmentJobs.txvToolbarGeneralRight.setOnClickListener(this);
 
     }
 
-    private void searchJob(int pageNumber, final boolean isPaginationLoading) {
-        SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
-        request.setPage(pageNumber);
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        webServices.searchJob(request).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) getActivity()) {
-            @Override
-            public void onSuccess(SearchJobResponse response) {
-                if(!isPaginationLoading) {
-                    if (response.getStatus() == 1) {
-                        jobData = response.getSearchJobResponseData();
-                        /**
-                         * Load list job fragment as the default fragment.
-                         */
-                        mJobListFragment = JobListFragment.newInstance();
-                        Bundle arguments = new Bundle();
-                        arguments.putParcelable(Constants.EXTRA_JOB_LIST,jobData);
-                        mJobListFragment.setArguments(arguments);
-
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.lay_container, mJobListFragment)
-                                .commit();
-
-                        mIsList = true;
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
-    }
 }

@@ -1,11 +1,12 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
+import com.appster.dentamatch.network.request.JobDetailRequest;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
+import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.request.profile.UpdateUserProfileRequest;
 import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
@@ -63,6 +64,10 @@ public interface AuthWebServices {
     String LOGOUT = "users/sign-out";
     String UPDATE_PROFILE = "users/user-profile-update";
     String SEARCH_JOBS = "users/search-jobs";
+    String JOB_DETAILS = "jobs/job-detail";
+
+    @POST(JOB_DETAILS)
+    Call<BaseResponse> getJobDetail(@Body JobDetailRequest request);
 
     @POST(SEARCH_JOBS)
     Call<SearchJobResponse> searchJob(@Body SearchJobRequest request);

@@ -56,6 +56,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarJobTitle.tvToolbarGeneralLeft.setText(getString(R.string.job_title));
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setText(getString(R.string.save_label));
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setAllCaps(true);
+        mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setOnClickListener(this);
         mBinder.toolbarJobTitle.ivToolBarLeft.setOnClickListener(this);
         mLayoutManager = new LinearLayoutManager(this);

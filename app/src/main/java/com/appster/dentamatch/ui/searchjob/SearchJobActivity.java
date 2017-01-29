@@ -10,20 +10,15 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
-import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleList;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.PreferenceUtil;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
 
 /**
  * Created by virender on 26/01/17.
@@ -212,7 +207,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
             case R.id.btn_job_search:
                 if (isValidData()) {
-                    searchJob();
+                    saveAndProceed();
                 }
                 break;
 
@@ -222,7 +217,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    private void searchJob() {
+    private void saveAndProceed() {
         SearchJobRequest request = new SearchJobRequest();
 
         if (isPartTime) {
@@ -244,20 +239,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         request.setParttimeDays(mPartTimeDays);
         request.setZipCode(mSelectedZipCode);
 
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        webServices.searchJob(request).enqueue(new BaseCallback<SearchJobResponse>(this) {
-            @Override
-            public void onSuccess(SearchJobResponse response) {
-
-            }
-
-            @Override
-            public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
+        PreferenceUtil.setJobFilter(true);
+        PreferenceUtil.saveJobFilter(request);
+        startActivity(new Intent(this, HomeActivity.class)
+                .putExtra(Constants.EXTRA_SEARCH_JOB,true));
     }
+
 
     private boolean isValidData() {
         if (mSelectedJobID.size() == 0) {

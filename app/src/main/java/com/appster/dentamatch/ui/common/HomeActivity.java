@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
-import com.appster.dentamatch.ui.jobs.JobsFragment;
+import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.messages.MessagesFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;
@@ -47,6 +47,12 @@ public class HomeActivity extends BaseActivity {
         ITEMS = new String[]{getString(R.string.nav_job), getString(R.string.nav_tracks), getString(R.string.nav_calendar), getString(R.string.nav_message), getString(R.string.nav_profile)};
         initUI();
 
+        /**
+         * Launch job search fragment if redirected from search activity.
+         */
+        if(getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)){
+            bottomBar.setCurrentItem(0);
+        }
 
     }
 

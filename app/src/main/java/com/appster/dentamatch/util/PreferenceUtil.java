@@ -1,5 +1,6 @@
 package com.appster.dentamatch.util;
 
+import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.response.profile.JobTitleList;
 import com.orhanobut.hawk.Hawk;
 
@@ -29,11 +30,22 @@ public final class PreferenceUtil {
     private static final String KEY_USER_TOKEN = "USER_TOKEN";
     private static final String KEY_JOB_TITLE_ID = "JOB_TITLE_ID";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
+
     private static final String KEY_JOB_FILTER_SET = "KEY_JOB_FILTER_SET";
+    private static final String KEY_JOB_FILTER_REQUEST = "KEY_JOB_FILTER_REQUEST";
+
 
 
     public static void saveAppState(Object state) {
         Hawk.put(KEY_APP_STATE, state);
+    }
+
+    public static void saveJobFilter(SearchJobRequest request) {
+        Hawk.put(KEY_JOB_FILTER_REQUEST, request);
+    }
+
+    public static Object getJobFilter() {
+        return Hawk.get(KEY_JOB_FILTER_REQUEST);
     }
 
     public static Object getAppState() {
