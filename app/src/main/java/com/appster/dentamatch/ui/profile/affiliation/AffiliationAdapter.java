@@ -120,7 +120,7 @@ public class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ViewHolderProfile itemProfileHolder = (ViewHolderProfile) holder;
             if(mIsFromEditProfile){
                 itemProfileHolder.tvTitleScreen.setVisibility(View.VISIBLE);
-                itemProfileHolder.tvTitleScreen.setText(mContext.getString(R.string.header_work_exp));
+                itemProfileHolder.tvTitleScreen.setText(mContext.getString(R.string.header_affiliation));
                 itemProfileHolder.progressLayout.setVisibility(View.GONE);
                 itemProfileHolder.tvTitle.setVisibility(View.GONE);
                 itemProfileHolder.tvDesc.setVisibility(View.GONE);

@@ -91,7 +91,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (holder1 instanceof ViewHolderHeader) {
             if (mIsFromEditProfile) {
                 mBinderHeader.tvTitleScreen.setVisibility(View.VISIBLE);
-                mBinderHeader.tvTitleScreen.setText(mContext.getString(R.string.header_schooling_exp));
+                mBinderHeader.tvTitleScreen.setText(mContext.getString(R.string.header_skills_exp));
                 mBinderHeader.progressLayout.setVisibility(View.GONE);
                 mBinderHeader.tvTitle.setVisibility(View.GONE);
                 mBinderHeader.tvDescription.setVisibility(View.GONE);
