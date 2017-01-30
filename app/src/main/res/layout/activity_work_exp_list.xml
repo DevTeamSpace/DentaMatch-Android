@@ -18,13 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/btn_next_work_exp_lsit"
-            android:layout_below="@+id/toolbar_work_exp_list"
-            android:layout_marginBottom="@dimen/margin_medium">
+            android:layout_below="@+id/toolbar_work_exp_list">
 
             <LinearLayout
                 android:id="@+id/layout_parent_scroll_work_exp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout

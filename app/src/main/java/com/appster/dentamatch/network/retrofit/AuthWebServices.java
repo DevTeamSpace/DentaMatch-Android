@@ -108,7 +108,7 @@ public interface AuthWebServices {
     @GET(SCHOOL_LIST)
     Call<SchoolingResponse> getSchoolList();
 
-    @GET(SCHOOL_ADD)
+    @POST(SCHOOL_ADD)
     Call<BaseResponse> addSchooling(@Body AddSchoolRequest schoolRequest);
 
     @GET(CERTIFICATION_LIST)

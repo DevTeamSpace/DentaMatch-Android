@@ -8,9 +8,11 @@ import java.util.ArrayList;
  * Created by virender on 21/01/17.
  */
 public class ProfileSkill {
+    @SerializedName("id")
     private int parentId;
+    @SerializedName("skillName")
     private String skillsName;
-    @SerializedName("childSkills")
+    @SerializedName("children")
     private ArrayList<ProfileSubSkill> childSkillList;
 
     public int getParentId() {

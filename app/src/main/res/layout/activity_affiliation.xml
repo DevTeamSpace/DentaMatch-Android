@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/btn_next"
             android:layout_below="@+id/toolbar_affiliation"
-            android:layout_marginBottom="@dimen/margin_21"
+            android:layout_marginBottom="@dimen/margin_2"
             android:scrollbars="vertical" />
 
         <com.appster.dentamatch.widget.CustomButton

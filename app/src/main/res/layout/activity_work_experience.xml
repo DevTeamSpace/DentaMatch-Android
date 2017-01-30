@@ -25,13 +25,12 @@
             <LinearLayout
                 android:id="@+id/layout_parent_scroll_work_exp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_margin="@dimen/margin_25">
 
                     <ProgressBar
@@ -126,6 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"
                     android:layout_marginTop="@dimen/margin_19"
+                    android:layout_marginBottom="@dimen/margin_2"
                     android:clipToPadding="false"
                     android:gravity="bottom"
                     android:paddingTop="@dimen/padding_input_layout"
@@ -143,16 +143,13 @@
                         android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
 
-
             </LinearLayout>
-
         </ScrollView>
 
         <com.appster.dentamatch.widget.CustomButton
             android:id="@+id/btn_next_work_exp"
             style="@style/button_style"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/margin_medium"
             android:background="@color/colorPrimary"
             android:text="@string/lable_next"
             android:textColor="@color/white_color"

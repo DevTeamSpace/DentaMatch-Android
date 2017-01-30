@@ -32,8 +32,10 @@
     <dimen name="text_size_13">13sp</dimen>
 
     <!--Margins-->
+    <dimen name="margin_2">2dp</dimen>
     <dimen name="margin_small_3">3dp</dimen>
     <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_6">5dp</dimen>
     <dimen name="margin_medium">8dp</dimen>
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_normal">26dp</dimen>
@@ -73,5 +75,11 @@
     <dimen name="edit_height">62dp</dimen>
     <dimen name="edit_height_about_me">160dp</dimen>
     <dimen name="profile_header_height">280dp</dimen>
+    <dimen name="on_baording_text_layout_size">220dp</dimen>
+
+    <dimen name="margin_17">17dp</dimen>
+    <dimen name="margin_74">74dp</dimen>
+    <dimen name="circular_text_dimen">40dp</dimen>
+
 
 </resources>

@@ -31,6 +31,7 @@ import com.appster.dentamatch.model.ProfileSkill;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
+import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
 import com.appster.dentamatch.ui.profile.workexperience.SkillsActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateCertificateActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
@@ -86,9 +87,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-       if( !EventBus.getDefault().isRegistered(this)){
-           EventBus.getDefault().register(this);
-       }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -112,7 +113,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellLicence.tvCertificatesName.setText(getString(R.string.lable_licence_number));
         profileBinding.cellExp.tvCertificatesName.setText(getString(R.string.title_experience));
         profileBinding.cellSchooling.tvCertificatesName.setText(getString(R.string.title_schooling));
-        profileBinding.cellDentalStateBoard.tvCertificatesName.setText(getString(R.string.dental_state_board));
+        profileBinding.cellKeySkill.tvCertificatesName.setText(getString(R.string.title_skill));
         profileBinding.cellAffiliation.tvCertificatesName.setText(getString(R.string.title_affiliation));
         profileBinding.ivSetting.setOnClickListener(this);
         profileBinding.tvEdit.setOnClickListener(this);
@@ -130,6 +131,26 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(licenseintent);
             }
         });
+        profileBinding.cellDentalStateBoard.tvEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
+                CertificatesList data = new CertificatesList();
+                data.setImageUrl(profileResponseData.getDentalStateBoard().getImageUrl());
+                data.setCertificateName(getString(R.string.dental_state_board));
+                intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+                intent.putExtra(Constants.INTENT_KEY.DATA, data);
+                startActivity(intent);
+            }
+        });
+        profileBinding.cellDentalStateBoard.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellDentalStateBoard.tvEdit.performClick();
+
+            }
+        });
+
 
         profileBinding.cellAffiliation.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +160,33 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(affiliationIntent);
             }
         });
-        profileBinding.cellAffiliation.tvEditCell.setOnClickListener(new View.OnClickListener() {
+        profileBinding.cellAffiliation.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellAffiliation.tvEditCell.performClick();
+            }
+        });
+        profileBinding.cellSchooling.tvEditCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellSchooling.tvAddCertificates.performClick();
+            }
+        });
+        profileBinding.cellSchooling.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent skillIntent = new Intent(getActivity(), SchoolingActivity.class);
+                skillIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+                startActivity(skillIntent);
+            }
+        });
+        profileBinding.cellKeySkill.tvEditCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileBinding.cellKeySkill.tvAddCertificates.performClick();
+            }
+        });
+        profileBinding.cellKeySkill.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent skillIntent = new Intent(getActivity(), SkillsActivity.class);
@@ -220,6 +267,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
                     lp.setMargins(10, 10, 10, 10);
                     textView.setLayoutParams(lp);
+                    textView.setSingleLine(true);
+
                     textView.setBackgroundResource(R.drawable.bg_edit_text);
                     textView.setPadding(30, 10, 30, 10);
                     textView.setText(response.getAffiliationList().get(i).getAffiliationName());
@@ -246,7 +295,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             if (response.getCertificatesLists() != null && response.getCertificatesLists().size() > 0) {
                 inflateCertification(response.getCertificatesLists());
             }
-            if (response.getDentalStateBoard() != null) {
+            if (response.getDentalStateBoard() != null && !TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
                 profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
@@ -348,11 +397,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             cellCertificateBinding.tvAddCertificates.setTag(i);
             CertificatesList certificate = certificateList.get(i);
             cellCertificateBinding.tvCertificatesName.setText(certificate.getCertificateName());
-            if (!TextUtils.isEmpty(certificate.getImageUrl())) {
+            if (!TextUtils.isEmpty(certificate.getImage())) {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.GONE);
                 cellCertificateBinding.tvEdit.setVisibility(View.VISIBLE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.VISIBLE);
-                Picasso.with(getActivity()).load(certificate.getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(cellCertificateBinding.ivCertificateImage);
+                Picasso.with(getActivity()).load(certificate.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(cellCertificateBinding.ivCertificateImage);
 
             } else {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.VISIBLE);
@@ -401,8 +450,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onProfileUpdatedEvent(ProfileUpdatedEvent profileUpdatedEvent){
-        if(profileUpdatedEvent.ismIsProfileUpdated()) {
+    public void onProfileUpdatedEvent(ProfileUpdatedEvent profileUpdatedEvent) {
+        if (profileUpdatedEvent.ismIsProfileUpdated()) {
             getProfileData();
         }
     }

@@ -71,6 +71,7 @@
                 android:digits="@string/digits_alpha_numeric_only"
                 android:ellipsize="end"
                 android:hint="@string/hint_type_to_search"
+                android:imeOptions="actionDone"
                 android:paddingBottom="@dimen/margin_15"
                 app:customFont="@string/font_regular" />
 

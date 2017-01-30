@@ -33,6 +33,7 @@
     <color name="bottom_sheet_start_color">#80ffffff</color>
     <color name="bottom_sheet_center_color">#40ffffff</color>
     <color name="bottom_sheet_end_color">#ffffff</color>
+    <color name="pale_blue_color">#e7f4fd</color>
     <!--create profile-->
     <color name="cell_color">#f8f8f8</color>
     <color name="cell_text_color">#383838</color>
@@ -47,5 +48,13 @@
     <color name="warm_gray_color">#939393</color>
     <color name="gray_nav_bottom_unselected">#aaafb8</color>
     <color name="dark_state_blue_color">#192866</color>
+    <color name="white5_color">#f7f7f7</color>
+    <color name="greyish_color">#a9a9a9</color>
+    <color name="greeny_blue">#45b1b2</color>
+    <color name="light_moss_green">#8ecf7e</color>
+    <color name="grayish_two">#b4b4b4</color>
+    <color name="brownish_grey">#5d5d5d</color>
+    <color name="white_six">#20e1e1e1</color>
+    <color name="white3_color">#f3f3f3</color>
 
 </resources>

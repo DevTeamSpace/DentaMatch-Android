@@ -33,6 +33,7 @@
             android:id="@+id/view_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
+            android:visibility="gone"
             android:layout_below="@+id/tv_affiliation_type"
             android:background="@color/line_divider" />
     </RelativeLayout>
