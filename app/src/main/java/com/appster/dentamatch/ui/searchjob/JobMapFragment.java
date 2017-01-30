@@ -93,7 +93,6 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         }
 
         addMarker(mMarkerPositionList);
-
     }
 
     @Nullable
@@ -247,6 +246,10 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         if(mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
             collapseInfoDialog();
 
+            /**
+             * Allow the previous info window which is open to close , for that purpose a delay handler
+             * of 300 ms is added .
+             */
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -265,7 +268,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
             mMapBinding.infoWindowContent.tvJobName.setText(jobModel.getJobTitleName());
 
             if (jobModel.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
-                mMapBinding.infoWindowContent.tvJobType.setText("Part Time");
+                mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_part_time));
                 mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
@@ -323,18 +326,18 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
             } else if (jobModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                 mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
                 mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.GONE);
-                mMapBinding.infoWindowContent.tvJobType.setText("Full Time");
+                mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_full_time));
 
             } else if (jobModel.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
                 mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
                 mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.GONE);
-                mMapBinding.infoWindowContent.tvJobType.setText("Temporary");
+                mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_temporary));
             }
 
             mMapBinding.infoWindowContent.tvJobDocAddress.setText(jobModel.getAddress());
-            String endMessage = jobModel.getDays() > 1 ? "DAYS AGO" : " DAY AGO";
+            String endMessage = jobModel.getDays() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
             mMapBinding.infoWindowContent.tvJobDocTime.setText(String.valueOf(jobModel.getDays()).concat(" ").concat(endMessage));
-            mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(" miles"));
+            mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
             mMapBinding.infoWindowContent.tvJobDocName.setText(jobModel.getOfficeName());
         }
     }

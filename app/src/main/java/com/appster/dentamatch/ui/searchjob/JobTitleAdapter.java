@@ -38,6 +38,23 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
+    public void setSelectedListItems(ArrayList<JobTitleList> List){
+        if (mAffiliationList != null  && mAffiliationList.size() > 0) {
+            for(JobTitleList mylist : mAffiliationList){
+
+                for(JobTitleList selectedList : List){
+
+                    if(mylist.getId() == selectedList.getId()){
+                        mylist.setSelected(true);
+                        break;
+                    }
+                }
+            }
+        }
+        mSelectedJobTitles = List;
+        notifyDataSetChanged();
+    }
+
     public ArrayList<JobTitleList> getList() {
         return mAffiliationList;
     }

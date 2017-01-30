@@ -269,5 +269,18 @@
     <string name="parking_availability_label">PARKING AVAILABILITY</string>
     <string name="map_label">MAP</string>
     <string name="button_apply_for_job">APPLY FOR JOB</string>
+    <string name="txt_part_time">Part Time</string>
+    <string name="txt_full_time">Full Time</string>
+    <string name="txt_temporary">Temporary</string>
+    <string name="txt_days_ago">DAYS AGO</string>
+    <string name="txt_day_ago">" DAY AGO"</string>
+    <string name="txt_miles">" miles"</string>
+    <string name="txt_monday">Monday</string>
+    <string name="txt_tuesday">Tuesday</string>
+    <string name="txt_wednesday">Wednesday</string>
+    <string name="txt_thursday">Thursday</string>
+    <string name="txt_friday">Friday</string>
+    <string name="txt_saturday">Saturday</string>
+    <string name="txt_sunday">Sunday</string>
 
 </resources>

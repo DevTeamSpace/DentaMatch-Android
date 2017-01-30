@@ -28,11 +28,11 @@
                     android:id="@+id/tv_job_title"
                     style="@style/text_view_normal"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/cell_height"
-                    android:layout_marginBottom="@dimen/margin_15"
-                    android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginRight="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_33"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_33"
                     android:drawableRight="@drawable/ic_arrow_right"
                     android:text="@string/job_title"
                     android:textColor="@color/graish_brown_color"
@@ -40,6 +40,7 @@
                     app:customFont="@string/font_medium" />
 
                 <org.apmem.tools.layouts.FlowLayout
+                    android:visibility="gone"
                     android:id="@+id/flow_layout_job_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,9 +72,9 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_job_type"
                     style="@style/text_view_normal"
-                    android:layout_marginBottom="@dimen/margin_15"
-                    android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginRight="@dimen/margin_normal"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_17"
                     android:text="@string/job_type"
                     android:textAllCaps="true"
@@ -98,7 +99,7 @@
                     android:layout_height="@dimen/edit_height"
                     android:background="@color/white_color">
 
-                    <ImageView
+                    <View
                         android:id="@+id/iv_full_time"
                         android:layout_width="@dimen/margin_medium"
                         android:layout_height="match_parent"
@@ -109,20 +110,21 @@
                         style="@style/text_view_normal"
                         android:layout_width="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginStart="@dimen/margin_normal"
                         android:text="@string/full_time"
                         android:textColor="@color/greyish_color"
                         android:textSize="@dimen/text_size_13"
                         app:customFont="@string/font_regular" />
 
-                    <ImageView
-                        android:id="@+id/iv_full_time_check_box"
+                    <CheckBox
+                        android:id="@+id/cb_full_time_check_box"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/margin_normal"
-                        android:src="@drawable/ic_check_empty" />
+                        android:button="@drawable/checkbox_check_selector"
+                        />
 
                 </RelativeLayout>
 
@@ -139,7 +141,7 @@
                     android:layout_height="@dimen/edit_height"
                     android:background="@color/white_color">
 
-                    <ImageView
+                    <View
                         android:id="@+id/iv_part_time"
                         android:layout_width="@dimen/margin_medium"
                         android:layout_height="match_parent"
@@ -156,15 +158,15 @@
                         android:textSize="@dimen/text_size_13"
                         app:customFont="@string/font_regular" />
 
-                    <ImageView
-                        android:id="@+id/iv_part_time_check_box"
+                    <CheckBox
+                        android:id="@+id/cb_part_time_check_box"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/margin_normal"
-                        android:src="@drawable/ic_check_empty" />
-
+                        android:button="@drawable/checkbox_check_selector"
+                        />
                 </RelativeLayout>
 
                 <View

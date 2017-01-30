@@ -53,36 +53,36 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             holder.tvName.setText(data.getJobTitleName());
 
             if (data.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
-                holder.tvJobType.setText("Part Time");
+                holder.tvJobType.setText(mContext.getString(R.string.txt_part_time));
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
                 if (data.getIsMonday() == 1) {
-                    partTimeDaysArray.add("Monday");
+                    partTimeDaysArray.add(mContext.getString(R.string.txt_monday));
                 }
 
                 if (data.getIsTuesday() == 1) {
-                    partTimeDaysArray.add("Tuesday");
+                    partTimeDaysArray.add(mContext.getString(R.string.txt_tuesday));
                 }
 
                 if (data.getIsWednesday() == 1) {
-                    partTimeDaysArray.add("Wednesday");
+                    partTimeDaysArray.add(mContext.getString(R.string.txt_wednesday));
                 }
 
                 if (data.getIsThursday() == 1) {
-                    partTimeDaysArray.add("Thursday");
+                    partTimeDaysArray.add(mContext.getString(R.string.txt_thursday));
                 }
 
                 if (data.getIsFriday() == 1) {
-                    partTimeDaysArray.add("Friday");
+                    partTimeDaysArray.add(mContext.getString(R.string.txt_friday));
                 }
 
                 if (data.getIsSaturday() == 1) {
-                    partTimeDaysArray.add("Saturday");
+                    partTimeDaysArray.add(mContext.getString(R.string.txt_saturday));
                 }
 
                 if (data.getIsSunday() == 1) {
-                    partTimeDaysArray.add("Sunday");
+                    partTimeDaysArray.add(mContext.getString(R.string.txt_sunday));
                 }
 
                 String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
@@ -111,18 +111,18 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             } else if (data.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
                 holder.tvDate.setVisibility(View.GONE);
-                holder.tvJobType.setText("Full Time");
+                holder.tvJobType.setText(mContext.getString(R.string.txt_full_time));
 
             } else if (data.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
                 holder.tvDate.setVisibility(View.GONE);
-                holder.tvJobType.setText("Temporary");
+                holder.tvJobType.setText(mContext.getString(R.string.txt_temporary));
             }
 
             holder.tvDocAddress.setText(data.getAddress());
-            String endMessage = data.getDays() > 1 ? "DAYS AGO" : " DAY AGO";
+            String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
             holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
-            holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(" miles"));
+            holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDocName.setText(data.getOfficeName());
         }
 
@@ -146,11 +146,11 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
     }
 
 
-    public class MyHolder extends RecyclerView.ViewHolder {
+     class MyHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvJobType, tvDate, tvDocName, tvDocAddress, tvDuration, tvDistance;
         CheckBox cbSelect;
 
-        public MyHolder(View itemView) {
+         MyHolder(View itemView) {
             super(itemView);
             tvName = mBinding.tvJobName;
             tvJobType = mBinding.tvJobType;

@@ -44,10 +44,22 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_select_job_title);
         initViews();
 
+        if(getIntent().hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)){
+            mSelectedTitleList = getIntent().getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
+        }
+
         if (PreferenceUtil.getSearchJobTitleList() != null && PreferenceUtil.getSearchJobTitleList().size() > 0) {
             mJobTitleAdapter.addList(PreferenceUtil.getSearchJobTitleList());
         } else {
             callJobListApi();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mSelectedTitleList != null && mSelectedTitleList.size()>0){
+            mJobTitleAdapter.setSelectedListItems(mSelectedTitleList);
         }
     }
 
@@ -60,7 +72,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setOnClickListener(this);
         mBinder.toolbarJobTitle.ivToolBarLeft.setOnClickListener(this);
         mLayoutManager = new LinearLayoutManager(this);
-//
+
         mBinder.recyclerAjobTitle.setLayoutManager(mLayoutManager);
         mBinder.recyclerAjobTitle.addItemDecoration(new SimpleDividerItemDecoration(this));
         mJobTitleAdapter = new JobTitleAdapter(this, this);

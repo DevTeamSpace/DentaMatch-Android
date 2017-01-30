@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
@@ -23,11 +24,12 @@ import java.util.ArrayList;
 /**
  * Created by virender on 26/01/17.
  */
-public class SearchJobActivity extends BaseActivity implements View.OnClickListener {
+public class SearchJobActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private ActivitySearchJobBinding mBinder;
     private String mSelectedLat, mSelectedLng;
     private ArrayList<Integer> mSelectedJobID;
     private ArrayList<String> mPartTimeDays;
+    private ArrayList<JobTitleList> mChosenTitles;
     private String mSelectedZipCode;
     private boolean isPartTime, isFullTime, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
 
@@ -48,8 +50,8 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         mPartTimeDays = new ArrayList<>();
         mBinder.toolbarSearchJob.tvToolbarGeneralLeft.setText(getString(R.string.header_search_job));
         mBinder.toolbarSearchJob.ivToolBarLeft.setOnClickListener(this);
-        mBinder.layoutFullTime.setOnClickListener(this);
-        mBinder.layoutPartTime.setOnClickListener(this);
+        mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
+        mBinder.cbPartTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.tvCurrentLocation.setOnClickListener(this);
         mBinder.tvJobTitle.setOnClickListener(this);
         mBinder.tvSaturday.setOnClickListener(this);
@@ -71,35 +73,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 startActivityForResult(new Intent(SearchJobActivity.this, PlacesMapActivity.class), Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
                 break;
 
-            case R.id.layout_part_time:
-                if (isPartTime) {
-                    isPartTime = false;
-                    mBinder.dayLayout.setVisibility(View.GONE);
-                    mBinder.tvPartTime.setTextColor(R.color.greyish_color);
-                    mBinder.ivPartTimeCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
-                } else {
-                    isPartTime = true;
-                    mBinder.tvPartTime.setTextColor(R.color.black_color);
-                    mBinder.dayLayout.setVisibility(View.VISIBLE);
-                    mBinder.ivPartTimeCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
-                }
-                break;
-
-            case R.id.layout_full_time:
-                if (isFullTime) {
-                    isFullTime = false;
-                    mBinder.tvFullTime.setTextColor(R.color.greyish_color);
-                    mBinder.ivFullTimeCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
-                } else {
-                    isFullTime = true;
-                    mBinder.tvFullTime.setTextColor(R.color.black_color);
-                    mBinder.dayLayout.setVisibility(View.GONE);
-                    mBinder.ivFullTimeCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
-                }
-                break;
-
             case R.id.tv_job_title:
-                startActivityForResult(new Intent(getApplicationContext(), SelectJobTitleActivity.class), Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE);
+                Intent jobTitleSelectionIntent =  new Intent(getApplicationContext(), SelectJobTitleActivity.class);
+
+                if(mChosenTitles != null) {
+                    jobTitleSelectionIntent.putExtra(Constants.EXTRA_CHOSEN_JOB_TITLES, mChosenTitles);
+                }
+
+                startActivityForResult(jobTitleSelectionIntent, Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE);
                 break;
 
             case R.id.tv_sunday:
@@ -217,6 +198,39 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()){
+
+            case R.id.cb_part_time_check_box:
+                if(isChecked){
+                    isPartTime = true;
+                    mBinder.tvPartTime.setTextColor(R.color.black_color);
+                    mBinder.dayLayout.setVisibility(View.VISIBLE);
+                }else{
+                    isPartTime = false;
+                    mBinder.dayLayout.setVisibility(View.GONE);
+                    mBinder.tvPartTime.setTextColor(R.color.greyish_color);
+                }
+
+                break;
+
+
+            case R.id.cb_full_time_check_box:
+                if(isChecked){
+                    isFullTime = true;
+                    mBinder.tvFullTime.setTextColor(R.color.black_color);
+                }else{
+                    isFullTime = false;
+                    mBinder.tvFullTime.setTextColor(R.color.greyish_color);
+                }
+                break;
+
+            default: break;
+        }
+
+    }
+
     private void saveAndProceed() {
         SearchJobRequest request = new SearchJobRequest();
 
@@ -278,8 +292,9 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
             if (data != null && data.hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)) {
                 mSelectedJobID.clear();
+                mBinder.flowLayoutJobTitle.removeAllViews();
                 ArrayList<JobTitleList> jobTitleList = data.getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
-
+                mChosenTitles = jobTitleList;
                 for (JobTitleList item : jobTitleList) {
                     addTitleToLayout(item);
                 }
@@ -302,6 +317,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void addTitleToLayout(JobTitleList jobTitleListItem) {
+        mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
         com.wefika.flowlayout.FlowLayout.LayoutParams layoutParams = new com.wefika.flowlayout.FlowLayout.LayoutParams(com.wefika.flowlayout.FlowLayout.LayoutParams.WRAP_CONTENT,
                 com.wefika.flowlayout.FlowLayout.LayoutParams.WRAP_CONTENT);
 
@@ -315,4 +331,6 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         textView.setText(text);
         mBinder.flowLayoutJobTitle.addView(textView, layoutParams);
     }
+
+
 }
