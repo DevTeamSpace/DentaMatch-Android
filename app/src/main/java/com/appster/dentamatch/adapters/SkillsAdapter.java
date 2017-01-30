@@ -10,8 +10,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -47,13 +45,11 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private LayoutProfileHeaderBinding mBinderHeader;
 
     private List<ParentSkill> mSkillList;
-    //    private ItemSkillBinding mBinder;
     private Context mContext;
     private boolean mIsFromEditProfile;
     private int windowWidth;
     private Activity activity;
     private OnSkillClick mListener;
-    public EditText etOtherTemp;
     private EditTextSelected mOthersSelectedListener;
 
     public SkillsAdapter(List<ParentSkill> skillList, Context context, OnSkillClick listener, EditTextSelected othersSelectedListener, boolean isFromEditProfile) {
@@ -105,7 +101,8 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             placeholder(R.drawable.profile_pic_placeholder).into(mBinderHeader.ivProfileIcon);
                 }
 
-                mBinderHeader.progressBar.setProgress(80);
+                mBinderHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.SKILLS);
+
                 mBinderHeader.tvTitle.setText(mContext.getString(R.string.header_skills_exp));
                 mBinderHeader.tvDescription.setText(mContext.getString(R.string.lorem_ipsum));
             }
@@ -113,18 +110,16 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final ViewHolderItem holder = (ViewHolderItem) holder1;
             final ParentSkill skill = mSkillList.get(position - 1);
 
-//        LogUtils.LOGD("SkillsAdapt", "Skill "+ skill.getSkillName());
             holder.tvSkillName.setText(skill.getSkillName());
-
             holder.layoutSkills.setTag(position - 1);
 
             if (skill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                 holder.layoutSkills.setOnClickListener(null);
                 holder.etOther.setVisibility(View.VISIBLE);
                 holder.ivArrow.setVisibility(View.GONE);
+                holder.flowLayout.setVisibility(View.GONE);
                 holder.etOther.setText(skill.getOtherSkill());
 
-                holder.flowLayout.setVisibility(View.GONE);
                 holder.etOther.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
@@ -132,10 +127,8 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         if (hasFocus) {
                             mOthersSelectedListener.onEditTextSelected(position);
                         }
-
                     }
                 });
-
 
                 holder.etOther.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -153,8 +146,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         mSkillList.get(position - 1).setOtherSkill(s.toString());
                     }
                 });
-
-
             } else {
                 holder.etOther.setVisibility(View.GONE);
                 holder.ivArrow.setVisibility(View.VISIBLE);
@@ -231,11 +222,9 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private class ViewHolderItem extends RecyclerView.ViewHolder {
-        //        RelativeLayout layoutSkills;
         LinearLayout layoutSkills;
         RelativeLayout layoutSkillsInner;
         FlowLayout flowLayout;
-        //        RelativeLayout layoutBricks;
         TextView tvSkillName;
         ImageView ivArrow;
         CustomEditText etOther;
@@ -245,7 +234,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             layoutSkills = mBinder.layoutSkillsTop;
             layoutSkillsInner = mBinder.layoutSkillsInner;
             flowLayout = mBinder.flowLayoutChips;
-//            layoutBricks = mBinder.layoutSkillBricks;
             tvSkillName = mBinder.tvSkillName;
             ivArrow = mBinder.ivRightArrow;
             etOther = mBinder.etOther;
@@ -258,4 +246,5 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 }
+
 

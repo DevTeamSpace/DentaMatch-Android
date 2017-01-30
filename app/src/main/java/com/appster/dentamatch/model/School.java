@@ -2,8 +2,6 @@ package com.appster.dentamatch.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-
 /**
  * Created by ramkumar on 16/01/17.
  */
@@ -19,8 +17,6 @@ public class School {
     private int isSelected;
     private String yearOfGraduation;
     private String otherSchooling;
-
-
 
     public int getSchoolId() {
         return schoolId;

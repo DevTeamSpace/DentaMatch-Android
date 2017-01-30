@@ -10,7 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivityWorkExperinceDetailBinding;
+import com.appster.dentamatch.databinding.ActivityWorkExperienceDetailBinding;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -35,15 +35,15 @@ import retrofit2.Call;
  * Created by virender on 05/01/17.
  */
 public class WorkExperienceDetailActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
-    private ActivityWorkExperinceDetailBinding mBinder;
-    private String selectedJobtitle = "";
+    private ActivityWorkExperienceDetailBinding mBinder;
+    private String selectedJobTitle = "";
     private ArrayList<WorkExpRequest> workExpRequestList = new ArrayList<>();
     private int expMonth = 0, jobTitleId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_work_experince_detail);
+        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_work_experience_detail);
         initViews();
     }
 
@@ -55,6 +55,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setOnClickListener(this);
         mBinder.toolbarWorkExpDetail.ivToolBarLeft.setOnClickListener(this);
         mBinder.includeRefrence2.tvRefrenceDelete.setOnClickListener(this);
+
         try {
             mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
             expMonth = PreferenceUtil.getYear() * 12 + PreferenceUtil.getMonth();
@@ -62,6 +63,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         mBinder.includeRefrence1.etOfficeReferenceMobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -114,7 +116,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                 break;
             case R.id.tv_add_more_experience:
                 boolean isMoveForward = false;
-                isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobtitle, expMonth,
+                isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobTitle, expMonth,
                         Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeName),
                         Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress),
                         Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeCity),
@@ -132,8 +134,6 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                             , Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceMobile), Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceEmail),
                             Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail), Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName),
                             Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceMobile)));
-
-//                    startActivity(new Intent(getApplicationContext(), WorkExpListActivity.class));
                 }
 
                 break;
@@ -155,17 +155,10 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 
     }
 
-
-
-
-
     @Override
     public void onExperienceSection(int year, int month) {
         mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
-//        PreferenceUtil.setMonth(month);
-//        PreferenceUtil.setYear(year);
         expMonth = year * 12 + month;
-
     }
 
     private void callAddExpApi(WorkExpRequest workExpRequest) {

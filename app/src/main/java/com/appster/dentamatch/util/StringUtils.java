@@ -82,7 +82,7 @@ public class StringUtils {
     }
 
 
-    public static final <T> List<T> getList(final Class<T[]> clazz, final String json) {
+    public static <T> List<T> getList(final Class<T[]> clazz, final String json) {
         final T[] jsonToObject = new Gson().fromJson(json, clazz);
         return Arrays.asList(jsonToObject);
     }

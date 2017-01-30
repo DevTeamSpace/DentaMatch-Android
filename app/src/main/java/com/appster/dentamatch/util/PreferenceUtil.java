@@ -1,6 +1,6 @@
 package com.appster.dentamatch.util;
 
-import com.appster.dentamatch.network.response.profile.JobTitleList;
+import com.appster.dentamatch.model.JobTitleList;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;

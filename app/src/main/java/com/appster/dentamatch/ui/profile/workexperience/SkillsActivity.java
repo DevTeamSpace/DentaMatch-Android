@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.appster.dentamatch.R;
@@ -69,13 +68,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
 
         }
         btnNext.setOnClickListener(this);
-//        setResideMenu();
     }
-
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        return resideMenu.dispatchTouchEvent(ev);
-//    }
 
     @Override
     public String getActivityName() {
@@ -127,7 +120,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         Intent intent = new Intent(SkillsActivity.this, SubSkillsActivity.class);
         intent.putExtra(Constants.BundleKey.SUB_SKILLS, subSkillList);
 
-        startActivityForResult(intent, 901);
+        startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_SKILLS);
         mSkillPosition = position;
     }
 

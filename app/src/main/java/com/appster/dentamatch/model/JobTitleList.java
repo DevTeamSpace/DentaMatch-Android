@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.profile;
+package com.appster.dentamatch.model;
 
 import com.google.gson.annotations.SerializedName;
 

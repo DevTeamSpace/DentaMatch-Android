@@ -13,7 +13,6 @@ import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.profile.affiliation.AffiliationAdapter;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;

@@ -40,8 +40,8 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
     private void initView() {
         mBinder.toolbarLicense.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
         mBinder.btnSave.setOnClickListener(this);
-        if(getIntent()!=null){
-            data=(LicenceRequest)getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
+        if (getIntent() != null) {
+            data = getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             setViewData();
         }
     }
@@ -65,7 +65,6 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
                 }
                 break;
         }
-
     }
 
     private boolean checkInputValidator() {
@@ -104,7 +103,6 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
     private LicenceRequest prepareLicenceRequest() {
         processToShowDialog("", getString(R.string.please_wait), null);
         LicenceRequest licenceRequest = new LicenceRequest();
-//        licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
         licenceRequest.setLicense(mBinder.etLicence.getText().toString());
         licenceRequest.setState(mBinder.etState.getText().toString());
         return licenceRequest;
@@ -129,7 +127,6 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
                 @Override
                 public void onFail(Call<LicenceUpdateResponse> call, BaseResponse baseResponse) {
                     LogUtils.LOGD(TAG, "onFail");
-
 
                 }
             });

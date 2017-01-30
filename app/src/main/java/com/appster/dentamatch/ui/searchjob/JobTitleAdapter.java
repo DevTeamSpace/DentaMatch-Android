@@ -14,8 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.network.response.affiliation.AffiliationData;
-import com.appster.dentamatch.network.response.profile.JobTitleList;
+import com.appster.dentamatch.model.JobTitleList;
 import com.appster.dentamatch.network.response.profile.JobTitleResponseData;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;

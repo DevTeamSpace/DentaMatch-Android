@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.profile;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -36,7 +34,6 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_about_me);
         initViews();
-
     }
 
     private void initViews() {
@@ -48,7 +45,8 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
             Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.layoutIncludeProfileHeader.ivProfileIcon);
 
         }
-        mBinder.layoutIncludeProfileHeader.progressBar.setProgress(100);
+
+        mBinder.layoutIncludeProfileHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.COMPLETE);
         mBinder.toolbarAboutMe.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnNext.setOnClickListener(this);
     }
@@ -64,15 +62,16 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
             case R.id.iv_tool_bar_left:
                 onBackPressed();
                 break;
+
             case R.id.btn_next:
                 hideKeyboard();
+
                 if (checkValidation()) {
                     postboutMeAData(prepareRequest());
 
                 }
                 break;
         }
-
     }
 
     private boolean checkValidation() {

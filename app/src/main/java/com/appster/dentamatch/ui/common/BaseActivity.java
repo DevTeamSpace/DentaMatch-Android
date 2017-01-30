@@ -240,12 +240,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                     break;
             }
             if (fragment.isAdded()) {
-                return;
+
             } else {
                 ft.replace(R.id.fragment_container, fragment);
                 ft.commitAllowingStateLoss();
             }
         } catch (Exception x) {
+            x.printStackTrace();
         }
     }
 

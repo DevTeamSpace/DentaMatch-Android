@@ -10,10 +10,10 @@ import java.util.ArrayList;
  */
 public class SkillsUpdateRequest {
 
-    ArrayList<Integer> skills;
+    private ArrayList<Integer> skills;
 
     @SerializedName("other")
-    ArrayList<UpdateCertificates> others;
+    private ArrayList<UpdateCertificates> others;
 
     public void setSkills(ArrayList<Integer> skills) {
         this.skills = skills;

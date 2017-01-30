@@ -39,7 +39,7 @@
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_edit"
                         style="@style/text_view_normal"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:text="@string/edit_label"
                         android:textColor="@color/white_color"
@@ -62,10 +62,13 @@
                     android:id="@+id/tv_name"
                     style="@style/text_view_normal"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
                     android:gravity="center_horizontal"
                     android:text="@string/where_you_work"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_xlarge"
+
                     app:customFont="@string/font_bold" />
 
                 <com.appster.dentamatch.widget.CustomTextView
@@ -73,7 +76,10 @@
 
                     style="@style/text_view_normal"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_medium"
+
                     android:gravity="center_horizontal"
                     android:text="@string/lable_job_title"
                     android:textColor="@color/white_color"
@@ -85,7 +91,10 @@
                     style="@style/text_view_normal"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="@dimen/margin_normal"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_medium"
+
                     android:gravity="center_horizontal"
                     android:text="@string/settings_change_home_location"
                     android:textColor="@color/white_color"
@@ -160,7 +169,7 @@
                 layout="@layout/layout_profile_cell_header" />
 
             <org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
-               android:id="@+id/flow_layout"
+                android:id="@+id/flow_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
@@ -184,8 +193,6 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_licence_number"
                     style="@style/text_view_normal"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:textColor="@color/text_default_color"
                     android:textSize="@dimen/text_size_13"
@@ -194,8 +201,6 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_licence_state"
                     style="@style/text_view_normal"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:textColor="@color/text_default_color"
                     android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_regular" />

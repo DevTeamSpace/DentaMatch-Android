@@ -14,22 +14,20 @@ import com.appster.dentamatch.R;
 /**
  * Created by virender on 06/01/17.
  */
-public class OnBoardingAdapter extends PagerAdapter {
 
+class OnBoardingAdapter extends PagerAdapter {
     private Context mContext;
     private int images[] = {R.drawable.onboard_1, R.drawable.onboard_2, R.drawable.onboard_3, R.drawable.onboard_4};
     private String mTitle[], mDesc[];
 
     private LayoutInflater mLayoutInflater;
 
-    public OnBoardingAdapter(Context context) {
+    OnBoardingAdapter(Context context) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mTitle = mContext.getResources().getStringArray(R.array.onbording_title);
         mDesc = mContext.getResources().getStringArray(R.array.onbording_desc);
-
     }
-
 
     @Override
     public int getCount() {
@@ -38,7 +36,7 @@ public class OnBoardingAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((RelativeLayout) object);
+        return view == object;
     }
 
     @Override

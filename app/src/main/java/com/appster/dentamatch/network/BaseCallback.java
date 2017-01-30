@@ -54,7 +54,7 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
         act.hideProgressBar();
         if (response.isSuccessful()) { //HTTP 200
 
-            BaseResponse responseBase = (BaseResponse) response.body();
+            BaseResponse responseBase = response.body();
             if (responseBase == null) {
 //                act.showSnackBar(act.getResources().getString(R.string.server_error), true);
                 return;

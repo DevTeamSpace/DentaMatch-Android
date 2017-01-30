@@ -49,11 +49,11 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_add_more_reference"
                     style="@style/text_view_normal"
-                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:drawablePadding="@dimen/padding_drawable"
                     android:drawableStart="@drawable/ic_add_refrence"
-                    android:paddingLeft="@dimen/margin_medium"
+                    android:paddingStart="@dimen/margin_medium"
                     android:text="@string/add_more_refrence"
                     android:textColor="@color/color_forgot_pwd"
                     android:textSize="@dimen/text_size_14"
