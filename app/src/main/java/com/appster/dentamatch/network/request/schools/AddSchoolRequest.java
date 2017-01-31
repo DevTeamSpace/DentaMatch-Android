@@ -1,6 +1,6 @@
 package com.appster.dentamatch.network.request.schools;
 
-import com.appster.dentamatch.model.SchoolType;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -9,13 +9,14 @@ import java.util.ArrayList;
  */
 
 public class AddSchoolRequest {
-    private ArrayList<SchoolType> schoolingData;
+    @SerializedName("schoolDataArray")
+    private ArrayList<PostSchoolData> schoolingData;
 
-    public ArrayList<SchoolType> getSchoolingData() {
+    public ArrayList<PostSchoolData> getSchoolingData() {
         return schoolingData;
     }
 
-    public void setSchoolingData(ArrayList<SchoolType> schoolingData) {
+    public void setSchoolingData(ArrayList<PostSchoolData> schoolingData) {
         this.schoolingData = schoolingData;
     }
 }

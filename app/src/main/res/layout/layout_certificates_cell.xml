@@ -23,7 +23,6 @@
             android:gravity="start|bottom"
             android:paddingBottom="@dimen/margin_medium"
             android:paddingStart="@dimen/margin_normal"
-            android:text="Name"
             android:textColor="@color/text_default_color"
             android:textSize="@dimen/text_size_13"
             app:customFont="@string/font_medium" />

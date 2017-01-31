@@ -105,5 +105,28 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         mBinder.recyclerSkills.setItemAnimator(new DefaultItemAnimator());
         mBinder.recyclerSkills.setAdapter(mSkillsAdapter);
         mSkillsAdapter.notifyDataSetChanged();
+
+
+        mBinder.recyclerSkills.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                if (dy < 0) {
+                    // Recycle view scrolling up...
+                    hideKeyboard();
+
+
+                } else if (dy > 0) {
+                    // Recycle view scrolling down...
+
+                }
+            }
+        });
     }
 }

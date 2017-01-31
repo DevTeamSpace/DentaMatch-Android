@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_25"
             android:ellipsize="end"
-            android:text="Dental School"
             android:textColor="@color/color_forgot_pwd"
             android:textSize="@dimen/text_size_large"
             app:customFont="@string/font_bold" />
