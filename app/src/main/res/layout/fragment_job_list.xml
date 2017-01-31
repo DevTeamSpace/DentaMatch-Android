@@ -9,6 +9,18 @@
 
         <com.appster.dentamatch.widget.CustomTextView
             style="@style/text_view_normal"
+            android:id="@+id/tv_no_data_found"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@color/colorAccent"
+            android:text="No jobs found"/>
+
+        <com.appster.dentamatch.widget.CustomTextView
+            style="@style/text_view_normal"
+            android:visibility="gone"
             android:id="@+id/tv_job_result_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -16,7 +28,6 @@
             android:paddingBottom="@dimen/margin_medium"
             android:paddingStart="@dimen/margin_12"
             android:paddingTop="@dimen/margin_medium"
-            android:text="20 results found "
             android:textColor="@color/text_default_color"
             app:customFont="@string/font_regular" />
 

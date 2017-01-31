@@ -5,5 +5,5 @@ package com.appster.dentamatch.interfaces;
  */
 
 public interface EditTextSelected {
-    public void onEditTextSelected(int position);
+    void onEditTextSelected(int position);
 }

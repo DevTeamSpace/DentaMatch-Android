@@ -13,7 +13,7 @@ public class User implements Parcelable{
     private String firstName;
     private String lastName;
     private String jobTitle;
-    private int jobTitileId;
+    private int jobTitleId;
     private String profileImage;
     private String profilePic;
     private String userName;
@@ -28,14 +28,13 @@ public class User implements Parcelable{
     private String preferredJobLocation;
     private int id;
 
-
-    protected User(Parcel in) {
+    private User(Parcel in) {
         email = in.readString();
         status = in.readString();
         firstName = in.readString();
         lastName = in.readString();
         jobTitle = in.readString();
-        jobTitileId = in.readInt();
+        jobTitleId = in.readInt();
         profileImage = in.readString();
         profilePic = in.readString();
         userName = in.readString();
@@ -51,6 +50,34 @@ public class User implements Parcelable{
         id = in.readInt();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(status);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(jobTitle);
+        dest.writeInt(jobTitleId);
+        dest.writeString(profileImage);
+        dest.writeString(profilePic);
+        dest.writeString(userName);
+        dest.writeString(accountID);
+        dest.writeString(accountType);
+        dest.writeString(dentalStateBoard);
+        dest.writeString(licenseNumber);
+        dest.writeString(state);
+        dest.writeString(aboutMe);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(preferredJobLocation);
+        dest.writeInt(id);
+    }
+
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {
@@ -63,8 +90,8 @@ public class User implements Parcelable{
         }
     };
 
-    public int getJobTitileId() {
-        return jobTitileId;
+    public int getJobTitleId() {
+        return jobTitleId;
     }
 
     public String getLatitude() {
@@ -200,39 +227,11 @@ public class User implements Parcelable{
     }
 
     public int getJobTitleID() {
-        return jobTitileId;
+        return jobTitleId;
     }
 
     public String getPreferredJobLocation() {
         return preferredJobLocation;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(status);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(jobTitle);
-        dest.writeInt(jobTitileId);
-        dest.writeString(profileImage);
-        dest.writeString(profilePic);
-        dest.writeString(userName);
-        dest.writeString(accountID);
-        dest.writeString(accountType);
-        dest.writeString(dentalStateBoard);
-        dest.writeString(licenseNumber);
-        dest.writeString(state);
-        dest.writeString(aboutMe);
-        dest.writeString(latitude);
-        dest.writeString(longitude);
-        dest.writeString(preferredJobLocation);
-        dest.writeInt(id);
-    }
 }

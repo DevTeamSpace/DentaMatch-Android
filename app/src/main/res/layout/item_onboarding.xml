@@ -22,7 +22,7 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:layout_width="@dimen/on_baording_text_layout_size"
+        android:layout_width="@dimen/on_boarding_text_layout_size"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"

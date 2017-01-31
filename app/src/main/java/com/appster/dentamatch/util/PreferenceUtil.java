@@ -1,7 +1,7 @@
 package com.appster.dentamatch.util;
 
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
-import com.appster.dentamatch.network.response.profile.JobTitleList;
+import com.appster.dentamatch.model.JobTitleList;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
@@ -30,10 +30,10 @@ public final class PreferenceUtil {
     private static final String KEY_USER_TOKEN = "USER_TOKEN";
     private static final String KEY_JOB_TITLE_ID = "JOB_TITLE_ID";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
+    private static final String KEY_IS_JOB_FILTER_CHANGED = "KEY_IS_JOB_FILTER_CHANGED";
 
     private static final String KEY_JOB_FILTER_SET = "KEY_JOB_FILTER_SET";
     private static final String KEY_JOB_FILTER_REQUEST = "KEY_JOB_FILTER_REQUEST";
-
 
 
     public static void saveAppState(Object state) {
@@ -42,6 +42,14 @@ public final class PreferenceUtil {
 
     public static void saveJobFilter(SearchJobRequest request) {
         Hawk.put(KEY_JOB_FILTER_REQUEST, request);
+    }
+
+    public static void setFilterChanged(boolean filterChanged) {
+        Hawk.put(KEY_IS_JOB_FILTER_CHANGED, filterChanged);
+    }
+
+    public static boolean isFilterChanged(){
+        return Hawk.get(KEY_IS_JOB_FILTER_CHANGED, false);
     }
 
     public static Object getJobFilter() {

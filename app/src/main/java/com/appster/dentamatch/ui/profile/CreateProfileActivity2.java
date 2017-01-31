@@ -80,24 +80,27 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
         ivUpload.setOnClickListener(this);
-//        ivProfile.setOnClickListener(this);
         btnNext.setOnClickListener(this);
         ivToolbarLeft.setOnClickListener(this);
-        mProgressBar.setProgress(25);
+        mProgressBar.setProgress(Constants.PROFILE_PERCENTAGE.PROFILE_2);
         tvToolbarLeft.setText(getString(R.string.header_create_profile));
-        if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-//            Picasso.with(getApplicationContext()).load(new File(PreferenceUtil.getProfileImagePath())).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).into(ivProfile);
-            LogUtils.LOGD("pabd", "path is--=" + PreferenceUtil.getProfileImagePath());
-            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivProfile);
 
+        if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
+            LogUtils.LOGD(TAG, "path is--=" + PreferenceUtil.getProfileImagePath());
+            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop()
+                    .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                    .placeholder(R.drawable.profile_pic_placeholder)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .into(ivProfile);
         }
+
         if (!TextUtils.isEmpty(PreferenceUtil.getJobTitle())) {
             tvJobTitle.setText(PreferenceUtil.getJobTitle());
         }
+
         if (!TextUtils.isEmpty(PreferenceUtil.getFirstName())) {
             tvName.setText(PreferenceUtil.getFirstName());
         }
-
     }
 
     @Override
@@ -116,6 +119,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                 break;
             case R.id.create_profile2_btn_next:
                 hideKeyboard();
+
                 if (checkInputValidator()) {
                     callLicenceApi(prepareLicenceRequest());
                 }
@@ -156,7 +160,6 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         }
 
         return true;
-
     }
 
     private LicenceRequest prepareLicenceRequest() {
@@ -188,7 +191,6 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                 @Override
                 public void onFail(Call<LicenceUpdateResponse> call, BaseResponse baseResponse) {
                     LogUtils.LOGD(TAG, "onFail");
-
 
                 }
             });
@@ -257,7 +259,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void gallaryClicked() {
+    public void galleryClicked() {
         imageSourceType = 1;
 
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
@@ -281,7 +283,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
     }
 
-    public void getImageFromGallery() {
+    private void getImageFromGallery() {
         Intent gIntent = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -291,9 +293,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                 Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
     }
 
-    public void takePhoto() {
-
-
+    private void takePhoto() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));

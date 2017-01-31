@@ -9,9 +9,7 @@ import android.widget.NumberPicker;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
-import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.util.PreferenceUtil;
-import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
 /**

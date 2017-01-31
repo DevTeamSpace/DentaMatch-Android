@@ -11,5 +11,5 @@
         android:text="Select Location"
         android:textAllCaps="false"
         android:gravity="center"
-        android:textSize="18dp"/>
+        android:textSize="18sp"/>
 </LinearLayout>

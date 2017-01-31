@@ -47,10 +47,8 @@ import java.util.List;
 public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener {
 
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-
     private static String TAG = "DentaPlaces";
-    protected GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
 
     private GoogleMap mMap;
     private PlaceAutocompleteAdapter mAdapter;
@@ -332,36 +330,4 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
         return address;
     }
-
-//    private void check() {
-//        LogUtils.LOGD(TAG, "check...");
-//
-//        // Here, thisActivity is the current activity
-//        if (ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            // Should we show an explanation?
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-//
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//                Utils.showToast(this, "Please enable location permission in App Settings.");
-//                setMap();
-//            } else {
-//
-//                // No explanation needed, we can request the permission.
-//
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                        BaseActivity.MY_PERMISSION_ACCESS_LOCATION);
-//
-//                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-//                // app-defined int constant. The callback method gets the
-//                // result of the request.
-//            }
-//        }
-//    }
 }

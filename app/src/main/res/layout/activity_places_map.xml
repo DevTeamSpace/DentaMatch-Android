@@ -31,7 +31,7 @@
                 android:textSize="14sp"
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColorHint="@color/black_color" />
 
             <ImageView

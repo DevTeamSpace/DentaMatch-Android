@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.appster.dentamatch.R;
@@ -35,27 +34,27 @@ import java.util.List;
 
 import retrofit2.Call;
 
-//import com.special.ResideMenu.ResideMenu;
-//import com.special.ResideMenu.ResideMenuItem;
-
 /**
  * Created by ram on 12/01/17.
  */
 public class SkillsActivity extends BaseActivity implements View.OnClickListener, SkillsAdapter.OnSkillClick, EditTextSelected {
     private static final String TAG = "Skills";
     private ActivitySkillsBinding mBinder;
-//    private ResideMenu resideMenu;
 
     private SkillsAdapter mSkillsAdapter;
     private Button btnNext;
 
     private int mSkillPosition;
+    private boolean isFromProfile;
     private List<ParentSkill> mParentSkillList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_skills);
+        if(getIntent()!=null){
+            isFromProfile=getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE,false);
+        }
         initViews();
         getSkillsListApi();
     }
@@ -64,14 +63,12 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         btnNext = mBinder.btnNext;
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
-        btnNext.setOnClickListener(this);
-//        setResideMenu();
-    }
+        if(isFromProfile){
+            mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
 
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        return resideMenu.dispatchTouchEvent(ev);
-//    }
+        }
+        btnNext.setOnClickListener(this);
+    }
 
     @Override
     public String getActivityName() {
@@ -109,7 +106,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void setAdapter(List<ParentSkill> skillArrayList) {
-        mSkillsAdapter = new SkillsAdapter(skillArrayList, this, this, this);
+        mSkillsAdapter = new SkillsAdapter(skillArrayList, this, this, this,isFromProfile);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSkills.setLayoutManager(layoutManager);
         mBinder.recyclerSkills.setItemAnimator(new DefaultItemAnimator());
@@ -123,7 +120,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         Intent intent = new Intent(SkillsActivity.this, SubSkillsActivity.class);
         intent.putExtra(Constants.BundleKey.SUB_SKILLS, subSkillList);
 
-        startActivityForResult(intent, 901);
+        startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_SKILLS);
         mSkillPosition = position;
     }
 
@@ -195,9 +192,11 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 if (response.getStatus() == 1) {
                     LogUtils.LOGD(TAG, "updateSkillsListApi success");
                     Utils.showToast(SkillsActivity.this, response.getMessage());
-                    startActivity(new Intent(SkillsActivity.this, AffiliationActivity.class));
-                } else {
-                    Utils.showToast(getApplicationContext(), response.getMessage());
+                    if(isFromProfile){
+                        finish();
+                    }else {
+                        startActivity(new Intent(SkillsActivity.this, AffiliationActivity.class));
+                    }
                 }
             }
 

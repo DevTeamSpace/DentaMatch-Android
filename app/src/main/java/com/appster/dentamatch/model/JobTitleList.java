@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.profile;
+package com.appster.dentamatch.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

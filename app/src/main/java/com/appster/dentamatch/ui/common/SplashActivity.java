@@ -9,6 +9,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.onboardtutorial.OnBoardingActivity;
 import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
+import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 /*
@@ -51,8 +52,6 @@ public class SplashActivity extends Activity implements Runnable {
 
     @Override
     public void run() {
-
-//        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
         if (PreferenceUtil.getIsOnBoarding()) {
 
             if (PreferenceUtil.getIsLogined()) {

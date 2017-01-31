@@ -13,7 +13,7 @@ import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
 import com.appster.dentamatch.network.request.skills.SkillsUpdateRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
-import com.appster.dentamatch.network.response.affiliation.AffiliationPostRequest;
+import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
@@ -37,7 +37,9 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 
-
+/**
+ * Interface to declare web service stubs.
+ */
 public interface AuthWebServices {
     String SIGN_IN = "users/sign-in";
     String SIGN_UP = "users/sign-up";
@@ -83,6 +85,7 @@ public interface AuthWebServices {
 
     @DELETE(WORK_EXP_DELETE)
     Call<BaseResponse> workExpDelete(@Query("id") int id);
+
     @DELETE(LOGOUT)
     Call<BaseResponse> logout();
 
@@ -124,6 +127,7 @@ public interface AuthWebServices {
 
     @GET(AFFILIATION_LIST)
     Call<AffiliationResponse> getAffiliationList();
+
     @GET(GET_PROFILE)
     Call<ProfileResponse> getProfile();
 
@@ -141,5 +145,5 @@ public interface AuthWebServices {
     @Multipart
     @POST(IMAGE_UPLOAD_CERTIFICATE)
     Call<FileUploadResponse> uploadCertificateImage(@Part("certificateId") RequestBody type,
-                                         @Part("image\"; filename=\"denta_img.jpg\"") RequestBody file);
+                                                    @Part("image\"; filename=\"denta_img.jpg\"") RequestBody file);
 }

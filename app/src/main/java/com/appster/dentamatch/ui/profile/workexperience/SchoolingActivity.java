@@ -25,6 +25,7 @@ import com.appster.dentamatch.network.request.schools.PostSchoolData;
 import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
@@ -42,11 +43,15 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     private static final String TAG = "Schooling";
     private ActivitySchoolingBinding mBinder;
     private SchoolsAdapter mSchoolsAdapter;
+    private boolean isFromProfile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_schooling);
+        if(getIntent()!=null){
+            isFromProfile=getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE,false);
+        }
         initViews();
 
         getSchoolListApi();
@@ -55,6 +60,11 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     private void initViews() {
         mBinder.toolbarSchooling.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_schooling_exp).toUpperCase());
+
+        if(isFromProfile){
+            mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
+
+        }
         mBinder.btnNext.setOnClickListener(this);
     }
 
@@ -72,8 +82,6 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
                 break;
             case R.id.btn_next:
-//                addSchoolListApi();
-
                 if (checkValidation()) {
 
                     addSchoolListApi(prepareRequest());
@@ -99,25 +107,9 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                         school.setOtherSchooling("");
                         break;
                     }
-//                    else {
-////                   school.setSchoolId("");
-//                        school.setOtherSchooling(entry.getValue().getSchoolName());
-//                        school.setSchoolName("");
-//
-//
-//                    }
 
 
                 }
-//                if (!isMatchScoolName) {
-////                    school.setSchoolId("");
-//                    school.setOtherSchooling(entry.getValue().getSchoolName());
-//                    school.setSchoolName("");
-//                }
-//
-//                school.setYearOfGraduation(entry.getValue().getYearOfGraduation());
-//                requestList.add(school);
-
             }
 
 
@@ -162,7 +154,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
 
     private void setAdapter(List<SchoolType> schoolTypeList) {
-        mSchoolsAdapter = new SchoolsAdapter(schoolTypeList, this, this);
+        mSchoolsAdapter = new SchoolsAdapter(schoolTypeList, this, this,isFromProfile);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSchools.setLayoutManager(layoutManager);
         mBinder.recyclerSchools.setItemAnimator(new DefaultItemAnimator());
@@ -203,8 +195,12 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-//                    setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
-                    startActivity(new Intent(SchoolingActivity.this, SkillsActivity.class));
+                    if(isFromProfile){
+                        finish();
+                    }else{
+                        startActivity(new Intent(SchoolingActivity.this, SkillsActivity.class));
+
+                    }
 
                 }
             }

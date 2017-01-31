@@ -18,7 +18,6 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateCertificateBinding;
-import com.appster.dentamatch.databinding.LayoutCertificatesCellBinding;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.network.BaseCallback;
@@ -30,12 +29,10 @@ import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.profile.AboutMeActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
-import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetDatePicker;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
@@ -56,12 +53,12 @@ import retrofit2.Call;
  * Created by virender on 20/01/17.
  */
 public class UpdateCertificateActivity extends BaseActivity implements View.OnClickListener, ImageSelectedListener, DateSelectedListener {
+    private static final String TAG = "UpdateCertificate";
     private ActivityUpdateCertificateBinding mBinder;
     private String mFilePath;
     private byte imageSourceType;
     private CertificatesList data;
     private boolean isFromDentalStateBoard;
-
 
     @Override
     public String getActivityName() {
@@ -82,7 +79,9 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         mBinder.toolbarUpdateCertificate.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnSave.setOnClickListener(this);
         mBinder.tvValidityDatePicker.setOnClickListener(this);
+
         if (getIntent() != null) {
+            data = getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             isFromDentalStateBoard = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
             data = (CertificatesList) getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             setViewData();
@@ -103,11 +102,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
             }
             mBinder.tvValidityDatePicker.setText(data.getValidityDate());
-
         }
-
     }
-
 
     @Override
     public void onClick(View view) {
@@ -115,6 +111,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             case R.id.iv_certificate_upoload_icon:
                 callBottomSheet();
                 break;
+
             case R.id.tv_validity_date_picker:
                 callBottomSheetDate();
 
@@ -136,9 +133,9 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                     postCertificateData(preparePostValidation());
                 }
                 break;
+
             case R.id.iv_tool_bar_left:
                 finish();
-
                 break;
         }
     }
@@ -160,13 +157,10 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
     private void callBottomSheetDate() {
         new BottomSheetDatePicker(UpdateCertificateActivity.this, this, 0);
-
     }
 
     @Override
     public void cameraClicked() {
-//        takePhoto();
-
         imageSourceType = 0;
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.CAMERA, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this) &&
@@ -188,13 +182,10 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 PermissionUtils.requestPermission(UpdateCertificateActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
             }
         }
-
-
     }
 
     @Override
-    public void gallaryClicked() {
-//        getImageFromGallery();
+    public void galleryClicked() {
         imageSourceType = 1;
 
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
@@ -215,11 +206,9 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 PermissionUtils.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
             }
         }
-
-
     }
 
-    public void getImageFromGallery() {
+    private void getImageFromGallery() {
         Intent gIntent = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -229,7 +218,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
     }
 
-    public void takePhoto() {
+    private void takePhoto() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
@@ -262,13 +251,11 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d("Tag", "request permisison called --");
-        Log.d("Tag", "request permisison called --" + grantResults.length);
-
+        Log.d(TAG, "request permission called --" + grantResults.length);
 
         if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
-            Log.d("Tag", "request permisison called if granted --");
+            Log.d(TAG, "request permission called if granted --");
             if (imageSourceType == 0) {
                 takePhoto();
             } else {

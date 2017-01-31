@@ -4,6 +4,7 @@ package com.appster.dentamatch.util;
  * Class to hold constant values.
  */
 public class Constants {
+    public static final String DEVICE_TYPE = "ANDROID";
 
     public static final String EXTRA_PLACE_NAME = "place_name";
     public static final String EXTRA_POSTAL_CODE = "postal_code";
@@ -27,7 +28,7 @@ public class Constants {
     public static final int FIRST_NAME_MIN_LENGTH = 2;
     public static final int IMAGE_DIMEN = 102;
     public static final int IMAGE_DIME_CERTIFICATE = 142;
-    public static final String DEVICE_TYPE = "ANDROID";
+    public static final int EDUCATION_HISTORY_YEARS = 50;
 
     public enum ACTIVITIES {
         SWITCH_ACTIVITY
@@ -77,7 +78,9 @@ public class Constants {
         int REQUEST_CODE_READ_PHONE_STATE = 202;
         int REQUEST_CODE_JOB_TITLE = 210;
         int REQUEST_CODE_JOYRIDE = 203;
-        int REQUEST_CODE_PASS_INTENT = 5001;
+        int REQUEST_CODE_SKILLS = 303;
+        int REQUEST_CODE_PASS_INTENT = 304;
+        int REQUEST_CODE_LOCATION = 101;
     }
 
     public interface FRAGMENT_NAME {
@@ -92,5 +95,15 @@ public class Constants {
         String POSITION = "position";
         String DATA = "DATA";
         String JOB_TITLE = "job_title";
+    }
+
+    public interface PROFILE_PERCENTAGE {
+        int PROFILE_2 = 15;
+        int WORK_EXPERIENCE = 25;
+        int SCHOOLING = 50;
+        int SKILLS = 65;
+        int AFFILIATION = 80;
+        int CERTIFICATE = 90;
+        int COMPLETE = 100;
     }
 }

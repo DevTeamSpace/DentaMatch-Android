@@ -61,18 +61,23 @@ class SearchJobDataHelper {
     private void searchJob(final Context ct, final boolean isPaginationLoading) {
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
 
-        if(request != null) {
+        if (request != null) {
             /**
              * Do not show loader in case of pagination call.
              */
             if (!isPaginationLoading) {
                 showProgress(ct);
             }
+
             request.setPage(mPageNumber);
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
             webServices.searchJob(request).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) ct) {
                 @Override
                 public void onSuccess(SearchJobResponse response) {
+                    /**
+                     * Once data has been loaded from the filter changes we can dismiss this filter.
+                     */
+                    PreferenceUtil.setFilterChanged(false);
                     hideProgress();
                     if (response.getStatus() == 1) {
 
@@ -85,6 +90,7 @@ class SearchJobDataHelper {
 
                     } else {
                         Toast.makeText(ct, response.getMessage(), Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
                     }
 
                 }
@@ -92,6 +98,7 @@ class SearchJobDataHelper {
 
                 @Override
                 public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
+                    EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
                     hideProgress();
 
                 }
@@ -112,11 +119,20 @@ class SearchJobDataHelper {
     }
 
     public void requestData(Context ct) {
-        if (jobDataList.size() > 0) {
-            EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
-        } else {
+        /**
+         * In case the filter is changed we hit API agin to refresh the data.
+         */
+        if (PreferenceUtil.isFilterChanged()) {
             searchJob(ct, false);
+
+        } else {
+            if (jobDataList.size() > 0) {
+                EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
+            } else {
+                searchJob(ct, false);
+            }
         }
+
     }
 
     public void updateDataViaPagination(Context ct) {
@@ -124,7 +140,7 @@ class SearchJobDataHelper {
         searchJob(ct, true);
     }
 
-    public void requestRefreshData(Context ct){
+    public void requestRefreshData(Context ct) {
         jobDataList.clear();
         mPageNumber = 1;
         searchJob(ct, true);

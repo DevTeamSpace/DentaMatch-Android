@@ -20,7 +20,6 @@ public class UpdateUserProfileRequest {
     private int jobTitleID;
     private String aboutMe;
 
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

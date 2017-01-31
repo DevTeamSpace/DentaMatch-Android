@@ -69,8 +69,19 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
             mJobListData.clear();
             mJobListData.addAll(event.getJobList());
             mIsPaginationNeeded = event.isPaginationNeeded();
-            mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" results found"));
-            mJobAdapter.notifyDataSetChanged();
+
+            if(mJobListData.size() > 0 ) {
+                mJobListBinding.tvNoDataFound.setVisibility(View.GONE);
+                mJobListBinding.tvJobResultCount.setVisibility(View.VISIBLE);
+                mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" results found"));
+                mJobAdapter.notifyDataSetChanged();
+
+            }else{
+                mJobListBinding.tvNoDataFound.setVisibility(View.VISIBLE);
+                mJobListBinding.tvJobResultCount.setVisibility(View.GONE);
+            }
+
+
 
             /**
              * Hide pagination loader if it is visible.
@@ -117,6 +128,7 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
          * Request data helper to provide data for user's filter set.
          */
         SearchJobDataHelper.getInstance().requestData(getActivity());
+
     }
 
     private void initViews(){

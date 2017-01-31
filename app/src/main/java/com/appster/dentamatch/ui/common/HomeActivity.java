@@ -26,8 +26,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
  */
 public class HomeActivity extends BaseActivity {
 
-    public int count;
-    private String[] ITEMS;
     //   categoryId valid for maximum 6 level
     private AHBottomNavigation bottomBar;
     private FragmentTransaction fragmentTransaction;
@@ -43,9 +41,7 @@ public class HomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        ITEMS = new String[]{getString(R.string.nav_job), getString(R.string.nav_tracks), getString(R.string.nav_calendar), getString(R.string.nav_message), getString(R.string.nav_profile)};
-        initUI();
+        initViews();
 
         /**
          * Launch job search fragment if redirected from search activity.
@@ -57,10 +53,9 @@ public class HomeActivity extends BaseActivity {
     }
 
     /**
-     * initUI is used to initialize this view at app launch
+     * initViews is used to initialize this view at app launch
      */
-    private void initUI() {
-        count = 0;
+    private void initViews() {
         fragmentManager = getSupportFragmentManager();
         bottomBar = (AHBottomNavigation) findViewById(R.id.ntb_horizontal);
         bottomBar.setTitleTextSize(Utils.convertSpToPixels(10.0f, this), Utils.convertSpToPixels(10.0f, this));

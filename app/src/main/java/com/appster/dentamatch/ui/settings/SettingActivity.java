@@ -30,8 +30,7 @@ import retrofit2.Call;
  * Created by virender on 17/01/17.
  */
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
-    ActivitySettingsBinding settingsBinding;
-
+    private ActivitySettingsBinding settingsBinding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

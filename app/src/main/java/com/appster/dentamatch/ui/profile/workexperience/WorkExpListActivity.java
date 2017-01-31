@@ -22,7 +22,6 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
@@ -43,17 +42,22 @@ import retrofit2.Call;
  */
 public class WorkExpListActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener, JobTitleSelectionListener {
     private ActivityWorkExpListBinding mBinder;
-    private String selectedJobtitle = "";
-    private int jobTitleId, expMonth, jobTitlePosition;
-    private ArrayList<WorkExpRequest> workExpList = new ArrayList<>();
+    private boolean isFromProfile;
+    private String mSelectedJobTitle = "";
+    private int mJobTitleId, mExpMonth, jobTitlePosition;
+    private ArrayList<WorkExpRequest> workExpList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_work_exp_list);
+        if (getIntent() != null) {
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
         initViews();
         hideKeyboard();
         callGetExpListApi(prepareListRequest());
+        workExpList = new ArrayList<>();
     }
 
 
@@ -73,25 +77,29 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         UsPhoneNumberFormat addLineNumberFormatter2 = new UsPhoneNumberFormat(
                 new WeakReference<EditText>(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
         mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter2);
-        selectedJobtitle = PreferenceUtil.getJobTitle();
-        jobTitleId = PreferenceUtil.getJobTitleId();
-        if (!TextUtils.isEmpty(selectedJobtitle)) {
-            mBinder.includeWorkExpList.etJobTitle.setText(selectedJobtitle);
+        if (isFromProfile) {
+            mBinder.btnNextWorkExpLsit.setText(getString(R.string.save_label));
+            mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
         }
+        mSelectedJobTitle = PreferenceUtil.getJobTitle();
+        mJobTitleId = PreferenceUtil.getJobTitleId();
+
+        if (!TextUtils.isEmpty(mSelectedJobTitle)) {
+            mBinder.includeWorkExpList.etJobTitle.setText(mSelectedJobTitle);
+        }
+
         if (!TextUtils.isEmpty(PreferenceUtil.getOfficeName())) {
             mBinder.includeWorkExpList.etOfficeName.setText(PreferenceUtil.getOfficeName());
         }
         try {
             mBinder.includeWorkExpList.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
-//            selectedJobtitle = mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString();
             if (!TextUtils.isEmpty(mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString())) {
                 String split[] = mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString().split(" ");
-                expMonth = Integer.parseInt(split[0]) * 12 + Integer.parseInt(split[2]);
+                mExpMonth = Integer.parseInt(split[0]) * 12 + Integer.parseInt(split[2]);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private WorkExpListRequest prepareListRequest() {
@@ -101,7 +109,6 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         workExpListRequest.setLimit(Constants.WORK_EXP_LIST_LIMIT);
         workExpListRequest.setStart(0);
         return workExpListRequest;
-
     }
 
 
@@ -109,7 +116,6 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     public String getActivityName() {
         return null;
     }
-
 
     @Override
     public void onClick(View view) {
@@ -172,7 +178,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
 
     private void prepareRequestForAdd(boolean isNext) {
         boolean isMoveForward = false;
-        isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobtitle, expMonth,
+        isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), mSelectedJobTitle, mExpMonth,
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
@@ -184,19 +190,15 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
         if (isMoveForward) {
             hideKeyboard();
-            WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(), Constants.APIS.ACTION_ADD, jobTitleId, expMonth,
+            WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(), Constants.APIS.ACTION_ADD, mJobTitleId, mExpMonth,
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName), Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity), Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)
                     , Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile), Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
                     Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail), Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
                     Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
             callAddExpApi(request, isNext);
-
-//                    startActivity(new Intent(getApplicationContext(), WorkExpListActivity.class));
         }
     }
-    //
-
 
     private void clearAllExpField() {
         mBinder.includeWorkExpList.tvExperinceWorkExp.setText("");
@@ -212,8 +214,8 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.includeLayoutRefrence2.etOfficeReferenceName.setText("");
         mBinder.layoutReference2.setVisibility(View.GONE);
 
-        expMonth = 0;
-        selectedJobtitle = "";
+        mExpMonth = 0;
+        mSelectedJobTitle = "";
     }
 
     private void callGetExpListApi(WorkExpListRequest workExpListRequest) {
@@ -257,7 +259,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
                     if (workExpList != null) {
-                        response.getWorkExpResponseData().getSaveList().get(0).setJobtitleName(selectedJobtitle);
+                        response.getWorkExpResponseData().getSaveList().get(0).setJobTitleName(mSelectedJobTitle);
                         clearAllExpField();
                         workExpList.add(response.getWorkExpResponseData().getSaveList().get(0));
                         inflateExpList(workExpList);
@@ -285,11 +287,12 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     private void inflateExpList(ArrayList<WorkExpRequest> expList) {
         hideKeyboard();
         mBinder.layoutExpListInflater.removeAllViews();
+
         for (int i = 0; i < expList.size(); i++) {
             final View referenceView = getLayoutInflater().inflate(R.layout.layout_work_exp_header_item, mBinder.layoutExpListInflater, false);
             TextView tvJobTitle = (TextView) referenceView.findViewById(R.id.tv_title);
             TextView tvExp = (TextView) referenceView.findViewById(R.id.tv_exp);
-            tvJobTitle.setText(expList.get(i).getJobtitleName());
+            tvJobTitle.setText(expList.get(i).getJobTitleName());
 
             tvExp.setText(Utils.getExpYears(expList.get(i).getMonthsOfExpereince()));
             referenceView.setTag(i);
@@ -299,6 +302,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     Intent intent = new Intent(WorkExpListActivity.this, ViewAndEditWorkExperienceActivity.class);
                     intent.putExtra(Constants.INTENT_KEY.POSITION, (Integer) referenceView.getTag());
                     intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
+                    intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, workExpList);
                     startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT);
                 }
             });
@@ -309,19 +313,8 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onExperienceSection(int year, int month) {
         mBinder.includeWorkExpList.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
-//        PreferenceUtil.setMonth(month);
-//        PreferenceUtil.setYear(year);
-        expMonth = year * 12 + month;
-
+        mExpMonth = year * 12 + month;
     }
-
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        clearAllExpField();
-////        inflateExpList();
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -334,33 +327,27 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 clearAllExpField();
                 inflateExpList(workExpList);
             }
-
         }
-
     }
 
     @Override
     public void onJobTitleSelection(String title, int titleId, int position) {
-        selectedJobtitle = title;
-        jobTitleId = titleId;
+        mSelectedJobTitle = title;
+        mJobTitleId = titleId;
         jobTitlePosition = position;
         mBinder.includeWorkExpList.etJobTitle.setText(title);
-
     }
 
     private void launchNextActivity() {
-
-        if (selectedJobtitle.equalsIgnoreCase("") && expMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
+        if (mSelectedJobTitle.equalsIgnoreCase("") && mExpMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
                 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("")
                 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) {
             startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
-
-
         } else {
-            if ((selectedJobtitle.equalsIgnoreCase("") || expMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
+            if ((mSelectedJobTitle.equalsIgnoreCase("") || mExpMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
                     || Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("")
                     || Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")
-            ) || (!TextUtils.isEmpty(selectedJobtitle) && expMonth != 0 && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName))
+            ) || (!TextUtils.isEmpty(mSelectedJobTitle) && mExpMonth != 0 && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName))
                     && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress))
                     && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity))
             )) {
@@ -371,7 +358,6 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     public void onPositive(DialogInterface dialog) {
 
                         startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
-
                     }
 
                     @Override

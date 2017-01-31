@@ -21,10 +21,9 @@
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/tv_skip_onboarding"
                 style="@style/text_view_normal"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:text="@string/get_started"
-
                 android:textColor="@color/get_started_color"
                 android:textSize="@dimen/text_size_normal"
                 android:visibility="visible" />

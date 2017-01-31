@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by virender on 14/01/17.
  */
-public class CertificatesList  implements Parcelable{
+public class CertificatesList implements Parcelable {
     private int id;
     private String certificateName;
     @SerializedName("imagePath")
@@ -20,7 +20,8 @@ public class CertificatesList  implements Parcelable{
 
     public CertificatesList() {
     }
-    protected CertificatesList(Parcel in) {
+
+    private CertificatesList(Parcel in) {
         id = in.readInt();
         certificateName = in.readString();
         image = in.readString();
@@ -40,6 +41,21 @@ public class CertificatesList  implements Parcelable{
             return new CertificatesList[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(certificateName);
+        parcel.writeString(image);
+        parcel.writeString(imageUrl);
+        parcel.writeString(validityDate);
+        parcel.writeByte((byte) (isImageUploaded ? 1 : 0));
+    }
 
     public boolean isImageUploaded() {
         return isImageUploaded;
@@ -87,20 +103,5 @@ public class CertificatesList  implements Parcelable{
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(certificateName);
-        parcel.writeString(image);
-        parcel.writeString(imageUrl);
-        parcel.writeString(validityDate);
-        parcel.writeByte((byte) (isImageUploaded ? 1 : 0));
     }
 }

@@ -3,6 +3,8 @@ package com.appster.dentamatch.network.request.workexp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by virender on 11/01/17.
  */
@@ -23,13 +25,12 @@ public class WorkExpRequest implements Parcelable {
     private String reference1Email;
     private String reference2Email;
     private String createdAt;
-    private String jobtitleName;
+    @SerializedName("jobtitleName")
+    private String jobTitleName;
 
-    public WorkExpRequest() {
+    public WorkExpRequest() { }
 
-    }
-
-    protected WorkExpRequest(Parcel in) {
+    private WorkExpRequest(Parcel in) {
         id = in.readString();
         exp = in.readString();
         action = in.readString();
@@ -46,7 +47,33 @@ public class WorkExpRequest implements Parcelable {
         reference1Email = in.readString();
         reference2Email = in.readString();
         createdAt = in.readString();
-        jobtitleName = in.readString();
+        jobTitleName = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(exp);
+        parcel.writeString(action);
+        parcel.writeString(userId);
+        parcel.writeInt(jobTitleId);
+        parcel.writeInt(monthsOfExpereince);
+        parcel.writeString(officeName);
+        parcel.writeString(officeAddress);
+        parcel.writeString(city);
+        parcel.writeString(reference1Name);
+        parcel.writeString(reference2Name);
+        parcel.writeString(reference1Mobile);
+        parcel.writeString(reference2Mobile);
+        parcel.writeString(reference1Email);
+        parcel.writeString(reference2Email);
+        parcel.writeString(createdAt);
+        parcel.writeString(jobTitleName);
     }
 
     public static final Creator<WorkExpRequest> CREATOR = new Creator<WorkExpRequest>() {
@@ -69,12 +96,12 @@ public class WorkExpRequest implements Parcelable {
         this.userId = userId;
     }
 
-    public String getJobtitleName() {
-        return jobtitleName;
+    public String getJobTitleName() {
+        return jobTitleName;
     }
 
-    public void setJobtitleName(String jobtitleName) {
-        this.jobtitleName = jobtitleName;
+    public void setJobTitleName(String jobTitleName) {
+        this.jobTitleName = jobTitleName;
     }
 
     public String getCreatedAt() {
@@ -158,7 +185,6 @@ public class WorkExpRequest implements Parcelable {
         this.jobTitleId = jobTitleId;
     }
 
-
     public String getId() {
         return id;
     }
@@ -197,32 +223,5 @@ public class WorkExpRequest implements Parcelable {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(exp);
-        parcel.writeString(action);
-        parcel.writeString(userId);
-        parcel.writeInt(jobTitleId);
-        parcel.writeInt(monthsOfExpereince);
-        parcel.writeString(officeName);
-        parcel.writeString(officeAddress);
-        parcel.writeString(city);
-        parcel.writeString(reference1Name);
-        parcel.writeString(reference2Name);
-        parcel.writeString(reference1Mobile);
-        parcel.writeString(reference2Mobile);
-        parcel.writeString(reference1Email);
-        parcel.writeString(reference2Email);
-        parcel.writeString(createdAt);
-        parcel.writeString(jobtitleName);
     }
 }

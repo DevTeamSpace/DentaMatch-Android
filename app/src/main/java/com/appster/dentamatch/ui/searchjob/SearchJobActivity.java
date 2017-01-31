@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,8 +12,8 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
+import com.appster.dentamatch.model.JobTitleList;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
-import com.appster.dentamatch.network.response.profile.JobTitleList;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
@@ -41,7 +42,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_search_job);
+        mBinder =DataBindingUtil.setContentView(this, R.layout.activity_search_job);
         initViews();
     }
 
@@ -100,7 +101,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isMonday) {
                     isMonday = false;
                     mPartTimeDays.remove("Monday");
-                    mBinder.tvMonday.setTextColor(R.color.black_color);
+                    mBinder.tvMonday.setTextColor(Color.BLACK);
                     mBinder.tvMonday.setBackground(null);
                 } else {
                     isMonday = true;
@@ -115,7 +116,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isTuesday) {
                     isTuesday = false;
                     mPartTimeDays.remove("Tuesday");
-                    mBinder.tvTuesday.setTextColor(R.color.black_color);
+                    mBinder.tvTuesday.setTextColor(Color.BLACK);
                     mBinder.tvTuesday.setBackground(null);
                 } else {
                     isTuesday = true;
@@ -130,7 +131,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isWednesday) {
                     isWednesday = false;
                     mPartTimeDays.remove("Wednesday");
-                    mBinder.tvWednesday.setTextColor(R.color.black_color);
+                    mBinder.tvWednesday.setTextColor(Color.BLACK);
                     mBinder.tvWednesday.setBackground(null);
                 } else {
                     isWednesday = true;
@@ -145,7 +146,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isThursday) {
                     isThursday = false;
                     mPartTimeDays.remove("Thursday");
-                    mBinder.tvThursday.setTextColor(R.color.black_color);
+                    mBinder.tvThursday.setTextColor(Color.BLACK);
                     mBinder.tvThursday.setBackground(null);
                 } else {
                     isThursday = true;
@@ -160,7 +161,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isFriday) {
                     isFriday = false;
                     mPartTimeDays.remove("Friday");
-                    mBinder.tvFriday.setTextColor(R.color.black_color);
+                    mBinder.tvFriday.setTextColor(Color.BLACK);
                     mBinder.tvFriday.setBackground(null);
                 } else {
                     isFriday = true;
@@ -175,7 +176,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isSaturday) {
                     isSaturday = false;
                     mPartTimeDays.remove("Saturday");
-                    mBinder.tvSaturday.setTextColor(R.color.black_color);
+                    mBinder.tvSaturday.setTextColor(Color.BLACK);
                     mBinder.tvSaturday.setBackground(null);
                 } else {
                     isSaturday = true;
@@ -190,6 +191,10 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isValidData()) {
                     saveAndProceed();
                 }
+                break;
+
+            case R.id.iv_tool_bar_left:
+                onBackPressed();
                 break;
 
             default:
@@ -252,9 +257,16 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         request.setPage(1);
         request.setParttimeDays(mPartTimeDays);
         request.setZipCode(mSelectedZipCode);
-
+        /**
+         * This value is set in order to redirect user from login or splash screen.
+         */
         PreferenceUtil.setJobFilter(true);
         PreferenceUtil.saveJobFilter(request);
+        /**
+         * This value is used by job search result helper to see if the filter value has been changed
+         * and it needs to request data from server again or not.
+         */
+        PreferenceUtil.setFilterChanged(true);
         startActivity(new Intent(this, HomeActivity.class)
                 .putExtra(Constants.EXTRA_SEARCH_JOB,true));
     }
@@ -324,9 +336,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         layoutParams.setMargins(20, 0, 20, 20);
         String text = jobTitleListItem.getJobTitle();
         mSelectedJobID.add(jobTitleListItem.getId());
+
         TextView textView = new TextView(this);
         textView.setSingleLine();
+        textView.setLayoutParams(layoutParams);
         textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setPadding(30, 10, 30, 10);
         textView.setBackgroundResource(R.drawable.edit_text_selector);
         textView.setText(text);
         mBinder.flowLayoutJobTitle.addView(textView, layoutParams);

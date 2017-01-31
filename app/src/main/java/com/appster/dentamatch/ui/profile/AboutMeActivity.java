@@ -35,7 +35,6 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_about_me);
         initViews();
-
     }
 
     private void initViews() {
@@ -47,7 +46,8 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
             Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.layoutIncludeProfileHeader.ivProfileIcon);
 
         }
-        mBinder.layoutIncludeProfileHeader.progressBar.setProgress(100);
+
+        mBinder.layoutIncludeProfileHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.COMPLETE);
         mBinder.toolbarAboutMe.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnNext.setOnClickListener(this);
     }
@@ -63,15 +63,16 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
             case R.id.iv_tool_bar_left:
                 onBackPressed();
                 break;
+
             case R.id.btn_next:
                 hideKeyboard();
+
                 if (checkValidation()) {
                     postboutMeAData(prepareRequest());
 
                 }
                 break;
         }
-
     }
 
     private boolean checkValidation() {
@@ -100,8 +101,7 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
 
                 if (response.getStatus() == 1) {
                     Intent intent = new Intent(AboutMeActivity.this, SearchJobActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 
                 }

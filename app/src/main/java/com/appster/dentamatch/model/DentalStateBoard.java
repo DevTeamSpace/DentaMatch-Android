@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.response.profile;
+package com.appster.dentamatch.model;
 
 /**
  * Created by virender on 19/01/17.

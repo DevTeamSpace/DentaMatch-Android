@@ -3,15 +3,13 @@ package com.appster.dentamatch.network.response.profile;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.appster.dentamatch.model.School;
-import com.appster.dentamatch.model.SchoolType;
-import com.appster.dentamatch.model.Skill;
+import com.appster.dentamatch.model.DentalStateBoard;
+import com.appster.dentamatch.model.LocationEvent;
+import com.appster.dentamatch.model.ProfileSchool;
+import com.appster.dentamatch.model.ProfileSkill;
 import com.appster.dentamatch.model.User;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
-import com.appster.dentamatch.network.request.certificates.CertificateRequest;
-import com.appster.dentamatch.network.response.affiliation.AffiliationData;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
-import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponseData;
 import com.google.gson.annotations.SerializedName;
 
@@ -37,12 +35,12 @@ public class ProfileResponseData implements Parcelable {
     @SerializedName("skills")
     private ArrayList<ProfileSkill> skillArrayList;
     @SerializedName("affiliations")
-    private ArrayList<AffiliationData> affiliationList;
+    private ArrayList<LocationEvent.Affiliation> affiliationList;
     @SerializedName("certifications")
     private ArrayList<CertificatesList> certificatesLists;
 
 
-    protected ProfileResponseData(Parcel in) {
+    private ProfileResponseData(Parcel in) {
         user = in.readParcelable(User.class.getClassLoader());
     }
 
@@ -57,6 +55,16 @@ public class ProfileResponseData implements Parcelable {
             return new ProfileResponseData[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(user, flags);
+    }
 
     public User getUser() {
         return user;
@@ -82,7 +90,7 @@ public class ProfileResponseData implements Parcelable {
         return skillArrayList;
     }
 
-    public ArrayList<AffiliationData> getAffiliationList() {
+    public ArrayList<LocationEvent.Affiliation> getAffiliationList() {
         return affiliationList;
     }
 
@@ -90,13 +98,4 @@ public class ProfileResponseData implements Parcelable {
         return certificatesLists;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(user, flags);
-    }
 }
