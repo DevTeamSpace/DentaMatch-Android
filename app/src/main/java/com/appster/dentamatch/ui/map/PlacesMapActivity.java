@@ -22,6 +22,7 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -90,11 +91,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
         // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
         // the entire world.
-        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
-                null);
+        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY, null);
         mAutocompleteView.setAdapter(mAdapter);
 
-//        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentMap);
         mapFragment.getMapAsync(this);
 
@@ -130,10 +129,16 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         switch (view.getId()) {
             case R.id.img_clear:
                 mAutocompleteView.setText("");
+                mMap.clear();
                 break;
 
             case R.id.layout_done:
                 hideKeyboard();
+                if(mAutocompleteView.getText().toString().trim().isEmpty()) {
+                    Utils.showToast(this, getString(R.string.error_empty_address));
+                    return;
+                }
+
                 setResult(RESULT_OK, prepareIntent());
                 finish();
                 break;
@@ -163,10 +168,12 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mLatitude = String.valueOf(address.getLatitude());
             mLongitude = String.valueOf(address.getLongitude());
 
-            mAutocompleteView.setOnClickListener(null);
+            mAutocompleteView.setAdapter(null);
+//            mAutocompleteView.setOnClickListener(null);
             mAutocompleteView.setText(mPlaceName);
-            mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
-            mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+//            mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
+//            mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+            mAutocompleteView.setAdapter(mAdapter);
 
         } else {
             mPlaceName = "";
