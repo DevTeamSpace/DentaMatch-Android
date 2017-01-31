@@ -42,6 +42,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     private String selectedJobtitle;
     private ArrayList<WorkExpRequest> workExpList;
     private int expMonth, jobTitleId;
+    private boolean isFromProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
 
         if (getIntent() != null) {
             position = getIntent().getIntExtra(Constants.INTENT_KEY.POSITION, 0);
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
             workExpList = getIntent().getParcelableArrayListExtra(Constants.INTENT_KEY.DATA);
         }
 
@@ -251,7 +253,6 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
             @Override
             public void onFail(Call<WorkExpResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
 

@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +16,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SchoolsAdapter;
 import com.appster.dentamatch.databinding.ActivitySchoolingBinding;
 import com.appster.dentamatch.interfaces.EditTextSelected;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.School;
 import com.appster.dentamatch.model.SchoolType;
 import com.appster.dentamatch.network.BaseCallback;
@@ -28,6 +30,8 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,8 +53,8 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_schooling);
-        if(getIntent()!=null){
-            isFromProfile=getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE,false);
+        if (getIntent() != null) {
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
         }
         initViews();
 
@@ -61,7 +65,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
         mBinder.toolbarSchooling.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_schooling_exp).toUpperCase());
 
-        if(isFromProfile){
+        if (isFromProfile) {
             mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
 
         }
@@ -154,7 +158,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
 
     private void setAdapter(List<SchoolType> schoolTypeList) {
-        mSchoolsAdapter = new SchoolsAdapter(schoolTypeList, this, this,isFromProfile);
+        mSchoolsAdapter = new SchoolsAdapter(schoolTypeList, this, this, isFromProfile);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSchools.setLayoutManager(layoutManager);
         mBinder.recyclerSchools.setItemAnimator(new DefaultItemAnimator());
@@ -179,7 +183,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onFail(Call<SchoolingResponse> call, BaseResponse baseResponse) {
-
+                Log.d(TAG, "onFial");
             }
         });
     }
@@ -195,9 +199,10 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-                    if(isFromProfile){
+                    if (isFromProfile) {
+                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                         finish();
-                    }else{
+                    } else {
                         startActivity(new Intent(SchoolingActivity.this, SkillsActivity.class));
 
                     }

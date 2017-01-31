@@ -128,6 +128,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onClick(View view) {
                 Intent licenseintent = new Intent(getActivity(), UpdateLicenseActivity.class);
+                licenseintent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+
                 licenseintent.putExtra(Constants.INTENT_KEY.DATA, profileResponseData.getLicence());
                 startActivity(licenseintent);
             }

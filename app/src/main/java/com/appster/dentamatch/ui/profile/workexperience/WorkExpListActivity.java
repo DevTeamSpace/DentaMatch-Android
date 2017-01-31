@@ -14,6 +14,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityWorkExpListBinding;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -31,6 +32,8 @@ import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.util.socialhelper.WorkExpValidationUtil;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetJobTitle;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetPicker;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -69,8 +72,14 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.tvExperienceDelete.setOnClickListener(this);
         mBinder.tvAddMoreReference.setOnClickListener(this);
         mBinder.btnNextWorkExpLsit.setOnClickListener(this);
+        if (isFromProfile) {
+            mBinder.tvTitleScreen.setVisibility(View.VISIBLE);
+            mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
+        } else {
+            mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
+
+        }
         mBinder.includeLayoutRefrence2.tvRefrenceDelete.setOnClickListener(this);
-        mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
         UsPhoneNumberFormat addLineNumberFormatter = new UsPhoneNumberFormat(
                 new WeakReference<EditText>(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile));
         mBinder.includeLayoutRefrence1.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter);
@@ -82,7 +91,9 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
             mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
         }
         mSelectedJobTitle = PreferenceUtil.getJobTitle();
-        mJobTitleId = PreferenceUtil.getJobTitleId();
+        if (PreferenceUtil.getJobTitle() != null) {
+            mJobTitleId = PreferenceUtil.getJobTitleId();
+        }
 
         if (!TextUtils.isEmpty(mSelectedJobTitle)) {
             mBinder.includeWorkExpList.etJobTitle.setText(mSelectedJobTitle);
@@ -302,7 +313,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     Intent intent = new Intent(WorkExpListActivity.this, ViewAndEditWorkExperienceActivity.class);
                     intent.putExtra(Constants.INTENT_KEY.POSITION, (Integer) referenceView.getTag());
                     intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
-                    intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, workExpList);
+                    intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, isFromProfile);
                     startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT);
                 }
             });
@@ -354,17 +365,23 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
 
 
                 Alert.createYesNoAlert(WorkExpListActivity.this, getString(R.string.ok), getString(R.string.cancel), "", getString(R.string.alert_discard_exp), new Alert.OnAlertClickListener() {
-                    @Override
-                    public void onPositive(DialogInterface dialog) {
+                            @Override
+                            public void onPositive(DialogInterface dialog) {
+                                if (isFromProfile) {
+                                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                                    finish();
+                                } else {
+                                    startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+                                }
+                            }
 
-                        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
-                    }
+                            @Override
+                            public void onNegative(DialogInterface dialog) {
+                                dialog.dismiss();
+                            }
+                        }
 
-                    @Override
-                    public void onNegative(DialogInterface dialog) {
-                        dialog.dismiss();
-                    }
-                });
+                );
             } else {
                 startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
 

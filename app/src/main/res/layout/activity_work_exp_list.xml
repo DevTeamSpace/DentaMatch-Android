@@ -14,11 +14,23 @@
             android:id="@+id/toolbar_work_exp_list"
             layout="@layout/toolbar_general" />
 
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_title_screen"
+            style="@style/text_view_normal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cell_height"
+            android:layout_below="@+id/toolbar_work_exp_list"
+            android:background="@color/cell_color"
+            android:paddingStart="@dimen/margin_normal"
+            android:text="@string/header_work_exp"
+            android:visibility="gone"
+            app:customFont="@string/font_medium" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/btn_next_work_exp_lsit"
-            android:layout_below="@+id/toolbar_work_exp_list">
+            android:layout_below="@+id/tv_title_screen">
 
             <LinearLayout
                 android:id="@+id/layout_parent_scroll_work_exp"
