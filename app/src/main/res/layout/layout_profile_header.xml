@@ -15,16 +15,13 @@
             android:layout_height="@dimen/cell_height"
             android:background="@color/cell_color"
             android:paddingStart="@dimen/margin_normal"
-            android:text="@string/send_label"
             android:visibility="gone" />
-
 
 
         <RelativeLayout
             android:id="@+id/progress_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_margin="@dimen/margin_25">
 
             <ProgressBar

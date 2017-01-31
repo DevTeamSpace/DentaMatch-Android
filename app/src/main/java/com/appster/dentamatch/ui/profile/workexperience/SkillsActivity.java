@@ -15,6 +15,7 @@ import com.appster.dentamatch.adapters.SkillsAdapter;
 import com.appster.dentamatch.databinding.ActivitySkillsBinding;
 import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.model.ParentSkill;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.SubSkill;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -28,6 +29,8 @@ import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +55,8 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_skills);
-        if(getIntent()!=null){
-            isFromProfile=getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE,false);
+        if (getIntent() != null) {
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
         }
         initViews();
         getSkillsListApi();
@@ -63,7 +66,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         btnNext = mBinder.btnNext;
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
-        if(isFromProfile){
+        if (isFromProfile) {
             mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
 
         }
@@ -106,7 +109,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void setAdapter(List<ParentSkill> skillArrayList) {
-        mSkillsAdapter = new SkillsAdapter(skillArrayList, this, this, this,isFromProfile);
+        mSkillsAdapter = new SkillsAdapter(skillArrayList, this, this, this, isFromProfile);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSkills.setLayoutManager(layoutManager);
         mBinder.recyclerSkills.setItemAnimator(new DefaultItemAnimator());
@@ -155,7 +158,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         ArrayList<UpdateCertificates> othersList = new ArrayList<UpdateCertificates>();
 
         for (ParentSkill parentSkill : mParentSkillList) {
-            if(parentSkill.getSkillName().equalsIgnoreCase(Constants.OTHERS)){
+            if (parentSkill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                 UpdateCertificates obj = new UpdateCertificates();
                 obj.setId(parentSkill.getId());
                 obj.setValue(parentSkill.getOtherSkill());
@@ -163,9 +166,9 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
             }
             for (SubSkill subSkill : parentSkill.getSubSkills()) {
                 if (subSkill.getIsSelected() == 1) {
-                    if(!subSkill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                    if (!subSkill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                         skills.add(subSkill.getId());
-                    }else {
+                    } else {
                         UpdateCertificates obj = new UpdateCertificates();
                         obj.setId(subSkill.getId());
                         obj.setValue(subSkill.getOtherText());
@@ -192,9 +195,10 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 if (response.getStatus() == 1) {
                     LogUtils.LOGD(TAG, "updateSkillsListApi success");
                     Utils.showToast(SkillsActivity.this, response.getMessage());
-                    if(isFromProfile){
+                    if (isFromProfile) {
+                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                         finish();
-                    }else {
+                    } else {
                         startActivity(new Intent(SkillsActivity.this, AffiliationActivity.class));
                     }
                 }
