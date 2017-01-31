@@ -34,6 +34,7 @@ import com.appster.dentamatch.R;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Utils for app
@@ -45,9 +46,20 @@ public class Utils {
     /*
     * get device id
     * */
-    public static String getDeviceID(Context context) {
-        return Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+//    public static String getDeviceID(Context context) {
+//        return Settings.Secure.getString(context.getContentResolver(),
+//                Settings.Secure.ANDROID_ID);
+//    }
+
+    public synchronized static String getDeviceID(Context context) {
+        String uniqueID = PreferenceUtil.getDeviceId();
+
+        if (uniqueID == null) {
+            uniqueID = UUID.randomUUID().toString();
+            PreferenceUtil.setDeviceId(uniqueID);
+        }
+
+        return uniqueID;
     }
 
     public static String getDeviceToken() {
