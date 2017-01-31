@@ -67,6 +67,8 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
         if (isFromProfile) {
             mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
+            mBinder.btnNext.setText(getString(R.string.save_label));
+
 
         }
         mBinder.btnNext.setOnClickListener(this);

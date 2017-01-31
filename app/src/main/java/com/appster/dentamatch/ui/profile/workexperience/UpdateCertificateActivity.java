@@ -20,6 +20,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateCertificateBinding;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -40,6 +41,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.params.CoreConnectionPNames;
+import org.greenrobot.eventbus.EventBus;
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -81,7 +83,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         mBinder.tvValidityDatePicker.setOnClickListener(this);
 
         if (getIntent() != null) {
-            data = getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
+//            data = getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             isFromDentalStateBoard = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
             data = (CertificatesList) getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             setViewData();
@@ -122,7 +124,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                         Utils.showToast(getApplicationContext(), getString(R.string.blank_satate_board_photo_alert));
                         return;
                     }
-                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
+                    uploadDentaImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
                 } else {
 
 
@@ -243,7 +245,9 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             if (mFilePath != null) {
 //                mBinder.createProfile1IvProfileIcon.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN));
                 Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
-                uploadCertificateImageApi(mFilePath, "" + data.getId());
+                if (!isFromDentalStateBoard) {
+                    uploadCertificateImageApi(mFilePath, "" + data.getId());
+                }
             }
         }
     }
@@ -287,6 +291,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 if (response != null && response.getStatus() == 1) {
                     // showSnackBarFromTop(response.getMessage(), false);
 
+
                 }
             }
 
@@ -298,7 +303,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         });
     }
 
-    private void uploadImageApi(String filePath, String imageType) {
+    private void uploadDentaImageApi(String filePath, String imageType) {
         showProgressBar(getString(R.string.please_wait));
         File file = new File(filePath);
         RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
@@ -314,7 +319,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 if (response != null && response.getStatus() == 1) {
                     // showSnackBarFromTop(response.getMessage(), false);
 //                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
-
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                    finish();
                 }
             }
 

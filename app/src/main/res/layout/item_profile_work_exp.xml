@@ -65,6 +65,7 @@
             app:customFont="@string/font_regular" />
 
         <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_contact_info"
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_12"
@@ -74,7 +75,7 @@
             app:customFont="@string/font_medium" />
 
         <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/tv_reference_name"
+            android:id="@+id/tv_reference1_name"
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
@@ -84,7 +85,7 @@
             app:customFont="@string/font_medium" />
 
         <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/tv_reference_phone_number"
+            android:id="@+id/tv_reference1_phone_number"
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
@@ -94,7 +95,35 @@
             app:customFont="@string/font_medium" />
 
         <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/tv_reference_email"
+            android:id="@+id/tv_reference1_email"
+            style="@style/text_view_normal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="Dr Nancy"
+            android:textColor="@color/graish_brown_color"
+            android:textSize="@dimen/text_size_12"
+            app:customFont="@string/font_medium" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_reference2_name"
+            style="@style/text_view_normal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:textColor="@color/graish_brown_color"
+            android:textSize="@dimen/text_size_12"
+            app:customFont="@string/font_medium" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_reference2_phone_number"
+            style="@style/text_view_normal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:textColor="@color/graish_brown_color"
+            android:textSize="@dimen/text_size_12"
+            app:customFont="@string/font_medium" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_reference2_email"
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
