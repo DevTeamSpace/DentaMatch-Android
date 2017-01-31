@@ -80,7 +80,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         fragmentManager = getActivity().getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         initViews();
-        getProfileData();
         return profileBinding.getRoot();
 
     }
@@ -102,6 +101,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getProfileData();
     }
 
     private void initViews() {
@@ -355,6 +355,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
                     .inflate(R.layout.item_profile_skill, profileBinding.expInflater, false));
             skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName());
+
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
                 CustomTextView textView = new CustomTextView(getActivity());
                 FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
