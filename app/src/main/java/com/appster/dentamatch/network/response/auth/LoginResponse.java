@@ -4,7 +4,7 @@ import com.appster.dentamatch.network.BaseResponse;
 import com.google.gson.annotations.SerializedName;
 
 /**
- *
+ * Class to hold Login response.
  */
 public class LoginResponse extends BaseResponse {
 

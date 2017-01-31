@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/profile_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layout_setting"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_height"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:src="@drawable/ic_gallary" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_edit"
+                style="@style/text_view_normal"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/margin_normal"
+                android:text="@string/send_label" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="@dimen/margin_25">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="@dimen/profile_progress_dimen"
+                android:layout_height="@dimen/profile_progress_dimen"
+                android:layout_centerInParent="true"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="25"
+                android:progressDrawable="@drawable/circuler_progress" />
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/iv_profile_icon"
+                android:layout_width="@dimen/profile_image_height"
+                android:layout_height="@dimen/profile_image_height"
+                android:layout_centerInParent="true"
+                android:src="@drawable/profile_pic_placeholder"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_title"
+            style="@style/text_view_normal"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:text="@string/where_you_work"
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/text_size_xlarge"
+            app:customFont="@string/font_bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_description"
+
+            style="@style/text_view_normal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:gravity="center_horizontal"
+            android:text="@string/lable_relevant_exp"
+            android:textColor="@color/edt_hint_color"
+            android:textSize="@dimen/text_size_normal"
+            app:customFont="@string/font_regular" />
+
+    </LinearLayout>
+</layout>

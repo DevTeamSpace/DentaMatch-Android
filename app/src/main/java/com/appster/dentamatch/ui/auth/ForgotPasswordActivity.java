@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActvityForgotPasswordBinding;
+import com.appster.dentamatch.databinding.ActivityForgotPasswordBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -24,19 +24,19 @@ import retrofit2.Call;
  */
 public class ForgotPasswordActivity extends BaseActivity implements View.OnClickListener {
     private final String TAG = "ForgotPasswordActivity";
-    private ActvityForgotPasswordBinding mBinder;
+    private ActivityForgotPasswordBinding mBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinder = DataBindingUtil.setContentView(this, R.layout.actvity_forgot_password);
+        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
         initViews();
     }
 
     private void initViews() {
         mBinder.toolbarForgotPassword.tvToolbarGeneralLeft.setText(getString(R.string.header_forgot_password));
         mBinder.toolbarForgotPassword.ivToolBarLeft.setOnClickListener(this);
-        mBinder.forgotPasswordBtnSave.setOnClickListener(this);
+        mBinder.btnSave.setOnClickListener(this);
     }
 
     @Override
@@ -46,8 +46,10 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
                 hideKeyboard();
                 onBackPressed();
                 break;
-            case R.id.forgot_password_btn_save:
+
+            case R.id.btn_save:
                 if (validateInput()) {
+                    hideKeyboard();
                     forgotPasswordApi(prepareForgotPasswordRequest());
                 }
                 break;
@@ -55,14 +57,12 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private boolean validateInput() {
-        hideKeyboard();
-
-        if (TextUtils.isEmpty(mBinder.forgotPasswordEtEmail.getText().toString())) {
+        if (TextUtils.isEmpty(mBinder.etEmail.getText().toString())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
             return false;
         }
 
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mBinder.forgotPasswordEtEmail.getText().toString()).matches()) {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mBinder.etEmail.getText().toString()).matches()) {
             Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
             return false;
         }
@@ -73,7 +73,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
         processToShowDialog("", getString(R.string.please_wait), null);
 
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail(mBinder.forgotPasswordEtEmail.getText().toString());
+        loginRequest.setEmail(mBinder.etEmail.getText().toString());
         return loginRequest;
     }
 

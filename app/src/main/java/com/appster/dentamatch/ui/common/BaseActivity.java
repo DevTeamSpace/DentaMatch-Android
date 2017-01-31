@@ -2,10 +2,14 @@ package com.appster.dentamatch.ui.common;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
@@ -13,23 +17,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
-
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.LocationUtils;
 
 /**
  * Created by gautambisht on 11/11/16.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-
-    private final String TAG = "BASE_ACTIVITY";
+    private static final String TAG = "BASE_ACTIVITY";
+    protected static final int MY_PERMISSION_ACCESS_LOCATION = 101;
     protected boolean mAlive;
     private boolean mActive;
     private ProgressDialog mProgressDialog;
     private Toast mToast;
-
+    public static PermissionCallback permissionResult;
 
     public static BaseFragment getFragment(Constants.FRAGMENTS fragmentId) {
         BaseFragment fragment = null;
@@ -89,6 +92,48 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mAlive = true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case LocationUtils.REQUEST_CHECK_SETTINGS:
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(LocationUtils.TAG);
+                fragment.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != MY_PERMISSION_ACCESS_LOCATION) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        } else {
+            if (grantResults.length == 0) {
+                if (permissionResult != null) permissionResult.permissionsDenied();
+                return;
+            }
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    if (permissionResult != null) permissionResult.permissionsDenied();
+                    return;
+                }
+            }
+            if (permissionResult != null) permissionResult.permissionsGranted();
+        }
+    }
+
+    public boolean hasPermission(String permission) {
+        return PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, permission);
+    }
+
+    public interface PermissionCallback {
+
+        void permissionsGranted();
+
+        void permissionsDenied();
     }
 
     public void showProgressBar() {
@@ -177,10 +222,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack, boolean shouldAdd, ANIMATION_TYPE animationType) {
+    public void pushFragment(BaseFragment fragment, Bundle args, ANIMATION_TYPE animationType) {
         try {
-            BaseFragment fragment = getFragment(fragmentId);
-            if (fragment == null) return null;
+            if (fragment == null) return;
             if (args != null)
                 fragment.setArguments(args);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -195,53 +239,18 @@ public abstract class BaseActivity extends AppCompatActivity {
                 case NONE:
                     break;
             }
-            if (shouldAdd)
-                ft.add(containerViewId, fragment, fragment.getFragmentName());
-            else
-                ft.replace(containerViewId, fragment, fragment.getFragmentName());
-            if (addToBackStack)
-                ft.addToBackStack(fragment.getFragmentName());
-            if (shouldAdd)
-                ft.commit();
-            else
+            if (fragment.isAdded()) {
+
+            } else {
+                ft.replace(R.id.fragment_container, fragment);
                 ft.commitAllowingStateLoss();
-            return fragment;
+            }
         } catch (Exception x) {
+            x.printStackTrace();
         }
-        return null;
     }
 
-    public void pushFragment(Constants.FRAGMENTS fragmentId) {
-        pushFragment(fragmentId, null, ANIMATION_TYPE.DEFAULT);
-    }
 
-    public void pushFragment(Constants.FRAGMENTS fragmentId, ANIMATION_TYPE animationType) {
-        pushFragment(fragmentId, null, animationType);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args) {
-        return pushFragment(fragmentId, args, R.id.frg_container, true, ANIMATION_TYPE.DEFAULT);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, ANIMATION_TYPE animationType) {
-        return pushFragment(fragmentId, args, R.id.frg_container, true, animationType);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, boolean addToBackStack) {
-        return pushFragment(fragmentId, args, R.id.frg_container, addToBackStack, ANIMATION_TYPE.DEFAULT);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, boolean addToBackStack, ANIMATION_TYPE animationType) {
-        return pushFragment(fragmentId, args, R.id.frg_container, addToBackStack, animationType);
-    }
-
-    public Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack) {
-        return pushFragment(fragmentId, args, containerViewId, addToBackStack, false, ANIMATION_TYPE.DEFAULT);
-    }
-
-    private Fragment pushFragment(Constants.FRAGMENTS fragmentId, Bundle args, int containerViewId, boolean addToBackStack, ANIMATION_TYPE animationType) {
-        return pushFragment(fragmentId, args, containerViewId, addToBackStack, false, animationType);
-    }
 
     private void doLogin(String email, String password) {
         showProgressBar();

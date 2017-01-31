@@ -5,16 +5,16 @@ package com.appster.dentamatch;
  */
 
 import android.content.Context;
-import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
 import com.appster.dentamatch.util.NetworkMonitor;
-//import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
-//import com.squareup.leakcanary.LeakCanary;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
+
+//import com.facebook.stetho.Stetho;
+//import com.squareup.leakcanary.LeakCanary;
 
 public class DentaApp extends MultiDexApplication {
 
@@ -28,7 +28,7 @@ public class DentaApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mAppContext = this.getApplicationContext();
-        NetworkMonitor.initialize(this);
+        NetworkMonitor.initialize(mAppContext);
 
 //        if (BuildConfig.DEBUG) {
 ////            LeakCanary.install(this);
@@ -56,7 +56,6 @@ public class DentaApp extends MultiDexApplication {
 
         // Shared preference initialize
         Hawk.init(mAppContext).build();
-        Hawk.deleteAll();
         NetworkMonitor.initialize(getApplicationContext());
 
         /*int buildVersion = PreferenceUtils.getBuildVersion();

@@ -5,44 +5,60 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.TypedValue;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Utils for app
  */
 public class Utils {
-    public static final String TAG = "Utils";
+    private static final String TAG = "Utils";
 
     @Nullable
     /*
     * get device id
     * */
-    public static String getDeviceID(Context context) {
-        return Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+//    public static String getDeviceID(Context context) {
+//        return Settings.Secure.getString(context.getContentResolver(),
+//                Settings.Secure.ANDROID_ID);
+//    }
+
+    public synchronized static String getDeviceID(Context context) {
+        String uniqueID = PreferenceUtil.getDeviceId();
+
+        if (uniqueID == null) {
+            uniqueID = UUID.randomUUID().toString();
+            PreferenceUtil.setDeviceId(uniqueID);
+        }
+
+        return uniqueID;
     }
 
     public static String getDeviceToken() {
@@ -118,6 +134,10 @@ public class Utils {
 
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showToastLong(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -212,8 +232,8 @@ public class Utils {
      * @param edtPassword
      * @param isShow
      */
-    public static void showPassword(Context context,EditText edtPassword, boolean isShow,TextView tvShowPwd) {
-        if(edtPassword.getText().toString().trim().length()>0) {
+    public static void showPassword(Context context, EditText edtPassword, boolean isShow, TextView tvShowPwd) {
+        if (edtPassword.getText().toString().trim().length() > 0) {
             if (!isShow) {
                 edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 tvShowPwd.setText(context.getString(R.string.hide_password));
@@ -227,9 +247,82 @@ public class Utils {
             edtPassword.setSelection(edtPassword.length());
         }
     }
-    public static void showNetowrkAlert(Context context){
-        showToast(context,context.getString(R.string.error_no_network_connection));
 
+    public static void showNetowrkAlert(Context context) {
+        showToast(context, context.getString(R.string.error_no_network_connection));
+
+    }
+
+    public static String getStringFromEditText(EditText editText) {
+        return editText.getText().toString().trim();
+    }
+
+
+    public static void setFontFaceRobotoLight(TextView view) {
+        Typeface tf = Typeface.createFromAsset(view.getContext()
+                .getAssets(), "Roboto-Light.ttf");
+
+        view.setTypeface(tf);
+
+    }
+
+    public static int convertSpToPixels(float sp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+    }
+
+    public static void setFontFaceRobotoBold(TextView view) {
+        Typeface tf = Typeface.createFromAsset(view.getContext()
+                .getAssets(), "Roboto-Bold.ttf");
+
+        view.setTypeface(tf);
+
+    }
+
+    public static String getExpYears(int month) {
+
+        if (month != 0) {
+            return month / 12 + " " + DentaApp.getAppContext().getString(R.string.year) + " " + month % 12 + " " + DentaApp.getAppContext().getString(R.string.month);
+        }
+        return "";
+    }
+
+    public static int getCurrentYear() {
+        return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    private void setPhoneNumberFormat(final EditText editText, final int count) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (count <= editText.getText().toString().length()
+                        && (editText.getText().toString().length() == 4
+                        || editText.getText().toString().length() == 10
+                        || editText.getText().toString().length() == 15)) {
+                    editText.setText("(" + editText.getText().toString() + " )");
+                    int pos = editText.getText().length();
+                    editText.setSelection(pos);
+                } else if (count >= editText.getText().toString().length()
+                        && (editText.getText().toString().length() == 4
+                        || editText.getText().toString().length() == 10
+                        || editText.getText().toString().length() == 15)) {
+                    editText.setText(editText.getText().toString().substring(0, editText.getText().toString().length() - 1));
+                    int pos = editText.getText().length();
+                    editText.setSelection(pos);
+                }
+//                count = editText.getText().toString().length();
+            }
+
+        });
     }
 
 }

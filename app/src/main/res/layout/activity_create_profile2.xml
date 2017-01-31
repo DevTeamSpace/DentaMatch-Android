@@ -19,7 +19,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
 
             android:orientation="vertical">
@@ -28,7 +28,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_margin="@dimen/margin_25">
+                android:layout_marginBottom="@dimen/margin_15"
+                android:layout_marginTop="@dimen/margin_25">
                 <!--android:background="@drawable/circular_shape"-->
 
                 <ProgressBar
@@ -61,25 +62,38 @@
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_job_title"
                 style="@style/text_view_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:textColor="@color/edt_hint_color"
                 android:textSize="@dimen/text_size_xlarge"
-                app:customFont="@string/font_light" />
+                app:customFont="@string/font_regular" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/cell_boundry_color"
+
+                />
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_state_board"
                 style="@style/text_view_normal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/cell_height"
-                android:layout_marginTop="@dimen/margin_medium"
                 android:background="@color/cell_color"
-                android:gravity="left|bottom"
+                android:gravity="start|bottom"
                 android:paddingBottom="@dimen/margin_medium"
-                android:paddingLeft="@dimen/margin_normal"
+                android:paddingStart="@dimen/margin_normal"
                 android:text="@string/dental_state_board"
                 android:textColor="@color/text_default_color"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_13"
                 app:customFont="@string/font_medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/cell_boundry_color" />
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/create_profile_iv_upoload_icon"
@@ -97,26 +111,35 @@
                 android:textSize="@dimen/text_size_xlarge"
                 app:customFont="@string/font_regular" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/cell_boundry_color" />
+
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_licence"
                 style="@style/text_view_normal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/cell_height"
-                android:layout_marginTop="@dimen/margin_medium"
                 android:background="@color/cell_color"
-                android:gravity="left|bottom"
+                android:gravity="start|bottom"
                 android:paddingBottom="@dimen/margin_medium"
-                android:paddingLeft="@dimen/margin_normal"
+                android:paddingStart="@dimen/margin_normal"
                 android:text="@string/lable_licence"
                 android:textColor="@color/text_default_color"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_13"
                 app:customFont="@string/font_medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/cell_boundry_color" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/create_profile_input_layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edit_height"
-
                 android:layout_marginTop="@dimen/margin_43"
                 android:clipToPadding="false"
                 android:gravity="bottom"
@@ -129,7 +152,10 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:background="@drawable/edit_text_selector"
-                    android:hint="@string/lable_licence_number" />
+                    android:digits="@string/digits_licence"
+                    android:hint="@string/lable_licence_number"
+                    android:maxLength="15"
+                    android:textColor="@color/text_default_color" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -149,6 +175,7 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:background="@drawable/edit_text_selector"
+                    android:digits="@string/digits_alpha_numeric_only"
                     android:hint="@string/lable_state" />
             </android.support.design.widget.TextInputLayout>
 
@@ -166,5 +193,6 @@
         android:gravity="center"
         android:text="@string/lable_next"
         android:textColor="@color/white_color"
-        />
+        android:textSize="@dimen/text_size_normal"
+        app:customBackground="@string/font_bold" />
 </RelativeLayout>

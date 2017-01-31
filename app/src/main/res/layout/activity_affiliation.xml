@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_color">
+
+        <include
+            android:id="@+id/toolbar_affiliation"
+            layout="@layout/toolbar_general" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_affiliation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_next"
+            android:layout_below="@+id/toolbar_affiliation"
+            android:layout_marginBottom="@dimen/margin_21"
+            android:scrollbars="vertical" />
+
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/btn_next"
+            style="@style/button_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/button_bg_color"
+            android:gravity="center"
+            android:text="@string/lable_next"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_size_normal"
+            app:customBackground="@string/font_bold" />
+    </RelativeLayout>
+</layout>

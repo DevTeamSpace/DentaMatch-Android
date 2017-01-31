@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_color"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_skills"
+            layout="@layout/toolbar_general" />
+
+        <!--<include
+            android:id="@+id/layout_profile_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar_skills"
+            layout="@layout/layout_profile_header"/>-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar_skills"
+            android:layout_above="@+id/btn_next"
+            />
+
+        <!--<com.appster.dentamatch.widget.CustomEditText
+            android:id="@+id/et_other"
+            android:layout_below="@id/recycler_skills"
+            android:layout_width="match_parent"
+            android:textColor="@color/white_color"
+            android:text="jkfdjskf"
+            android:layout_height="wrap_content" />-->
+
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/btn_next"
+            style="@style/button_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/button_bg_color"
+            android:gravity="center"
+            android:text="@string/lable_next"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_size_large"
+            app:customFont="@string/font_regular" />
+    </RelativeLayout>
+</layout>

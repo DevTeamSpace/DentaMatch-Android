@@ -354,7 +354,7 @@ public class CameraUtil {
             file.mkdirs();
         }
         String uriSting = (file.getAbsolutePath() + "/denta" + System.currentTimeMillis() + ".jpg");
-//        String uriSting = (file.getAbsolutePath() + "/denta0011" + ".jpg");
+//        String uriSting = (file.getAbsolutePath() + "/denta_img" + ".jpg");
         return uriSting;
 
     }

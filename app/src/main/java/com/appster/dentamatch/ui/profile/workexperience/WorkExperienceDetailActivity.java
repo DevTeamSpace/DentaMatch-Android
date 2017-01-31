@@ -4,31 +4,46 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivityWorkExperinceDetailBinding;
+import com.appster.dentamatch.databinding.ActivityWorkExperienceDetailBinding;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
+import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
+import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.BottomSheetPicker;
+import com.appster.dentamatch.util.socialhelper.WorkExpValidationUtil;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetPicker;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
 
 /**
  * Created by virender on 05/01/17.
  */
 public class WorkExperienceDetailActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
-    private com.appster.dentamatch.databinding.ActivityWorkExperinceDetailBinding mBinder;
-    //AtzTextBinding mBinder;
-    private int count = 0;
+    private ActivityWorkExperienceDetailBinding mBinder;
+    private String selectedJobTitle = "";
+    private ArrayList<WorkExpRequest> workExpRequestList = new ArrayList<>();
+    private int expMonth = 0, jobTitleId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_work_experince_detail);
+        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_work_experience_detail);
         initViews();
     }
 
@@ -39,36 +54,37 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         mBinder.btnNextDetailWorkExp.setOnClickListener(this);
         mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setOnClickListener(this);
         mBinder.toolbarWorkExpDetail.ivToolBarLeft.setOnClickListener(this);
+        mBinder.includeRefrence2.tvRefrenceDelete.setOnClickListener(this);
+
         try {
             mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(PreferenceUtil.getYear() + " " + getString(R.string.year) + " " + PreferenceUtil.getMonth() + " " + getString(R.string.month));
-        }catch (Exception ex) {
+            expMonth = PreferenceUtil.getYear() * 12 + PreferenceUtil.getMonth();
+
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        setSpinnerData();
+
+        mBinder.includeRefrence1.etOfficeReferenceMobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+            }
+        });
+        mBinder.includeLayoutWorkExp.etOfficeName.setText(PreferenceUtil.getOfficeName());
+        mBinder.includeLayoutWorkExp.etOfficeAddress.requestFocus();
     }
 
-    private void inflateRefrence() {
-        mBinder.layoutRefrenceInfalter.removeAllViews();
-        for (int i = 0; i < count; i++) {
-            final View refrenceView = getLayoutInflater().inflate(R.layout.layout_reference, mBinder.layoutRefrenceInfalter, false);
-            TextView tvRefrenceCount = (TextView) refrenceView.findViewById(R.id.tv_refrence_count);
-            TextView tvRefrenceDlt = (TextView) refrenceView.findViewById(R.id.tv_refrence_delete);
-            tvRefrenceCount.setText(getString(R.string.reference) + " " + (i+1));
-            tvRefrenceCount.setVisibility(View.VISIBLE);
-            tvRefrenceDlt.setVisibility(View.VISIBLE);
-            tvRefrenceDlt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    count--;
-                    inflateRefrence();
-
-                }
-            });
-// number.setTag(i);
-//            number.setText(Integer.toString(i));
-            mBinder.layoutRefrenceInfalter.addView(refrenceView);
-        }
-    }
 
     @Override
     public String getActivityName() {
@@ -78,16 +94,47 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.tv_add_more_reference:
             case R.id.tv_add_more_reference:
-                count++;
-                inflateRefrence();
+
+                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceName))) {
+                    Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
+                } else {
+                    mBinder.includeRefrence2.tvRefrenceDelete.setVisibility(View.VISIBLE);
+                    mBinder.tvAddMoreReference.setVisibility(View.GONE);
+                    mBinder.includeRefrence2.tvRefrenceCount.setText(getString(R.string.reference2));
+                    mBinder.layoutReference2.setVisibility(View.VISIBLE);
+                }
+
+
                 break;
             case R.id.iv_tool_bar_left:
                 onBackPressed();
                 break;
+            case R.id.tv_refrence_delete:
+                mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
+                mBinder.layoutReference2.setVisibility(View.GONE);
+                break;
             case R.id.tv_add_more_experience:
-                startActivity(new Intent(getApplicationContext(), WorkExpListActivity.class));
+                boolean isMoveForward = false;
+                isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobTitle, expMonth,
+                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeName),
+                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress),
+                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeCity),
+                        Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceName)
+                        , Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceEmail),
+                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
+                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName),
+                        Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceMobile),
+                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceMobile));
+                if (isMoveForward) {
+                    hideKeyboard();
+                    callAddExpApi(WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(), Constants.APIS.ACTION_ADD, jobTitleId, expMonth,
+                            Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeName), Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress),
+                            Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeCity), Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceName)
+                            , Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceMobile), Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceEmail),
+                            Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail), Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName),
+                            Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceMobile)));
+                }
 
                 break;
             case R.id.tv_experince_work_exp:
@@ -102,29 +149,41 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                 break;
             case R.id.btn_next_detail_work_exp:
                 Utils.showToast(WorkExperienceDetailActivity.this, "New feature will introduce soon");
+                startActivity(new Intent(this, AffiliationActivity.class));
                 break;
         }
 
     }
 
-    private void setSpinnerData() {
-        String title[] = new String[PreferenceUtil.getJobTitleList().size()];
-
-        for (int i = 0; i < PreferenceUtil.getJobTitleList().size(); i++) {
-            title[i] = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(WorkExperienceDetailActivity.this,
-                android.R.layout.simple_dropdown_item_1line, title);
-//        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
-//                findViewById(R.id.android_material_design_spinner);
-        mBinder.includeLayoutWorkExp.spinnerJobTitleWorkExp.setPrompt(getString(R.string.lable_job_title));
-        mBinder.includeLayoutWorkExp.spinnerJobTitleWorkExp.setAdapter(arrayAdapter);
-    }
-
     @Override
     public void onExperienceSection(int year, int month) {
         mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
-        PreferenceUtil.setMonth(month);
-        PreferenceUtil.setYear(year);
+        expMonth = year * 12 + month;
     }
+
+    private void callAddExpApi(WorkExpRequest workExpRequest) {
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.addWorkExp(workExpRequest).enqueue(new BaseCallback<WorkExpResponse>(WorkExperienceDetailActivity.this) {
+            @Override
+            public void onSuccess(WorkExpResponse response) {
+                LogUtils.LOGD(TAG, "onSuccess");
+                if (response.getStatus() == 1) {
+                    Utils.showToast(getApplicationContext(), response.getMessage());
+                    startActivity(new Intent(getApplicationContext(), WorkExpListActivity.class));
+                    finish();
+                } else {
+                    Utils.showToast(getApplicationContext(), response.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Call<WorkExpResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "onFail");
+                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
+            }
+        });
+
+    }
+
+
 }

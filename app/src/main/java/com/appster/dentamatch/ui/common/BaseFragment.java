@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.appster.dentamatch.ui.common.BaseActivity;
-
 /**
  * Created by gautambisht on 11/11/16.
  */
@@ -109,6 +107,7 @@ public abstract class BaseFragment extends Fragment {
             if (isAlive() && getBaseActivity() != null)
                 getBaseActivity().showProgressBar(title, message, view, delayTime);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -127,6 +126,7 @@ public abstract class BaseFragment extends Fragment {
     public void showProgressBar(String msg, int delayTime) {
         showProgressBar(null, msg, null, delayTime);
     }
+
 
     /*public void hideHud() {
         try {

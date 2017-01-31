@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.appster.dentamatch"
     android:installLocation="auto">
 
@@ -37,10 +36,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.auth.LoginActivity"
             android:screenOrientation="userPortrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".ui.profile.affiliation.AffiliationActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -58,7 +64,8 @@
         <activity
             android:name=".ui.profile.CreateProfileActivity1"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.profile.CreateProfileActivity2"
             android:screenOrientation="portrait"
@@ -67,20 +74,25 @@
             android:name=".ui.profile.workexperience.WorkExperienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.profile.workexperience.ViewAndEditWorkExperienceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".ui.profile.workexperience.WorkExpListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.profile.workexperience.WorkExperienceDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.profile.CertificateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustResize" />
@@ -91,6 +103,51 @@
 
         <activity
             android:name=".ui.map.PlacesMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.AboutMeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <activity
+            android:name=".ui.profile.workexperience.SkillsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ui.settings.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <activity
+            android:name=".ui.profile.workexperience.SchoolingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ui.profile.workexperience.SubSkillsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar.LIGHT"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.common.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+
+        <activity
+            android:name=".ui.profile.workexperience.UpdateCertificateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.UpdateProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.profile.workexperience.UpdateLicenseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 

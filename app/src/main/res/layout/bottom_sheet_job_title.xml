@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/gradient_bottom_sheet"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cell_height"
+        android:background="@color/cell_color">
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/bottom_sheet_picker_tv_cancel"
+            style="@style/text_view_normal"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/margin_medium"
+            android:text="@string/cancel"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_normal"
+            app:customFont="@string/font_regular" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/bottom_sheet_picker_tv_done"
+
+            style="@style/text_view_normal"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/margin_medium"
+            android:text="@string/done_button"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_normal"
+            app:customFont="@string/font_bold" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/bottom_picker_tv_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/year"
+            android:textColor="@color/text_default_color"
+            android:textSize="@dimen/text_size_normal"
+            android:visibility="gone"
+            app:customFont="@string/font_bold" />
+
+        <NumberPicker
+            android:id="@+id/bottom_sheet_picker_job_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:soundEffectsEnabled="true" />
+
+    </LinearLayout>
+</LinearLayout>

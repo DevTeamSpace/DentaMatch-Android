@@ -15,14 +15,14 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btn_next_work_exp_view_edit"
+            android:layout_above="@+id/btn_update"
             android:layout_below="@+id/toolbar_work_exp_view"
             android:layout_marginBottom="@dimen/margin_medium">
 
             <LinearLayout
                 android:id="@+id/layout_parent_scroll_work_exp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
 
@@ -31,29 +31,63 @@
                     layout="@layout/layout_work_exp" />
 
                 <include
-                    android:id="@+id/layout_refrence_view_edit"
+                    android:id="@+id/include_layout_refrence1"
 
                     layout="@layout/layout_reference" />
+
                 <LinearLayout
-                    android:id="@+id/layout_refrence_infalter"
+                    android:id="@+id/layout_refrence2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <include
+                        android:id="@+id/include_layout_refrence2"
+
+                        layout="@layout/layout_reference" />
+
+                </LinearLayout>
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_add_more_reference"
+                    style="@style/text_view_normal"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:drawablePadding="@dimen/padding_drawable"
+                    android:drawableStart="@drawable/ic_add_refrence"
+                    android:paddingStart="@dimen/margin_medium"
+                    android:text="@string/add_more_refrence"
+                    android:textColor="@color/color_forgot_pwd"
+                    android:textSize="@dimen/text_size_14"
+                    app:customFont="@string/font_regular" />
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_experience_delete"
+                    style="@style/text_view_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:drawablePadding="@dimen/padding_drawable"
+                    android:text="@string/experience_delete"
+                    android:textColor="@color/color_forgot_pwd"
+                    android:textSize="@dimen/text_size_normal"
+                    android:visibility="visible"
+                    app:customFont="@string/font_bold" />
 
             </LinearLayout>
         </ScrollView>
 
         <com.appster.dentamatch.widget.CustomButton
-            android:id="@+id/btn_next_work_exp_view_edit"
+            android:id="@+id/btn_update"
             style="@style/button_style"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_alignParentBottom="true"
             android:background="@color/button_bg_color"
             android:gravity="center"
-            android:text="@string/lable_next"
+            android:text="@string/lable_update"
             android:textColor="@color/white_color"
-            android:textSize="@dimen/text_size_large"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_regular" />
     </RelativeLayout>
 </layout>

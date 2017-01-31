@@ -10,12 +10,14 @@
     </style>
 
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowActionBar">false</item>
+    </style>
 
+    <style name="NoActionBar.LIGHT" parent="NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
     </style>
 
     <style name="CustomAlertDialogTitle">
@@ -63,11 +65,25 @@
         <!--<item businessName="android:textColor">@android:color/darker_gray</item>-->
     </style>
 
+    <style name="TextInputEditTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/edt_hint_color</item>
+        <item name="android:textColor">@color/text_default_color</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:tint">@color/text_default_color</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
+
+    </style>
+
     <style name="edit_text_view_normal" parent="edit_text">
         <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:textColorHint">@color/edt_hint_color</item>
         <item name="android:textColor">@color/text_default_color</item>
         <item name="android:singleLine">true</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:maxLength">30</item>
     </style>
 
 

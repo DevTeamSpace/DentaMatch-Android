@@ -1,29 +1,20 @@
 package com.appster.dentamatch.ui.map;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.model.LocationEvent;
@@ -31,7 +22,6 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -47,7 +37,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,11 +47,8 @@ import java.util.List;
 public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener {
 
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-
     private static String TAG = "DentaPlaces";
-    private static final int MY_PERMISSION_ACCESS_LOCATION = 101;
-    protected GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
 
     private GoogleMap mMap;
     private PlaceAutocompleteAdapter mAdapter;
@@ -102,10 +88,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mImgClear.setOnClickListener(this);
         mLayout.setOnClickListener(this);
 
-        // Retrieve the TextViews that will display details and attributions of the selected place.
-//        mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
-//        mPlaceDetailsAttribution = (TextView) findViewById(R.id.place_attribution);
-
         // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
         // the entire world.
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
@@ -114,8 +96,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
         mapFragment.getMapAsync(this);
-
-//        check();
 
         EventBus.getDefault().register(this);
 
@@ -159,58 +139,42 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSION_ACCESS_LOCATION: {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do
-                    // contacts-related task you need to do.
-                    setMap();
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Utils.showToast(this, "Permission denied for location");
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
     // This method will be called when Event is posted.
     @Subscribe
     public void onEvent(LocationEvent locationEvent) {
-        // your implementation
-        LogUtils.LOGD(TAG, "onEvent " + locationEvent.getMessage().getLongitude());
-//        Toast.makeText(this, "received on sender " + locationEvent.getMessage().getLongitude(), Toast.LENGTH_SHORT).show();
-
         Location location = locationEvent.getMessage();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         if (mMap != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-//            mMap.addMarker(new MarkerOptions().position(latLng));
+            mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
         Address address = getReverseGeoCode(latLng);
-        String localityName = convertAddressToString(address);
-        mAutocompleteView.setText(localityName);
-        mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
-        mAutocompleteView.clearListSelection();
 
-        mPlaceName = mAutocompleteView.getText().toString();
-        mPostalCode = address.getPostalCode();
-        mLatitude = String.valueOf(address.getLatitude());
-        mLongitude = String.valueOf(address.getLongitude());
+        setData(address);
+    }
+
+    private void setData(Address address) {
+        if (address != null) {
+            mPlaceName = convertAddressToString(address);
+            mPostalCode = address.getPostalCode() == null ? "" : address.getPostalCode();
+            mLatitude = String.valueOf(address.getLatitude());
+            mLongitude = String.valueOf(address.getLongitude());
+
+            mAutocompleteView.setOnClickListener(null);
+            mAutocompleteView.setText(mPlaceName);
+            mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
+            mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+
+        } else {
+            mPlaceName = "";
+            mPostalCode = "";
+            mLatitude = "";
+            mLongitude = "";
+        }
+
+        LogUtils.LOGD(TAG, "(Postal and Place) " + mPostalCode + ", " + mPlaceName);
     }
 
     @Override
@@ -219,15 +183,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mMap.addMarker(new MarkerOptions().position(latLng));
 
         Address address = getReverseGeoCode(latLng);
-        String placeName = convertAddressToString(address);
-        mAutocompleteView.setText(placeName);
 
-        if (TextUtils.isEmpty(placeName)) {
-            mLongitude = "";
-            mLatitude = "";
-            mPlaceName = "";
-            mPostalCode = "";
-        }
+        setData(address);
     }
 
     /**
@@ -293,12 +250,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
             LogUtils.LOGD(TAG, latLng.toString());
 
-            LogUtils.LOGD(TAG, "Place details received: " + place.getName());
+            Address address = getReverseGeoCode(latLng);
 
-            mPostalCode = getReverseGeoCode(latLng).getPostalCode();
-            mPlaceName = mAutocompleteView.getText().toString();
-            mLatitude = String.valueOf(latLng.latitude);
-            mLongitude = String.valueOf(latLng.longitude);
+            setData(address);
 
             places.release();
         }
@@ -310,6 +264,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         intent.putExtra(Constants.EXTRA_POSTAL_CODE, mPostalCode);
         intent.putExtra(Constants.EXTRA_LATITUDE, mLatitude);
         intent.putExtra(Constants.EXTRA_LONGITUDE, mLongitude);
+
+        LogUtils.LOGD(TAG, "Postal Code " + mPostalCode + ", Place " + mPlaceName);
+
         return intent;
     }
 
@@ -352,6 +309,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             sb.append(address.getAdminArea());
         }
 
+        LogUtils.LOGD(TAG, "convertAddressToString " + sb.toString());
+
         return sb.toString();
     }
 
@@ -369,37 +328,5 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         }
 
         return address;
-    }
-
-    private void check() {
-        LogUtils.LOGD(TAG, "check...");
-
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                Utils.showToast(this, "Please enable location permission in App Settings.");
-                setMap();
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSION_ACCESS_LOCATION);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
     }
 }

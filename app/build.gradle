@@ -22,7 +22,7 @@ android {
     }
 
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.appster.dentamatch"
@@ -81,7 +81,7 @@ android {
         }
         QA {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://qa.dentamach/api/"')
+            buildConfigField("String", "BASE_URL", '"http://52.52.216.246/api/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
@@ -124,7 +124,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.google.maps.android:android-maps-utils:0.4'
     compile 'com.google.android.gms:play-services:10.0.0'
     compile 'com.google.firebase:firebase-messaging:9.0.1'
@@ -146,6 +145,7 @@ dependencies {
 
     //Third party libs
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.aurelhubert:ahbottomnavigation:2.0.3'
     compile 'cat.ereza:customactivityoncrash:1.5.0'
     compile 'com.orhanobut:hawk:2.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.12.0'
@@ -153,7 +153,6 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
-//    compile 'com.squareup.okhttp3:okhttp:3.1.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
@@ -165,6 +164,9 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.doodle.android:android-material-chips:1.1.0'
+    compile 'org.apmem.tools:layouts:1.10@aar'
+    compile 'com.wefika:flowlayout:0.4.1'
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'

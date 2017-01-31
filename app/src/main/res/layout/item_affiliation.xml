@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_color">
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_affiliation_type"
+            style="@style/text_view_normal"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="@dimen/margin_15"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_15"
+            android:textColor="@color/graish_brown_color"
+            android:textSize="@dimen/text_size_normal"
+            app:customFont="@string/font_medium" />
+
+        <ImageView
+            android:id="@+id/iv_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/margin_15"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_15"
+            android:src="@drawable/ic_check_empty" />
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:layout_below="@+id/tv_affiliation_type"
+            android:background="@color/line_divider" />
+    </RelativeLayout>
+</layout>

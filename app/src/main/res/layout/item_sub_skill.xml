@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_medium">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_skill_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_toStartOf="@+id/iv_selected"
+                android:ellipsize="end"
+                android:textColor="@color/white_color"
+                android:textSize="@dimen/text_size_large" />
+
+            <ImageView
+                android:id="@+id/iv_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_check_unselected" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/et_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:background="@drawable/edit_text_selector_blue"
+            android:digits="@string/digits_alpha_numeric_only"
+            android:focusable="true"
+            android:textColor="@color/white_color"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</layout>
