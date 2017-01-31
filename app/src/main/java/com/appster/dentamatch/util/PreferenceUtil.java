@@ -16,6 +16,7 @@ public final class PreferenceUtil {
      */
     private static final String KEY_APP_STATE = "APP_STATE";
     private static final String KEY_FIRST_TIME = "FIRST_TIME";
+    private static final String KEY_DEVICE_ID = "DEVICE_ID";
     private static final String KEY_ON_BOARDING = "ON_BOARDING";
     private static final String KEY_IS_LOGIN = "IS_LOGIN";
     private static final String KEY_FIRST_NAME = "FIRST_NAME";
@@ -105,10 +106,16 @@ public final class PreferenceUtil {
         return Hawk.get(KEY_JOB_TITLE_LIST);
     }
 
+    public static void setDeviceId(String value) {
+        Hawk.put(KEY_DEVICE_ID, value);
+    }
+
+    public static String getDeviceId() {
+        return Hawk.get(KEY_DEVICE_ID);
+    }
     public static ArrayList<JobTitleList> getSearchJobTitleList() {
         return Hawk.get(KEY_SEARCH_JOB_TITLE_LIST);
     }
-
 
     public static void setJobTitle(String value) {
         Hawk.put(KEY_JOB_TITLE, value);
@@ -123,7 +130,7 @@ public final class PreferenceUtil {
     }
 
     public static int getJobTitlePosition() {
-        return Hawk.get(KEY_JOB_TITLE_POSITION);
+        return Hawk.get(KEY_JOB_TITLE_POSITION,0);
     }
 
     public static void setJobTitleId(int value) {

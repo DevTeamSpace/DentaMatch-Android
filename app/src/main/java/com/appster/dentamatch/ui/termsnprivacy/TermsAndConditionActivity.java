@@ -1,9 +1,12 @@
 package com.appster.dentamatch.ui.termsnprivacy;
 
+import android.annotation.TargetApi;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 
 import com.appster.dentamatch.BuildConfig;
@@ -77,10 +80,17 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
             super.onPageStarted(view, url, favicon);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
             view.loadUrl(url);
+            return true;
+        }
+
+        @TargetApi(Build.VERSION_CODES.N)
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            view.loadUrl(request.getUrl().toString());
             return true;
         }
 

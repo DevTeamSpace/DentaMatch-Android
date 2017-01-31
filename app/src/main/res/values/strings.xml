@@ -57,6 +57,7 @@
     <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_unable_reterive_email">Unable to retrieve email address from your social account.</string>
     <string name="error_unable_access_account">Unable to access to your account.</string>
+    <string name="error_empty_address">Please select an address.</string>
 
     <!--register & Login & Forgot password screen-->
     <string name="email_label">Email</string>

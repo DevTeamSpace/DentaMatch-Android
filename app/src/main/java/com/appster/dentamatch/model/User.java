@@ -3,6 +3,8 @@ package com.appster.dentamatch.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Appster on 23/05/16.
  */
@@ -13,6 +15,7 @@ public class User implements Parcelable{
     private String firstName;
     private String lastName;
     private String jobTitle;
+    @SerializedName("jobTitileId")
     private int jobTitleId;
     private String profileImage;
     private String profilePic;

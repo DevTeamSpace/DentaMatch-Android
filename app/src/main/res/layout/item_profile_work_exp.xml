@@ -19,7 +19,6 @@
                 style="@style/text_view_normal"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:text="job title"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_17"
                 app:customFont="@string/font_medium" />
@@ -29,7 +28,6 @@
                 style="@style/text_view_normal"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="3.5 yrs"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_12"
                 app:customFont="@string/font_bold" />
@@ -49,7 +47,6 @@
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
-            android:text="Dr nancy"
             android:textColor="@color/text_default_color"
             android:textSize="@dimen/text_size_13"
             app:customFont="@string/font_bold" />
@@ -59,7 +56,6 @@
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
-            android:text="618 mall road"
             android:textColor="@color/text_default_color"
             android:textSize="@dimen/text_size_13"
             app:customFont="@string/font_regular" />
@@ -79,7 +75,6 @@
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
-            android:text="Dr Nancy"
             android:textColor="@color/graish_brown_color"
             android:textSize="@dimen/text_size_12"
             app:customFont="@string/font_medium" />
@@ -89,7 +84,6 @@
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
-            android:text="Dr Nancy"
             android:textColor="@color/graish_brown_color"
             android:textSize="@dimen/text_size_12"
             app:customFont="@string/font_medium" />
@@ -127,7 +121,6 @@
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
-            android:text="Dr Nancy"
             android:textColor="@color/graish_brown_color"
             android:textSize="@dimen/text_size_12"
             app:customFont="@string/font_medium" />

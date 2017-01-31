@@ -108,8 +108,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 if (response.getStatus() == 1) {
                     PreferenceUtil.setIsLogined(false);
                     Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
             }
