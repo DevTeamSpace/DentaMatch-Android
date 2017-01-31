@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -107,12 +108,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         int tncStart = getString(R.string.label_accept_term_ncondition).indexOf("Term");
         int tncEnd = getString(R.string.label_accept_term_ncondition).lastIndexOf("and") - 1;
         Utils.setSpannClickEvent(spanString, tncStart, tncEnd, termsAndCondition);
-        Utils.setSpannColor(spanString, tncStart, tncEnd, getResources().getColor(R.color.button_bg_color));
+        Utils.setSpannColor(spanString, tncStart, tncEnd, ContextCompat.getColor(this, R.color.button_bg_color));
         Utils.setSpannUnderline(spanString, tncStart, tncEnd);
 
         int privacyStart = getString(R.string.label_accept_term_ncondition).indexOf("Privacy");
         Utils.setSpannClickEvent(spanString, privacyStart + 1, spanString.length(), privacy);
-        Utils.setSpannColor(spanString, privacyStart, spanString.length(), getResources().getColor(R.color.button_bg_color));
+        Utils.setSpannColor(spanString, privacyStart, spanString.length(), ContextCompat.getColor(this, R.color.button_bg_color));
         Utils.setSpannUnderline(spanString, privacyStart + 1, spanString.length());
         Utils.setSpannCommanProperty(mBinder.tvTermNPolicy, spanString);
     }

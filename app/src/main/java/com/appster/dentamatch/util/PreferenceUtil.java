@@ -77,16 +77,15 @@ public final class PreferenceUtil {
         return Hawk.get(KEY_JOB_TITLE_LIST);
     }
 
-    public static ArrayList<JobTitleList> getSearchJobTitleList() {
-        return Hawk.get(KEY_SEARCH_JOB_TITLE_LIST);
-    }
-
     public static void setDeviceId(String value) {
         Hawk.put(KEY_DEVICE_ID, value);
     }
 
     public static String getDeviceId() {
         return Hawk.get(KEY_DEVICE_ID);
+    }
+    public static ArrayList<JobTitleList> getSearchJobTitleList() {
+        return Hawk.get(KEY_SEARCH_JOB_TITLE_LIST);
     }
 
     public static void setJobTitle(String value) {
