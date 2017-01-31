@@ -109,16 +109,14 @@ public class UsPhoneNumberFormat implements TextWatcher {
 //        }
         // The first 3 numbers beyond '1' must be enclosed in brackets "()"
         if (totalDigitCount - alreadyPlacedDigitCount > 3) {
-            formattedString.append("("
-                    + allDigitString.substring(alreadyPlacedDigitCount,
-                    alreadyPlacedDigitCount + 3) + ")");
+            formattedString.append("(").append(allDigitString.substring(alreadyPlacedDigitCount,
+                    alreadyPlacedDigitCount + 3)).append(")");
             alreadyPlacedDigitCount += 3;
         }
         // There must be a '-' inserted after the next 3 numbers
         if (totalDigitCount - alreadyPlacedDigitCount > 3) {
             formattedString.append(allDigitString.substring(
-                    alreadyPlacedDigitCount, alreadyPlacedDigitCount + 3)
-                    + "-");
+                    alreadyPlacedDigitCount, alreadyPlacedDigitCount + 3)).append("-");
             alreadyPlacedDigitCount += 3;
         }
         // All the required formatting is done so we'll just copy the
