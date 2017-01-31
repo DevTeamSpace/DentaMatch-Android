@@ -120,9 +120,12 @@ class SearchJobDataHelper {
 
     public void requestData(Context ct) {
         /**
-         * In case the filter is changed we hit API agin to refresh the data.
+         * In case the filter is changed we clear all previous data and hit API again to refresh the data.
+         *
          */
         if (PreferenceUtil.isFilterChanged()) {
+            jobDataList.clear();
+            mPageNumber = 1;
             searchJob(ct, false);
 
         } else {
