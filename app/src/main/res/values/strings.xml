@@ -268,6 +268,7 @@
     <string name="parking_availability_label">PARKING AVAILABILITY</string>
     <string name="map_label">MAP</string>
     <string name="button_apply_for_job">APPLY FOR JOB</string>
+    <string name="button_already_applied">JOB ALREADY APPLIED </string>
     <string name="txt_part_time">Part Time</string>
     <string name="txt_full_time">Full Time</string>
     <string name="txt_temporary">Temporary</string>

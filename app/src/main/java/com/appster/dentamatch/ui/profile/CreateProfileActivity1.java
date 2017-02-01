@@ -27,7 +27,6 @@ import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
-import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
@@ -71,9 +70,15 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         mBinder.createProfile1BtnNotNow.setOnClickListener(this);
         mBinder.createProfile1BtnNext.setOnClickListener(this);
         mBinder.createProfile1IvProfileIcon.setOnClickListener(this);
-        mBinder.etJobTitle.setOnClickListener(this);
+        if(!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())){
 
-//        mBinder.createProfileTvName.setText("Hi " + PreferenceUtil.getFirstName());
+            Picasso.with(CreateProfileActivity1.this).load(PreferenceUtil.getProfileImagePath())
+                    .centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                    .placeholder(R.drawable.profile_pic_placeholder)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .into(mBinder.createProfile1IvProfileIcon);
+        }
+        mBinder.etJobTitle.setOnClickListener(this);
         mBinder.createProfileTvName.setText(getString(R.string.hi_user, PreferenceUtil.getFirstName()));
     }
 

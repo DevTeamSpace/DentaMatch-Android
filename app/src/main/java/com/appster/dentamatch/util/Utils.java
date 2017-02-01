@@ -32,8 +32,13 @@ import android.widget.Toast;
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 /**
@@ -41,6 +46,8 @@ import java.util.UUID;
  */
 public class Utils {
     private static final String TAG = "Utils";
+    private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
 
     @Nullable
     /*
@@ -282,6 +289,19 @@ public class Utils {
 
         view.setTypeface(tf);
 
+    }
+
+    public static String convertUTCtoLocal(String UTCDateTime){
+        Date myDate = null;
+        try {
+            timeOnlyDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            myDate = timeOnlyDateFormat.parse(UTCDateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        hourOnlyDateFormat.setTimeZone(TimeZone.getDefault());
+        return hourOnlyDateFormat.format(myDate);
     }
 
     public static String getExpYears(int month) {
