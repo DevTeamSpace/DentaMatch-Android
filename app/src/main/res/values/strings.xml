@@ -86,6 +86,7 @@
     <string name="label_take_photo">Take photo</string>
     <string name="label_choose_gallary">Choose from gallery</string>
     <string name="dental_state_board">ADD DENTAL STATE BOARD</string>
+    <string name="certificate_dental_state_board">Certificate_denta</string>
     <string name="lable_licence">LICENSE</string>
     <string name="lable_licence_number">License Number</string>
     <string name="label_upload_photo">Upload Photo</string>

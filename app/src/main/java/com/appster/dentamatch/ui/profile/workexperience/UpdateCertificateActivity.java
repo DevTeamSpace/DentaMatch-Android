@@ -93,8 +93,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     private void setViewData() {
         if (data != null) {
             mBinder.tvCertificatesName.setText(data.getCertificateName());
-            if (!TextUtils.isEmpty(data.getImageUrl())) {
-                Picasso.with(UpdateCertificateActivity.this).load(data.getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
+            if (!TextUtils.isEmpty(data.getImage())) {
+                Picasso.with(UpdateCertificateActivity.this).load(data.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
 
             }
             if (isFromDentalStateBoard) {

@@ -57,6 +57,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private EditTextSelected mNameSelectedListener;
     private HashMap<Integer, PostSchoolData> mHashMap = new HashMap<>();
     private boolean mIsFromEditProfile;
+    private String year = "";
+
 
     public SchoolsAdapter(List<SchoolType> schoolTypeList, Context context, EditTextSelected nameSelectedListener, boolean isFromEditProfile) {
         this.mSchoolList = schoolTypeList;
@@ -107,7 +109,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder1, final int position) {
 
-        String year = "";
         final List<String> listSchools = new ArrayList<String>();
 
         if (holder1 instanceof ViewHolderHeader) {
@@ -141,6 +142,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             holder.tvSchoolTypeName.setText(schoolType.getSchoolTypeName());
             holder.autoCompleteTextView.setTag(position - 1);
             holder.etYearOfGraduation.setTag(position - 1);
+            holder.spinnerYears.setTag(position - 1);
 
             if (schoolType.getOtherList() != null && schoolType.getOtherList().size() > 0 &&
                     schoolType.getOtherList().get(0).getIsSelected() == 1) {
@@ -153,6 +155,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 holder.autoCompleteTextView.setText(schoolType.getOtherList().get(0).getOtherSchooling());
                 holder.etYearOfGraduation.setText(schoolType.getOtherList().get(0).getYearOfGraduation());
+                year = schoolType.getOtherList().get(0).getYearOfGraduation();
 
                 mHashMap.put(position - 1, data);
             }
@@ -212,9 +215,27 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     int key = (Integer) holder.autoCompleteTextView.getTag();
                     PostSchoolData school = getSchool(key);
 //                    school.setSchoolId(mSchoolList.get(key).getSchoolList().get(i).getSchoolId());
-                    school.setSchoolName(editable.toString());
+//                    if (TextUtils.isEmpty(editable.toString())) {
+//                        if (school != null) {
+//                            mHashMap.remove(key);
+//                            year = school.getYearOfGraduation();
+//                            holder.spinnerYears.setSelection(0);
+//                            if (TextUtils.isEmpty(year)) {
+//                                holder.spinnerYears.setSelection(0);
+//
+//                            } else {
+//                                for (int i = 0; i < mYearsList.size(); i++) {
+//                                    if (mYearsList.get(i).equals(year)) {
+//                                        holder.spinnerYears.setSelection(0);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    } else {
+                        school.setSchoolName(editable.toString());
+                        mHashMap.put(key, school);
+//                    }
 
-                    mHashMap.put(key, school);
                 }
             });
 
@@ -233,16 +254,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             holder.spinnerYears.setAdapter(adapter);
 
-            if (year.isEmpty()) {
-                holder.spinnerYears.setSelection(0);
-            } else {
-                for (int i = 0; i < mYearsList.size(); i++) {
-                    if (mYearsList.get(i).equals(year)) {
-                        holder.spinnerYears.setSelection(i);
-                    }
-                }
-            }
-
             holder.spinnerYears.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -252,12 +263,14 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     if (position != 0) {
                         holder.etYearOfGraduation.setTextColor(mContext.getResources().getColor(R.color.text_default_color));
 
-                        PostSchoolData school = getSchool((Integer) holder.etYearOfGraduation.getTag());
+                        PostSchoolData school = getSchool((Integer) holder.spinnerYears.getTag());
                         school.setYearOfGraduation(mYearsList.get(position));
                         school.setOtherId("" + mSchoolList.get((Integer) holder.etYearOfGraduation.getTag()).getSchoolTypeId());
                     } else {
                         holder.etYearOfGraduation.setTextColor(mContext.getResources().getColor(R.color.edt_hint_color));
 
+                        PostSchoolData school = getSchool((Integer) holder.spinnerYears.getTag());
+                        school.setYearOfGraduation("");
                     }
                 }
 
@@ -286,6 +299,18 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     return false;
                 }
             });
+/**
+ * this task is done here to set the year in spinner
+ */
+            if (TextUtils.isEmpty(year)) {
+                holder.spinnerYears.setSelection(0);
+            } else {
+                for (int i = 0; i < mYearsList.size(); i++) {
+                    if (mYearsList.get(i).equals(year)) {
+                        holder.spinnerYears.setSelection(i);
+                    }
+                }
+            }
 
         }
     }

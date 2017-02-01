@@ -322,9 +322,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
+                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.VISIBLE);
+                profileBinding.cellDentalStateBoard.tvCertificateValidityDate.setVisibility(View.GONE);
+                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
 
                 if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
-                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.cellDentalStateBoard.ivCertificateImage);
+                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.cellDentalStateBoard.ivCertificateImage);
 
                 }
             } else {
@@ -471,8 +474,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.certificationInflater.removeAllViews();
 
         for (int i = 0; i < certificateList.size(); i++) {
+
             cellCertificateBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.certificationInflater.getContext())
                     .inflate(R.layout.item_profile_cell_certificate, profileBinding.expInflater, false));
+            final View tempView = cellCertificateBinding.getRoot();
+            tempView.setTag(i);
             cellCertificateBinding.tvEdit.setId(i);
             cellCertificateBinding.tvCertificateImageName.setVisibility(View.VISIBLE);
             cellCertificateBinding.tvCertificateValidityDate.setVisibility(View.VISIBLE);
@@ -482,9 +488,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             cellCertificateBinding.tvCertificateImageName.setText(certificate.getCertificateName());
             if (TextUtils.isEmpty(certificate.getValidityDate())) {
                 cellCertificateBinding.tvCertificateValidityDate.setVisibility(View.GONE);
+                cellCertificateBinding.tvCertificateValidityText.setVisibility(View.GONE);
                 cellCertificateBinding.tvCertificateImageName.setVisibility(View.GONE);
 
             } else {
+                cellCertificateBinding.tvCertificateValidityText.setVisibility(View.VISIBLE);
                 cellCertificateBinding.tvCertificateValidityDate.setText(certificate.getValidityDate());
 
             }
@@ -506,7 +514,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) cellCertificateBinding.tvEdit.getId()));
+//                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) cellCertificateBinding.tvEdit.getId()));
+                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) tempView.getTag()));
                     startActivity(intent);
                 }
             });
@@ -514,8 +523,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) cellCertificateBinding.tvAddCertificates.getId()));
-
+//                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) cellCertificateBinding.tvAddCertificates.getId()));
+                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) tempView.getTag()));
                     startActivity(intent);
                 }
             });
