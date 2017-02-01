@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
@@ -35,7 +34,6 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<JobTitleList> mChosenTitles;
     private String mSelectedZipCode;
     private boolean isPartTime, isFullTime, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
-    private FlowLayout.LayoutParams layoutParams;
 
 
     @Override
@@ -53,9 +51,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private void initViews() {
         mSelectedJobID = new ArrayList<>();
         mPartTimeDays = new ArrayList<>();
-        layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
-                FlowLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(50, 50, 50, 50);
+
         mBinder.toolbarSearchJob.tvToolbarGeneralLeft.setText(getString(R.string.header_search_job));
         mBinder.toolbarSearchJob.ivToolBarLeft.setOnClickListener(this);
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
@@ -339,19 +335,20 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void addTitleToLayout(JobTitleList jobTitleListItem) {
-
         String text = jobTitleListItem.getJobTitle();
         mSelectedJobID.add(jobTitleListItem.getId());
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
+                FlowLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(20, 0, 20, 20);
+
         TextView textView = new TextView(this);
-        textView.setSingleLine();
-        textView.setLayoutParams(params);
         textView.setLayoutParams(layoutParams);
+        textView.setSingleLine();
+        textView.setPadding(10,10,10,10);
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setBackgroundResource(R.drawable.edit_text_selector);
         textView.setText(text);
-
         mBinder.flowLayoutJobTitle.addView(textView, layoutParams);
     }
 
