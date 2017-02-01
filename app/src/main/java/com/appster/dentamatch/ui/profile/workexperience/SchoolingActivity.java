@@ -148,6 +148,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                     return false;
                 }
 
+
                 if (TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
                     showToast("Year of graduation can never blank for school " + entry.getValue().getSchoolName());
                     return false;
