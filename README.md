@@ -1,29 +1,27 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+DentaMatch Android App
 
-### What is this repository for? ###
+This repository is for storing source code for DentaMatch Android application development by Appster. 
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Summary: DentaMatch provides a platform to recruiters and candidates in dental domain. It works in U.S. only.
+* Version: 1.0 (Under development)
 
 ### How do I get set up? ###
 
 * Summary of set up
+Requires Android device with O.S. version 4.4 and above.
+Open the code in Android Studio. Download and install the required plugins and tools which are prompted by Android Studio.
+
 * Configuration
 * Dependencies
-* Database configuration
-* How to run tests
 * Deployment instructions
 
 ### Contribution guidelines ###
-
-* Writing tests
-* Code review
+* Writing tests: Sangeeta Yadav and Venktesh Kalthuri.
+* Code review: Ram Kumar Bhambhu
 * Other guidelines
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* ram.bhambhu@appster.in
