@@ -40,6 +40,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
         mBinder.tvShowConfirmPassword.setOnClickListener(this);
         mBinder.tvShowNewPassword.setOnClickListener(this);
         mBinder.tvShowOldPassword.setOnClickListener(this);
+        mBinder.toolbarResetPassword.ivToolBarLeft.setOnClickListener(this);
     }
 
     @Override
@@ -54,6 +55,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 if (checkValidation()) {
                     callResetPassword(prepareRequest());
                 }
+                break;
             case R.id.tv_show_confirm_password:
                 if (mBinder.etConfirmPassword.getText().toString().length() > 0) {
 

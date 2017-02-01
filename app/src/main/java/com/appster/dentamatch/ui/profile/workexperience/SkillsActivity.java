@@ -68,6 +68,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
         if (isFromProfile) {
             mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
+            mBinder.btnNext.setText(getString(R.string.save_label));
 
         }
         btnNext.setOnClickListener(this);

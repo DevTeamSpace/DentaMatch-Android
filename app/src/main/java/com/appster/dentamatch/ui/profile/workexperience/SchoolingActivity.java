@@ -67,6 +67,8 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
         if (isFromProfile) {
             mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
+            mBinder.btnNext.setText(getString(R.string.save_label));
+
 
         }
         mBinder.btnNext.setOnClickListener(this);
@@ -145,6 +147,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                     showToast("School name can never blank.");
                     return false;
                 }
+
 
                 if (TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
                     showToast("Year of graduation can never blank for school " + entry.getValue().getSchoolName());

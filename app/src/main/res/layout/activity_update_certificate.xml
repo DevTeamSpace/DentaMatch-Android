@@ -55,7 +55,7 @@
                     android:layout_height="@dimen/camera_image_size"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="@dimen/margin_25"
-                    android:src="@drawable/ic_upload" />
+                    android:background="@drawable/ic_upload" />
             </LinearLayout>
 
             <com.appster.dentamatch.widget.CustomTextView
