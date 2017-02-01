@@ -56,6 +56,8 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
     private void initViews() {
         mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_affiliation));
         if (isFromEditProfile) {
+            mBinder.btnNext.setText(getString(R.string.save_label));
+
             mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
 
         }

@@ -353,7 +353,12 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         if (mSelectedJobTitle.equalsIgnoreCase("") && mExpMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
                 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("")
                 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) {
-            startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+            if (isFromProfile) {
+                EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                finish();
+            } else {
+                startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+            }
         } else {
             if ((mSelectedJobTitle.equalsIgnoreCase("") || mExpMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
                     || Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("")

@@ -73,10 +73,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mProfileData = getIntent().getParcelableExtra(Constants.EXTRA_PROFILE_DATA);
         }
 
-        mSelectedLat = mProfileData.getUser().getLatitude();
-        mSelectedLng = mProfileData.getUser().getLongitude();
-        mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
-
         mBinding.etLocation.setFocusableInTouchMode(false);
         mBinding.etLocation.setCursorVisible(false);
 
@@ -93,10 +89,19 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
     private void setViewData() {
         if (mProfileData != null) {
+            mSelectedLat = mProfileData.getUser().getLatitude();
+            mSelectedLng = mProfileData.getUser().getLongitude();
+            mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
+            if(mSelectedJobTitleID == 0){
+                mBinding.etJobTitle.setText("Please select a job");
+
+            }else{
+                mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
+
+            }
             mBinding.toolbarProfile.tvToolbarGeneralLeft.setText(R.string.header_edit_profile);
             mBinding.etFname.setText(mProfileData.getUser().getFirstName());
             mBinding.etLname.setText(mProfileData.getUser().getLastName());
-            mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
             mBinding.etDesc.setText(mProfileData.getUser().getAboutMe());
             mBinding.etLocation.setText(mProfileData.getUser().getPreferredJobLocation());
 
@@ -218,7 +223,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (TextUtils.isEmpty(mBinding.etJobTitle.getText())) {
             showToast(getString(R.string.error_no_job_type));
 
-        } else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
+        }else if(mBinding.etJobTitle.getText().toString().equalsIgnoreCase("Please select a job")){
+            showToast(getString(R.string.error_no_job_type));
+
+        }else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
             showToast(getString(R.string.error_no_location));
 
         } else if (TextUtils.isEmpty(mBinding.etDesc.getText())) {
@@ -372,7 +380,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     }
 
     private void takePhoto() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);

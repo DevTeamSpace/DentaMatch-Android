@@ -130,7 +130,7 @@ public final class PreferenceUtil {
     }
 
     public static int getJobTitlePosition() {
-        return Hawk.get(KEY_JOB_TITLE_POSITION);
+        return Hawk.get(KEY_JOB_TITLE_POSITION,0);
     }
 
     public static void setJobTitleId(int value) {

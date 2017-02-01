@@ -59,8 +59,8 @@
             android:id="@+id/tv_add_certificates"
             style="@style/text_view_normal"
             android:layout_margin="@dimen/margin_normal"
-            android:drawableStart="@drawable/ic_plus_exp"
             android:drawablePadding="@dimen/padding_drawable"
+            android:drawableStart="@drawable/ic_plus_exp"
             android:gravity="center"
             android:text="@string/add_certificate"
             android:textColor="@color/cell_text_color"
@@ -74,20 +74,52 @@
             android:layout_height="@dimen/profile_image_height"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_normal"
-            android:background="@drawable/profile_pic_placeholder"
+            android:background="@drawable/ic_upload"
             android:visibility="gone" />
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_certificate_image_name"
             style="@style/text_view_normal"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
             android:text="@string/header_certification"
-            android:textColor="@color/cerulean_color"
+            android:textColor="@color/text_default_color"
             android:textSize="@dimen/text_size_13"
             android:visibility="gone"
-            app:customFont="@string/font_medium" />
+            app:customFont="@string/font_bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_certificate_validity_text"
+                style="@style/text_view_normal"
+                android:layout_gravity="center"
+
+                android:text="@string/valdity_date_string"
+                android:textColor="@color/text_default_color"
+                android:textSize="@dimen/text_size_13"
+                android:visibility="gone"
+                app:customFont="@string/font_regular" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_certificate_validity_date"
+                style="@style/text_view_normal"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_6"
+                android:text="@string/header_certification"
+                android:textColor="@color/text_default_color"
+                android:textSize="@dimen/text_size_13"
+                android:visibility="gone"
+                app:customFont="@string/font_bold" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

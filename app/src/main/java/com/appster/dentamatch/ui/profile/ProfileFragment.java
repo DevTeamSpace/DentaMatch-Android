@@ -64,6 +64,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private String TAG = "ProfileFragment-";
     private int tempValue = 0;
     private ProfileResponseData profileResponseData;
+    private ItemProfileCellCertificateBinding cellCertificateBinding;
 
     public static ProfileFragment newInstance() {
         ProfileFragment frag = new ProfileFragment();
@@ -80,7 +81,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         fragmentManager = getActivity().getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         initViews();
-        getProfileData();
         return profileBinding.getRoot();
 
     }
@@ -102,6 +102,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getProfileData();
     }
 
     private void initViews() {
@@ -127,11 +128,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellLicence.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent licenseintent = new Intent(getActivity(), UpdateLicenseActivity.class);
-                licenseintent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
-
-                licenseintent.putExtra(Constants.INTENT_KEY.DATA, profileResponseData.getLicence());
-                startActivity(licenseintent);
+                Intent licenseIntent = new Intent(getActivity(), UpdateLicenseActivity.class);
+                licenseIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+                licenseIntent.putExtra(Constants.INTENT_KEY.DATA, profileResponseData.getLicence());
+                startActivity(licenseIntent);
             }
         });
         profileBinding.cellDentalStateBoard.tvEdit.setOnClickListener(new View.OnClickListener() {
@@ -139,8 +139,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
                 CertificatesList data = new CertificatesList();
-                data.setImageUrl(profileResponseData.getDentalStateBoard().getImageUrl());
+                if (TextUtils.isEmpty(profileResponseData.getDentalStateBoard().getImageUrl())) {
+                    data.setImageUrl("");
+
+                } else {
+                    data.setImageUrl(profileResponseData.getDentalStateBoard().getImageUrl());
+                }
                 data.setCertificateName(getString(R.string.dental_state_board));
+
                 intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
                 intent.putExtra(Constants.INTENT_KEY.DATA, data);
                 startActivity(intent);
@@ -316,9 +322,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
+                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.VISIBLE);
+                profileBinding.cellDentalStateBoard.tvCertificateValidityDate.setVisibility(View.GONE);
+                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
 
                 if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
-                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.cellDentalStateBoard.ivCertificateImage);
+                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.cellDentalStateBoard.ivCertificateImage);
 
                 }
             } else {
@@ -352,9 +361,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.keySkillInflater.removeAllViews();
         ItemProfileSkillBinding skillBinding;
         for (int i = 0; i < skillArrayList.size(); i++) {
-            skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
-                    .inflate(R.layout.item_profile_skill, profileBinding.expInflater, false));
+            skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.keySkillInflater.getContext())
+                    .inflate(R.layout.item_profile_skill, profileBinding.keySkillInflater, false));
             skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName());
+
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
                 CustomTextView textView = new CustomTextView(getActivity());
                 FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
@@ -388,14 +398,72 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.expInflater.removeAllViews();
         ItemProfileWorkExpBinding expBinding;
         for (int i = 0; i < expList.size(); i++) {
+            boolean isNoContactInfo = false;
             expBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
                     .inflate(R.layout.item_profile_work_exp, profileBinding.expInflater, false));
             expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
             expBinding.tvAddress.setText(expList.get(i).getOfficeAddress());
-            expBinding.tvReferenceEmail.setText(expList.get(i).getReference1Email());
-            expBinding.tvReferenceName.setText(expList.get(i).getReference1Name());
-            expBinding.tvReferencePhoneNumber.setText(expList.get(i).getReference1Mobile());
+            if (TextUtils.isEmpty(expList.get(i).getReference1Email()) && TextUtils.isEmpty(expList.get(i).getReference1Mobile()) && TextUtils.isEmpty(expList.get(i).getReference1Name())) {
+                isNoContactInfo = true;
+                expBinding.tvReference1Email.setVisibility(View.GONE);
+                expBinding.tvReference1Name.setVisibility(View.GONE);
+                expBinding.tvReference1PhoneNumber.setVisibility(View.GONE);
+            } else {
+                if (TextUtils.isEmpty(expList.get(i).getReference1Email())) {
+                    expBinding.tvReference1Email.setText(getString(R.string.not_applicable));
+
+                } else {
+                    expBinding.tvReference1Email.setText(expList.get(i).getReference1Email());
+
+                }
+                if (TextUtils.isEmpty(expList.get(i).getReference1Name())) {
+                    expBinding.tvReference1Name.setText(getString(R.string.not_applicable));
+
+                } else {
+                    expBinding.tvReference1Name.setText(expList.get(i).getReference1Name());
+
+                }
+                if (TextUtils.isEmpty(expList.get(i).getReference1Mobile())) {
+                    expBinding.tvReference1PhoneNumber.setText(getString(R.string.not_applicable));
+
+                } else {
+                    expBinding.tvReference1PhoneNumber.setText(expList.get(i).getReference1Mobile());
+
+                }
+            }
+            if (TextUtils.isEmpty(expList.get(i).getReference2Email()) && TextUtils.isEmpty(expList.get(i).getReference2Mobile()) && TextUtils.isEmpty(expList.get(i).getReference2Name())) {
+                if (isNoContactInfo) {
+                    expBinding.tvContactInfo.setVisibility(View.GONE);
+                }
+                expBinding.tvReference2Email.setVisibility(View.GONE);
+                expBinding.tvReference2Name.setVisibility(View.GONE);
+                expBinding.tvReference2PhoneNumber.setVisibility(View.GONE);
+            } else {
+                if (TextUtils.isEmpty(expList.get(i).getReference2Email())) {
+                    expBinding.tvReference2Email.setText(getString(R.string.not_applicable));
+
+                } else {
+                    expBinding.tvReference2Email.setText(expList.get(i).getReference2Email());
+
+                }
+                if (TextUtils.isEmpty(expList.get(i).getReference2Name())) {
+                    expBinding.tvReference2Name.setText(getString(R.string.not_applicable));
+
+                } else {
+                    expBinding.tvReference2Name.setText(expList.get(i).getReference2Name());
+
+                }
+                if (TextUtils.isEmpty(expList.get(i).getReference2Mobile())) {
+                    expBinding.tvReference2PhoneNumber.setText(getString(R.string.not_applicable));
+
+                } else {
+                    expBinding.tvReference2PhoneNumber.setText(expList.get(i).getReference2Mobile());
+
+                }
+            }
+
+
             expBinding.tvExpDuration.setText("" + expList.get(i).getMonthsOfExpereince() / 12 + "." + (expList.get(i).getMonthsOfExpereince() % 12) + " " + getString(R.string.yrs));
             profileBinding.expInflater.addView(expBinding.getRoot());
         }
@@ -404,16 +472,31 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private void inflateCertification(final ArrayList<CertificatesList> certificateList) {
         profileBinding.certificationInflater.removeAllViews();
-        ItemProfileCellCertificateBinding cellCertificateBinding;
 
         for (int i = 0; i < certificateList.size(); i++) {
+
             cellCertificateBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.certificationInflater.getContext())
                     .inflate(R.layout.item_profile_cell_certificate, profileBinding.expInflater, false));
-            tempValue = i;
-            cellCertificateBinding.tvEdit.setTag(i);
+            final View tempView = cellCertificateBinding.getRoot();
+            tempView.setTag(i);
+            cellCertificateBinding.tvEdit.setId(i);
+            cellCertificateBinding.tvCertificateImageName.setVisibility(View.VISIBLE);
+            cellCertificateBinding.tvCertificateValidityDate.setVisibility(View.VISIBLE);
             cellCertificateBinding.tvAddCertificates.setTag(i);
             CertificatesList certificate = certificateList.get(i);
             cellCertificateBinding.tvCertificatesName.setText(certificate.getCertificateName());
+            cellCertificateBinding.tvCertificateImageName.setText(certificate.getCertificateName());
+            if (TextUtils.isEmpty(certificate.getValidityDate())) {
+                cellCertificateBinding.tvCertificateValidityDate.setVisibility(View.GONE);
+                cellCertificateBinding.tvCertificateValidityText.setVisibility(View.GONE);
+                cellCertificateBinding.tvCertificateImageName.setVisibility(View.GONE);
+
+            } else {
+                cellCertificateBinding.tvCertificateValidityText.setVisibility(View.VISIBLE);
+                cellCertificateBinding.tvCertificateValidityDate.setText(certificate.getValidityDate());
+
+            }
+
             if (!TextUtils.isEmpty(certificate.getImage())) {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.GONE);
                 cellCertificateBinding.tvEdit.setVisibility(View.VISIBLE);
@@ -431,7 +514,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get(tempValue));
+//                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) cellCertificateBinding.tvEdit.getId()));
+                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) tempView.getTag()));
                     startActivity(intent);
                 }
             });
@@ -439,8 +523,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get(tempValue));
-
+//                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) cellCertificateBinding.tvAddCertificates.getId()));
+                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) tempView.getTag()));
                     startActivity(intent);
                 }
             });

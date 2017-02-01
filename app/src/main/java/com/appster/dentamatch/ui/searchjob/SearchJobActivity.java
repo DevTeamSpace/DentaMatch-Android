@@ -2,9 +2,9 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -19,6 +19,7 @@ import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private String mSelectedZipCode;
     private boolean isPartTime, isFullTime, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
 
+
     @Override
     public String getActivityName() {
         return null;
@@ -42,13 +44,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinder =DataBindingUtil.setContentView(this, R.layout.activity_search_job);
+        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_search_job);
         initViews();
     }
 
     private void initViews() {
         mSelectedJobID = new ArrayList<>();
         mPartTimeDays = new ArrayList<>();
+
         mBinder.toolbarSearchJob.tvToolbarGeneralLeft.setText(getString(R.string.header_search_job));
         mBinder.toolbarSearchJob.ivToolBarLeft.setOnClickListener(this);
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
@@ -75,9 +78,9 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 break;
 
             case R.id.tv_job_title:
-                Intent jobTitleSelectionIntent =  new Intent(getApplicationContext(), SelectJobTitleActivity.class);
+                Intent jobTitleSelectionIntent = new Intent(getApplicationContext(), SelectJobTitleActivity.class);
 
-                if(mChosenTitles != null) {
+                if (mChosenTitles != null) {
                     jobTitleSelectionIntent.putExtra(Constants.EXTRA_CHOSEN_JOB_TITLES, mChosenTitles);
                 }
 
@@ -89,11 +92,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                     isSunday = false;
                     mPartTimeDays.remove("Sunday");
                     mBinder.tvSunday.setBackground(null);
+                    mBinder.tvSunday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                 } else {
                     mPartTimeDays.add("Sunday");
                     isSunday = true;
                     mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
-
+                    mBinder.tvSunday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
                 }
                 break;
 
@@ -101,14 +105,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isMonday) {
                     isMonday = false;
                     mPartTimeDays.remove("Monday");
-                    mBinder.tvMonday.setTextColor(Color.BLACK);
                     mBinder.tvMonday.setBackground(null);
+                    mBinder.tvMonday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
+
                 } else {
                     isMonday = true;
                     mPartTimeDays.add("Monday");
-                    mBinder.tvMonday.setTextColor(R.color.white_color);
                     mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
-
+                    mBinder.tvMonday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
                 }
                 break;
 
@@ -116,13 +120,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isTuesday) {
                     isTuesday = false;
                     mPartTimeDays.remove("Tuesday");
-                    mBinder.tvTuesday.setTextColor(Color.BLACK);
                     mBinder.tvTuesday.setBackground(null);
+                    mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
+
                 } else {
                     isTuesday = true;
                     mPartTimeDays.add("Tuesday");
-                    mBinder.tvTuesday.setTextColor(R.color.white_color);
                     mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                    mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
 
                 }
                 break;
@@ -131,13 +136,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isWednesday) {
                     isWednesday = false;
                     mPartTimeDays.remove("Wednesday");
-                    mBinder.tvWednesday.setTextColor(Color.BLACK);
+                    mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                     mBinder.tvWednesday.setBackground(null);
                 } else {
                     isWednesday = true;
                     mPartTimeDays.add("Wednesday");
-                    mBinder.tvWednesday.setTextColor(R.color.white_color);
                     mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                    mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
 
                 }
                 break;
@@ -146,13 +151,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isThursday) {
                     isThursday = false;
                     mPartTimeDays.remove("Thursday");
-                    mBinder.tvThursday.setTextColor(Color.BLACK);
+                    mBinder.tvThursday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                     mBinder.tvThursday.setBackground(null);
                 } else {
                     isThursday = true;
                     mPartTimeDays.add("Thursday");
-                    mBinder.tvThursday.setTextColor(R.color.white_color);
                     mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                    mBinder.tvThursday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
 
                 }
                 break;
@@ -161,14 +166,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isFriday) {
                     isFriday = false;
                     mPartTimeDays.remove("Friday");
-                    mBinder.tvFriday.setTextColor(Color.BLACK);
+                    mBinder.tvFriday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                     mBinder.tvFriday.setBackground(null);
                 } else {
                     isFriday = true;
                     mPartTimeDays.add("Friday");
-                    mBinder.tvFriday.setTextColor(R.color.white_color);
                     mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
-
+                    mBinder.tvFriday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
                 }
                 break;
 
@@ -176,14 +180,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (isSaturday) {
                     isSaturday = false;
                     mPartTimeDays.remove("Saturday");
-                    mBinder.tvSaturday.setTextColor(Color.BLACK);
+                    mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                     mBinder.tvSaturday.setBackground(null);
                 } else {
                     isSaturday = true;
-                    mPartTimeDays.remove("Saturday");
-                    mBinder.tvSaturday.setTextColor(R.color.white_color);
+                    mPartTimeDays.add("Saturday");
                     mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
-
+                    mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
                 }
                 break;
 
@@ -205,33 +208,34 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()){
+        switch (buttonView.getId()) {
 
             case R.id.cb_part_time_check_box:
-                if(isChecked){
+                if (isChecked) {
                     isPartTime = true;
-                    mBinder.tvPartTime.setTextColor(R.color.black_color);
+                    mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.black_color));
                     mBinder.dayLayout.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     isPartTime = false;
                     mBinder.dayLayout.setVisibility(View.GONE);
-                    mBinder.tvPartTime.setTextColor(R.color.greyish_color);
+                    mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.grayish_two));
                 }
 
                 break;
 
 
             case R.id.cb_full_time_check_box:
-                if(isChecked){
+                if (isChecked) {
                     isFullTime = true;
-                    mBinder.tvFullTime.setTextColor(R.color.black_color);
-                }else{
+                    mBinder.tvFullTime.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.black_color));
+                } else {
                     isFullTime = false;
-                    mBinder.tvFullTime.setTextColor(R.color.greyish_color);
+                    mBinder.tvFullTime.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.grayish_two));
                 }
                 break;
 
-            default: break;
+            default:
+                break;
         }
 
     }
@@ -268,7 +272,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
          */
         PreferenceUtil.setFilterChanged(true);
         startActivity(new Intent(this, HomeActivity.class)
-                .putExtra(Constants.EXTRA_SEARCH_JOB,true));
+                .putExtra(Constants.EXTRA_SEARCH_JOB, true));
     }
 
 
@@ -307,6 +311,8 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 mBinder.flowLayoutJobTitle.removeAllViews();
                 ArrayList<JobTitleList> jobTitleList = data.getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
                 mChosenTitles = jobTitleList;
+                mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
+
                 for (JobTitleList item : jobTitleList) {
                     addTitleToLayout(item);
                 }
@@ -329,19 +335,18 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void addTitleToLayout(JobTitleList jobTitleListItem) {
-        mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
-        com.wefika.flowlayout.FlowLayout.LayoutParams layoutParams = new com.wefika.flowlayout.FlowLayout.LayoutParams(com.wefika.flowlayout.FlowLayout.LayoutParams.WRAP_CONTENT,
-                com.wefika.flowlayout.FlowLayout.LayoutParams.WRAP_CONTENT);
-
-        layoutParams.setMargins(20, 0, 20, 20);
         String text = jobTitleListItem.getJobTitle();
         mSelectedJobID.add(jobTitleListItem.getId());
 
+        FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
+                FlowLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(20, 0, 20, 20);
+
         TextView textView = new TextView(this);
-        textView.setSingleLine();
         textView.setLayoutParams(layoutParams);
+        textView.setSingleLine();
+        textView.setPadding(10,10,10,10);
         textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setPadding(30, 10, 30, 10);
         textView.setBackgroundResource(R.drawable.edit_text_selector);
         textView.setText(text);
         mBinder.flowLayoutJobTitle.addView(textView, layoutParams);

@@ -84,11 +84,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 });
                 break;
             case R.id.tv_privacy_policy:
-                startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.F_NAME, true));
+                startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, true));
 
                 break;
             case R.id.tv_term_n_condition:
-                startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.F_NAME, false));
+                startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, false));
 
                 break;
         }
@@ -108,8 +108,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 if (response.getStatus() == 1) {
                     PreferenceUtil.setIsLogined(false);
                     Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
             }

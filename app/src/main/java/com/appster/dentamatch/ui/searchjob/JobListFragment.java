@@ -150,6 +150,7 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
 
         if (mIsPaginationNeeded) {
             if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                mIsPaginationNeeded = false;
                 mJobListBinding.layJobListPagination.setVisibility(View.VISIBLE);
                 SearchJobDataHelper.getInstance().updateDataViaPagination(getActivity());
             }

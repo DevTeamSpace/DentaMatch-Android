@@ -13,6 +13,16 @@ public class UserDetail {
     private String zipCode;
     private String preferredJobLocation;
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    private String imageUrl;
+
     @SerializedName("accessToken")
     private String userToken;
 
