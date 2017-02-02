@@ -21,7 +21,3 @@ Open the code in Android Studio. Download and install the required plugins and t
 * Writing tests: Sangeeta Yadav and Venktesh Kalthuri.
 * Code review: Ram Kumar Bhambhu
 * Other guidelines
-
-### Who do I talk to? ###
-
-* ram.bhambhu@appster.in
