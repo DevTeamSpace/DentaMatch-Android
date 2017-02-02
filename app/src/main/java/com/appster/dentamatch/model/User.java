@@ -28,6 +28,8 @@ public class User implements Parcelable{
     private String aboutMe;
     private String latitude;
     private String longitude;
+    @SerializedName("zipcode")
+    private String postalCode;
     private String preferredJobLocation;
     private int id;
 
@@ -49,6 +51,7 @@ public class User implements Parcelable{
         aboutMe = in.readString();
         latitude = in.readString();
         longitude = in.readString();
+        postalCode = in.readString();
         preferredJobLocation = in.readString();
         id = in.readInt();
     }
@@ -77,6 +80,7 @@ public class User implements Parcelable{
         dest.writeString(aboutMe);
         dest.writeString(latitude);
         dest.writeString(longitude);
+        dest.writeString(postalCode);
         dest.writeString(preferredJobLocation);
         dest.writeInt(id);
     }
@@ -103,6 +107,14 @@ public class User implements Parcelable{
 
     public String getLongitude() {
         return longitude;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getStatus() {

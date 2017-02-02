@@ -19,6 +19,7 @@ import com.appster.dentamatch.databinding.ItemProfileSchoolingBinding;
 import com.appster.dentamatch.databinding.ItemProfileSkillBinding;
 import com.appster.dentamatch.databinding.ItemProfileWorkExpBinding;
 import com.appster.dentamatch.model.ProfileUpdatedEvent;
+import com.appster.dentamatch.model.User;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -39,6 +40,7 @@ import com.appster.dentamatch.ui.profile.workexperience.WorkExpListActivity;
 import com.appster.dentamatch.ui.settings.SettingActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 import com.squareup.picasso.MemoryPolicy;
@@ -272,6 +274,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.tvJobTitle.setText(response.getUser().getJobTitle());
                 profileBinding.tvLocation.setText(response.getUser().getPreferredJobLocation());
 
+                saveUserProfile(response.getUser());
             }
             if (response.getWorkExperience() != null && response.getWorkExperience().getSaveList().size() > 0) {
                 goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
@@ -568,6 +571,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         if (profileUpdatedEvent.ismIsProfileUpdated()) {
             getProfileData();
         }
+    }
+    private void saveUserProfile(User user) {
+        PreferenceUtil.setUserModel(user);
     }
 
 

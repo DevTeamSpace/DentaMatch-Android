@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySettingsBinding;
+import com.appster.dentamatch.model.User;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -26,11 +27,14 @@ import com.appster.dentamatch.util.Utils;
 
 import retrofit2.Call;
 
+import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LOCATION;
+
 /**
  * Created by virender on 17/01/17.
  */
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private ActivitySettingsBinding settingsBinding;
+    private User mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         settingsBinding.tvLogout.setOnClickListener(this);
         settingsBinding.tvTermNCondition.setOnClickListener(this);
         settingsBinding.tvPrivacyPolicy.setOnClickListener(this);
+        mUser = PreferenceUtil.getUserModel();
     }
 
     @Override
@@ -67,7 +72,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.tv_chnage_location:
 //                startActivity(new Intent(SettingActivity.this,));
-                startActivity(new Intent(this, PlacesMapActivity.class));
+                Intent intent = new Intent(this, PlacesMapActivity.class);
+
+                if (mUser.getLatitude() != null && mUser.getLongitude() != null) {
+                    intent.putExtra(Constants.EXTRA_LATITUDE, mUser.getLatitude());
+                    intent.putExtra(Constants.EXTRA_LONGITUDE, mUser.getLongitude());
+                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mUser.getPostalCode());
+                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mUser.getPreferredJobLocation());
+                }
+
+                startActivityForResult(intent, REQUEST_CODE_LOCATION);
+
+//                startActivity(new Intent(this, PlacesMapActivity.class));
 
                 break;
             case R.id.tv_logout:
