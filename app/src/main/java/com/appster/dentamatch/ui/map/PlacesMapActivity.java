@@ -66,10 +66,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private String mLatitude;
     private String mLongitude;
 
-
-    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
-            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +91,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
         // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
         // the entire world.
-        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY, null);
+        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, null, null);
         mAutocompleteView.setAdapter(mAdapter);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentMap);
@@ -143,7 +139,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             LatLng latLng = new LatLng(lat, longi);
 
             if (mMap != null) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
                 mMap.addMarker(new MarkerOptions().position(latLng));
             }
         }
@@ -183,7 +179,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         if (mMap != null) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
@@ -279,7 +275,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             // Get the Place object from the buffer.
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
             mMap.clear();
             mMap.addMarker(new MarkerOptions().position(latLng));
 
