@@ -138,13 +138,14 @@
         <activity
             android:name=".ui.common.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" >
+            android:theme="@style/NoActionBar">
 
         </activity>
 
-        <activity android:name=".ui.searchjob.JobDetailActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.searchjob.JobDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
 
         <activity
@@ -165,6 +166,10 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".ui.searchjob.SelectJobTitleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.calendar.SetAvailabilityActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 

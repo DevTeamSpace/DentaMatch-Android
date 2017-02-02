@@ -254,6 +254,7 @@
     <string name="friday">Fr</string>
     <string name="saturday">Sa</string>
     <string name="header_search_job">SEARCH JOBS</string>
+    <string name="header_set_availability">SET AVAILBILITY</string>
     <string name="job_tile_search">You can select more than one job title</string>
     <string name="button_search">SEARCH</string>
 
@@ -282,5 +283,16 @@
     <string name="txt_saturday">Saturday</string>
     <string name="txt_sunday">Sunday</string>
     <string name="not_applicable">NA</string>
+
+<!--calendar-->
+
+    <string name="sun">SU</string>
+    <string name="mon">MO</string>
+    <string name="tue">TU</string>
+    <string name="wed">WE</string>
+    <string name="thu">TH</string>
+    <string name="fri">FR</string>
+    <string name="sat">SA</string>
+    <string name="last_date">30</string>
 
 </resources>

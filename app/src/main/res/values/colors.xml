@@ -44,6 +44,7 @@
     <color name="get_started_color">#02bbd5</color>
     <color name="cell_boundry_color">#e4e4e4</color>
     <color name="graish_brown_color">#515151</color>
+    <color name="graish_brown_opacity_color">#50515151</color>
     <color name="line_divider">#e5e5e5</color>
     <color name="nav_bg_color">#b2b2b2</color>
     <color name="nav_text_default_color">#50b2b2b2</color>
