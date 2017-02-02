@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by ramkumar on 12/01/17.
  */
 
-public class SubSkill implements Parcelable{
+public class SubSkill implements Parcelable {
     private int id;
     private int parentId;
     private String skillName;
