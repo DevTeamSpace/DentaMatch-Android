@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.searchjob;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
@@ -43,6 +45,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     private int jobID;
     private ActivityJobDetailBinding mBinding;
     private GoogleMap mGoogleMap;
+    private boolean mIsDescExpanded, mIsDescCollapsed;
 
     @Override
     public String getActivityName() {
@@ -52,23 +55,23 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_job_detail);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_job_detail);
         setData();
 
-        if(getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)){
-            jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID,0);
+        if (getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)) {
+            jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID, 0);
         }
 
         mBinding.mapJobDetail.onCreate(savedInstanceState);
         mBinding.mapJobDetail.getMapAsync(this);
         getJobDetail();
+        mIsDescCollapsed = true;
     }
 
 
     private void setData() {
         mBinding.jobDetailToolbar.tvToolbarGeneralLeft.setText(getString(R.string.header_job_detail));
         mBinding.jobDetailToolbar.ivToolBarLeft.setOnClickListener(this);
-        mBinding.tvJobDetailDocReadMore.setOnClickListener(this);
 
     }
 
@@ -120,23 +123,58 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         mBinding.mapJobDetail.onLowMemory();
     }
 
-    private void cycleTextViewExpansion(){
-        int collapsedMaxLines = 3;
+    private void cycleTextViewExpansion() {
+        int collapsedMaxLines = 4;
         ObjectAnimator animation = ObjectAnimator.ofInt(mBinding.tvJobDetailDocDescription, "maxLines",
-                mBinding.tvJobDetailDocDescription.getMaxLines() == collapsedMaxLines? mBinding.tvJobDetailDocDescription.getLineCount() : collapsedMaxLines);
-        animation.setDuration(200).start();
+                mBinding.tvJobDetailDocDescription.getMaxLines() == collapsedMaxLines ? mBinding.tvJobDetailDocDescription.getLineCount() : collapsedMaxLines);
+        animation.setInterpolator(new AccelerateInterpolator());
+        animation.setDuration(2000).start();
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+                if(mBinding.tvJobDetailDocReadMore.getText().toString().equalsIgnoreCase(getString(R.string.txt_read_more))){
+                    mBinding.tvJobDetailDocReadMore.setText(getString(R.string.text_show_label));
+                }else{
+                    mBinding.tvJobDetailDocReadMore.setText(getString(R.string.txt_read_more));
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_tool_bar_left:
                 onBackPressed();
                 break;
 
             case R.id.tv_job_detail_doc_read_more:
-                cycleTextViewExpansion();
+                if(mIsDescCollapsed) {
+                    mIsDescCollapsed = false;
+                    mBinding.tvJobDetailDocDescription.setMaxLines(Integer.MAX_VALUE);
+                    mBinding.tvJobDetailDocReadMore.setText(getString(R.string.text_show_label));
+                }else{
+                    mIsDescCollapsed = true;
+                    mBinding.tvJobDetailDocDescription.setMaxLines(4);
+                    mBinding.tvJobDetailDocReadMore.setText(getString(R.string.txt_read_more));
+                }
                 break;
 
             case R.id.btn_apply_job:
@@ -144,7 +182,8 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 break;
 
 
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -167,7 +206,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         });
     }
 
-    private void getJobDetail(){
+    private void getJobDetail() {
         JobDetailRequest request = new JobDetailRequest();
         request.setJobId(jobID);
         showProgressBar();
@@ -175,12 +214,12 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {
             @Override
             public void onSuccess(JobDetailResponse response) {
-                if(response != null ){
+                if (response != null) {
 
-                    if(response.getStatus() == 1){
+                    if (response.getStatus() == 1) {
                         mBinding.layJobDetailHolder.setVisibility(View.VISIBLE);
                         setDetailData(response.getResult());
-                    }else{
+                    } else {
                         showToast(response.getMessage());
                         mBinding.layJobDetailHolder.setVisibility(View.GONE);
                         mBinding.btnApplyJob.setOnClickListener(null);
@@ -253,7 +292,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 }
             }, 200);
 
-        }else if (dataModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
+        } else if (dataModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
             mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_full_time);
             mBinding.tvJobDetailDate.setVisibility(View.GONE);
             mBinding.tvJobDetailType.setText(getString(R.string.txt_full_time));
@@ -265,13 +304,12 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         }
 
         String endMessage = dataModel.getJobPostedTimeGap() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
-        mBinding.tvJobDocTime.setText(String.valueOf( dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
+        mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
 
         mBinding.tvJobDetailDocName.setText(dataModel.getOfficeName());
         mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
 //        mBinding.tvJobDetailJobOpenings.setText(dataModel.);
 //        mBinding.tvOfficeDress.setText(dataModel.g);
-        mBinding.tvJobDetailDocDescription.setText(dataModel.getTemplateDesc());
 //        mBinding.tvOfficeParkingAvailibility.setText(dataModel.get);
         String startTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart());
         String endTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd());
@@ -279,30 +317,38 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
         mBinding.tvJobDetailDocOfficeType.setText(dataModel.getOfficeTypeName());
 
-        //TODO: check the line count of tvJobDetailDocDescription on post of the view, then if it is greater than 4 show read more and animate
-        if(dataModel.getTemplateDesc().length() > 500){
-            mBinding.tvJobDetailDocReadMore.setVisibility(View.VISIBLE);
-            mBinding.tvJobDetailDocReadMore.setOnClickListener(this);
-        }else{
-//            mBinding.tvJobDetailDocReadMore.setVisibility(View.GONE);
-//            mBinding.tvJobDetailDocReadMore.setOnClickListener(null);
-        }
+        mBinding.tvJobDetailDocDescription.setText(dataModel.getTemplateDesc());
+        mBinding.tvJobDetailDocDescription.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mBinding.tvJobDetailDocDescription.getLineCount() > 4) {
+                    mBinding.tvJobDetailDocDescription.setMaxLines(4);
+                    mBinding.tvJobDetailDocReadMore.setVisibility(View.VISIBLE);
+                    mBinding.tvJobDetailDocReadMore.setOnClickListener(JobDetailActivity.this);
 
-        if(dataModel.getIsApplied() == 0){
+                } else {
+                    mBinding.tvJobDetailDocReadMore.setVisibility(View.GONE);
+                    mBinding.tvJobDetailDocReadMore.setOnClickListener(null);
+                }
+            }
+        }, 200);
+
+
+        if (dataModel.getIsApplied() == 0) {
             mBinding.btnApplyJob.setOnClickListener(JobDetailActivity.this);
             mBinding.btnApplyJob.setText(getString(R.string.button_apply_for_job));
-        }else{
+        } else {
             mBinding.btnApplyJob.setOnClickListener(null);
             mBinding.btnApplyJob.setText(getString(R.string.button_already_applied));
         }
 
-        if(dataModel.getIsSaved() == 1){
+        if (dataModel.getIsSaved() == 1) {
             mBinding.cbJobSelection.setChecked(true);
-        }else{
+        } else {
             mBinding.cbJobSelection.setChecked(false);
         }
 
-        addMarker(dataModel.getLatitude(),dataModel.getLongitude(), true);
+        addMarker(dataModel.getLatitude(), dataModel.getLongitude(), true);
     }
 
 
@@ -310,14 +356,14 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         MarkerOptions options = new MarkerOptions();
         options.position(new LatLng(lat, lng));
 
-        if(isSelected) {
+        if (isSelected) {
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_selected_large));
-        }else{
+        } else {
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
         }
 
         mGoogleMap.addMarker(options);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), MAP_ZOOM_LEVEL));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), MAP_ZOOM_LEVEL));
 
     }
 }

@@ -536,6 +536,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private void inflateSchools(ArrayList<ProfileSchool> schoolList) {
         profileBinding.schoolInflater.removeAllViews();
         ItemProfileSchoolingBinding schoolBinding;
+
         for (int i = 0; i < schoolList.size(); i++) {
             schoolBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.schoolInflater.getContext())
                     .inflate(R.layout.item_profile_schooling, profileBinding.schoolInflater, false));

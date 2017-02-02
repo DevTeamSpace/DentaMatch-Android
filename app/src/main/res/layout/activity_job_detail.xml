@@ -253,7 +253,6 @@
                         android:layout_marginTop="@dimen/margin_10"
                         android:layout_marginBottom="@dimen/margin_10"
                         android:ellipsize="end"
-                        android:maxLines="3"
                         android:text="@string/lorem_ipsum_medium"
                         android:paddingBottom="@dimen/margin_small"
                         android:paddingTop="@dimen/margin_small"
@@ -270,7 +269,7 @@
                         android:layout_marginTop="@dimen/margin_15"
                         android:ellipsize="end"
                         android:maxLines="4"
-                        android:text="READ MORE"
+                        android:text="@string/txt_read_more"
                         android:textColor="@color/cerulean_color"
                         app:customFont="@string/font_regular" />
 
