@@ -342,6 +342,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                     finish();
                 }
             }
