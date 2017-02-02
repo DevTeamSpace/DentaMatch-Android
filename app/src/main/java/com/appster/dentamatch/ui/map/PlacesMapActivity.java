@@ -7,6 +7,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
@@ -38,6 +40,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.math.DoubleMath;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -62,6 +65,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private String mPlaceName;
     private String mLatitude;
     private String mLongitude;
+
 
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
@@ -97,9 +101,20 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentMap);
         mapFragment.getMapAsync(this);
 
-        EventBus.getDefault().register(this);
+        if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_LATITUDE)) {
+            mLatitude = getIntent().getStringExtra(Constants.EXTRA_LATITUDE);
+            mLongitude = getIntent().getStringExtra(Constants.EXTRA_LONGITUDE);
+            mPostalCode = getIntent().getStringExtra(Constants.EXTRA_POSTAL_CODE);
+            mPlaceName = getIntent().getStringExtra(Constants.EXTRA_PLACE_NAME);
 
-        LocationUtils.addFragment(this);
+            mAutocompleteView.setAdapter(null);
+            mAutocompleteView.setText(mPlaceName);
+            mAutocompleteView.setAdapter(mAdapter);
+
+        } else {
+            EventBus.getDefault().register(this);
+            LocationUtils.addFragment(this);
+        }
     }
 
     @Override
@@ -116,6 +131,22 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         setMap();
+
+        if (mLatitude != null) {
+            Location location = new Location("");
+            double lat = Double.parseDouble(mLatitude);
+            double longi = Double.parseDouble(mLongitude);
+
+            location.setLatitude(lat);
+            location.setLongitude(longi);
+
+            LatLng latLng = new LatLng(lat, longi);
+
+            if (mMap != null) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                mMap.addMarker(new MarkerOptions().position(latLng));
+            }
+        }
     }
 
     @Override
@@ -134,7 +165,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
             case R.id.layout_done:
                 hideKeyboard();
-                if(mAutocompleteView.getText().toString().trim().isEmpty()) {
+                if (mAutocompleteView.getText().toString().trim().isEmpty()) {
                     Utils.showToast(this, getString(R.string.error_empty_address));
                     return;
                 }
@@ -157,7 +188,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         }
 
         Address address = getReverseGeoCode(latLng);
-
         setData(address);
     }
 
@@ -169,10 +199,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mLongitude = String.valueOf(address.getLongitude());
 
             mAutocompleteView.setAdapter(null);
-//            mAutocompleteView.setOnClickListener(null);
             mAutocompleteView.setText(mPlaceName);
-//            mAutocompleteView.setEllipsize(TextUtils.TruncateAt.END);
-//            mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
             mAutocompleteView.setAdapter(mAdapter);
 
         } else {
