@@ -14,6 +14,7 @@ import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.request.profile.UpdateUserProfileRequest;
 import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
 import com.appster.dentamatch.network.request.skills.SkillsUpdateRequest;
+import com.appster.dentamatch.network.request.tracks.TrackJobsRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
@@ -72,6 +73,10 @@ public interface AuthWebServices {
     String JOB_DETAILS = "jobs/job-detail";
     String APPLY_JOB = "users/apply-job";
     String SAVE_UNSAVE_JOB = "users/save-job";
+    String TRACK_JOBS = "users/job-list";
+
+    @POST(TRACK_JOBS)
+    Call<SearchJobResponse> fetchTrackJobs(@Body TrackJobsRequest request);
 
     @POST(SAVE_UNSAVE_JOB)
     Call<BaseResponse> saveUnSaveJob(@Body SaveUnSaveRequest request);

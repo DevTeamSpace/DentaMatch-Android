@@ -59,5 +59,6 @@
     <color name="brownish_grey">#5d5d5d</color>
     <color name="white_six">#20e1e1e1</color>
     <color name="white3_color">#f3f3f3</color>
+    <color name="tab_normal_color">#b3ffffff</color>
 
 </resources>
