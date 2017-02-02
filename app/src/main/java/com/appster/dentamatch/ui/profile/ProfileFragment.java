@@ -541,7 +541,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             schoolBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.schoolInflater.getContext())
                     .inflate(R.layout.item_profile_schooling, profileBinding.schoolInflater, false));
             schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
-            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
+            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName());
             profileBinding.schoolInflater.addView(schoolBinding.getRoot());
         }
 
