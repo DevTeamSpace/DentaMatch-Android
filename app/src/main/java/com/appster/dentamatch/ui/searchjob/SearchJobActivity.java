@@ -272,7 +272,8 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
          */
         PreferenceUtil.setFilterChanged(true);
         startActivity(new Intent(this, HomeActivity.class)
-                .putExtra(Constants.EXTRA_SEARCH_JOB, true));
+                .putExtra(Constants.EXTRA_SEARCH_JOB, true)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
 

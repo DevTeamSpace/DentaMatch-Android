@@ -130,7 +130,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             public void onClick(View view) {
                 Intent licenseIntent = new Intent(getActivity(), UpdateLicenseActivity.class);
                 licenseIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
-                licenseIntent.putExtra(Constants.INTENT_KEY.DATA, profileResponseData.getLicence());
+                licenseIntent.putExtra(Constants.INTENT_KEY.DATA, profileResponseData != null ? profileResponseData.getLicence() : null);
                 startActivity(licenseIntent);
             }
         });
@@ -282,9 +282,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             }
             if (response.getAffiliationList() != null && response.getAffiliationList().size() > 0) {
+                profileBinding.flowLayout.setVisibility(View.VISIBLE);
                 goneViews(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
                 profileBinding.flowLayout.removeAllViews();
-
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
                     CustomTextView textView = new CustomTextView(getActivity());
                     FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
@@ -299,6 +299,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 }
 
             } else {
+                profileBinding.flowLayout.setVisibility(View.GONE);
                 visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
             }
 
@@ -540,7 +541,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             schoolBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.schoolInflater.getContext())
                     .inflate(R.layout.item_profile_schooling, profileBinding.schoolInflater, false));
             schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
-            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
+            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName());
             profileBinding.schoolInflater.addView(schoolBinding.getRoot());
         }
 
