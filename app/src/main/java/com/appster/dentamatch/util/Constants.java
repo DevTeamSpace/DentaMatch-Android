@@ -81,6 +81,7 @@ public class Constants {
         int REQUEST_CODE_SKILLS = 303;
         int REQUEST_CODE_PASS_INTENT = 304;
         int REQUEST_CODE_LOCATION = 101;
+        int REQUEST_CODE_JOB_DETAIL = 121;
     }
 
     public interface FRAGMENT_NAME {

@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
-import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.messages.MessagesFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
+import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;

@@ -25,7 +25,7 @@ import retrofit2.Call;
  * Created by Appster on 28/01/17.
  */
 
-class SearchJobDataHelper {
+public class SearchJobDataHelper {
     private ProgressDialog mProgressDialog;
     private static SearchJobDataHelper ourInstance;
     private ArrayList<SearchJobModel> jobDataList;
@@ -80,7 +80,6 @@ class SearchJobDataHelper {
                     PreferenceUtil.setFilterChanged(false);
                     hideProgress();
                     if (response.getStatus() == 1) {
-
                         if (!isPaginationLoading) {
                             jobDataList.clear();
                             processResponse(response);
@@ -123,7 +122,7 @@ class SearchJobDataHelper {
          * In case the filter is changed we clear all previous data and hit API again to refresh the data.
          *
          */
-        if (PreferenceUtil.isFilterChanged()) {
+        if (PreferenceUtil.isFilterChanged() ) {
             jobDataList.clear();
             mPageNumber = 1;
             searchJob(ct, false);
@@ -147,5 +146,19 @@ class SearchJobDataHelper {
         jobDataList.clear();
         mPageNumber = 1;
         searchJob(ct, true);
+    }
+
+    /**
+     * Notify the helper that content of a response has been changed locally and we need to request server for refreshed data.
+     * Eg. save un-save of jobs.
+     */
+    public void notifyItemsChanged(SearchJobModel model){
+        for(SearchJobModel jobModel : jobDataList){
+
+            if(jobModel.getId() == model.getId()){
+                jobModel.setIsSaved(model.getIsSaved());
+                break;
+            }
+        }
     }
 }

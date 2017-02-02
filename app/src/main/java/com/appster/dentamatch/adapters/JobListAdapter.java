@@ -14,13 +14,22 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemJobListBinding;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
+import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
+import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import retrofit2.Call;
 
 /**
  * Created by Appster on 24/01/17.
@@ -51,6 +60,9 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             holder.itemView.setTag(data.getId());
             holder.itemView.setOnClickListener(this);
             holder.tvName.setText(data.getJobTitleName());
+            holder.cbSelect.setTag(position);
+            holder.cbSelect.setOnClickListener(this);
+            holder.cbSelect.setChecked(data.getIsSaved() == 1);
 
             if (data.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                 holder.tvJobType.setText(mContext.getString(R.string.txt_part_time));
@@ -138,19 +150,68 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
         return 0;
     }
 
+    private void saveUnSaveJob(int JobID, final int status, final int position) {
+        SaveUnSaveRequest request = new SaveUnSaveRequest();
+        request.setJobId(JobID);
+        request.setStatus(status);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
+        webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                ((BaseActivity) mContext).showToast(response.getMessage());
+
+                if (response.getStatus() == 1) {
+                    mJobListData.get(position).setIsSaved(status);
+                    notifyItemChanged(position);
+                    SearchJobDataHelper.getInstance().notifyItemsChanged(mJobListData.get(position));
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
-        int jobID = (int) v.getTag();
-        mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID));
+        switch (v.getId()) {
+            case R.id.cb_job_selection:
+                int position = (int) v.getTag();
+                int status = mJobListData.get(position).getIsSaved() == 1 ? 0 : 1;
+                saveUnSaveJob(mJobListData.get(position).getId(), status, position);
+                break;
+
+            case R.id.lay_item_job_list:
+                int jobID = (int) v.getTag();
+                mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
+                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID));
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    public void updateData(SearchJobModel model){
+        for (int i = 0; i< mJobListData.size(); i++){
+            if(mJobListData.get(i).getId() == model.getId()){
+                mJobListData.set(i,model);
+                notifyItemChanged(i);
+                break;
+            }
+        }
     }
 
 
-     class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvJobType, tvDate, tvDocName, tvDocAddress, tvDuration, tvDistance;
         CheckBox cbSelect;
 
-         MyHolder(View itemView) {
+        MyHolder(View itemView) {
             super(itemView);
             tvName = mBinding.tvJobName;
             tvJobType = mBinding.tvJobType;

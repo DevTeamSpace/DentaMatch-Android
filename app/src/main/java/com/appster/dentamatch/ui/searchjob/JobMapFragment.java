@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
@@ -21,7 +22,14 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentJobsMapBinding;
 import com.appster.dentamatch.model.JobDataReceivedEvent;
 import com.appster.dentamatch.model.LocationEvent;
+import com.appster.dentamatch.model.SaveUnSaveEvent;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
+import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
@@ -42,18 +50,20 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import retrofit2.Call;
+
 /**
  * Created by Appster on 24/01/17.
  */
 
-public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, View.OnClickListener {
     private final int MARKER_PADDING = 100;
-
+    private int mSelectedJobID;
     private BottomSheetBehavior mBottomSheetBehavior;
     private FragmentJobsMapBinding mMapBinding;
     private GoogleMap mGoogleMap;
-    private  double mCurrentLocLat;
-    private  double mCurrentLocLng;
+    private double mCurrentLocLat;
+    private double mCurrentLocLng;
     private ArrayList<LatLng> mMarkerPositionList;
     private Marker previousSelectedMarker;
     private ArrayList<SearchJobModel> mJobData;
@@ -71,7 +81,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if( !EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -83,17 +93,37 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     }
 
     @Subscribe
-    public void onDataUpdated(JobDataReceivedEvent event){
-        if(event != null){
+    public void onDataUpdated(JobDataReceivedEvent event) {
+        if (event != null) {
             mJobData = event.getJobList();
 
-            for(SearchJobModel model : mJobData){
+            for (SearchJobModel model : mJobData) {
                 mMarkerPositionList.add(new LatLng(model.getLatitude(), model.getLongitude()));
             }
+
         }
 
         addMarker(mMarkerPositionList);
     }
+
+    @Subscribe
+    public void onJobSavedUnsaved(SaveUnSaveEvent event){
+        if(event != null){
+
+            for(SearchJobModel model1 : mJobData){
+
+                if(model1.getId() == event.getJobID()){
+                    model1.setIsSaved(event.getStatus());
+                    SearchJobDataHelper.getInstance().notifyItemsChanged(model1);
+                    if(mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
+                        mMapBinding.infoWindowContent.cbJobSelection.setChecked(event.getStatus() == 1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
 
     @Nullable
     @Override
@@ -102,7 +132,11 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         mMapBinding.mapView.onCreate(savedInstanceState);
         mMarkerPositionList = new ArrayList<>();
         mBottomSheetBehavior = BottomSheetBehavior.from(mMapBinding.jobMapInfoWindow);
+        /**
+         * Disable user dragging of bottom sheet.
+         */
         mBottomSheetBehavior.setHideable(false);
+        mMapBinding.infoWindowContent.getRoot().setOnClickListener(this);
         mMapBinding.mapView.getMapAsync(this);
         return mMapBinding.getRoot();
     }
@@ -204,22 +238,22 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         builder.include(marker.getPosition());
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), MARKER_PADDING));
 
-        if(previousSelectedMarker != null ){
+        if (previousSelectedMarker != null) {
             /**
              * In case current and previous markers are same close the info window and deselect marker.
              */
-            if(previousSelectedMarker.getId().equalsIgnoreCase(marker.getId())){
+            if (previousSelectedMarker.getId().equalsIgnoreCase(marker.getId())) {
                 collapseInfoDialog();
                 previousSelectedMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
                 previousSelectedMarker = null;
-            }else{
+            } else {
                 marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_selected_large));
                 previousSelectedMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
                 previousSelectedMarker = marker;
                 openInfoDialog(marker);
             }
 
-        }else{
+        } else {
             marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_selected_large));
             previousSelectedMarker = marker;
             openInfoDialog(marker);
@@ -228,10 +262,11 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         return false;
     }
 
+
     @Override
     public void onMapClick(LatLng latLng) {
         collapseInfoDialog();
-        if(previousSelectedMarker != null) {
+        if (previousSelectedMarker != null) {
             previousSelectedMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
             previousSelectedMarker = null;
         }
@@ -243,7 +278,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
          * In case a previous bottom sheet is remaining open then 1st the previous one gets hidden
          * and then a new one appears.
          */
-        if(mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
+        if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             collapseInfoDialog();
 
             /**
@@ -257,7 +292,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                     mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }
             }, 300);
-        }else{
+        } else {
             updateInfoWindowData(jobModel);
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
@@ -265,7 +300,11 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
     private void updateInfoWindowData(SearchJobModel jobModel) {
         if (jobModel != null) {
+            mSelectedJobID = jobModel.getId();
             mMapBinding.infoWindowContent.tvJobName.setText(jobModel.getJobTitleName());
+            mMapBinding.infoWindowContent.cbJobSelection.setChecked(jobModel.getIsSaved() == 1);
+            mMapBinding.infoWindowContent.cbJobSelection.setTag(jobModel);
+            mMapBinding.infoWindowContent.cbJobSelection.setOnClickListener(this);
 
             if (jobModel.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                 mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_part_time));
@@ -342,19 +381,19 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         }
     }
 
-    private void collapseInfoDialog(){
+    private void collapseInfoDialog() {
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
 
-    private void addMarker(ArrayList<LatLng> markerList ) {
+    private void addMarker(ArrayList<LatLng> markerList) {
         /**
          * Lat lng Bounds of the entire icons on the map.
          */
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
 
-        for (int i = 0; i < markerList.size(); i++){
+        for (int i = 0; i < markerList.size(); i++) {
             MarkerOptions options = new MarkerOptions();
             options.position(markerList.get(i));
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
@@ -378,5 +417,44 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
     }
 
+    private void saveUnSaveJob(int JobID, final int status, final SearchJobModel model) {
+        SaveUnSaveRequest request = new SaveUnSaveRequest();
+        request.setJobId(JobID);
+        request.setStatus(status);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        ((BaseActivity) getActivity()).processToShowDialog("", getActivity().getString(R.string.please_wait), null);
+        webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                ((BaseActivity) getActivity()).showToast(response.getMessage());
 
+                if (response.getStatus() == 1) {
+                    model.setIsSaved(status);
+                    mMapBinding.infoWindowContent.cbJobSelection.setChecked(status == 1);
+                    SearchJobDataHelper.getInstance().notifyItemsChanged(model);
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.cb_job_selection:
+                SearchJobModel model = (SearchJobModel) v.getTag();
+                int status = (model.getIsSaved() == 1) ? 0 : 1;
+                saveUnSaveJob(model.getId(), status, model);
+                break;
+
+            default:
+                getActivity().startActivity(new Intent(getActivity(), JobDetailActivity.class)
+                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, mSelectedJobID));
+                break;
+        }
+    }
 }

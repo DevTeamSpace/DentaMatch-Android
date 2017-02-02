@@ -12,11 +12,13 @@ import android.widget.RelativeLayout;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityJobDetailBinding;
 import com.appster.dentamatch.model.JobDetailModel;
+import com.appster.dentamatch.model.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
 import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
+import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -28,6 +30,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -43,6 +47,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     private int jobID;
     private ActivityJobDetailBinding mBinding;
     private GoogleMap mGoogleMap;
+    private JobDetailModel mJobDetailModel;
 
     @Override
     public String getActivityName() {
@@ -52,6 +57,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.pull_in, R.anim.hold_still);
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_job_detail);
         setData();
 
@@ -66,7 +72,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
 
     private void setData() {
+        mBinding.btnApplyJob.setOnClickListener(JobDetailActivity.this);
         mBinding.jobDetailToolbar.tvToolbarGeneralLeft.setText(getString(R.string.header_job_detail));
+        mBinding.cbJobSelection.setOnClickListener(this);
         mBinding.jobDetailToolbar.ivToolBarLeft.setOnClickListener(this);
         mBinding.tvJobDetailDocReadMore.setOnClickListener(this);
 
@@ -82,6 +90,17 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         mGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
         mGoogleMap.getUiSettings().setZoomGesturesEnabled(false);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.hold_still, R.anim.pull_out);
     }
 
     @Override
@@ -139,6 +158,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 cycleTextViewExpansion();
                 break;
 
+            case R.id.cb_job_selection:
+                int status = mJobDetailModel.getIsSaved() == 1? 0 : 1 ;
+                saveUnSaveJob(jobID, status);
+                break;
+
             case R.id.btn_apply_job:
                 applyJob();
                 break;
@@ -152,12 +176,19 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         JobApplyRequest request = new JobApplyRequest();
         request.setJobId(jobID);
 
-        showProgressBar();
+        processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.applyJob(request).enqueue(new BaseCallback<BaseResponse>(this) {
             @Override
             public void onSuccess(BaseResponse response) {
                 showToast(response.getMessage());
+                if(response.getStatus() == 1) {
+                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                    mBinding.btnApplyJob.setVisibility(View.GONE);
+                }else{
+                    mBinding.tvJobStatus.setVisibility(View.GONE);
+                    mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -170,7 +201,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     private void getJobDetail(){
         JobDetailRequest request = new JobDetailRequest();
         request.setJobId(jobID);
-        showProgressBar();
+        processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {
             @Override
@@ -178,6 +209,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 if(response != null ){
 
                     if(response.getStatus() == 1){
+                        mJobDetailModel = response.getResult();
                         mBinding.layJobDetailHolder.setVisibility(View.VISIBLE);
                         setDetailData(response.getResult());
                     }else{
@@ -289,11 +321,13 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         }
 
         if(dataModel.getIsApplied() == 0){
-            mBinding.btnApplyJob.setOnClickListener(JobDetailActivity.this);
-            mBinding.btnApplyJob.setText(getString(R.string.button_apply_for_job));
+
+            mBinding.tvJobStatus.setVisibility(View.GONE);
+            mBinding.btnApplyJob.setVisibility(View.VISIBLE);
         }else{
-            mBinding.btnApplyJob.setOnClickListener(null);
-            mBinding.btnApplyJob.setText(getString(R.string.button_already_applied));
+            mBinding.btnApplyJob.setVisibility(View.GONE);
+            mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+
         }
 
         if(dataModel.getIsSaved() == 1){
@@ -319,5 +353,29 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         mGoogleMap.addMarker(options);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), MAP_ZOOM_LEVEL));
 
+    }
+
+    private void saveUnSaveJob(final int JobID, final int status) {
+        SaveUnSaveRequest request = new SaveUnSaveRequest();
+        request.setJobId(JobID);
+        request.setStatus(status);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        processToShowDialog("", getString(R.string.please_wait), null);
+        webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>(this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                showToast(response.getMessage());
+                if(response.getStatus() == 1){
+                    mBinding.cbJobSelection.setChecked(status == 1);
+                    EventBus.getDefault().post(new SaveUnSaveEvent(JobID,status));
+                }
+
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+
+            }
+        });
     }
 }
