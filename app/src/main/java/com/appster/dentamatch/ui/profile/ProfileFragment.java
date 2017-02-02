@@ -299,6 +299,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 }
 
             } else {
+                profileBinding.expInflater.setVisibility(View.GONE);
+
                 profileBinding.flowLayout.setVisibility(View.GONE);
                 visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
             }
@@ -335,6 +337,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.GONE);
+                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
+
 
             }
             if (response.getSchoolArrayList() != null && response.getSchoolArrayList().size() > 0) {
@@ -343,6 +347,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 inflateSchools(response.getSchoolArrayList());
 
             } else {
+                profileBinding.schoolInflater.setVisibility(View.GONE);
+
                 profileBinding.cellSchooling.tvAddCertificates.setVisibility(View.VISIBLE);
                 profileBinding.cellSchooling.tvEditCell.setVisibility(View.GONE);
             }
@@ -352,6 +358,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 inflateSkill(response.getSkillArrayList());
 
             } else {
+                profileBinding.keySkillInflater.setVisibility(View.GONE);
                 profileBinding.cellKeySkill.tvAddCertificates.setVisibility(View.VISIBLE);
                 profileBinding.cellKeySkill.tvEditCell.setVisibility(View.GONE);
             }
@@ -359,6 +366,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void inflateSkill(ArrayList<ProfileSkill> skillArrayList) {
+        profileBinding.keySkillInflater.setVisibility(View.VISIBLE);
+
         profileBinding.keySkillInflater.removeAllViews();
         ItemProfileSkillBinding skillBinding;
         for (int i = 0; i < skillArrayList.size(); i++) {
@@ -396,6 +405,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void inflateExperience(ArrayList<WorkExpRequest> expList) {
+        profileBinding.expInflater.setVisibility(View.VISIBLE);
         profileBinding.expInflater.removeAllViews();
         ItemProfileWorkExpBinding expBinding;
         for (int i = 0; i < expList.size(); i++) {
@@ -535,6 +545,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void inflateSchools(ArrayList<ProfileSchool> schoolList) {
+        profileBinding.schoolInflater.setVisibility(View.VISIBLE);
+
         profileBinding.schoolInflater.removeAllViews();
         ItemProfileSchoolingBinding schoolBinding;
         for (int i = 0; i < schoolList.size(); i++) {

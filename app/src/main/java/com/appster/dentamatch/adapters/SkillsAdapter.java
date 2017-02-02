@@ -201,7 +201,8 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 String text = listSkills.get(i).getSkillName();
 
                 if (text.equalsIgnoreCase(Constants.OTHERS)) {
-                    text = Constants.OTHERS;
+//                    text = Constants.OTHERS;
+                    text =listSkills.get(i).getOtherText();
                 }
 
                 TextView textView = new TextView(mContext);
