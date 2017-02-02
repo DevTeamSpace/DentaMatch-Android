@@ -29,6 +29,7 @@ public class Constants {
     public static final int IMAGE_DIMEN = 102;
     public static final int IMAGE_DIME_CERTIFICATE = 142;
     public static final int EDUCATION_HISTORY_YEARS = 50;
+    public static final int MAP_ZOOM_LEVEL = 15;
 
     public enum ACTIVITIES {
         SWITCH_ACTIVITY
