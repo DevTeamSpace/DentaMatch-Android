@@ -1,6 +1,7 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
 import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
 import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
@@ -72,6 +73,10 @@ public interface AuthWebServices {
     String JOB_DETAILS = "jobs/job-detail";
     String APPLY_JOB = "users/apply-job";
     String SAVE_UNSAVE_JOB = "users/save-job";
+    String UPDATE_USER_LOCATION = "users/user-location-update";
+
+    @POST(UPDATE_USER_LOCATION)
+    Call<BaseResponse> updateUserLocation(@Body ChangeUserLocation request);
 
     @POST(SAVE_UNSAVE_JOB)
     Call<BaseResponse> saveUnSaveJob(@Body SaveUnSaveRequest request);

@@ -202,7 +202,7 @@
     <string name="blank_profile_summary_alert">Please write something about your profile.</string>
     <!--setting -->
     <string name="settings_reset_password">Reset Password</string>
-    <string name="settings_change_home_location">Change Home Location</string>
+    <string name="settings_change_home_location">Preferred Job Location</string>
     <string name="settings_logout">Logout</string>
     <string name="settings_privacy">Privacy Policy</string>
     <string name="settings_terms">Terms &amp; Conditions</string>

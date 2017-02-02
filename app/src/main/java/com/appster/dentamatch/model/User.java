@@ -249,4 +249,15 @@ public class User implements Parcelable{
         return preferredJobLocation;
     }
 
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setPreferredJobLocation(String preferredJobLocation) {
+        this.preferredJobLocation = preferredJobLocation;
+    }
 }

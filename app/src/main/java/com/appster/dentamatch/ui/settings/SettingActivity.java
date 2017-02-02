@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySettingsBinding;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.User;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.auth.ResetPasswordActivity;
@@ -24,6 +27,8 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
 
@@ -64,14 +69,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.tv_reset_password:
                 startActivity(new Intent(SettingActivity.this, ResetPasswordActivity.class));
-
                 break;
+
             case R.id.iv_tool_bar_left:
                 finish();
-
                 break;
+
             case R.id.tv_chnage_location:
-//                startActivity(new Intent(SettingActivity.this,));
                 Intent intent = new Intent(this, PlacesMapActivity.class);
 
                 if (mUser.getLatitude() != null && mUser.getLongitude() != null) {
@@ -82,10 +86,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 }
 
                 startActivityForResult(intent, REQUEST_CODE_LOCATION);
-
-//                startActivity(new Intent(this, PlacesMapActivity.class));
-
                 break;
+
             case R.id.tv_logout:
                 Alert.createYesNoAlert(SettingActivity.this, getString(R.string.yes), getString(R.string.no), "", getString(R.string.alert_logout), new Alert.OnAlertClickListener() {
                     @Override
@@ -99,16 +101,70 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     }
                 });
                 break;
+
             case R.id.tv_privacy_policy:
                 startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, true));
-
                 break;
+
             case R.id.tv_term_n_condition:
                 startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, false));
-
                 break;
+
+            default: break;
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CODE_LOCATION){
+            if(data != null){
+                if (data.hasExtra(Constants.EXTRA_PLACE_NAME)) {
+                    String lat = data.getStringExtra(Constants.EXTRA_LATITUDE);
+                    String lng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
+                    String address = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
+                    String zipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
+
+                    if(TextUtils.isEmpty(zipCode)){
+                        showToast("Please select a zip code");
+                    }else {
+                        updateUserLocation(lat, lng, zipCode, address);
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateUserLocation(final String lat, final String lng,final String zipCode, final String address) {
+        ChangeUserLocation request = new ChangeUserLocation();
+        request.setLatitude(lat);
+        request.setLongitude(lng);
+        request.setPreferredLocation(address);
+        request.setZipCode(Integer.valueOf(zipCode));
+
+        processToShowDialog("", getString(R.string.please_wait), null);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.updateUserLocation(request).enqueue(new BaseCallback<BaseResponse>(this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                showToast(response.getMessage());
+                if(response.getStatus() == 1){
+                    mUser.setLongitude(lng);
+                    mUser.setLatitude(lat);
+                    mUser.setPreferredJobLocation(address);
+                    mUser.setPostalCode(zipCode);
+                    PreferenceUtil.setUserModel(mUser);
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+
+            }
+        });
     }
 
     private void callLogoutApi() {

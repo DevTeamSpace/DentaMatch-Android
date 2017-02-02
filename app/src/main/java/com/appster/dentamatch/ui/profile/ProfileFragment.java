@@ -18,6 +18,8 @@ import com.appster.dentamatch.databinding.ItemProfileCellCertificateBinding;
 import com.appster.dentamatch.databinding.ItemProfileSchoolingBinding;
 import com.appster.dentamatch.databinding.ItemProfileSkillBinding;
 import com.appster.dentamatch.databinding.ItemProfileWorkExpBinding;
+import com.appster.dentamatch.model.ProfileSchool;
+import com.appster.dentamatch.model.ProfileSkill;
 import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.User;
 import com.appster.dentamatch.network.BaseCallback;
@@ -27,8 +29,6 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
-import com.appster.dentamatch.model.ProfileSchool;
-import com.appster.dentamatch.model.ProfileSkill;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
@@ -49,7 +49,6 @@ import com.squareup.picasso.Picasso;
 import org.apmem.tools.layouts.FlowLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -245,7 +244,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
                     profileResponseData = response.getProfileResponseData();
-                    if (isActive()) {
+                    if (isAlive()) {
                         setViewData(response.getProfileResponseData());
                     }
                 } else {
@@ -276,6 +275,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
                 saveUserProfile(response.getUser());
             }
+
             if (response.getWorkExperience() != null && response.getWorkExperience().getSaveList().size() > 0) {
                 goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
 
@@ -566,12 +566,13 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         return null;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe()
     public void onProfileUpdatedEvent(ProfileUpdatedEvent profileUpdatedEvent) {
         if (profileUpdatedEvent.ismIsProfileUpdated()) {
             getProfileData();
         }
     }
+
     private void saveUserProfile(User user) {
         PreferenceUtil.setUserModel(user);
     }
