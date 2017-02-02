@@ -9,8 +9,8 @@ This repository is for storing source code for DentaMatch Android application de
 
 ### How do I get set up? ###
 
-* Summary of set up
-Requires Android device with O.S. version 4.4 and above.
+* Summary of set up: 
+It Requires Android device with O.S. version 4.4 and above.
 Open the code in Android Studio. Download and install the required plugins and tools which are prompted by Android Studio.
 
 * Configuration
