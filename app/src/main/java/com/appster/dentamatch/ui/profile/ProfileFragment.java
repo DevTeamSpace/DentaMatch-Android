@@ -140,10 +140,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
                 CertificatesList data = new CertificatesList();
                 if (TextUtils.isEmpty(profileResponseData.getDentalStateBoard().getImageUrl())) {
-                    data.setImageUrl("");
+                    data.setImage("");
 
                 } else {
-                    data.setImageUrl(profileResponseData.getDentalStateBoard().getImageUrl());
+                    data.setImage(profileResponseData.getDentalStateBoard().getImageUrl());
                 }
                 data.setCertificateName(getString(R.string.dental_state_board));
 
