@@ -2,19 +2,21 @@ package com.appster.dentamatch.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ItemJobListBinding;
+import com.appster.dentamatch.databinding.ItemTrackJobListBinding;
+import com.appster.dentamatch.model.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -22,11 +24,12 @@ import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
-import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
+import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -34,23 +37,26 @@ import java.util.Locale;
 import retrofit2.Call;
 
 /**
- * Created by Appster on 24/01/17.
+ * Created by Appster on 03/02/17.
  */
 
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder> implements View.OnClickListener {
-    private ItemJobListBinding mBinding;
+public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
+    private ItemTrackJobListBinding mBinding;
     private Context mContext;
     private ArrayList<SearchJobModel> mJobListData;
+    private boolean mIsSaved, mIsApplied, mIsShortListed;
 
-
-    public JobListAdapter(Context context, ArrayList<SearchJobModel> jobListData) {
+    public TrackJobsAdapter(Context context, ArrayList<SearchJobModel> jobListData, boolean isSaved, boolean isApplied, boolean isShortListed) {
         mContext = context;
         mJobListData = jobListData;
+        mIsSaved = isSaved;
+        mIsApplied = isApplied;
+        mIsShortListed = isShortListed;
     }
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_job_list, parent, false);
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_track_job_list, parent, false);
         return new MyHolder(mBinding.getRoot());
     }
 
@@ -62,9 +68,31 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             holder.itemView.setTag(data.getId());
             holder.itemView.setOnClickListener(this);
             holder.tvName.setText(data.getJobTitleName());
-            holder.cbSelect.setTag(position);
-            holder.cbSelect.setOnClickListener(this);
-            holder.cbSelect.setChecked(data.getIsSaved() == 1);
+
+            if (mIsSaved) {
+                holder.cbSelect.setVisibility(View.VISIBLE);
+                holder.ivChat.setVisibility(View.GONE);
+                holder.cbSelect.setTag(position);
+                holder.cbSelect.setOnClickListener(this);
+                holder.itemView.setOnLongClickListener(null);
+
+            } else if (mIsApplied) {
+                holder.cbSelect.setVisibility(View.GONE);
+                holder.ivChat.setVisibility(View.GONE);
+                holder.cbSelect.setTag(null);
+                holder.cbSelect.setOnClickListener(null);
+                holder.itemView.setTag(position);
+                holder.itemView.setOnLongClickListener(this);
+
+            } else {
+                holder.cbSelect.setVisibility(View.GONE);
+                holder.ivChat.setVisibility(View.VISIBLE);
+                holder.cbSelect.setTag(null);
+                holder.cbSelect.setOnClickListener(null);
+                holder.itemView.setTag(position);
+                holder.itemView.setOnLongClickListener(this);
+
+            }
 
             if (data.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                 holder.tvJobType.setText(mContext.getString(R.string.txt_part_time));
@@ -139,8 +167,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDocName.setText(data.getOfficeName());
         }
-
-
     }
 
     @Override
@@ -152,22 +178,58 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
         return 0;
     }
 
-    private void saveUnSaveJob(int JobID, final int status, final int position) {
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.cb_job_selection:
+                final int position = (int) v.getTag();
+                Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
+                    @Override
+                    public void onPositive(DialogInterface dialog) {
+                        unSaveJob(mJobListData.get(position).getId(), position);
+                    }
+
+                    @Override
+                    public void onNegative(DialogInterface dialog) {
+                        /**
+                         * change the star uncheck by notifying the item.
+                         */
+                        notifyItemChanged(position);
+                        dialog.dismiss();
+                    }
+                });
+            break;
+
+            default: break;
+        }
+
+    }
+
+    private void unSaveJob(final int JobID, final int position) {
         SaveUnSaveRequest request = new SaveUnSaveRequest();
         request.setJobId(JobID);
-        request.setStatus(status);
+        request.setStatus(0);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+
         ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
+
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
             @Override
             public void onSuccess(BaseResponse response) {
                 ((BaseActivity) mContext).showToast(response.getMessage());
 
-                if (response.getStatus() == 1) {
-                    mJobListData.get(position).setIsSaved(status);
-                    notifyItemChanged(position);
-                    SearchJobDataHelper.getInstance().notifyItemsChanged(mJobListData.get(position));
+                if(response.getStatus() == 1){
+                    mJobListData.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, mJobListData.size());
+
+                    /**
+                     * Update the search job screens for un-save events.
+                     */
+                    EventBus.getDefault().post(new SaveUnSaveEvent(JobID,0));
                 }
+
             }
 
             @Override
@@ -178,55 +240,41 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.cb_job_selection:
-                final int position = (int) v.getTag();
-                final int status = mJobListData.get(position).getIsSaved() == 1 ? 0 : 1;
-                if(status == 0) {
-                    Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
-                        @Override
-                        public void onPositive(DialogInterface dialog) {
-                            saveUnSaveJob(mJobListData.get(position).getId(), status, position);
-                        }
-
-                        @Override
-                        public void onNegative(DialogInterface dialog) {
-                            dialog.dismiss();
-                            notifyItemChanged(position);
-                        }
-                    });
-                }else{
-                    saveUnSaveJob(mJobListData.get(position).getId(), status, position);
-                }
-
-                break;
-
-            case R.id.lay_item_job_list:
-                int jobID = (int) v.getTag();
-                mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID));
-                break;
-
-            default:
-                break;
-        }
-
-    }
-
-    public void updateData(SearchJobModel model){
-        for (int i = 0; i< mJobListData.size(); i++){
-            if(mJobListData.get(i).getId() == model.getId()){
-                mJobListData.set(i,model);
-                notifyItemChanged(i);
-                break;
+    public boolean onLongClick(View v) {
+        final int position = (int) v.getTag();
+        Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to cancel the job?", new Alert.OnAlertClickListener() {
+            @Override
+            public void onPositive(DialogInterface dialog) {
+                CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getId());
+                dialogFragment.setArguments(bundle);
+                dialogFragment.show(((BaseActivity)mContext).getSupportFragmentManager(),null);
             }
-        }
+
+            @Override
+            public void onNegative(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+        });
+        return false;
     }
 
+    public void cancelJob(int JobID){
+       for(int i = 0; i < mJobListData.size(); i++){
+
+           if(mJobListData.get(i).getId() == JobID){
+               mJobListData.remove(i);
+               notifyItemRemoved(i);
+               notifyItemRangeChanged(i,mJobListData.size());
+               break;
+           }
+       }
+    }
 
     class MyHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvJobType, tvDate, tvDocName, tvDocAddress, tvDuration, tvDistance;
+        ImageView ivChat;
         CheckBox cbSelect;
 
         MyHolder(View itemView) {
@@ -239,6 +287,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             tvDuration = mBinding.tvJobDocTime;
             tvDistance = mBinding.tvJobDocDistance;
             cbSelect = mBinding.cbJobSelection;
+            ivChat = mBinding.ivJobMessage;
         }
     }
 }

@@ -138,6 +138,10 @@ public class SearchJobModel implements Parcelable{
         return isSaved;
     }
 
+    public void setIsSaved(int isSaved) {
+        this.isSaved = isSaved;
+    }
+
     public double getDistance() {
         return distance;
     }

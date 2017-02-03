@@ -15,6 +15,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.JobListAdapter;
 import com.appster.dentamatch.databinding.FragmentJobListBinding;
 import com.appster.dentamatch.model.JobDataReceivedEvent;
+import com.appster.dentamatch.model.SaveUnSaveEvent;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.ui.common.BaseFragment;
 
@@ -81,8 +82,6 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
                 mJobListBinding.tvJobResultCount.setVisibility(View.GONE);
             }
 
-
-
             /**
              * Hide pagination loader if it is visible.
              */
@@ -95,6 +94,22 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
             if(mJobListBinding.swipeRefreshJobList.isRefreshing()){
                 mJobListBinding.swipeRefreshJobList.setRefreshing(false);
             }
+        }
+    }
+
+    @Subscribe
+    public void onJobSavedUnsaved(SaveUnSaveEvent event){
+        if(event != null){
+
+           for(SearchJobModel model : mJobListData){
+
+               if(model.getId() == event.getJobID()){
+                   model.setIsSaved(event.getStatus());
+                   mJobAdapter.updateData(model);
+                   SearchJobDataHelper.getInstance().notifyItemsChanged(model);
+                   break;
+               }
+           }
         }
     }
 
@@ -122,8 +137,8 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResume() {
+        super.onResume();
         /**
          * Request data helper to provide data for user's filter set.
          */
@@ -136,7 +151,6 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
         mLayoutManager = new LinearLayoutManager(getActivity());
         mJobAdapter = new JobListAdapter(getActivity(), mJobListData);
         mJobListBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
-
         mJobListBinding.swipeRefreshJobList.setOnRefreshListener(this);
     }
 

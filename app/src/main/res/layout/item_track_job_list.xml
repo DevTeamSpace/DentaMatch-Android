@@ -121,8 +121,18 @@
         android:button="@drawable/checkbox_star_selector"
         android:layout_alignTop="@+id/tv_job_name"
         android:layout_marginEnd="@dimen/margin_25"
-        android:src="@drawable/img_job_star"
+        android:checked="true"
         android:layout_height="wrap_content" />
+    
+    <ImageView
+        android:id="@+id/iv_job_message"
+        android:layout_width="22dp"
+        android:layout_alignTop="@+id/tv_job_name"
+        android:layout_marginEnd="@dimen/margin_25"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_chat"
+        android:visibility="gone"
+        android:layout_height="22dp" />
 
     <com.appster.dentamatch.widget.CustomTextView
         style="@style/text_view_normal"
@@ -131,6 +141,7 @@
         android:text="1.0 miles"
         android:textColor="@color/black_color"
         android:layout_marginEnd="@dimen/margin_25"
+        android:layout_alignTop="@+id/tv_job_type"
         android:paddingTop="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
         android:layout_width="wrap_content"
