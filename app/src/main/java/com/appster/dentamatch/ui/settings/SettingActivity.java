@@ -177,12 +177,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
-                if (response.getStatus() == 1) {
-                    PreferenceUtil.setIsLogined(false);
-                    Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
+                localLogOut();
             }
 
             @Override

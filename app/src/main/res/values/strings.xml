@@ -132,8 +132,10 @@
     <string name="month">Month</string>
 
     <!--Server error-->
-    <string name="authentication_error">Authentication error , Please login again. </string>
+    <string name="authentication_error">Authentication error, please login again.</string>
+    <string name="server_invalid_response">Something went wrong.</string>
     <string name="server_error">There is some issue connecting with server.</string>
+    <string name="server_error_internal">Server internal error.</string>
     <string name="no_internet">Please check your Internet Connection.</string>
     <string name="unidentified_error">Oops, Something went wrong..</string>
     <string name="add_more_refrence">Add More References</string>
@@ -268,7 +270,7 @@
     <string name="parking_availability_label">PARKING AVAILABILITY</string>
     <string name="map_label">MAP</string>
     <string name="button_apply_for_job">APPLY FOR JOB</string>
-    <string name="button_already_applied">JOB ALREADY APPLIED </string>
+    <string name="button_already_applied">JOB ALREADY APPLIED</string>
     <string name="txt_part_time">Part Time</string>
     <string name="txt_full_time">Full Time</string>
     <string name="txt_temporary">Temporary</string>

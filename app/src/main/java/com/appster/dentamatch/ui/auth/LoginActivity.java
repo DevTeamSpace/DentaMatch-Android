@@ -53,6 +53,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
+        if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_IS_LOGIN)) {
+            isLogin = getIntent().getBooleanExtra(Constants.EXTRA_IS_LOGIN, false);
+        }
+
         initViews();
     }
 

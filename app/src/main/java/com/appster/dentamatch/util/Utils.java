@@ -32,6 +32,11 @@ import android.widget.Toast;
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 
+import com.appster.dentamatch.network.BaseResponse;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -81,6 +86,23 @@ public class Utils {
         return context.getResources().getDrawable(drawableId);
     }
 
+    public static BaseResponse parseDataOnError(retrofit2.Response<BaseResponse> response){
+        Gson gson = new Gson();
+        BaseResponse apiResponse = null;
+        TypeAdapter<BaseResponse> adapter = gson.getAdapter(BaseResponse.class);
+
+        try {
+            if (response.errorBody() != null) {
+                apiResponse = adapter.fromJson(response.errorBody().string());
+            }else {
+                LogUtils.LOGE(TAG, "Retrofit response.errorBody found null!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return apiResponse;
+    }
 
     public static boolean isSimulator() {
         boolean isSimulator = "google_sdk".equals(Build.PRODUCT)

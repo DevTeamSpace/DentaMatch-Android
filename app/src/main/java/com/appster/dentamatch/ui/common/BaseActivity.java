@@ -17,9 +17,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
+import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -279,9 +282,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         });*/
     }
 
+    public void localLogOut() {
+        LogUtils.LOGD(TAG, "Local logout");
+
+        PreferenceUtil.reset();
+        PreferenceUtil.setIsOnBoarding(true);
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(Constants.EXTRA_IS_LOGIN, true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
 
     public void logOut() {
-
 //        AuthWebServices client = RequestController.createService(AuthWebServices.class, true);
 //        Call<BaseResponse> response = client.logout();
 //        showProgressBar();
