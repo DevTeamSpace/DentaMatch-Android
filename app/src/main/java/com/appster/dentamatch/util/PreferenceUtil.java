@@ -1,5 +1,7 @@
 package com.appster.dentamatch.util;
 
+import android.location.Location;
+
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.model.JobTitleList;
 import com.orhanobut.hawk.Hawk;
@@ -35,7 +37,15 @@ public final class PreferenceUtil {
 
     private static final String KEY_JOB_FILTER_SET = "KEY_JOB_FILTER_SET";
     private static final String KEY_JOB_FILTER_REQUEST = "KEY_JOB_FILTER_REQUEST";
+    private static final String KEY_USER_CURRENT_LOC = "KEY_USER_CURRENT_LOC";
 
+    public static void setUserCurrentLocation(Location location){
+        Hawk.put(KEY_USER_CURRENT_LOC, location);
+    }
+
+    public static Object getUserCurrentLocation(){
+        return Hawk.get(KEY_USER_CURRENT_LOC);
+    }
 
     public static void saveAppState(Object state) {
         Hawk.put(KEY_APP_STATE, state);

@@ -18,6 +18,9 @@ import com.appster.dentamatch.ui.common.BaseFragment;
 
 public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
     private FragmentTracksBinding mBinding;
+    private SavedJobFragment savedJobsFragment ;
+    private AppliedJobsFragment appliedJobsFragment ;
+    private ShortlistedJobsFragment shortListedJobsFragment ;
 
     public static TrackFragment newInstance(){
         return new TrackFragment();
@@ -38,7 +41,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
          */
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.lay_container_fragment_tracks, SavedJobFragment.newInstance())
+                .replace(R.id.lay_container_fragment_tracks, savedJobsFragment)
                 .commit();
 
         return mBinding.getRoot();
@@ -48,6 +51,9 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
         mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText("SAVED"));
         mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText("APPLIED"));
         mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText("SHORTLISTED"));
+        savedJobsFragment = SavedJobFragment.newInstance();
+        appliedJobsFragment = AppliedJobsFragment.newInstance();
+        shortListedJobsFragment = ShortlistedJobsFragment.newInstance();
 
         mBinding.layTabFragmentTracks.addOnTabSelectedListener(this);
 
@@ -60,8 +66,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
             case 0:
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
-                        .replace(R.id.lay_container_fragment_tracks, SavedJobFragment.newInstance())
+                        .replace(R.id.lay_container_fragment_tracks, savedJobsFragment)
                         .commit();
 
                 break;
@@ -69,8 +74,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
             case 1:
                 getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
-                    .replace(R.id.lay_container_fragment_tracks, AppliedJobsFragment.newInstance())
+                    .replace(R.id.lay_container_fragment_tracks, appliedJobsFragment)
                     .commit();
 
                 break;
@@ -78,8 +82,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
             case 2:
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
-                        .replace(R.id.lay_container_fragment_tracks, ShortlistedJobsFragment.newInstance())
+                        .replace(R.id.lay_container_fragment_tracks, shortListedJobsFragment)
                         .commit();
                 break;
 

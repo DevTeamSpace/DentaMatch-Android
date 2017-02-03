@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.common;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -11,15 +12,21 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
 import com.appster.dentamatch.ui.messages.MessagesFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LocationUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by virender on 17/01/17.
@@ -40,18 +47,38 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
         setContentView(R.layout.activity_home);
         initViews();
 
         /**
          * Launch job search fragment if redirected from search activity.
          */
-        if(getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)){
+        if (getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)) {
             bottomBar.setCurrentItem(0);
         }
 
+        /**
+         * Retrieve user's current location.
+         */
+        LocationUtils.addFragment(this);
+
     }
 
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+
+    }
+
+    @Subscribe
+    public void onEvent(LocationEvent locationEvent) {
+        Location location = locationEvent.getMessage();
+        PreferenceUtil.setUserCurrentLocation(location);
+    }
     /**
      * initViews is used to initialize this view at app launch
      */
@@ -207,7 +234,6 @@ public class HomeActivity extends BaseActivity {
         super.onBackPressed();
         finish();
     }
-
 
 
 }

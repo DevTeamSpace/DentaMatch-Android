@@ -54,6 +54,22 @@ public class Constants {
         }
     }
 
+    public enum SEARCHJOBTYPE {
+        SAVED(1),
+        APPLIED(2),
+        SHORTLISTED(3);
+
+        private int value;
+
+        SEARCHJOBTYPE(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     public interface BundleKey {
         String LAYOUT_ID = "layoutResId";
         String INDEX = "INDEX";
