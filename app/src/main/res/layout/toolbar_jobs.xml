@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/margin_29"
+                android:src="@drawable/img_list"
                 android:layout_toStartOf="@+id/txv_toolbar_general_right"
                 android:visibility="gone" />
 

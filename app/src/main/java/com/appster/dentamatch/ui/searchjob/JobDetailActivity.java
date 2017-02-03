@@ -143,7 +143,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     }
 
     private void cycleTextViewExpansion(){
-        int collapsedMaxLines = 3;
+        int collapsedMaxLines = 4;
         ObjectAnimator animation = ObjectAnimator.ofInt(mBinding.tvJobDetailDocDescription, "maxLines",
                 mBinding.tvJobDetailDocDescription.getMaxLines() == collapsedMaxLines? mBinding.tvJobDetailDocDescription.getLineCount() : collapsedMaxLines);
         animation.setDuration(200).start();

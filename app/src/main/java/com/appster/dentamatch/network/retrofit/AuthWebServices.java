@@ -3,6 +3,7 @@ package com.appster.dentamatch.network.retrofit;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
+import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;

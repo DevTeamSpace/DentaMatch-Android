@@ -9,7 +9,7 @@
         <include
             android:id="@+id/toolbar_calendar"
             layout="@layout/toolbar_general" />
-\][poiuytrdz
+
         <com.appster.dentamatch.ui.calendar.CalendarViewEvent
             android:id="@+id/custom_calendar"
             android:layout_width="match_parent"

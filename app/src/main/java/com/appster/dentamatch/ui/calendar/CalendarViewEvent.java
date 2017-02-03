@@ -11,6 +11,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 
@@ -66,8 +67,9 @@ public class CalendarViewEvent extends LinearLayout {
         previousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.MONTH, -1);
-                setUpCalendarAdapter();
+                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
+//                cal.add(Calendar.MONTH, -1);
+//                setUpCalendarAdapter();
             }
         });
     }
@@ -76,8 +78,9 @@ public class CalendarViewEvent extends LinearLayout {
         nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.MONTH, 1);
-                setUpCalendarAdapter();
+                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
+//                cal.add(Calendar.MONTH, 1);
+//                setUpCalendarAdapter();
             }
         });
     }

@@ -9,7 +9,7 @@
 
             <include
                 android:id="@+id/toolbar_fragment_jobs"
-                layout="@layout/toolbar_general" />
+                layout="@layout/toolbar_jobs" />
 
             <FrameLayout
                 android:id="@+id/lay_container"
