@@ -285,5 +285,7 @@
     <string name="txt_saturday">Saturday</string>
     <string name="txt_sunday">Sunday</string>
     <string name="not_applicable">NA</string>
+    <string name="txt_read_more">READ MORE</string>
+    <string name="text_show_label">SHOW LESS</string>
 
 </resources>
