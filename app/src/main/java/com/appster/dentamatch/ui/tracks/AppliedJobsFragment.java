@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.tracks;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,13 +11,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
 import com.appster.dentamatch.databinding.FragmentAppliedJobsBinding;
+import com.appster.dentamatch.model.JobCancelEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.tracks.CancelJobRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
@@ -24,6 +28,9 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -56,6 +63,61 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
         setArguments(new Bundle());
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        EventBus.getDefault().unregister(this);
+        super.onDetach();
+
+    }
+
+    @Subscribe
+    public void jobCancelled(JobCancelEvent event){
+        if(event != null){
+          for(SearchJobModel model : mJobListData){
+
+
+              if(model.getId() == event.getJobID()){
+                  cancelJob(event.getJobID(), event.getMsg());
+                  break;
+              }
+          }
+        }
+
+    }
+
+    private void cancelJob(final int ID, String msg ) {
+        CancelJobRequest request = new CancelJobRequest();
+        request.setCancelReason(msg);
+        request.setJobId(ID);
+
+        showProgressBar(getString(R.string.please_wait));
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        webServices.cancelJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
+
+            @Override
+            public void onSuccess(BaseResponse response) {
+                Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+
+                if (response.getStatus() == 1) {
+                    mJobAdapter.cancelJob(ID);
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+
+            }
+        });
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,7 +147,12 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
         super.onActivityCreated(savedInstanceState);
         if (getArguments().getParcelableArrayList(DATA_ARRAY) != null) {
             ArrayList<SearchJobModel> jobData = getArguments().getParcelableArrayList(DATA_ARRAY);
-            mJobListData.addAll(jobData);
+
+            if(jobData.size() > 0) {
+                mJobListData.addAll(jobData);
+            }else{
+                getAllAppliedJobs(false, true);
+            }
 
         } else {
             getAllAppliedJobs(false, true);

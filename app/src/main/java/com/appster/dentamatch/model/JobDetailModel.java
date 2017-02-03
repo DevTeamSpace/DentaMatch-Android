@@ -52,6 +52,10 @@ public class JobDetailModel {
     private int isSaved;
     private String partTimeDays;
 
+    public void setIsSaved(int isSaved) {
+        this.isSaved = isSaved;
+    }
+
     public int getId() {
         return id;
     }

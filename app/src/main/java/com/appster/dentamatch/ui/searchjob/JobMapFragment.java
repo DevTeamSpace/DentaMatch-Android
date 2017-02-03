@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -16,6 +17,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
@@ -31,6 +33,7 @@ import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.PermissionUtils;
@@ -443,12 +446,28 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.cb_job_selection:
-                SearchJobModel model = (SearchJobModel) v.getTag();
-                int status = (model.getIsSaved() == 1) ? 0 : 1;
-                saveUnSaveJob(model.getId(), status, model);
+                final SearchJobModel model = (SearchJobModel) v.getTag();
+                final int status = (model.getIsSaved() == 1) ? 0 : 1;
+
+                if(status == 0) {
+                    Alert.createYesNoAlert(getActivity(), "OK", "CANCEL", getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
+                        @Override
+                        public void onPositive(DialogInterface dialog) {
+                            saveUnSaveJob(model.getId(), status, model);
+                        }
+
+                        @Override
+                        public void onNegative(DialogInterface dialog) {
+                            ((CheckBox)v).setChecked(true);
+                            dialog.dismiss();
+                        }
+                    });
+                }else{
+                    saveUnSaveJob(model.getId(), status, model);
+                }
                 break;
 
             default:

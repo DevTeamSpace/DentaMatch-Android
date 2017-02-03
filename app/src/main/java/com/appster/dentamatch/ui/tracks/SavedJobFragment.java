@@ -87,8 +87,12 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
 
         if (getArguments().getParcelableArrayList(DATA_ARRAY) != null) {
             ArrayList<SearchJobModel> jobData = getArguments().getParcelableArrayList(DATA_ARRAY);
-            mJobListData.addAll(jobData);
 
+            if(jobData.size() > 0) {
+                mJobListData.addAll(jobData);
+            }else{
+                getAllSavedJobs(false, true);
+            }
         } else {
             getAllSavedJobs(false, true);
         }

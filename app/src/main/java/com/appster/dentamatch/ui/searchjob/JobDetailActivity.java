@@ -1,12 +1,14 @@
 package com.appster.dentamatch.ui.searchjob;
 
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
@@ -22,6 +24,7 @@ import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -148,7 +151,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()){
             case R.id.iv_tool_bar_left:
                 onBackPressed();
@@ -159,8 +162,23 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 break;
 
             case R.id.cb_job_selection:
-                int status = mJobDetailModel.getIsSaved() == 1? 0 : 1 ;
-                saveUnSaveJob(jobID, status);
+                final int status = mJobDetailModel.getIsSaved() == 1? 0 : 1 ;
+                if(status == 0){
+                    Alert.createYesNoAlert(JobDetailActivity.this, "OK", "CANCEL", getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
+                        @Override
+                        public void onPositive(DialogInterface dialog) {
+                            saveUnSaveJob(jobID, status);
+                        }
+
+                        @Override
+                        public void onNegative(DialogInterface dialog) {
+                            ((CheckBox)v).setChecked(true);
+                            dialog.dismiss();
+                        }
+                    });
+                }else {
+                    saveUnSaveJob(jobID, status);
+                }
                 break;
 
             case R.id.btn_apply_job:
@@ -366,6 +384,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             public void onSuccess(BaseResponse response) {
                 showToast(response.getMessage());
                 if(response.getStatus() == 1){
+                    mJobDetailModel.setIsSaved(status);
                     mBinding.cbJobSelection.setChecked(status == 1);
                     EventBus.getDefault().post(new SaveUnSaveEvent(JobID,status));
                 }

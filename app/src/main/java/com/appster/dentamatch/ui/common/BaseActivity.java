@@ -54,6 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         Alert.showSnackBar(findViewById(android.R.id.content), message, buttonText, listener);
     }
 
+
     public boolean isActive() {
         return mActive;
     }

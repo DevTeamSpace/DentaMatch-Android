@@ -1,6 +1,7 @@
 package com.appster.dentamatch.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
+import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
@@ -179,9 +181,25 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cb_job_selection:
-                int position = (int) v.getTag();
-                int status = mJobListData.get(position).getIsSaved() == 1 ? 0 : 1;
-                saveUnSaveJob(mJobListData.get(position).getId(), status, position);
+                final int position = (int) v.getTag();
+                final int status = mJobListData.get(position).getIsSaved() == 1 ? 0 : 1;
+                if(status == 0) {
+                    Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
+                        @Override
+                        public void onPositive(DialogInterface dialog) {
+                            saveUnSaveJob(mJobListData.get(position).getId(), status, position);
+                        }
+
+                        @Override
+                        public void onNegative(DialogInterface dialog) {
+                            dialog.dismiss();
+                            notifyItemChanged(position);
+                        }
+                    });
+                }else{
+                    saveUnSaveJob(mJobListData.get(position).getId(), status, position);
+                }
+
                 break;
 
             case R.id.lay_item_job_list:
