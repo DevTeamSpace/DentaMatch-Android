@@ -1,7 +1,6 @@
 package com.appster.dentamatch.ui.calendar;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 
@@ -32,8 +30,10 @@ public class CalendarViewEvent extends LinearLayout {
     private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
     private Context context;
     private CalendarEventGridAdapter mAdapter;
-    List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
+    private int oldClickedPos = -1;
+    private View oldView;
 
+    private List<CalenderAvailableCellModel> mDayList=new ArrayList<>();
 
     public CalendarViewEvent(Context context) {
         super(context);
@@ -47,7 +47,6 @@ public class CalendarViewEvent extends LinearLayout {
         setPreviousButtonClickEvent();
         setNextButtonClickEvent();
         setGridCellClickEvents();
-        Log.d(TAG, "I need to call this method");
     }
 
     public CalendarViewEvent(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -67,9 +66,9 @@ public class CalendarViewEvent extends LinearLayout {
         previousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
-//                cal.add(Calendar.MONTH, -1);
-//                setUpCalendarAdapter();
+//                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
+                cal.add(Calendar.MONTH, -1);
+                setUpCalendarAdapter();
             }
         });
     }
@@ -78,9 +77,9 @@ public class CalendarViewEvent extends LinearLayout {
         nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
-//                cal.add(Calendar.MONTH, 1);
-//                setUpCalendarAdapter();
+//                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
+                cal.add(Calendar.MONTH, 1);
+                setUpCalendarAdapter();
             }
         });
     }
@@ -90,17 +89,21 @@ public class CalendarViewEvent extends LinearLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(context, "Clicked " + (Integer)view.getTag(), Toast.LENGTH_LONG).show();
-//                if((Integer)view.getTag()!=-1)
-                if (dayValueInCells.get(position).isSelected()) {
-                    view.setBackgroundResource(R.color.white_color);
-                    dayValueInCells.get(position).setSelected(false);
-
-                } else {
-                    view.setBackgroundResource(R.drawable.shape_date_selection);
-                    dayValueInCells.get(position).setSelected(true);
-
+                if((Integer)view.getTag()!=-1) {
+                    if (!mDayList.get(position).isSelected()) {
+                        oldClickedPos = position;
+                        mDayList.get(position).setSelected(true);
+                        mDayList.get(oldClickedPos).setSelected(false);
+                        oldView = view;
+                    mAdapter = new CalendarEventGridAdapter(context, mDayList, cal, null);
+                    calendarGridView.setAdapter(mAdapter);
+                    }
                 }
-//                calendarGridView.deferNotifyDataSetChanged();
+                oldView.setBackgroundResource(0);
+
+                view.setBackgroundResource(R.drawable.shape_date_selection);
+
+//                    view.setBackgroundResource(R.drawable.shape_date_selection);
 
             }
         });
@@ -108,7 +111,7 @@ public class CalendarViewEvent extends LinearLayout {
 
     private void setUpCalendarAdapter() {
 //        List<Date> dayValueInCells = new ArrayList<Date>();
-//        mQuery = new DatabaseQuery(context);
+        List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
         List<EventObjects> mEvents = getAllFutureEvents();
         Calendar mCal = (Calendar) cal.clone();
         mCal.set(Calendar.DAY_OF_MONTH, 1);
@@ -117,14 +120,17 @@ public class CalendarViewEvent extends LinearLayout {
         while (dayValueInCells.size() < MAX_CALENDAR_COLUMN) {
             CalenderAvailableCellModel data = new CalenderAvailableCellModel();
             data.setDate(mCal.getTime());
+            mCal.add(Calendar.DAY_OF_MONTH, 1);
+
             data.setSelected(false);
 //            dayValueInCells.add(mCal.getTime());
             dayValueInCells.add(data);
-            mCal.add(Calendar.DAY_OF_MONTH, 1);
+//            mCal.add(Calendar.DAY_OF_MONTH, 1);
         }
         Log.d(TAG, "Number of date " + dayValueInCells.size());
         String sDate = formatter.format(cal.getTime());
         currentDate.setText(sDate);
+        mDayList=dayValueInCells;
         mAdapter = new CalendarEventGridAdapter(context, dayValueInCells, cal, mEvents);
         calendarGridView.setAdapter(mAdapter);
 //        setFontFaceLatoBold(currentDate);
@@ -142,12 +148,4 @@ public class CalendarViewEvent extends LinearLayout {
         return list;
     }
 
-    public void setFontFaceLatoBold(TextView view) {
-        Typeface tf = Typeface.createFromAsset(view.getContext()
-                .getAssets(), "untitled-font-6.ttf");
-
-        view.setTypeface(tf);
-        view.setText("a");
-
-    }
 }

@@ -37,7 +37,6 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
     private void initViews() {
         mPartTimeDays = new ArrayList<>();
-
         mBinder.toolbarSetAvailability.tvToolbarGeneralLeft.setText(getString(R.string.header_set_availability));
         mBinder.toolbarSetAvailability.ivToolBarLeft.setOnClickListener(this);
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);

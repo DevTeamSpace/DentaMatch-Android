@@ -24,7 +24,7 @@
         <com.appster.dentamatch.widget.CustomTextView
             style="@style/text_view_normal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/cell_height"
+            android:layout_height="@dimen/circular_text_dimen"
             android:background="@color/cell_color"
             android:gravity="bottom"
             android:paddingStart="@dimen/margin_normal"

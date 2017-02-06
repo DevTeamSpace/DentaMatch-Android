@@ -34,6 +34,9 @@ public class CalendarGridAdapter extends ArrayAdapter {
         mContext = context;
         mInflater = LayoutInflater.from(context);
     }
+    public  List<CalenderAvailableCellModel> getList(){
+       return  monthlyDates;
+    }
 
     @NonNull
     @Override

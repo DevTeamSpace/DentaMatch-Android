@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.calendar;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import java.util.List;
 public class CalendarEventGridAdapter extends ArrayAdapter {
     private static final String TAG = CalendarEventGridAdapter.class.getSimpleName();
     private LayoutInflater mInflater;
-    //    private List<Date> monthlyDates;
+//        private List<Date> monthlyDates;
     private List<CalenderAvailableCellModel> monthlyDates;
     private Calendar currentDate;
     private List<EventObjects> allEvents;
@@ -32,6 +33,9 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
         this.allEvents = allEvents;
         mContext = context;
         mInflater = LayoutInflater.from(context);
+    }
+    public  List<CalenderAvailableCellModel> getList(){
+        return  monthlyDates;
     }
 
     @NonNull
@@ -62,7 +66,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
 //            view.setBackgroundColor(Color.parseColor(R.color.colorPrimary));
             cellNumber.setText(String.valueOf(dayValue));
             view.setTag(position);
-            view.setBackgroundColor(mContext.getResources().getColor(R.color.white_color));
+//            view.setBackgroundColor(ContextCompat.getColor(mContext,R.color.white_color));
 //            if (dayValue == currentDay) {
 //                view.setBackgroundResource(R.drawable.oval);
 //            }
@@ -72,40 +76,38 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
 //
 //            }
             if (monthlyDates.get(position).isSelected()) {
-                view.setBackgroundResource(R.drawable.shape_temporary_date_selection);
+                view.setBackgroundResource(R.drawable.shape_date_selection);
 
             } else {
                 view.setBackgroundResource(0);
 
             }
-            for (int i = 0; i < allEvents.size(); i++) {
-//            eventCalendar.setTime(allEvents.get(i).getDate());
-//            if (dayValue == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH) + 1
-//                    && displayYear == eventCalendar.get(Calendar.YEAR)) {
-//                eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
+//            for (int i = 0; i < allEvents.size(); i++) {
+////            eventCalendar.setTime(allEvents.get(i).getDate());
+////            if (dayValue == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH) + 1
+////                    && displayYear == eventCalendar.get(Calendar.YEAR)) {
+////                eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
+////            }
+//                if (dayValue == allEvents.get(i).getDayOfMonth()) {
+////                    eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
+//                    if (allEvents.get(i).getDayOfMonth() % 6 == 0) {
+//                        dot1.setVisibility(View.VISIBLE);
+//                        dot2.setVisibility(View.VISIBLE);
+//                        dot3.setVisibility(View.VISIBLE);
+//                    } else if (allEvents.get(i).getDayOfMonth() % 7 == 0) {
+//                        dot1.setVisibility(View.VISIBLE);
+//                        dot2.setVisibility(View.VISIBLE);
+//                        dot3.setVisibility(View.GONE);
+//                    } else if (allEvents.get(i).getDayOfMonth() % 5 == 0) {
+//                        dot1.setVisibility(View.VISIBLE);
+//                        dot2.setVisibility(View.GONE);
+//                        dot3.setVisibility(View.GONE);
+//                    }
+//                }
 //            }
-                if (dayValue == allEvents.get(i).getDayOfMonth()) {
-//                    eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
-                    if (allEvents.get(i).getDayOfMonth() % 6 == 0) {
-                        dot1.setVisibility(View.VISIBLE);
-                        dot2.setVisibility(View.VISIBLE);
-                        dot3.setVisibility(View.VISIBLE);
-                    } else if (allEvents.get(i).getDayOfMonth() % 7 == 0) {
-                        dot1.setVisibility(View.VISIBLE);
-                        dot2.setVisibility(View.VISIBLE);
-                        dot3.setVisibility(View.GONE);
-                    } else if (allEvents.get(i).getDayOfMonth() % 5 == 0) {
-                        dot1.setVisibility(View.VISIBLE);
-                        dot2.setVisibility(View.GONE);
-                        dot3.setVisibility(View.GONE);
-                    }
-                }
-            }
         } else
 
         {
-//            view.setBackgroundColor(Color.parseColor("#cccccc"));
-//            view.setBackgroundColor(Color.parseColor("#cccccc"));
             view.setBackgroundColor(mContext.getResources().getColor(R.color.white_color));
 
             view.setTag(-1);

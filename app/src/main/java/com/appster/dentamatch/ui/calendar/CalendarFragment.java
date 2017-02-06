@@ -53,7 +53,11 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 //        calendarBinding.toolbarCalendar.ivToolBarRight.setBackgroundResource(R.drawable.ic_profile_plus);
 
         calendarBinding.toolbarCalendar.ivToolBarLeft.setVisibility(View.GONE);
+        calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
+        calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setOnClickListener(this);
         calendarBinding.toolbarCalendar.tvToolbarGeneralLeft.setText("CALENDER");
+        calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setText("+");
+        calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setPadding(10,10,10,10);
         calendarBinding.toolbarCalendar.ivToolBarRight.setVisibility(View.VISIBLE);
         calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
         calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setCompoundDrawables(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_plus), null, null,null);
@@ -65,7 +69,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         switch (view.getId()) {
             case R.id.iv_tool_bar_left:
                 break;
-            case R.id.iv_tool_bar_right:
+            case R.id.txv_toolbar_general_right:
                 startActivity(new Intent(getActivity(), SetAvailabilityActivity.class));
                 break;
         }

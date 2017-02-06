@@ -11,6 +11,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.appster.dentamatch.R;
@@ -32,7 +33,7 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
     private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
     private Context context;
     private CalendarGridAdapter mAdapter;
-    List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
+//    List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
 
 
     public CalendarViewSetAvaliablity(Context context) {
@@ -47,7 +48,6 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
         setPreviousButtonClickEvent();
         setNextButtonClickEvent();
         setGridCellClickEvents();
-        Log.d(TAG, "I need to call this method");
     }
 
     public CalendarViewSetAvaliablity(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -88,25 +88,25 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(context, "Clicked " + (Integer)view.getTag(), Toast.LENGTH_LONG).show();
-//                if((Integer)view.getTag()!=-1)
-                    if(dayValueInCells.get(position).isSelected()){
+                if((Integer)view.getTag()!=-1) {
+                    if (mAdapter.getList().get(position).isSelected()) {
                         view.setBackgroundResource(R.color.white_color);
 
-                        dayValueInCells.get(position).setSelected(false);
+                        mAdapter.getList().get(position).setSelected(false);
 
-                    }else{
+                    } else {
                         view.setBackgroundResource(R.drawable.shape_temporary_date_selection);
-
-                        dayValueInCells.get(position).setSelected(true);
+                        mAdapter.getList().get(position).setSelected(true);
 
                     }
-
+                }
             }
         });
     }
 
     private void setUpCalendarAdapter() {
 //        List<Date> dayValueInCells = new ArrayList<Date>();
+        List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
 //        mQuery = new DatabaseQuery(context);
         List<EventObjects> mEvents = getAllFutureEvents();
         Calendar mCal = (Calendar) cal.clone();
