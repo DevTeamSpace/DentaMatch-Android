@@ -60,6 +60,12 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
                 return;
             }
 
+                if (responseBase.getStatusCode() == INVALID_SESSION) {
+                    act.showToast(act.getString(R.string.authentication_error));
+                    act.logOut();
+                    return;
+                }
+
 //            if (responseBase.getStatus() == STATUS_FAIL) {//STATUS 0
 //                if (responseBase.getStatusCode() == INVALID_SESSION) {
 //                    act.showSnackBar(act.getResources().getString(R.string.authentication_error), true);

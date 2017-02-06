@@ -132,8 +132,10 @@
     <string name="month">Month</string>
 
     <!--Server error-->
-    <string name="authentication_error">Authentication error , Please login again. </string>
+    <string name="authentication_error">Authentication error, please login again.</string>
+    <string name="server_invalid_response">Something went wrong.</string>
     <string name="server_error">There is some issue connecting with server.</string>
+    <string name="server_error_internal">Server internal error.</string>
     <string name="no_internet">Please check your Internet Connection.</string>
     <string name="unidentified_error">Oops, Something went wrong..</string>
     <string name="add_more_refrence">Add More References</string>
@@ -202,7 +204,7 @@
     <string name="blank_profile_summary_alert">Please write something about your profile.</string>
     <!--setting -->
     <string name="settings_reset_password">Reset Password</string>
-    <string name="settings_change_home_location">Change Home Location</string>
+    <string name="settings_change_home_location">Preferred Job Location</string>
     <string name="settings_logout">Logout</string>
     <string name="settings_privacy">Privacy Policy</string>
     <string name="settings_terms">Terms &amp; Conditions</string>
@@ -269,6 +271,7 @@
     <string name="parking_availability_label">PARKING AVAILABILITY</string>
     <string name="map_label">MAP</string>
     <string name="button_apply_for_job">APPLY FOR JOB</string>
+    <string name="button_already_applied">JOB ALREADY APPLIED</string>
     <string name="txt_part_time">Part Time</string>
     <string name="txt_full_time">Full Time</string>
     <string name="txt_temporary">Temporary</string>
@@ -283,9 +286,9 @@
     <string name="txt_saturday">Saturday</string>
     <string name="txt_sunday">Sunday</string>
     <string name="not_applicable">NA</string>
-
-<!--calendar-->
-
+    <string name="txt_read_more">READ MORE</string>
+    <string name="text_show_label">SHOW LESS</string>
+    <string name="txt_applied">Applied</string>
     <string name="sun">SU</string>
     <string name="mon">MO</string>
     <string name="tue">TU</string>

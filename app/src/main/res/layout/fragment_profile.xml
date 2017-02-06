@@ -124,7 +124,6 @@
                 android:layout_marginRight="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_15"
                 android:gravity="center_vertical"
-                android:text="@string/label_accept_term_ncondition"
                 android:textColor="@color/warm_gray_color"
                 android:textSize="@dimen/text_size_normal"
                 app:customFont="@string/font_regular" />
@@ -141,7 +140,9 @@
                 android:id="@+id/exp_inflater"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:orientation="vertical"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/cell_schooling"
@@ -151,7 +152,9 @@
                 android:id="@+id/school_inflater"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:orientation="vertical"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/cell_key_skill"
@@ -161,7 +164,9 @@
                 android:id="@+id/key_skill_inflater"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:layout_marginTop="@dimen/margin_normal"
+                android:orientation="vertical"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/cell_affiliation"
@@ -172,9 +177,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
-                app:layoutDirection="ltr"
-
-                >
+                android:visibility="gone"
+                app:layoutDirection="ltr">
 
             </org.apmem.tools.layouts.FlowLayout>
 
@@ -200,6 +204,7 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_licence_state"
                     style="@style/text_view_normal"
+                    android:layout_marginTop="@dimen/margin_medium"
                     android:textColor="@color/text_default_color"
                     android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_regular" />

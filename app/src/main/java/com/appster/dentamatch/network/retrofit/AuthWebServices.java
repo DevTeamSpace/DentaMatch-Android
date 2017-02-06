@@ -1,23 +1,28 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.request.JobDetailRequest;
+import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
+import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
+import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
+import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
+import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.request.profile.UpdateUserProfileRequest;
 import com.appster.dentamatch.network.request.schools.AddSchoolRequest;
 import com.appster.dentamatch.network.request.skills.SkillsUpdateRequest;
+import com.appster.dentamatch.network.request.tracks.CancelJobRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
-import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
+import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
@@ -67,9 +72,30 @@ public interface AuthWebServices {
     String UPDATE_PROFILE = "users/user-profile-update";
     String SEARCH_JOBS = "users/search-jobs";
     String JOB_DETAILS = "jobs/job-detail";
+    String APPLY_JOB = "users/apply-job";
+    String SAVE_UNSAVE_JOB = "users/save-job";
+    String TRACK_JOBS = "users/job-list";
+    String CANCEL_JOB = "users/cancel-job";
+    String UPDATE_USER_LOCATION = "users/user-location-update";
+
+    @POST(UPDATE_USER_LOCATION)
+    Call<BaseResponse> updateUserLocation(@Body ChangeUserLocation request);
+
+
+    @GET(TRACK_JOBS)
+    Call<SearchJobResponse> fetchTrackJobs(@Query("type") int type, @Query("page") int page, @Query("lat") double lat, @Query("lng") double lng);
+
+    @POST(SAVE_UNSAVE_JOB)
+    Call<BaseResponse> saveUnSaveJob(@Body SaveUnSaveRequest request);
+
+    @POST(CANCEL_JOB)
+    Call<BaseResponse> cancelJob(@Body CancelJobRequest request);
+
+    @POST(APPLY_JOB)
+    Call<BaseResponse> applyJob(@Body JobApplyRequest request);
 
     @POST(JOB_DETAILS)
-    Call<BaseResponse> getJobDetail(@Body JobDetailRequest request);
+    Call<JobDetailResponse> getJobDetail(@Body JobDetailRequest request);
 
     @POST(SEARCH_JOBS)
     Call<SearchJobResponse> searchJob(@Body SearchJobRequest request);

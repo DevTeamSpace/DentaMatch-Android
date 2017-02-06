@@ -24,6 +24,7 @@
     <color name="edt_boundry_color">#e4e4e4</color>
     <color name="edt_boundry_highlight_color">#046dbb</color>
     <color name="edt_hint_color">#959595</color>
+    <color name="note_color">#8a414141</color>
     <color name="register_help_color">#a6a6a6</color>
     <color name="text_default_color">#383838</color>
     <color name="color_forgot_pwd">#0470c0</color>
@@ -60,5 +61,6 @@
     <color name="brownish_grey">#5d5d5d</color>
     <color name="white_six">#20e1e1e1</color>
     <color name="white3_color">#f3f3f3</color>
+    <color name="tab_normal_color">#b3ffffff</color>
 
 </resources>

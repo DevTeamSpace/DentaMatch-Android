@@ -53,6 +53,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
+        if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_IS_LOGIN)) {
+            isLogin = getIntent().getBooleanExtra(Constants.EXTRA_IS_LOGIN, false);
+        }
+
         initViews();
     }
 
@@ -187,7 +191,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.tv_preferred_job_location:
-                startActivityForResult(new Intent(this, PlacesMapActivity.class), REQUEST_CODE_LOCATION);
+                Intent intent = new Intent(this, PlacesMapActivity.class);
+
+                if (mLatitude != null && mLongitude != null) {
+                    intent.putExtra(Constants.EXTRA_LATITUDE, mLatitude);
+                    intent.putExtra(Constants.EXTRA_LONGITUDE, mLongitude);
+                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mPostalCode);
+                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mPlaceName);
+                }
+
+                startActivityForResult(intent, REQUEST_CODE_LOCATION);
                 break;
         }
     }
@@ -206,7 +219,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         mLongitude = bundle.getString(Constants.EXTRA_LONGITUDE);
                         mPlaceName = bundle.getString(Constants.EXTRA_PLACE_NAME);
                         mPostalCode = bundle.getString(Constants.EXTRA_POSTAL_CODE);
-                        mBinder.tvPreferredJobLocation.setText(data.getExtras().getString(Constants.EXTRA_PLACE_NAME));
+                        mBinder.tvPreferredJobLocation.setText(mPlaceName);
                     }
                 }
         }
@@ -373,6 +386,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
+                    PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
                     Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
                     startActivity(intent);
                     finish();

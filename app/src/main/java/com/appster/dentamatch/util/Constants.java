@@ -15,6 +15,8 @@ public class Constants {
     public static final String EXTRA_SEARCH_JOB = "EXTRA_SEARCH_JOB";
     public static final String EXTRA_JOB_LIST = "EXTRA_JOB_LIST";
     public static final String EXTRA_JOB_DETAIL_ID = "EXTRA_JOB_DETAIL_ID";
+    public static final String EXTRA_IS_LOGIN = "display_login";
+    public static final String EXTRA_JOB_ID = "EXTRA_JOB_ID";
 
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";
@@ -29,6 +31,7 @@ public class Constants {
     public static final int IMAGE_DIMEN = 102;
     public static final int IMAGE_DIME_CERTIFICATE = 142;
     public static final int EDUCATION_HISTORY_YEARS = 50;
+    public static final int MAP_ZOOM_LEVEL = 15;
 
     public enum ACTIVITIES {
         SWITCH_ACTIVITY
@@ -46,6 +49,22 @@ public class Constants {
         private int value;
 
         JOBTYPE(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public enum SEARCHJOBTYPE {
+        SAVED(1),
+        APPLIED(2),
+        SHORTLISTED(3);
+
+        private int value;
+
+        SEARCHJOBTYPE(int value) {
             this.value = value;
         }
 
@@ -81,6 +100,7 @@ public class Constants {
         int REQUEST_CODE_SKILLS = 303;
         int REQUEST_CODE_PASS_INTENT = 304;
         int REQUEST_CODE_LOCATION = 101;
+        int REQUEST_CODE_JOB_DETAIL = 121;
     }
 
     public interface FRAGMENT_NAME {

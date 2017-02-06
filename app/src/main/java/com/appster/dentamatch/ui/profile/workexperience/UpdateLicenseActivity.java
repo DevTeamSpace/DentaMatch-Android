@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateLicenseBinding;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -18,6 +19,8 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
 
@@ -39,6 +42,7 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
 
     private void initView() {
         mBinder.toolbarLicense.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
+        mBinder.toolbarLicense.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnSave.setOnClickListener(this);
         if (getIntent() != null) {
             data = getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
@@ -47,8 +51,10 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
     }
 
     private void setViewData() {
-        mBinder.etState.setText(data.getState());
-        mBinder.etLicence.setText(data.getLicenseNumber());
+        if (data != null) {
+            mBinder.etState.setText(data.getState());
+            mBinder.etLicence.setText(data.getLicenseNumber());
+        }
     }
 
     @Override
@@ -63,6 +69,9 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
                 if (checkInputValidator()) {
                     callLicenceApi(prepareLicenceRequest());
                 }
+                break;
+            case R.id.iv_tool_bar_left:
+                finish();
                 break;
         }
     }
@@ -117,6 +126,7 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
                 public void onSuccess(LicenceUpdateResponse response) {
                     LogUtils.LOGD(TAG, "onSuccess");
                     if (response.getStatus() == 1) {
+                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                         finish();
                     } else {
                         Utils.showToast(getApplicationContext(), response.getMessage());

@@ -1,10 +1,15 @@
 package com.appster.dentamatch.util;
 
+import android.location.Location;
+import com.appster.dentamatch.model.User;
+
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.model.JobTitleList;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
+
+import retrofit2.http.PUT;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -35,8 +40,16 @@ public final class PreferenceUtil {
 
     private static final String KEY_JOB_FILTER_SET = "KEY_JOB_FILTER_SET";
     private static final String KEY_JOB_FILTER_REQUEST = "KEY_JOB_FILTER_REQUEST";
+    private static final String KEY_USER_CURRENT_LOC = "KEY_USER_CURRENT_LOC";
 
+    private static final String KEY_USER_MODEL = "USER_MODEL";
+    public static void setUserCurrentLocation(Location location){
+        Hawk.put(KEY_USER_CURRENT_LOC, location);
+    }
 
+    public static Object getUserCurrentLocation(){
+        return Hawk.get(KEY_USER_CURRENT_LOC);
+    }
     public static void saveAppState(Object state) {
         Hawk.put(KEY_APP_STATE, state);
     }
@@ -198,6 +211,14 @@ public final class PreferenceUtil {
 
     public static void setIsLogined(boolean value) {
         Hawk.put(KEY_IS_LOGIN, value);
+    }
+
+    public static void setUserModel(User user) {
+        Hawk.put(KEY_USER_MODEL, user);
+    }
+
+    public static User getUserModel() {
+        return Hawk.get(KEY_USER_MODEL);
     }
 
     public static void reset() {

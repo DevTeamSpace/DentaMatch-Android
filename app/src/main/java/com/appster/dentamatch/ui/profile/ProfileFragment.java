@@ -18,7 +18,10 @@ import com.appster.dentamatch.databinding.ItemProfileCellCertificateBinding;
 import com.appster.dentamatch.databinding.ItemProfileSchoolingBinding;
 import com.appster.dentamatch.databinding.ItemProfileSkillBinding;
 import com.appster.dentamatch.databinding.ItemProfileWorkExpBinding;
+import com.appster.dentamatch.model.ProfileSchool;
+import com.appster.dentamatch.model.ProfileSkill;
 import com.appster.dentamatch.model.ProfileUpdatedEvent;
+import com.appster.dentamatch.model.User;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -26,8 +29,6 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
-import com.appster.dentamatch.model.ProfileSchool;
-import com.appster.dentamatch.model.ProfileSkill;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
@@ -39,6 +40,7 @@ import com.appster.dentamatch.ui.profile.workexperience.WorkExpListActivity;
 import com.appster.dentamatch.ui.settings.SettingActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 import com.squareup.picasso.MemoryPolicy;
@@ -47,7 +49,6 @@ import com.squareup.picasso.Picasso;
 import org.apmem.tools.layouts.FlowLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -130,7 +131,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             public void onClick(View view) {
                 Intent licenseIntent = new Intent(getActivity(), UpdateLicenseActivity.class);
                 licenseIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
-                licenseIntent.putExtra(Constants.INTENT_KEY.DATA, profileResponseData.getLicence());
+                licenseIntent.putExtra(Constants.INTENT_KEY.DATA, profileResponseData != null ? profileResponseData.getLicence() : null);
                 startActivity(licenseIntent);
             }
         });
@@ -140,10 +141,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
                 CertificatesList data = new CertificatesList();
                 if (TextUtils.isEmpty(profileResponseData.getDentalStateBoard().getImageUrl())) {
-                    data.setImageUrl("");
+                    data.setImage("");
 
                 } else {
-                    data.setImageUrl(profileResponseData.getDentalStateBoard().getImageUrl());
+                    data.setImage(profileResponseData.getDentalStateBoard().getImageUrl());
                 }
                 data.setCertificateName(getString(R.string.dental_state_board));
 
@@ -243,7 +244,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
                     profileResponseData = response.getProfileResponseData();
-                    if (isActive()) {
+                    if (isAlive()) {
                         setViewData(response.getProfileResponseData());
                     }
                 } else {
@@ -272,7 +273,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.tvJobTitle.setText(response.getUser().getJobTitle());
                 profileBinding.tvLocation.setText(response.getUser().getPreferredJobLocation());
 
+                saveUserProfile(response.getUser());
             }
+
             if (response.getWorkExperience() != null && response.getWorkExperience().getSaveList().size() > 0) {
                 goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
 
@@ -282,9 +285,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             }
             if (response.getAffiliationList() != null && response.getAffiliationList().size() > 0) {
+                profileBinding.flowLayout.setVisibility(View.VISIBLE);
                 goneViews(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
                 profileBinding.flowLayout.removeAllViews();
-
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
                     CustomTextView textView = new CustomTextView(getActivity());
                     FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
@@ -299,6 +302,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 }
 
             } else {
+                profileBinding.expInflater.setVisibility(View.GONE);
+
+                profileBinding.flowLayout.setVisibility(View.GONE);
                 visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
             }
 
@@ -334,6 +340,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.GONE);
+                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
+
 
             }
             if (response.getSchoolArrayList() != null && response.getSchoolArrayList().size() > 0) {
@@ -342,6 +350,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 inflateSchools(response.getSchoolArrayList());
 
             } else {
+                profileBinding.schoolInflater.setVisibility(View.GONE);
+
                 profileBinding.cellSchooling.tvAddCertificates.setVisibility(View.VISIBLE);
                 profileBinding.cellSchooling.tvEditCell.setVisibility(View.GONE);
             }
@@ -351,6 +361,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 inflateSkill(response.getSkillArrayList());
 
             } else {
+                profileBinding.keySkillInflater.setVisibility(View.GONE);
                 profileBinding.cellKeySkill.tvAddCertificates.setVisibility(View.VISIBLE);
                 profileBinding.cellKeySkill.tvEditCell.setVisibility(View.GONE);
             }
@@ -358,6 +369,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void inflateSkill(ArrayList<ProfileSkill> skillArrayList) {
+        profileBinding.keySkillInflater.setVisibility(View.VISIBLE);
+
         profileBinding.keySkillInflater.removeAllViews();
         ItemProfileSkillBinding skillBinding;
         for (int i = 0; i < skillArrayList.size(); i++) {
@@ -395,6 +408,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void inflateExperience(ArrayList<WorkExpRequest> expList) {
+        profileBinding.expInflater.setVisibility(View.VISIBLE);
         profileBinding.expInflater.removeAllViews();
         ItemProfileWorkExpBinding expBinding;
         for (int i = 0; i < expList.size(); i++) {
@@ -534,13 +548,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void inflateSchools(ArrayList<ProfileSchool> schoolList) {
+        profileBinding.schoolInflater.setVisibility(View.VISIBLE);
+
         profileBinding.schoolInflater.removeAllViews();
         ItemProfileSchoolingBinding schoolBinding;
+
         for (int i = 0; i < schoolList.size(); i++) {
             schoolBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.schoolInflater.getContext())
                     .inflate(R.layout.item_profile_schooling, profileBinding.schoolInflater, false));
             schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
-            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
+            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName());
             profileBinding.schoolInflater.addView(schoolBinding.getRoot());
         }
 
@@ -550,11 +567,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         return null;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe()
     public void onProfileUpdatedEvent(ProfileUpdatedEvent profileUpdatedEvent) {
         if (profileUpdatedEvent.ismIsProfileUpdated()) {
             getProfileData();
         }
+    }
+
+    private void saveUserProfile(User user) {
+        PreferenceUtil.setUserModel(user);
     }
 
 

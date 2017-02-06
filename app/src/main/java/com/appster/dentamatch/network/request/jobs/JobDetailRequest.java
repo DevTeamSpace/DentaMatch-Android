@@ -1,4 +1,4 @@
-package com.appster.dentamatch.network.request;
+package com.appster.dentamatch.network.request.jobs;
 
 /**
  * Created by Appster on 28/01/17.

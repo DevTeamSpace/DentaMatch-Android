@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +34,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
         calendarBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false);
 //        fragmentManager = getActivity().getSupportFragmentManager();
 //        fragmentTransaction = fragmentManager.beginTransaction();
@@ -46,10 +45,18 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initViews() {
-        calendarBinding.toolbarCalendar.ivToolBarLeft.setOnClickListener(this);
-        calendarBinding.toolbarCalendar.ivToolBarRight.setOnClickListener(this);
+//        calendarBinding.toolbarCalendar.tvToolbarGeneralLeft.setVisibility(View.GONE);
+////        calendarBinding.toolbarCalendar.ivToolBarLeft.setOnClickListener(this);
+//        calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setOnClickListener(this);
+//        calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setCompoundDrawables(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_plus), null, null, null);
+//        calendarBinding.toolbarCalendar.tvToolbarGeneralLeft.setText("CALENDER");
+//        calendarBinding.toolbarCalendar.ivToolBarRight.setBackgroundResource(R.drawable.ic_profile_plus);
+
+        calendarBinding.toolbarCalendar.ivToolBarLeft.setVisibility(View.GONE);
+        calendarBinding.toolbarCalendar.tvToolbarGeneralLeft.setText("CALENDER");
         calendarBinding.toolbarCalendar.ivToolBarRight.setVisibility(View.VISIBLE);
-        calendarBinding.toolbarCalendar.ivToolBarRight.setBackgroundResource(R.drawable.ic_back);
+        calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
+        calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setCompoundDrawables(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_plus), null, null,null);
 
     }
 
