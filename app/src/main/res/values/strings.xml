@@ -294,5 +294,6 @@
     <string name="fri">FR</string>
     <string name="sat">SA</string>
     <string name="last_date">30</string>
+    <string name="booked_job">BOOKED JOBS</string>
 
 </resources>

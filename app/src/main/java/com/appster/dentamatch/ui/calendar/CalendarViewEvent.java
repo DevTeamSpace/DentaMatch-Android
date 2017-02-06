@@ -30,7 +30,7 @@ public class CalendarViewEvent extends LinearLayout {
     private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
     private Context context;
-    private CalendarGridAdapter mAdapter;
+    private CalendarEventGridAdapter mAdapter;
     List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
 
 
@@ -88,17 +88,16 @@ public class CalendarViewEvent extends LinearLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(context, "Clicked " + (Integer)view.getTag(), Toast.LENGTH_LONG).show();
 //                if((Integer)view.getTag()!=-1)
-                    if(dayValueInCells.get(position).isSelected()){
-                        view.setBackgroundResource(R.color.white_color);
+                if (dayValueInCells.get(position).isSelected()) {
+                    view.setBackgroundResource(R.color.white_color);
+                    dayValueInCells.get(position).setSelected(false);
 
-                        dayValueInCells.get(position).setSelected(false);
+                } else {
+                    view.setBackgroundResource(R.drawable.shape_date_selection);
+                    dayValueInCells.get(position).setSelected(true);
 
-                    }else{
-                        view.setBackgroundResource(R.drawable.shape_date_selection);
-
-                        dayValueInCells.get(position).setSelected(true);
-
-                    }
+                }
+//                calendarGridView.deferNotifyDataSetChanged();
 
             }
         });
@@ -113,7 +112,7 @@ public class CalendarViewEvent extends LinearLayout {
         int firstDayOfTheMonth = mCal.get(Calendar.DAY_OF_WEEK) - 1;
         mCal.add(Calendar.DAY_OF_MONTH, -firstDayOfTheMonth);
         while (dayValueInCells.size() < MAX_CALENDAR_COLUMN) {
-            CalenderAvailableCellModel data=new CalenderAvailableCellModel();
+            CalenderAvailableCellModel data = new CalenderAvailableCellModel();
             data.setDate(mCal.getTime());
             data.setSelected(false);
 //            dayValueInCells.add(mCal.getTime());
@@ -123,7 +122,7 @@ public class CalendarViewEvent extends LinearLayout {
         Log.d(TAG, "Number of date " + dayValueInCells.size());
         String sDate = formatter.format(cal.getTime());
         currentDate.setText(sDate);
-        mAdapter = new CalendarGridAdapter(context, dayValueInCells, cal, mEvents);
+        mAdapter = new CalendarEventGridAdapter(context, dayValueInCells, cal, mEvents);
         calendarGridView.setAdapter(mAdapter);
 //        setFontFaceLatoBold(currentDate);
     }
@@ -134,17 +133,18 @@ public class CalendarViewEvent extends LinearLayout {
         List<EventObjects> list = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
 //            dt.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
-            EventObjects eventObjects = new EventObjects("" + i,  null,cal.get(Calendar.DAY_OF_MONTH)-i);
+            EventObjects eventObjects = new EventObjects("" + i, null, cal.get(Calendar.DAY_OF_MONTH) - i);
             list.add(eventObjects);
         }
         return list;
     }
-        public  void setFontFaceLatoBold( TextView view) {
-            Typeface tf = Typeface.createFromAsset(view.getContext()
-                    .getAssets(), "untitled-font-6.ttf");
 
-            view.setTypeface(tf);
-            view.setText("a");
+    public void setFontFaceLatoBold(TextView view) {
+        Typeface tf = Typeface.createFromAsset(view.getContext()
+                .getAssets(), "untitled-font-6.ttf");
+
+        view.setTypeface(tf);
+        view.setText("a");
 
     }
 }
