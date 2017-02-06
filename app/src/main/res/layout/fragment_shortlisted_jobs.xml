@@ -4,6 +4,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            style="@style/text_view_normal"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:drawableTop="@drawable/img_placeholder_track"
+            android:drawablePadding="@dimen/margin_23"
+            android:text="You don’t have any shortlisted jobs"
+            android:id="@+id/tv_no_jobs"/>
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_job_list"
             android:layout_above="@+id/lay_job_list_pagination"

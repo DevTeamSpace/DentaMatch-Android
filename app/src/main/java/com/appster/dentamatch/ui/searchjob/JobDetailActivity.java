@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.searchjob;
 
-import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -143,10 +142,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     }
 
     private void cycleTextViewExpansion(){
-        int collapsedMaxLines = 4;
-        ObjectAnimator animation = ObjectAnimator.ofInt(mBinding.tvJobDetailDocDescription, "maxLines",
-                mBinding.tvJobDetailDocDescription.getMaxLines() == collapsedMaxLines? mBinding.tvJobDetailDocDescription.getLineCount() : collapsedMaxLines);
-        animation.setDuration(200).start();
+//        int collapsedMaxLines = 4;
+//        ObjectAnimator animation = ObjectAnimator.ofInt(mBinding.tvJobDetailDocDescription, "maxLines",
+//                mBinding.tvJobDetailDocDescription.getMaxLines() == collapsedMaxLines? mBinding.tvJobDetailDocDescription.getLineCount() : collapsedMaxLines);
+//        animation.setDuration(200).start();
     }
 
 
@@ -158,7 +157,16 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 break;
 
             case R.id.tv_job_detail_doc_read_more:
-                cycleTextViewExpansion();
+
+                if(mBinding.tvJobDetailDocReadMore.getText().toString().equalsIgnoreCase(getString(R.string.txt_read_more))) {
+                    mBinding.tvJobDetailDocDescription.setMaxLines(Integer.MAX_VALUE);
+                    mBinding.tvJobDetailDocReadMore.setText(R.string.txt_show_less);
+                }else{
+                    mBinding.tvJobDetailDocDescription.setMaxLines(4);
+                    mBinding.tvJobDetailDocReadMore.setText(getString(R.string.txt_read_more));
+
+                }
+
                 break;
 
             case R.id.cb_job_selection:
@@ -321,7 +329,6 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
 //        mBinding.tvJobDetailJobOpenings.setText(dataModel.);
 //        mBinding.tvOfficeDress.setText(dataModel.g);
-        mBinding.tvJobDetailDocDescription.setText(dataModel.getTemplateDesc());
 //        mBinding.tvOfficeParkingAvailibility.setText(dataModel.get);
         String startTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart());
         String endTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd());

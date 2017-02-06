@@ -107,6 +107,12 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
 
                 if (response.getStatus() == 1) {
                     mJobAdapter.cancelJob(ID);
+
+                    if(mJobListData.size() > 0){
+                        mBinding.tvNoJobs.setVisibility(View.GONE);
+                    }else{
+                        mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -220,6 +226,12 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
                     mBinding.layJobListPagination.setVisibility(View.GONE);
                 }
 
+                if(mJobListData.size() > 0){
+                    mBinding.tvNoJobs.setVisibility(View.GONE);
+                }else{
+                    mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+                }
+
             }
 
             @Override
@@ -244,6 +256,8 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
             mTotalResultCount = response.getSearchJobResponseData().getTotal();
             mIsPaginationNeeded = !(mTotalResultCount == mJobListData.size());
         }
+
+
     }
 
     @Override
