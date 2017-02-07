@@ -113,6 +113,11 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@android:color/darker_gray"/>
+
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
@@ -128,6 +133,12 @@
                     android:text="@string/label_about"
                     android:textColor="@color/cell_text_color"
                     app:customFont="@string/font_medium" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@android:color/darker_gray"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -232,12 +243,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignTop="@+id/tv_job_detail_doc_name"
+                        android:layout_alignTop="@+id/tv_office_location_label"
                         android:layout_marginEnd="@dimen/margin_20"
                         android:lineSpacingMultiplier="1.2"
                         app:customFont="@string/font_regular" />
 
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@android:color/darker_gray"/>
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
@@ -253,6 +269,11 @@
                     android:text="@string/job_description_label"
                     android:textColor="@color/cell_text_color"
                     app:customFont="@string/font_medium" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@android:color/darker_gray"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -292,6 +313,11 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@android:color/darker_gray"/>
+
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
                     android:layout_width="wrap_content"
@@ -306,6 +332,11 @@
                     android:text="@string/office_description_label"
                     android:textColor="@color/cell_text_color"
                     app:customFont="@string/font_medium" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@android:color/darker_gray"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -388,6 +419,11 @@
                         app:customFont="@string/font_regular" />
                 </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@android:color/darker_gray"/>
+
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
                     android:layout_width="wrap_content"
@@ -402,6 +438,11 @@
                     android:text="@string/map_label"
                     android:textColor="@color/cell_text_color"
                     app:customFont="@string/font_medium" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@android:color/darker_gray"/>
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/map_job_detail"

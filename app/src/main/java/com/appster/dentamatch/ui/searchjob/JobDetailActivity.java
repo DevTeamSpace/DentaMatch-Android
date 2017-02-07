@@ -1,6 +1,7 @@
 package com.appster.dentamatch.ui.searchjob;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
@@ -200,13 +202,30 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         webServices.applyJob(request).enqueue(new BaseCallback<BaseResponse>(this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                showToast(response.getMessage());
                 if(response.getStatus() == 1) {
                     mBinding.tvJobStatus.setVisibility(View.VISIBLE);
                     mBinding.btnApplyJob.setVisibility(View.GONE);
+                    Alert.alert(JobDetailActivity.this,"Congratulations", "You have successfully applied for the job.");
                 }else{
                     mBinding.tvJobStatus.setVisibility(View.GONE);
                     mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                    if(response.getStatusCode() == 202){
+                        Alert.createYesNoAlert(JobDetailActivity.this, "Yes", "No", "Complete your profile", response.getMessage(), new Alert.OnAlertClickListener() {
+                            @Override
+                            public void onPositive(DialogInterface dialog) {
+                                startActivity(new Intent(JobDetailActivity.this, HomeActivity.class)
+//                                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                            }
+
+                            @Override
+                            public void onNegative(DialogInterface dialog) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }else{
+                        showToast(response.getMessage());
+                    }
                 }
             }
 

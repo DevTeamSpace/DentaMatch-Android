@@ -304,7 +304,7 @@
     <string name="txt_full_wednesday">Wednesday</string>
     <string name="txt_full_thursday">Thursday</string>
     <string name="txt_full_friday">Friday</string>
-    <string name="txt_full_saturday">Satday</string>
+    <string name="txt_full_saturday">Saturday</string>
     <string name="msg_empty_job_title">please select a job title</string>
     <string name="msg_empty_job_type">please select job type</string>
     <string name="msg_empty_part_days">please select part time days</string>

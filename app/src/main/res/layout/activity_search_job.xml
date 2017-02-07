@@ -182,15 +182,14 @@
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_74"
-                    android:layout_marginLeft="@dimen/margin_medium"
-                    android:layout_marginRight="@dimen/margin_medium"
+                    android:layout_marginLeft="@dimen/margin_6"
+                    android:layout_marginRight="@dimen/margin_6"
                     android:background="@color/white_six"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_sunday"
-
                         style="@style/text_view_normal"
                         android:layout_width="@dimen/circular_text_dimen"
                         android:layout_height="@dimen/circular_text_dimen"
@@ -251,7 +250,6 @@
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_thursday"
-
                         style="@style/text_view_normal"
                         android:layout_width="@dimen/circular_text_dimen"
                         android:layout_height="@dimen/circular_text_dimen"

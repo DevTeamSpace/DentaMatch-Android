@@ -12,7 +12,6 @@ import android.widget.CompoundButton;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
-import com.appster.dentamatch.databinding.ItemFlowChildBinding;
 import com.appster.dentamatch.model.JobTitleList;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -341,7 +340,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         String text = jobTitleListItem.getJobTitle();
         mSelectedJobID.add(jobTitleListItem.getId());
 
-       ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(mBinder.flowLayoutJobTitle.getContext())
+       com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(mBinder.flowLayoutJobTitle.getContext())
                 .inflate(R.layout.item_flow_child, mBinder.flowLayoutJobTitle, false));
 
         flowBinding.flowChild.setText(text);

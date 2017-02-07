@@ -161,6 +161,7 @@ public class HomeActivity extends BaseActivity {
                 setTitleMargins(1);
                 setTitleMargins(2);
                 setTitleMargins(3);
+                setTitleMargins(4);
             }
         }, 1000);
 
@@ -199,6 +200,14 @@ public class HomeActivity extends BaseActivity {
                 llp3.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp3.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
                 tvTitle3.setLayoutParams(llp3);
+                break;
+
+            case 4:
+                TextView tvTitle4 = (TextView) bottomBar.getViewAtPosition(4).findViewById(R.id.bottom_navigation_item_title);
+                FrameLayout.LayoutParams llp4 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                llp4.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
+                llp4.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                tvTitle4.setLayoutParams(llp4);
                 break;
 
             default:
