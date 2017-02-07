@@ -223,10 +223,14 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             case R.id.cb_temporary_check_box:
                 if (isChecked) {
                     isTemporary = true;
+                    mBinder.customCalendar.setVisibility(View.VISIBLE);
                     mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
                 } else {
                     isTemporary = false;
+                    mBinder.customCalendar.setVisibility(View.GONE);
+
                     mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
+
                 }
                 break;
 
