@@ -132,7 +132,6 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 holder.tvDate.setText(partTimeDays);
 
                 final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.BELOW, holder.tvName.getId());
                 params.addRule(RelativeLayout.END_OF, holder.tvJobType.getId());
                 params.addRule(RelativeLayout.START_OF, holder.tvDistance.getId());
                 params.setMargins(Utils.dpToPx(mContext, 12), 0, Utils.dpToPx(mContext, 10), 0);
@@ -141,13 +140,15 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                     @Override
                     public void run() {
                         if (holder.tvDate.getLineCount() == 1) {
-                            params.addRule(RelativeLayout.ALIGN_BASELINE, holder.tvJobType.getId());
+                            params.addRule(RelativeLayout.ALIGN_BOTTOM, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
                         } else {
+                            params.addRule(RelativeLayout.ALIGN_BASELINE, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
+                            holder.tvDate.setPadding(0,4,0,0);
                         }
                     }
-                }, 200);
+                }, 100);
 
 
             } else if (data.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {

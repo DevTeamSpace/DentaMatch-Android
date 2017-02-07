@@ -62,7 +62,7 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
 
                 if (responseBase.getStatusCode() == INVALID_SESSION) {
                     act.showToast(act.getString(R.string.authentication_error));
-                    act.logOut();
+                    act.localLogOut();
                     return;
                 }
 

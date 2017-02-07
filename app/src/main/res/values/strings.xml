@@ -278,13 +278,13 @@
     <string name="txt_days_ago">DAYS AGO</string>
     <string name="txt_day_ago">" DAY AGO"</string>
     <string name="txt_miles">" miles"</string>
-    <string name="txt_monday">Monday</string>
-    <string name="txt_tuesday">Tuesday</string>
-    <string name="txt_wednesday">Wednesday</string>
-    <string name="txt_thursday">Thursday</string>
-    <string name="txt_friday">Friday</string>
-    <string name="txt_saturday">Saturday</string>
-    <string name="txt_sunday">Sunday</string>
+    <string name="txt_monday">Mon</string>
+    <string name="txt_tuesday">Tue</string>
+    <string name="txt_wednesday">Wed</string>
+    <string name="txt_thursday">Thu</string>
+    <string name="txt_friday">Fri</string>
+    <string name="txt_saturday">Sat</string>
+    <string name="txt_sunday">Sun</string>
     <string name="not_applicable">NA</string>
     <string name="txt_read_more">READ MORE</string>
     <string name="text_show_label">SHOW LESS</string>
@@ -298,5 +298,20 @@
     <string name="sat">SA</string>
     <string name="last_date">30</string>
     <string name="txt_show_less">SHOW LESS</string>
+    <string name="txt_full_sunday">Sunday</string>
+    <string name="txt_full_monday">Monday</string>
+    <string name="txt_full_tuesday">Tuesday</string>
+    <string name="txt_full_wednesday">Wednesday</string>
+    <string name="txt_full_thursday">Thursday</string>
+    <string name="txt_full_friday">Friday</string>
+    <string name="txt_full_saturday">Satday</string>
+    <string name="msg_empty_job_title">please select a job title</string>
+    <string name="msg_empty_job_type">please select job type</string>
+    <string name="msg_empty_part_days">please select part time days</string>
+    <string name="msg_empty_location">please select a location</string>
+    <string name="msg_empty_zip_code">please enter zip code</string>
+    <string name="msg_unsave_warning">Are you sure you want to unsave the job?</string>
+    <string name="txt_ok">OK</string>
+    <string name="txt_cancel">CANCEL</string>
 
 </resources>

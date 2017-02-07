@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.appster.dentamatch.widget.CustomTextView
+        android:id="@+id/flow_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginStart="@dimen/margin_6"
+        android:layout_marginBottom="@dimen/margin_6"
+        android:background="@drawable/edit_text_selector"
+        android:text="akldslkddaskl"/>
+
+</layout>

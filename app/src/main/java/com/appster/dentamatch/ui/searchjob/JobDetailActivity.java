@@ -69,7 +69,6 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
         mBinding.mapJobDetail.onCreate(savedInstanceState);
         mBinding.mapJobDetail.getMapAsync(this);
-        getJobDetail();
     }
 
 
@@ -115,6 +114,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     protected void onResume() {
         super.onResume();
         mBinding.mapJobDetail.onResume();
+        getJobDetail();
     }
 
     @Override
@@ -139,13 +139,6 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     public void onLowMemory() {
         super.onLowMemory();
         mBinding.mapJobDetail.onLowMemory();
-    }
-
-    private void cycleTextViewExpansion(){
-//        int collapsedMaxLines = 4;
-//        ObjectAnimator animation = ObjectAnimator.ofInt(mBinding.tvJobDetailDocDescription, "maxLines",
-//                mBinding.tvJobDetailDocDescription.getMaxLines() == collapsedMaxLines? mBinding.tvJobDetailDocDescription.getLineCount() : collapsedMaxLines);
-//        animation.setDuration(200).start();
     }
 
 
@@ -295,7 +288,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             mBinding.tvJobDetailDate.setText(partTimeDays);
 
             final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.BELOW, mBinding.tvJobDetailName.getId());
+            params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
             params.addRule(RelativeLayout.END_OF, mBinding.tvJobDetailType.getId());
             params.setMargins(Utils.dpToPx(this, 12), 0, Utils.dpToPx(this, 10), 0);
 
@@ -303,10 +296,12 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 @Override
                 public void run() {
                     if (mBinding.tvJobDetailDate.getLineCount() == 1) {
-                        params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailType.getId());
+                        params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
                         mBinding.tvJobDetailDate.setLayoutParams(params);
                     } else {
+                        params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailType.getId());
                         mBinding.tvJobDetailDate.setLayoutParams(params);
+                        mBinding.tvJobDetailDate.setPadding(0,4,0,0);
                     }
                 }
             }, 200);

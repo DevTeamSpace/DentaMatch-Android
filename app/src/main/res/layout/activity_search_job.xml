@@ -40,15 +40,14 @@
                     app:customFont="@string/font_medium" />
 
                 <org.apmem.tools.layouts.FlowLayout
-                    android:visibility="gone"
                     app:layoutDirection="ltr"
                     android:id="@+id/flow_layout_job_title"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:layout_marginBottom="@dimen/margin_normal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    android:layout_marginRight="@dimen/margin_normal">
-                </org.apmem.tools.layouts.FlowLayout>
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"/>
 
                 <View
                     android:layout_width="match_parent"
