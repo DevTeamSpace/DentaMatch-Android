@@ -63,7 +63,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private FragmentManager fragmentManager;
     private FragmentProfileBinding profileBinding;
     private String TAG = "ProfileFragment-";
-    private int tempValue = 0;
     private ProfileResponseData profileResponseData;
     private ItemProfileCellCertificateBinding cellCertificateBinding;
 
@@ -228,6 +227,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(new Intent(getActivity(), UpdateProfileActivity.class)
                         .putExtra(Constants.EXTRA_PROFILE_DATA, profileResponseData));
 
+
+
                 break;
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
@@ -302,7 +303,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 }
 
             } else {
-                profileBinding.expInflater.setVisibility(View.GONE);
+//                profileBinding.expInflater.setVisibility(View.GONE);
 
                 profileBinding.flowLayout.setVisibility(View.GONE);
                 visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
@@ -376,7 +377,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < skillArrayList.size(); i++) {
             skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.keySkillInflater.getContext())
                     .inflate(R.layout.item_profile_skill, profileBinding.keySkillInflater, false));
-            skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName());
+            skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName().toUpperCase());
 
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
                 CustomTextView textView = new CustomTextView(getActivity());
@@ -385,6 +386,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 textView.setLayoutParams(lp);
                 textView.setBackgroundResource(R.drawable.bg_edit_text);
                 textView.setPadding(30, 10, 30, 10);
+//                textView.setTextSize(getResources().getDimension(R.dimen.text_size_12));
                 textView.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
                 skillBinding.skillFlowLayout.addView(textView, lp);
 
@@ -410,10 +412,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private void inflateExperience(ArrayList<WorkExpRequest> expList) {
         profileBinding.expInflater.setVisibility(View.VISIBLE);
         profileBinding.expInflater.removeAllViews();
-        ItemProfileWorkExpBinding expBinding;
+//        ItemProfileWorkExpBinding expBinding;
         for (int i = 0; i < expList.size(); i++) {
             boolean isNoContactInfo = false;
-            expBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
+            ItemProfileWorkExpBinding expBinding
+            = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
                     .inflate(R.layout.item_profile_work_exp, profileBinding.expInflater, false));
             expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
@@ -490,7 +493,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < certificateList.size(); i++) {
 
             cellCertificateBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.certificationInflater.getContext())
-                    .inflate(R.layout.item_profile_cell_certificate, profileBinding.expInflater, false));
+                    .inflate(R.layout.item_profile_cell_certificate, profileBinding.certificationInflater, false));
             final View tempView = cellCertificateBinding.getRoot();
             tempView.setTag(i);
             cellCertificateBinding.tvEdit.setId(i);

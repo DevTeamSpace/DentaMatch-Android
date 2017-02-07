@@ -151,6 +151,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 data.setYearOfGraduation(schoolType.getOtherList().get(0).getYearOfGraduation());
                 data.setSchoolId(schoolType.getOtherList().get(0).getSchoolId());
                 data.setSchoolName(schoolType.getOtherList().get(0).getOtherSchooling());
+                data.setParentSchoolName(schoolType.getSchoolTypeName());
                 data.setOtherId("" + schoolType.getOtherList().get(0).getSchoolId());
 
                 holder.autoCompleteTextView.setText(schoolType.getOtherList().get(0).getOtherSchooling());
@@ -171,6 +172,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     data.setSchoolName(school.getSchoolName());
                     data.setOtherId("" + school.getSchoolTypeId());
                     holder.autoCompleteTextView.setText(school.getSchoolName());
+                    data.setParentSchoolName(schoolType.getSchoolTypeName());
+
                     holder.etYearOfGraduation.setText(school.getYearOfGraduation());
                     year = school.getYearOfGraduation();
 
@@ -232,8 +235,9 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 //                            }
 //                        }
 //                    } else {
-                        school.setSchoolName(editable.toString());
-                        mHashMap.put(key, school);
+                    school.setSchoolName(editable.toString());
+                    school.setParentSchoolName(mSchoolList.get(key).getSchoolTypeName());
+                    mHashMap.put(key, school);
 //                    }
 
                 }

@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityAffiliationBinding;
+import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -22,6 +23,8 @@ import com.appster.dentamatch.ui.profile.CertificateActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -95,7 +98,7 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             }
 
             if (affiliationAdapter.getList().get(i).getAffiliationName().equalsIgnoreCase(Constants.OTHERS) && affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
-                if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation())) {
+                if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation().trim())) {
                     Utils.showToast(AffiliationActivity.this, getString(R.string.blank_other_alert));
                     return false;
                 } else {
@@ -165,6 +168,8 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
 
                 if (response.getStatus() == 1) {
                     if (getIntent() != null && getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false)) {
+                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+
                         finish();
                     } else {
                         startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));

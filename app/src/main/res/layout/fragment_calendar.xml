@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white_color">
 
         <include
             android:id="@+id/toolbar_calendar"
@@ -15,6 +17,45 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/calendar_height"></com.appster.dentamatch.ui.calendar.CalendarViewEvent>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:background="@color/line_divider" />
 
+        <com.appster.dentamatch.widget.CustomTextView
+            style="@style/text_view_normal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/circular_text_dimen"
+            android:background="@color/cell_color"
+            android:gravity="bottom"
+            android:paddingBottom="@dimen/margin_6"
+            android:paddingStart="@dimen/margin_normal"
+            android:text="@string/booked_job"
+            android:textColor="@color/text_default_color"
+            app:customFont="@string/font_medium" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:background="@color/line_divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                style="@style/text_view_normal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/circular_text_dimen"
+                android:layout_margin="@dimen/margin_normal"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text="You don’t have any booked jobs on this date yet."
+                android:textColor="@color/edt_hint_color"
+                app:customFont="@string/font_medium" />
+
+        </LinearLayout>
     </LinearLayout>
 </layout>

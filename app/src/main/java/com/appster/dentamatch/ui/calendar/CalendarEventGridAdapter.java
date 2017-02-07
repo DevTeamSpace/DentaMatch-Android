@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.calendar;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,23 +11,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.appster.dentamatch.R;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarGridAdapter extends ArrayAdapter {
-    private static final String TAG = CalendarGridAdapter.class.getSimpleName();
+public class CalendarEventGridAdapter extends ArrayAdapter {
+    private static final String TAG = CalendarEventGridAdapter.class.getSimpleName();
     private LayoutInflater mInflater;
-    //    private List<Date> monthlyDates;
+//        private List<Date> monthlyDates;
     private List<CalenderAvailableCellModel> monthlyDates;
     private Calendar currentDate;
     private List<EventObjects> allEvents;
     private Context mContext;
 
-    public CalendarGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate, List<EventObjects> allEvents) {
+    public CalendarEventGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate, List<EventObjects> allEvents) {
         super(context, R.layout.single_cell_layout);
         this.monthlyDates = monthlyDates;
         this.currentDate = currentDate;
@@ -35,7 +35,7 @@ public class CalendarGridAdapter extends ArrayAdapter {
         mInflater = LayoutInflater.from(context);
     }
     public  List<CalenderAvailableCellModel> getList(){
-       return  monthlyDates;
+        return  monthlyDates;
     }
 
     @NonNull
@@ -66,7 +66,7 @@ public class CalendarGridAdapter extends ArrayAdapter {
 //            view.setBackgroundColor(Color.parseColor(R.color.colorPrimary));
             cellNumber.setText(String.valueOf(dayValue));
             view.setTag(position);
-            view.setBackgroundColor(mContext.getResources().getColor(R.color.white_color));
+//            view.setBackgroundColor(ContextCompat.getColor(mContext,R.color.white_color));
 //            if (dayValue == currentDay) {
 //                view.setBackgroundResource(R.drawable.oval);
 //            }
@@ -76,7 +76,7 @@ public class CalendarGridAdapter extends ArrayAdapter {
 //
 //            }
             if (monthlyDates.get(position).isSelected()) {
-                view.setBackgroundResource(R.drawable.shape_temporary_date_selection);
+                view.setBackgroundResource(R.drawable.shape_date_selection);
 
             } else {
                 view.setBackgroundResource(0);
@@ -108,8 +108,6 @@ public class CalendarGridAdapter extends ArrayAdapter {
         } else
 
         {
-//            view.setBackgroundColor(Color.parseColor("#cccccc"));
-//            view.setBackgroundColor(Color.parseColor("#cccccc"));
             view.setBackgroundColor(mContext.getResources().getColor(R.color.white_color));
 
             view.setTag(-1);
