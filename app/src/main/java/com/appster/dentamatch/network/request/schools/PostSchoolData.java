@@ -16,6 +16,16 @@ public class PostSchoolData {
     private String otherSchooling;
     private String otherId;
 
+    private String parentSchoolName;
+
+    public String getParentSchoolName() {
+        return parentSchoolName;
+    }
+
+    public void setParentSchoolName(String parentSchoolName) {
+        this.parentSchoolName = parentSchoolName;
+    }
+
     public String getOtherId() {
         return otherId;
     }

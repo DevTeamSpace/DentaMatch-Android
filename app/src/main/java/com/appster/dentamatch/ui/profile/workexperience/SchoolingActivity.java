@@ -138,10 +138,15 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     private boolean checkValidation() {
         HashMap<Integer, PostSchoolData> hashMap = mSchoolsAdapter.getPostMapData();
         if (!(hashMap != null && hashMap.size() > 0)) {
-            showToast("please choose atleast one college");
+            showToast("please choose at least one college/school");
             return false;
         } else {
             for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
+                if (TextUtils.isEmpty(entry.getValue().getSchoolName()) && TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
+                    mSchoolsAdapter.getPostMapData().remove(entry);
+                    hashMap=mSchoolsAdapter.getPostMapData();
+
+                }
 
                 if (TextUtils.isEmpty(entry.getValue().getSchoolName())) {
                     showToast("School name can never blank.");
@@ -150,7 +155,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
 
                 if (TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
-                    showToast("Year of graduation can never blank for school " + entry.getValue().getSchoolName());
+                    showToast("Please select year of graduation for  " + entry.getValue().getParentSchoolName());
                     return false;
                 }
 

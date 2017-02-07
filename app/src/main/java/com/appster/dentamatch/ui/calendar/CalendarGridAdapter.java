@@ -82,29 +82,29 @@ public class CalendarGridAdapter extends ArrayAdapter {
                 view.setBackgroundResource(0);
 
             }
-            for (int i = 0; i < allEvents.size(); i++) {
-//            eventCalendar.setTime(allEvents.get(i).getDate());
-//            if (dayValue == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH) + 1
-//                    && displayYear == eventCalendar.get(Calendar.YEAR)) {
-//                eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
+//            for (int i = 0; i < allEvents.size(); i++) {
+////            eventCalendar.setTime(allEvents.get(i).getDate());
+////            if (dayValue == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH) + 1
+////                    && displayYear == eventCalendar.get(Calendar.YEAR)) {
+////                eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
+////            }
+//                if (dayValue == allEvents.get(i).getDayOfMonth()) {
+////                    eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
+//                    if (allEvents.get(i).getDayOfMonth() % 6 == 0) {
+//                        dot1.setVisibility(View.VISIBLE);
+//                        dot2.setVisibility(View.VISIBLE);
+//                        dot3.setVisibility(View.VISIBLE);
+//                    } else if (allEvents.get(i).getDayOfMonth() % 7 == 0) {
+//                        dot1.setVisibility(View.VISIBLE);
+//                        dot2.setVisibility(View.VISIBLE);
+//                        dot3.setVisibility(View.GONE);
+//                    } else if (allEvents.get(i).getDayOfMonth() % 5 == 0) {
+//                        dot1.setVisibility(View.VISIBLE);
+//                        dot2.setVisibility(View.GONE);
+//                        dot3.setVisibility(View.GONE);
+//                    }
+//                }
 //            }
-                if (dayValue == allEvents.get(i).getDayOfMonth()) {
-//                    eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
-                    if (allEvents.get(i).getDayOfMonth() % 6 == 0) {
-                        dot1.setVisibility(View.VISIBLE);
-                        dot2.setVisibility(View.VISIBLE);
-                        dot3.setVisibility(View.VISIBLE);
-                    } else if (allEvents.get(i).getDayOfMonth() % 7 == 0) {
-                        dot1.setVisibility(View.VISIBLE);
-                        dot2.setVisibility(View.VISIBLE);
-                        dot3.setVisibility(View.GONE);
-                    } else if (allEvents.get(i).getDayOfMonth() % 5 == 0) {
-                        dot1.setVisibility(View.VISIBLE);
-                        dot2.setVisibility(View.GONE);
-                        dot3.setVisibility(View.GONE);
-                    }
-                }
-            }
         } else
 
         {

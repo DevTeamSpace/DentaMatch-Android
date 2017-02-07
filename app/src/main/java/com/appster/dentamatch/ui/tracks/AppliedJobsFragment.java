@@ -108,6 +108,12 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
 
                 if (response.getStatus() == 1) {
                     mJobAdapter.cancelJob(ID);
+
+                    if(mJobListData.size() > 0){
+                        mBinding.tvNoJobs.setVisibility(View.GONE);
+                    }else{
+                        mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -202,6 +208,12 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
                 if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
                     mBinding.layJobListPagination.setVisibility(View.GONE);
                 }
+
+                if(mJobListData.size() > 0){
+                    mBinding.tvNoJobs.setVisibility(View.GONE);
+                }else{
+                    mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -243,6 +255,12 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
              */
             mTotalResultCount = response.getSearchJobResponseData().getTotal();
             mIsPaginationNeeded = !(mTotalResultCount == mJobListData.size());
+        }
+
+        if(mJobListData.size() > 0){
+            mBinding.tvNoJobs.setVisibility(View.GONE);
+        }else{
+            mBinding.tvNoJobs.setVisibility(View.VISIBLE);
         }
     }
 

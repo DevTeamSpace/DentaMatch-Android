@@ -11,9 +11,24 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
 import com.appster.dentamatch.databinding.ActivitySetAvailabilityBinding;
 import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.calendar.SaveAvailabiltyRequest;
+import com.appster.dentamatch.network.response.profile.ProfileResponse;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
 
 /**
  * Created by virender on 01/02/17.
@@ -38,6 +53,10 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     private void initViews() {
         mPartTimeDays = new ArrayList<>();
         mBinder.toolbarSetAvailability.tvToolbarGeneralLeft.setText(getString(R.string.header_set_availability));
+        mBinder.toolbarSetAvailability.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
+
+        mBinder.toolbarSetAvailability.txvToolbarGeneralRight.setText(getString(R.string.save_label));
+        mBinder.toolbarSetAvailability.txvToolbarGeneralRight.setOnClickListener(this);
         mBinder.toolbarSetAvailability.ivToolBarLeft.setOnClickListener(this);
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.cbPartTimeCheckBox.setOnCheckedChangeListener(this);
@@ -60,6 +79,12 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         switch (view.getId()) {
             case R.id.iv_tool_bar_left:
                 finish();
+                break;
+            case R.id.txv_toolbar_general_right:
+                if (checkValidation()) {
+                    finish();
+//                    saveAvailability(prepareSaveRequest());
+                }
                 break;
             case R.id.tv_sunday:
                 if (isSunday) {
@@ -205,8 +230,123 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 }
                 break;
 
+
             default:
                 break;
         }
     }
+
+    private boolean checkValidation() {
+        if (!isPartTime && !isFullTime && !isTemporary) {
+            showToast(getString(R.string.select_multiple_job));
+            return false;
+        }
+        return true;
+    }
+
+    private SaveAvailabiltyRequest prepareSaveRequest() {
+
+        SaveAvailabiltyRequest request = new SaveAvailabiltyRequest();
+        ArrayList<String> dayList = new ArrayList<>();
+        ArrayList<String> temporaryList = new ArrayList<>();
+
+
+        if (isFullTime) {
+            request.setIsFulltime(1);
+        } else {
+            request.setIsFulltime(0);
+        }
+        if (isPartTime) {
+            if (isMonday) {
+                dayList.add(getString(R.string.txt_monday));
+            }
+            if (isTuesday) {
+                dayList.add(getString(R.string.txt_tuesday));
+            }
+            if (isWednesday) {
+                dayList.add(getString(R.string.txt_wednesday));
+            }
+            if (isThursday) {
+                dayList.add(getString(R.string.txt_thursday));
+            }
+            if (isFriday) {
+                dayList.add(getString(R.string.txt_friday));
+            }
+            if (isSaturday) {
+                dayList.add(getString(R.string.txt_saturday));
+            }
+            if (isSunday) {
+                dayList.add(getString(R.string.txt_sunday));
+            }
+        }
+        request.setPartTimeDays(dayList);
+        if (isTemporary) {
+            List<CalenderAvailableCellModel> tempList = mBinder.customCalendar.getAvailabilityList();
+            if (tempList != null && tempList.size() > 0) {
+
+                for (int i = 0; i < tempList.size(); i++) {
+                    if (tempList.get(i).isSelected()) {
+                        temporaryList.add(dateFormet(tempList.get(i).getDate()));
+                    }
+                }
+            }
+        }
+        request.setTempDates(temporaryList);
+
+        return request;
+    }
+
+
+    private void getAvailability() {
+        processToShowDialog("", getString(R.string.please_wait), mBinder.cbFullTimeCheckBox);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.getAvailabilityList().enqueue(new BaseCallback<BaseResponse>(SetAvailabilityActivity.this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                LogUtils.LOGD(TAG, "onSuccess");
+                if (response.getStatus() == 1) {
+
+                } else {
+                    Utils.showToast(SetAvailabilityActivity.this, response.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "onFail");
+            }
+        });
+    }
+
+    private void saveAvailability(SaveAvailabiltyRequest request) {
+        processToShowDialog("", getString(R.string.please_wait), null);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.saveAvailability(request).enqueue(new BaseCallback<BaseResponse>(SetAvailabilityActivity.this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                LogUtils.LOGD(TAG, "onSuccess");
+                Utils.showToast(SetAvailabilityActivity.this, response.getMessage());
+
+                if (response.getStatus() == 1) {
+                    EventBus.getDefault().isRegistered(true);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "onFail");
+            }
+        });
+    }
+
+    private String dateFormet(Date mydate) {
+        SimpleDateFormat sm = new SimpleDateFormat("yyyy-mm-dd");
+        // myDate is the java.util.Date in yyyy-mm-dd format
+        // Converting it into String using formatter
+        String strDate = sm.format(mydate);
+        //Converting the String back to java.util.Date
+        return strDate;
+    }
 }
+

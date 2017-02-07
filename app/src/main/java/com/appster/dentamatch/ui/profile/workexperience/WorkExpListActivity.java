@@ -350,7 +350,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void launchNextActivity() {
-        if (mSelectedJobTitle.equalsIgnoreCase("") && mExpMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
+        if (TextUtils.isEmpty(mSelectedJobTitle) && mExpMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
                 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("")
                 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) {
             if (isFromProfile) {

@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.tracks;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
 import com.appster.dentamatch.databinding.FragmentSavedJobsBinding;
+import com.appster.dentamatch.model.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -24,6 +26,9 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -50,6 +55,21 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public String getFragmentName() {
         return null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        EventBus.getDefault().unregister(this);
+        super.onDetach();
+
     }
 
     @Nullable
@@ -158,6 +178,12 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
                 if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
                     mBinding.layJobListPagination.setVisibility(View.GONE);
                 }
+
+                if(mJobListData.size() > 0){
+                    mBinding.tvNoJobs.setVisibility(View.GONE);
+                }else{
+                    mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -182,6 +208,22 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
              */
             mTotalResultCount = response.getSearchJobResponseData().getTotal();
             mIsPaginationNeeded = !(mTotalResultCount == mJobListData.size());
+
+        }
+
+
+    }
+
+    /**
+     * Handling in case the job is unsaved and might clear the list of jobs.
+     * @param event : the event that has happened.
+     */
+    @Subscribe
+    public void unSaved(SaveUnSaveEvent event){
+        if(mJobListData.size() > 0){
+            mBinding.tvNoJobs.setVisibility(View.GONE);
+        }else{
+            mBinding.tvNoJobs.setVisibility(View.VISIBLE);
         }
     }
 

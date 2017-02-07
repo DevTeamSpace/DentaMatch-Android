@@ -6,6 +6,7 @@ import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.request.calendar.SaveAvailabiltyRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
 import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
@@ -76,6 +77,8 @@ public interface AuthWebServices {
     String SAVE_UNSAVE_JOB = "users/save-job";
     String TRACK_JOBS = "users/job-list";
     String CANCEL_JOB = "users/cancel-job";
+    String AVAILABLE_LIST = "users/availability-list";
+    String SAVE_AVAILABILITY = "users/update-availability";
     String UPDATE_USER_LOCATION = "users/user-location-update";
 
     @POST(UPDATE_USER_LOCATION)
@@ -156,6 +159,10 @@ public interface AuthWebServices {
 
     @GET(GET_PROFILE)
     Call<ProfileResponse> getProfile();
+    @GET(AVAILABLE_LIST)
+    Call<BaseResponse> getAvailabilityList();
+    @POST(SAVE_AVAILABILITY)
+    Call<BaseResponse> saveAvailability(@Body SaveAvailabiltyRequest saveAvailabiltyRequest);
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);

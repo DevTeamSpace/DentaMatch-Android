@@ -98,10 +98,11 @@ public class CalendarViewEvent extends LinearLayout {
                     mAdapter = new CalendarEventGridAdapter(context, mDayList, cal, null);
                     calendarGridView.setAdapter(mAdapter);
                     }
-                }
-                oldView.setBackgroundResource(0);
+                    oldView.setBackgroundResource(0);
 
-                view.setBackgroundResource(R.drawable.shape_date_selection);
+                    view.setBackgroundResource(R.drawable.shape_date_selection);
+                }
+
 
 //                    view.setBackgroundResource(R.drawable.shape_date_selection);
 

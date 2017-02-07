@@ -36,6 +36,7 @@
     <string name="digits_alpha_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_only">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_email">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
+    <string name="digits_other">0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-/</string>
     <string name="digits_alpha_numeric_special">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_./:;,&amp;amp;</string>
     <string name="digits_address">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
     <string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
@@ -80,7 +81,7 @@
     <string name="old_password_label">Old Password</string>
     <string name="new_password_label">New Password</string>
     <string name="confirm_password_label">Confirm Password</string>
-    <string name="save_label">save</string>
+    <string name="save_label">Save</string>
 
     <!--  Bottom sheet string-->
     <string name="label_take_photo">Take photo</string>
@@ -298,5 +299,6 @@
     <string name="sat">SA</string>
     <string name="last_date">30</string>
     <string name="booked_job">BOOKED JOBS</string>
+    <string name="txt_show_less">SHOW LESS</string>
 
 </resources>
