@@ -5,6 +5,7 @@ package com.appster.dentamatch.util;
  */
 public class Constants {
     public static final String DEVICE_TYPE = "ANDROID";
+    public static String CHAT_SERVER_URL = "http://172.16.16.188:3000";
 
     public static final String EXTRA_PLACE_NAME = "place_name";
     public static final String EXTRA_POSTAL_CODE = "postal_code";

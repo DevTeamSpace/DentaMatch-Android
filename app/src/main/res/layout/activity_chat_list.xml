@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_normal"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <com.appster.dentamatch.widget.CustomEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="User Name" />
+
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/chat_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:background="@color/button_bg_color"
+            android:text="Login"
+            android:textColor="@color/white_color" />
+
+    </LinearLayout>
+</layout>

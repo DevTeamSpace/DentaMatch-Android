@@ -7,11 +7,16 @@ package com.appster.dentamatch;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
 
+import java.net.URISyntaxException;
+
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 //import com.facebook.stetho.Stetho;
 //import com.squareup.leakcanary.LeakCanary;
@@ -22,6 +27,19 @@ public class DentaApp extends MultiDexApplication {
 
     public static Context getAppContext() {
         return mAppContext;
+    }
+
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(Constants.CHAT_SERVER_URL);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Socket getSocket() {
+        return mSocket;
     }
 
     @Override
