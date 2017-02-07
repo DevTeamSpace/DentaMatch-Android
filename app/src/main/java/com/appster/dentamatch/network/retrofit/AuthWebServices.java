@@ -6,7 +6,7 @@ import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
-import com.appster.dentamatch.network.request.calendar.SaveAvailabiltyRequest;
+import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
 import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
@@ -162,7 +162,7 @@ public interface AuthWebServices {
     @GET(AVAILABLE_LIST)
     Call<BaseResponse> getAvailabilityList();
     @POST(SAVE_AVAILABILITY)
-    Call<BaseResponse> saveAvailability(@Body SaveAvailabiltyRequest saveAvailabiltyRequest);
+    Call<BaseResponse> saveAvailability(@Body SaveAvailabilityRequest saveAvailabiltyRequest);
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);

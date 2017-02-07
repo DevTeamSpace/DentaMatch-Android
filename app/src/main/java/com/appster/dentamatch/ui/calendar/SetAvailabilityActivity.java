@@ -8,14 +8,12 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
 import com.appster.dentamatch.databinding.ActivitySetAvailabilityBinding;
 import com.appster.dentamatch.model.JobTitleList;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.calendar.SaveAvailabiltyRequest;
-import com.appster.dentamatch.network.response.profile.ProfileResponse;
+import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.LogUtils;
@@ -60,6 +58,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         mBinder.toolbarSetAvailability.ivToolBarLeft.setOnClickListener(this);
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.cbPartTimeCheckBox.setOnCheckedChangeListener(this);
+        mBinder.cbTemporaryCheckBox.setOnCheckedChangeListener(this);
         mBinder.tvSaturday.setOnClickListener(this);
         mBinder.tvSunday.setOnClickListener(this);
         mBinder.tvMonday.setOnClickListener(this);
@@ -223,10 +222,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             case R.id.cb_temporary_check_box:
                 if (isChecked) {
                     isTemporary = true;
+                    mBinder.customCalendar.setVisibility(View.GONE);
+
                     mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
                 } else {
                     isTemporary = false;
                     mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
+                    mBinder.customCalendar.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -244,9 +246,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         return true;
     }
 
-    private SaveAvailabiltyRequest prepareSaveRequest() {
+    private void prepareGetAvailableRequest(){
 
-        SaveAvailabiltyRequest request = new SaveAvailabiltyRequest();
+
+    }
+    private SaveAvailabilityRequest prepareSaveRequest() {
+
+        SaveAvailabilityRequest request = new SaveAvailabilityRequest();
         ArrayList<String> dayList = new ArrayList<>();
         ArrayList<String> temporaryList = new ArrayList<>();
 
@@ -318,7 +324,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    private void saveAvailability(SaveAvailabiltyRequest request) {
+    private void saveAvailability(SaveAvailabilityRequest request) {
         processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.saveAvailability(request).enqueue(new BaseCallback<BaseResponse>(SetAvailabilityActivity.this) {

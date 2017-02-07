@@ -293,7 +293,8 @@
                 <com.appster.dentamatch.ui.calendar.CalendarViewSetAvaliablity
                     android:id="@+id/custom_calendar"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/calendar_height"></com.appster.dentamatch.ui.calendar.CalendarViewSetAvaliablity>
+                    android:layout_height="@dimen/calendar_height"
+                    android:visibility="gone"></com.appster.dentamatch.ui.calendar.CalendarViewSetAvaliablity>
 
             </LinearLayout>
         </ScrollView>
