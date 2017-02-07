@@ -93,7 +93,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
         HashMap<String, String> userMap = new HashMap<>();
         userMap.put("userId", "606");
-        mSocket.emit("init", userMap);
+        mSocket.emit("init", new JSONObject(userMap));
     }
 
     @Override
@@ -117,7 +117,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 hashMap.put("toId", "420");
                 hashMap.put("msg", msg);
 
-                mSocket.emit("sendMsg", hashMap);
+                JSONObject jsonObject = new JSONObject(hashMap);
+                mSocket.emit("sendMsg", jsonObject);
                 mBinder.messageInput.setText("");
 
                 addMessage("Ram", msg);
