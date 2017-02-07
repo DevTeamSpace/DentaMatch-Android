@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.appster.dentamatch.widget.CustomTextView
+        style="@style/text_view_normal"
+        android:id="@+id/tv_message_recruiter_name"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_14"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Dr. Nicklaus Morton"
+        android:layout_toStartOf="@+id/tv_message_date"
+        android:textColor="@color/toolbar_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:customFont="@string/font_bold"
+        />
+
+    <com.appster.dentamatch.widget.CustomTextView
+        style="@style/text_view_normal"
+        android:id="@+id/tv_message_date"
+        android:textColor="@color/text_color_chat"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/tv_message_recruiter_name"
+        android:text="Today"
+        android:layout_toStartOf="@+id/iv_message_arrow"
+        android:layout_marginEnd="@dimen/margin_14"
+        app:customFont="@string/font_regular"
+        android:layout_height="wrap_content" />
+
+    <com.appster.dentamatch.widget.CustomTextView
+        android:id="@+id/tv_message_chat"
+        style="@style/text_view_normal"
+        android:text="Yes, Dr. Nicklaus Morton"
+        android:textColor="@color/chat_message"
+        android:layout_alignStart="@+id/tv_message_recruiter_name"
+        android:layout_below="@+id/tv_message_recruiter_name"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:customFont="@string/font_regular"
+        />
+    
+    <ImageView
+        android:id="@+id/iv_message_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_right"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:layout_alignParentEnd="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@android:color/black"
+        android:layout_marginTop="@dimen/margin_15"
+        android:layout_below="@+id/tv_message_chat"
+        android:layout_marginStart="@dimen/margin_normal"/>
+</RelativeLayout>
+</layout>

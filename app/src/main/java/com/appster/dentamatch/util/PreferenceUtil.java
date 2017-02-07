@@ -1,15 +1,13 @@
 package com.appster.dentamatch.util;
 
 import android.location.Location;
-import com.appster.dentamatch.model.User;
 
-import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.model.User;
+import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
-
-import retrofit2.http.PUT;
 
 /**
  * Created by gautambisht on 11/11/16.

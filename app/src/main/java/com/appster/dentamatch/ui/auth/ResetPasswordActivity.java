@@ -96,6 +96,10 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                     }
                 }
                 break;
+
+            case R.id.tv_toolbar_general_left:
+                onBackPressed();
+                break;
         }
     }
 

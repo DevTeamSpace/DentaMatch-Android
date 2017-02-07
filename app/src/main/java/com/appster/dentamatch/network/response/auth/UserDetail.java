@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class UserDetail {
+    private String id;
     private String firstName;
     private String lastName;
     private String email;
@@ -15,6 +16,10 @@ public class UserDetail {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setImageUrl(String imageUrl) {

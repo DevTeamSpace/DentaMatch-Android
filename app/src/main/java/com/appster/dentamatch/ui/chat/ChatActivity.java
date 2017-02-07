@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.chat;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,28 +8,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivityChatBinding;
-import com.appster.dentamatch.databinding.ActivityChatListBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.Utils;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
@@ -42,7 +34,7 @@ import io.socket.emitter.Emitter;
 public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "Chat";
-    private ActivityChatBinding mBinder;
+    private com.appster.dentamatch.databinding.ActivityChatBinding mBinder;
     private Gson gson;
 
     private static final int REQUEST_LOGIN = 0;
