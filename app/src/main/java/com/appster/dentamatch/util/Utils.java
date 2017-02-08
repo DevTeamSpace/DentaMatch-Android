@@ -397,4 +397,26 @@ public class Utils {
         }
     }
 
+    public static String dateFormetyyyyMMdd(Date mydate) {
+        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+        // myDate is the java.util.Date in yyyy-mm-dd format
+        // Converting it into String using formatter
+        String strDate = sm.format(mydate);
+        //Converting the String back to java.util.Date
+        return strDate;
+    }
+
+    public static String getRequriedServerDateFormet(String dateStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("dd MMMM yyyy");
+            Date date = inputFormat.parse(dateStr);
+
+            SimpleDateFormat reqFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = reqFormat.format(date);
+            return formattedDate;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

@@ -312,6 +312,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 for (int i = 0; i < mYearsList.size(); i++) {
                     if (mYearsList.get(i).equals(year)) {
                         holder.spinnerYears.setSelection(i);
+                        year = "";
                     }
                 }
             }

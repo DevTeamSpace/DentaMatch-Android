@@ -308,8 +308,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
             }
 
-            if (response.getLicence() != null) {
-                goneViews(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
+            if (response.getLicence() != null && !TextUtils.isEmpty(response.getLicence().getLicenseNumber()) && !TextUtils.isEmpty(response.getLicence().getState())) {
+//                goneViews(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
+                profileBinding.cellLicence.tvAddCertificates.setVisibility(View.GONE);
+                profileBinding.cellLicence.tvEditCell.setVisibility(View.VISIBLE);
                 profileBinding.layoutLicenceData.setVisibility(View.VISIBLE);
 
                 profileBinding.tvLicenceNumber.setText(response.getLicence().getLicenseNumber());
@@ -317,8 +319,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
 
             } else {
+                profileBinding.cellLicence.tvAddCertificates.setVisibility(View.VISIBLE);
+                profileBinding.cellLicence.tvEditCell.setVisibility(View.GONE);
                 profileBinding.layoutLicenceData.setVisibility(View.GONE);
-                visibleView(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
+//                visibleView(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
 
             }
             if (response.getCertificatesLists() != null && response.getCertificatesLists().size() > 0) {
@@ -330,6 +334,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.tvCertificateValidityDate.setVisibility(View.GONE);
+                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
+
                 profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
 
                 if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
@@ -341,6 +347,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
+                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
 
 
             }
@@ -523,6 +530,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.VISIBLE);
                 cellCertificateBinding.tvEdit.setVisibility(View.GONE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.GONE);
+                cellCertificateBinding.layoutValidationDate.setVisibility(View.GONE);
+
 
             }
 

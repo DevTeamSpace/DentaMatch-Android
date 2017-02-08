@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
     private Context context;
     private CalendarGridAdapter mAdapter;
     private HashMap<Integer, ArrayList<CalenderAvailableCellModel>> mDateMap = new HashMap<>();
-    private ArrayList<String>mTempDateList=new ArrayList<>();
+    private ArrayList<String> mTempDateList = new ArrayList<>();
 //    List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
 
 
@@ -55,6 +56,11 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
 
     public CalendarViewSetAvaliablity(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void setAvailableDate(ArrayList<String> tempDateList) {
+        mTempDateList = tempDateList;
+        setUpCalendarAdapter();
     }
 
     private void initializeUILayout() {
@@ -85,8 +91,12 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
             }
         });
     }
-    public List<CalenderAvailableCellModel> getAvailabilityList(){
-        return  mAdapter.getList();
+
+//    public List<CalenderAvailableCellModel> getAvailabilityList() {
+//        return mAdapter.getList();
+//    }
+    public ArrayList<String> getAvailabilityList() {
+        return mTempDateList;
     }
 
     private void setGridCellClickEvents() {
@@ -97,12 +107,16 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
                 if ((Integer) view.getTag() != -1) {
                     if (mAdapter.getList().get(position).isSelected()) {
                         view.setBackgroundResource(R.color.white_color);
-
+                        if (mTempDateList.contains(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()))) {
+                            mTempDateList.remove(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
+                        }
                         mAdapter.getList().get(position).setSelected(false);
 
                     } else {
                         view.setBackgroundResource(R.drawable.shape_temporary_date_selection);
                         mAdapter.getList().get(position).setSelected(true);
+                        mTempDateList.add(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
+
 
                     }
                 }
@@ -126,7 +140,20 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
         while (dayValueInCells.size() < MAX_CALENDAR_COLUMN) {
             CalenderAvailableCellModel data = new CalenderAvailableCellModel();
             data.setDate(mCal.getTime());
-            data.setSelected(false);
+            if (mTempDateList != null && mTempDateList.size() > 0) {
+                for (int i = 0; i < mTempDateList.size(); i++) {
+                    if (Utils.dateFormetyyyyMMdd(mCal.getTime()).equalsIgnoreCase(mTempDateList.get(i))) {
+                        data.setSelected(true);
+                        break;
+
+                    } else {
+                        data.setSelected(false);
+
+                    }
+                }
+            } else {
+                data.setSelected(false);
+            }
 //            dayValueInCells.add(mCal.getTime());
             dayValueInCells.add(data);
             mCal.add(Calendar.DAY_OF_MONTH, 1);
@@ -159,4 +186,6 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
         view.setText("a");
 
     }
+
+
 }

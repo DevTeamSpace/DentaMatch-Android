@@ -91,6 +91,7 @@
             app:customFont="@string/font_bold" />
 
         <LinearLayout
+            android:id="@+id/layout_validation_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_normal"

@@ -49,6 +49,7 @@ import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 
 /**
@@ -125,7 +126,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                     }
                     uploadDentaImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
                 } else {
-                    if (!TextUtils.isEmpty(data.getImage())) {
+                    if (!TextUtils.isEmpty(data.getImage())||!TextUtils.isEmpty(mFilePath)) {
 
                         if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
                             Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date, data.getCertificateName()));
@@ -150,7 +151,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         ArrayList<UpdateCertificates> updateCertificatesArrayList = new ArrayList<>();
         UpdateCertificates updateCertificates = new UpdateCertificates();
         updateCertificates.setId(data.getId());
-        updateCertificates.setValue(mBinder.tvValidityDatePicker.getText().toString());
+        updateCertificates.setValue(Utils.getRequriedServerDateFormet(mBinder.tvValidityDatePicker.getText().toString()));
         updateCertificatesArrayList.add(updateCertificates);
         certificateRequest.setUpdateCertificatesList(updateCertificatesArrayList);
         return certificateRequest;

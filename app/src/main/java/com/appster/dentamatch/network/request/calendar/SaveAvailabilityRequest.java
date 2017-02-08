@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by virender on 06/02/17.
  */
-public class SaveAvailabiltyRequest {
+public class SaveAvailabilityRequest {
     private int isFulltime;
     private ArrayList<String> partTimeDays;
     @SerializedName("tempdDates")
