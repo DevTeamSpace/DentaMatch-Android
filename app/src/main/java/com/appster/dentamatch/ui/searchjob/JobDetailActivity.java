@@ -62,11 +62,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.pull_in, R.anim.hold_still);
-        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_job_detail);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_job_detail);
         setData();
 
-        if(getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)){
-            jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID,0);
+        if (getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)) {
+            jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID, 0);
         }
 
         mBinding.mapJobDetail.onCreate(savedInstanceState);
@@ -146,17 +146,17 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
     @Override
     public void onClick(final View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_tool_bar_left:
                 onBackPressed();
                 break;
 
             case R.id.tv_job_detail_doc_read_more:
 
-                if(mBinding.tvJobDetailDocReadMore.getText().toString().equalsIgnoreCase(getString(R.string.txt_read_more))) {
+                if (mBinding.tvJobDetailDocReadMore.getText().toString().equalsIgnoreCase(getString(R.string.txt_read_more))) {
                     mBinding.tvJobDetailDocDescription.setMaxLines(Integer.MAX_VALUE);
                     mBinding.tvJobDetailDocReadMore.setText(R.string.txt_show_less);
-                }else{
+                } else {
                     mBinding.tvJobDetailDocDescription.setMaxLines(4);
                     mBinding.tvJobDetailDocReadMore.setText(getString(R.string.txt_read_more));
 
@@ -165,8 +165,8 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 break;
 
             case R.id.cb_job_selection:
-                final int status = mJobDetailModel.getIsSaved() == 1? 0 : 1 ;
-                if(status == 0){
+                final int status = mJobDetailModel.getIsSaved() == 1 ? 0 : 1;
+                if (status == 0) {
                     Alert.createYesNoAlert(JobDetailActivity.this, "OK", "CANCEL", getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
                         @Override
                         public void onPositive(DialogInterface dialog) {
@@ -175,11 +175,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
                         @Override
                         public void onNegative(DialogInterface dialog) {
-                            ((CheckBox)v).setChecked(true);
+                            ((CheckBox) v).setChecked(true);
                             dialog.dismiss();
                         }
                     });
-                }else {
+                } else {
                     saveUnSaveJob(jobID, status);
                 }
                 break;
@@ -189,7 +189,8 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 break;
 
 
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -202,20 +203,20 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         webServices.applyJob(request).enqueue(new BaseCallback<BaseResponse>(this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                if(response.getStatus() == 1) {
+                if (response.getStatus() == 1) {
                     mBinding.tvJobStatus.setVisibility(View.VISIBLE);
                     mBinding.btnApplyJob.setVisibility(View.GONE);
-                    Alert.alert(JobDetailActivity.this,"Congratulations", "You have successfully applied for the job.");
-                }else{
+                    Alert.alert(JobDetailActivity.this, "Congratulations", "You have successfully applied for the job.");
+                } else {
                     mBinding.tvJobStatus.setVisibility(View.GONE);
                     mBinding.btnApplyJob.setVisibility(View.VISIBLE);
-                    if(response.getStatusCode() == 202){
+                    if (response.getStatusCode() == 202) {
                         Alert.createYesNoAlert(JobDetailActivity.this, "Yes", "No", "Complete your profile", response.getMessage(), new Alert.OnAlertClickListener() {
                             @Override
                             public void onPositive(DialogInterface dialog) {
                                 startActivity(new Intent(JobDetailActivity.this, HomeActivity.class)
 //                                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                             }
 
                             @Override
@@ -223,7 +224,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                                 dialog.dismiss();
                             }
                         });
-                    }else{
+                    } else {
                         showToast(response.getMessage());
                     }
                 }
@@ -236,7 +237,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         });
     }
 
-    private void getJobDetail(){
+    private void getJobDetail() {
         JobDetailRequest request = new JobDetailRequest();
         request.setJobId(jobID);
         processToShowDialog("", getString(R.string.please_wait), null);
@@ -244,13 +245,13 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {
             @Override
             public void onSuccess(JobDetailResponse response) {
-                if(response != null ){
+                if (response != null) {
 
-                    if(response.getStatus() == 1){
+                    if (response.getStatus() == 1) {
                         mJobDetailModel = response.getResult();
                         mBinding.layJobDetailHolder.setVisibility(View.VISIBLE);
                         setDetailData(response.getResult());
-                    }else{
+                    } else {
                         showToast(response.getMessage());
                         mBinding.layJobDetailHolder.setVisibility(View.GONE);
                         mBinding.btnApplyJob.setOnClickListener(null);
@@ -320,12 +321,12 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     } else {
                         params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailType.getId());
                         mBinding.tvJobDetailDate.setLayoutParams(params);
-                        mBinding.tvJobDetailDate.setPadding(0,4,0,0);
+                        mBinding.tvJobDetailDate.setPadding(0, 4, 0, 0);
                     }
                 }
             }, 200);
 
-        }else if (dataModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
+        } else if (dataModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
             mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_full_time);
             mBinding.tvJobDetailDate.setVisibility(View.GONE);
             mBinding.tvJobDetailType.setText(getString(R.string.txt_full_time));
@@ -337,7 +338,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         }
 
         String endMessage = dataModel.getJobPostedTimeGap() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
-        mBinding.tvJobDocTime.setText(String.valueOf( dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
+        mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
 
         mBinding.tvJobDetailDocName.setText(dataModel.getOfficeName());
         mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
@@ -367,23 +368,23 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         }, 200);
 
 
-        if(dataModel.getIsApplied() == 0){
+        if (dataModel.getIsApplied() == 0) {
 
             mBinding.tvJobStatus.setVisibility(View.GONE);
             mBinding.btnApplyJob.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mBinding.btnApplyJob.setVisibility(View.GONE);
             mBinding.tvJobStatus.setVisibility(View.VISIBLE);
 
         }
 
-        if(dataModel.getIsSaved() == 1){
+        if (dataModel.getIsSaved() == 1) {
             mBinding.cbJobSelection.setChecked(true);
-        }else{
+        } else {
             mBinding.cbJobSelection.setChecked(false);
         }
 
-        addMarker(dataModel.getLatitude(),dataModel.getLongitude(), true);
+        addMarker(dataModel.getLatitude(), dataModel.getLongitude(), true);
     }
 
 
@@ -391,14 +392,14 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         MarkerOptions options = new MarkerOptions();
         options.position(new LatLng(lat, lng));
 
-        if(isSelected) {
+        if (isSelected) {
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_selected_large));
-        }else{
+        } else {
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
         }
 
         mGoogleMap.addMarker(options);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), MAP_ZOOM_LEVEL));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), MAP_ZOOM_LEVEL));
 
     }
 
@@ -412,10 +413,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             @Override
             public void onSuccess(BaseResponse response) {
                 showToast(response.getMessage());
-                if(response.getStatus() == 1){
+                if (response.getStatus() == 1) {
                     mJobDetailModel.setIsSaved(status);
                     mBinding.cbJobSelection.setChecked(status == 1);
-                    EventBus.getDefault().post(new SaveUnSaveEvent(JobID,status));
+                    EventBus.getDefault().post(new SaveUnSaveEvent(JobID, status));
                 }
 
             }

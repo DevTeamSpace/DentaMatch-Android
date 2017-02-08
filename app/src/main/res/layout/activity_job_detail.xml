@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    
+
     <data>
+
         <variable
             name="JobDetail"
-            type="com.appster.dentamatch.model.JobDetailModel"/>
+            type="com.appster.dentamatch.model.JobDetailModel" />
     </data>
 
     <RelativeLayout
@@ -23,11 +24,12 @@
             android:layout_below="@+id/job_detail_toolbar">
 
             <LinearLayout
+                android:id="@+id/lay_job_detail_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/lay_job_detail_holder"
                 android:background="@color/cell_color"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -64,9 +66,9 @@
                         style="@style/text_view_normal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_job_detail_type"
                         android:layout_marginStart="@dimen/margin_12"
                         android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_alignBottom="@+id/tv_job_detail_type"
                         android:layout_toEndOf="@+id/tv_job_detail_type"
                         android:textColor="@color/black_color"
                         app:customFont="@string/font_regular" />
@@ -97,7 +99,6 @@
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_job_status"
                         style="@style/text_view_normal"
-                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -106,9 +107,10 @@
                         android:layout_marginEnd="@dimen/margin_normal"
                         android:paddingBottom="@dimen/margin_small"
                         android:paddingTop="@dimen/margin_small"
-                        android:textAllCaps="true"
                         android:text="@string/txt_applied"
+                        android:textAllCaps="true"
                         android:textColor="@color/light_moss_green"
+                        android:visibility="gone"
                         app:customFont="@string/font_medium" />
 
                 </RelativeLayout>
@@ -116,16 +118,16 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_5"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_25"
-                    android:layout_marginBottom="@dimen/margin_5"
                     android:drawablePadding="@dimen/margin_10"
                     android:drawableStart="@drawable/ic_about"
                     android:paddingBottom="@dimen/margin_small"
@@ -138,7 +140,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -175,8 +177,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignStart="@+id/tv_office_location_label"
-                        android:layout_toStartOf="@+id/tv_job_detail_job_distance"
                         android:layout_below="@+id/tv_job_detail_doc_name"
+                        android:layout_toStartOf="@+id/tv_job_detail_job_distance"
                         android:lineSpacingMultiplier="1.2"
                         android:paddingBottom="@dimen/margin_small"
                         android:paddingTop="@dimen/margin_small"
@@ -253,18 +255,18 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_5"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_25"
                     android:drawablePadding="@dimen/margin_10"
                     android:drawableStart="@drawable/ic_description"
                     android:paddingBottom="@dimen/margin_small"
-                    android:layout_marginBottom="@dimen/margin_5"
                     android:paddingTop="@dimen/margin_small"
                     android:text="@string/job_description_label"
                     android:textColor="@color/cell_text_color"
@@ -273,12 +275,12 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
                 <RelativeLayout
+                    android:id="@+id/lay_job_detail_desc_holder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lay_job_detail_desc_holder"
                     android:background="@color/white_color">
 
                     <com.appster.dentamatch.widget.CustomTextView
@@ -286,14 +288,14 @@
                         style="@style/text_view_normal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_10"
                         android:layout_marginEnd="@dimen/margin_20"
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:layout_marginBottom="@dimen/margin_10"
                         android:ellipsize="end"
-                        android:text="@string/lorem_ipsum_medium"
                         android:paddingBottom="@dimen/margin_small"
                         android:paddingTop="@dimen/margin_small"
+                        android:text="@string/lorem_ipsum_medium"
                         app:customFont="@string/font_regular" />
 
                     <com.appster.dentamatch.widget.CustomTextView
@@ -316,19 +318,19 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_5"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_25"
                     android:drawablePadding="@dimen/margin_10"
                     android:drawableStart="@drawable/ic_office_description"
                     android:paddingBottom="@dimen/margin_small"
                     android:paddingTop="@dimen/margin_small"
-                    android:layout_marginBottom="@dimen/margin_5"
                     android:text="@string/office_description_label"
                     android:textColor="@color/cell_text_color"
                     app:customFont="@string/font_medium" />
@@ -336,7 +338,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -422,19 +424,19 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_5"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_25"
                     android:drawablePadding="@dimen/margin_10"
                     android:drawableStart="@drawable/ic_job_map"
                     android:paddingBottom="@dimen/margin_small"
                     android:paddingTop="@dimen/margin_small"
-                    android:layout_marginBottom="@dimen/margin_5"
                     android:text="@string/map_label"
                     android:textColor="@color/cell_text_color"
                     app:customFont="@string/font_medium" />
@@ -442,7 +444,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/map_job_detail"
