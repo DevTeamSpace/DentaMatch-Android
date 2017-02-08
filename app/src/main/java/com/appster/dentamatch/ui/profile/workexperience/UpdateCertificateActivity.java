@@ -101,9 +101,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 mBinder.tvValidityDatePicker.setVisibility(View.GONE);
             } else {
                 mBinder.tvValidityDatePicker.setVisibility(View.VISIBLE);
-
             }
-            mBinder.tvValidityDatePicker.setText(data.getValidityDate());
+            mBinder.tvValidityDatePicker.setText(Utils.dateFormatYYYYMMMMDD(data.getValidityDate()));
         }
     }
 
@@ -126,13 +125,17 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                     }
                     uploadDentaImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
                 } else {
+                    if (!TextUtils.isEmpty(data.getImage())) {
 
+                        if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
+                            Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date, data.getCertificateName()));
+                            return;
+                        }
+                        postCertificateData(preparePostValidation());
+                    } else {
+                        Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_phot_first));
 
-                    if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
-                        Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date));
-                        return;
                     }
-                    postCertificateData(preparePostValidation());
                 }
                 break;
 
@@ -272,7 +275,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void onDateSelection(String date, int position) {
-        mBinder.tvValidityDatePicker.setText(date);
+        mBinder.tvValidityDatePicker.setText(Utils.dateFormatYYYYMMMMDD(date));
+
     }
 
     private void uploadCertificateImageApi(final String filePath, String certificateId) {

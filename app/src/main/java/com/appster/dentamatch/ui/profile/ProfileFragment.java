@@ -228,7 +228,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                         .putExtra(Constants.EXTRA_PROFILE_DATA, profileResponseData));
 
 
-
                 break;
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
@@ -416,7 +415,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < expList.size(); i++) {
             boolean isNoContactInfo = false;
             ItemProfileWorkExpBinding expBinding
-            = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
+                    = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
                     .inflate(R.layout.item_profile_work_exp, profileBinding.expInflater, false));
             expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
@@ -510,7 +509,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             } else {
                 cellCertificateBinding.tvCertificateValidityText.setVisibility(View.VISIBLE);
-                cellCertificateBinding.tvCertificateValidityDate.setText(certificate.getValidityDate());
+                cellCertificateBinding.tvCertificateValidityDate.setText(Utils.dateFormatYYYYMMMMDD(certificate.getValidityDate()));
 
             }
 

@@ -244,7 +244,7 @@
     <string name="error_no_job_type">Job type  cannot be empty</string>
     <string name="error_no_location">Location cannot be empty</string>
     <string name="error_no_description">Introduction cannot be empty</string>
-    <string name="alert_upload_phot_first">Please upload your document first.</string>
+    <string name="alert_upload_phot_first">Please upload certificate image first</string>
     <!--search job-->
     <string name="job_title">JOB TITLE</string>
     <string name="full_time">Full Time</string>

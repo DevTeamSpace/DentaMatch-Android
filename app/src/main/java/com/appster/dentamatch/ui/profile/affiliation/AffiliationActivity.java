@@ -98,11 +98,16 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             }
 
             if (affiliationAdapter.getList().get(i).getAffiliationName().equalsIgnoreCase(Constants.OTHERS) && affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
-                if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation().trim())) {
+                if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation())) {
                     Utils.showToast(AffiliationActivity.this, getString(R.string.blank_other_alert));
                     return false;
                 } else {
-                    affiliationAdapter.getList().get(i).setOtherAffiliation(affiliationAdapter.getList().get(i).getOtherAffiliation());
+                    if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation())) {
+                        Utils.showToast(AffiliationActivity.this, getString(R.string.blank_other_alert));
+                        return false;
+                    } else {
+                        affiliationAdapter.getList().get(i).setOtherAffiliation(affiliationAdapter.getList().get(i).getOtherAffiliation());
+                    }
                 }
             }
         }

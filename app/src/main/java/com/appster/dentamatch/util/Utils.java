@@ -86,7 +86,7 @@ public class Utils {
         return context.getResources().getDrawable(drawableId);
     }
 
-    public static BaseResponse parseDataOnError(retrofit2.Response<BaseResponse> response){
+    public static BaseResponse parseDataOnError(retrofit2.Response<BaseResponse> response) {
         Gson gson = new Gson();
         BaseResponse apiResponse = null;
         TypeAdapter<BaseResponse> adapter = gson.getAdapter(BaseResponse.class);
@@ -94,7 +94,7 @@ public class Utils {
         try {
             if (response.errorBody() != null) {
                 apiResponse = adapter.fromJson(response.errorBody().string());
-            }else {
+            } else {
                 LogUtils.LOGE(TAG, "Retrofit response.errorBody found null!");
             }
         } catch (IOException e) {
@@ -381,6 +381,20 @@ public class Utils {
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
+    }
+
+    public static String dateFormatYYYYMMMMDD(String dateStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = inputFormat.parse(dateStr);
+
+            SimpleDateFormat reqFormat = new SimpleDateFormat("dd MMMM yyyy");
+            String formattedDate = reqFormat.format(date);
+            return formattedDate;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 }
