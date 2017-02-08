@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
-import com.appster.dentamatch.databinding.FragmentAppliedJobsBinding;
 import com.appster.dentamatch.model.JobCancelEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -41,7 +40,7 @@ import retrofit2.Call;
  */
 
 public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-    private FragmentAppliedJobsBinding mBinding;
+    private com.appster.dentamatch.databinding.FragmentAppliedJobsBinding mBinding;
     private LinearLayoutManager mLayoutManager;
     private TrackJobsAdapter mJobAdapter;
     private ArrayList<SearchJobModel> mJobListData;
@@ -187,7 +186,6 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
         webServices.fetchTrackJobs(type, mPage, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) getActivity()) {
             @Override
             public void onSuccess(SearchJobResponse response) {
-                showToast(response.getMessage());
 
                 if (response.getStatus() == 1) {
 
@@ -199,6 +197,8 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
                     }
 
                     mJobAdapter.notifyDataSetChanged();
+                }else{
+                    showToast(response.getMessage());
                 }
 
                 if (mBinding.swipeRefreshJobList.isRefreshing()) {

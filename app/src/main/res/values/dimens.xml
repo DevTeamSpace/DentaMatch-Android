@@ -37,7 +37,8 @@
     <dimen name="margin_2">2dp</dimen>
     <dimen name="margin_small_3">3dp</dimen>
     <dimen name="margin_small">4dp</dimen>
-    <dimen name="margin_6">5dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_medium">8dp</dimen>
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_normal">26dp</dimen>
@@ -82,7 +83,7 @@
 
     <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_74">74dp</dimen>
-    <dimen name="circular_text_dimen">40dp</dimen>
+    <dimen name="circular_text_dimen">35dp</dimen>
     <dimen name="calendar_height">300dp</dimen>
     <dimen name="calendar_cell_height">40dp</dimen>
 

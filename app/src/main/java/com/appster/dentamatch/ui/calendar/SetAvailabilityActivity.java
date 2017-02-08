@@ -13,7 +13,9 @@ import com.appster.dentamatch.model.JobTitleList;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest;
 import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
+import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.LogUtils;
@@ -23,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +49,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_set_availability);
         initViews();
+        getAvailability(prepareGetAvailableRequest());
     }
 
     private void initViews() {
@@ -81,8 +85,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.txv_toolbar_general_right:
                 if (checkValidation()) {
-                    finish();
-//                    saveAvailability(prepareSaveRequest());
+                    saveAvailability(prepareSaveRequest());
                 }
                 break;
             case R.id.tv_sunday:
@@ -222,13 +225,12 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             case R.id.cb_temporary_check_box:
                 if (isChecked) {
                     isTemporary = true;
-                    mBinder.customCalendar.setVisibility(View.GONE);
-
+                    mBinder.customCalendar.setVisibility(View.VISIBLE);
                     mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
                 } else {
                     isTemporary = false;
+                    mBinder.customCalendar.setVisibility(View.GONE);
                     mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
-                    mBinder.customCalendar.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -246,10 +248,23 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         return true;
     }
 
-    private void prepareGetAvailableRequest(){
+    private GetAvailabilityRequest prepareGetAvailableRequest() {
+        GetAvailabilityRequest request = new GetAvailabilityRequest();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -3);
+        Date startDate = calendar.getTime();
+        Calendar endDateCalendar = Calendar.getInstance();
+        endDateCalendar.add(Calendar.MONTH, 3);
+        Date endDate = endDateCalendar.getTime();
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        request.setCalendarEndDate(format.format(endDate));
+        request.setCalendarStartDate(format.format(startDate));
+
+        return request;
 
     }
+
     private SaveAvailabilityRequest prepareSaveRequest() {
 
         SaveAvailabilityRequest request = new SaveAvailabilityRequest();
@@ -264,25 +279,25 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         }
         if (isPartTime) {
             if (isMonday) {
-                dayList.add(getString(R.string.txt_monday));
+                dayList.add(getString(R.string.txt_full_monday).toLowerCase());
             }
             if (isTuesday) {
-                dayList.add(getString(R.string.txt_tuesday));
+                dayList.add(getString(R.string.txt_full_tuesday).toLowerCase());
             }
             if (isWednesday) {
-                dayList.add(getString(R.string.txt_wednesday));
+                dayList.add(getString(R.string.txt_full_wednesday).toLowerCase());
             }
             if (isThursday) {
-                dayList.add(getString(R.string.txt_thursday));
+                dayList.add(getString(R.string.txt_full_thursday).toLowerCase());
             }
             if (isFriday) {
-                dayList.add(getString(R.string.txt_friday));
+                dayList.add(getString(R.string.txt_full_friday).toLowerCase());
             }
             if (isSaturday) {
-                dayList.add(getString(R.string.txt_saturday));
+                dayList.add(getString(R.string.txt_full_saturday).toLowerCase());
             }
             if (isSunday) {
-                dayList.add(getString(R.string.txt_sunday));
+                dayList.add(getString(R.string.txt_full_sunday).toLowerCase());
             }
         }
         request.setPartTimeDays(dayList);
@@ -303,12 +318,12 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     }
 
 
-    private void getAvailability() {
+    private void getAvailability(GetAvailabilityRequest request) {
         processToShowDialog("", getString(R.string.please_wait), mBinder.cbFullTimeCheckBox);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getAvailabilityList().enqueue(new BaseCallback<BaseResponse>(SetAvailabilityActivity.this) {
+        webServices.getAvailabilityList(request).enqueue(new BaseCallback<AvailabilityResponse>(SetAvailabilityActivity.this) {
             @Override
-            public void onSuccess(BaseResponse response) {
+            public void onSuccess(AvailabilityResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
 
@@ -318,7 +333,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             }
 
             @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+            public void onFail(Call<AvailabilityResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
             }
         });
@@ -347,7 +362,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     }
 
     private String dateFormet(Date mydate) {
-        SimpleDateFormat sm = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
         // myDate is the java.util.Date in yyyy-mm-dd format
         // Converting it into String using formatter
         String strDate = sm.format(mydate);

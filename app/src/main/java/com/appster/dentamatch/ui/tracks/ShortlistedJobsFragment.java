@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
-import com.appster.dentamatch.databinding.FragmentShortlistedJobsBinding;
 import com.appster.dentamatch.model.JobCancelEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -41,7 +40,7 @@ import retrofit2.Call;
  */
 
 public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-    private FragmentShortlistedJobsBinding mBinding;
+    private com.appster.dentamatch.databinding.FragmentShortlistedJobsBinding mBinding;
     private static final String DATA_ARRAY = "DATA_ARRAY";
     private int mPage = 1;
     private boolean mIsPaginationNeeded;
@@ -103,7 +102,6 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
 
             @Override
             public void onSuccess(BaseResponse response) {
-                Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
 
                 if (response.getStatus() == 1) {
                     mJobAdapter.cancelJob(ID);
@@ -113,6 +111,8 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
                     }else{
                         mBinding.tvNoJobs.setVisibility(View.VISIBLE);
                     }
+                }else{
+                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 

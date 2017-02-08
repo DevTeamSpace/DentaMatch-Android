@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.FragmentTracksBinding;
 import com.appster.dentamatch.ui.common.BaseFragment;
 
 /**
@@ -17,7 +16,7 @@ import com.appster.dentamatch.ui.common.BaseFragment;
  */
 
 public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
-    private FragmentTracksBinding mBinding;
+    private com.appster.dentamatch.databinding.FragmentTracksBinding mBinding;
     private SavedJobFragment savedJobsFragment ;
     private AppliedJobsFragment appliedJobsFragment ;
     private ShortlistedJobsFragment shortListedJobsFragment ;

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="email_max_length">100</integer>
+    <integer name="margin_20">20</integer>
+    <integer name="margin_10">10</integer>
+    <integer name="zero">0</integer>
 </resources>

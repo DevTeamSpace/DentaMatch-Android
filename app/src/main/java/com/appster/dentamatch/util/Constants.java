@@ -17,6 +17,7 @@ public class Constants {
     public static final String EXTRA_JOB_DETAIL_ID = "EXTRA_JOB_DETAIL_ID";
     public static final String EXTRA_IS_LOGIN = "display_login";
     public static final String EXTRA_JOB_ID = "EXTRA_JOB_ID";
+    public static final String EXTRA_FROM_JOB_DETAIL = "EXTRA_FROM_JOB_DETAIL";
 
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";
