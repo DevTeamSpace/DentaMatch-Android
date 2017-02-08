@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
-import com.appster.dentamatch.ui.messages.MessagesFragment;
+import com.appster.dentamatch.ui.messages.MessagesListFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;
@@ -40,7 +40,7 @@ public class HomeActivity extends BaseActivity {
 
     private ProfileFragment mProfileFragment;
     private JobsFragment mJobsFragment;
-    private MessagesFragment mMessagesFragment;
+    private MessagesListFragment mMessagesFragment;
     private CalendarFragment mCalendarFragment;
     private TrackFragment mTrackFragment;
 
@@ -134,7 +134,7 @@ public class HomeActivity extends BaseActivity {
                         if (mMessagesFragment != null) {
                             pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
                         } else {
-                            mMessagesFragment = MessagesFragment.newInstance();
+                            mMessagesFragment = MessagesListFragment.newInstance();
                             pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
                         }
                         break;
