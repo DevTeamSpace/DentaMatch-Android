@@ -16,6 +16,8 @@ import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest;
 import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
+import com.appster.dentamatch.network.response.calendar.AvailabilityResponseData;
+import com.appster.dentamatch.network.response.calendar.CalendarAvailability;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.LogUtils;
@@ -257,9 +259,9 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         endDateCalendar.add(Calendar.MONTH, 3);
         Date endDate = endDateCalendar.getTime();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        request.setCalendarEndDate(format.format(endDate));
-        request.setCalendarStartDate(format.format(startDate));
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        request.setCalendarStartDate(Utils.dateFormetyyyyMMdd(startDate));
+        request.setCalendarEndDate(Utils.dateFormetyyyyMMdd(endDate));
 
         return request;
 
@@ -302,15 +304,17 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         }
         request.setPartTimeDays(dayList);
         if (isTemporary) {
-            List<CalenderAvailableCellModel> tempList = mBinder.customCalendar.getAvailabilityList();
-            if (tempList != null && tempList.size() > 0) {
+//            List<CalenderAvailableCellModel> tempList = mBinder.customCalendar.getAvailabilityList();
+//            if (tempList != null && tempList.size() > 0) {
+//
+//                for (int i = 0; i < tempList.size(); i++) {
+//                    if (tempList.get(i).isSelected()) {
+//                        temporaryList.add(Utils.dateFormetyyyyMMdd(tempList.get(i).getDate()));
+//                    }
+//                }
 
-                for (int i = 0; i < tempList.size(); i++) {
-                    if (tempList.get(i).isSelected()) {
-                        temporaryList.add(dateFormet(tempList.get(i).getDate()));
-                    }
-                }
-            }
+//            }
+            temporaryList = mBinder.customCalendar.getAvailabilityList();
         }
         request.setTempDates(temporaryList);
 
@@ -319,14 +323,16 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
 
     private void getAvailability(GetAvailabilityRequest request) {
-        processToShowDialog("", getString(R.string.please_wait), mBinder.cbFullTimeCheckBox);
+        processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.getAvailabilityList(request).enqueue(new BaseCallback<AvailabilityResponse>(SetAvailabilityActivity.this) {
             @Override
             public void onSuccess(AvailabilityResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
-
+                    if (response != null) {
+                        setViewData(response);
+                    }
                 } else {
                     Utils.showToast(SetAvailabilityActivity.this, response.getMessage());
                 }
@@ -337,6 +343,149 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 LogUtils.LOGD(TAG, "onFail");
             }
         });
+    }
+
+    public void setViewData(AvailabilityResponse res) {
+        AvailabilityResponseData data = res.getAvailabilityResponseData();
+        if (data.getCalendarAvailability() != null) {
+            CalendarAvailability calendarAvailability = data.getCalendarAvailability();
+            if (calendarAvailability != null) {
+                if (calendarAvailability.getIsFulltime() == 1) {
+                    isFullTime = true;
+                    mBinder.cbFullTimeCheckBox.setChecked(true);
+                    mBinder.tvFullTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
+                } else {
+                    mBinder.cbFullTimeCheckBox.setChecked(false);
+
+                    isFullTime = false;
+                    mBinder.tvFullTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
+                }
+
+                if (calendarAvailability.getIsParttimeSunday() == 1 || calendarAvailability.getIsParttimeMonday() == 1 || calendarAvailability.getIsParttimeTuesday() == 1 || calendarAvailability.getIsParttimeWednesday() == 1 || calendarAvailability.getIsParttimeThursday() == 1 || calendarAvailability.getIsParttimeFriday() == 1 || calendarAvailability.getIsParttimeSaturday() == 1) {
+                    isPartTime = true;
+                    mBinder.cbPartTimeCheckBox.setChecked(true);
+
+                    mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
+                    mBinder.dayLayout.setVisibility(View.VISIBLE);
+                    setPartTimeDayView(calendarAvailability);
+
+                } else {
+                    mBinder.cbPartTimeCheckBox.setChecked(false);
+
+                    isPartTime = false;
+                    mBinder.dayLayout.setVisibility(View.GONE);
+                    mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
+                }
+
+            }
+            mBinder.customCalendar.setAvailableDate(data.getTempDateList());
+            if (data.getTempDateList() != null && data.getTempDateList().size() > 0) {
+                isTemporary = true;
+                mBinder.cbTemporaryCheckBox.setChecked(true);
+
+                mBinder.customCalendar.setVisibility(View.VISIBLE);
+                mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
+            } else {
+                mBinder.cbTemporaryCheckBox.setChecked(false);
+
+                isTemporary = false;
+                mBinder.customCalendar.setVisibility(View.GONE);
+                mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
+            }
+
+        }
+    }
+
+    private void setPartTimeDayView(CalendarAvailability calendarAvailability) {
+
+        if (calendarAvailability.getIsParttimeSaturday() == 0) {
+            isSaturday = false;
+            mPartTimeDays.remove(getString(R.string.txt_full_saturday));
+            mBinder.tvSaturday.setBackground(null);
+            mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
+        } else {
+            mPartTimeDays.add(getString(R.string.txt_full_saturday));
+            isSaturday = true;
+            mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
+            mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
+
+        }
+        if (calendarAvailability.getIsParttimeSunday() == 0) {
+            isSunday = false;
+            mPartTimeDays.remove(getString(R.string.txt_full_sunday));
+            mBinder.tvSunday.setBackground(null);
+            mBinder.tvSunday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
+        } else {
+            mPartTimeDays.add(getString(R.string.txt_full_sunday));
+            isSunday = true;
+            mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
+            mBinder.tvSunday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
+
+        }
+
+        if (calendarAvailability.getIsParttimeMonday() == 0) {
+            isMonday = false;
+            mPartTimeDays.remove(getString(R.string.txt_full_monday));
+            mBinder.tvMonday.setBackground(null);
+            mBinder.tvMonday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
+        } else {
+            mPartTimeDays.add(getString(R.string.txt_full_monday));
+            isMonday = true;
+            mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
+            mBinder.tvMonday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
+
+        }
+
+
+        if (calendarAvailability.getIsParttimeTuesday() == 0) {
+            isTuesday = false;
+            mPartTimeDays.remove(getString(R.string.txt_full_tuesday));
+            mBinder.tvTuesday.setBackground(null);
+            mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
+        } else {
+            mPartTimeDays.add(getString(R.string.txt_full_tuesday));
+            isTuesday = true;
+            mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+            mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
+
+        }
+        if (calendarAvailability.getIsParttimeWednesday() == 0) {
+            isWednesday = false;
+            mPartTimeDays.remove(getString(R.string.txt_full_wednesday));
+            mBinder.tvWednesday.setBackground(null);
+            mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
+        } else {
+            mPartTimeDays.add(getString(R.string.txt_full_wednesday));
+            isWednesday = true;
+            mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+            mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
+
+        }
+        if (calendarAvailability.getIsParttimeThursday() == 0) {
+            isThursday = false;
+            mPartTimeDays.remove(getString(R.string.txt_full_thursday));
+            mBinder.tvThursday.setBackground(null);
+            mBinder.tvThursday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
+        } else {
+            mPartTimeDays.add(getString(R.string.txt_full_thursday));
+            isThursday = true;
+            mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
+            mBinder.tvThursday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
+
+        }
+        if (calendarAvailability.getIsParttimeFriday() == 0) {
+            isFriday = false;
+            mPartTimeDays.remove(getString(R.string.txt_full_friday));
+            mBinder.tvFriday.setBackground(null);
+            mBinder.tvFriday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
+        } else {
+            mPartTimeDays.add(getString(R.string.txt_full_friday));
+            isFriday = true;
+            mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
+            mBinder.tvFriday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
+
+        }
+
     }
 
     private void saveAvailability(SaveAvailabilityRequest request) {
@@ -361,13 +510,6 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    private String dateFormet(Date mydate) {
-        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
-        // myDate is the java.util.Date in yyyy-mm-dd format
-        // Converting it into String using formatter
-        String strDate = sm.format(mydate);
-        //Converting the String back to java.util.Date
-        return strDate;
-    }
+
 }
 

@@ -383,4 +383,13 @@ public class Utils {
         return m.matches();
     }
 
+    public static String dateFormetyyyyMMdd(Date mydate) {
+        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+        // myDate is the java.util.Date in yyyy-mm-dd format
+        // Converting it into String using formatter
+        String strDate = sm.format(mydate);
+        //Converting the String back to java.util.Date
+        return strDate;
+    }
+
 }
