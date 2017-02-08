@@ -194,7 +194,7 @@
     <string name="blank_year_alert">Please select experience.</string>
     <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
     <string name="blank_phone_number_alert">Phone number can never be blank</string>
-    <string name="complete_reference">Please complete the reference.</string>
+    <string name="complete_reference">Please add the Reference 1 first.</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="blank_certificate_photo_alert">Please upload atleast one certificate</string>
@@ -286,7 +286,7 @@
     <string name="txt_friday">Fri</string>
     <string name="txt_saturday">Sat</string>
     <string name="txt_sunday">Sun</string>
-    <string name="not_applicable">NA</string>
+    <string name="not_applicable">N/A</string>
     <string name="txt_read_more">READ MORE</string>
     <string name="text_show_label">SHOW LESS</string>
     <string name="txt_applied">Applied</string>
