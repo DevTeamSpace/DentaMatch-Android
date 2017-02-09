@@ -86,11 +86,11 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.txv_toolbar_general_right:
-                if (checkValidation()) {
+//                if (checkValidation()) {
 //                    saveAvailability(prepareSaveRequest());
-                    finish();
+                finish();
 
-                }
+//                }
                 break;
             case R.id.tv_sunday:
                 if (isSunday) {
