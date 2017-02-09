@@ -85,6 +85,10 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public HashMap<Integer, PostSchoolData> getPostMapData() {
         return mHashMap;
     }
+    public void setSchoolMapData(HashMap<Integer, PostSchoolData> data) {
+//        mHashMap.clear();
+        mHashMap=data;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

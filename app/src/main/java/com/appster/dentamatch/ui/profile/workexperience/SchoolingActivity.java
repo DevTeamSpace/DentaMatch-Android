@@ -137,28 +137,39 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
     private boolean checkValidation() {
         HashMap<Integer, PostSchoolData> hashMap = mSchoolsAdapter.getPostMapData();
-        if (!(hashMap != null && hashMap.size() > 0)) {
+        if (hashMap == null || hashMap.size() == 0) {
             showToast("please choose at least one college/school");
             return false;
         } else {
             for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
+                boolean isRemoveSchool = false;
                 if (TextUtils.isEmpty(entry.getValue().getSchoolName()) && TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
-                    mSchoolsAdapter.getPostMapData().remove(entry);
-                    hashMap=mSchoolsAdapter.getPostMapData();
+                    hashMap.remove(entry.getKey());
+                    mSchoolsAdapter.setSchoolMapData(hashMap);
+                    if (hashMap == null || hashMap.size() == 0) {
+                        showToast("please choose at least one college/school");
+                        return false;
+                    } else {
+                        isRemoveSchool = true;
+                        return false;
+                    }
 
                 }
 
-                if (TextUtils.isEmpty(entry.getValue().getSchoolName())) {
-                    showToast("School name can never blank.");
-                    return false;
+                if (isRemoveSchool) {
+                    checkValidation();
+                } else {
+                    if (TextUtils.isEmpty(entry.getValue().getSchoolName())) {
+                        showToast("School name can never blank.");
+                        return false;
+                    }
+
+
+                    if (TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
+                        showToast("Please select year of graduation for  " + entry.getValue().getParentSchoolName());
+                        return false;
+                    }
                 }
-
-
-                if (TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
-                    showToast("Please select year of graduation for  " + entry.getValue().getParentSchoolName());
-                    return false;
-                }
-
             }
         }
         return true;
