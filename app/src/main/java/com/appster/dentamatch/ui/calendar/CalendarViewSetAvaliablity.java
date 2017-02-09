@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +31,8 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
     private ImageView previousButton, nextButton;
     private TextView currentDate;
     private GridView calendarGridView;
-    private static final int MAX_CALENDAR_COLUMN = 35;
+    private int count = 3;
+    private static final int MAX_CALENDAR_COLUMN = 42;
     private int month, year;
     private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -73,26 +76,43 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
     }
 
     private void setPreviousButtonClickEvent() {
+
         previousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.MONTH, -1);
-                setUpCalendarAdapter();
+                LogUtils.LOGD(TAG, "pre count is ===" + count);
+                if (count > 0) {
+                    count--;
+                    cal.add(Calendar.MONTH, -1);
+                    setUpCalendarAdapter();
+                } else {
+                    Utils.showToast(context, "You can set see last three months availability from current month");
+                }
             }
         });
+
     }
 
     private void setNextButtonClickEvent() {
+
         nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.MONTH, 1);
-                setUpCalendarAdapter();
+                LogUtils.LOGD(TAG, "next  count is ===" + count);
+
+                if (count < Constants.MAX_MONTH_COUNT - 1) {
+                    ++count;
+                    cal.add(Calendar.MONTH, 1);
+                    setUpCalendarAdapter();
+                } else {
+                    Utils.showToast(context, "You can set up to next three months availability from current month");
+                }
             }
         });
+
     }
 
-//    public List<CalenderAvailableCellModel> getAvailabilityList() {
+    //    public List<CalenderAvailableCellModel> getAvailabilityList() {
 //        return mAdapter.getList();
 //    }
     public ArrayList<String> getAvailabilityList() {
@@ -104,21 +124,25 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(context, "Clicked " + (Integer)view.getTag(), Toast.LENGTH_LONG).show();
-                if ((Integer) view.getTag() != -1) {
-                    if (mAdapter.getList().get(position).isSelected()) {
-                        view.setBackgroundResource(R.color.white_color);
-                        if (mTempDateList.contains(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()))) {
-                            mTempDateList.remove(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
+                if (mAdapter.getList().get(position).getDate().compareTo(Calendar.getInstance().getTime()) > 0) {
+                    if ((Integer) view.getTag() != -1) {
+                        if (mAdapter.getList().get(position).isSelected()) {
+                            view.setBackgroundResource(R.color.white_color);
+                            if (mTempDateList.contains(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()))) {
+                                mTempDateList.remove(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
+                            }
+                            mAdapter.getList().get(position).setSelected(false);
+
+                        } else {
+                            view.setBackgroundResource(R.drawable.shape_temporary_date_selection);
+                            mAdapter.getList().get(position).setSelected(true);
+                            mTempDateList.add(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
+
+
                         }
-                        mAdapter.getList().get(position).setSelected(false);
-
-                    } else {
-                        view.setBackgroundResource(R.drawable.shape_temporary_date_selection);
-                        mAdapter.getList().get(position).setSelected(true);
-                        mTempDateList.add(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
-
-
                     }
+                } else {
+                    Utils.showToast(context, context.getString(R.string.alert_past_date));
                 }
             }
         });

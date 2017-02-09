@@ -4,6 +4,7 @@ package com.appster.dentamatch.util;
  * Class to hold constant values.
  */
 public class Constants {
+    public static final int  MAX_MONTH_COUNT=7;
     public static final String DEVICE_TYPE = "ANDROID";
 
     public static final String EXTRA_PLACE_NAME = "place_name";
