@@ -34,6 +34,10 @@ public class Constants {
     public static final int EDUCATION_HISTORY_YEARS = 50;
     public static final int MAP_ZOOM_LEVEL = 15;
 
+    public static final String DISCONNECTED = "DISCONNECTED";
+    public static final String CONNECTION_TIMED_OUT = "CONNECTION_TIMED_OUT";
+    public static final String CONNECTED = "CONNECTED";
+
     public enum ACTIVITIES {
         SWITCH_ACTIVITY
     }

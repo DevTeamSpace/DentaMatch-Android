@@ -298,5 +298,7 @@
     <string name="sat">SA</string>
     <string name="last_date">30</string>
     <string name="txt_show_less">SHOW LESS</string>
+    <string name="txt_no_chat_messages">No message in your chats yet.</string>
+    <string name="txt_text_message">Text message</string>
 
 </resources>

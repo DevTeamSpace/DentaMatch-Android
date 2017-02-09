@@ -21,6 +21,7 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
+import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
@@ -77,6 +78,11 @@ public interface AuthWebServices {
     String TRACK_JOBS = "users/job-list";
     String CANCEL_JOB = "users/cancel-job";
     String UPDATE_USER_LOCATION = "users/user-location-update";
+    String USER_CHAT_HISTORY = "users/chat-user-list";
+
+
+    @GET(USER_CHAT_HISTORY)
+    Call<ChatHistoryResponse> getChatHistory();
 
     @POST(UPDATE_USER_LOCATION)
     Call<BaseResponse> updateUserLocation(@Body ChangeUserLocation request);

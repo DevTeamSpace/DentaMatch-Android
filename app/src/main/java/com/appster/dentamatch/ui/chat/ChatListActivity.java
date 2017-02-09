@@ -10,18 +10,15 @@ import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityChatListBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
-import io.socket.client.IO;
 import io.socket.client.Socket;
 
 

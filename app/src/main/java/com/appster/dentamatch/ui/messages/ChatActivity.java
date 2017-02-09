@@ -1,21 +1,23 @@
-package com.appster.dentamatch.ui.chat;
+package com.appster.dentamatch.ui.messages;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
-import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.chat.ChatManager;
+import com.appster.dentamatch.model.SocketConnectionEvent;
+import com.appster.dentamatch.ui.chat.Message;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,12 +44,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private static final int TYPING_TIMER_LENGTH = 600;
 
     private List<Message> mMessages = new ArrayList<Message>();
-    private RecyclerView.Adapter mAdapter;
+    private ChatAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
+//    private RecyclerView.Adapter mAdapter;
     private boolean mTyping = false;
     private Handler mTypingHandler = new Handler();
     private String mUsername;
     private Socket mSocket;
-
+    private ChatManager chatManager;
     private Boolean isConnected = true;
 
     @Override
@@ -57,13 +61,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         LogUtils.LOGD(TAG, "onCreate..");
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_chat);
         gson = new Gson();
-        mAdapter = new MessageAdapter(this, mMessages);
+//        mAdapter = new MessageAdapter(this, mMessages);
+        mAdapter = new ChatAdapter(this);
 
         mBinder.sendButton.setOnClickListener(this);
-        mBinder.messages.setLayoutManager(new LinearLayoutManager(this));
+        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setStackFromEnd(true);
+        mBinder.messages.setLayoutManager(mLayoutManager);
         mBinder.messages.setAdapter(mAdapter);
 
-        mSocket = ((DentaApp) getApplication()).getSocket();
+//        mSocket = ((DentaApp) getApplication()).getSocket();
 
 //        mSocket.on(Socket.EVENT_CONNECT,onConnect);
 //        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
@@ -72,20 +79,56 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 //        mSocket.on("new message", onNewMessage);
 //        mSocket.on("typing", onTyping);
 //        mSocket.on("stop typing", onStopTyping);
-        mSocket.connect();
-
+//        mSocket.connect();
+        chatManager =  ChatManager.getInstance();
+        chatManager.init();
 //        startSignIn();
 
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * Socket event is return in this method where we connect or disconnect a socket .
+     * @param event: socket connection event.
+     */
+    @Subscribe
+    public void onSocketConnectionEvent(SocketConnectionEvent event){
+       switch (event.getStatus()){
+
+           case Constants.CONNECTED:
+               break;
+
+           case Constants.DISCONNECTED:
+               break;
+
+           case Constants.CONNECTION_TIMED_OUT:
+               break;
+
+           default: break;
+       }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.LOGD(TAG, "onResume..");
-
-        HashMap<String, String> userMap = new HashMap<>();
-        userMap.put("userId", "606");
-        mSocket.emit("init", new JSONObject(userMap));
+//        LogUtils.LOGD(TAG, "onResume..");
+//
+//        HashMap<String, String> userMap = new HashMap<>();
+//        userMap.put("userId", "606");
+//        mSocket.emit("init", new JSONObject(userMap));
     }
 
     @Override
@@ -100,20 +143,23 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             case R.id.send_button:
 
                 String msg = mBinder.messageInput.getText().toString().trim();
-                LogUtils.LOGD(TAG, "Send "+msg);
-
-                if(TextUtils.isEmpty(msg)) return;
-
-                HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put("fromId", "606");
-                hashMap.put("toId", "420");
-                hashMap.put("msg", msg);
-
-                JSONObject jsonObject = new JSONObject(hashMap);
-                mSocket.emit("sendMsg", jsonObject);
+                mAdapter.addMessage(msg);
                 mBinder.messageInput.setText("");
-
-                addMessage("Ram", msg);
+                scrollToBottom();
+//                LogUtils.LOGD(TAG, "Send "+msg);
+//
+//                if(TextUtils.isEmpty(msg)) return;
+//
+//                HashMap<String, String> hashMap = new HashMap<>();
+//                hashMap.put("fromId", "606");
+//                hashMap.put("toId", "420");
+//                hashMap.put("msg", msg);
+//
+//                JSONObject jsonObject = new JSONObject(hashMap);
+//                mSocket.emit("sendMsg", jsonObject);
+//                mBinder.messageInput.setText("");
+//
+//                addMessage("Ram", msg);
         }
     }
 
@@ -212,50 +258,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
-    private Emitter.Listener onConnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(!isConnected) {
-                        if(null!=mUsername)
-                            mSocket.emit("add user", mUsername);
-                        Toast.makeText(ChatActivity.this.getApplicationContext(),
-                                "Connected", Toast.LENGTH_LONG).show();
-                        isConnected = true;
-                    }
-                }
-            });
-        }
-    };
 
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    isConnected = false;
-                    Toast.makeText(ChatActivity.this.getApplicationContext(),
-                            "Disconnected", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    };
 
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(ChatActivity.this.getApplicationContext(),
-                            "Failed to connect", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    };
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
