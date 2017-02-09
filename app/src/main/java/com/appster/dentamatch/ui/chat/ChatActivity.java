@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.chat.ChatMessage;
+import com.appster.dentamatch.chat.RealmController;
+import com.appster.dentamatch.chat.RealmManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.databinding.ActivityChatListBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -30,6 +33,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmModel;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -50,13 +58,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private static final int TYPING_TIMER_LENGTH = 600;
 
     private List<Message> mMessages = new ArrayList<Message>();
-    private RecyclerView.Adapter mAdapter;
+//    private RecyclerView.Adapter mAdapter;
+    private RealmRecyclerViewAdapter mAdapter;
     private boolean mTyping = false;
     private Handler mTypingHandler = new Handler();
     private String mUsername;
     private Socket mSocket;
 
     private Boolean isConnected = true;
+
+    private Realm realm;
+    private RealmController realmController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +77,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         LogUtils.LOGD(TAG, "onCreate..");
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_chat);
         gson = new Gson();
-        mAdapter = new MessageAdapter(this, mMessages);
+
+        realm = RealmManager.getRealmNewInstance();
+        realmController = new RealmController();
+
+        RealmList<ChatMessage> realmList = realmController.getAllMsgByThreadId(realm, "901");
+        mAdapter = new MessageAdapter(this, realmList);
 
         mBinder.sendButton.setOnClickListener(this);
         mBinder.messages.setLayoutManager(new LinearLayoutManager(this));

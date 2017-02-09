@@ -8,18 +8,26 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.chat.ChatMessage;
 
 import java.util.List;
 
+import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
+
+public class MessageAdapter extends RealmRecyclerViewAdapter<ChatMessage, MessageAdapter.ViewHolder> {
 
     private List<Message> mMessages;
     private int[] mUsernameColors;
+    private RealmResults<ChatMessage> realmResults;
 
-    public MessageAdapter(Context context, List<Message> messages) {
-        mMessages = messages;
-        mUsernameColors = context.getResources().getIntArray(R.array.username_colors);
+    public MessageAdapter(Context context, OrderedRealmCollection<ChatMessage> realmResults) {
+       super(context, realmResults, true);
+        realmResults = realmResults;
     }
 
     @Override
@@ -44,19 +52,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        Message message = mMessages.get(position);
-        viewHolder.setMessage(message.getMessage());
-        viewHolder.setUsername(message.getUsername());
+        ChatMessage chatMessage = realmResults.get(position);
+        viewHolder.setUsername(chatMessage.getChatThreadId());
+        viewHolder.setMessage(chatMessage.getMsgText());
+
+//        Message message = mMessages.get(position);
+//        viewHolder.setMessage(message.getMessage());
+//        viewHolder.setUsername(message.getUsername());
     }
 
     @Override
     public int getItemCount() {
-        return mMessages.size();
+        return realmResults.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return mMessages.get(position).getType();
+//        return mMessages.get(position).getType();
+        return Message.TYPE_MESSAGE;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

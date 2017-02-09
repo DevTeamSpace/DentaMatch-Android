@@ -65,7 +65,9 @@ public class SocketManager {
             return;
         }
 
-        mSocket.connect();
+        if (!mSocket.connected()) {
+            mSocket.connect();
+        }
     }
 
     public void disconnect() {
@@ -74,7 +76,9 @@ public class SocketManager {
             return;
         }
 
-        mSocket.disconnect();
+        if(mSocket.connected()) {
+            mSocket.disconnect();
+        }
     }
 
     public void registerEvents() {
