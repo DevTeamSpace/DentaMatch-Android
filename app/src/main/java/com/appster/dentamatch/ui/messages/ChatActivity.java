@@ -1,19 +1,25 @@
 package com.appster.dentamatch.ui.messages;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.ChatManager;
 import com.appster.dentamatch.model.SocketConnectionEvent;
 import com.appster.dentamatch.ui.chat.Message;
+import com.appster.dentamatch.databinding.ActivityChatBinding;
+import com.appster.dentamatch.databinding.ActivityChatListBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,10 +27,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
@@ -36,7 +44,7 @@ import io.socket.emitter.Emitter;
 public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "Chat";
-    private com.appster.dentamatch.databinding.ActivityChatBinding mBinder;
+    private ActivityChatBinding mBinder;
     private Gson gson;
 
     private static final int REQUEST_LOGIN = 0;
@@ -258,8 +266,50 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
+    private Emitter.Listener onConnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            ChatActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(!isConnected) {
+                        if(null!=mUsername)
+                            mSocket.emit("add user", mUsername);
+                        Toast.makeText(ChatActivity.this.getApplicationContext(),
+                                "Connected", Toast.LENGTH_LONG).show();
+                        isConnected = true;
+                    }
+                }
+            });
+        }
+    };
 
+    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            ChatActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    isConnected = false;
+                    Toast.makeText(ChatActivity.this.getApplicationContext(),
+                            "Disconnected", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    };
 
+    private Emitter.Listener onConnectError = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            ChatActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ChatActivity.this.getApplicationContext(),
+                            "Failed to connect", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    };
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
