@@ -5,70 +5,86 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
-        <include layout="@layout/toolbar_general"
-            android:id="@+id/toolbar_activity_chat"/>
+        <include
+            android:id="@+id/toolbar_activity_chat"
+            layout="@layout/toolbar_general" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/messages"
-            android:background="@color/white_color"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:scrollbarStyle="outsideOverlay"/>
+            android:background="@color/white_color"
+            android:scrollbarStyle="outsideOverlay" />
 
         <LinearLayout
             android:id="@+id/lay_activity_chat_sender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@color/off_white"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/message_input"
                 android:layout_width="0dp"
-                android:textSize="@dimen/text_size_12"
-                android:background="@drawable/edittext_curved_background_chat"
-                android:paddingStart="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_10"
-                android:paddingTop="@dimen/margin_medium"
-                android:paddingBottom="@dimen/margin_medium"
-                android:layout_marginTop="@dimen/margin_7"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_7"
                 android:layout_marginStart="@dimen/margin_14"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_7"
                 android:layout_weight="1"
+                android:background="@drawable/edittext_curved_background_chat"
                 android:hint="@string/txt_text_message"
                 android:inputType="textMultiLine"
                 android:maxLines="6"
-                />
+                android:paddingBottom="@dimen/margin_medium"
+                android:paddingEnd="@dimen/margin_10"
+                android:paddingStart="@dimen/margin_10"
+                android:paddingTop="@dimen/margin_medium"
+                android:textSize="@dimen/text_size_12" />
 
             <ImageView
                 android:id="@+id/send_button"
-                android:layout_marginStart="@dimen/margin_17"
-                android:layout_marginEnd="@dimen/margin_14"
-                android:layout_marginTop="@dimen/margin_14"
-                android:layout_marginBottom="@dimen/margin_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_14"
+                android:paddingEnd="@dimen/margin_14"
+                android:paddingStart="@dimen/margin_17"
+                android:paddingTop="@dimen/margin_14"
                 app:srcCompat="@drawable/ic_chat_send" />
-            </LinearLayout>
+        </LinearLayout>
 
-
-
-        <com.appster.dentamatch.widget.CustomTextView
-            style="@style/text_view_normal"
-            android:id="@+id/tv_unblock"
+        <LinearLayout
+            android:id="@+id/lay_unblock"
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:visibility="gone"
-            android:text="@string/txt_unblock"
-            android:padding="@dimen/margin_17"
-            android:textColor="@color/color_forgot_pwd"
-            app:customFont="@string/font_regular"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                style="@style/text_view_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/white_color"
+                android:padding="@dimen/margin_17"
+                android:text="You have blocked this recruiter."
+                app:customFont="@string/font_regular" />
+
+
+            <com.appster.dentamatch.widget.CustomTextView
+                style="@style/text_view_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/margin_17"
+                android:text="@string/txt_unblock"
+                android:textColor="@color/color_forgot_pwd"
+                app:customFont="@string/font_regular" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -9,12 +9,11 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.ChatMessage;
+import com.appster.dentamatch.ui.messages.Message;
 
 import java.util.List;
 
 import io.realm.OrderedRealmCollection;
-import io.realm.Realm;
-import io.realm.RealmObject;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
 
@@ -34,9 +33,9 @@ public class MessageAdapter extends RealmRecyclerViewAdapter<ChatMessage, Messag
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout = -1;
         switch (viewType) {
-        case Message.TYPE_MESSAGE:
-            layout = R.layout.item_message;
-            break;
+//        case Message.TYPE_MESSAGE:
+//            layout = R.layout.item_message;
+//            break;
         case Message.TYPE_LOG:
             layout = R.layout.item_log;
             break;
@@ -66,11 +65,11 @@ public class MessageAdapter extends RealmRecyclerViewAdapter<ChatMessage, Messag
         return realmResults.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-//        return mMessages.get(position).getType();
-        return Message.TYPE_MESSAGE;
-    }
+//    @Override
+//    public int getItemViewType(int position) {
+////        return mMessages.get(position).getType();
+////        return Message.TYPE_MESSAGE;
+//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mUsernameView;

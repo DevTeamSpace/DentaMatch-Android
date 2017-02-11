@@ -58,10 +58,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
          * Change the Ui based on recruiter is blocked or not.
          */
         if (mChatModel.getRecruiterBlock() == 1) {
-            mBinder.tvUnblock.setVisibility(View.VISIBLE);
+            mBinder.layUnblock.setVisibility(View.VISIBLE);
             mBinder.layActivityChatSender.setVisibility(View.GONE);
         } else {
-            mBinder.tvUnblock.setVisibility(View.GONE);
+            mBinder.layUnblock.setVisibility(View.GONE);
             mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
         }
 
@@ -83,7 +83,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
         mBinder.sendButton.setOnClickListener(this);
         mBinder.toolbarActivityChat.ivToolBarLeft.setOnClickListener(this);
-        mBinder.tvUnblock.setOnClickListener(this);
+        mBinder.layUnblock.setOnClickListener(this);
     }
 
     @Override
@@ -171,7 +171,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
                 if (response.getStatus() == 1) {
                     mChatModel.setRecruiterBlock(0);
-                    mBinder.tvUnblock.setVisibility(View.GONE);
+                    mBinder.layUnblock.setVisibility(View.GONE);
                     mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
                     EventBus.getDefault().post(new ChatUserUnBlockedEvent(recruiterID));
                 } else {
