@@ -1,142 +1,95 @@
 package com.appster.dentamatch.ui.messages;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.chat.ChatManager;
-import com.appster.dentamatch.model.SocketConnectionEvent;
-import com.appster.dentamatch.ui.chat.Message;
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
-import com.appster.dentamatch.databinding.ActivityChatListBinding;
+import com.appster.dentamatch.model.ChatListModel;
+import com.appster.dentamatch.model.ChatMessageReceivedEvent;
+import com.appster.dentamatch.model.ChatUserUnBlockedEvent;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.Utils;
-import com.google.gson.Gson;
+import com.appster.dentamatch.util.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-
+import retrofit2.Call;
 
 /**
- * Created by ramkumar on 06/02/17.
+ * Created by Appster on 09/02/17.
  */
 
 public class ChatActivity extends BaseActivity implements View.OnClickListener {
-
-    private static final String TAG = "Chat";
+    private static final String TAG = "ChatActivity";
     private ActivityChatBinding mBinder;
-    private Gson gson;
-
-    private static final int REQUEST_LOGIN = 0;
-
-    private static final int TYPING_TIMER_LENGTH = 600;
-
-    private List<Message> mMessages = new ArrayList<Message>();
     private ChatAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-//    private RecyclerView.Adapter mAdapter;
-    private boolean mTyping = false;
-    private Handler mTypingHandler = new Handler();
-    private String mUsername;
-    private Socket mSocket;
-    private ChatManager chatManager;
-    private Boolean isConnected = true;
+    private ChatListModel mChatModel;
+    String userId;
+    String recruiterId;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        LogUtils.LOGD(TAG, "onCreate..");
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_chat);
-        gson = new Gson();
-//        mAdapter = new MessageAdapter(this, mMessages);
-        mAdapter = new ChatAdapter(this);
-
-        mBinder.sendButton.setOnClickListener(this);
-        mLayoutManager = new LinearLayoutManager(this);
+        initViews();
         mLayoutManager.setStackFromEnd(true);
         mBinder.messages.setLayoutManager(mLayoutManager);
         mBinder.messages.setAdapter(mAdapter);
 
-//        mSocket = ((DentaApp) getApplication()).getSocket();
-
-//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
-//        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
-//        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-//        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-//        mSocket.on("new message", onNewMessage);
-//        mSocket.on("typing", onTyping);
-//        mSocket.on("stop typing", onStopTyping);
-//        mSocket.connect();
-        chatManager =  ChatManager.getInstance();
-        chatManager.init();
-//        startSignIn();
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this);
+        if (getIntent().hasExtra(Constants.EXTRA_CHAT_MODEL)) {
+            mChatModel = getIntent().getParcelableExtra(Constants.EXTRA_CHAT_MODEL);
         }
+
+        /**
+         * Change the Ui based on recruiter is blocked or not.
+         */
+        if (mChatModel.getRecruiterBlock() == 1) {
+            mBinder.tvUnblock.setVisibility(View.VISIBLE);
+            mBinder.layActivityChatSender.setVisibility(View.GONE);
+        } else {
+            mBinder.tvUnblock.setVisibility(View.GONE);
+            mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
+        }
+
+        userId = PreferenceUtil.getUserChatId();
+        recruiterId = String.valueOf(mChatModel.getRecruiterId());
+        mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(mChatModel.getName());
+
+        /**
+         * Connect to socket and request past chats to update the recycler view.
+         */
+        SocketManager.getInstance().attachActivityToSocket(this);
+        SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
 
-    /**
-     * Socket event is return in this method where we connect or disconnect a socket .
-     * @param event: socket connection event.
-     */
-    @Subscribe
-    public void onSocketConnectionEvent(SocketConnectionEvent event){
-       switch (event.getStatus()){
+    private void initViews() {
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new ChatAdapter(this);
 
-           case Constants.CONNECTED:
-               break;
-
-           case Constants.DISCONNECTED:
-               break;
-
-           case Constants.CONNECTION_TIMED_OUT:
-               break;
-
-           default: break;
-       }
+        mBinder.sendButton.setOnClickListener(this);
+        mBinder.toolbarActivityChat.ivToolBarLeft.setOnClickListener(this);
+        mBinder.tvUnblock.setOnClickListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        LogUtils.LOGD(TAG, "onResume..");
-//
-//        HashMap<String, String> userMap = new HashMap<>();
-//        userMap.put("userId", "606");
-//        mSocket.emit("init", new JSONObject(userMap));
+
     }
 
     @Override
@@ -144,288 +97,106 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         return null;
     }
 
+    /**
+     * Registering EventBus to receive chat updates.
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    /**
+     * UnRegistering EventBus to stop receive chat updates.
+     */
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.send_button:
 
+            case R.id.tv_unblock:
+                blockUnBlockUser(0, mChatModel.getRecruiterId());
+                break;
+
+            case R.id.send_button:
                 String msg = mBinder.messageInput.getText().toString().trim();
-                mAdapter.addMessage(msg);
-                mBinder.messageInput.setText("");
-                scrollToBottom();
-//                LogUtils.LOGD(TAG, "Send "+msg);
-//
-//                if(TextUtils.isEmpty(msg)) return;
-//
-//                HashMap<String, String> hashMap = new HashMap<>();
-//                hashMap.put("fromId", "606");
-//                hashMap.put("toId", "420");
-//                hashMap.put("msg", msg);
-//
-//                JSONObject jsonObject = new JSONObject(hashMap);
-//                mSocket.emit("sendMsg", jsonObject);
-//                mBinder.messageInput.setText("");
-//
-//                addMessage("Ram", msg);
+
+                if (!TextUtils.isEmpty(msg)) {
+                    SocketManager.getInstance().sendMessage(userId, recruiterId, msg);
+                    mBinder.messageInput.setText("");
+                    addMessageToAdapter(msg, Message.TYPE_MESSAGE_SEND, String.valueOf(System.currentTimeMillis()));
+                }
+
+                break;
+
+            case R.id.iv_tool_bar_left:
+                onBackPressed();
+                break;
+
+            default:
+                break;
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
 
-        mSocket.disconnect();
-
-//        mSocket.off(Socket.EVENT_CONNECT, onConnect);
-//        mSocket.off(Socket.EVENT_DISCONNECT, onDisconnect);
-//        mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
-//        mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-//        mSocket.off("new message", onNewMessage);
-//        mSocket.off("typing", onTyping);
-//        mSocket.off("stop typing", onStopTyping);
-    }
-
-    private JSONObject getUserObject() {
-        LogUtils.LOGD(TAG, "getUserObject: ");
-        HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("User", "Ram");
-//        String json = gson.toJson(hashMap);
-
-        return new JSONObject(hashMap);
-    }
-
-    private void addLog(String message) {
-        mMessages.add(new Message.Builder(Message.TYPE_LOG)
-                .message(message).build());
-        mAdapter.notifyItemInserted(mMessages.size() - 1);
-        scrollToBottom();
-    }
-
-    /*private void addParticipantsLog(int numUsers) {
-        addLog(getResources().getQuantityString(R.plurals.message_participants, numUsers, numUsers));
-    }*/
-
-    private void addMessage(String username, String message) {
-        mMessages.add(new Message.Builder(Message.TYPE_MESSAGE)
-                .username(username).message(message).build());
-        mAdapter.notifyItemInserted(mMessages.size() - 1);
-        scrollToBottom();
-    }
-
-    private void addTyping(String username) {
-        mMessages.add(new Message.Builder(Message.TYPE_ACTION)
-                .username(username).build());
-        mAdapter.notifyItemInserted(mMessages.size() - 1);
-        scrollToBottom();
-    }
-
-    private void removeTyping(String username) {
-        for (int i = mMessages.size() - 1; i >= 0; i--) {
-            Message message = mMessages.get(i);
-            if (message.getType() == Message.TYPE_ACTION && message.getUsername().equals(username)) {
-                mMessages.remove(i);
-                mAdapter.notifyItemRemoved(i);
+    @Subscribe
+    public void onNewMessageReceived(ChatMessageReceivedEvent event) {
+        if (event != null) {
+            if(event.getFromId().equalsIgnoreCase(userId)){
+                addMessageToAdapter(event.getMessage(), Message.TYPE_MESSAGE_SEND, event.getSentTime());
+            }else {
+                addMessageToAdapter(event.getMessage(), Message.TYPE_MESSAGE_RECEIVED, event.getSentTime());
             }
         }
+
     }
 
-//    private void attemptSend() {
-//        if (null == mUsername) return;
-//        if (!mSocket.connected()) return;
-//
-//        mTyping = false;
-//
-//        String message = mInputMessageView.getText().toString().trim();
-//        if (TextUtils.isEmpty(message)) {
-//            mInputMessageView.requestFocus();
-//            return;
-//        }
-//
-//        mInputMessageView.setText("");
-//        addMessage(mUsername, message);
-//
-//        // perform the sending message attempt.
-//        mSocket.emit("new message", message);
-//    }
+    private void blockUnBlockUser(final int status, final int recruiterID) {
+        BlockUnBlockRequest request = new BlockUnBlockRequest();
+        request.setBlockStatus(String.valueOf(status));
+        request.setRecruiterId(String.valueOf(recruiterID));
 
-/*    private void startSignIn() {
-        mUsername = null;
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivityForResult(intent, REQUEST_LOGIN);
-    }*/
+        processToShowDialog("", getString(R.string.please_wait), null);
+        AuthWebServices client = RequestController.createService(AuthWebServices.class);
+        client.blockUnBlockUser(request).enqueue(new BaseCallback<BaseResponse>(this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
 
-    private void leave() {
-        mUsername = null;
-        mSocket.disconnect();
-        mSocket.connect();
-//        startSignIn();
+                if (response.getStatus() == 1) {
+                    mChatModel.setRecruiterBlock(0);
+                    mBinder.tvUnblock.setVisibility(View.GONE);
+                    mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
+                    EventBus.getDefault().post(new ChatUserUnBlockedEvent(recruiterID));
+                } else {
+                    showToast(response.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+
+            }
+        });
     }
 
     private void scrollToBottom() {
         mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
-    private Emitter.Listener onConnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(!isConnected) {
-                        if(null!=mUsername)
-                            mSocket.emit("add user", mUsername);
-                        Toast.makeText(ChatActivity.this.getApplicationContext(),
-                                "Connected", Toast.LENGTH_LONG).show();
-                        isConnected = true;
-                    }
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    isConnected = false;
-                    Toast.makeText(ChatActivity.this.getApplicationContext(),
-                            "Disconnected", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(ChatActivity.this.getApplicationContext(),
-                            "Failed to connect", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    String message;
-                    try {
-                        username = data.getString("username");
-                        message = data.getString("message");
-                    } catch (JSONException e) {
-                        return;
-                    }
-
-                    removeTyping(username);
-                    addMessage(username, message);
-                }
-            });
-        }
-    };
-
-/*    private Emitter.Listener onUserJoined = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    int numUsers;
-                    try {
-                        username = data.getString("username");
-                        numUsers = data.getInt("numUsers");
-                    } catch (JSONException e) {
-                        return;
-                    }
-
-                    addLog(getResources().getString(R.string.message_user_joined, username));
-                    addParticipantsLog(numUsers);
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onUserLeft = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    int numUsers;
-                    try {
-                        username = data.getString("username");
-                        numUsers = data.getInt("numUsers");
-                    } catch (JSONException e) {
-                        return;
-                    }
-
-                    addLog(getResources().getString(R.string.message_user_left, username));
-                    addParticipantsLog(numUsers);
-                    removeTyping(username);
-                }
-            });
-        }
-    };*/
-
-    private Emitter.Listener onTyping = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    try {
-                        username = data.getString("username");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    addTyping(username);
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onStopTyping = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    try {
-                        username = data.getString("username");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    removeTyping(username);
-                }
-            });
-        }
-    };
-
-    private Runnable onTypingTimeout = new Runnable() {
-        @Override
-        public void run() {
-            if (!mTyping) return;
-
-            mTyping = false;
-            mSocket.emit("stop typing");
-        }
-    };
+    private void addMessageToAdapter(String userText, int messageType, String time) {
+        Message message = new Message.Builder(messageType)
+                .message(userText)
+                .time(time)
+                .build();
+        mAdapter.addMessage(message);
+        scrollToBottom();
+    }
 }

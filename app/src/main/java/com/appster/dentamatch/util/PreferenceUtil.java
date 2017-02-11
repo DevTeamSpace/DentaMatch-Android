@@ -35,6 +35,7 @@ public final class PreferenceUtil {
     private static final String KEY_JOB_TITLE_ID = "JOB_TITLE_ID";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
     private static final String KEY_IS_JOB_FILTER_CHANGED = "KEY_IS_JOB_FILTER_CHANGED";
+    private static final String KEY_CHAT_USER_ID= "KEY_CHAT_USER_ID";
 
     private static final String KEY_JOB_FILTER_SET = "KEY_JOB_FILTER_SET";
     private static final String KEY_JOB_FILTER_REQUEST = "KEY_JOB_FILTER_REQUEST";
@@ -221,5 +222,13 @@ public final class PreferenceUtil {
 
     public static void reset() {
         Hawk.deleteAll();
+    }
+
+    public static void setUserChatId(String userId) {
+        Hawk.put(KEY_CHAT_USER_ID, userId);
+    }
+
+    public static String getUserChatId(){
+        return Hawk.get(KEY_CHAT_USER_ID);
     }
 }

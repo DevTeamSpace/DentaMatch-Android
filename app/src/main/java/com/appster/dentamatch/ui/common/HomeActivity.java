@@ -67,6 +67,7 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -212,13 +213,23 @@ public class HomeActivity extends BaseActivity {
         return null;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        if (viewPager != null)
-//            textHeader.setText(ITEMS[viewPager.getCurrentItem()]);
-
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onResume();
+//        /**
+//         * Connect Socket for chatting initialization.
+//         */
+//        SocketManager.getInstance(this).connect();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        /**
+//         * Socket disconnected.
+//         */
+//        SocketManager.getInstance(this).disconnect();
+//        super.onStop();
+//    }
 
     private void launchProfileFragment() {
         fragmentTransaction = fragmentManager.beginTransaction();

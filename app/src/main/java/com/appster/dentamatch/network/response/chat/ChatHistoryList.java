@@ -1,6 +1,6 @@
 package com.appster.dentamatch.network.response.chat;
 
-import com.appster.dentamatch.model.ChatHistoryModel;
+import com.appster.dentamatch.model.ChatListModel;
 
 import java.util.ArrayList;
 
@@ -9,9 +9,9 @@ import java.util.ArrayList;
  */
 
 public class ChatHistoryList {
-    private ArrayList<ChatHistoryModel> list;
+    private ArrayList<ChatListModel> list;
 
-    public ArrayList<ChatHistoryModel> getList() {
+    public ArrayList<ChatListModel> getList() {
         return list;
     }
 }

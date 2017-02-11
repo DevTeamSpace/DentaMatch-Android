@@ -21,6 +21,7 @@ public class Constants {
 
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";
+    public static final String EXTRA_CHAT_MODEL = "EXTRA_CHAT_MODEL";
 
     public static final int PASSWORD_MIN_LENGTH = 6;
     public static final int WORK_EXP_LIST_LIMIT = 50;

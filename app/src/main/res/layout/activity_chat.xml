@@ -19,6 +19,7 @@
             android:scrollbarStyle="outsideOverlay"/>
 
         <LinearLayout
+            android:id="@+id/lay_activity_chat_sender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -40,10 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/txt_text_message"
-                android:imeActionId="@+id/send"
-                android:imeOptions="actionSend"
-                android:inputType="text"
-                android:maxLines="1"
+                android:inputType="textMultiLine"
+                android:maxLines="6"
                 />
 
             <ImageView
@@ -55,8 +54,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_chat_send" />
+            </LinearLayout>
 
-        </LinearLayout>
+
+
+        <com.appster.dentamatch.widget.CustomTextView
+            style="@style/text_view_normal"
+            android:id="@+id/tv_unblock"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/txt_unblock"
+            android:padding="@dimen/margin_17"
+            android:textColor="@color/color_forgot_pwd"
+            app:customFont="@string/font_regular"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

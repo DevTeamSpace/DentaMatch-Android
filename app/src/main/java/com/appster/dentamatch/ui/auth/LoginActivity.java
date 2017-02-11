@@ -397,6 +397,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         request.setLng(searchFilters.getLng());
                         request.setJobTitle(searchFilters.getJobTitle());
                         request.setPage(1);
+
                         if(searchFilters.getParttimeDays() != null && searchFilters.getParttimeDays().size() >0) {
                             request.setParttimeDays(searchFilters.getParttimeDays());
                         }else{
@@ -417,6 +418,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
                     PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
+                    PreferenceUtil.setUserChatId(response.getLoginResponseData().getUserDetail().getId());
                     Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
                     startActivity(intent);
                     finish();
@@ -428,7 +430,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
+//                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
     }

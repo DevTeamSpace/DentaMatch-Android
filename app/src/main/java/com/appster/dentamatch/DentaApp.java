@@ -7,16 +7,12 @@ package com.appster.dentamatch;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
-import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
 
-import java.net.URISyntaxException;
-
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
-import io.socket.client.IO;
-import io.socket.client.Socket;
 
 //import com.facebook.stetho.Stetho;
 //import com.squareup.leakcanary.LeakCanary;
@@ -24,17 +20,6 @@ import io.socket.client.Socket;
 public class DentaApp extends MultiDexApplication {
     private static DentaApp appController;
     private static Context mAppContext;
-    private Socket mSocket;
-    {
-        try {
-            IO.Options options = new IO.Options();
-            options.forceNew = true;
-            options.reconnection = true;
-            mSocket = IO.socket(Constants.CHAT_SERVER_URL, options);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
     @Override
@@ -43,7 +28,7 @@ public class DentaApp extends MultiDexApplication {
         appController = this;
         mAppContext = this.getApplicationContext();
         NetworkMonitor.initialize(mAppContext);
-
+        SocketManager.getInstance().connect();
 //        if (BuildConfig.DEBUG) {
 ////            LeakCanary.install(this);
 //            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -94,13 +79,11 @@ public class DentaApp extends MultiDexApplication {
         FirebaseApp.initializeApp(mAppContext);
     }
 
+
     public static Context getAppContext() {
         return mAppContext;
     }
 
-    public Socket getSocket() {
-        return mSocket;
-    }
 
     public static DentaApp getInstance() {
         return appController;
