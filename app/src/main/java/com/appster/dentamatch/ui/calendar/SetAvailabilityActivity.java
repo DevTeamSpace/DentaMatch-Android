@@ -51,7 +51,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_set_availability);
         initViews();
-//        getAvailability(prepareGetAvailableRequest());
+        getAvailability(prepareGetAvailableRequest());
     }
 
     private void initViews() {
@@ -87,9 +87,8 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.txv_toolbar_general_right:
                 if (checkValidation()) {
-//                    saveAvailability(prepareSaveRequest());
+                    saveAvailability(prepareSaveRequest());
                     finish();
-
                 }
                 break;
             case R.id.tv_sunday:
@@ -259,11 +258,23 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         Date startDate = calendar.getTime();
         Calendar endDateCalendar = Calendar.getInstance();
         endDateCalendar.add(Calendar.MONTH, 3);
+
+        /**
+         * to get  the number of days  in month
+         */
+        Calendar tempCalendar = Calendar.getInstance();
+        tempCalendar.set(Calendar.MONTH, endDateCalendar.get(Calendar.MONTH));
+        int days = tempCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
         Date endDate = endDateCalendar.getTime();
 
 //        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        request.setCalendarStartDate(Utils.dateFormetyyyyMMdd(startDate));
-        request.setCalendarEndDate(Utils.dateFormetyyyyMMdd(endDate));
+        String startStr = Utils.dateFormetyyyyMMdd(startDate);
+        startStr = startStr.substring(0, startStr.lastIndexOf("-"));
+        startStr = startStr + "-01";
+        String[] splitEndDate = Utils.dateFormetyyyyMMdd(endDate).split("-");
+        request.setCalendarStartDate(startStr);
+        request.setCalendarEndDate(splitEndDate[0] + "-" + splitEndDate[1] + "-" + days);
 
         return request;
 

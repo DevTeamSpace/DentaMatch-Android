@@ -32,6 +32,8 @@ public class SearchJobModel implements Parcelable{
     private int isSaved;
     private double distance;
 
+
+
     protected SearchJobModel(Parcel in) {
         id = in.readInt();
         jobType = in.readInt();

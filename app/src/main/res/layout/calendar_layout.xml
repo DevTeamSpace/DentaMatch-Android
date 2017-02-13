@@ -1,158 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout
-    android:id="@+id/activity_custom_calendar"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white_color"
-    android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <ImageView
-            android:id="@+id/previous_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:contentDescription="@string/app_name"
-            android:padding="@dimen/margin_medium"
-            android:src="@drawable/ic_arrow_left" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/display_current_date"
-            style="@style/text_view_normal"
-            android:layout_width="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="4dp"
-            android:text="current date"
-            android:textColor="@color/graish_brown_color"
-            app:customFont="@string/font_regular" />
-
-        <ImageView
-            android:id="@+id/next_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="left|center_horizontal"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:contentDescription="@string/app_name"
-
-            android:padding="@dimen/margin_medium"
-
-
-            android:src="@drawable/ic_arrow_right" />
-    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/activity_custom_calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white_color"
-        android:orientation="horizontal"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp">
+        android:orientation="vertical">
 
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/sun"
-            android:layout_width="0dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <ImageView
+                android:id="@+id/previous_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/margin_medium"
+                android:src="@drawable/ic_arrow_left" />
+
+            <ImageView
+                android:id="@+id/iv_full_time"
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_toLeftOf="@+id/display_current_date"
+                android:background="@drawable/shape_full_time_dot"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_6"
+                android:visibility="gone" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/display_current_date"
+                style="@style/text_view_normal"
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="4dp"
+                android:text="current date"
+                android:textColor="@color/graish_brown_color"
+                app:customFont="@string/font_regular" />
+
+            <ImageView
+                android:id="@+id/next_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left|center_horizontal"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:contentDescription="@string/app_name"
+
+                android:padding="@dimen/margin_medium"
+
+
+                android:src="@drawable/ic_arrow_right" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/sun"
-            android:textColor="@color/graish_brown_opacity_color"
-            android:textStyle="bold" />
+            android:background="@color/white_color"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
 
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/mon"
-            style="@style/text_view_normal"
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/sun"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/sun"
+                android:textColor="@color/graish_brown_opacity_color"
+                android:textStyle="bold" />
 
-            android:layout_width="0dp"
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/mon"
+                style="@style/text_view_normal"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/mon"
+                android:textColor="@color/graish_brown_opacity_color"
+                android:textStyle="bold" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tue"
+                style="@style/text_view_normal"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/tue"
+                android:textColor="@color/graish_brown_opacity_color"
+                android:textStyle="bold" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/wed"
+                style="@style/text_view_normal"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/wed"
+                android:textColor="@color/graish_brown_opacity_color"
+                android:textStyle="bold" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/thu"
+                style="@style/text_view_normal"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/thu"
+                android:textColor="@color/graish_brown_opacity_color"
+                android:textStyle="bold" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/fri"
+                style="@style/text_view_normal"
+
+                android:layout_width="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/fri"
+                android:textColor="@color/graish_brown_opacity_color"
+                android:textStyle="bold" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/sat"
+                style="@style/text_view_normal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/sat"
+                android:textColor="@color/graish_brown_opacity_color"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <com.appster.dentamatch.widget.ExpandableGridView
+            android:id="@+id/calendar_grid"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/mon"
-            android:textColor="@color/graish_brown_opacity_color"
-            android:textStyle="bold" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/tue"
-            style="@style/text_view_normal"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/tue"
-            android:textColor="@color/graish_brown_opacity_color"
-            android:textStyle="bold" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/wed"
-            style="@style/text_view_normal"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/wed"
-            android:textColor="@color/graish_brown_opacity_color"
-            android:textStyle="bold" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/thu"
-            style="@style/text_view_normal"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/thu"
-            android:textColor="@color/graish_brown_opacity_color"
-            android:textStyle="bold" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/fri"
-            style="@style/text_view_normal"
-
-            android:layout_width="0dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/fri"
-            android:textColor="@color/graish_brown_opacity_color"
-            android:textStyle="bold" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/sat"
-            style="@style/text_view_normal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/sat"
-            android:textColor="@color/graish_brown_opacity_color"
-            android:textStyle="bold" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:horizontalSpacing="5dp"
+            android:numColumns="7"
+            android:scrollbars="none"
+            android:verticalSpacing="3dp" />
     </LinearLayout>
-
-    <com.appster.dentamatch.widget.ExpandableGridView
-        android:id="@+id/calendar_grid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:horizontalSpacing="5dp"
-        android:numColumns="7"
-        android:verticalSpacing="3dp" />
-</LinearLayout>
 </layout>

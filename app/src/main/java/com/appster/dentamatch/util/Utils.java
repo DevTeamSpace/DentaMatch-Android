@@ -427,4 +427,20 @@ public class Utils {
             return "";
         }
     }
+
+
+    public static String getDayOfWeek(String dateStr) {
+        try {
+
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = inputFormat.parse(dateStr);
+
+        SimpleDateFormat reqFormat = new SimpleDateFormat("EEEE");
+        String formattedDate = reqFormat.format(date);
+        return formattedDate;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

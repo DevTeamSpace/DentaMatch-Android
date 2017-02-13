@@ -86,7 +86,7 @@
     <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_74">74dp</dimen>
     <dimen name="circular_text_dimen">35dp</dimen>
-    <dimen name="calendar_height">300dp</dimen>
+    <dimen name="calendar_height">330dp</dimen>
     <dimen name="calendar_cell_height">40dp</dimen>
 
 

@@ -317,6 +317,10 @@
     <string name="msg_unsave_warning">Are you sure you want to unsave the job?</string>
     <string name="txt_ok">OK</string>
     <string name="txt_cancel">CANCEL</string>
+    <string name="alert_past_date">You can not edit past date availability.</string>
+    <string name="alert_next_month_click">You can set up to next three months availability from current month.</string>
+    <string name="alert_next_month_job">You can view up to next three months job from current month.</string>
+    <string name="alert_previous_month_click">You can view last three months availability from current month.</string>
     <string name="txt_no_chat_messages">No message in your chats yet.</string>
     <string name="txt_text_message">Text message</string>
     <string name="txt_unblock">UNBLOCK</string>
