@@ -103,7 +103,9 @@
 
     <!--alert button-->
     <string name="ok">OK</string>
+    <string name="block">BLOCK</string>
     <string name="cancel">Cancel</string>
+    <string name="msg_block_alert">This blocked recruiter will no longer be able to send you message.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -315,5 +317,8 @@
     <string name="msg_unsave_warning">Are you sure you want to unsave the job?</string>
     <string name="txt_ok">OK</string>
     <string name="txt_cancel">CANCEL</string>
+    <string name="txt_no_chat_messages">No message in your chats yet.</string>
+    <string name="txt_text_message">Text message</string>
+    <string name="txt_unblock">UNBLOCK</string>
 
 </resources>

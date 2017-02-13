@@ -19,7 +19,9 @@ import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.response.auth.SearchFilterModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
@@ -29,6 +31,8 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 
@@ -382,11 +386,39 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onSuccess(LoginResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
+
+                    if (response.getLoginResponseData().getSearchFilters() != null) {
+                        SearchFilterModel searchFilters = response.getLoginResponseData().getSearchFilters();
+                        SearchJobRequest request = new SearchJobRequest();
+                        request.setIsParttime(searchFilters.getIsParttime());
+                        request.setIsFulltime(searchFilters.getIsFulltime());
+
+                        request.setLat(searchFilters.getLat());
+                        request.setLng(searchFilters.getLng());
+                        request.setJobTitle(searchFilters.getJobTitle());
+                        request.setPage(1);
+
+                        if(searchFilters.getParttimeDays() != null && searchFilters.getParttimeDays().size() >0) {
+                            request.setParttimeDays(searchFilters.getParttimeDays());
+                        }else{
+                            request.setParttimeDays(new ArrayList<String>());
+                        }
+
+                        request.setZipCode(searchFilters.getZipCode());
+
+                        /**
+                         * This value is set in order to redirect user from login or splash screen.
+                         */
+                        PreferenceUtil.setJobFilter(true);
+                        PreferenceUtil.saveJobFilter(request);
+                    }
+
                     PreferenceUtil.setIsLogined(true);
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
                     PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
+                    PreferenceUtil.setUserChatId(response.getLoginResponseData().getUserDetail().getId());
                     Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
                     startActivity(intent);
                     finish();
@@ -398,7 +430,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
                 LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
+//                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
     }

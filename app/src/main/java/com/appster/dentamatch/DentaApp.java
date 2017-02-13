@@ -7,6 +7,7 @@ package com.appster.dentamatch;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
@@ -17,19 +18,17 @@ import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 //import com.squareup.leakcanary.LeakCanary;
 
 public class DentaApp extends MultiDexApplication {
-
+    private static DentaApp appController;
     private static Context mAppContext;
 
-    public static Context getAppContext() {
-        return mAppContext;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        appController = this;
         mAppContext = this.getApplicationContext();
         NetworkMonitor.initialize(mAppContext);
-
+        SocketManager.getInstance().connect();
 //        if (BuildConfig.DEBUG) {
 ////            LeakCanary.install(this);
 //            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -79,4 +78,17 @@ public class DentaApp extends MultiDexApplication {
         // Push Notification initialize
         FirebaseApp.initializeApp(mAppContext);
     }
+
+
+    public static Context getAppContext() {
+        return mAppContext;
+    }
+
+
+    public static DentaApp getInstance() {
+        return appController;
+    }
+
+
+
 }
