@@ -1,7 +1,6 @@
 package com.appster.dentamatch.ui.messages;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.FragmentMessagesBinding;
 import com.appster.dentamatch.model.ChatListModel;
 import com.appster.dentamatch.model.ChatUserUnBlockedEvent;
@@ -22,7 +20,6 @@ import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
-import com.appster.dentamatch.util.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,24 +64,25 @@ public class MessagesListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mMessagesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_messages, container, false);
-        initViews();
-        mMessagesBinding.rvMessageList.setLayoutManager(mLayoutManager);
-        mMessagesBinding.rvMessageList.setAdapter(mAdapter);
-        return mMessagesBinding.getRoot();
+//        mMessagesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_under_dev, container, false);
+//        initViews();
+//        mMessagesBinding.rvMessageList.setLayoutManager(mLayoutManager);
+//        mMessagesBinding.rvMessageList.setAdapter(mAdapter);
+//        return mMessagesBinding.getRoot();
+        return inflater.inflate(R.layout.fragment_under_dev, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getChatHistory();
+//        getChatHistory();
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-       SocketManager.getInstance().init(PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
+//       SocketManager.getInstance().init(PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
     }
 
     private void getChatHistory() {
