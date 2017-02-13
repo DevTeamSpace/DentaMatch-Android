@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
-import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.model.ChatListModel;
 import com.appster.dentamatch.model.ChatMessageReceivedEvent;
 import com.appster.dentamatch.model.ChatUserUnBlockedEvent;
@@ -82,7 +81,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mAdapter = new ChatAdapter(this);
 
         mBinder.sendButton.setOnClickListener(this);
-        mBinder.toolbarActivityChat.ivToolBarLeft.setOnClickListener(this);
+        mBinder.git .ivToolBarLeft.setOnClickListener(this);
         mBinder.tvUnblock.setOnClickListener(this);
     }
 
@@ -121,9 +120,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.tv_unblock:
-                blockUnBlockUser(0, mChatModel.getRecruiterId());
-                break;
+//            case R.id.tv_unblock:
+//                blockUnBlockUser(0, mChatModel.getRecruiterId());
+//                break;
 
             case R.id.send_button:
                 String msg = mBinder.messageInput.getText().toString().trim();

@@ -13,7 +13,6 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.ChatMessage;
 import com.appster.dentamatch.chat.RealmController;
 import com.appster.dentamatch.chat.RealmManager;
-import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.messages.Message;
 import com.appster.dentamatch.util.LogUtils;
