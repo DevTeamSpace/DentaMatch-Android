@@ -9,6 +9,7 @@ import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest;
 import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
+import com.appster.dentamatch.network.request.jobs.HiredJobRequest;
 import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
 import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
 import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
@@ -25,6 +26,7 @@ import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
+import com.appster.dentamatch.network.response.jobs.HiredJobResponse;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
@@ -54,6 +56,7 @@ public interface AuthWebServices {
     String FORGOT_PASSWORD = "users/forgot-password";
     String UPDATE_LICENCE = "users/update-license";
     String JOB_TITLE_LIST = "list-jobtitle";
+    String JOB_HIRED_LIST = "jobs/hired-jobs";
     String SKILLS_LIST = "list-skills";
     String SKILLS_UPDATE = "users/update-skill";
     String SCHOOL_LIST = "users/school-list";
@@ -105,6 +108,9 @@ public interface AuthWebServices {
     @POST(SEARCH_JOBS)
     Call<SearchJobResponse> searchJob(@Body SearchJobRequest request);
 
+    @POST(JOB_HIRED_LIST)
+    Call<HiredJobResponse> getHiredJob(@Body HiredJobRequest hiredJobRequest);
+
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
 
@@ -140,6 +146,8 @@ public interface AuthWebServices {
 
     @GET(JOB_TITLE_LIST)
     Call<JobTitleResponse> jobTitle();
+
+
 
     @GET(SKILLS_LIST)
     Call<SkillsResponse> getSkillsList();

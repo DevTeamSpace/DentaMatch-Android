@@ -86,7 +86,8 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
                     cal.add(Calendar.MONTH, -1);
                     setUpCalendarAdapter();
                 } else {
-                    Utils.showToast(context, "You can set see last three months availability from current month");
+                    Utils.showToast(context, context.getString(R.string.alert_previous_month_click));
+
                 }
             }
         });
@@ -105,7 +106,7 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
                     cal.add(Calendar.MONTH, 1);
                     setUpCalendarAdapter();
                 } else {
-                    Utils.showToast(context, "You can set up to next three months availability from current month");
+                    Utils.showToast(context, context.getString(R.string.alert_next_month_click));
                 }
             }
         });
@@ -201,15 +202,5 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
         }
         return list;
     }
-
-    public void setFontFaceLatoBold(TextView view) {
-        Typeface tf = Typeface.createFromAsset(view.getContext()
-                .getAssets(), "untitled-font-6.ttf");
-
-        view.setTypeface(tf);
-        view.setText("a");
-
-    }
-
 
 }

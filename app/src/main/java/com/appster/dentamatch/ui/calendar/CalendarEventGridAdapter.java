@@ -12,7 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.network.response.jobs.HiredJobs;
+import com.appster.dentamatch.util.Utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -20,23 +23,34 @@ import java.util.List;
 public class CalendarEventGridAdapter extends ArrayAdapter {
     private static final String TAG = CalendarEventGridAdapter.class.getSimpleName();
     private LayoutInflater mInflater;
-//        private List<Date> monthlyDates;
     private List<CalenderAvailableCellModel> monthlyDates;
     private Calendar currentDate;
-    private List<EventObjects> allEvents;
     private Context mContext;
+    private ArrayList<HiredJobs> mJobList;
 
-    public CalendarEventGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate, List<EventObjects> allEvents) {
+
+    public CalendarEventGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate) {
         super(context, R.layout.single_cell_layout);
         this.monthlyDates = monthlyDates;
         this.currentDate = currentDate;
-        this.allEvents = allEvents;
         mContext = context;
         mInflater = LayoutInflater.from(context);
     }
-    public  List<CalenderAvailableCellModel> getList(){
-        return  monthlyDates;
+
+    public void setJobList(ArrayList<HiredJobs> list) {
+        if (mJobList != null) {
+            mJobList = null;
+        }
+        mJobList = new ArrayList<>();
+        mJobList = list;
+        notifyDataSetChanged();
+
     }
+
+    public List<CalenderAvailableCellModel> getList() {
+        return monthlyDates;
+    }
+
 
     @NonNull
     @Override
@@ -61,6 +75,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
         ImageView dot2 = (ImageView) view.findViewById(R.id.dot2);
         ImageView dot3 = (ImageView) view.findViewById(R.id.dot3);
 //        cellNumber.setText(String.valueOf(dayValue));
+        view.setVisibility(View.VISIBLE);
 
         if (displayMonth == currentMonth && displayYear == currentYear) {
 //            view.setBackgroundColor(Color.parseColor(R.color.colorPrimary));
@@ -70,45 +85,18 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
 //            if (dayValue == currentDay) {
 //                view.setBackgroundResource(R.drawable.oval);
 //            }
-//            if (dayValue == currentDay - 10) {
-//
-//                view.setBackgroundResource(R.drawable.shape_date_selection);
-//
-//            }
-            if (monthlyDates.get(position).isSelected()) {
+            if (dayValue == currentDay) {
+
                 view.setBackgroundResource(R.drawable.shape_date_selection);
 
-            } else {
-                view.setBackgroundResource(0);
-
             }
-//            for (int i = 0; i < allEvents.size(); i++) {
-////            eventCalendar.setTime(allEvents.get(i).getDate());
-////            if (dayValue == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH) + 1
-////                    && displayYear == eventCalendar.get(Calendar.YEAR)) {
-////                eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
-////            }
-//                if (dayValue == allEvents.get(i).getDayOfMonth()) {
-////                    eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
-//                    if (allEvents.get(i).getDayOfMonth() % 6 == 0) {
-//                        dot1.setVisibility(View.VISIBLE);
-//                        dot2.setVisibility(View.VISIBLE);
-//                        dot3.setVisibility(View.VISIBLE);
-//                    } else if (allEvents.get(i).getDayOfMonth() % 7 == 0) {
-//                        dot1.setVisibility(View.VISIBLE);
-//                        dot2.setVisibility(View.VISIBLE);
-//                        dot3.setVisibility(View.GONE);
-//                    } else if (allEvents.get(i).getDayOfMonth() % 5 == 0) {
-//                        dot1.setVisibility(View.VISIBLE);
-//                        dot2.setVisibility(View.GONE);
-//                        dot3.setVisibility(View.GONE);
-//                    }
-//                }
-//            }
+
+
         } else
 
         {
             view.setBackgroundColor(mContext.getResources().getColor(R.color.white_color));
+            view.setVisibility(View.GONE);
 
             view.setTag(-1);
         }
@@ -123,6 +111,50 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
 //                eventIndicator.setBackgroundColor(mContext.getResources().getColor(R.color.colorAccent));
 //            }
 //        }
+        Calendar eventCalendar = Calendar.getInstance();
+        if (eventCalendar.get(Calendar.MONTH) + 1 == displayMonth && eventCalendar.get(Calendar.YEAR) == displayYear) {
+            if (monthlyDates.get(position).isSelected()) {
+                view.setBackgroundResource(R.drawable.shape_date_selection);
+
+            } else {
+                view.setBackgroundResource(0);
+
+            }
+            if (mJobList != null && mJobList.size() > 0) {
+                String date = Utils.dateFormetyyyyMMdd(mDate);
+                eventCalendar.setTime(mDate);
+                String day = Utils.getDayOfWeek(date);
+                dot2.setVisibility(View.GONE);
+                for (int k = 0; k < mJobList.size(); k++) {
+                    if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_monday)) && mJobList.get(k).getIsMonday() == 1) {
+                        dot2.setVisibility(View.VISIBLE);
+                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_tuesday)) && mJobList.get(k).getIsTuesday() == 1) {
+                        dot2.setVisibility(View.VISIBLE);
+                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_wednesday)) && mJobList.get(k).getIsWednesday() == 1) {
+                        dot2.setVisibility(View.VISIBLE);
+                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_thursday)) && mJobList.get(k).getIsThursday() == 1) {
+                        dot2.setVisibility(View.VISIBLE);
+                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_friday)) && mJobList.get(k).getIsFriday() == 1) {
+                        dot2.setVisibility(View.VISIBLE);
+                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_saturday)) && mJobList.get(k).getIsSaturday() == 1) {
+                        dot2.setVisibility(View.VISIBLE);
+                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_sunday)) && mJobList.get(k).getIsSunday() == 1) {
+                        dot2.setVisibility(View.VISIBLE);
+                    }
+                    for (int i = 0; i < mJobList.get(k).getTemporaryJobDates().size(); i++) {
+                        if (mJobList.get(k).getTemporaryJobDates().get(i).getJobDate().equalsIgnoreCase(date)) {
+                            dot3.setVisibility(View.VISIBLE);
+
+                        } else {
+                            dot2.setVisibility(View.GONE);
+
+                        }
+                    }
+                }
+            }
+        }
+
+
         return view;
     }
 

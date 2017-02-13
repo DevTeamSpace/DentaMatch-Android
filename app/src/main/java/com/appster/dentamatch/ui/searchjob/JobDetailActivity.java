@@ -49,6 +49,7 @@ import retrofit2.Call;
 public class JobDetailActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener {
     private final int MAP_ZOOM_LEVEL = 7;
     private int jobID;
+    private boolean isFromHiredJob;
     private ActivityJobDetailBinding mBinding;
     private GoogleMap mGoogleMap;
     private JobDetailModel mJobDetailModel;
@@ -68,10 +69,17 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         if (getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)) {
             jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID, 0);
         }
-
-        mBinding.mapJobDetail.onCreate(savedInstanceState);
-        mBinding.mapJobDetail.getMapAsync(this);
-    }
+//        if (getIntent().hasExtra(Constants.INTENT_KEY.FROM_WHERE)) {
+//
+//            isFromHiredJob = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+//            if (isFromHiredJob) {
+//                mBinding.btnApplyJob.setVisibility(View.GONE);
+//            }
+//
+//        }
+            mBinding.mapJobDetail.onCreate(savedInstanceState);
+            mBinding.mapJobDetail.getMapAsync(this);
+        }
 
 
     private void setData() {
