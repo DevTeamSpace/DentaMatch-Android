@@ -116,7 +116,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 ((BaseActivity)mContext).showToast(response.getMessage());
 
                 if(response.getStatus() == 1){
-                    mData.get(position).setRecruiterBlock(status);
+                    mData.get(position).setSeekerBlock(status);
                     notifyItemChanged(position);
                 }
             }

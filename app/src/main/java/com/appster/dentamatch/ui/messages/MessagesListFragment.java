@@ -131,7 +131,7 @@ public class MessagesListFragment extends BaseFragment {
 
             for (ChatListModel model: mData) {
                 if(model.getRecruiterId() == event.getRecruiterID()){
-                    model.setRecruiterBlock(0);
+                    model.setSeekerBlock(0);
                     break;
                 }
             }

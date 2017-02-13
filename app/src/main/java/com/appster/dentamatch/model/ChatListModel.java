@@ -18,9 +18,6 @@ public class ChatListModel implements Parcelable{
     private String name;
     private int seekerBlock;
 
-    public void setRecruiterBlock(int recruiterBlock) {
-        this.recruiterBlock = recruiterBlock;
-    }
 
     protected ChatListModel(Parcel in) {
         messageListId = in.readInt();
@@ -45,6 +42,14 @@ public class ChatListModel implements Parcelable{
             return new ChatListModel[size];
         }
     };
+
+    public void setRecruiterBlock(int recruiterBlock) {
+        this.recruiterBlock = recruiterBlock;
+    }
+
+    public void setSeekerBlock(int seekerBlock) {
+        this.seekerBlock = seekerBlock;
+    }
 
     public int getMessageListId() {
         return messageListId;

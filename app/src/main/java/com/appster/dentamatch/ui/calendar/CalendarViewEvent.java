@@ -174,13 +174,13 @@ public class CalendarViewEvent extends LinearLayout {
         List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
         Calendar mCal = (Calendar) cal.clone();
         mCal.set(Calendar.DAY_OF_MONTH, 1);
-        int firstDayOfTheMonth = mCal.get(fd.DAY_OF_WEEK) - 1;
+        int firstDayOfTheMonth = mCal.get(Calendar.DAY_OF_WEEK) - 1;
         mCal.add(Calendar.DAY_OF_MONTH, -firstDayOfTheMonth);
         mCal.get(Calendar.DAY_OF_WEEK);
         mCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
 
         int days = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        Utils.showToast(context, "Days is-=" + firstDayOfTheMonth + "&&days month=" + days);
+//        Utils.showToast(context, "Days is-=" + firstDayOfTheMonth + "&&days month=" + days);
         if (firstDayOfTheMonth == 6 && (days == 30 || days == 31) || (firstDayOfTheMonth == 5 && days == 31)) {
             MAX_CALENDAR_COLUMN = 42;
         } else {
