@@ -53,6 +53,7 @@ public class Utils {
     private static final String TAG = "Utils";
     private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
+    private static final SimpleDateFormat chatDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 9 am
 
     @Nullable
     /*
@@ -324,6 +325,13 @@ public class Utils {
 
         hourOnlyDateFormat.setTimeZone(TimeZone.getDefault());
         return hourOnlyDateFormat.format(myDate);
+    }
+
+    public static String convertUTCtoLocalFromTimeStamp(String UTCDateTime) {
+        Long time = Long.parseLong(UTCDateTime);
+        Date date = new Date(time);
+        chatDateFormat.setTimeZone(TimeZone.getDefault());
+       return  chatDateFormat.format(date);
     }
 
     public static String getExpYears(int month) {

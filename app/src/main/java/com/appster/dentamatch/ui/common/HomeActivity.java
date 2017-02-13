@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
-import com.appster.dentamatch.ui.messages.MessagesFragment;
+import com.appster.dentamatch.ui.messages.MessagesListFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;
@@ -40,7 +40,7 @@ public class HomeActivity extends BaseActivity {
 
     private ProfileFragment mProfileFragment;
     private JobsFragment mJobsFragment;
-    private MessagesFragment mMessagesFragment;
+    private MessagesListFragment mMessagesFragment;
     private CalendarFragment mCalendarFragment;
     private TrackFragment mTrackFragment;
 
@@ -66,6 +66,7 @@ public class HomeActivity extends BaseActivity {
         LocationUtils.addFragment(this);
 
     }
+
 
     @Override
     protected void onDestroy() {
@@ -134,7 +135,7 @@ public class HomeActivity extends BaseActivity {
                         if (mMessagesFragment != null) {
                             pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
                         } else {
-                            mMessagesFragment = MessagesFragment.newInstance();
+                            mMessagesFragment = MessagesListFragment.newInstance();
                             pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
                         }
                         break;
@@ -221,13 +222,23 @@ public class HomeActivity extends BaseActivity {
         return null;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        if (viewPager != null)
-//            textHeader.setText(ITEMS[viewPager.getCurrentItem()]);
-
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onResume();
+//        /**
+//         * Connect Socket for chatting initialization.
+//         */
+//        SocketManager.getInstance(this).connect();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        /**
+//         * Socket disconnected.
+//         */
+//        SocketManager.getInstance(this).disconnect();
+//        super.onStop();
+//    }
 
     private void launchProfileFragment() {
         fragmentTransaction = fragmentManager.beginTransaction();
