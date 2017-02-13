@@ -38,12 +38,11 @@ public class CalendarViewEvent extends LinearLayout {
     private Context context;
     private CalendarEventGridAdapter mAdapter;
     private int oldClickedPos = -1;
-    private View oldView;
     private int count = 3;
     private OnDateSelected mDateSelectedListener;
     private ArrayList<HiredJobs> mHiredListData;
     private ImageView ivFullTime;
-    private View calendarView;
+    //    private View calendarView;
     private List<CalenderAvailableCellModel> mDayList = new ArrayList<>();
 
     public CalendarViewEvent(Context context) {
@@ -92,10 +91,10 @@ public class CalendarViewEvent extends LinearLayout {
 
     private void initializeUILayout() {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        if (calendarView != null) {
-            calendarView = null;
-        }
-        calendarView = inflater.inflate(R.layout.calendar_layout, this);
+//        if (calendarView != null) {
+//            calendarView = null;
+//        }
+        View calendarView = inflater.inflate(R.layout.calendar_layout, this);
         previousButton = (ImageView) calendarView.findViewById(R.id.previous_month);
         nextButton = (ImageView) calendarView.findViewById(R.id.next_month);
         ivFullTime = (ImageView) calendarView.findViewById(R.id.iv_full_time);
@@ -107,7 +106,7 @@ public class CalendarViewEvent extends LinearLayout {
         previousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                initializeUILayout();
+//                initializeUILayout();
 
 //                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
                 --count;
@@ -124,7 +123,7 @@ public class CalendarViewEvent extends LinearLayout {
             public void onClick(View v) {
 //                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
                 if (count < Constants.MAX_MONTH_COUNT - 1) {
-                    initializeUILayout();
+//                    initializeUILayout();
 
                     ++count;
                     cal.add(Calendar.MONTH, 1);
