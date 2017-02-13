@@ -31,7 +31,6 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
-
 import com.appster.dentamatch.network.BaseResponse;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -52,8 +51,10 @@ import java.util.UUID;
 public class Utils {
     private static final String TAG = "Utils";
     private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
-    private static final SimpleDateFormat chatDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 9 am
+    private static final SimpleDateFormat chatDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
 
     @Nullable
     /*
@@ -333,6 +334,39 @@ public class Utils {
         chatDateFormat.setTimeZone(TimeZone.getDefault());
        return  chatDateFormat.format(date);
     }
+
+
+    public static String compareDateFromCurrentLocalTime(String date) {
+        FullDateFormat.setTimeZone(TimeZone.getDefault());
+        DateOnlyFormat.setTimeZone(TimeZone.getDefault());
+
+        try {
+            String currentDate = DateOnlyFormat.format(new Date(System.currentTimeMillis()));
+
+            Date convertedDate = FullDateFormat.parse(date);
+            String receivedDate = DateOnlyFormat.format(convertedDate);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+            String yesterdayDate = DateOnlyFormat.format(calendar.getTime());
+
+            if(receivedDate.equalsIgnoreCase(currentDate)){
+                return "Today";
+
+            }else if(receivedDate.equalsIgnoreCase(yesterdayDate)){
+                return "Yesterday";
+
+            }else{
+                return receivedDate;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+
 
     public static String getExpYears(int month) {
 

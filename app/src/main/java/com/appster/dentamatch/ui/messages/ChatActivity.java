@@ -121,7 +121,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.tv_unblock:
+            case R.id.lay_unblock:
                 blockUnBlockUser(0, mChatModel.getRecruiterId());
                 break;
 

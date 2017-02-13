@@ -71,6 +71,11 @@ public class MessagesListFragment extends BaseFragment {
         initViews();
         mMessagesBinding.rvMessageList.setLayoutManager(mLayoutManager);
         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
+
+//        ItemHelperCallback callback = new ItemHelperCallback(0, ItemTouchHelper.LEFT);
+//        ItemTouchHelper itemHelper = new ItemTouchHelper(callback);
+//        itemHelper.attachToRecyclerView(mMessagesBinding.rvMessageList);
+
         return mMessagesBinding.getRoot();
     }
 

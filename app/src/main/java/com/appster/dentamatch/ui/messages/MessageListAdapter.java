@@ -21,6 +21,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             ChatListModel dataModel = mData.get(position);
             holder.tvRecruiterName.setText(dataModel.getName());
             holder.tvLastMessage.setText(dataModel.getMessage());
-            holder.tvDate.setText(dataModel.getTimestamp());
+            holder.tvDate.setText(Utils.compareDateFromCurrentLocalTime(dataModel.getTimestamp()));
             holder.itemView.setTag(position);
 
             holder.itemView.setOnClickListener(this);
@@ -128,14 +129,25 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         });
     }
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    public class MyHolder extends RecyclerView.ViewHolder {
          TextView tvRecruiterName, tvLastMessage, tvDate;
+        View RemovableView, ConstantView;
 
           MyHolder(View itemView) {
              super(itemView);
              tvRecruiterName = mBinding.tvMessageRecruiterName;
              tvLastMessage = mBinding.tvMessageChat;
              tvDate = mBinding.tvMessageDate;
+              RemovableView = mBinding.swipebleView;
+              ConstantView = mBinding.constantView;
          }
+
+       public View getRemovableView(){
+            return RemovableView;
+        }
+
+        public View getConstantView(){
+           return ConstantView;
+        }
      }
 }

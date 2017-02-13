@@ -118,6 +118,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                         }else {
                             startActivity(new Intent(CreateProfileActivity1.this, SearchJobActivity.class)
+                                    .putExtra(Constants.EXTRA_IS_FIRST_TIME, true)
                                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
                     }
