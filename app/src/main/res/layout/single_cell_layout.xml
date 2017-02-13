@@ -27,6 +27,8 @@
             android:id="@+id/dot1"
             android:layout_width="5dp"
             android:layout_height="5dp"
+            android:layout_marginRight="5dp"
+
             android:background="@drawable/shape_full_time_dot"
             android:visibility="gone" />
 
@@ -34,7 +36,6 @@
             android:id="@+id/dot2"
             android:layout_width="5dp"
             android:layout_height="5dp"
-            android:layout_marginLeft="5dp"
             android:background="@drawable/shape_part_time_dot"
             android:visibility="gone" />
 

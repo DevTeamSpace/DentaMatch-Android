@@ -146,7 +146,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                             dot3.setVisibility(View.VISIBLE);
 
                         } else {
-                            dot2.setVisibility(View.GONE);
+//                            dot3.setVisibility(View.GONE);
 
                         }
                     }
