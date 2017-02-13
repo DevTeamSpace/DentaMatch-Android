@@ -28,7 +28,6 @@ public class DentaApp extends MultiDexApplication {
         appController = this;
         mAppContext = this.getApplicationContext();
         NetworkMonitor.initialize(mAppContext);
-        SocketManager.getInstance().connect();
 //        if (BuildConfig.DEBUG) {
 ////            LeakCanary.install(this);
 //            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

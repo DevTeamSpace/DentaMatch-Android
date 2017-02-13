@@ -62,14 +62,32 @@
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/tv_message_chat"
         style="@style/text_view_normal"
-        android:text="Yes, Dr. Nicklaus Morton"
+        android:text="Yes, Dr. Nicklaus Morton "
         android:textColor="@color/chat_message"
+        android:layout_toStartOf="@+id/tv_message_chat_count"
         android:layout_alignStart="@+id/tv_message_recruiter_name"
         android:layout_below="@+id/tv_message_recruiter_name"
         android:layout_marginTop="@dimen/margin_10"
         android:maxLines="2"
         android:ellipsize="end"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:customFont="@string/font_regular"
+        />
+
+    <com.appster.dentamatch.widget.CustomTextView
+        android:id="@+id/tv_message_chat_count"
+        style="@style/text_view_small"
+        android:text="50"
+        android:visibility="gone"
+        android:gravity="center"
+        android:padding="@dimen/margin_6"
+        android:background="@drawable/background_badge"
+        android:textColor="@color/white_color"
+        android:layout_below="@+id/tv_message_recruiter_name"
+        android:layout_alignBaseline="@+id/tv_message_chat"
+        android:layout_alignEnd="@+id/tv_message_date"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:customFont="@string/font_regular"
         />

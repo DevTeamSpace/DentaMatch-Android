@@ -3,7 +3,9 @@ package com.appster.dentamatch.chat;
 
 import android.app.Activity;
 
-import com.appster.dentamatch.model.ChatMessageReceivedEvent;
+import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
+import com.appster.dentamatch.model.GlobalMessageReceivedEvent;
+import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,10 +51,10 @@ public class SocketManager {
 
     private static Socket mSocket;
     private static SocketManager socketManager;
-    private Emitter.Listener onNewMessage;
     private Emitter.Listener onHistory;
     private boolean isConnected;
-
+    private Activity attachedActivity;
+    private String attachedUserID;
 
     private SocketManager() {
         getSocket();
@@ -105,6 +107,84 @@ public class SocketManager {
         mSocket.disconnect();
     }
 
+    private Emitter.Listener onConnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            LogUtils.LOGD(TAG, SOCKET_CONNECT);
+            isConnected = true;
+        }
+    };
+
+    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
+            isConnected = false;
+        }
+    };
+
+    private Emitter.Listener onConnectError = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
+        }
+    };
+
+    /**
+     * this listener is called  when a new message is transmitted from he server.
+     */
+    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            LogUtils.LOGD(TAG, EVENT_NEW_MESSAGE + ":" + args[0]);
+            final JSONObject jsonObject = (JSONObject) args[0];
+
+
+            final ChatMessageModel model = parseData(jsonObject);
+            /**
+             * If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
+             * Else send the message to the global message list listener to update data.
+             */
+            if (attachedUserID != null && model.getToID().equalsIgnoreCase(attachedUserID)) {
+                if (attachedActivity != null) {
+                    attachedActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(model));
+                        }
+                    });
+                }
+            } else {
+                EventBus.getDefault().post(new GlobalMessageReceivedEvent(model));
+            }
+
+        }
+    };
+
+    public void attachPersonalListener(Activity act, String userID) {
+        attachedActivity = act;
+        setHistoryListener();
+        this.attachedUserID = userID;
+
+        /**
+         * Attach listener for history.
+         */
+        if (!mSocket.hasListeners(EVENT_CHAT_HISTORY)) {
+            mSocket.on(EVENT_CHAT_HISTORY, onHistory);
+        }
+    }
+
+    public void detachPersonalListener(){
+        attachedActivity = null;
+        this.attachedUserID = null;
+        /**
+         * Remove history listener.
+         */
+        if (mSocket.hasListeners(EVENT_CHAT_HISTORY)) {
+            mSocket.off(EVENT_CHAT_HISTORY, onHistory);
+        }
+    }
+
     private void registerEvents() {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
@@ -115,6 +195,7 @@ public class SocketManager {
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        mSocket.on(EVENT_NEW_MESSAGE, onNewMessage);
     }
 
     private void unRegisterEvents() {
@@ -128,7 +209,7 @@ public class SocketManager {
         mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
         mSocket.off(EVENT_NEW_MESSAGE, onNewMessage);
-        mSocket.off(EVENT_CHAT_HISTORY, onHistory);
+
     }
 
     public void sendMessage(String fromId, String toId, String msg) {
@@ -155,124 +236,65 @@ public class SocketManager {
         hashMap.put(PARAM_USERNAME, UserName);
         JSONObject object = new JSONObject(hashMap);
         mSocket.emit(EMIT_INIT, object);
-        LogUtils.LOGD(TAG, EMIT_INIT +":"+ object.toString());
+        LogUtils.LOGD(TAG, EMIT_INIT + ":" + object.toString());
 
     }
 
-    public void getAllPastChats(String userID, String pageNo, String toID){
+    public void getAllPastChats(String userID, String pageNo, String toID) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put(PARAM_PAGE, pageNo);
         hashMap.put(PARAM_FROM_ID, userID);
         hashMap.put(PARAM_TO_ID, toID);
         JSONObject object = new JSONObject(hashMap);
         mSocket.emit(EMIT_USER_HISTORY, object);
-        LogUtils.LOGD(TAG, EMIT_USER_HISTORY+ ":" + object.toString());
+        LogUtils.LOGD(TAG, EMIT_USER_HISTORY + ":" + object.toString());
+    }
+
+    private ChatMessageModel parseData(JSONObject messageData) {
+        ChatMessageModel model = new ChatMessageModel();
+
+        try {
+            model.setFromID(messageData.getString(PARAM_FROM_ID));
+            model.setToID(messageData.getString(PARAM_TO_ID));
+            model.setMessageTime(messageData.getString(PARAM_SENT_TIME));
+            model.setMessage(messageData.getString(PARAM_USER_MSG));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
     }
 
 
-    private Emitter.Listener onConnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            LogUtils.LOGD(TAG, SOCKET_CONNECT);
-            isConnected = true;
-        }
-    };
-
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
-            isConnected = false;
-        }
-    };
-
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
-        }
-    };
-
-
-
-    public void attachActivityToSocket(final Activity act){
-        setChatMessageListener(act);
-        setHistoryListener(act);
-    }
-
-    private void  setHistoryListener(final Activity act){
+    private void setHistoryListener() {
         onHistory = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
 
-                LogUtils.LOGD(TAG,EVENT_CHAT_HISTORY+":"+args[0]);
+                LogUtils.LOGD(TAG, EVENT_CHAT_HISTORY + ":" + args[0]);
                 final JSONArray jsonArray = (JSONArray) args[0];
 
-                   act.runOnUiThread(new Runnable() {
-                       @Override
-                       public void run() {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    try {
+                        final JSONObject dataObject = jsonArray.getJSONObject(i);
 
-                           for(int i = 0; i < jsonArray.length(); i++){
-                               try {
-                                   JSONObject messageData = jsonArray.getJSONObject(i);
-                                  String fromId = messageData.getString(PARAM_FROM_ID);
-                                   String toId = messageData.getString(PARAM_TO_ID);
-                                   String sentTime = messageData.getString(PARAM_SENT_TIME);
-                                   String message = messageData.getString(PARAM_USER_MSG);
-                                   EventBus.getDefault().post(new ChatMessageReceivedEvent(fromId, toId, message, sentTime));
+                        if (attachedActivity != null) {
 
-                               } catch (JSONException e) {
-                                   e.printStackTrace();
-                               }
-                           }
-                       }
-                   });
+                            attachedActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(parseData(dataObject)));
+                                }
+                            });
 
 
-            }
-        };
-
-        if(!mSocket.hasListeners(EVENT_CHAT_HISTORY)) {
-            mSocket.on(EVENT_CHAT_HISTORY, onHistory);
-        }
-
-    }
-
-    private  void setChatMessageListener(final Activity act){
-         onNewMessage = new Emitter.Listener() {
-            @Override
-            public void call(final Object... args) {
-                act.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        JSONObject data = (JSONObject) args[0];
-                        LogUtils.LOGD(TAG, EVENT_NEW_MESSAGE+":" + data);
-
-                        String fromId ;
-                        String toId ;
-                        String sentTime ;
-                        String message;
-                        try {
-                            fromId = data.getString(PARAM_FROM_ID);
-                            toId = data.getString(PARAM_TO_ID);
-                            sentTime = data.getString(PARAM_SENT_TIME);
-                            message = data.getString(PARAM_USER_MSG);
-                            EventBus.getDefault().post(new ChatMessageReceivedEvent(fromId, toId, message, sentTime));
-                        } catch (JSONException e) {
-                            LogUtils.LOGD(TAG, "JSON parse error " + e.getMessage());
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
-
-
+                }
             }
+
+
         };
-
-        if (!mSocket.hasListeners(EVENT_NEW_MESSAGE)) {
-            mSocket.on(EVENT_NEW_MESSAGE, onNewMessage);
-        }
     }
-
-
-
 }

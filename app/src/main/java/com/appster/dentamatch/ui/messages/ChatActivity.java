@@ -11,7 +11,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.model.ChatListModel;
-import com.appster.dentamatch.model.ChatMessageReceivedEvent;
+import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.ChatUserUnBlockedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -69,12 +69,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         recruiterId = String.valueOf(mChatModel.getRecruiterId());
         mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(mChatModel.getName());
 
-        /**
-         * Connect to socket and request past chats to update the recycler view.
-         */
-        SocketManager.getInstance().attachActivityToSocket(this);
-        SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
     }
+
 
 
     private void initViews() {
@@ -106,6 +102,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        /**
+         * Connect to socket and request past chats to update the recycler view.
+         */
+        SocketManager.getInstance().attachPersonalListener(this, userId);
+        SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
     }
 
     /**
@@ -114,6 +116,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
+
+        /**
+         * Disconnect to socket and request past chats to update the recycler view.
+         */
+        SocketManager.getInstance().detachPersonalListener();
         super.onStop();
     }
 
@@ -147,12 +154,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
 
     @Subscribe
-    public void onNewMessageReceived(ChatMessageReceivedEvent event) {
+    public void onNewMessageReceived(ChatPersonalMessageReceivedEvent event) {
         if (event != null) {
-            if(event.getFromId().equalsIgnoreCase(userId)){
-                addMessageToAdapter(event.getMessage(), Message.TYPE_MESSAGE_SEND, event.getSentTime());
-            }else {
-                addMessageToAdapter(event.getMessage(), Message.TYPE_MESSAGE_RECEIVED, event.getSentTime());
+            ChatMessageModel messageModel = event.getModel();
+
+            if (messageModel.getToID().equalsIgnoreCase(userId)) {
+                addMessageToAdapter(messageModel.getMessage(), Message.TYPE_MESSAGE_SEND, messageModel.getMessageTime());
+            } else {
+                addMessageToAdapter(messageModel.getMessage(), Message.TYPE_MESSAGE_RECEIVED, messageModel.getMessageTime());
             }
         }
 

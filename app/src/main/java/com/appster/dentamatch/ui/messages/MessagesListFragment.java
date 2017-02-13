@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.FragmentMessagesBinding;
 import com.appster.dentamatch.model.ChatListModel;
 import com.appster.dentamatch.model.ChatUserUnBlockedEvent;
@@ -22,7 +21,6 @@ import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
-import com.appster.dentamatch.util.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -89,7 +87,6 @@ public class MessagesListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-       SocketManager.getInstance().init(PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
     }
 
     private void getChatHistory() {
