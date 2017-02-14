@@ -18,15 +18,16 @@ import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
 
 
+
 public class MessageAdapter extends RealmRecyclerViewAdapter<ChatMessage, MessageAdapter.ViewHolder> {
 
     private List<Message> mMessages;
     private int[] mUsernameColors;
-    private RealmResults<ChatMessage> realmResults;
+    private OrderedRealmCollection<ChatMessage> realmResults;
 
     public MessageAdapter(Context context, OrderedRealmCollection<ChatMessage> realmResults) {
        super(context, realmResults, true);
-        realmResults = realmResults;
+        this.realmResults = realmResults;
     }
 
     @Override
@@ -85,7 +86,7 @@ public class MessageAdapter extends RealmRecyclerViewAdapter<ChatMessage, Messag
         public void setUsername(String username) {
             if (null == mUsernameView) return;
             mUsernameView.setText(username);
-            mUsernameView.setTextColor(getUsernameColor(username));
+//            mUsernameView.setTextColor(getUsernameColor(username));
         }
 
         public void setMessage(String message) {

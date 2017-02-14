@@ -1,12 +1,13 @@
 package com.appster.dentamatch.chat;
 
 import io.realm.RealmModel;
+import io.realm.RealmObject;
 
 /**
  * Created by ramkumar on 09/02/17.
  */
 
-public class ChatMessage implements RealmModel{
+public class ChatMessage extends RealmObject{
     private String msgId;
     private long msgTimeStamp;
     private String msgText;

@@ -48,7 +48,7 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
     private static final int TYPING_TIMER_LENGTH = 600;
 
     private List<Message> mMessages = new ArrayList<Message>();
-//    private RecyclerView.Adapter mAdapter;
+    //    private RecyclerView.Adapter mAdapter;
     private RealmRecyclerViewAdapter mAdapter;
     private boolean mTyping = false;
     private Handler mTypingHandler = new Handler();
@@ -59,6 +59,7 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 
     private Realm realm;
     private RealmController realmController;
+    RealmList<ChatMessage> realmList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,16 +69,19 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_chat);
         gson = new Gson();
 
-        realm = RealmManager.getRealmNewInstance();
+        realm = RealmManager.getRealm();
         realmController = new RealmController();
 
-        RealmList<ChatMessage> realmList = realmController.getAllMsgByThreadId(realm, "901");
+        realmList = realmController.getAllMsgByThreadId(realm, "901");
+
         mAdapter = new MessageAdapter(this, realmList);
 
-        mBinder.sendButton.setOnClickListener(this);
-        mBinder.messages.setLayoutManager(new LinearLayoutManager(this));
-        mBinder.messages.setAdapter(mAdapter);
+        mBinder.rcvChat.setLayoutManager(new LinearLayoutManager(this));
+        mBinder.rcvChat.setAdapter(mAdapter);
 
+<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
+        mSocket = ((DentaApp) getApplication()).getSocket();
+=======
 //        mSocket = ((DentaApp) getApplication()).getSocket();
 
 //        mSocket.on(Socket.EVENT_CONNECT,onConnect);
@@ -87,27 +91,11 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 //        mSocket.on("new message", onNewMessage);
 //        mSocket.on("typing", onTyping);
 //        mSocket.on("stop typing", onStopTyping);
+>>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
         mSocket.connect();
 
-//        startSignIn();
-
+        mBinder.sendButton.setOnClickListener(this);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LogUtils.LOGD(TAG, "onResume..");
-
-        HashMap<String, String> userMap = new HashMap<>();
-        userMap.put("userId", "606");
-        mSocket.emit("init", new JSONObject(userMap));
-    }
-
-    @Override
-    public String getActivityName() {
-        return null;
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -115,9 +103,9 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
             case R.id.send_button:
 
                 String msg = mBinder.messageInput.getText().toString().trim();
-                LogUtils.LOGD(TAG, "Send "+msg);
+                LogUtils.LOGD(TAG, "Send " + msg);
 
-                if(TextUtils.isEmpty(msg)) return;
+                if (TextUtils.isEmpty(msg)) return;
 
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put("fromId", "606");
@@ -133,18 +121,25 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtils.LOGD(TAG, "onResume..");
+
+        HashMap<String, String> userMap = new HashMap<>();
+        userMap.put("userId", "606");
+        mSocket.emit("init", new JSONObject(userMap));
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-
         mSocket.disconnect();
+    }
 
-//        mSocket.off(Socket.EVENT_CONNECT, onConnect);
-//        mSocket.off(Socket.EVENT_DISCONNECT, onDisconnect);
-//        mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
-//        mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-//        mSocket.off("new message", onNewMessage);
-//        mSocket.off("typing", onTyping);
-//        mSocket.off("stop typing", onStopTyping);
+
+    @Override
+    public String getActivityName() {
+        return null;
     }
 
     private JSONObject getUserObject() {
@@ -167,12 +162,44 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
         addLog(getResources().getQuantityString(R.plurals.message_participants, numUsers, numUsers));
     }*/
 
+<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
+    private void addMessage(String username, String message) {
+        ChatMessage msg = new ChatMessage();
+        msg.setChatThreadId("901");
+        msg.setMsgType(1);
+        msg.setToChatId("201");
+        msg.setFromChatId("601");
+        msg.setMsgId("1");
+        msg.setMsgStatus(1);
+        msg.setMsgText(message);
+        msg.setMsgTimeStamp(System.currentTimeMillis());
+
+//        if (realmList == null) {
+//            realmList = new RealmList<>();
+//        }
+
+//        mBinder.recyclerView.setAdapter(mAdapter);
+
+        realmController.saveChatMessage(realm, msg);
+
+        for(ChatMessage chat:realmList) {
+            LogUtils.LOGD(TAG, "RealmList " + chat.getMsgText());
+        }
+
+
+
+=======
 //    private void addMessage(String username, String message) {
+>>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
 //        mMessages.add(new Message.Builder(Message.TYPE_MESSAGE)
 //                .username(username).message(message).build());
 //        mAdapter.notifyItemInserted(mMessages.size() - 1);
 //        scrollToBottom();
+<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
+    }
+=======
 //    }
+>>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
 
     private void addTyping(String username) {
         mMessages.add(new Message.Builder(Message.TYPE_ACTION)
@@ -224,7 +251,7 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void scrollToBottom() {
-        mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
+//        mBinder.recyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
     private Emitter.Listener onConnect = new Emitter.Listener() {
@@ -233,8 +260,8 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
             TestChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if(!isConnected) {
-                        if(null!=mUsername)
+                    if (!isConnected) {
+                        if (null != mUsername)
                             mSocket.emit("add user", mUsername);
                         Toast.makeText(TestChatActivity.this.getApplicationContext(),
                                 "Connected", Toast.LENGTH_LONG).show();

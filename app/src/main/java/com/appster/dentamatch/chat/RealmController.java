@@ -45,7 +45,7 @@ public class RealmController {
     public boolean checkIfChatThreadExists(Realm realm, String id) {
 
         RealmQuery<ChatThread> query = realm.where(ChatThread.class)
-                .equalTo("jabberId", id.toLowerCase());
+                .equalTo("chatThreadId", id);
 
         return query.count() != 0;
     }
@@ -75,6 +75,8 @@ public class RealmController {
     }
 
     public void saveChatMessage(Realm realm, ChatMessage chatMessage) {
+        LogUtils.LOGD(TAG, "saveChatMessage");
+
         if (chatMessage == null) return;
 
         if (realm == null) {
@@ -85,15 +87,7 @@ public class RealmController {
             realm.beginTransaction();
 
         try {
-            ChatMessage chatMessageNew = realm.createObject(ChatMessage.class);
-            chatMessageNew.setMsgText(chatMessage.getMsgText());
-            chatMessageNew.setMsgId(chatMessage.getMsgId());
-            chatMessageNew.setChatId(chatMessage.getChatId());
-            chatMessageNew.setFromChatId(chatMessage.getFromChatId());
-            chatMessageNew.setToChatId(chatMessage.getToChatId());
-            chatMessageNew.setMsgTimeStamp(chatMessage.getMsgTimeStamp());
-            chatMessageNew.setMsgType(chatMessage.getMsgType());
-            chatMessageNew.setMsgStatus(chatMessage.getMsgStatus());
+            ChatMessage chatMessageNew = realm.copyToRealm(chatMessage);
 
             if (checkIfChatThreadExists(realm, chatMessage.getChatThreadId())) {
                 //Add value to the thread
@@ -128,23 +122,25 @@ public class RealmController {
         }
     }
 
-    public RealmList<ChatMessage> getAllMsgByThreadId(Realm realm, String jabberId) {
+    public RealmList<ChatMessage> getAllMsgByThreadId(Realm realm, String threadId) {
+        LogUtils.LOGI(TAG, "getAllMsgByThreadId");
 
         if (realm == null) {
             realm = RealmManager.getRealm();
         }
 
-        RealmList<ChatMessage> chatMessages = null;
+        RealmList<ChatMessage> chatMessages = new RealmList<ChatMessage>();
+
         try {
-            if (checkIfChatThreadExists(realm, jabberId)) {
-                LogUtils.LOGI(TAG, "Yes, Chat Thread Exists");
+//            if (checkIfChatThreadExists(realm, jabberId)) {
                 //Add value to the thread
-                ChatThread thread = realm.where(ChatThread.class).equalTo("jabberId", jabberId).findFirst();
+                ChatThread thread = realm.where(ChatThread.class).equalTo("chatThreadId", threadId).findFirst();
 
                 if (thread != null) {
+                    LogUtils.LOGI(TAG, "Yes, Chat Thread Exists");
                     chatMessages = thread.getMessages();
                 }
-            }
+//            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
