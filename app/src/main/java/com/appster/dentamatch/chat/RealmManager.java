@@ -7,6 +7,7 @@ import com.appster.dentamatch.util.LogUtils;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.exceptions.RealmMigrationNeededException;
 
 public class RealmManager {
     private static String TAG = "RealmManager";
@@ -17,6 +18,8 @@ public class RealmManager {
     private static int closeCounter = 0;
 
     public static void initializeRealmConfig(Context appContext) {
+        Realm.init(appContext);
+
         if (realmConfiguration == null) {
             RealmConfiguration realmConfiguration = new RealmConfiguration
                     .Builder()
@@ -33,7 +36,7 @@ public class RealmManager {
         Realm.setDefaultConfiguration(realmConfiguration);
     }
 
-    static Realm getRealm() {
+    public static Realm getRealm() {
         if (realm == null || realm.isClosed()) {
             realm = Realm.getDefaultInstance();
             openCounter++;
@@ -51,9 +54,10 @@ public class RealmManager {
         closeCounter = 0;
     }
 
-    public static Realm getRealmNewInstance() {
+    public static Realm getRealmNewInstance(Context context) {
         openCounter++;
         LogUtils.LOGD(TAG, "while opening for thread-->open counter-->" + openCounter + " close counter--->" + closeCounter);
+
         return Realm.getDefaultInstance();
     }
 

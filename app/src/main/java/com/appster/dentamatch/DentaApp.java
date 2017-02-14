@@ -7,6 +7,7 @@ package com.appster.dentamatch;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.appster.dentamatch.chat.RealmManager;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.google.firebase.FirebaseApp;
@@ -15,6 +16,7 @@ import com.orhanobut.hawk.Hawk;
 import java.net.URISyntaxException;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
+import io.realm.Realm;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
@@ -47,6 +49,10 @@ public class DentaApp extends MultiDexApplication {
         super.onCreate();
         mAppContext = this.getApplicationContext();
         NetworkMonitor.initialize(mAppContext);
+
+
+
+        RealmManager.initializeRealmConfig(getAppContext());
 
 //        if (BuildConfig.DEBUG) {
 ////            LeakCanary.install(this);

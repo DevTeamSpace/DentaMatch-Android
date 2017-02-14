@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 import io.realm.RealmList;
 import io.realm.RealmModel;
+import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
 /**
  * Created by ramkumar on 09/02/17.
  */
 
-public class ChatThread implements RealmModel{
+public class ChatThread extends RealmObject{
     private String chatId;
     @PrimaryKey
     private String chatThreadId;
