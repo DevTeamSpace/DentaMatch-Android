@@ -94,7 +94,6 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        registerEvents();
         mSocket.connect();
     }
 
@@ -110,6 +109,7 @@ public class SocketManager {
     private Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
+            registerEvents();
             LogUtils.LOGD(TAG, SOCKET_CONNECT);
             isConnected = true;
         }
@@ -118,6 +118,7 @@ public class SocketManager {
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
+            unRegisterEvents();
             LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
             isConnected = false;
         }

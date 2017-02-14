@@ -89,6 +89,7 @@ public class MessagesListFragment extends BaseFragment {
         super.onResume();
     }
 
+
     private void getChatHistory() {
         showProgressBar(getString(R.string.please_wait));
         AuthWebServices client = RequestController.createService(AuthWebServices.class, true);

@@ -51,6 +51,13 @@ public class HomeActivity extends BaseActivity {
         if(!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
         }
+
+        /**
+         * Connect Socket for chatting initialization.
+         */
+        SocketManager.getInstance().connect();
+        SocketManager.getInstance().init(PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
+
         setContentView(R.layout.activity_home);
         initViews();
 
@@ -72,6 +79,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        SocketManager.getInstance().disconnect();
         super.onDestroy();
 
     }
@@ -215,24 +223,6 @@ public class HomeActivity extends BaseActivity {
         return null;
     }
 
-    @Override
-    protected void onStart() {
-        super.onResume();
-        /**
-         * Connect Socket for chatting initialization.
-         */
-        SocketManager.getInstance().connect();
-        SocketManager.getInstance().init(PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
-    }
-
-    @Override
-    protected void onStop() {
-        /**
-         * Socket disconnected.
-         */
-        SocketManager.getInstance().disconnect();
-        super.onStop();
-    }
 
     private void launchProfileFragment() {
         fragmentTransaction = fragmentManager.beginTransaction();
