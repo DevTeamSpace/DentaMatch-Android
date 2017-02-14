@@ -51,7 +51,7 @@
     <string name="blank_postal_code">Unable to find postal code in the address, please retry or choose near by location on map.</string>
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
     <string name="valid_email_alert">Please provide a valid Email Id.</string>
-    <string name="valid_mobile_alert">Please provide a valid mobile number.</string>
+    <string name="valid_mobile_alert">Please provide a valid phone number of 10 digits.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
     <string name="password_contains_space">Password can not contain spaces.</string>
     <string name="error_something_wrong">Something went wrong!</string>
@@ -181,7 +181,7 @@
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
     <string name="licence_number_blnk_space_alert">Licence number should not contain blank spaces</string>
     <string name="licence_number_hyfen_alert">Licence number can not begin or end with the hyphen (-) </string>
-    <string name="blank_state_alert">State text can not be left blank.</string>
+    <string name="blank_state_alert">State text field can not be left blank.</string>
     <string name="state_max_length">State can not be exceed 30 characters</string>
     <string name="state_blank_space_alert">State can not contain blank spaces</string>
     <string name="invalid_exp_selection">Experience can never be zero.</string>
