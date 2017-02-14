@@ -121,9 +121,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.tv_unblock:
-                blockUnBlockUser(0, mChatModel.getRecruiterId());
-                break;
+//            case R.id.tv_unblock:
+//                blockUnBlockUser(0, mChatModel.getRecruiterId());
+//                break;
 
             case R.id.send_button:
                 String msg = mBinder.messageInput.getText().toString().trim();

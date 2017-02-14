@@ -35,20 +35,23 @@ public final class PreferenceUtil {
     private static final String KEY_JOB_TITLE_ID = "JOB_TITLE_ID";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
     private static final String KEY_IS_JOB_FILTER_CHANGED = "KEY_IS_JOB_FILTER_CHANGED";
-    private static final String KEY_CHAT_USER_ID= "KEY_CHAT_USER_ID";
+    private static final String KEY_CHAT_USER_ID = "KEY_CHAT_USER_ID";
 
     private static final String KEY_JOB_FILTER_SET = "KEY_JOB_FILTER_SET";
     private static final String KEY_JOB_FILTER_REQUEST = "KEY_JOB_FILTER_REQUEST";
     private static final String KEY_USER_CURRENT_LOC = "KEY_USER_CURRENT_LOC";
+    private static final String KEY_FCM_TOKEN = "FCM_TOKEN";
 
     private static final String KEY_USER_MODEL = "USER_MODEL";
-    public static void setUserCurrentLocation(Location location){
+
+    public static void setUserCurrentLocation(Location location) {
         Hawk.put(KEY_USER_CURRENT_LOC, location);
     }
 
-    public static Object getUserCurrentLocation(){
+    public static Object getUserCurrentLocation() {
         return Hawk.get(KEY_USER_CURRENT_LOC);
     }
+
     public static void saveAppState(Object state) {
         Hawk.put(KEY_APP_STATE, state);
     }
@@ -61,7 +64,7 @@ public final class PreferenceUtil {
         Hawk.put(KEY_IS_JOB_FILTER_CHANGED, filterChanged);
     }
 
-    public static boolean isFilterChanged(){
+    public static boolean isFilterChanged() {
         return Hawk.get(KEY_IS_JOB_FILTER_CHANGED, false);
     }
 
@@ -110,6 +113,14 @@ public final class PreferenceUtil {
         Hawk.put(KEY_JOB_TITLE_LIST, value);
     }
 
+    public static String getFcmToken() {
+        return Hawk.get(KEY_FCM_TOKEN);
+    }
+
+    public static void setFcmToken(String token) {
+        Hawk.put(KEY_FCM_TOKEN, token);
+    }
+
     public static void setSearchJobTitleList(ArrayList<JobTitleList> value) {
         Hawk.put(KEY_SEARCH_JOB_TITLE_LIST, value);
     }
@@ -125,6 +136,7 @@ public final class PreferenceUtil {
     public static String getDeviceId() {
         return Hawk.get(KEY_DEVICE_ID);
     }
+
     public static ArrayList<JobTitleList> getSearchJobTitleList() {
         return Hawk.get(KEY_SEARCH_JOB_TITLE_LIST);
     }
@@ -142,7 +154,7 @@ public final class PreferenceUtil {
     }
 
     public static int getJobTitlePosition() {
-        return Hawk.get(KEY_JOB_TITLE_POSITION,0);
+        return Hawk.get(KEY_JOB_TITLE_POSITION, 0);
     }
 
     public static void setJobTitleId(int value) {
@@ -228,7 +240,7 @@ public final class PreferenceUtil {
         Hawk.put(KEY_CHAT_USER_ID, userId);
     }
 
-    public static String getUserChatId(){
+    public static String getUserChatId() {
         return Hawk.get(KEY_CHAT_USER_ID);
     }
 }

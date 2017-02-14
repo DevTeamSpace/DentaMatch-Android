@@ -1,4 +1,4 @@
-package com.appster.dentamatch.util.socialhelper;
+package com.appster.dentamatch.util;
 
 import android.text.TextUtils;
 

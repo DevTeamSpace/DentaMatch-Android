@@ -145,10 +145,11 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                         if (mJobList.get(k).getTemporaryJobDates().get(i).getJobDate().equalsIgnoreCase(date)) {
                             dot3.setVisibility(View.VISIBLE);
 
-                        } else {
-//                            dot3.setVisibility(View.GONE);
-
                         }
+//                        else {
+//                            dot3.setVisibility(View.GONE);
+//
+//                        }
                     }
                 }
             }
