@@ -88,6 +88,7 @@ public interface AuthWebServices {
     String SAVE_AVAILABILITY = "users/update-availability";
     String UPDATE_USER_LOCATION = "users/user-location-update";
     String USER_CHAT_HISTORY = "users/chat-user-list";
+    String GET_NOTIFICATION= "users/notification-list";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
 
 
@@ -97,6 +98,8 @@ public interface AuthWebServices {
 
     @GET(USER_CHAT_HISTORY)
     Call<ChatHistoryResponse> getChatHistory();
+    @GET(GET_NOTIFICATION)
+    Call<ChatHistoryResponse> getNotification(@Query("page") int page);
 
     @POST(UPDATE_USER_LOCATION)
     Call<BaseResponse> updateUserLocation(@Body ChangeUserLocation request);
