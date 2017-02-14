@@ -13,16 +13,24 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
 import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
-import com.appster.dentamatch.network.response.auth.SearchFilterModel;
+import com.appster.dentamatch.network.response.profile.JobTitleResponse;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
 
 /**
  * Created by virender on 26/01/17.
@@ -34,6 +42,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<String> mPartTimeDays;
     private ArrayList<JobTitleList> mChosenTitles;
     private String mSelectedZipCode;
+    private boolean isFirstTime;
     private boolean isPartTime, isFullTime, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
 
 
@@ -46,8 +55,83 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_search_job);
+
+        if(getIntent().hasExtra(Constants.EXTRA_IS_FIRST_TIME)){
+            isFirstTime = getIntent().getBooleanExtra(Constants.EXTRA_IS_FIRST_TIME,false);
+        }
+
         initViews();
+//        getUserSelectedData();
     }
+
+    private void getUserSelectedData() {
+
+        if( PreferenceUtil.getJobFilter() !=  null) {
+            SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+
+            mSelectedJobID = request.getJobTitle();
+            isFullTime = (request.getIsFulltime() == 1);
+            isPartTime = (request.getIsParttime() == 1);
+
+            if(isPartTime){
+                mPartTimeDays = request.getParttimeDays();
+            }
+
+            mSelectedZipCode = request.getZipCode();
+            mSelectedLat = request.getLat();
+            mSelectedLng = request.getLng();
+
+            /**
+             * Set views based on the user data obtained above.
+             */
+            if(isFullTime){
+                mBinder.cbFullTimeCheckBox.setChecked(true);
+            }
+
+            if(isPartTime){
+                mBinder.dayLayout.setVisibility(View.VISIBLE);
+                mBinder.cbPartTimeCheckBox.setChecked(true);
+
+                for (String days : mPartTimeDays){
+                    switch(days){
+                        case "Sunday":
+                            mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            break;
+
+                        case "Monday":
+                            mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            break;
+
+                        case "Tuesday":
+                            mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            break;
+
+                        case "Wednesday":
+                            mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            break;
+
+                        case "Thursday":
+                            mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            break;
+
+                        case "Friday":
+                            mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            break;
+
+                        case "Saturday":
+                            mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            break;
+
+                        default: break;
+                    }
+                }
+            }
+
+            callJobListApi();
+        }
+
+    }
+
 
     private void initViews() {
         mSelectedJobID = new ArrayList<>();
@@ -200,7 +284,8 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 break;
 
             case R.id.iv_tool_bar_left:
-                onBackPressed();
+
+                    onBackPressed();
                 break;
 
             default:
@@ -275,7 +360,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
          */
         PreferenceUtil.setFilterChanged(true);
         startActivity(new Intent(this, HomeActivity.class)
-                .putExtra(Constants.EXTRA_SEARCH_JOB, true)
+//                .putExtra(Constants.EXTRA_SEARCH_JOB, true)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
@@ -300,6 +385,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         } else if (TextUtils.isEmpty(mSelectedZipCode)) {
             showToast("please enter zip code");
             return false;
+
         } else {
             return true;
         }
@@ -318,7 +404,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
 
                 for (JobTitleList item : jobTitleList) {
-                    addTitleToLayout(item);
+                    addTitleToLayout(item, true);
                 }
 
             }
@@ -338,9 +424,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private void addTitleToLayout(JobTitleList jobTitleListItem) {
+    private void addTitleToLayout(JobTitleList jobTitleListItem, boolean shouldAdd) {
         String text = jobTitleListItem.getJobTitle();
-        mSelectedJobID.add(jobTitleListItem.getId());
+
+        if(shouldAdd) {
+            mSelectedJobID.add(jobTitleListItem.getId());
+        }
 
         FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
                 FlowLayout.LayoutParams.WRAP_CONTENT);
@@ -355,6 +444,48 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         textView.setText(text);
         mBinder.flowLayoutJobTitle.addView(textView, layoutParams);
     }
+
+    private void callJobListApi() {
+        processToShowDialog("", getString(R.string.please_wait), null);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        webServices.jobTitle().enqueue(new BaseCallback<JobTitleResponse>(SearchJobActivity.this) {
+            @Override
+            public void onSuccess(JobTitleResponse response) {
+                LogUtils.LOGD(TAG, "onSuccess");
+
+                if (response.getStatus() == 1) {
+                    mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
+                    PreferenceUtil.setSearchJobTitleList(response.getJobTitleResponseData().getJobTitleList());
+
+                    for (JobTitleList title :response.getJobTitleResponseData().getJobTitleList()){
+                        for (Integer jobId : mSelectedJobID) {
+                            if(jobId == title.getId()) {
+                                addTitleToLayout(title, false);
+                                if(mChosenTitles == null){
+                                    mChosenTitles = new ArrayList<JobTitleList>();
+                                }
+                                mChosenTitles.add(title);
+                            }
+                        }
+                    }
+
+                } else {
+                    Utils.showToast(getApplicationContext(), response.getMessage());
+
+                }
+            }
+
+            @Override
+            public void onFail(Call<JobTitleResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "onFail");
+
+
+
+            }
+        });
+
+    }
+
 
 
 }

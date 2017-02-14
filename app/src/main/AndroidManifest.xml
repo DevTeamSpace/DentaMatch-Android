@@ -174,13 +174,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+
+        <activity
+            android:name=".ui.messages.ChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+
         <!--<activity android:name=".ui.chat.ChatListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />-->
-
-        <activity android:name=".ui.chat.ChatActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
 
     </application>
 

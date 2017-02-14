@@ -1,17 +1,22 @@
 
 package com.appster.dentamatch.util;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.NotificationCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Spannable;
@@ -31,7 +36,6 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
-
 import com.appster.dentamatch.network.BaseResponse;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -51,8 +55,13 @@ import java.util.UUID;
  */
 public class Utils {
     private static final String TAG = "Utils";
+    private int NOTIFICATION_CODE = 00101;
+
     private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
+    private static final SimpleDateFormat chatDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
 
     @Nullable
     /*
@@ -326,6 +335,46 @@ public class Utils {
         return hourOnlyDateFormat.format(myDate);
     }
 
+    public static String convertUTCtoLocalFromTimeStamp(String UTCDateTime) {
+        Long time = Long.parseLong(UTCDateTime);
+        Date date = new Date(time);
+        chatDateFormat.setTimeZone(TimeZone.getDefault());
+       return  chatDateFormat.format(date);
+    }
+
+
+    public static String compareDateFromCurrentLocalTime(String date) {
+        FullDateFormat.setTimeZone(TimeZone.getDefault());
+        DateOnlyFormat.setTimeZone(TimeZone.getDefault());
+
+        try {
+            String currentDate = DateOnlyFormat.format(new Date(System.currentTimeMillis()));
+
+            Date convertedDate = FullDateFormat.parse(date);
+            String receivedDate = DateOnlyFormat.format(convertedDate);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+            String yesterdayDate = DateOnlyFormat.format(calendar.getTime());
+
+            if(receivedDate.equalsIgnoreCase(currentDate)){
+                return "Today";
+
+            }else if(receivedDate.equalsIgnoreCase(yesterdayDate)){
+                return "Yesterday";
+
+            }else{
+                return receivedDate;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+
+
     public static String getExpYears(int month) {
 
         if (month != 0) {
@@ -371,6 +420,23 @@ public class Utils {
             }
 
         });
+    }
+
+    public void showNotification(Context ct,String title, String message){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
+        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        builder.setContentTitle(title)
+                .setSound(defaultSound)
+                .setContentText(message)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true);
+
+        NotificationManager manager = (NotificationManager) ct.getSystemService(ct.NOTIFICATION_SERVICE);
+        manager.notify(NOTIFICATION_CODE, builder.build());
     }
 
     public static boolean isValidEmailAddress(String email) {

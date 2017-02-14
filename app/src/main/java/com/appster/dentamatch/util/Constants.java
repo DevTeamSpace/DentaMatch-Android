@@ -18,9 +18,11 @@ public class Constants {
     public static final String EXTRA_JOB_DETAIL_ID = "EXTRA_JOB_DETAIL_ID";
     public static final String EXTRA_IS_LOGIN = "display_login";
     public static final String EXTRA_JOB_ID = "EXTRA_JOB_ID";
+    public static final String EXTRA_IS_FIRST_TIME = "EXTRA_IS_FIRST_TIME";
 
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";
+    public static final String EXTRA_CHAT_MODEL = "EXTRA_CHAT_MODEL";
 
     public static final int PASSWORD_MIN_LENGTH = 6;
     public static final int WORK_EXP_LIST_LIMIT = 50;
@@ -33,6 +35,10 @@ public class Constants {
     public static final int IMAGE_DIME_CERTIFICATE = 142;
     public static final int EDUCATION_HISTORY_YEARS = 50;
     public static final int MAP_ZOOM_LEVEL = 15;
+
+    public static final String DISCONNECTED = "DISCONNECTED";
+    public static final String CONNECTION_TIMED_OUT = "CONNECTION_TIMED_OUT";
+    public static final String CONNECTED = "CONNECTED";
 
     public enum ACTIVITIES {
         SWITCH_ACTIVITY

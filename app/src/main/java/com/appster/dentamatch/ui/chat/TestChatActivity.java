@@ -1,44 +1,34 @@
 package com.appster.dentamatch.ui.chat;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.ChatMessage;
 import com.appster.dentamatch.chat.RealmController;
 import com.appster.dentamatch.chat.RealmManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
-import com.appster.dentamatch.databinding.ActivityChatListBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.ui.messages.Message;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.Utils;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmModel;
 import io.realm.RealmRecyclerViewAdapter;
-import io.realm.RealmResults;
-import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
@@ -47,7 +37,7 @@ import io.socket.emitter.Emitter;
  * Created by ramkumar on 06/02/17.
  */
 
-public class ChatActivity extends BaseActivity implements View.OnClickListener {
+public class TestChatActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "Chat";
     private ActivityChatBinding mBinder;
@@ -89,7 +79,19 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.rcvChat.setLayoutManager(new LinearLayoutManager(this));
         mBinder.rcvChat.setAdapter(mAdapter);
 
+<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
         mSocket = ((DentaApp) getApplication()).getSocket();
+=======
+//        mSocket = ((DentaApp) getApplication()).getSocket();
+
+//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
+//        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
+//        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+//        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+//        mSocket.on("new message", onNewMessage);
+//        mSocket.on("typing", onTyping);
+//        mSocket.on("stop typing", onStopTyping);
+>>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
         mSocket.connect();
 
         mBinder.sendButton.setOnClickListener(this);
@@ -114,7 +116,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 mSocket.emit("sendMsg", jsonObject);
                 mBinder.messageInput.setText("");
 
-                addMessage("Ram", msg);
+//                addMessage("Ram", msg);
         }
     }
 
@@ -160,6 +162,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         addLog(getResources().getQuantityString(R.plurals.message_participants, numUsers, numUsers));
     }*/
 
+<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
     private void addMessage(String username, String message) {
         ChatMessage msg = new ChatMessage();
         msg.setChatThreadId("901");
@@ -185,11 +188,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
 
 
+=======
+//    private void addMessage(String username, String message) {
+>>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
 //        mMessages.add(new Message.Builder(Message.TYPE_MESSAGE)
 //                .username(username).message(message).build());
 //        mAdapter.notifyItemInserted(mMessages.size() - 1);
 //        scrollToBottom();
+<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
     }
+=======
+//    }
+>>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
 
     private void addTyping(String username) {
         mMessages.add(new Message.Builder(Message.TYPE_ACTION)
@@ -247,13 +257,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
+            TestChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (!isConnected) {
                         if (null != mUsername)
                             mSocket.emit("add user", mUsername);
-                        Toast.makeText(ChatActivity.this.getApplicationContext(),
+                        Toast.makeText(TestChatActivity.this.getApplicationContext(),
                                 "Connected", Toast.LENGTH_LONG).show();
                         isConnected = true;
                     }
@@ -265,11 +275,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
+            TestChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     isConnected = false;
-                    Toast.makeText(ChatActivity.this.getApplicationContext(),
+                    Toast.makeText(TestChatActivity.this.getApplicationContext(),
                             "Disconnected", Toast.LENGTH_LONG).show();
                 }
             });
@@ -279,10 +289,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
+            TestChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ChatActivity.this.getApplicationContext(),
+                    Toast.makeText(TestChatActivity.this.getApplicationContext(),
                             "Failed to connect", Toast.LENGTH_LONG).show();
                 }
             });
@@ -292,7 +302,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
+            TestChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
@@ -306,7 +316,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     }
 
                     removeTyping(username);
-                    addMessage(username, message);
+//                    addMessage(username, message);
                 }
             });
         }
@@ -362,7 +372,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private Emitter.Listener onTyping = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
+            TestChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
@@ -381,7 +391,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private Emitter.Listener onStopTyping = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
+            TestChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];

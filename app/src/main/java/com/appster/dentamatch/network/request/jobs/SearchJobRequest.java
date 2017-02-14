@@ -24,6 +24,38 @@ public class SearchJobRequest {
         this.lat = lat;
     }
 
+    public String getLat() {
+        return lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public ArrayList<Integer> getJobTitle() {
+        return jobTitle;
+    }
+
+    public int getIsFulltime() {
+        return isFulltime;
+    }
+
+    public int getIsParttime() {
+        return isParttime;
+    }
+
+    public ArrayList<String> getParttimeDays() {
+        return parttimeDays;
+    }
+
     public void setLng(String lng) {
         this.lng = lng;
     }

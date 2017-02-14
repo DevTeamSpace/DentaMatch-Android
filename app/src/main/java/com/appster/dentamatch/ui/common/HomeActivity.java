@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
 import com.appster.dentamatch.ui.messages.MessagesListFragment;
@@ -67,6 +68,7 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -79,6 +81,7 @@ public class HomeActivity extends BaseActivity {
         Location location = locationEvent.getMessage();
         PreferenceUtil.setUserCurrentLocation(location);
     }
+
     /**
      * initViews is used to initialize this view at app launch
      */
@@ -213,11 +216,22 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onStart() {
         super.onResume();
-//        if (viewPager != null)
-//            textHeader.setText(ITEMS[viewPager.getCurrentItem()]);
+        /**
+         * Connect Socket for chatting initialization.
+         */
+        SocketManager.getInstance().connect();
+        SocketManager.getInstance().init(PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
+    }
 
+    @Override
+    protected void onStop() {
+        /**
+         * Socket disconnected.
+         */
+        SocketManager.getInstance().disconnect();
+        super.onStop();
     }
 
     private void launchProfileFragment() {

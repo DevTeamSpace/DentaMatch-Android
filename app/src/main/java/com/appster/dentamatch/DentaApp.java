@@ -9,11 +9,10 @@ import android.support.multidex.MultiDexApplication;
 
 import com.appster.dentamatch.chat.RealmManager;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
-
-import java.net.URISyntaxException;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import io.realm.Realm;
@@ -24,33 +23,16 @@ import io.socket.client.Socket;
 //import com.squareup.leakcanary.LeakCanary;
 
 public class DentaApp extends MultiDexApplication {
-
+    private static DentaApp appController;
     private static Context mAppContext;
 
-    public static Context getAppContext() {
-        return mAppContext;
-    }
-
-    private Socket mSocket;
-    {
-        try {
-            mSocket = IO.socket(Constants.CHAT_SERVER_URL);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Socket getSocket() {
-        return mSocket;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        appController = this;
         mAppContext = this.getApplicationContext();
         NetworkMonitor.initialize(mAppContext);
-
-
 
         RealmManager.initializeRealmConfig(getAppContext());
 
@@ -103,4 +85,17 @@ public class DentaApp extends MultiDexApplication {
         // Push Notification initialize
         FirebaseApp.initializeApp(mAppContext);
     }
+
+
+    public static Context getAppContext() {
+        return mAppContext;
+    }
+
+
+    public static DentaApp getInstance() {
+        return appController;
+    }
+
+
+
 }

@@ -20,6 +20,7 @@
     <color name="center_color">#0e199f</color>
     <color name="white_color">#ffffff</color>
     <color name="white_1">#e5e5e5</color>
+    <color name="off_white">#f9f9f9</color>
     <color name="black_color">#0f183e</color>
     <color name="red_color">#fe3824</color>
     <color name="white_color_pacity">#50ffffff</color>
@@ -30,6 +31,8 @@
     <color name="register_help_color">#a6a6a6</color>
     <color name="text_default_color">#383838</color>
     <color name="color_forgot_pwd">#0470c0</color>
+    <color name="chat_background_received">#f5f8fb</color>
+    <color name="chat_text_color_received">#4d4d4d</color>
 
     <!--bottom sheet view colors-->
     <color name="color_bottom_sheet_text">#54000000</color>

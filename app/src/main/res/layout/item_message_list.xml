@@ -2,8 +2,34 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <FrameLayout
+            android:id="@+id/constant_view"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_alignTop="@+id/swipeble_view"
+            android:layout_alignBottom="@+id/swipeble_view"
+            android:layout_height="wrap_content">
+            <com.appster.dentamatch.widget.CustomTextView
+                style="@style/text_view_normal"
+                android:layout_width="match_parent"
+                android:textColor="@color/white_color"
+                android:gravity="center"
+                app:customFont="@string/font_regular"
+                android:background="@color/red_color"
+                android:padding="@dimen/default_padding"
+                android:layout_height="match_parent"
+                android:text="DELETE"/>
+        </FrameLayout>
+
 <RelativeLayout
     android:layout_width="match_parent"
+    android:background="@color/white_color"
+    android:id="@+id/swipeble_view"
     android:layout_height="wrap_content">
 
     <com.appster.dentamatch.widget.CustomTextView
@@ -22,8 +48,8 @@
         />
 
     <com.appster.dentamatch.widget.CustomTextView
-        style="@style/text_view_normal"
         android:id="@+id/tv_message_date"
+        android:textSize="@dimen/text_size_12"
         android:textColor="@color/text_color_chat"
         android:layout_width="wrap_content"
         android:layout_alignTop="@+id/tv_message_recruiter_name"
@@ -36,12 +62,32 @@
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/tv_message_chat"
         style="@style/text_view_normal"
-        android:text="Yes, Dr. Nicklaus Morton"
+        android:text="Yes, Dr. Nicklaus Morton "
         android:textColor="@color/chat_message"
+        android:layout_toStartOf="@+id/tv_message_chat_count"
         android:layout_alignStart="@+id/tv_message_recruiter_name"
         android:layout_below="@+id/tv_message_recruiter_name"
         android:layout_marginTop="@dimen/margin_10"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:customFont="@string/font_regular"
+        />
+
+    <com.appster.dentamatch.widget.CustomTextView
+        android:id="@+id/tv_message_chat_count"
+        style="@style/text_view_small"
+        android:text="50"
+        android:visibility="gone"
+        android:gravity="center"
+        android:padding="@dimen/margin_6"
+        android:background="@drawable/background_badge"
+        android:textColor="@color/white_color"
+        android:layout_below="@+id/tv_message_recruiter_name"
+        android:layout_alignBaseline="@+id/tv_message_chat"
+        android:layout_alignEnd="@+id/tv_message_date"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:customFont="@string/font_regular"
         />
@@ -57,10 +103,14 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@android:color/black"
+        android:layout_height="1dp"
+        android:background="@color/white_1"
         android:layout_marginTop="@dimen/margin_15"
         android:layout_below="@+id/tv_message_chat"
         android:layout_marginStart="@dimen/margin_normal"/>
+</RelativeLayout>
+
+
+
 </RelativeLayout>
 </layout>

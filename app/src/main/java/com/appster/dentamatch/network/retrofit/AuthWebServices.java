@@ -1,6 +1,7 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
 import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
@@ -21,6 +22,7 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
+import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
@@ -77,6 +79,16 @@ public interface AuthWebServices {
     String TRACK_JOBS = "users/job-list";
     String CANCEL_JOB = "users/cancel-job";
     String UPDATE_USER_LOCATION = "users/user-location-update";
+    String USER_CHAT_HISTORY = "users/chat-user-list";
+    String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
+
+
+    @POST(USER_CHAT_BLOCK_UNBLOCK)
+    Call<BaseResponse> blockUnBlockUser(@Body BlockUnBlockRequest request);
+
+
+    @GET(USER_CHAT_HISTORY)
+    Call<ChatHistoryResponse> getChatHistory();
 
     @POST(UPDATE_USER_LOCATION)
     Call<BaseResponse> updateUserLocation(@Body ChangeUserLocation request);
