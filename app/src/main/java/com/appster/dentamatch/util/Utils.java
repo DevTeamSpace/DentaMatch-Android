@@ -331,7 +331,7 @@ public class Utils {
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
         chatDateFormat.setTimeZone(TimeZone.getDefault());
-       return  chatDateFormat.format(date);
+        return chatDateFormat.format(date);
     }
 
     public static String getExpYears(int month) {
@@ -433,14 +433,30 @@ public class Utils {
         try {
 
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = inputFormat.parse(dateStr);
+            Date date = inputFormat.parse(dateStr);
 
-        SimpleDateFormat reqFormat = new SimpleDateFormat("EEEE");
-        String formattedDate = reqFormat.format(date);
-        return formattedDate;
+            SimpleDateFormat reqFormat = new SimpleDateFormat("EEEE");
+            String formattedDate = reqFormat.format(date);
+            return formattedDate;
         } catch (Exception e) {
             e.printStackTrace();
             return "";
+        }
+    }
+
+    public static Date parseDate(Date date) {
+        try {
+
+
+            SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+            // myDate is the java.util.Date in yyyy-mm-dd format
+            // Converting it into String using formatter
+            String strDate = sm.format(date);
+            return sm.parse(strDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
         }
     }
 }

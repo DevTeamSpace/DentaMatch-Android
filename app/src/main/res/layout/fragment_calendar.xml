@@ -15,7 +15,10 @@
         <com.appster.dentamatch.ui.calendar.CalendarViewEvent
             android:id="@+id/custom_calendar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.appster.dentamatch.ui.calendar.CalendarViewEvent>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"></com.appster.dentamatch.ui.calendar.CalendarViewEvent>
 
         <View
             android:layout_width="match_parent"
@@ -54,7 +57,7 @@
                 android:layout_margin="@dimen/margin_normal"
                 android:gravity="center"
                 android:singleLine="false"
-                android:text="You don’t have any booked jobs on this date yet."
+                android:text="@string/alert_empty_hired_job"
                 android:textColor="@color/edt_hint_color"
                 app:customFont="@string/font_medium" />
 
@@ -63,6 +66,6 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_booked_job"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>

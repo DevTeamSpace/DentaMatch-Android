@@ -42,7 +42,6 @@ public class CalendarViewEvent extends LinearLayout {
     private OnDateSelected mDateSelectedListener;
     private ArrayList<HiredJobs> mHiredListData;
     private ImageView ivFullTime;
-    //    private View calendarView;
     private List<CalenderAvailableCellModel> mDayList = new ArrayList<>();
 
     public CalendarViewEvent(Context context) {
@@ -91,9 +90,6 @@ public class CalendarViewEvent extends LinearLayout {
 
     private void initializeUILayout() {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-//        if (calendarView != null) {
-//            calendarView = null;
-//        }
         View calendarView = inflater.inflate(R.layout.calendar_layout, this);
         previousButton = (ImageView) calendarView.findViewById(R.id.previous_month);
         nextButton = (ImageView) calendarView.findViewById(R.id.next_month);
@@ -110,9 +106,12 @@ public class CalendarViewEvent extends LinearLayout {
 
 //                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
                 --count;
+
+
                 cal.add(Calendar.MONTH, -1);
                 mDateSelectedListener.onMonthChanged(cal);
                 setUpCalendarAdapter();
+
             }
         });
     }
@@ -129,6 +128,7 @@ public class CalendarViewEvent extends LinearLayout {
                     cal.add(Calendar.MONTH, 1);
                     mDateSelectedListener.onMonthChanged(cal);
                     setUpCalendarAdapter();
+
                 } else {
                     Utils.showToast(context, context.getString(R.string.alert_next_month_job));
 
@@ -144,6 +144,7 @@ public class CalendarViewEvent extends LinearLayout {
 //                Toast.makeText(context, "Clicked " + (Integer)view.getTag(), Toast.LENGTH_LONG).show();
                 if ((Integer) view.getTag() != -1) {
                     if (!mDayList.get(position).isSelected()) {
+
                         mDayList.get(position).setSelected(true);
                         if (oldClickedPos != -1) {
                             mDayList.get(oldClickedPos).setSelected(false);
@@ -151,7 +152,7 @@ public class CalendarViewEvent extends LinearLayout {
                         oldClickedPos = position;
 
                         view.setBackgroundResource(R.drawable.shape_date_selection);
-
+//                        mAdapter.setCurrentMonthDate(false);
                         mAdapter.setJobList(mHiredListData);
 
                     }
@@ -169,7 +170,6 @@ public class CalendarViewEvent extends LinearLayout {
     }
 
     private void setUpCalendarAdapter() {
-//        List<Date> dayValueInCells = new ArrayList<Date>();
         List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
         Calendar mCal = (Calendar) cal.clone();
         mCal.set(Calendar.DAY_OF_MONTH, 1);
@@ -179,22 +179,33 @@ public class CalendarViewEvent extends LinearLayout {
         mCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
 
         int days = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-//        Utils.showToast(context, "Days is-=" + firstDayOfTheMonth + "&&days month=" + days);
         if (firstDayOfTheMonth == 6 && (days == 30 || days == 31) || (firstDayOfTheMonth == 5 && days == 31)) {
             MAX_CALENDAR_COLUMN = 42;
         } else {
             MAX_CALENDAR_COLUMN = 35;
         }
 
-        while (dayValueInCells.size() < MAX_CALENDAR_COLUMN) {
+//        while (dayValueInCells.size() < MAX_CALENDAR_COLUMN) {
+        for (int i = 0; i < MAX_CALENDAR_COLUMN; i++) {
+            LogUtils.LOGD(TAG, "firstDayOfTheMonth==" + firstDayOfTheMonth + "=i=" + i);
             CalenderAvailableCellModel data = new CalenderAvailableCellModel();
             data.setDate(mCal.getTime());
             mCal.add(Calendar.DAY_OF_MONTH, 1);
+//            if (isCurrentMonth&&Calendar.getInstance().get(Calendar.MONTH) == cal.get(Calendar.MONTH) && Calendar.getInstance().get(Calendar.YEAR) == cal.get(Calendar.YEAR)) {
+            if (Utils.dateFormetyyyyMMdd(mCal.getTime()).equalsIgnoreCase(Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()))) {
+                oldClickedPos = i;
+                data.setSelected(true);
+            } else if (i == firstDayOfTheMonth && !(Calendar.getInstance().get(Calendar.MONTH) == cal.get(Calendar.MONTH) && Calendar.getInstance().get(Calendar.YEAR) == cal.get(Calendar.YEAR))) {
+                oldClickedPos = i;
+                data.setSelected(true);
 
-            data.setSelected(false);
-//            dayValueInCells.add(mCal.getTime());
+            } else {
+                data.setSelected(false);
+
+            }
+            //                data.setSelected(true);
+
             dayValueInCells.add(data);
-//            mCal.add(Calendar.DAY_OF_MONTH, 1);
         }
         LogUtils.LOGD(TAG, "Number of date " + dayValueInCells.size());
         String sDate = formatter.format(cal.getTime());

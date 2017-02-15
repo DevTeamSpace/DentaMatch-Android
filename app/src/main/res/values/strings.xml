@@ -326,5 +326,9 @@
     <string name="txt_text_message">Text message</string>
     <string name="txt_unblock">UNBLOCK</string>
     <string name="header_notification">NOTIFICATIONS</string>
+    <string name="alert_empty_hired_job">You don’t have any booked jobs on this date yet.</string>
+    <string name="alert_invalid_part_time">Please select at least one day or part time job.</string>
+    <string name="alert_invalid_temp_job">Please select at least one  day for temporary job.</string>
+    <string name="header_calendar">Calendar</string>
 
 </resources>

@@ -43,6 +43,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     private ArrayList<String> mPartTimeDays;
     private ArrayList<JobTitleList> mChosenTitles;
     private String mSelectedZipCode;
+    private AvailabilityResponse availabilityResponse;
     private boolean isPartTime, isFullTime, isTemporary, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
 
 
@@ -208,6 +209,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                     mBinder.dayLayout.setVisibility(View.VISIBLE);
                 } else {
                     isPartTime = false;
+//                    resetParTimeAvailability();
                     mBinder.dayLayout.setVisibility(View.GONE);
                     mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
                 }
@@ -243,10 +245,34 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         }
     }
 
+    private void resetParTimeAvailability() {
+        if (availabilityResponse != null && availabilityResponse.getAvailabilityResponseData() != null && availabilityResponse.getAvailabilityResponseData().getCalendarAvailability() != null) {
+            CalendarAvailability calendarAvailability = availabilityResponse.getAvailabilityResponseData().getCalendarAvailability();
+
+            calendarAvailability.setIsParttimeMonday(0);
+            calendarAvailability.setIsParttimeTuesday(0);
+            calendarAvailability.setIsParttimeWednesday(0);
+            calendarAvailability.setIsParttimeThursday(0);
+            calendarAvailability.setIsParttimeFriday(0);
+            calendarAvailability.setIsParttimeSaturday(0);
+            calendarAvailability.setIsParttimeSunday(0);
+            setPartTimeDayView(calendarAvailability);
+        }
+    }
+
     private boolean checkValidation() {
         if (!isPartTime && !isFullTime && !isTemporary) {
             showToast(getString(R.string.select_multiple_job));
             return false;
+        }
+        if (isPartTime && (!isSunday && !isMonday && !isWednesday && !isThursday && !isFriday && !isSaturday && !isSunday)) {
+            showToast(getString(R.string.alert_invalid_part_time));
+
+            return false;
+        }
+        if (isTemporary && (mBinder.customCalendar.getAvailabilityList() == null && mBinder.customCalendar.getAvailabilityList().size() == 0)) {
+            showToast(getString(R.string.alert_invalid_temp_job));
+
         }
         return true;
     }
@@ -344,6 +370,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
                     if (response != null) {
+                        availabilityResponse = response;
                         setViewData(response);
                     }
                 } else {

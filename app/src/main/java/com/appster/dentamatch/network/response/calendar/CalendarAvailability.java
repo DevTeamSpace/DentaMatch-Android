@@ -14,6 +14,38 @@ public class CalendarAvailability {
     private int isParttimeSaturday;
     private int isParttimeSunday;
 
+    public void setIsFulltime(int isFulltime) {
+        this.isFulltime = isFulltime;
+    }
+
+    public void setIsParttimeMonday(int isParttimeMonday) {
+        this.isParttimeMonday = isParttimeMonday;
+    }
+
+    public void setIsParttimeTuesday(int isParttimeTuesday) {
+        this.isParttimeTuesday = isParttimeTuesday;
+    }
+
+    public void setIsParttimeWednesday(int isParttimeWednesday) {
+        this.isParttimeWednesday = isParttimeWednesday;
+    }
+
+    public void setIsParttimeThursday(int isParttimeThursday) {
+        this.isParttimeThursday = isParttimeThursday;
+    }
+
+    public void setIsParttimeFriday(int isParttimeFriday) {
+        this.isParttimeFriday = isParttimeFriday;
+    }
+
+    public void setIsParttimeSaturday(int isParttimeSaturday) {
+        this.isParttimeSaturday = isParttimeSaturday;
+    }
+
+    public void setIsParttimeSunday(int isParttimeSunday) {
+        this.isParttimeSunday = isParttimeSunday;
+    }
+
     public int getIsFulltime() {
         return isFulltime;
     }
