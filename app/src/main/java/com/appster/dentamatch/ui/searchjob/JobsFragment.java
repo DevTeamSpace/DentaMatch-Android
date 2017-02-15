@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentJobsBinding;
 import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.ui.notification.NotificationActivity;
 
 /**
  * Created by Appster on 23/01/17.
@@ -81,6 +82,9 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
             case R.id.txv_toolbar_general_right:
                 startActivity(new Intent(getActivity(),SearchJobActivity.class));
                 break;
+            case R.id.iv_tool_bar_left:
+                startActivity(new Intent(getActivity(),NotificationActivity.class));
+                break;
 
             default:
                 break;
@@ -100,6 +104,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
 
         mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setOnClickListener(this);
         mJobsBinding.toolbarFragmentJobs.txvToolbarGeneralRight.setOnClickListener(this);
+        mJobsBinding.toolbarFragmentJobs.ivToolBarLeft.setOnClickListener(this);
 
     }
 

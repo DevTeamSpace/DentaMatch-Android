@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_18"
+
+            >
+
+            <ImageView
+                android:id="@+id/iv_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shape_dot_selected" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_desc"
+                style="@style/text_view_normal"
+                android:layout_marginLeft="@dimen/margin_15"
+                android:layout_marginRight="@dimen/margin_15"
+                android:layout_toEndOf="@+id/iv_read"
+                android:layout_toStartOf="@+id/iv_right_arrow"
+                android:text="hfiw bobf fow wbfqb sgfi safu aff absfbjsa sacv"
+                android:textColor="@color/chat_message"
+                android:textSize="@dimen/text_size_14"
+                app:customFont="@string/font_regular" />
+
+            <ImageView
+                android:id="@+id/iv_right_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_arrow_right" />
+        </RelativeLayout>
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_address"
+            style="@style/text_view_normal"
+            android:layout_marginLeft="@dimen/margin_50"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:lineSpacingExtra="@dimen/margin_small_3"
+            android:text="Dr BEN\n680 parsant nager"
+            android:textColor="@color/chat_message"
+            android:textSize="@dimen/text_size_14"
+            app:customFont="@string/font_regular" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_job_type"
+            style="@style/text_view_normal"
+            android:layout_marginLeft="@dimen/margin_50"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:background="@drawable/job_type_background_temporary"
+            android:lineSpacingExtra="@dimen/margin_small_3"
+            android:paddingBottom="@dimen/margin_5"
+            android:paddingLeft="@dimen/margin_10"
+            android:paddingRight="@dimen/margin_10"
+            android:paddingTop="@dimen/margin_5"
+            android:text="@string/txt_temporary"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_size_14"
+            app:customFont="@string/font_regular" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_time"
+            style="@style/text_view_normal"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_50"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/txt_temporary"
+            android:textColor="@color/chat_message"
+            android:textSize="@dimen/text_size_14"
+            app:customFont="@string/font_regular" />
+    </LinearLayout>
+</layout>

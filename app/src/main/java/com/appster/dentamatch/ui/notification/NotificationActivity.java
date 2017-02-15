@@ -18,6 +18,7 @@ import com.appster.dentamatch.ui.calendar.HiredJobAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ import retrofit2.Call;
 /**
  * Created by virender on 14/02/17.
  */
-public class NotificationActivity extends BaseActivity {
+public class NotificationActivity extends BaseActivity implements View.OnClickListener {
     private final String TAG = "NotificationActivity";
     private ActivityNotificationBinding mBinder;
     private NotificaionAdapter mNotificaionAdapter;
@@ -36,7 +37,7 @@ public class NotificationActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DataBindingUtil.setContentView(this, R.layout.activity_notification);
+        mBinder = DataBindingUtil.setContentView(this, R.layout.activity_notification);
         intiView();
     }
 
@@ -44,10 +45,10 @@ public class NotificationActivity extends BaseActivity {
         mBinder.toolbarNotification.tvToolbarGeneralLeft.setText(getString(R.string.header_notification));
         mLayoutManager = new LinearLayoutManager(this);
         mBinder.rvNotification.setLayoutManager(mLayoutManager);
+        mBinder.rvNotification.addItemDecoration(new SimpleDividerItemDecoration(this));
+        mBinder.toolbarNotification.ivToolBarLeft.setOnClickListener(this);
         mNotificaionAdapter = new NotificaionAdapter(this);
         mBinder.rvNotification.setAdapter(mNotificaionAdapter);
-
-
     }
 
     @Override
@@ -77,5 +78,16 @@ public class NotificationActivity extends BaseActivity {
                 LogUtils.LOGD(TAG, "Failed job hired");
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_tool_bar_left:
+                finish();
+                break;
+
+
+        }
     }
 }

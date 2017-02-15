@@ -76,7 +76,10 @@ public class Utils {
     }
 
     public static String getDeviceToken() {
-        return "agkj2899jhfj38ry3ry0yr0321y0yr";
+        if (PreferenceUtil.getFcmToken() != null) {
+            return PreferenceUtil.getFcmToken();
+        }
+        return "";
     }
 
     public static Drawable getDrawable(@NonNull Context context, @DrawableRes int drawableId) {
