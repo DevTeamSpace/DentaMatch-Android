@@ -1,10 +1,12 @@
 package com.appster.dentamatch.ui.messages;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Appster on 13/02/17.
  */
 
-public class ChatMessageModel {
+public class ChatMessageModel extends RealmObject {
     private String message;
     private String fromID;
     private String toID;

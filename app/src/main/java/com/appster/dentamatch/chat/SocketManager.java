@@ -2,11 +2,13 @@ package com.appster.dentamatch.chat;
 
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.GlobalMessageReceivedEvent;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
@@ -55,6 +57,7 @@ public class SocketManager {
     private boolean isConnected;
     private Activity attachedActivity;
     private String attachedUserID;
+    private Context mContext;
 
     private SocketManager() {
         getSocket();
@@ -94,6 +97,7 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
+        registerEvents();
         mSocket.connect();
     }
 
@@ -109,7 +113,6 @@ public class SocketManager {
     private Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            registerEvents();
             LogUtils.LOGD(TAG, SOCKET_CONNECT);
             isConnected = true;
         }
@@ -118,7 +121,6 @@ public class SocketManager {
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            unRegisterEvents();
             LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
             isConnected = false;
         }
@@ -157,6 +159,9 @@ public class SocketManager {
                 }
             } else {
                 EventBus.getDefault().post(new GlobalMessageReceivedEvent(model));
+                if(mContext != null){
+                    Utils.showNotification(mContext, "Denta Test", model.getMessage());
+                }
             }
 
         }
@@ -226,12 +231,12 @@ public class SocketManager {
         mSocket.emit(EMIT_SEND_MSG, new JSONObject(hashMap));
     }
 
-    public void init(String UserID, String UserName) {
+    public void init(Context context, String UserID, String UserName) {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-
+        mContext = context;
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put(PARAM_USERID, UserID);
         hashMap.put(PARAM_USERNAME, UserName);

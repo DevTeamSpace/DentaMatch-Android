@@ -17,7 +17,6 @@ import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.auth.ResetPasswordActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;

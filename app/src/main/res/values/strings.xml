@@ -189,7 +189,6 @@
     <string name="blank_office_addrerss_alert">Office address can never be blank</string>
     <string name="blank_city_alert">City can never be blank</string>
     <string name="office_name_length_alert">Office name length can not exceed 30 characters</string>
-    <string name="office_address_length_alert">Office address length can not exceed 30 characters</string>
     <string name="refrence_length_alert">Reference name length can not exceed 30 characters</string>
     <string name="city_length_alert">City name length can not exceed 30 characters</string>
     <string name="blank_year_alert">Please select experience.</string>
@@ -303,5 +302,6 @@
     <string name="txt_no_chat_messages">No message in your chats yet.</string>
     <string name="txt_text_message">Text message</string>
     <string name="txt_unblock">UNBLOCK</string>
+    <string name="office_address_length_alert">Office address length can not exceed 30 characters</string>
 
 </resources>

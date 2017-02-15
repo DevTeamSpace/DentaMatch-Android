@@ -1,6 +1,8 @@
 package com.appster.dentamatch.ui.messages;
 
-public class Message {
+import io.realm.RealmObject;
+
+public class Message extends RealmObject{
 
     public static final int TYPE_MESSAGE_SEND = 0;
     public static final int TYPE_LOG = 1;
@@ -12,8 +14,11 @@ public class Message {
     private String mUsername;
     private String mMessageTime;
 
-
-    private Message() {}
+    /**
+     * public constructor is used here because we have extended
+     * it with realmObject and it needs a public constructor.
+     */
+    public Message() {}
 
     public int getType() {
         return mType;

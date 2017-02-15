@@ -4,14 +4,13 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.ChatMessage;
-import com.appster.dentamatch.chat.RealmController;
+import com.appster.dentamatch.chat.RealmDBController;
 import com.appster.dentamatch.chat.RealmManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -58,7 +57,7 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
     private Boolean isConnected = true;
 
     private Realm realm;
-    private RealmController realmController;
+    private RealmDBController realmDBController;
     RealmList<ChatMessage> realmList;
 
     @Override
@@ -70,18 +69,16 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
         gson = new Gson();
 
         realm = RealmManager.getRealm();
-        realmController = new RealmController();
+        realmDBController = new RealmDBController();
 
-        realmList = realmController.getAllMsgByThreadId(realm, "901");
+        realmList = realmDBController.getAllMsgByThreadId(realm, "901");
 
         mAdapter = new MessageAdapter(this, realmList);
 
-        mBinder.rcvChat.setLayoutManager(new LinearLayoutManager(this));
-        mBinder.rcvChat.setAdapter(mAdapter);
-
-<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
-        mSocket = ((DentaApp) getApplication()).getSocket();
-=======
+//        mBinder.rcvChat.setLayoutManager(new LinearLayoutManager(this));
+//        mBinder.rcvChat.setAdapter(mAdapter);
+//
+//        mSocket = ((DentaApp) getApplication()).getSocket();
 //        mSocket = ((DentaApp) getApplication()).getSocket();
 
 //        mSocket.on(Socket.EVENT_CONNECT,onConnect);
@@ -91,7 +88,6 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 //        mSocket.on("new message", onNewMessage);
 //        mSocket.on("typing", onTyping);
 //        mSocket.on("stop typing", onStopTyping);
->>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
         mSocket.connect();
 
         mBinder.sendButton.setOnClickListener(this);
@@ -162,7 +158,6 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
         addLog(getResources().getQuantityString(R.plurals.message_participants, numUsers, numUsers));
     }*/
 
-<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
     private void addMessage(String username, String message) {
         ChatMessage msg = new ChatMessage();
         msg.setChatThreadId("901");
@@ -180,7 +175,7 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 
 //        mBinder.recyclerView.setAdapter(mAdapter);
 
-        realmController.saveChatMessage(realm, msg);
+        realmDBController.saveChatMessage(realm, msg);
 
         for(ChatMessage chat:realmList) {
             LogUtils.LOGD(TAG, "RealmList " + chat.getMsgText());
@@ -188,18 +183,12 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 
 
 
-=======
 //    private void addMessage(String username, String message) {
->>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
 //        mMessages.add(new Message.Builder(Message.TYPE_MESSAGE)
 //                .username(username).message(message).build());
 //        mAdapter.notifyItemInserted(mMessages.size() - 1);
 //        scrollToBottom();
-<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
     }
-=======
-//    }
->>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
 
     private void addTyping(String username) {
         mMessages.add(new Message.Builder(Message.TYPE_ACTION)

@@ -56,7 +56,7 @@ public class HomeActivity extends BaseActivity {
          * Connect Socket for chatting initialization.
          */
         SocketManager.getInstance().connect();
-        SocketManager.getInstance().init(PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
+        SocketManager.getInstance().init(this,PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
 
         setContentView(R.layout.activity_home);
         initViews();

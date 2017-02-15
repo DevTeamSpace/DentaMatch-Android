@@ -1,13 +1,11 @@
 package com.appster.dentamatch.chat;
 
 import android.content.Context;
-import android.content.pm.ProviderInfo;
 
 import com.appster.dentamatch.util.LogUtils;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.exceptions.RealmMigrationNeededException;
 
 public class RealmManager {
     private static String TAG = "RealmManager";
@@ -27,7 +25,6 @@ public class RealmManager {
                     .deleteRealmIfMigrationNeeded()
                     .build();
             setRealmConfiguration(realmConfiguration);
-
         }
     }
 

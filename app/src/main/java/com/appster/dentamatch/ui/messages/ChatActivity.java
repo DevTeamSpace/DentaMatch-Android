@@ -8,11 +8,11 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.RealmDataBase.DBModel;
+import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
-import com.appster.dentamatch.model.ChatListModel;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
-import com.appster.dentamatch.model.ChatUserUnBlockedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -36,10 +36,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private ActivityChatBinding mBinder;
     private ChatAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-    private ChatListModel mChatModel;
-    String userId;
-    String recruiterId;
-
+    private String userId;
+    private String recruiterId;
+    private DBModel dbModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,13 +50,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.messages.setAdapter(mAdapter);
 
         if (getIntent().hasExtra(Constants.EXTRA_CHAT_MODEL)) {
-            mChatModel = getIntent().getParcelableExtra(Constants.EXTRA_CHAT_MODEL);
+            String recruiterID = getIntent().getStringExtra(Constants.EXTRA_CHAT_MODEL);
+            dbModel = DBHelper.getInstance().getDBData(recruiterID);
         }
 
         /**
-         * Change the Ui based on recruiter is blocked or not.
+         * Change the UI based on recruiter is blocked or not.
          */
-        if (mChatModel.getRecruiterBlock() == 1) {
+        if (dbModel.getSeekerHasBlocked() == 1) {
             mBinder.layUnblock.setVisibility(View.VISIBLE);
             mBinder.layActivityChatSender.setVisibility(View.GONE);
         } else {
@@ -66,8 +66,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }
 
         userId = PreferenceUtil.getUserChatId();
-        recruiterId = String.valueOf(mChatModel.getRecruiterId());
-        mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(mChatModel.getName());
+        recruiterId = dbModel.getRecruiterId();
+        mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(dbModel.getName());
 
     }
 
@@ -129,7 +129,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.lay_unblock:
-                blockUnBlockUser(0, mChatModel.getRecruiterId());
+                UnBlockUser();
                 break;
 
             case R.id.send_button:
@@ -159,18 +159,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             ChatMessageModel messageModel = event.getModel();
 
             if (messageModel.getToID().equalsIgnoreCase(userId)) {
-                addMessageToAdapter(messageModel.getMessage(), Message.TYPE_MESSAGE_SEND, messageModel.getMessageTime());
-            } else {
                 addMessageToAdapter(messageModel.getMessage(), Message.TYPE_MESSAGE_RECEIVED, messageModel.getMessageTime());
+            } else {
+                addMessageToAdapter(messageModel.getMessage(), Message.TYPE_MESSAGE_SEND, messageModel.getMessageTime());
             }
         }
 
     }
 
-    private void blockUnBlockUser(final int status, final int recruiterID) {
+    private void UnBlockUser() {
         BlockUnBlockRequest request = new BlockUnBlockRequest();
-        request.setBlockStatus(String.valueOf(status));
-        request.setRecruiterId(String.valueOf(recruiterID));
+        request.setBlockStatus(String.valueOf(0));
+        request.setRecruiterId(recruiterId);
 
         processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices client = RequestController.createService(AuthWebServices.class);
@@ -179,10 +179,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             public void onSuccess(BaseResponse response) {
 
                 if (response.getStatus() == 1) {
-                    mChatModel.setRecruiterBlock(0);
+                    DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_RECRUITED_BLOCKED, "0", null);
                     mBinder.layUnblock.setVisibility(View.GONE);
                     mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
-                    EventBus.getDefault().post(new ChatUserUnBlockedEvent(recruiterID));
                 } else {
                     showToast(response.getMessage());
                 }

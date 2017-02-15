@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
@@ -55,7 +56,7 @@ import java.util.UUID;
  */
 public class Utils {
     private static final String TAG = "Utils";
-    private int NOTIFICATION_CODE = 00101;
+    private  static int NOTIFICATION_CODE = 00101;
 
     private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -422,7 +423,7 @@ public class Utils {
         });
     }
 
-    public void showNotification(Context ct,String title, String message){
+    public static void showNotification(Context ct,String title, String message){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -433,6 +434,7 @@ public class Utils {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(),R.mipmap.ic_launcher))
                 .setAutoCancel(true);
 
         NotificationManager manager = (NotificationManager) ct.getSystemService(ct.NOTIFICATION_SERVICE);

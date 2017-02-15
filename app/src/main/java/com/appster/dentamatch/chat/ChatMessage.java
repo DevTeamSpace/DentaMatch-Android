@@ -1,6 +1,5 @@
 package com.appster.dentamatch.chat;
 
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 
 /**
