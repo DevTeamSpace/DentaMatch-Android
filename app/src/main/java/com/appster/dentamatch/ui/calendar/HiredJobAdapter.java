@@ -139,7 +139,13 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
             }
 
             holder.tvDocAddress.setText(data.getAddress());
-            String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+            String endMessage="";
+            if(data.getDays()==0){
+              endMessage=mContext.getString(R.string.text_todays);
+            }else{
+                 endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+
+            }
             holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             holder.tvDocName.setText(data.getOfficeName());
         }

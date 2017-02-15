@@ -330,5 +330,6 @@
     <string name="alert_invalid_part_time">Please select at least one day or part time job.</string>
     <string name="alert_invalid_temp_job">Please select at least one  day for temporary job.</string>
     <string name="header_calendar">Calendar</string>
+    <string name="text_todays">Today</string>
 
 </resources>
