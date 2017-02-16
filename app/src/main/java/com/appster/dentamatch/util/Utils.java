@@ -343,6 +343,31 @@ public class Utils {
        return  chatDateFormat.format(date);
     }
 
+    public static String convertUTCToTimeLabel(String UTCDateTime) {
+        Long time = Long.parseLong(UTCDateTime);
+        Date receivedDate = new Date(time);
+        Date currentDate = new Date(System.currentTimeMillis());
+        DateOnlyFormat.setTimeZone(TimeZone.getDefault());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        Date yesterdayDate = calendar.getTime();
+
+        String receivedDateString = DateOnlyFormat.format(receivedDate);
+        String currentDateString = DateOnlyFormat.format(currentDate);
+        String yesterdaysDateString = DateOnlyFormat.format(yesterdayDate);
+
+        if(receivedDateString.equalsIgnoreCase(currentDateString)){
+            return "Today";
+
+        }else if(receivedDateString.equalsIgnoreCase(yesterdaysDateString)){
+            return "Yesterday";
+
+        }else{
+            return receivedDateString;
+        }
+    }
+
 
     public static String compareDateFromCurrentLocalTime(String date) {
         FullDateFormat.setTimeZone(TimeZone.getDefault());

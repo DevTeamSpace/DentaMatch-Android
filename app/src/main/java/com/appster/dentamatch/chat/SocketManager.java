@@ -6,8 +6,11 @@ import android.content.Context;
 
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.GlobalMessageReceivedEvent;
+import com.appster.dentamatch.model.MessageAcknowledgementEvent;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
+import com.appster.dentamatch.ui.messages.Message;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -18,6 +21,7 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
+import io.socket.client.Ack;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -32,6 +36,7 @@ public class SocketManager {
     private final String SOCKET_CONNECT = "Socket connected";
     private final String SOCKET_DISCONNECT = "Socket disconnected";
     private final String SOCKET_CONNECTION_ERROR = "Socket connection error";
+    private final String SOCKET_ACKNOWLEDGEMENT= "Socket_acknowledgement_received";
 
     private final String PARAM_FROM_ID = "fromId";
     private final String PARAM_TO_ID = "toId";
@@ -40,10 +45,13 @@ public class SocketManager {
     private final String PARAM_SENT_TIME = "sentTime";
     private final String PARAM_USER_MSG = "message";
     private final String PARAM_PAGE = "pageNo";
+    private final String PARAM_RECRUITER_NAME = "fromName";
+    private final String PARAM_MESSAGE_ID = "messageId";
 
     private final String EMIT_USER_HISTORY = "getHistory";
     private final String EMIT_INIT = "init";
     private final String EMIT_SEND_MSG = "sendMessage";
+    private final String EMIT_UPDATE_READ_COUNT = "updateReadCount";
 
     private final String EVENT_NEW_MESSAGE = "receiveMessage";
     private final String EVENT_CHAT_HISTORY = "getMessages";
@@ -66,11 +74,11 @@ public class SocketManager {
     public static SocketManager getInstance() {
         if (socketManager == null) {
             synchronized (SocketManager.class) {
+
                 if (socketManager == null) {
                     socketManager = new SocketManager();
                 }
             }
-
         }
 
         return socketManager;
@@ -82,7 +90,6 @@ public class SocketManager {
 
     private static Socket getSocket() {
         try {
-
             mSocket = IO.socket(CHAT_SERVER_URL);
 
         } catch (URISyntaxException e) {
@@ -92,11 +99,12 @@ public class SocketManager {
         return mSocket;
     }
 
-    public void connect() {
+    public void connect(Context ct) {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
+        mContext = ct;
         registerEvents();
         mSocket.connect();
     }
@@ -115,6 +123,7 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECT);
             isConnected = true;
+            init();
         }
     };
 
@@ -133,6 +142,31 @@ public class SocketManager {
         }
     };
 
+    private Ack messageSentAcknowledgement = new Ack() {
+        @Override
+        public void call(final Object... args) {
+            attachedActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    /**
+                     * Insert the message sent into the DB .
+                     */
+                    final JSONObject jsonObject = (JSONObject) args[0];
+                    LogUtils.LOGD(TAG,SOCKET_ACKNOWLEDGEMENT+args[0]);
+                    ChatMessageModel model = parseData(jsonObject);
+                    Message message = new Message(model.getMessage(),
+                            model.getRecruiterName(),
+                            model.getMessageTime(),
+                            model.getMessageId(),
+                            Message.TYPE_MESSAGE_SEND);
+
+                    EventBus.getDefault().post(new MessageAcknowledgementEvent(message));
+                }
+            });
+
+        }
+    };
+
     /**
      * this listener is called  when a new message is transmitted from he server.
      */
@@ -142,8 +176,8 @@ public class SocketManager {
             LogUtils.LOGD(TAG, EVENT_NEW_MESSAGE + ":" + args[0]);
             final JSONObject jsonObject = (JSONObject) args[0];
 
-
             final ChatMessageModel model = parseData(jsonObject);
+
             /**
              * If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
              * Else send the message to the global message list listener to update data.
@@ -153,14 +187,19 @@ public class SocketManager {
                     attachedActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            /**
+                             * update the Unread status to read when the user has seen the message.
+                             */
+                            updateMsgRead(model.getFromID(),model.getToID());
                             EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(model));
                         }
                     });
                 }
             } else {
                 EventBus.getDefault().post(new GlobalMessageReceivedEvent(model));
+
                 if(mContext != null){
-                    Utils.showNotification(mContext, "Denta Test", model.getMessage());
+                    Utils.showNotification(mContext, model.getRecruiterName(), model.getMessage());
                 }
             }
 
@@ -228,18 +267,18 @@ public class SocketManager {
         hashMap.put(PARAM_FROM_ID, fromId);
         hashMap.put(PARAM_TO_ID, toId);
         hashMap.put(PARAM_USER_MSG, msg);
-        mSocket.emit(EMIT_SEND_MSG, new JSONObject(hashMap));
+        mSocket.emit(EMIT_SEND_MSG, new JSONObject(hashMap), messageSentAcknowledgement);
+
     }
 
-    public void init(Context context, String UserID, String UserName) {
+    public void init() {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        mContext = context;
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put(PARAM_USERID, UserID);
-        hashMap.put(PARAM_USERNAME, UserName);
+        hashMap.put(PARAM_USERID, PreferenceUtil.getUserChatId());
+        hashMap.put(PARAM_USERNAME, PreferenceUtil.getFirstName());
         JSONObject object = new JSONObject(hashMap);
         mSocket.emit(EMIT_INIT, object);
         LogUtils.LOGD(TAG, EMIT_INIT + ":" + object.toString());
@@ -261,9 +300,26 @@ public class SocketManager {
 
         try {
             model.setFromID(messageData.getString(PARAM_FROM_ID));
+            model.setRecruiterName(messageData.getString(PARAM_RECRUITER_NAME));
             model.setToID(messageData.getString(PARAM_TO_ID));
             model.setMessageTime(messageData.getString(PARAM_SENT_TIME));
             model.setMessage(messageData.getString(PARAM_USER_MSG));
+            model.setMessageId(messageData.getString(PARAM_MESSAGE_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
+
+    private ChatMessageModel parseDataForHistory(JSONObject messageData) {
+        ChatMessageModel model = new ChatMessageModel();
+
+        try {
+            model.setFromID(messageData.getString(PARAM_FROM_ID));
+            model.setToID(messageData.getString(PARAM_TO_ID));
+            model.setMessageTime(messageData.getString(PARAM_SENT_TIME));
+            model.setMessage(messageData.getString(PARAM_USER_MSG));
+            model.setMessageId(messageData.getString(PARAM_MESSAGE_ID));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -288,7 +344,7 @@ public class SocketManager {
                             attachedActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(parseData(dataObject)));
+                                    EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(parseDataForHistory(dataObject)));
                                 }
                             });
 
@@ -302,5 +358,23 @@ public class SocketManager {
 
 
         };
+    }
+
+    /**
+     * Messages sent from recruiter ID to user ID, need to be updated.
+     * @param fromId
+     * @param toId
+     */
+    public void updateMsgRead(String fromId, String toId){
+        if (mSocket == null) {
+            LogUtils.LOGD(TAG, SOCKET_ERROR);
+            return;
+        }
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put(PARAM_FROM_ID, fromId);
+        hashMap.put(PARAM_TO_ID, toId);
+        mSocket.emit(EMIT_UPDATE_READ_COUNT, new JSONObject(hashMap));
+
     }
 }

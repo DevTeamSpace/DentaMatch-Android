@@ -82,7 +82,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder> {
 
     }
 
-    public void addMessage(Message message){
+     void addMessage(Message message){
 
         if(mChatMessages == null){
             mChatMessages = new ArrayList<>();

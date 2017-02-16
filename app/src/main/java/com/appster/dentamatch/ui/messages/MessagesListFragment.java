@@ -33,9 +33,7 @@ import retrofit2.Call;
 public class MessagesListFragment extends BaseFragment {
     private FragmentMessagesBinding mMessagesBinding;
     private RecyclerView.LayoutManager mLayoutManager;
-    //    private MessageListAdapter mAdapter;
     private MyMessageListAdapter mAdapter;
-    //    private ArrayList<ChatListModel> mData;
     RealmResults<DBModel> data;
 
     public static MessagesListFragment newInstance() {
@@ -91,11 +89,12 @@ public class MessagesListFragment extends BaseFragment {
                         mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
 
                         for (ChatListModel model : response.getResult().getList()){
-                            Message message = new Message.Builder(Message.TYPE_MESSAGE_RECEIVED)
-                                    .username(model.getName())
-                                    .time(model.getTimestamp())
-                                    .message(model.getMessage()).build();
-                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()),message,model.getName());
+                            Message message = new Message(model.getMessage(),
+                                    model.getName(),
+                                    model.getTimestamp(),
+                                    null,
+                                    Message.TYPE_MESSAGE_RECEIVED);
+                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), model.getUnreadCount());
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();

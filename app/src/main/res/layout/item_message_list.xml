@@ -78,10 +78,9 @@
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/tv_message_chat_count"
         style="@style/text_view_small"
-        android:text="50"
-        android:visibility="gone"
+        android:text="99+"
+        android:visibility="visible"
         android:gravity="center"
-        android:padding="@dimen/margin_6"
         android:background="@drawable/background_badge"
         android:textColor="@color/white_color"
         android:layout_below="@+id/tv_message_recruiter_name"

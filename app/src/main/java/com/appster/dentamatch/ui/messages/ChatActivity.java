@@ -8,11 +8,12 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.RealmDataBase.DBModel;
 import com.appster.dentamatch.RealmDataBase.DBHelper;
+import com.appster.dentamatch.RealmDataBase.DBModel;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
+import com.appster.dentamatch.model.MessageAcknowledgementEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -38,6 +39,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayoutManager mLayoutManager;
     private String userId;
     private String recruiterId;
+    private String recruiterName;
     private DBModel dbModel;
 
     @Override
@@ -50,8 +52,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.messages.setAdapter(mAdapter);
 
         if (getIntent().hasExtra(Constants.EXTRA_CHAT_MODEL)) {
-            String recruiterID = getIntent().getStringExtra(Constants.EXTRA_CHAT_MODEL);
-            dbModel = DBHelper.getInstance().getDBData(recruiterID);
+            recruiterId = getIntent().getStringExtra(Constants.EXTRA_CHAT_MODEL);
+            dbModel = DBHelper.getInstance().getDBData(recruiterId);
         }
 
         /**
@@ -66,12 +68,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }
 
         userId = PreferenceUtil.getUserChatId();
-        recruiterId = dbModel.getRecruiterId();
-        mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(dbModel.getName());
+        recruiterName = dbModel.getName();
+        mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(recruiterName);
+
+        /**
+         * Update the unread count once the user has opened the chat activity.
+         */
+        SocketManager.getInstance().updateMsgRead(recruiterId, userId);
+        DBHelper.getInstance().upDateDB(recruiterId,DBHelper.UNREAD_MSG_COUNT,"0",null);
 
     }
-
-
 
     private void initViews() {
         mLayoutManager = new LinearLayoutManager(this);
@@ -107,7 +113,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
          * Connect to socket and request past chats to update the recycler view.
          */
         SocketManager.getInstance().attachPersonalListener(this, userId);
+//        RealmList<Message> data = DBHelper.getInstance().getRecruiterPastChats(recruiterId);
+
+//        if (data != null && data.size() > 0) {
+//            for (Message message : data) {
+//                addMessageToAdapter(message);
+//            }
+//        } else {
         SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
+//        }
+
     }
 
     /**
@@ -138,7 +153,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 if (!TextUtils.isEmpty(msg)) {
                     SocketManager.getInstance().sendMessage(userId, recruiterId, msg);
                     mBinder.messageInput.setText("");
-                    addMessageToAdapter(msg, Message.TYPE_MESSAGE_SEND, String.valueOf(System.currentTimeMillis()));
                 }
 
                 break;
@@ -152,17 +166,47 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-
+    /**
+     * Callback called in case of new message and in case of history received.
+     *
+     * @param event : received message from server.
+     */
     @Subscribe
     public void onNewMessageReceived(ChatPersonalMessageReceivedEvent event) {
         if (event != null) {
             ChatMessageModel messageModel = event.getModel();
+            int messageType = 0;
 
             if (messageModel.getToID().equalsIgnoreCase(userId)) {
-                addMessageToAdapter(messageModel.getMessage(), Message.TYPE_MESSAGE_RECEIVED, messageModel.getMessageTime());
+                messageType = Message.TYPE_MESSAGE_RECEIVED;
             } else {
-                addMessageToAdapter(messageModel.getMessage(), Message.TYPE_MESSAGE_SEND, messageModel.getMessageTime());
+                messageType = Message.TYPE_MESSAGE_SEND;
             }
+
+            /**
+             * Add the received message to the chat adapter for viewing.
+             */
+            Message message = new Message(messageModel.getMessage(),
+                    messageModel.getRecruiterName(),
+                    messageModel.getMessageTime(),
+                    messageModel.getMessageId(),
+                    messageType);
+
+            /**
+             * Insert the message received into the DB first.
+             */
+            DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(),"0");
+            addMessageToAdapter(message);
+        }
+
+    }
+
+    @Subscribe
+    public void onSentMsgAcknowledgement(final MessageAcknowledgementEvent event) {
+        if (event != null) {
+            DBHelper.getInstance().insertIntoDB(recruiterId, event.getmMessage(), recruiterName, "0");
+            addMessageToAdapter(event.getmMessage());
+
         }
 
     }
@@ -199,11 +243,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
-    private void addMessageToAdapter(String userText, int messageType, String time) {
-        Message message = new Message.Builder(messageType)
-                .message(userText)
-                .time(time)
-                .build();
+    private void addMessageToAdapter(Message message) {
         mAdapter.addMessage(message);
         scrollToBottom();
     }

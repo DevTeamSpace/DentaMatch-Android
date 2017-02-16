@@ -8,6 +8,7 @@ import com.appster.dentamatch.util.LogUtils;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -67,7 +68,7 @@ public class DBHelper {
         return mRealmInstance.where(DBModel.class).findAll();
     }
 
-    public void insertIntoDB(String recruiterId, Message userMessage, String recruiterName) {
+    public void insertIntoDB(String recruiterId, Message userMessage, String recruiterName, String unreadMsgCount) {
 
         if (mRealmInstance == null) {
             LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
@@ -85,8 +86,10 @@ public class DBHelper {
 
                 DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
                 newModel.setLastMessage(userMessage.getMessage());
+                newModel.setUnReadChatCount(unreadMsgCount);
                 newModel.setSeekerHasBlocked(0); // Set unblocked as default.
                 newModel.setName(recruiterName);
+                newModel.getUserChats().add(userMessage);
             }
             mRealmInstance.commitTransaction();
         }
@@ -126,6 +129,19 @@ public class DBHelper {
             mRealmInstance.commitTransaction();
 
         }
+    }
+
+    public RealmList<Message> getRecruiterPastChats(String recruiterId){
+        DBModel retrievedModel = getDBData(recruiterId);
+
+        if(retrievedModel != null){
+
+           if( retrievedModel.getUserChats().size() > 0){
+               return retrievedModel.getUserChats();
+           }
+        }
+
+        return null;
     }
 
     /**

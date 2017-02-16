@@ -18,6 +18,7 @@ public class ChatListModel implements Parcelable{
     private int recruiterId;
     private int recruiterBlock;
     private String name;
+    private String unreadCount;
     @SerializedName("seekerBlock")
     private int seekerHasBlocked;
 
@@ -30,6 +31,7 @@ public class ChatListModel implements Parcelable{
         seekerId = in.readInt();
         messageId = in.readInt();
         timestamp = in.readString();
+        unreadCount = in.readString();
         message = in.readString();
         recruiterId = in.readInt();
         recruiterBlock = in.readInt();
@@ -77,6 +79,9 @@ public class ChatListModel implements Parcelable{
         return recruiterBlock;
     }
 
+    public String getUnreadCount() {
+        return unreadCount;
+    }
     public String getName() {
         return name;
     }
@@ -100,6 +105,7 @@ public class ChatListModel implements Parcelable{
         dest.writeInt(recruiterId);
         dest.writeInt(recruiterBlock);
         dest.writeString(name);
+        dest.writeString(unreadCount);
         dest.writeInt(seekerHasBlocked);
     }
 }

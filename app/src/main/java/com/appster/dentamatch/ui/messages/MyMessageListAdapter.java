@@ -24,6 +24,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.Utils;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
@@ -57,9 +58,21 @@ public class MyMessageListAdapter extends RealmRecyclerViewAdapter<DBModel, MyMe
             DBModel dataModel = messagesData.get(position);
             holder.tvRecruiterName.setText(dataModel.getName());
             holder.tvLastMessage.setText(dataModel.getLastMessage());
-//            holder.tvDate.setText(Utils.compareDateFromCurrentLocalTime(dataModel
-//                            .getUserChats()
-//                            .get(dataModel.getUserChats().size() - 1).getmMessageTime()));
+            holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel
+                            .getUserChats()
+                            .get(dataModel.getUserChats().size() - 1).getmMessageTime()));
+
+            int unreadChatCount = Integer.parseInt(dataModel.getUnReadChatCount());
+
+            if(unreadChatCount == 0){
+                holder.tvUnreadChatCount.setVisibility(View.GONE);
+            }else if(unreadChatCount >= 100){
+                holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
+                holder.tvUnreadChatCount.setText("99+");
+            }else{
+                holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
+                holder.tvUnreadChatCount.setText(dataModel.getUnReadChatCount());
+            }
 
             holder.itemView.setTag(position);
 
@@ -138,13 +151,14 @@ public class MyMessageListAdapter extends RealmRecyclerViewAdapter<DBModel, MyMe
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-        TextView tvRecruiterName, tvLastMessage, tvDate;
+        TextView tvRecruiterName, tvLastMessage, tvDate, tvUnreadChatCount;
         View RemovableView, ConstantView;
 
         MyHolder(View itemView) {
             super(itemView);
 
             tvRecruiterName = mBinding.tvMessageRecruiterName;
+            tvUnreadChatCount = mBinding.tvMessageChatCount;
             tvLastMessage = mBinding.tvMessageChat;
             tvDate = mBinding.tvMessageDate;
             RemovableView = mBinding.swipebleView;

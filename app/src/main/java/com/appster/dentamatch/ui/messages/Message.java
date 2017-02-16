@@ -13,12 +13,20 @@ public class Message extends RealmObject{
     private String mMessage;
     private String mUsername;
     private String mMessageTime;
+    private String mMessageId;
 
-    /**
-     * public constructor is used here because we have extended
-     * it with realmObject and it needs a public constructor.
-     */
-    public Message() {}
+    public Message(){
+
+    }
+
+    public Message(String mMessage, String mUsername, String mMessageTime, String mMessageId, int mType) {
+        this.mMessage = mMessage;
+        this.mUsername = mUsername;
+        this.mMessageTime = mMessageTime;
+        this.mMessageId = mMessageId;
+        this.mType = mType;
+
+    }
 
     public int getType() {
         return mType;
@@ -36,38 +44,8 @@ public class Message extends RealmObject{
         return mMessageTime;
     }
 
-    public static class Builder {
-        private final int mType;
-        private String mUsername;
-        private String mMessage;
-        private String mMessageTime;
-
-        public Builder(int type) {
-            mType = type;
-        }
-
-        public Builder username(String username) {
-            mUsername = username;
-            return this;
-        }
-
-        public Builder message(String message) {
-            mMessage = message;
-            return this;
-        }
-
-        public Builder time(String time) {
-            mMessageTime = time;
-            return this;
-        }
-
-        public Message build() {
-            Message message = new Message();
-            message.mType = mType;
-            message.mUsername = mUsername;
-            message.mMessage = mMessage;
-            message.mMessageTime = mMessageTime;
-            return message;
-        }
+    public String getmMessageId() {
+        return mMessageId;
     }
+
 }
