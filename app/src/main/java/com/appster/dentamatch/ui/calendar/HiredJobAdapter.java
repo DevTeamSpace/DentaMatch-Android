@@ -201,7 +201,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to cancel the job?", new Alert.OnAlertClickListener() {
+        Alert.createYesNoAlert(mContext, mContext.getString(R.string.ok), mContext.getString(R.string.cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {
             @Override
             public void onPositive(DialogInterface dialog) {
                 CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
@@ -219,19 +219,16 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
         return false;
     }
 
-    public void cancelJob(int positon) {
-//        for(int i = 0; i < mJobListData.size(); i++){
-//
-//            if(mJobListData.get(i).getId() == JobID){
-//                mJobListData.remove(i);
-//                notifyItemRemoved(i);
-//                notifyItemRangeChanged(i,mJobListData.size());
-//                break;
-//            }
-//        }
+    public void cancelJob(int JobID) {
+        for(int i = 0; i < mJobListData.size(); i++){
 
-        mJobListData.remove(positon);
-        notifyItemRemoved(positon);
-        notifyItemRangeChanged(positon, mJobListData.size());
+            if(mJobListData.get(i).getId() == JobID){
+                mJobListData.remove(i);
+                notifyItemRemoved(i);
+                notifyItemRangeChanged(i,mJobListData.size());
+                break;
+            }
+        }
+
     }
 }

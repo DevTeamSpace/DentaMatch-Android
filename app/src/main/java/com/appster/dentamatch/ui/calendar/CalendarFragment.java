@@ -1,6 +1,7 @@
 package com.appster.dentamatch.ui.calendar;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.nfc.Tag;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.JobListAdapter;
 import com.appster.dentamatch.databinding.FragmentCalendarBinding;
+import com.appster.dentamatch.model.JobCancelEvent;
 import com.appster.dentamatch.model.JobDataReceivedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -27,6 +29,7 @@ import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.request.tracks.CancelJobRequest;
 import com.appster.dentamatch.network.response.jobs.HiredJobResponse;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
+import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
@@ -38,6 +41,7 @@ import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,7 +82,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         calendarBinding.toolbarCalendar.ivToolBarLeft.setVisibility(View.GONE);
         calendarBinding.toolbarCalendar.ivToolBarLeft.setVisibility(View.GONE);
         calendarBinding.toolbarCalendar.txvToolbarGeneralRight.setOnClickListener(this);
-        calendarBinding.toolbarCalendar.tvToolbarGeneralLeft.setText(getString(R.string.header_calendar));
+        calendarBinding.toolbarCalendar.tvToolbarGeneralLeft.setText(getString(R.string.header_calendar).toUpperCase());
         calendarBinding.toolbarCalendar.ivToolBarRight.setBackgroundResource(R.drawable.ic_plus);
         calendarBinding.toolbarCalendar.ivToolBarRight.setOnClickListener(this);
         calendarBinding.toolbarCalendar.ivToolBarRight.setVisibility(View.VISIBLE);
@@ -148,8 +152,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                 if (response.getStatus() == 1) {
                     calendarBinding.layoutBlankAlert.setVisibility(View.GONE);
                     calendarBinding.rvBookedJob.setVisibility(View.VISIBLE);
-                    calendarBinding.rvBookedJob.requestLayout();
-                    calendarBinding.rvBookedJob.setFocusable(true);
                     mAllJobLIst = response.getHiredJobResponseData().getJobList();
                     calendarBinding.customCalendar.setHiredListData(mAllJobLIst);
                     arrangeJobData(date);
@@ -157,7 +159,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                     calendarBinding.customCalendar.isFullTimeJob(false);
                     calendarBinding.rvBookedJob.setVisibility(View.GONE);
                     calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
-                    if(mAllJobLIst!=null){
+                    if (mAllJobLIst != null) {
                         mAllJobLIst.clear();
                     }
                     calendarBinding.customCalendar.setHiredListData(mAllJobLIst);
@@ -175,12 +177,12 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    private void cancelJob(final int ID, String msg, final int position) {
+    private void cancelJob(final int jobId, String msg) {
         showProgressBar(getString(R.string.please_wait));
 
         CancelJobRequest request = new CancelJobRequest();
         request.setCancelReason(msg);
-        request.setJobId(ID);
+        request.setJobId(jobId);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.cancelJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
@@ -190,10 +192,10 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                 Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
 
                 if (response.getStatus() == 1) {
-                    mJobAdapter.cancelJob(position);
+                    mJobAdapter.cancelJob(jobId);
 
                     if (mJobAdapter.getList().size() > 0) {
-//                        calendarBinding.rvBookedJob.setVisibility(View.GONE);
+                        calendarBinding.rvBookedJob.setVisibility(View.VISIBLE);
                         calendarBinding.layoutBlankAlert.setVisibility(View.GONE);
 
                     } else {
@@ -219,22 +221,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onMonthChanged(Calendar cal) {
         ViewGroup.LayoutParams params = calendarBinding.customCalendar.getLayoutParams();
-//        cal.set(Calendar.DAY_OF_MONTH, 1);
-//        int firstDayOfTheMonth = cal.get(Calendar.DAY_OF_WEEK) - 1;
-//        cal.set(Calendar.MONTH, cal.get(Calendar.MONTH));
-////        int days = tempCal.getActualMaximum(Calendar.DAY_OF_MONTH);
-//
-//        int days = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-//        Utils.showToast(getActivity(), "Days is-=" + firstDayOfTheMonth + "&&days month=" + days);
-//        if (firstDayOfTheMonth == 6 && (days == 30 || days == 31)) {
-//            params.height = 330;
-//        } else if (firstDayOfTheMonth == 5 && days == 31) {
-//            params.height = 330;
-//        } else {
-//            params.height = 300;
-//        }
-
-//        calendarBinding.customCalendar.setLayoutParams(params);
         getBookedJob(prepareRequest(cal), Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()));
 
     }
@@ -286,5 +272,34 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
             }
         }
+    }
+
+    @Subscribe
+    public void jobCancelled(JobCancelEvent event) {
+        if (event != null) {
+            for (HiredJobs model : mAllJobLIst) {
+
+                if (model.getId() == event.getJobID()) {
+                    cancelJob(event.getJobID(), event.getMsg());
+                    break;
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        EventBus.getDefault().unregister(this);
+        super.onDetach();
+
     }
 }

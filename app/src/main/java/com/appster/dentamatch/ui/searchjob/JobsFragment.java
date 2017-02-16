@@ -80,10 +80,10 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.txv_toolbar_general_right:
-                startActivity(new Intent(getActivity(),SearchJobActivity.class));
+                startActivity(new Intent(getActivity(), SearchJobActivity.class));
                 break;
             case R.id.iv_tool_bar_left:
-                startActivity(new Intent(getActivity(),NotificationActivity.class));
+//                startActivity(new Intent(getActivity(),NotificationActivity.class));
                 break;
 
             default:

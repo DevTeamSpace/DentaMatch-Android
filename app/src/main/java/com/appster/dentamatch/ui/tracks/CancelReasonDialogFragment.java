@@ -53,7 +53,7 @@ public class CancelReasonDialogFragment extends android.support.v4.app.DialogFra
     @Override
     public void onClick(View v) {
         if(TextUtils.isEmpty(mBinding.etFragmentDialogCancel.getText())){
-            Toast.makeText(getActivity(),"Please enter a reason for cancelling the job", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),getActivity().getString(R.string.alert_reason_cancel_job), Toast.LENGTH_SHORT).show();
         }else{
             EventBus.getDefault().post(new JobCancelEvent(mJobID, mBinding.etFragmentDialogCancel.getText().toString()));
             getDialog().dismiss();

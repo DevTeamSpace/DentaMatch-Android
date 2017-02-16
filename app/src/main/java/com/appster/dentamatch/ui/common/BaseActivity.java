@@ -285,7 +285,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void localLogOut() {
         LogUtils.LOGD(TAG, "Local logout");
-
+        PreferenceUtil.setFcmToken("");
         PreferenceUtil.reset();
         PreferenceUtil.setIsOnBoarding(true);
 
