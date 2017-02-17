@@ -39,16 +39,14 @@
                     android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_medium" />
 
-                <org.apmem.tools.layouts.FlowLayout
+                <com.wefika.flowlayout.FlowLayout
                     android:visibility="gone"
-                    app:layoutDirection="ltr"
                     android:id="@+id/flow_layout_job_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginBottom="@dimen/margin_10"
-                    android:layout_marginRight="@dimen/margin_normal">
-                </org.apmem.tools.layouts.FlowLayout>
+                    android:layout_marginRight="@dimen/margin_normal" />
 
                 <View
                     android:layout_width="match_parent"

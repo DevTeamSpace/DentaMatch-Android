@@ -50,7 +50,6 @@
                     android:layout_below="@+id/fl_profile_pic_id"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_15"
-                    android:text="@string/accept"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_header"
                     app:customFont="@string/font_regular" />

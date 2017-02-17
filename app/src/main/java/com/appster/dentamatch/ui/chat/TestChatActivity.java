@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.ChatMessage;
 import com.appster.dentamatch.chat.RealmController;
@@ -31,7 +32,6 @@ import io.realm.RealmList;
 import io.realm.RealmRecyclerViewAdapter;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-
 
 /**
  * Created by ramkumar on 06/02/17.
@@ -74,24 +74,12 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 
         realmList = realmController.getAllMsgByThreadId(realm, "901");
 
-        mAdapter = new MessageAdapter(this, realmList);
+//        mAdapter = new MessageAdapter(this, realmList);
 
         mBinder.rcvChat.setLayoutManager(new LinearLayoutManager(this));
         mBinder.rcvChat.setAdapter(mAdapter);
 
-<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
-        mSocket = ((DentaApp) getApplication()).getSocket();
-=======
 //        mSocket = ((DentaApp) getApplication()).getSocket();
-
-//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
-//        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
-//        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-//        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-//        mSocket.on("new message", onNewMessage);
-//        mSocket.on("typing", onTyping);
-//        mSocket.on("stop typing", onStopTyping);
->>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
         mSocket.connect();
 
         mBinder.sendButton.setOnClickListener(this);
@@ -162,7 +150,6 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
         addLog(getResources().getQuantityString(R.plurals.message_participants, numUsers, numUsers));
     }*/
 
-<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
     private void addMessage(String username, String message) {
         ChatMessage msg = new ChatMessage();
         msg.setChatThreadId("901");
@@ -188,18 +175,13 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 
 
 
-=======
 //    private void addMessage(String username, String message) {
->>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
 //        mMessages.add(new Message.Builder(Message.TYPE_MESSAGE)
 //                .username(username).message(message).build());
 //        mAdapter.notifyItemInserted(mMessages.size() - 1);
 //        scrollToBottom();
-<<<<<<< HEAD:app/src/main/java/com/appster/dentamatch/ui/chat/ChatActivity.java
     }
-=======
 //    }
->>>>>>> bba097ec35e5bd0b8601cead6b1b856f70f51585:app/src/main/java/com/appster/dentamatch/ui/chat/TestChatActivity.java
 
     private void addTyping(String username) {
         mMessages.add(new Message.Builder(Message.TYPE_ACTION)

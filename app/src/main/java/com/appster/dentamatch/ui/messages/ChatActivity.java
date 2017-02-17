@@ -47,8 +47,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_chat);
         initViews();
         mLayoutManager.setStackFromEnd(true);
-        mBinder.messages.setLayoutManager(mLayoutManager);
-        mBinder.messages.setAdapter(mAdapter);
+        mBinder.rcvChat.setLayoutManager(mLayoutManager);
+        mBinder.rcvChat.setAdapter(mAdapter);
 
         if (getIntent().hasExtra(Constants.EXTRA_CHAT_MODEL)) {
             mChatModel = getIntent().getParcelableExtra(Constants.EXTRA_CHAT_MODEL);
@@ -197,7 +197,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void scrollToBottom() {
-        mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
+        mBinder.rcvChat.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
     private void addMessageToAdapter(String userText, int messageType, String time) {

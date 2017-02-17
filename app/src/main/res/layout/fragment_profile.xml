@@ -47,7 +47,7 @@
                 </RelativeLayout>
 
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_profile_icon"
                     android:layout_width="@dimen/profile_image_height"
                     android:layout_height="@dimen/profile_image_height"
@@ -172,15 +172,12 @@
                 android:id="@+id/cell_affiliation"
                 layout="@layout/layout_profile_cell_header" />
 
-            <org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.wefika.flowlayout.FlowLayout
                 android:id="@+id/flow_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
-                android:visibility="gone"
-                app:layoutDirection="ltr">
-
-            </org.apmem.tools.layouts.FlowLayout>
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/cell_licence"

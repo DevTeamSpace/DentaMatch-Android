@@ -4,28 +4,23 @@ package com.appster.dentamatch;
  * Created by gautambisht on 10/11/16.
  */
 
+import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
 import com.appster.dentamatch.chat.RealmManager;
-import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.util.NetworkMonitor;
+import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
+import com.squareup.leakcanary.LeakCanary;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
-import io.realm.Realm;
-import io.socket.client.IO;
-import io.socket.client.Socket;
 
-//import com.facebook.stetho.Stetho;
-//import com.squareup.leakcanary.LeakCanary;
-
-public class DentaApp extends MultiDexApplication {
+public class DentaApp extends Application {
     private static DentaApp appController;
     private static Context mAppContext;
-
 
     @Override
     public void onCreate() {
@@ -36,29 +31,31 @@ public class DentaApp extends MultiDexApplication {
 
         RealmManager.initializeRealmConfig(getAppContext());
 
-//        if (BuildConfig.DEBUG) {
-////            LeakCanary.install(this);
-//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-//                    .detectDiskReads()
-//                    .detectDiskWrites()
-//                    .detectNetwork()   // or .detectAll() for all detectable problems
-//                    .penaltyLog()
-//                    .build());
-//            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//                    .detectLeakedSqlLiteObjects()
-//                    .detectLeakedClosableObjects()
-//                    .detectActivityLeaks()
-//                    .penaltyLog()
-//                    //.penaltyDeath()
-//                    .build());
-//            Stetho.initialize(
-//                    Stetho.newInitializerBuilder(this)
-//                            .enableDumpapp(
-//                                    Stetho.defaultDumperPluginsProvider(this))
-//                            .enableWebKitInspector(
-//                                    Stetho.defaultInspectorModulesProvider(this))
-//                            .build());
-//        }
+        if (BuildConfig.DEBUG) {
+            LeakCanary.install(this);
+
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .detectActivityLeaks()
+                    .penaltyLog()
+                    //.penaltyDeath()
+                    .build());
+
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(
+                                    Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(
+                                    Stetho.defaultInspectorModulesProvider(this))
+                            .build());
+        }
 
         // Shared preference initialize
         Hawk.init(mAppContext).build();

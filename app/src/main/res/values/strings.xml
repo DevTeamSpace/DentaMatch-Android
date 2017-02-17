@@ -153,8 +153,7 @@
     <string name="header_affiliation">AFFILIATIONS</string>
     <string name="header_about_me">ABOUT ME</string>
     <string name="header_job_detail">JOB DETAILS</string>
-
-
+    <string name="header_license">License</string>
     <string name="header_skills_exp">SKILLS &amp; EXPERIENCE</string>
     <string name="header_schooling_exp">SCHOOLING &amp; EXPERIENCE</string>
 
@@ -210,6 +209,7 @@
     <string name="settings_logout">Logout</string>
     <string name="settings_privacy">Privacy Policy</string>
     <string name="settings_terms">Terms &amp; Conditions</string>
+    <string name="settings_license">Attributions</string>
     <string name="header_settings">SETTINGS</string>
     <string name="alert_logout">Do you really want to logout?</string>
     <string name="alert_discard_exp">You have to discard this experience if you want to move further.</string>

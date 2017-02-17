@@ -20,15 +20,14 @@
             android:textSize="@dimen/text_size_12"
             app:customFont="@string/font_medium" />
 
-        <org.apmem.tools.layouts.FlowLayout
+        <com.wefika.flowlayout.FlowLayout
             android:id="@+id/skill_flow_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_25"
             android:layout_marginStart="@dimen/margin_25"
-            android:layout_marginBottom="@dimen/margin_normal">
+            android:layout_marginBottom="@dimen/margin_normal" />
 
-        </org.apmem.tools.layouts.FlowLayout>
     </LinearLayout>
 
 </layout>
