@@ -3,6 +3,7 @@ package com.appster.dentamatch.util;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -448,7 +451,13 @@ public class Utils {
         });
     }
 
-    public static void showNotification(Context ct,String title, String message){
+    public static boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public static void showNotification(Context ct, String title, String message, PendingIntent intent){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -462,8 +471,14 @@ public class Utils {
                 .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(),R.mipmap.ic_launcher))
                 .setAutoCancel(true);
 
+        if(intent != null){
+            builder.setContentIntent(intent);
+        }
+
         NotificationManager manager = (NotificationManager) ct.getSystemService(ct.NOTIFICATION_SERVICE);
-        manager.notify(NOTIFICATION_CODE, builder.build());
+        Notification notification = builder.build();
+        notification.defaults = Notification.DEFAULT_VIBRATE;
+        manager.notify(NOTIFICATION_CODE, notification);
     }
 
     public static boolean isValidEmailAddress(String email) {

@@ -22,6 +22,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 
 import io.realm.RealmResults;
 import retrofit2.Call;
@@ -59,21 +60,27 @@ public class MessagesListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        data = DBHelper.getInstance().getAllUserChats();
 
-        if (data != null && data.size() > 0) {
-            mAdapter = new MyMessageListAdapter(getActivity(), data, true);
-            mMessagesBinding.rvMessageList.setAdapter(mAdapter);
-        }else {
+        if (Utils.isConnected(getActivity())) {
             getChatHistory();
+        } else {
+            data = DBHelper.getInstance().getAllUserChats();
+
+            if (data != null && data.size() > 0) {
+                mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
+                mAdapter = new MyMessageListAdapter(getActivity(), data, true);
+                mMessagesBinding.rvMessageList.setAdapter(mAdapter);
+            } else {
+                mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
+            }
         }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
     }
-
 
     private void getChatHistory() {
         showProgressBar(getString(R.string.please_wait));
@@ -88,20 +95,19 @@ public class MessagesListFragment extends BaseFragment {
                             response.getResult().getList().size() > 0) {
                         mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
 
-                        for (ChatListModel model : response.getResult().getList()){
+                        for (ChatListModel model : response.getResult().getList()) {
                             Message message = new Message(model.getMessage(),
                                     model.getName(),
                                     model.getTimestamp(),
                                     null,
                                     Message.TYPE_MESSAGE_RECEIVED);
-                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), model.getUnreadCount());
+                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), Integer.parseInt(model.getUnreadCount()));
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();
-                        LogUtils.LOGD("REALM",""+data);
-                        mAdapter = new MyMessageListAdapter(getActivity(),data, true);
+                        LogUtils.LOGD("REALM", "" + data);
+                        mAdapter = new MyMessageListAdapter(getActivity(), data, true);
                         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
-
 
 
                     } else {

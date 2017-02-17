@@ -63,7 +63,6 @@ public class NetworkMonitor extends BroadcastReceiver {
             e.printStackTrace();
             mConnectionAvailable = false;
         }
-
     }
 
     public static String getNetworkOperatorName() {

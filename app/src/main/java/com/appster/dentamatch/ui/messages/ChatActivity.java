@@ -22,6 +22,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -88,17 +89,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.layUnblock.setOnClickListener(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
-    public String getActivityName() {
-        return null;
-    }
-
     /**
      * Registering EventBus to receive chat updates.
      */
@@ -113,18 +103,37 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
          * Connect to socket and request past chats to update the recycler view.
          */
         SocketManager.getInstance().attachPersonalListener(this, userId);
-//        RealmList<Message> data = DBHelper.getInstance().getRecruiterPastChats(recruiterId);
 
-//        if (data != null && data.size() > 0) {
-//            for (Message message : data) {
-//                addMessageToAdapter(message);
-//            }
-//        } else {
-        SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
-//        }
+        if(!dbModel.isDBUpdated()){
+
+            if(Utils.isConnected(this)) {
+                SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
+                DBHelper.getInstance().upDateDB(recruiterId,DBHelper.IS_SYNCED,"true",null);
+            }else{
+                for(Message message : dbModel.getUserChats() ){
+                    addMessageToAdapter(message);
+                }
+            }
+
+        }else{
+
+           for(Message message : dbModel.getUserChats() ){
+               addMessageToAdapter(message);
+           }
+        }
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public String getActivityName() {
+        return null;
+    }
     /**
      * UnRegistering EventBus to stop receive chat updates.
      */
@@ -192,10 +201,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     messageModel.getMessageId(),
                     messageType);
 
+
             /**
              * Insert the message received into the DB first.
              */
-            DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(),"0");
+            DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(),0);
             addMessageToAdapter(message);
         }
 
@@ -204,7 +214,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Subscribe
     public void onSentMsgAcknowledgement(final MessageAcknowledgementEvent event) {
         if (event != null) {
-            DBHelper.getInstance().insertIntoDB(recruiterId, event.getmMessage(), recruiterName, "0");
+            DBHelper.getInstance().insertIntoDB(recruiterId, event.getmMessage(), recruiterName, 0);
             addMessageToAdapter(event.getmMessage());
 
         }

@@ -62,16 +62,16 @@ public class MyMessageListAdapter extends RealmRecyclerViewAdapter<DBModel, MyMe
                             .getUserChats()
                             .get(dataModel.getUserChats().size() - 1).getmMessageTime()));
 
-            int unreadChatCount = Integer.parseInt(dataModel.getUnReadChatCount());
+            dataModel.getUnReadChatCount();
 
-            if(unreadChatCount == 0){
+            if(dataModel.getUnReadChatCount() == 0){
                 holder.tvUnreadChatCount.setVisibility(View.GONE);
-            }else if(unreadChatCount >= 100){
+            }else if(dataModel.getUnReadChatCount() >= 100){
                 holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
                 holder.tvUnreadChatCount.setText("99+");
             }else{
                 holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
-                holder.tvUnreadChatCount.setText(dataModel.getUnReadChatCount());
+                holder.tvUnreadChatCount.setText(String.valueOf(dataModel.getUnReadChatCount()));
             }
 
             holder.itemView.setTag(position);

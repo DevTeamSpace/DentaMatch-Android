@@ -2,10 +2,9 @@ package com.appster.dentamatch.chat;
 
 
 import android.app.Activity;
-import android.content.Context;
 
+import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
-import com.appster.dentamatch.model.GlobalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.ui.messages.Message;
@@ -36,7 +35,7 @@ public class SocketManager {
     private final String SOCKET_CONNECT = "Socket connected";
     private final String SOCKET_DISCONNECT = "Socket disconnected";
     private final String SOCKET_CONNECTION_ERROR = "Socket connection error";
-    private final String SOCKET_ACKNOWLEDGEMENT= "Socket_acknowledgement_received";
+    private final String SOCKET_ACKNOWLEDGEMENT = "Socket_acknowledgement_received";
 
     private final String PARAM_FROM_ID = "fromId";
     private final String PARAM_TO_ID = "toId";
@@ -65,7 +64,7 @@ public class SocketManager {
     private boolean isConnected;
     private Activity attachedActivity;
     private String attachedUserID;
-    private Context mContext;
+    private Activity attachedGlobalActivity;
 
     private SocketManager() {
         getSocket();
@@ -99,14 +98,19 @@ public class SocketManager {
         return mSocket;
     }
 
-    public void connect(Context ct) {
+    public boolean isSocketConnected(){
+        return isConnected;
+    }
+
+    public void connect(Activity act) {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        mContext = ct;
         registerEvents();
         mSocket.connect();
+        attachedGlobalActivity = act;
+
     }
 
     public void disconnect() {
@@ -116,6 +120,19 @@ public class SocketManager {
         }
         unRegisterEvents();
         mSocket.disconnect();
+    }
+
+    /**
+     * Reset all DB status to sync status needed, in order to retreive data from the server on
+     * Socket Connected.
+     */
+    private void raiseSyncNeeded(){
+        attachedGlobalActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DBHelper.getInstance().setSyncNeeded();
+            }
+        });
     }
 
     private Emitter.Listener onConnect = new Emitter.Listener() {
@@ -132,6 +149,7 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
             isConnected = false;
+            raiseSyncNeeded();
         }
     };
 
@@ -139,6 +157,8 @@ public class SocketManager {
         @Override
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
+            isConnected = false;
+            raiseSyncNeeded();
         }
     };
 
@@ -152,7 +172,7 @@ public class SocketManager {
                      * Insert the message sent into the DB .
                      */
                     final JSONObject jsonObject = (JSONObject) args[0];
-                    LogUtils.LOGD(TAG,SOCKET_ACKNOWLEDGEMENT+args[0]);
+                    LogUtils.LOGD(TAG, SOCKET_ACKNOWLEDGEMENT + args[0]);
                     ChatMessageModel model = parseData(jsonObject);
                     Message message = new Message(model.getMessage(),
                             model.getRecruiterName(),
@@ -188,18 +208,36 @@ public class SocketManager {
                         @Override
                         public void run() {
                             /**
-                             * update the Unread status to read when the user has seen the message.
+                             * update the Unread status to read when the user has seen the message. In this case we
+                             * add the message after in the post event of eventBus because we need to update the chat adapter
+                             * in the UI, for the user to read the message.
                              */
-                            updateMsgRead(model.getFromID(),model.getToID());
+                            updateMsgRead(model.getFromID(), model.getToID());
                             EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(model));
                         }
                     });
                 }
             } else {
-                EventBus.getDefault().post(new GlobalMessageReceivedEvent(model));
 
-                if(mContext != null){
-                    Utils.showNotification(mContext, model.getRecruiterName(), model.getMessage());
+                /**
+                 * In case a global message has been received we store it to the DB directly as no UI needs to be updated,
+                 * The Db changes are directly reflected in the Adapter.
+                 */
+                if (attachedGlobalActivity != null) {
+                    attachedGlobalActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Message message = new Message(model.getMessage(),
+                                    model.getRecruiterName(),
+                                    model.getMessageTime(),
+                                    model.getMessageId(),
+                                    Message.TYPE_MESSAGE_RECEIVED);
+
+                            DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1);
+                            Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), null);
+
+                        }
+                    });
                 }
             }
 
@@ -219,7 +257,7 @@ public class SocketManager {
         }
     }
 
-    public void detachPersonalListener(){
+    public void detachPersonalListener() {
         attachedActivity = null;
         this.attachedUserID = null;
         /**
@@ -229,6 +267,7 @@ public class SocketManager {
             mSocket.off(EVENT_CHAT_HISTORY, onHistory);
         }
     }
+
 
     private void registerEvents() {
         if (mSocket == null) {
@@ -362,10 +401,11 @@ public class SocketManager {
 
     /**
      * Messages sent from recruiter ID to user ID, need to be updated.
+     *
      * @param fromId
      * @param toId
      */
-    public void updateMsgRead(String fromId, String toId){
+    public void updateMsgRead(String fromId, String toId) {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;

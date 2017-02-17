@@ -11,20 +11,29 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class DBModel extends RealmObject {
-
     @PrimaryKey
     private String recruiterId;
     private String name;
-    private String unReadChatCount;
+    private int unReadChatCount;
     private int seekerHasBlocked;
     private String lastMessage;
+    private boolean hasDBUpdated;
+
+    public boolean isDBUpdated() {
+        return hasDBUpdated;
+    }
+
+    public void setHasDBUpdated(boolean hasDBUpdated) {
+        this.hasDBUpdated = hasDBUpdated;
+    }
+
     private RealmList<Message> userChats;
 
-    public String getUnReadChatCount() {
+    public int getUnReadChatCount() {
         return unReadChatCount;
     }
 
-    public void setUnReadChatCount(String unReadChatCount) {
+    public void setUnReadChatCount(int unReadChatCount) {
         this.unReadChatCount = unReadChatCount;
     }
 
