@@ -76,7 +76,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
          * Update the unread count once the user has opened the chat activity.
          */
         SocketManager.getInstance().updateMsgRead(recruiterId, userId);
-        DBHelper.getInstance().upDateDB(recruiterId,DBHelper.UNREAD_MSG_COUNT,"0",null);
+        DBHelper.getInstance().upDateDB(recruiterId, DBHelper.UNREAD_MSG_COUNT, "0", null);
 
     }
 
@@ -102,24 +102,24 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         /**
          * Connect to socket and request past chats to update the recycler view.
          */
-        SocketManager.getInstance().attachPersonalListener(this, userId);
+        SocketManager.getInstance().attachPersonalListener(this, recruiterId);
 
-        if(!dbModel.isDBUpdated()){
+        if (!dbModel.isDBUpdated()) {
 
-            if(Utils.isConnected(this)) {
+            if (Utils.isConnected(this)) {
                 SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
-                DBHelper.getInstance().upDateDB(recruiterId,DBHelper.IS_SYNCED,"true",null);
-            }else{
-                for(Message message : dbModel.getUserChats() ){
+                DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
+            } else {
+                for (Message message : dbModel.getUserChats()) {
                     addMessageToAdapter(message);
                 }
             }
 
-        }else{
+        } else {
 
-           for(Message message : dbModel.getUserChats() ){
-               addMessageToAdapter(message);
-           }
+            for (Message message : dbModel.getUserChats()) {
+                addMessageToAdapter(message);
+            }
         }
 
     }
@@ -127,13 +127,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
     public String getActivityName() {
         return null;
     }
+
     /**
      * UnRegistering EventBus to stop receive chat updates.
      */
@@ -141,10 +141,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     protected void onStop() {
         EventBus.getDefault().unregister(this);
 
-        /**
-         * Disconnect to socket and request past chats to update the recycler view.
-         */
-        SocketManager.getInstance().detachPersonalListener();
+
         super.onStop();
     }
 
@@ -173,6 +170,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        /**
+         * Disconnect to socket and request past chats to update the recycler view.
+         */
+        SocketManager.getInstance().detachPersonalListener();
+        hideKeyboard();
+        super.onBackPressed();
+//        startActivity(new Intent(this, HomeActivity.class).putExtra(Constants.EXTRA_FROM_CHAT, true));
     }
 
     /**
@@ -205,7 +213,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             /**
              * Insert the message received into the DB first.
              */
-            DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(),0);
+            DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(), 0);
             addMessageToAdapter(message);
         }
 

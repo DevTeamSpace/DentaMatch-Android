@@ -23,6 +23,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -288,7 +289,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         PreferenceUtil.reset();
         PreferenceUtil.setIsOnBoarding(true);
-
+        Utils.clearNotifications(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(Constants.EXTRA_IS_LOGIN, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

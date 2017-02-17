@@ -99,7 +99,7 @@ public class MessagesListFragment extends BaseFragment {
                             Message message = new Message(model.getMessage(),
                                     model.getName(),
                                     model.getTimestamp(),
-                                    null,
+                                    String.valueOf(model.getMessageId()),
                                     Message.TYPE_MESSAGE_RECEIVED);
                             DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), Integer.parseInt(model.getUnreadCount()));
                         }

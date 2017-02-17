@@ -34,6 +34,7 @@ public class DentaApp extends MultiDexApplication {
          */
         DBHelper.getInstance().initializeRealmConfig(mAppContext);
 
+
 //        if (BuildConfig.DEBUG) {
 ////            LeakCanary.install(this);
 //            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

@@ -91,15 +91,12 @@ public class DBHelper {
             } else {
 
                 DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
-
-                if(!checkIfMessageAlreadyExists(newModel.getUserChats(), userMessage)){
                     newModel.setLastMessage(userMessage.getMessage());
-                    newModel.setHasDBUpdated(true);
+                    newModel.setHasDBUpdated(false);
                     newModel.setUnReadChatCount(unreadMsgCount);
                     newModel.setSeekerHasBlocked(0); // Set unblocked as default.
                     newModel.setName(recruiterName);
                     newModel.getUserChats().add(userMessage);
-                }
 
             }
             mRealmInstance.commitTransaction();
@@ -113,12 +110,20 @@ public class DBHelper {
     private boolean checkIfMessageAlreadyExists(RealmList<Message> chatArray, Message messageObj){
         boolean isAlreadyAdded = false;
 
-        for(Message message : chatArray){
-            if(message.getmMessageId().equalsIgnoreCase( messageObj.getmMessageId())){
-                isAlreadyAdded = true;
-                break;
+            if (chatArray.size() > 0) {
+                for (Message message : chatArray) {
+                    if (message.getmMessageId().equalsIgnoreCase(messageObj.getmMessageId())) {
+                        isAlreadyAdded = true;
+                        break;
+                    }
+                }
+            } else {
+                /**
+                 * Since ChatArray provided has no entries of chat in it , thus we conclude that
+                 * the chatArray needs to be updated.
+                 */
+                isAlreadyAdded = false;
             }
-        }
 
         return isAlreadyAdded;
     }

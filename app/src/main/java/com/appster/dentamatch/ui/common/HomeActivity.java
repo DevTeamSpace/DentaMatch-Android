@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.common;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
+import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.MessagesListFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.searchjob.JobsFragment;
@@ -34,7 +36,6 @@ import org.greenrobot.eventbus.Subscribe;
  */
 public class HomeActivity extends BaseActivity {
 
-    //   categoryId valid for maximum 6 level
     private AHBottomNavigation bottomBar;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
@@ -65,6 +66,15 @@ public class HomeActivity extends BaseActivity {
          */
         if (getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)) {
             bottomBar.setCurrentItem(0);
+        }
+
+        /**
+         * Launch job message fragment if redirected from notification click.
+         */
+        if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
+            bottomBar.setCurrentItem(3);
+            String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL,RecruiterID));
         }
 
         /**

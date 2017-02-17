@@ -457,7 +457,12 @@ public class Utils {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static void showNotification(Context ct, String title, String message, PendingIntent intent){
+    public static void clearNotifications(Context ct){
+        NotificationManager notificationManager = (NotificationManager)ct.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(NOTIFICATION_CODE);
+    }
+
+    public static void showNotification(Context ct, String title, String message, Intent intent){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -471,9 +476,10 @@ public class Utils {
                 .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(),R.mipmap.ic_launcher))
                 .setAutoCancel(true);
 
-        if(intent != null){
-            builder.setContentIntent(intent);
-        }
+
+            PendingIntent Pendingintent = PendingIntent.getActivity(ct, NOTIFICATION_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
+            builder.setContentIntent(Pendingintent);
+
 
         NotificationManager manager = (NotificationManager) ct.getSystemService(ct.NOTIFICATION_SERVICE);
         Notification notification = builder.build();

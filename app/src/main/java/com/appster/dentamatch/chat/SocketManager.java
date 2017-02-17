@@ -2,12 +2,15 @@ package com.appster.dentamatch.chat;
 
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.ui.messages.Message;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -63,7 +66,7 @@ public class SocketManager {
     private Emitter.Listener onHistory;
     private boolean isConnected;
     private Activity attachedActivity;
-    private String attachedUserID;
+    private String attachedRecruiterID;
     private Activity attachedGlobalActivity;
 
     private SocketManager() {
@@ -202,7 +205,7 @@ public class SocketManager {
              * If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
              * Else send the message to the global message list listener to update data.
              */
-            if (attachedUserID != null && model.getToID().equalsIgnoreCase(attachedUserID)) {
+            if (attachedRecruiterID != null && model.getFromID().equalsIgnoreCase(attachedRecruiterID)) {
                 if (attachedActivity != null) {
                     attachedActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -221,7 +224,7 @@ public class SocketManager {
 
                 /**
                  * In case a global message has been received we store it to the DB directly as no UI needs to be updated,
-                 * The Db changes are directly reflected in the Adapter.
+                 * The DB changes are directly reflected in the Adapter.
                  */
                 if (attachedGlobalActivity != null) {
                     attachedGlobalActivity.runOnUiThread(new Runnable() {
@@ -234,7 +237,11 @@ public class SocketManager {
                                     Message.TYPE_MESSAGE_RECEIVED);
 
                             DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1);
-                            Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), null);
+
+                            Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
+                            intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
+                            intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent);
 
                         }
                     });
@@ -247,7 +254,7 @@ public class SocketManager {
     public void attachPersonalListener(Activity act, String userID) {
         attachedActivity = act;
         setHistoryListener();
-        this.attachedUserID = userID;
+        this.attachedRecruiterID = userID;
 
         /**
          * Attach listener for history.
@@ -259,7 +266,7 @@ public class SocketManager {
 
     public void detachPersonalListener() {
         attachedActivity = null;
-        this.attachedUserID = null;
+        this.attachedRecruiterID = null;
         /**
          * Remove history listener.
          */
