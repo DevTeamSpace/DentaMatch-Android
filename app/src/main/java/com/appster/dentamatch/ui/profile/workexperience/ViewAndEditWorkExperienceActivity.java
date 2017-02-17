@@ -22,7 +22,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.UsPhoneNumberFormat;
 import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.util.socialhelper.WorkExpValidationUtil;
+import com.appster.dentamatch.util.WorkExpValidationUtil;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetJobTitle;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetPicker;
 

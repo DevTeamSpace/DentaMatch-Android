@@ -156,7 +156,6 @@ dependencies {
     compile 'com.aurelhubert:ahbottomnavigation:2.0.3'
     compile 'cat.ereza:customactivityoncrash:1.5.0'
     compile 'com.orhanobut:hawk:2.0.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.12.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.wefika:flowlayout:0.4.1'
