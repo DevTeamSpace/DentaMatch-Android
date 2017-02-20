@@ -78,13 +78,13 @@ public class DentaApp extends MultiDexApplication {
             //Fabric.with(this, new Crashlytics());
         }
 
+
         // GoogleAnalytics initialize
         //AnalyticsHelper.prepareAnalytics(this);
 
         // Push ReadNotificationRequest initialize
         FirebaseApp.initializeApp(mAppContext);
     }
-
 
     public static Context getAppContext() {
         return mAppContext;
