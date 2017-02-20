@@ -59,7 +59,6 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         mPartTimeDays = new ArrayList<>();
         mBinder.toolbarSetAvailability.tvToolbarGeneralLeft.setText(getString(R.string.header_set_availability));
         mBinder.toolbarSetAvailability.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
-
         mBinder.toolbarSetAvailability.txvToolbarGeneralRight.setText(getString(R.string.save_label));
         mBinder.toolbarSetAvailability.txvToolbarGeneralRight.setOnClickListener(this);
         mBinder.toolbarSetAvailability.ivToolBarLeft.setOnClickListener(this);
@@ -262,7 +261,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
     private boolean checkValidation() {
         if (!isPartTime && !isFullTime && !isTemporary) {
-            showToast(getString(R.string.select_multiple_job));
+            showToast(getString(R.string.alert_select_job_type));
             return false;
         }
         if (isPartTime && (!isSunday && !isMonday && !isWednesday && !isThursday && !isFriday && !isSaturday && !isSunday)) {
@@ -270,7 +269,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
             return false;
         }
-        if (isTemporary && (mBinder.customCalendar.getAvailabilityList() == null && mBinder.customCalendar.getAvailabilityList().size() == 0)) {
+        if (isTemporary && (mBinder.customCalendar.getAvailabilityList() == null || mBinder.customCalendar.getAvailabilityList().size() == 0)) {
             showToast(getString(R.string.alert_invalid_temp_job));
 
         }

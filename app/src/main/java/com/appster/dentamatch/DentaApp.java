@@ -75,7 +75,7 @@ public class DentaApp extends MultiDexApplication {
         // GoogleAnalytics initialize
         //AnalyticsHelper.prepareAnalytics(this);
 
-        // Push Notification initialize
+        // Push ReadNotificationRequest initialize
         FirebaseApp.initializeApp(mAppContext);
     }
 

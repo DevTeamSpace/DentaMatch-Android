@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/shape_dot_selected" />
+                android:background="@drawable/shape_read_notification" />
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/tv_desc"
@@ -72,19 +72,26 @@
             android:paddingTop="@dimen/margin_5"
             android:text="@string/txt_temporary"
             android:textColor="@color/white_color"
-            android:textSize="@dimen/text_size_14"
+            android:textSize="@dimen/text_size_small"
+
             app:customFont="@string/font_regular" />
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_time"
             style="@style/text_view_normal"
-            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_19"
             android:layout_marginLeft="@dimen/margin_50"
             android:layout_marginRight="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
-            android:text="@string/txt_temporary"
             android:textColor="@color/chat_message"
-            android:textSize="@dimen/text_size_14"
+            android:textSize="@dimen/text_size_small"
             app:customFont="@string/font_regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:background="@color/line_divider"
+        android:layout_marginStart="@dimen/margin_normal"
+            />
     </LinearLayout>
 </layout>

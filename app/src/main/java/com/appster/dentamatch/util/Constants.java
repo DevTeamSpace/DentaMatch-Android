@@ -86,6 +86,10 @@ public class Constants {
         String INDEX = "INDEX";
         String SUB_SKILLS = "sub_skills";
     }
+    public interface DateFormet {
+        String YYYYMMDD = "yyyy-MM-dd";
+        String YYYYMMDDHHMMSS = "yyyy-MM-dd hh:mm:ss";
+    }
 
     public interface APIS {
         String PRIVACY_POLICY = "privacy-policy";

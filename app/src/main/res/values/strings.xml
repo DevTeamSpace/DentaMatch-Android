@@ -327,11 +327,19 @@
     <string name="txt_unblock">UNBLOCK</string>
     <string name="header_notification">NOTIFICATIONS</string>
     <string name="alert_empty_hired_job">You don’t have any booked jobs on this date yet.</string>
-    <string name="alert_invalid_part_time">Please select at least one day or part time job.</string>
+    <string name="alert_invalid_part_time">Please select at least one day.</string>
     <string name="alert_invalid_temp_job">Please select at least one  day for temporary job.</string>
     <string name="header_calendar">Calendar</string>
     <string name="text_todays">Today</string>
     <string name="alert_cancel_job">Are you sure you want to cancel the job?</string>
     <string name="alert_reason_cancel_job">Please enter a reason for cancelling the job.</string>
+    <string name="alert_select_job_type">Please select at least one available option.</string>
+    <string name="sec">SEC AGO </string>
+    <string name="min">MIN AGO </string>
+    <string name="hrs">HRS AGO </string>
+    <string name="days">DAYS AGO </string>
+    <string name="weeks">WEEKS AGO </string>
+    <string name="months">MONTHS AGO </string>
+    <string name="yearss">YEARS AGO </string>
 
 </resources>

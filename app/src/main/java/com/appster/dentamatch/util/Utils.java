@@ -304,12 +304,25 @@ public class Utils {
         view.setTypeface(tf);
 
     }
+    public static void setFontFaceRobotoRegular(TextView view) {
+        Typeface tf = Typeface.createFromAsset(view.getContext()
+                .getAssets(), "Roboto-Regular.ttf");
+
+        view.setTypeface(tf);
+
+    }
 
     public static int convertSpToPixels(float sp, Context context) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
     }
 
     public static void setFontFaceRobotoBold(TextView view) {
+        Typeface tf = Typeface.createFromAsset(view.getContext()
+                .getAssets(), "Roboto-Bold.ttf");
+
+        view.setTypeface(tf);
+
+    }public static void setFontFaceRobotoMedium(TextView view) {
         Typeface tf = Typeface.createFromAsset(view.getContext()
                 .getAssets(), "Roboto-Bold.ttf");
 
@@ -431,6 +444,16 @@ public class Utils {
         }
     }
 
+    public static Date getDate(String dateStr, String dateFormet) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = inputFormat.parse(dateStr);
+            return date;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static String getDayOfWeek(String dateStr) {
         try {
@@ -461,5 +484,47 @@ public class Utils {
             return null;
 
         }
+    }
+
+    public static String getDuration(Date createdDate, Context context) {
+        String time = "";
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(createdDate);
+        long createMillis = cal.getTimeInMillis();
+        long currentMillis = System.currentTimeMillis();
+        long reqTime = currentMillis - createMillis;
+        long sec = reqTime / 1000;
+        time = sec + " " + context.getString(R.string.sec);
+        if (sec >= 60) {
+            long minute = sec / 60;
+            time = minute + " " + context.getString(R.string.min);
+
+            if (minute >= 60) {
+                long hrs = minute / 60;
+                time = hrs + " " + context.getString(R.string.hrs);
+
+                if (hrs > 24) {
+                    int days = (int) hrs / 24;
+                    time = days + " " + context.getString(R.string.days);
+
+                    if (days >= 7) {
+                        int week = days / 7;
+                        time = week + " " + context.getString(R.string.weeks);
+
+                        if (days >= 30) {
+                            int month = days / 30;
+                            time = month + " " + context.getString(R.string.mon);
+
+                            if (month >= 12) {
+                                int year = month / 12;
+                                time = year + " " + context.getString(R.string.year);
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return time;
     }
 }

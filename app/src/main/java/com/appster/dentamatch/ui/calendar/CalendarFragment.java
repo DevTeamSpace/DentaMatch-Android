@@ -202,6 +202,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
                         mJobAdapter.notifyDataSetChanged();
                     }
+                    calendarBinding.customCalendar.setHiredListData(mAllJobLIst);
                 }
             }
 
@@ -231,46 +232,49 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         boolean isFullTime = false;
         if (mAllJobLIst != null && mAllJobLIst.size() > 0) {
             for (int i = 0; i < mAllJobLIst.size(); i++) {
-                if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
-                    isFullTime = true;
-                    selectedDateJobList.add(mAllJobLIst.get(i));
-                } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
-                    String day = Utils.getDayOfWeek(date);
-                    if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
-                        selectedDateJobList.add(mAllJobLIst.get(i));
-                    } else if (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1) {
-                        selectedDateJobList.add(mAllJobLIst.get(i));
-                    } else if (day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1) {
-                        selectedDateJobList.add(mAllJobLIst.get(i));
-                    } else if (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1) {
-                        selectedDateJobList.add(mAllJobLIst.get(i));
-                    } else if (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1) {
-                        selectedDateJobList.add(mAllJobLIst.get(i));
-                    } else if (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1) {
-                        selectedDateJobList.add(mAllJobLIst.get(i));
-                    } else if (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1) {
-                        selectedDateJobList.add(mAllJobLIst.get(i));
-                    }
-                } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
-                    for (int t = 0; t < mAllJobLIst.get(i).getTemporaryJobDates().size(); t++) {
-                        if (mAllJobLIst.get(i).getTemporaryJobDates().get(t).getJobDate().equalsIgnoreCase(date)) {
+//                if (Utils.getDate(mAllJobLIst.get(i).getJobDate()).compareTo(Utils.parseDate(Calendar.getInstance().getTime())) >= 0) {
+//                    if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
+//                        isFullTime = true;
+//                        selectedDateJobList.add(mAllJobLIst.get(i));
+//                    } else
+                    if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
+                        String day = Utils.getDayOfWeek(date);
+                        if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
+                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1) {
+                            selectedDateJobList.add(mAllJobLIst.get(i));
+                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1) {
+                            selectedDateJobList.add(mAllJobLIst.get(i));
+                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1) {
+                            selectedDateJobList.add(mAllJobLIst.get(i));
+                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1) {
+                            selectedDateJobList.add(mAllJobLIst.get(i));
+                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1) {
+                            selectedDateJobList.add(mAllJobLIst.get(i));
+                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1) {
+                            selectedDateJobList.add(mAllJobLIst.get(i));
+                        }
+                    } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
+                        for (int t = 0; t < mAllJobLIst.get(i).getTemporaryJobDates().size(); t++) {
+                            if (mAllJobLIst.get(i).getTemporaryJobDates().get(t).getJobDate().equalsIgnoreCase(date)) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
 
+                            }
                         }
                     }
+
                 }
-
-            }
-            if (selectedDateJobList != null && selectedDateJobList.size() > 0) {
-                calendarBinding.customCalendar.isFullTimeJob(isFullTime);
-                calendarBinding.rvBookedJob.setVisibility(View.VISIBLE);
-                mJobAdapter.setJobList(selectedDateJobList);
+                if (selectedDateJobList != null && selectedDateJobList.size() > 0) {
+                    calendarBinding.customCalendar.isFullTimeJob(isFullTime);
+                    calendarBinding.rvBookedJob.setVisibility(View.VISIBLE);
+                    mJobAdapter.setJobList(selectedDateJobList);
 //                mJobAdapter.notifyDataSetChanged();
-            } else {
-                calendarBinding.rvBookedJob.setVisibility(View.GONE);
-                calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
+                } else {
+                    calendarBinding.rvBookedJob.setVisibility(View.GONE);
+                    calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
 
-            }
+                }
+//            }
         }
     }
 

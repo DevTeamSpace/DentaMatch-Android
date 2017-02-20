@@ -117,7 +117,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                         } else {
                             params.addRule(RelativeLayout.ALIGN_BASELINE, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
-                            holder.tvDate.setPadding(0,4,0,0);
+                            holder.tvDate.setPadding(0, 4, 0, 0);
                         }
                     }
                 }, 100);
@@ -137,8 +137,15 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             }
 
             holder.tvDocAddress.setText(data.getAddress());
-            String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
-            holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
+            if (data.getDays() == 0) {
+                holder.tvDuration.setText(mContext.getString(R.string.text_todays));
+
+            } else {
+                String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+                holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
+            }
+//            String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+//            holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDocName.setText(data.getOfficeName());
         }
@@ -186,7 +193,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             case R.id.cb_job_selection:
                 final int position = (int) v.getTag();
                 final int status = mJobListData.get(position).getIsSaved() == 1 ? 0 : 1;
-                if(status == 0) {
+                if (status == 0) {
                     Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
                         @Override
                         public void onPositive(DialogInterface dialog) {
@@ -199,7 +206,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                             notifyItemChanged(position);
                         }
                     });
-                }else{
+                } else {
                     saveUnSaveJob(mJobListData.get(position).getId(), status, position);
                 }
 
@@ -217,10 +224,10 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
 
     }
 
-    public void updateData(SearchJobModel model){
-        for (int i = 0; i< mJobListData.size(); i++){
-            if(mJobListData.get(i).getId() == model.getId()){
-                mJobListData.set(i,model);
+    public void updateData(SearchJobModel model) {
+        for (int i = 0; i < mJobListData.size(); i++) {
+            if (mJobListData.get(i).getId() == model.getId()) {
+                mJobListData.set(i, model);
                 notifyItemChanged(i);
                 break;
             }

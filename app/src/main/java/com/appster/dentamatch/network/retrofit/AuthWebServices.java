@@ -1,6 +1,7 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest;
 import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
 import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
@@ -31,6 +32,7 @@ import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.jobs.HiredJobResponse;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
+import com.appster.dentamatch.network.response.notification.NotificationResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
@@ -88,7 +90,8 @@ public interface AuthWebServices {
     String SAVE_AVAILABILITY = "users/update-availability";
     String UPDATE_USER_LOCATION = "users/user-location-update";
     String USER_CHAT_HISTORY = "users/chat-user-list";
-    String GET_NOTIFICATION= "users/notification-list";
+    String GET_NOTIFICATION = "users/notification-list";
+    String RAED_NOTIFICATION = "users/notification-list";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
 
 
@@ -98,8 +101,9 @@ public interface AuthWebServices {
 
     @GET(USER_CHAT_HISTORY)
     Call<ChatHistoryResponse> getChatHistory();
+
     @GET(GET_NOTIFICATION)
-    Call<ChatHistoryResponse> getNotification(@Query("page") int page);
+    Call<NotificationResponse> getNotification(@Query("page") int page);
 
     @POST(UPDATE_USER_LOCATION)
     Call<BaseResponse> updateUserLocation(@Body ChangeUserLocation request);
@@ -163,7 +167,6 @@ public interface AuthWebServices {
     Call<JobTitleResponse> jobTitle();
 
 
-
     @GET(SKILLS_LIST)
     Call<SkillsResponse> getSkillsList();
 
@@ -175,6 +178,8 @@ public interface AuthWebServices {
 
     @POST(SCHOOL_ADD)
     Call<BaseResponse> addSchooling(@Body AddSchoolRequest schoolRequest);
+    @POST(RAED_NOTIFICATION)
+    Call<BaseResponse> readNotification(@Body ReadNotificationRequest notificationRequest);
 
     @GET(CERTIFICATION_LIST)
     Call<CertificateResponse> getCertificationList();
@@ -184,8 +189,10 @@ public interface AuthWebServices {
 
     @GET(GET_PROFILE)
     Call<ProfileResponse> getProfile();
+
     @POST(AVAILABLE_LIST)
     Call<AvailabilityResponse> getAvailabilityList(@Body GetAvailabilityRequest getAvailabilityRequest);
+
     @POST(SAVE_AVAILABILITY)
     Call<BaseResponse> saveAvailability(@Body SaveAvailabilityRequest saveAvailabiltyRequest);
 

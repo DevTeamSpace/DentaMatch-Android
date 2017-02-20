@@ -10,11 +10,16 @@ public class NotificationData {
     private int senderId;
     private int receiverId;
     private int id;
+
+
     private int seen;
     private int jobListId;
     private String createdAt;
     private String notificationData;
     private JobDetailModel jobDetailModel;
+    public void setSeen(int seen) {
+        this.seen = seen;
+    }
 
     public int getSenderId() {
         return senderId;

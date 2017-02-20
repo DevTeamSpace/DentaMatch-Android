@@ -10,6 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
@@ -186,24 +187,36 @@ public class CalendarViewEvent extends LinearLayout {
         }
 
 //        while (dayValueInCells.size() < MAX_CALENDAR_COLUMN) {
+        boolean reqPos=false;
         for (int i = 0; i < MAX_CALENDAR_COLUMN; i++) {
             LogUtils.LOGD(TAG, "firstDayOfTheMonth==" + firstDayOfTheMonth + "=i=" + i);
             CalenderAvailableCellModel data = new CalenderAvailableCellModel();
             data.setDate(mCal.getTime());
             mCal.add(Calendar.DAY_OF_MONTH, 1);
 //            if (isCurrentMonth&&Calendar.getInstance().get(Calendar.MONTH) == cal.get(Calendar.MONTH) && Calendar.getInstance().get(Calendar.YEAR) == cal.get(Calendar.YEAR)) {
+            LogUtils.LOGD(TAG,"dis date####"+ Utils.dateFormetyyyyMMdd(mCal.getTime()));
+            LogUtils.LOGD(TAG,"curent date####"+ Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()));
             if (Utils.dateFormetyyyyMMdd(mCal.getTime()).equalsIgnoreCase(Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()))) {
-                oldClickedPos = i;
-                data.setSelected(true);
+                LogUtils.LOGD(TAG, "match");
+                reqPos=true;
+//                oldClickedPos = i;
+//                data.setSelected(true);
             } else if (i == firstDayOfTheMonth && !(Calendar.getInstance().get(Calendar.MONTH) == cal.get(Calendar.MONTH) && Calendar.getInstance().get(Calendar.YEAR) == cal.get(Calendar.YEAR))) {
                 oldClickedPos = i;
                 data.setSelected(true);
-
             } else {
                 data.setSelected(false);
-
             }
             //                data.setSelected(true);
+            if (!Utils.dateFormetyyyyMMdd(mCal.getTime()).equalsIgnoreCase(Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()))) {
+
+                if (reqPos) {
+                    LogUtils.LOGD(TAG, "match");
+                    reqPos = false;
+                    data.setSelected(true);
+                    oldClickedPos = i;
+                }
+            }
 
             dayValueInCells.add(data);
         }

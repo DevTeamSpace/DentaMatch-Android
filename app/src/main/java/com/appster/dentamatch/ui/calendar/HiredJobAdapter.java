@@ -18,6 +18,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemJobListBinding;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
@@ -139,14 +140,13 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
             }
 
             holder.tvDocAddress.setText(data.getAddress());
-            String endMessage="";
-            if(data.getDays()==0){
-              endMessage=mContext.getString(R.string.text_todays);
-            }else{
-                 endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+            if (data.getDays() == 0) {
+                holder.tvDuration.setText(mContext.getString(R.string.text_todays));
 
+            } else {
+                String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+                holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             }
-            holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             holder.tvDocName.setText(data.getOfficeName());
         }
 
@@ -167,12 +167,12 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     public void onClick(View v) {
         switch (v.getId()) {
 
-//
-//            case R.id.lay_item_job_list:
-//                int jobID = (int) v.getTag();
-//                mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-//                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID).putExtra(Constants.INTENT_KEY.FROM_WHERE,true));
-//                break;
+
+            case R.id.lay_item_job_list:
+                int jobID = mJobListData.get((int) v.getTag()).getRecruiterJobId();
+                mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
+                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID).putExtra(Constants.INTENT_KEY.FROM_WHERE, true));
+                break;
 
             default:
                 break;
@@ -206,7 +206,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
             public void onPositive(DialogInterface dialog) {
                 CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getId());
+                bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getRecruiterJobId());
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), null);
             }
@@ -220,12 +220,12 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     }
 
     public void cancelJob(int JobID) {
-        for(int i = 0; i < mJobListData.size(); i++){
+        for (int i = 0; i < mJobListData.size(); i++) {
 
-            if(mJobListData.get(i).getId() == JobID){
+            if (mJobListData.get(i).getId() == JobID) {
                 mJobListData.remove(i);
                 notifyItemRemoved(i);
-                notifyItemRangeChanged(i,mJobListData.size());
+                notifyItemRangeChanged(i, mJobListData.size());
                 break;
             }
         }
