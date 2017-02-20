@@ -476,9 +476,10 @@ public class Utils {
                 .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(),R.mipmap.ic_launcher))
                 .setAutoCancel(true);
 
-
-            PendingIntent Pendingintent = PendingIntent.getActivity(ct, NOTIFICATION_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
-            builder.setContentIntent(Pendingintent);
+            if(intent != null) {
+                PendingIntent Pendingintent = PendingIntent.getActivity(ct, NOTIFICATION_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
+                builder.setContentIntent(Pendingintent);
+            }
 
 
         NotificationManager manager = (NotificationManager) ct.getSystemService(ct.NOTIFICATION_SERVICE);

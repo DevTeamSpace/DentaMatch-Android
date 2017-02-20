@@ -2,15 +2,12 @@ package com.appster.dentamatch.chat;
 
 
 import android.app.Activity;
-import android.content.Intent;
 
 import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
-import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.ui.messages.Message;
-import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -238,10 +235,10 @@ public class SocketManager {
 
                             DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1);
 
-                            Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
-                            intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
-                            intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent);
+//                            Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
+//                            intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
+//                            intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), null);
 
                         }
                     });
