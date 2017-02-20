@@ -341,6 +341,5 @@
     <string name="weeks">WEEKS AGO </string>
     <string name="months">MONTHS AGO </string>
     <string name="years">YEARS AGO </string>
-    <string name="office_address_length_alert">Office address length can not exceed 30 characters</string>
 
 </resources>

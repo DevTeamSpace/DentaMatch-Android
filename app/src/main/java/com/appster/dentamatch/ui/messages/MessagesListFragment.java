@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.messages;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -45,20 +44,6 @@ public class MessagesListFragment extends BaseFragment {
     @Override
     public String getFragmentName() {
         return null;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        EventBus.getDefault().unregister(this);
-        super.onDetach();
     }
 
     @Nullable
@@ -138,25 +123,10 @@ public class MessagesListFragment extends BaseFragment {
     }
 
     private void initViews() {
-        mData = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new MessageListAdapter(getActivity(), mData);
         mMessagesBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getString(R.string.nav_message));
         mMessagesBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setAllCaps(true);
         mMessagesBinding.toolbarFragmentJobs.ivToolBarLeft.setVisibility(View.GONE);
-
     }
 
-    @Subscribe
-    public void onUserUnblocked(ChatUserUnBlockedEvent event){
-        if(event != null){
-
-            for (ChatListModel model: mData) {
-                if(model.getRecruiterId() == event.getRecruiterID()){
-                    model.setRecruiterBlock(0);
-                    break;
-                }
-            }
-        }
-    }
 }

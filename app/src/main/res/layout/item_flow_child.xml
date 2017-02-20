@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_6"
         android:layout_marginStart="@dimen/margin_6"
-        android:background="@drawable/edit_text_selector_search"
+        android:background="@drawable/bg_edit_text"
         android:ellipsize="end"
         android:maxLines="1"
         android:paddingBottom="@dimen/margin_5"

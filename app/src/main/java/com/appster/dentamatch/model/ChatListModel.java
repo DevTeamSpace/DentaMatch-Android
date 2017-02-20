@@ -53,7 +53,7 @@ public class ChatListModel implements Parcelable{
     }
 
     public void setSeekerBlock(int seekerBlock) {
-        this.seekerBlock = seekerBlock;
+        this.seekerHasBlocked = seekerBlock;
     }
 
     public int getMessageListId() {

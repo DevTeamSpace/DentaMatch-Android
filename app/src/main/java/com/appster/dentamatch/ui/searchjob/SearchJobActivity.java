@@ -26,7 +26,6 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
-import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
 
@@ -429,18 +428,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             mSelectedJobID.add(jobTitleListItem.getId());
         }
 
-        FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
-                FlowLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(20, 0, 20, 20);
+        com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(mBinder.flowLayoutJobTitle.getContext())
+                .inflate(R.layout.item_flow_child, mBinder.flowLayoutJobTitle, false));
 
-        TextView textView = new TextView(this);
-        textView.setLayoutParams(layoutParams);
-        textView.setSingleLine();
-        textView.setPadding(10,10,10,10);
-        textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setBackgroundResource(R.drawable.edit_text_selector);
-        textView.setText(text);
-        mBinder.flowLayoutJobTitle.addView(textView, layoutParams);
+        flowBinding.flowChild.setText(text);
+        mBinder.flowLayoutJobTitle.addView(flowBinding.getRoot());
+
     }
 
     private void callJobListApi() {
