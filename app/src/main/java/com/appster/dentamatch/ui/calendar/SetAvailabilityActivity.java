@@ -271,6 +271,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         }
         if (isTemporary && (mBinder.customCalendar.getAvailabilityList() == null || mBinder.customCalendar.getAvailabilityList().size() == 0)) {
             showToast(getString(R.string.alert_invalid_temp_job));
+            return false;
 
         }
         return true;
