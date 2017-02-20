@@ -1,28 +1,17 @@
 package com.appster.dentamatch.ui.notification;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ItemJobListBinding;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
-import com.appster.dentamatch.network.response.jobs.HiredJobs;
 import com.appster.dentamatch.network.response.notification.NotificationData;
-import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
-import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;

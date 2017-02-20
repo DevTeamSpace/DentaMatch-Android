@@ -340,6 +340,6 @@
     <string name="days">DAYS AGO </string>
     <string name="weeks">WEEKS AGO </string>
     <string name="months">MONTHS AGO </string>
-    <string name="yearss">YEARS AGO </string>
+    <string name="years">YEARS AGO </string>
 
 </resources>

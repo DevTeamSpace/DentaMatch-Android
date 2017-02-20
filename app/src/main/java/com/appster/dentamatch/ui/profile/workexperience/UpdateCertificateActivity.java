@@ -15,7 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateCertificateBinding;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
@@ -30,27 +29,18 @@ import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.CameraUtil;
-import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.PermissionUtils;
-import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.util.*;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetDatePicker;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-
-import org.apache.http.params.CoreConnectionPNames;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import org.greenrobot.eventbus.EventBus;
-import org.w3c.dom.Text;
+import retrofit2.Call;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.internal.Util;
-import retrofit2.Call;
 
 /**
  * Created by virender on 20/01/17.

@@ -13,7 +13,7 @@ public class Message {
     private String mMessageTime;
 
 
-    private Message() {}
+    public Message() {}
 
     public int getType() {
         return mType;

@@ -517,7 +517,7 @@ public class Utils {
 
                             if (month >= 12) {
                                 int year = month / 12;
-                                time = year + " " + context.getString(R.string.year);
+                                time = year + " " + context.getString(R.string.years);
 
                             }
                         }
