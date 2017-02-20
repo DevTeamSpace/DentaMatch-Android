@@ -3,6 +3,8 @@ package com.appster.dentamatch.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Appster on 08/02/17.
  */
@@ -16,7 +18,9 @@ public class ChatListModel implements Parcelable{
     private int recruiterId;
     private int recruiterBlock;
     private String name;
-    private int seekerBlock;
+    private String unreadCount;
+    @SerializedName("seekerBlock")
+    private int seekerHasBlocked;
 
 
     protected ChatListModel(Parcel in) {
@@ -24,11 +28,12 @@ public class ChatListModel implements Parcelable{
         seekerId = in.readInt();
         messageId = in.readInt();
         timestamp = in.readString();
+        unreadCount = in.readString();
         message = in.readString();
         recruiterId = in.readInt();
         recruiterBlock = in.readInt();
         name = in.readString();
-        seekerBlock = in.readInt();
+        seekerHasBlocked = in.readInt();
     }
 
     public static final Creator<ChatListModel> CREATOR = new Creator<ChatListModel>() {
@@ -79,12 +84,15 @@ public class ChatListModel implements Parcelable{
         return recruiterBlock;
     }
 
+    public String getUnreadCount() {
+        return unreadCount;
+    }
     public String getName() {
         return name;
     }
 
-    public int getSeekerBlock() {
-        return seekerBlock;
+    public int getSeekerHasBlocked() {
+        return seekerHasBlocked;
     }
 
     @Override
@@ -102,6 +110,7 @@ public class ChatListModel implements Parcelable{
         dest.writeInt(recruiterId);
         dest.writeInt(recruiterBlock);
         dest.writeString(name);
-        dest.writeInt(seekerBlock);
+        dest.writeString(unreadCount);
+        dest.writeInt(seekerHasBlocked);
     }
 }

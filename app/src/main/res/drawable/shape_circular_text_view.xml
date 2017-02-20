@@ -3,8 +3,9 @@
 
     <solid android:color="@color/light_moss_green" />
 
+
     <size
-        android:width="35dp"
-        android:height="35dp" />
+        android:width="30dp"
+        android:height="30dp" />
 
 </shape>

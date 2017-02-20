@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.common;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +13,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
+import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.MessagesListFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.searchjob.JobsFragment;
@@ -33,7 +36,6 @@ import org.greenrobot.eventbus.Subscribe;
  */
 public class HomeActivity extends BaseActivity {
 
-    //   categoryId valid for maximum 6 level
     private AHBottomNavigation bottomBar;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
@@ -50,6 +52,12 @@ public class HomeActivity extends BaseActivity {
         if(!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
         }
+
+        /**
+         * Connect Socket for chatting initialization.
+         */
+        SocketManager.getInstance().connect(this);
+
         setContentView(R.layout.activity_home);
         initViews();
 
@@ -58,6 +66,15 @@ public class HomeActivity extends BaseActivity {
          */
         if (getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)) {
             bottomBar.setCurrentItem(0);
+        }
+
+        /**
+         * Launch job message fragment if redirected from notification click.
+         */
+        if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
+            bottomBar.setCurrentItem(3);
+            String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL,RecruiterID));
         }
 
         /**
@@ -71,6 +88,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        SocketManager.getInstance().disconnect();
         super.onDestroy();
 
     }
@@ -80,6 +98,7 @@ public class HomeActivity extends BaseActivity {
         Location location = locationEvent.getMessage();
         PreferenceUtil.setUserCurrentLocation(location);
     }
+
     /**
      * initViews is used to initialize this view at app launch
      */
@@ -222,23 +241,6 @@ public class HomeActivity extends BaseActivity {
         return null;
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onResume();
-//        /**
-//         * Connect Socket for chatting initialization.
-//         */
-//        SocketManager.getInstance(this).connect();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        /**
-//         * Socket disconnected.
-//         */
-//        SocketManager.getInstance(this).disconnect();
-//        super.onStop();
-//    }
 
     private void launchProfileFragment() {
         fragmentTransaction = fragmentManager.beginTransaction();
