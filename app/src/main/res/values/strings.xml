@@ -260,7 +260,7 @@
     <string name="friday">Fr</string>
     <string name="saturday">Sa</string>
     <string name="header_search_job">SEARCH JOBS</string>
-    <string name="header_set_availability">SET AVAILBILITY</string>
+    <string name="header_set_availability">SET AVAILABILITY</string>
     <string name="job_tile_search">You can select more than one job title</string>
     <string name="button_search">SEARCH</string>
 
@@ -341,5 +341,4 @@
     <string name="weeks">WEEKS AGO </string>
     <string name="months">MONTHS AGO </string>
     <string name="years">YEARS AGO </string>
-
 </resources>
