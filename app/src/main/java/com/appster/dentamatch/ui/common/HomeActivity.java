@@ -172,7 +172,7 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-        bottomBar.setCurrentItem(4);
+        bottomBar.setCurrentItem(0);
 
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -9,11 +9,11 @@ public class LoginResponseData {
 
    @SerializedName("userDetails")
     private UserDetail userDetail;
-//    private SearchFilterModel searchFilters;
+    private SearchFilterModel searchFilters;
 
-//    public SearchFilterModel getSearchFilters() {
-//        return searchFilters;
-//    }
+    public SearchFilterModel getSearchFilters() {
+        return searchFilters;
+    }
 
     public UserDetail getUserDetail() {
         return userDetail;

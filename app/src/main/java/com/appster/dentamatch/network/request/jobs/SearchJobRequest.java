@@ -1,5 +1,7 @@
 package com.appster.dentamatch.network.request.jobs;
 
+import com.appster.dentamatch.model.JobTitleList;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,24 @@ public class SearchJobRequest {
     private int isFulltime;
     private int isParttime;
     private ArrayList<String> parttimeDays;
+    private ArrayList<JobTitleList> selectedJobTitles;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public ArrayList<JobTitleList> getSelectedJobTitles() {
+        return selectedJobTitles;
+    }
+
+    public void setSelectedJobTitles(ArrayList<JobTitleList> selectedJobTitles) {
+        this.selectedJobTitles = selectedJobTitles;
+    }
 
     public void setParttimeDays(ArrayList<String> parttimeDays) {
         this.parttimeDays = parttimeDays;
