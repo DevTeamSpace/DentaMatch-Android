@@ -336,7 +336,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvCertificateValidityDate.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
 
-                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
+//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
+                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
 
                 if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
                     Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.cellDentalStateBoard.ivCertificateImage);

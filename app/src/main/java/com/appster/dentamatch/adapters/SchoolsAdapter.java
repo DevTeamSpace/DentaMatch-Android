@@ -274,6 +274,9 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         PostSchoolData school = getSchool((Integer) holder.spinnerYears.getTag());
                         school.setYearOfGraduation(mYearsList.get(position));
                         school.setOtherId("" + mSchoolList.get((Integer) holder.etYearOfGraduation.getTag()).getSchoolTypeId());
+
+                        mHashMap.put((Integer) holder.spinnerYears.getTag(), school);
+
                     } else {
                         holder.etYearOfGraduation.setTextColor(mContext.getResources().getColor(R.color.edt_hint_color));
 

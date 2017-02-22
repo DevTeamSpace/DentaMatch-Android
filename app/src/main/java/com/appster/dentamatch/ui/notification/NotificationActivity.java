@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.notification;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,9 @@ import com.appster.dentamatch.network.response.notification.NotificationResponse
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.HiredJobAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.SimpleDividerItemDecoration;
@@ -46,6 +50,12 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         getNotification(1);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        LogUtils.LOGD(TAG, "new Intent run");
+    }
+
     private void intiView() {
         mBinder.toolbarNotification.tvToolbarGeneralLeft.setText(getString(R.string.header_notification));
         mLayoutManager = new LinearLayoutManager(this);
@@ -61,11 +71,12 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         return null;
     }
 
-    private void getNotification(int id) {
+    private void readNotification(final int position, int notificationId,final int notificationType) {
+
         processToShowDialog("", getString(R.string.please_wait), null);
 
         ReadNotificationRequest request = new ReadNotificationRequest();
-        request.setNotificationId(id);
+        request.setNotificationId(notificationId);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.readNotification(request).enqueue(new BaseCallback<BaseResponse>(this) {
@@ -74,12 +85,16 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                 /**
                  * Once data has been loaded from the filter changes we can dismiss this filter.
                  */
-                if (response.getStatus() == 1) {
 
+
+                if (response.getStatus() == 1) {
+                    ArrayList<NotificationData> list = mNotificaionAdapter.getList();
+                    list.get(position).setSeen(1);
+                    mNotificaionAdapter.resetJobList(list);
+                    redirectNotification(notificationType);
                 } else {
                     showToast(response.getMessage());
                 }
-
             }
 
 
@@ -88,6 +103,20 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                 LogUtils.LOGD(TAG, "Failed job hired");
             }
         });
+    }
+
+    private void redirectNotification(int notificationType) {
+        Intent intent = null;
+        if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED) {
+            intent = new Intent(this, JobDetailActivity.class);
+        } else if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC) {
+            intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        } else {
+            intent = new Intent(this, NotificationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
+        startActivity(intent);
     }
 
     @Override
@@ -106,22 +135,19 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         readNotification(position, notifId, notificationType);
     }
 
-    private void readNotification(final int position, int notificationId, int NotificationType) {
+    private void getNotification(int page) {
+
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getNotification(notificationId).enqueue(new BaseCallback<NotificationResponse>(this) {
+        webServices.getNotification(page).enqueue(new BaseCallback<NotificationResponse>(this) {
             @Override
             public void onSuccess(NotificationResponse response) {
                 /**
-                 * Once data has been loaded from the filter changes we can dismiss this filter.
                  */
                 if (response.getStatus() == 1) {
-                    ArrayList<NotificationData> list = response.getNotificationResponseData().getNotificationList();
-                    list.get(position).setSeen(1);
-                    mNotificaionAdapter.resetJobList(list);
 
-
+                    mNotificaionAdapter.setJobList(response.getNotificationResponseData().getNotificationList());
                 } else {
                     showToast(response.getMessage());
                 }

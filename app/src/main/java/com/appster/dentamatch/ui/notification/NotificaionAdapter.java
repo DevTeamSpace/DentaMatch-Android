@@ -39,9 +39,10 @@ public class NotificaionAdapter extends RecyclerView.Adapter<NotificaionAdapter.
 
     public void setJobList(ArrayList<NotificationData> jobList) {
 //        mNotificationData.clear();
-        mNotificationList = jobList;
+        mNotificationList.addAll(jobList);
         notifyDataSetChanged();
     }
+
     public void resetJobList(ArrayList<NotificationData> jobList) {
         mNotificationList.clear();
         mNotificationList = jobList;
@@ -137,7 +138,7 @@ public class NotificaionAdapter extends RecyclerView.Adapter<NotificaionAdapter.
     }
 
     public interface NotificationClickListener {
-        public void onNotificationItemClick(int position, int notifId,int notificationType);
+        public void onNotificationItemClick(int position, int notifId, int notificationType);
     }
 
 }
