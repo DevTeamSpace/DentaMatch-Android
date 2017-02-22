@@ -224,7 +224,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
     }
 
-    private void unSaveJob(final int JobID, final int position) {
+    public void unSaveJob(final int JobID, final int position) {
         SaveUnSaveRequest request = new SaveUnSaveRequest();
         request.setJobId(JobID);
         request.setStatus(0);

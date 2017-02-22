@@ -70,7 +70,7 @@ public class SearchJobDataHelper {
             }
 
             request.setPage(mPageNumber);
-            AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
             webServices.searchJob(request).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) ct) {
                 @Override
                 public void onSuccess(SearchJobResponse response) {

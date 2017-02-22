@@ -99,6 +99,10 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
                     PreferenceUtil.setSearchJobTitleList(response.getJobTitleResponseData().getJobTitleList());
                     mJobTitleAdapter.addList(response.getJobTitleResponseData().getJobTitleList());
 
+                    if(mSelectedTitleList != null && mSelectedTitleList.size()>0){
+                        mJobTitleAdapter.setSelectedListItems(mSelectedTitleList);
+                    }
+
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
 

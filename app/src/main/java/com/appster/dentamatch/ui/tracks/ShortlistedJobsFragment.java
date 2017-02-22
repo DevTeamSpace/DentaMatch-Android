@@ -97,7 +97,7 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         request.setJobId(ID);
 
         showProgressBar(getString(R.string.please_wait));
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.cancelJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
 
             @Override
