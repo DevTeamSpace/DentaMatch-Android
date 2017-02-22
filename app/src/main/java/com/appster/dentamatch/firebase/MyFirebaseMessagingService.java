@@ -11,9 +11,15 @@ import android.util.Log;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.notification.NotificationActivity;
+import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
+import java.util.Set;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -45,12 +51,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             LogUtils.LOGD(TAG, "Message data payload: " + remoteMessage.getData());
         }
+        Map<String, String> dataPayload = remoteMessage.getData();
+        int type,id;
+        if (dataPayload != null) {
+//            Set<String> keys = dataPayload.keySet();
+
+            id =Integer.parseInt(dataPayload.get(Constants.APIS.NOTIFICATION_ID));
+            type = Integer.parseInt(dataPayload.get(Constants.APIS.NOTIFICATION_TYPE));
+            Log.d("message payload:", "DATA PAYLOAD" + dataPayload);
+
+
+        }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             LogUtils.LOGD(TAG, "Message ReadNotificationRequest Body: " + remoteMessage.getNotification().getBody());
+            sendNotification(remoteMessage.getNotification().getBody(),1);
+
         }
-        sendNotification(remoteMessage.getNotification().getBody());
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -62,8 +80,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, HomeActivity.class);
+    private void sendNotification(String messageBody,int notificationType) {
+        Intent intent = redirectNotification(notificationType);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -81,5 +99,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private Intent redirectNotification(int notiifcationType) {
+        Intent intent = null;
+        if (notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED) {
+            intent = new Intent(this, JobDetailActivity.class);
+        } else if (notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC) {
+            intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        } else {
+            intent = new Intent(this, NotificationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
+        return intent;
     }
 }

@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.common;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,6 +16,11 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.model.LocationEvent;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
 import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.MessagesListFragment;
@@ -23,6 +29,7 @@ import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -31,11 +38,13 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import retrofit2.Call;
+
 /**
  * Created by virender on 17/01/17.
  */
 public class HomeActivity extends BaseActivity {
-
+    private final String TAG = "Home Screen";
     private AHBottomNavigation bottomBar;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
@@ -49,7 +58,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
@@ -74,13 +83,14 @@ public class HomeActivity extends BaseActivity {
         if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
             bottomBar.setCurrentItem(3);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
-            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL,RecruiterID));
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID));
         }
 
         /**
          * Retrieve user's current location.
          */
         LocationUtils.addFragment(this);
+        updateToken(PreferenceUtil.getFcmToken());
 
     }
 
@@ -249,6 +259,35 @@ public class HomeActivity extends BaseActivity {
         fragmentTransaction.replace(R.id.fragment_container, fragment, fragTagName)
                 .addToBackStack(fragTagName)
                 .commit();
+    }
+
+    private void updateToken(String fcmToken) {
+        try {
+            UpdateFcmTokenRequest request = new UpdateFcmTokenRequest();
+            request.setUpdateDeviceToken(fcmToken);
+            LogUtils.LOGD(TAG, "Update token");
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+            webServices.updateFcmToekn(request).enqueue(new BaseCallback<BaseResponse>(this) {
+                @Override
+                public void onSuccess(BaseResponse response) {
+                    LogUtils.LOGD(TAG, "onSuccess");
+                    if (response.getStatus() == 1) {
+                        LogUtils.LOGD(TAG, "token updated successfully");
+                    } else {
+                        LogUtils.LOGD(TAG, "token  not updated fails");
+
+                    }
+                }
+
+                @Override
+                public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+                    LogUtils.LOGD(TAG, "onFail");
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

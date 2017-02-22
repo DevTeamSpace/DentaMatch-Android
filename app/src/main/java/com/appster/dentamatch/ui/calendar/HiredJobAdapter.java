@@ -206,7 +206,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
             public void onPositive(DialogInterface dialog) {
                 CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getRecruiterJobId());
+                bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getId());
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), null);
             }

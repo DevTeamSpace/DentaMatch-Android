@@ -1,10 +1,15 @@
 package com.appster.dentamatch.util;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Class to hold constant values.
  */
 public class Constants {
-    public static final int  MAX_MONTH_COUNT=7;
+    public static final int MAX_MONTH_COUNT = 7;
     public static final String DEVICE_TYPE = "ANDROID";
     public static String CHAT_SERVER_URL = "http://172.16.16.188:3000";
 
@@ -88,6 +93,7 @@ public class Constants {
         String INDEX = "INDEX";
         String SUB_SKILLS = "sub_skills";
     }
+
     public interface DateFormet {
         String YYYYMMDD = "yyyy-MM-dd";
         String YYYYMMDDHHMMSS = "yyyy-MM-dd hh:mm:ss";
@@ -100,6 +106,19 @@ public class Constants {
         String IMAGE_TYPE_STATE_BOARD = "dental_state_board";
         String ACTION_ADD = "add";
         String ACTION_EDIT = "edit";
+        String NOTIFICATION_TYPE="notificationType";
+        String NOTIFICATION_ID="notificationId";
+    }
+
+    public interface NOTIFICATIONTYPES {
+        int NOTIFICATION_ACCEPT_JOB = 1;
+        int NOTIFICATION_HIRED = 2;
+        int NOTIFICATION_CANCEL = 3;
+        int NOTIFICATION_DELETE = 4;
+        int NOTIFICATION_VERIFY_DOC = 5;
+        int NOTIFICATION_COMPLETE_PROFILE = 6;
+        int NOTIFICATION_CHAT_MSG = 7;
+        int NOTIFICATION_OTHER = 8;
     }
 
     public interface REQUEST_CODE {

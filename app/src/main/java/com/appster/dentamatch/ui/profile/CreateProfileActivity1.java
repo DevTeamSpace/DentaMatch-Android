@@ -51,7 +51,6 @@ import retrofit2.Call;
  */
 public class CreateProfileActivity1 extends BaseActivity implements View.OnClickListener, ImageSelectedListener, JobTitleSelectionListener {
     private String TAG = "CreateProfileActivity1";
-    private ImageSelectedListener imageSelectedListener;
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
     private String selectedJobtitle = "";
