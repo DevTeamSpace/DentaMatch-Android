@@ -57,6 +57,8 @@ public class SocketManager {
 
     //    private static String CHAT_SERVER_URL = "http://172.16.16.188:3000";
     private static String CHAT_SERVER_URL = "http://dev.dentamatch.co:3000";
+    private static String CHAT_SERVER_URL_QA = "http://qa.dentamatch.co:3000";
+    private static String CHAT_SERVER_URL_STAGING = "http://staging.dentamatch.co:3000";
 
     private static Socket mSocket;
     private static SocketManager socketManager;

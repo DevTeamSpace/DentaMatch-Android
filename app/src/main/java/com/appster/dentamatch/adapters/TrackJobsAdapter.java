@@ -27,6 +27,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
+import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
@@ -246,6 +247,11 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                      * Update the search job screens for un-save events.
                      */
                     EventBus.getDefault().post(new SaveUnSaveEvent(JobID, 0));
+
+                    /**
+                     * Notify the helper class to update the data from the server.
+                     */
+                    TrackJobsDataHelper.getInstance().updateSavedData();
                 }
 
             }
