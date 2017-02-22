@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest;
+import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
 import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
 import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
@@ -93,6 +94,7 @@ public interface AuthWebServices {
     String GET_NOTIFICATION = "users/notification-list";
     String RAED_NOTIFICATION = "users/notification-list";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
+    String UPDATE_FCM_TOKEN = "users/update-devicetoken";
 
 
     @POST(USER_CHAT_BLOCK_UNBLOCK)
@@ -120,6 +122,9 @@ public interface AuthWebServices {
 
     @POST(APPLY_JOB)
     Call<BaseResponse> applyJob(@Body JobApplyRequest request);
+
+    @POST(UPDATE_FCM_TOKEN)
+    Call<BaseResponse> updateFcmToekn(@Body UpdateFcmTokenRequest request);
 
     @POST(JOB_DETAILS)
     Call<JobDetailResponse> getJobDetail(@Body JobDetailRequest request);

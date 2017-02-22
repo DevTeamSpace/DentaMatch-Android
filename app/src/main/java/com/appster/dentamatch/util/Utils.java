@@ -40,7 +40,14 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
+import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
+import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
@@ -54,12 +61,14 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import retrofit2.Call;
+
 /**
  * Utils for app
  */
 public class Utils {
     private static final String TAG = "Utils";
-    private  static int NOTIFICATION_CODE = 00101;
+    private static int NOTIFICATION_CODE = 00101;
 
     private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -316,6 +325,7 @@ public class Utils {
         view.setTypeface(tf);
 
     }
+
     public static void setFontFaceRobotoRegular(TextView view) {
         Typeface tf = Typeface.createFromAsset(view.getContext()
                 .getAssets(), "Roboto-Regular.ttf");
@@ -334,7 +344,9 @@ public class Utils {
 
         view.setTypeface(tf);
 
-    }public static void setFontFaceRobotoMedium(TextView view) {
+    }
+
+    public static void setFontFaceRobotoMedium(TextView view) {
         Typeface tf = Typeface.createFromAsset(view.getContext()
                 .getAssets(), "Roboto-Bold.ttf");
 
@@ -376,13 +388,13 @@ public class Utils {
         String currentDateString = DateOnlyFormat.format(currentDate);
         String yesterdaysDateString = DateOnlyFormat.format(yesterdayDate);
 
-        if(receivedDateString.equalsIgnoreCase(currentDateString)){
+        if (receivedDateString.equalsIgnoreCase(currentDateString)) {
             return "Today";
 
-        }else if(receivedDateString.equalsIgnoreCase(yesterdaysDateString)){
+        } else if (receivedDateString.equalsIgnoreCase(yesterdaysDateString)) {
             return "Yesterday";
 
-        }else{
+        } else {
             return receivedDateString;
         }
     }
@@ -402,13 +414,13 @@ public class Utils {
             calendar.add(Calendar.DATE, -1);
             String yesterdayDate = DateOnlyFormat.format(calendar.getTime());
 
-            if(receivedDate.equalsIgnoreCase(currentDate)){
+            if (receivedDate.equalsIgnoreCase(currentDate)) {
                 return "Today";
 
-            }else if(receivedDate.equalsIgnoreCase(yesterdayDate)){
+            } else if (receivedDate.equalsIgnoreCase(yesterdayDate)) {
                 return "Yesterday";
 
-            }else{
+            } else {
                 return receivedDate;
             }
         } catch (ParseException e) {
@@ -417,7 +429,6 @@ public class Utils {
 
         return "";
     }
-
 
 
     public static String getExpYears(int month) {
@@ -473,12 +484,12 @@ public class Utils {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static void clearNotifications(Context ct){
-        NotificationManager notificationManager = (NotificationManager)ct.getSystemService(Context.NOTIFICATION_SERVICE);
+    public static void clearNotifications(Context ct) {
+        NotificationManager notificationManager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_CODE);
     }
 
-    public static void showNotification(Context ct, String title, String message, Intent intent){
+    public static void showNotification(Context ct, String title, String message, Intent intent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -489,13 +500,13 @@ public class Utils {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(),R.mipmap.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(), R.mipmap.ic_launcher))
                 .setAutoCancel(true);
 
-            if(intent != null) {
-                PendingIntent Pendingintent = PendingIntent.getActivity(ct, NOTIFICATION_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
-                builder.setContentIntent(Pendingintent);
-            }
+        if (intent != null) {
+            PendingIntent Pendingintent = PendingIntent.getActivity(ct, NOTIFICATION_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
+            builder.setContentIntent(Pendingintent);
+        }
 
 
         NotificationManager manager = (NotificationManager) ct.getSystemService(ct.NOTIFICATION_SERVICE);
@@ -634,4 +645,6 @@ public class Utils {
         }
         return time;
     }
+
+
 }

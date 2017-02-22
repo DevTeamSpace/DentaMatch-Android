@@ -71,7 +71,7 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         return null;
     }
 
-    private void readNotification(final int position, int notificationId,final int notificationType) {
+    private void readNotification(final int position, int notificationId, final int notificationType) {
 
         processToShowDialog("", getString(R.string.please_wait), null);
 
@@ -110,13 +110,17 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED) {
             intent = new Intent(this, JobDetailActivity.class);
         } else if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC) {
-            intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent = new Intent(this, HomeActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            finish();
         } else {
             intent = new Intent(this, NotificationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
-        startActivity(intent);
+        if (intent != null) {
+            startActivity(intent);
+
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 /*
@@ -88,5 +89,6 @@ public class SplashActivity extends Activity implements Runnable {
                 PreferenceUtil.setFcmToken(token);
             }
         }
+
     }
 }
