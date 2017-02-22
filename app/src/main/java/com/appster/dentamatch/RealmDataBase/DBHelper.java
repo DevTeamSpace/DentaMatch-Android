@@ -2,6 +2,7 @@ package com.appster.dentamatch.RealmDataBase;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.appster.dentamatch.ui.messages.Message;
 import com.appster.dentamatch.util.LogUtils;
@@ -82,7 +83,10 @@ public class DBHelper {
              */
             if (retrievedModel != null ) {
                 if(!checkIfMessageAlreadyExists(retrievedModel.getUserChats(), userMessage)) {
-                    retrievedModel.setName(recruiterName);
+                    if(!TextUtils.isEmpty(recruiterName)) {
+                        retrievedModel.setName(recruiterName);
+                    }
+
                     retrievedModel.setHasDBUpdated(true);
                     retrievedModel.getUserChats().add(userMessage);
                     retrievedModel.setLastMessage(userMessage.getMessage());

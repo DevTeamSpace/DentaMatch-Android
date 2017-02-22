@@ -376,7 +376,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         }, 200);
 
 
-        if (dataModel.getIsApplied() == 0) {
+        if (dataModel.getIsApplied() == 0 ) {
 
             mBinding.tvJobStatus.setVisibility(View.GONE);
             mBinding.btnApplyJob.setVisibility(View.VISIBLE);
@@ -426,7 +426,6 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.cbJobSelection.setChecked(status == 1);
                     EventBus.getDefault().post(new SaveUnSaveEvent(JobID, status));
                 }
-
             }
 
             @Override

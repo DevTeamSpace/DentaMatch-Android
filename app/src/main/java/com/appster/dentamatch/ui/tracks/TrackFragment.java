@@ -19,7 +19,9 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
     private com.appster.dentamatch.databinding.FragmentTracksBinding mBinding;
     private SavedJobFragment savedJobsFragment ;
     private AppliedJobsFragment appliedJobsFragment ;
-    private ShortlistedJobsFragment shortListedJobsFragment ;
+    private ShortlistedJobsFragment shortListedJobsFragment;
+    private boolean shouldSaveListRefresh = true;
+    private boolean shouldAppliedListRefresh = true;
 
     public static TrackFragment newInstance(){
         return new TrackFragment();
@@ -28,6 +30,21 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
     public String getFragmentName() {
         return null;
     }
+
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if(!EventBus.getDefault().isRegistered(this)){
+//            EventBus.getDefault().register(this);
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        EventBus.getDefault().unregister(this);
+//        super.onDetach();
+//
+//    }
 
     @Nullable
     @Override
@@ -63,6 +80,10 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
         switch (tab.getPosition()){
 
             case 0:
+                if(shouldSaveListRefresh){
+                    savedJobsFragment = SavedJobFragment.newInstance();
+                }
+
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.lay_container_fragment_tracks, savedJobsFragment)
@@ -71,6 +92,10 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
                 break;
 
             case 1:
+                if(shouldAppliedListRefresh){
+                    appliedJobsFragment = AppliedJobsFragment.newInstance();
+                }
+
                 getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.lay_container_fragment_tracks, appliedJobsFragment)

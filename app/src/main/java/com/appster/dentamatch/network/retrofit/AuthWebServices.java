@@ -178,6 +178,7 @@ public interface AuthWebServices {
 
     @POST(SCHOOL_ADD)
     Call<BaseResponse> addSchooling(@Body AddSchoolRequest schoolRequest);
+
     @POST(RAED_NOTIFICATION)
     Call<BaseResponse> readNotification(@Body ReadNotificationRequest notificationRequest);
 

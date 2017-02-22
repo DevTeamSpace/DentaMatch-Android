@@ -132,14 +132,22 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             }else{
                 mBinder.dayLayout.setVisibility(View.GONE);
             }
+
             mSelectedAddress = request.getAddress();
-            mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
-            mBinder.tvFetchedLoation.setText(mSelectedAddress);
+
+            if(!TextUtils.isEmpty(mSelectedAddress )) {
+                mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
+                mBinder.tvFetchedLoation.setText(mSelectedAddress);
+            }
+
             mChosenTitles = request.getSelectedJobTitles();
 
-            mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
-            for(JobTitleList items : mChosenTitles){
-                addTitleToLayout(items, false);
+            if(mChosenTitles != null && mChosenTitles.size() > 0) {
+                mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
+
+                for (JobTitleList items : mChosenTitles) {
+                    addTitleToLayout(items, false);
+                }
             }
 
 
@@ -383,7 +391,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
          */
         PreferenceUtil.setFilterChanged(true);
         startActivity(new Intent(this, HomeActivity.class)
-                .putExtra(Constants.EXTRA_SEARCH_JOB, true)
+//                .putExtra(Constants.EXTRA_SEARCH_JOB, true)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 

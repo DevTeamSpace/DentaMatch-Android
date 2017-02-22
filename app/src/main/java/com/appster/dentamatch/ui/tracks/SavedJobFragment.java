@@ -152,7 +152,7 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
             showProgressBar(getString(R.string.please_wait));
         }
 
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.fetchTrackJobs(type, mPage, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) getActivity()) {
             @Override
             public void onSuccess(SearchJobResponse response) {
