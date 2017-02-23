@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.appster.dentamatch.R;
@@ -23,6 +24,7 @@ import com.appster.dentamatch.ui.calendar.HiredJobAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
+import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
@@ -40,6 +42,9 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
     private ActivityNotificationBinding mBinder;
     private NotificaionAdapter mNotificaionAdapter;
     private LinearLayoutManager mLayoutManager;
+    private boolean mIsPaginationNeeded;
+    private int page=1;
+
 
 
     @Override
@@ -64,8 +69,29 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         mBinder.toolbarNotification.ivToolBarLeft.setOnClickListener(this);
         mNotificaionAdapter = new NotificaionAdapter(this, this);
         mBinder.rvNotification.setAdapter(mNotificaionAdapter);
+        mBinder.rvNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                checkIfItsLastItem();
+            }
+        });
     }
+    private void checkIfItsLastItem() {
+        int visibleItemCount = mLayoutManager.getChildCount();
+        int totalItemCount = mLayoutManager.getItemCount();
+        int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
 
+        if (mIsPaginationNeeded) {
+            if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                ++page;
+                mIsPaginationNeeded = false;
+                mBinder.layPagination.setVisibility(View.VISIBLE);
+                getNotification(page);
+//                SearchJobDataHelper.getInstance().updateDataViaPagination(getActivity());
+            }
+        }
+    }
     @Override
     public String getActivityName() {
         return null;
@@ -193,4 +219,6 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
             }
         });
     }
+
+
 }

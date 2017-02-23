@@ -16,6 +16,24 @@
             android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white3_color"
+            android:id="@+id/lay_pagination"
+            android:visibility="gone"
+            android:layout_height="@dimen/pagination_view_height">
+
+            <ProgressBar
+                android:padding="@dimen/default_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 </layout>
