@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.common;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -65,7 +64,7 @@ public class HomeActivity extends BaseActivity {
         /**
          * Connect Socket for chatting initialization.
          */
-//        SocketManager.getInstance().connect(this);
+        SocketManager.getInstance().connect(this);
 
         setContentView(R.layout.activity_home);
         initViews();
@@ -91,8 +90,8 @@ public class HomeActivity extends BaseActivity {
          */
         LocationUtils.addFragment(this);
         updateToken(PreferenceUtil.getFcmToken());
-
     }
+
 
 
     @Override

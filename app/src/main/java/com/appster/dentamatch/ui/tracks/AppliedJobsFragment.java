@@ -193,7 +193,6 @@ import retrofit2.Call;
         if(event != null){
             for(SearchJobModel model : mJobListData){
 
-
                 if(model.getId() == event.getJobID()){
                     cancelJob(event.getJobID(), event.getMsg());
                     break;

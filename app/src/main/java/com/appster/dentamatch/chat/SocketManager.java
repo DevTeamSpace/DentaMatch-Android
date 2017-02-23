@@ -2,12 +2,16 @@ package com.appster.dentamatch.chat;
 
 
 import android.app.Activity;
+import android.content.Intent;
 
+import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
+import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.ui.messages.Message;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -35,7 +39,8 @@ public class SocketManager {
     private final String SOCKET_CONNECT = "Socket connected";
     private final String SOCKET_DISCONNECT = "Socket disconnected";
     private final String SOCKET_CONNECTION_ERROR = "Socket connection error";
-    private final String SOCKET_ACKNOWLEDGEMENT = "Socket_acknowledgement_received";
+    private final String SOCKET_MESSAGE_ACKNOWLEDGEMENT = "Socket_acknowledgement_received";
+    private final String SOCKET_PAST_CHAT_ACKNOWLEDGEMENT = "Socket_past_chat_acknowledgement_received";
 
     private final String PARAM_FROM_ID = "fromId";
     private final String PARAM_TO_ID = "toId";
@@ -51,22 +56,24 @@ public class SocketManager {
     private final String EMIT_INIT = "init";
     private final String EMIT_SEND_MSG = "sendMessage";
     private final String EMIT_UPDATE_READ_COUNT = "updateReadCount";
+    private final String EMIT_GET_LEFT_MESSAGES = "getLeftMessages";
 
     private final String EVENT_NEW_MESSAGE = "receiveMessage";
     private final String EVENT_CHAT_HISTORY = "getMessages";
 
-    //    private static String CHAT_SERVER_URL = "http://172.16.16.188:3000";
-    private static String CHAT_SERVER_URL = "http://dev.dentamatch.co:3000";
-    private static String CHAT_SERVER_URL_QA = "http://qa.dentamatch.co:3000";
-    private static String CHAT_SERVER_URL_STAGING = "http://staging.dentamatch.co:3000";
+    private static String CHAT_SERVER_URL = BuildConfig.CHAT_URL;
+
 
     private static Socket mSocket;
     private static SocketManager socketManager;
     private Emitter.Listener onHistory;
     private boolean isConnected;
+    private int attachedActivityStatus;
     private Activity attachedActivity;
     private String attachedRecruiterID;
     private Activity attachedGlobalActivity;
+    public static final int ON_RESUME = 0;
+    public static final int ON_PAUSE = 1;
 
     private SocketManager() {
         getSocket();
@@ -100,9 +107,6 @@ public class SocketManager {
         return mSocket;
     }
 
-    public boolean isSocketConnected(){
-        return isConnected;
-    }
 
     public void connect(Activity act) {
         if (mSocket == null) {
@@ -128,7 +132,7 @@ public class SocketManager {
      * Reset all DB status to sync status needed, in order to retreive data from the server on
      * Socket Connected.
      */
-    private void raiseSyncNeeded(){
+    private void raiseSyncNeeded() {
         attachedGlobalActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -174,7 +178,7 @@ public class SocketManager {
                      * Insert the message sent into the DB .
                      */
                     final JSONObject jsonObject = (JSONObject) args[0];
-                    LogUtils.LOGD(TAG, SOCKET_ACKNOWLEDGEMENT + args[0]);
+                    LogUtils.LOGD(TAG, SOCKET_MESSAGE_ACKNOWLEDGEMENT + args[0]);
                     ChatMessageModel model = parseData(jsonObject);
                     Message message = new Message(model.getMessage(),
                             model.getRecruiterName(),
@@ -186,6 +190,27 @@ public class SocketManager {
                 }
             });
 
+        }
+    };
+
+    private Ack pastChatReceivedAcknowledgement = new Ack() {
+        @Override
+        public void call(Object... args) {
+            final JSONObject jsonObject = (JSONObject) args[0];
+            LogUtils.LOGD(TAG, SOCKET_PAST_CHAT_ACKNOWLEDGEMENT + args[0]);
+            /**
+             * chat json is not empty
+             */
+            if (jsonObject.length() > 0) {
+                if (attachedActivity != null) {
+                    attachedActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(parseDataForHistory(jsonObject)));
+                        }
+                    });
+                }
+            }
         }
     };
 
@@ -216,6 +241,16 @@ public class SocketManager {
                              */
                             updateMsgRead(model.getFromID(), model.getToID());
                             EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(model));
+
+                            /**
+                             * in case the activity goes into background and socket is still connected , update user about message through notification.
+                             */
+                            if (attachedActivityStatus == ON_PAUSE) {
+                                Intent intent = new Intent(attachedActivity, ChatActivity.class);
+                                intent.putExtra(Constants.EXTRA_CHAT_MODEL, model.getFromID());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent);
+                            }
                         }
                     });
                 }
@@ -237,10 +272,10 @@ public class SocketManager {
 
                             DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1);
 
-//                            Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
-//                            intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
-//                            intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), null);
+                                Intent intent = new Intent(attachedGlobalActivity, ChatActivity.class);
+                                intent.putExtra(Constants.EXTRA_CHAT_MODEL, model.getFromID());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent);
 
                         }
                     });
@@ -316,6 +351,17 @@ public class SocketManager {
 
     }
 
+    public void disconnectFromChat() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("fromId", PreferenceUtil.getUserChatId());
+        mSocket.emit("notOnChat", new JSONObject(hashMap), new Ack() {
+            @Override
+            public void call(Object... args) {
+
+            }
+        });
+    }
+
     public void init() {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
@@ -324,8 +370,14 @@ public class SocketManager {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put(PARAM_USERID, PreferenceUtil.getUserChatId());
         hashMap.put(PARAM_USERNAME, PreferenceUtil.getFirstName());
+        hashMap.put("userType", "1");
         JSONObject object = new JSONObject(hashMap);
-        mSocket.emit(EMIT_INIT, object);
+        mSocket.emit(EMIT_INIT, object, new Ack() {
+            @Override
+            public void call(Object... args) {
+                //TODO acknowledgment for init success
+            }
+        });
         LogUtils.LOGD(TAG, EMIT_INIT + ":" + object.toString());
 
     }
@@ -371,6 +423,14 @@ public class SocketManager {
         return model;
     }
 
+    public void fetchPastChatsAfterMsgID(String messageID, String toID, String fromID) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put(PARAM_MESSAGE_ID, messageID);
+        hashMap.put(PARAM_FROM_ID, fromID);
+        hashMap.put(PARAM_TO_ID, toID);
+        mSocket.emit(EMIT_GET_LEFT_MESSAGES, new JSONObject(hashMap), pastChatReceivedAcknowledgement);
+    }
+
 
     private void setHistoryListener() {
         onHistory = new Emitter.Listener() {
@@ -385,7 +445,6 @@ public class SocketManager {
                         final JSONObject dataObject = jsonArray.getJSONObject(i);
 
                         if (attachedActivity != null) {
-
                             attachedActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -420,7 +479,27 @@ public class SocketManager {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put(PARAM_FROM_ID, fromId);
         hashMap.put(PARAM_TO_ID, toId);
-        mSocket.emit(EMIT_UPDATE_READ_COUNT, new JSONObject(hashMap));
+        mSocket.emit(EMIT_UPDATE_READ_COUNT, new JSONObject(hashMap), new Ack() {
+            @Override
+            public void call(Object... args) {
+                if (attachedActivity != null) {
+                    attachedActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            /**
+                             * Update the unread count once the user has opened the chat activity.
+                             */
+                            DBHelper.getInstance().upDateDB(attachedRecruiterID, DBHelper.UNREAD_MSG_COUNT, "0", null);
+                        }
+                    });
+                } else {
+                    LogUtils.LOGD(TAG, "attachedActivity == null");
+                }
+            }
+        });
+    }
 
+    public void setAttachedActivityStatus(int status) {
+        attachedActivityStatus = status;
     }
 }
