@@ -233,10 +233,10 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         if (mAllJobLIst != null && mAllJobLIst.size() > 0) {
             for (int i = 0; i < mAllJobLIst.size(); i++) {
 //                if (Utils.getDate(mAllJobLIst.get(i).getJobDate()).compareTo(Utils.parseDate(Calendar.getInstance().getTime())) >= 0) {
-//                    if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
-//                        isFullTime = true;
+                    if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
+                        isFullTime = true;
 //                        selectedDateJobList.add(mAllJobLIst.get(i));
-//                    } else
+                    } else
                     if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                         String day = Utils.getDayOfWeek(date);
                         if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {

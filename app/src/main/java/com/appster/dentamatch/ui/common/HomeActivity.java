@@ -79,10 +79,16 @@ public class HomeActivity extends BaseActivity {
         /**
          * Launch job message fragment if redirected from notification click.
          */
-        if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
+       else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
             bottomBar.setCurrentItem(3);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID));
+        }
+        else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
+            bottomBar.setCurrentItem(4);
+        }else{
+            bottomBar.setCurrentItem(0);
+
         }
 
         /**
@@ -181,7 +187,7 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-        bottomBar.setCurrentItem(0);
+//        bottomBar.setCurrentItem(0);
 
         new Handler().postDelayed(new Runnable() {
             @Override

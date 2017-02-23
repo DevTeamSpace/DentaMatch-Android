@@ -92,7 +92,7 @@ public interface AuthWebServices {
     String UPDATE_USER_LOCATION = "users/user-location-update";
     String USER_CHAT_HISTORY = "users/chat-user-list";
     String GET_NOTIFICATION = "users/notification-list";
-    String RAED_NOTIFICATION = "users/notification-list";
+    String RAED_NOTIFICATION = "users/notification-read";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
     String UPDATE_FCM_TOKEN = "users/update-devicetoken";
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.appster.dentamatch.R;
@@ -18,10 +19,14 @@ import com.appster.dentamatch.util.LogUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 import java.util.Set;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    private String KEY_JOB_DETAIL = "jobDetails";
+    private String KEY_NOTIFICATION_DETAIL = "notification_details";
 
     private static final String TAG = "MyFirebaseMsgService";
 
@@ -52,12 +57,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             LogUtils.LOGD(TAG, "Message data payload: " + remoteMessage.getData());
         }
         Map<String, String> dataPayload = remoteMessage.getData();
-        int type,id;
-        if (dataPayload != null) {
+//        int type,id,jobId=0;
+        int type = 0, id, jobId = 0;
+        if (dataPayload != null && dataPayload.size() > 0) {
 //            Set<String> keys = dataPayload.keySet();
+            String notificationData = parsePayloadData(dataPayload, KEY_NOTIFICATION_DETAIL);
+            String jobData = parsePayloadData(dataPayload, KEY_JOB_DETAIL);
+            if (!TextUtils.isEmpty(notificationData)) {
+                try {
+                    JSONObject notificationObject = new JSONObject(notificationData);
+                    id = notificationObject.optInt(Constants.APIS.NOTIFICATION_ID);
+                    type = notificationObject.optInt((Constants.APIS.NOTIFICATION_TYPE));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!TextUtils.isEmpty(jobData)) {
+                try {
+                    JSONObject notificationObject = new JSONObject(jobData);
+                    jobId = notificationObject.optInt(Constants.APIS.ID);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-            id =Integer.parseInt(dataPayload.get(Constants.APIS.NOTIFICATION_ID));
-            type = Integer.parseInt(dataPayload.get(Constants.APIS.NOTIFICATION_TYPE));
+//            id =Integer.parseInt(dataPayload.get(Constants.APIS.NOTIFICATION_ID));
+//            type = Integer.parseInt(dataPayload.get(Constants.APIS.NOTIFICATION_TYPE));
             Log.d("message payload:", "DATA PAYLOAD" + dataPayload);
 
 
@@ -66,7 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             LogUtils.LOGD(TAG, "Message ReadNotificationRequest Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getBody(),1);
+            sendNotification(remoteMessage.getNotification().getBody(), type, jobId);
 
         }
 
@@ -80,8 +105,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody,int notificationType) {
-        Intent intent = redirectNotification(notificationType);
+
+    private void sendNotification(String messageBody, int notificationType, int jobId) {
+        Intent intent = redirectNotification(notificationType, jobId);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -101,10 +127,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 
-    private Intent redirectNotification(int notiifcationType) {
+    private Intent redirectNotification(int notiifcationType, int jobId) {
         Intent intent = null;
         if (notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED) {
             intent = new Intent(this, JobDetailActivity.class);
+            intent.putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId);
         } else if (notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC) {
             intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -114,4 +141,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         return intent;
     }
+
+    private String parsePayloadData(Map<String, String> dataPayload, String key) {
+
+        String data = null;
+        if (dataPayload.containsKey(key)) {
+            data = dataPayload.get(key);
+
+        }
+
+        return data;
+    }
+
 }

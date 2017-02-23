@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -28,6 +29,7 @@ import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -78,9 +80,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 //            }
 //
 //        }
-            mBinding.mapJobDetail.onCreate(savedInstanceState);
-            mBinding.mapJobDetail.getMapAsync(this);
-        }
+        mBinding.mapJobDetail.onCreate(savedInstanceState);
+        mBinding.mapJobDetail.getMapAsync(this);
+    }
 
 
     private void setData() {
@@ -225,7 +227,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                             @Override
                             public void onPositive(DialogInterface dialog) {
                                 startActivity(new Intent(JobDetailActivity.this, HomeActivity.class)
-//                                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
+                                        .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
                                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                             }
 
@@ -272,7 +274,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             @Override
             public void onFail(Call<JobDetailResponse> call, BaseResponse baseResponse) {
-
+                LogUtils.LOGD(TAG, "FAiled");
             }
         });
     }
@@ -355,9 +357,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 //        mBinding.tvJobDetailJobOpenings.setText(dataModel.);
 //        mBinding.tvOfficeDress.setText(dataModel.g);
 //        mBinding.tvOfficeParkingAvailibility.setText(dataModel.get);
-        String startTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart());
-        String endTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd());
-        mBinding.tvJobDetailOfficeWorkingHours.setText(startTime.concat(" - ").concat(endTime));
+//        String startTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart());
+//        String endTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd());
+//        mBinding.tvJobDetailOfficeWorkingHours.setText(startTime.concat(" - ").concat(endTime));
+        mBinding.tvJobDetailOfficeWorkingHours.setVisibility(View.GONE);
         mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
         mBinding.tvJobDetailDocOfficeType.setText(dataModel.getOfficeTypeName());
 
@@ -378,7 +381,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         }, 200);
 
 
-        if (dataModel.getIsApplied() == 0 ) {
+        if (dataModel.getIsApplied() == 0) {
 
             mBinding.tvJobStatus.setVisibility(View.GONE);
             mBinding.btnApplyJob.setVisibility(View.VISIBLE);

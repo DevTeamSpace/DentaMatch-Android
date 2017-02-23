@@ -31,7 +31,6 @@
                 android:layout_marginRight="@dimen/margin_15"
                 android:layout_toEndOf="@+id/iv_read"
                 android:layout_toStartOf="@+id/iv_right_arrow"
-                android:text="hfiw bobf fow wbfqb sgfi safu aff absfbjsa sacv"
                 android:textColor="@color/chat_message"
                 android:textSize="@dimen/text_size_14"
                 app:customFont="@string/font_regular" />
@@ -53,7 +52,6 @@
             android:layout_marginRight="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
             android:lineSpacingExtra="@dimen/margin_small_3"
-            android:text="Dr BEN\n680 parsant nager"
             android:textColor="@color/chat_message"
             android:textSize="@dimen/text_size_14"
             app:customFont="@string/font_regular" />
@@ -64,7 +62,6 @@
             android:layout_marginLeft="@dimen/margin_50"
             android:layout_marginRight="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
-            android:background="@drawable/job_type_background_temporary"
             android:lineSpacingExtra="@dimen/margin_small_3"
             android:paddingBottom="@dimen/margin_5"
             android:paddingLeft="@dimen/margin_10"
@@ -90,8 +87,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
-            android:background="@color/line_divider"
-        android:layout_marginStart="@dimen/margin_normal"
-            />
+            android:layout_marginStart="@dimen/margin_normal"
+            android:background="@color/line_divider" />
     </LinearLayout>
 </layout>

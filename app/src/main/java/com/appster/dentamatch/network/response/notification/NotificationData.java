@@ -14,9 +14,10 @@ public class NotificationData {
 
     private int seen;
     private int jobListId;
+    private int notificationType;
     private String createdAt;
     private String notificationData;
-    private JobDetailModel jobDetailModel;
+    private JobDetailModel jobDetails;
     public void setSeen(int seen) {
         this.seen = seen;
     }
@@ -27,6 +28,9 @@ public class NotificationData {
 
     public int getReceiverId() {
         return receiverId;
+    }
+    public int getnotificationType() {
+        return notificationType;
     }
 
     public int getId() {
@@ -50,6 +54,6 @@ public class NotificationData {
     }
 
     public JobDetailModel getJobDetailModel() {
-        return jobDetailModel;
+        return jobDetails;
     }
 }

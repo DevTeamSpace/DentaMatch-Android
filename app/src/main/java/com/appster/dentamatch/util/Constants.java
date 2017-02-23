@@ -106,8 +106,9 @@ public class Constants {
         String IMAGE_TYPE_STATE_BOARD = "dental_state_board";
         String ACTION_ADD = "add";
         String ACTION_EDIT = "edit";
-        String NOTIFICATION_TYPE="notificationType";
-        String NOTIFICATION_ID="notificationId";
+        String NOTIFICATION_TYPE="notification_type";
+        String NOTIFICATION_ID="id";
+        String ID="id";
     }
 
     public interface NOTIFICATIONTYPES {
