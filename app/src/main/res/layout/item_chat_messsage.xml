@@ -5,13 +5,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_chat_date_label"
+            android:text="Fri, 03 Aug"
+            android:layout_marginTop="@dimen/margin_23"
+            android:textColor="@color/text_color_chat"
+            android:textSize="@dimen/text_size_12"
+            android:layout_alignStart="@+id/tv_chat_message"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            app:customFont="@string/font_regular"
+            android:layout_height="wrap_content" />
+
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/tv_chat_message"
         android:text="Hi Bob, you are awesome"
+        android:layout_below="@+id/tv_chat_date_label"
         android:layout_width="wrap_content"
         android:textSize="@dimen/text_size_13"
         android:background="@drawable/background_chat_bubble_sent"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_18"
         android:layout_marginStart="@dimen/margin_20"
         android:padding="@dimen/margin_15"
         android:textColor="@color/white_color"

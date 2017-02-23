@@ -323,6 +323,11 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
 

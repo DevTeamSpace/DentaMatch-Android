@@ -67,7 +67,8 @@ public class Utils {
     private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
-    private static final SimpleDateFormat chatDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
+    private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
+    private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE ,dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 am
 
     @Nullable
     /*
@@ -363,8 +364,8 @@ public class Utils {
     public static String convertUTCtoLocalFromTimeStamp(String UTCDateTime) {
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
-        chatDateFormat.setTimeZone(TimeZone.getDefault());
-        return chatDateFormat.format(date);
+        chatTimeFormat.setTimeZone(TimeZone.getDefault());
+        return chatTimeFormat.format(date);
     }
 
     public static String convertUTCToTimeLabel(String UTCDateTime) {
@@ -393,19 +394,19 @@ public class Utils {
     }
 
 
-    public static String compareDateFromCurrentLocalTime(String date) {
-        FullDateFormat.setTimeZone(TimeZone.getDefault());
-        DateOnlyFormat.setTimeZone(TimeZone.getDefault());
+    public static String compareDateForDateLabel(String UTCDateTime) {
+        Long time = Long.parseLong(UTCDateTime);
+        Date date = new Date(time);
+        chatDateLabelFormat.setTimeZone(TimeZone.getDefault());
 
-        try {
-            String currentDate = DateOnlyFormat.format(new Date(System.currentTimeMillis()));
 
-            Date convertedDate = FullDateFormat.parse(date);
-            String receivedDate = DateOnlyFormat.format(convertedDate);
+            String currentDate = chatDateLabelFormat.format(new Date(System.currentTimeMillis()));
+
+            String receivedDate = chatDateLabelFormat.format(date);
 
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, -1);
-            String yesterdayDate = DateOnlyFormat.format(calendar.getTime());
+            String yesterdayDate = chatDateLabelFormat.format(calendar.getTime());
 
             if (receivedDate.equalsIgnoreCase(currentDate)) {
                 return "Today";
@@ -416,11 +417,8 @@ public class Utils {
             } else {
                 return receivedDate;
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
-        return "";
+
     }
 
 

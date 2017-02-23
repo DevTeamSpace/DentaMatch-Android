@@ -54,6 +54,7 @@ public class MyMessageListAdapter extends RealmRecyclerViewAdapter<DBModel, MyMe
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
+
         if (messagesData.get(position) != null) {
             DBModel dataModel = messagesData.get(position);
             holder.tvRecruiterName.setText(dataModel.getName());
@@ -68,7 +69,7 @@ public class MyMessageListAdapter extends RealmRecyclerViewAdapter<DBModel, MyMe
                 holder.tvUnreadChatCount.setVisibility(View.GONE);
             }else if(dataModel.getUnReadChatCount() >= 100){
                 holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
-                holder.tvUnreadChatCount.setText("99+");
+                holder.tvUnreadChatCount.setText("999");
             }else{
                 holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
                 holder.tvUnreadChatCount.setText(String.valueOf(dataModel.getUnReadChatCount()));

@@ -349,7 +349,6 @@
                         android:paddingBottom="@dimen/margin_small"
                         android:paddingTop="@dimen/margin_small"
                         android:text="@string/working_hours_label"
-                        android:visibility="gone"
                         android:textColor="@color/dark_state_blue_color"
                         app:customFont="@string/font_medium" />
 
