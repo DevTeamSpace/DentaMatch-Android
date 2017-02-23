@@ -25,6 +25,7 @@ import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
@@ -215,6 +216,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.tvJobStatus.setVisibility(View.VISIBLE);
                     mBinding.btnApplyJob.setVisibility(View.GONE);
                     Alert.alert(JobDetailActivity.this, "Congratulations", "You have successfully applied for the job.");
+                    TrackJobsDataHelper.getInstance().updateAppliedData();
                 } else {
                     mBinding.tvJobStatus.setVisibility(View.GONE);
                     mBinding.btnApplyJob.setVisibility(View.VISIBLE);
@@ -426,6 +428,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mJobDetailModel.setIsSaved(status);
                     mBinding.cbJobSelection.setChecked(status == 1);
                     EventBus.getDefault().post(new SaveUnSaveEvent(JobID, status));
+                    TrackJobsDataHelper.getInstance().updateSavedData();
                 }
             }
 

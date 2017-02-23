@@ -20,8 +20,6 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
     private SavedJobFragment savedJobsFragment ;
     private AppliedJobsFragment appliedJobsFragment ;
     private ShortlistedJobsFragment shortListedJobsFragment;
-    private boolean shouldSaveListRefresh = true;
-    private boolean shouldAppliedListRefresh = true;
 
     public static TrackFragment newInstance(){
         return new TrackFragment();
@@ -80,10 +78,6 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
         switch (tab.getPosition()){
 
             case 0:
-                if(shouldSaveListRefresh){
-                    savedJobsFragment = SavedJobFragment.newInstance();
-                }
-
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.lay_container_fragment_tracks, savedJobsFragment)
@@ -92,10 +86,6 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
                 break;
 
             case 1:
-                if(shouldAppliedListRefresh){
-                    appliedJobsFragment = AppliedJobsFragment.newInstance();
-                }
-
                 getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.lay_container_fragment_tracks, appliedJobsFragment)

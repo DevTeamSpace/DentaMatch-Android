@@ -2,7 +2,6 @@ package com.appster.dentamatch.ui.tracks;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,23 +14,15 @@ import android.view.ViewGroup;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
 import com.appster.dentamatch.model.SaveUnSaveEvent;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.model.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
 
 /**
  * Created by Appster on 02/02/17.
@@ -40,12 +31,9 @@ import retrofit2.Call;
 public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String DATA_ARRAY = "DATA_ARRAY";
     private com.appster.dentamatch.databinding.FragmentSavedJobsBinding mBinding;
-    private int mPage = 1;
-    private boolean mIsPaginationNeeded;
     private LinearLayoutManager mLayoutManager;
     private TrackJobsAdapter mJobAdapter;
     private ArrayList<SearchJobModel> mJobListData;
-    private int mTotalResultCount;
 
     public static SavedJobFragment newInstance() {
         return new SavedJobFragment();
@@ -88,6 +76,12 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
         return mBinding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        TrackJobsDataHelper.getInstance().requestData(getActivity(), Constants.SEARCHJOBTYPE.SAVED.getValue());
+    }
+
     private void initViews() {
         mJobListData = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -101,25 +95,7 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (getArguments().getParcelableArrayList(DATA_ARRAY) != null) {
-            ArrayList<SearchJobModel> jobData = getArguments().getParcelableArrayList(DATA_ARRAY);
-
-            if(jobData.size() > 0) {
-                mJobListData.addAll(jobData);
-            }else{
-                getAllSavedJobs(false, true);
-            }
-        } else {
-            getAllSavedJobs(false, true);
-        }
-    }
-
-    @Override
     public void onPause() {
-        getArguments().putParcelableArrayList(DATA_ARRAY, mJobListData);
         super.onPause();
     }
 
@@ -131,88 +107,13 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
         int totalItemCount = mLayoutManager.getItemCount();
         int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
 
-        if (mIsPaginationNeeded) {
+        if (TrackJobsDataHelper.getInstance().isPaginationNeeded(Constants.SEARCHJOBTYPE.SAVED.getValue())) {
             if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                mIsPaginationNeeded = false;
                 mBinding.layJobListPagination.setVisibility(View.VISIBLE);
-                mPage++;
-                getAllSavedJobs(true, false);
-            }
-        }
-    }
-
-    private void getAllSavedJobs(final boolean isPaginationLoading, boolean showProgress) {
-
-        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
-        int type = Constants.SEARCHJOBTYPE.SAVED.getValue();
-        double lat = userLocation.getLatitude();
-        double lng = userLocation.getLongitude();
-
-        if (showProgress) {
-            showProgressBar(getString(R.string.please_wait));
-        }
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.fetchTrackJobs(type, mPage, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) getActivity()) {
-            @Override
-            public void onSuccess(SearchJobResponse response) {
-
-                if (response.getStatus() == 1) {
-
-                    if (!isPaginationLoading) {
-                        mJobListData.clear();
-                        processResponse(response);
-                    } else {
-                        processResponse(response);
-                    }
-
-                    mJobAdapter.notifyDataSetChanged();
-                }else{
-                    showToast(response.getMessage());
-
-                }
-
-                if (mBinding.swipeRefreshJobList.isRefreshing()) {
-                    mBinding.swipeRefreshJobList.setRefreshing(false);
-                }
-
-                if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
-                    mBinding.layJobListPagination.setVisibility(View.GONE);
-                }
-
-                if(mJobListData.size() > 0){
-                    mBinding.tvNoJobs.setVisibility(View.GONE);
-                }else{
-                    mBinding.tvNoJobs.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-                if (mBinding.swipeRefreshJobList.isRefreshing()) {
-                    mBinding.swipeRefreshJobList.setRefreshing(false);
-                }
-
-                if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
-                    mBinding.layJobListPagination.setVisibility(View.GONE);
-                }
+                TrackJobsDataHelper.getInstance().requestPaginatedData(getActivity(), Constants.SEARCHJOBTYPE.SAVED.getValue());
 
             }
-        });
-    }
-
-    private void processResponse(SearchJobResponse response) {
-        if (response.getSearchJobResponseData() != null && response.getSearchJobResponseData().getList() != null) {
-            mJobListData.addAll(response.getSearchJobResponseData().getList());
-            /**
-             * In case total item count and the job received size is equal, then pagination is not required.
-             */
-            mTotalResultCount = response.getSearchJobResponseData().getTotal();
-            mIsPaginationNeeded = !(mTotalResultCount == mJobListData.size());
-
         }
-
-
     }
 
     /**
@@ -228,9 +129,41 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
         }
     }
 
+    @Subscribe
+    public void onDataUpdated(TrackJobListRetrievedEvent event){
+        if(event != null){
+
+            if(event.getType() == Constants.SEARCHJOBTYPE.SAVED.getValue()) {
+                mJobListData.clear();
+                mJobListData.addAll(event.getmData());
+
+                if(mJobListData.size() == 0){
+                    mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+                }else{
+                    mBinding.tvNoJobs.setVisibility(View.GONE);
+                }
+
+                mJobAdapter.notifyDataSetChanged();
+            }
+
+            /**
+             * Hide pagination loader if it is visible.
+             */
+            if(mBinding.layJobListPagination.getVisibility() == View.VISIBLE){
+                mBinding.layJobListPagination.setVisibility(View.GONE);
+            }
+            /**
+             * Stop refreshing if the swipe loader is refreshing.
+             */
+            if(mBinding.swipeRefreshJobList.isRefreshing()){
+                mBinding.swipeRefreshJobList.setRefreshing(false);
+            }
+
+        }
+    }
+
     @Override
     public void onRefresh() {
-        mPage = 1;
-        getAllSavedJobs(false, false);
+        TrackJobsDataHelper.getInstance().refreshData(getActivity(), Constants.SEARCHJOBTYPE.SAVED.getValue());
     }
 }
