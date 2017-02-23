@@ -85,6 +85,9 @@ public class HomeActivity extends BaseActivity {
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID));
         }
+        if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
+            bottomBar.setCurrentItem(4);
+        }
 
         /**
          * Retrieve user's current location.

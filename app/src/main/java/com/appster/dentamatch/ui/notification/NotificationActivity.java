@@ -88,10 +88,19 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
 
 
                 if (response.getStatus() == 1) {
-                    ArrayList<NotificationData> list = mNotificaionAdapter.getList();
+                    ArrayList<NotificationData> list = new ArrayList<NotificationData>();
+                    list.addAll(mNotificaionAdapter.getList());
+                    LogUtils.LOGD(TAG, "size is---" + list.size());
+
                     list.get(position).setSeen(1);
                     mNotificaionAdapter.resetJobList(list);
-                    redirectNotification(notificationType);
+//                    list = mNotificaionAdapter.getList();
+                    if (list.get(position).getJobDetailModel() != null) {
+                        redirectNotification(notificationType, list.get(position).getJobDetailModel().getId());
+                    } else {
+                        redirectNotification(notificationType, -1);
+
+                    }
                 } else {
                     showToast(response.getMessage());
                 }
@@ -105,18 +114,21 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
-    private void redirectNotification(int notificationType) {
+    private void redirectNotification(int notificationType, int jobId) {
         Intent intent = null;
         if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED) {
             intent = new Intent(this, JobDetailActivity.class);
+            intent.putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId);
+
         } else if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC) {
 //            intent = new Intent(this, HomeActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             finish();
-        } else {
-            intent = new Intent(this, NotificationActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
+//        else {
+//            intent = new Intent(this, NotificationActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        }
         if (intent != null) {
             startActivity(intent);
 
@@ -136,7 +148,18 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onNotificationItemClick(int position, int notifId, int notificationType) {
-        readNotification(position, notifId, notificationType);
+        if (mNotificaionAdapter.getList().get(position).getSeen() == 1) {
+            if (mNotificaionAdapter.getList().get(position).getJobDetailModel() != null) {
+                redirectNotification(notificationType, mNotificaionAdapter.getList().get(position).getJobDetailModel().getId());
+            } else {
+                redirectNotification(notificationType, -1);
+
+            }
+
+        } else {
+            readNotification(position, notifId, notificationType);
+
+        }
     }
 
     private void getNotification(int page) {
@@ -152,6 +175,11 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                 if (response.getStatus() == 1) {
 
                     mNotificaionAdapter.setJobList(response.getNotificationResponseData().getNotificationList());
+//                    if (mNotificaionAdapter.getList() == null || mNotificaionAdapter.getList().size() == 0) {
+//                        mBinder.
+//                    } else {
+//                        mBinder.rvNotification.setVisibility(View.VISIBLE);
+//                    }
                 } else {
                     showToast(response.getMessage());
                 }

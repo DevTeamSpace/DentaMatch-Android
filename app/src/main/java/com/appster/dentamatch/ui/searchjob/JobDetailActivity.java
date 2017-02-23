@@ -223,7 +223,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                             @Override
                             public void onPositive(DialogInterface dialog) {
                                 startActivity(new Intent(JobDetailActivity.this, HomeActivity.class)
-//                                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
+                                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
                                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                             }
 
@@ -353,9 +353,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 //        mBinding.tvJobDetailJobOpenings.setText(dataModel.);
 //        mBinding.tvOfficeDress.setText(dataModel.g);
 //        mBinding.tvOfficeParkingAvailibility.setText(dataModel.get);
-        String startTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart());
-        String endTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd());
-        mBinding.tvJobDetailOfficeWorkingHours.setText(startTime.concat(" - ").concat(endTime));
+//        String startTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart());
+//        String endTime = Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd());
+//        mBinding.tvJobDetailOfficeWorkingHours.setText(startTime.concat(" - ").concat(endTime));
+        mBinding.tvJobDetailOfficeWorkingHours.setVisibility(View.GONE);
         mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
         mBinding.tvJobDetailDocOfficeType.setText(dataModel.getOfficeTypeName());
 
