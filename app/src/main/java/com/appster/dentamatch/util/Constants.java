@@ -120,6 +120,7 @@ public class Constants {
         int NOTIFICATION_COMPLETE_PROFILE = 6;
         int NOTIFICATION_CHAT_MSG = 7;
         int NOTIFICATION_OTHER = 8;
+        int NOTIFICATION_INVITE = 9;
     }
 
     public interface REQUEST_CODE {
