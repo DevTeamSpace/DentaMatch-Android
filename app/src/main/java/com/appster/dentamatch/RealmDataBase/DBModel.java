@@ -18,6 +18,7 @@ public class DBModel extends RealmObject {
     private int seekerHasBlocked;
     private String lastMessage;
     private boolean hasDBUpdated;
+    private RealmList<Message> userChats;
 
     public boolean isDBUpdated() {
         return hasDBUpdated;
@@ -26,8 +27,6 @@ public class DBModel extends RealmObject {
     public void setHasDBUpdated(boolean hasDBUpdated) {
         this.hasDBUpdated = hasDBUpdated;
     }
-
-    private RealmList<Message> userChats;
 
     public int getUnReadChatCount() {
         return unReadChatCount;

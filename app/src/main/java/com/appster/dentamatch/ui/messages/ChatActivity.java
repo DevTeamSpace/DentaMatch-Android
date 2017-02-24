@@ -55,13 +55,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         initViews();
         mLayoutManager.setStackFromEnd(true);
         mBinder.messages.setLayoutManager(mLayoutManager);
-        mBinder.messages.setAdapter(mAdapter);
+//        mBinder.messages.setAdapter(mAdapter);
         updateUI(getIntent());
     }
 
     private void initViews() {
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new ChatAdapter(this);
+//        mAdapter = new ChatAdapter(this);
 
         mBinder.sendButton.setOnClickListener(this);
         mBinder.toolbarActivityChat.ivToolBarLeft.setOnClickListener(this);
@@ -71,7 +71,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-       updateUI(intent);
+        updateUI(intent);
 
     }
 
@@ -116,10 +116,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 String msg = mBinder.messageInput.getText().toString().trim();
 
                 if (!TextUtils.isEmpty(msg)) {
-                    if(SocketManager.getInstance().isConnected()){
+                    if (SocketManager.getInstance().isConnected()) {
                         SocketManager.getInstance().sendMessage(userId, recruiterId, msg);
                         mBinder.messageInput.setText("");
-                    }else{
+                    } else {
                         ChatActivity.this.showToast("Internet connection problem, please check your connection.");
                     }
 
@@ -167,6 +167,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             /**
              * Add the received message to the chat adapter for viewing.
              */
+
             Message message = new Message(messageModel.getMessage(),
                     messageModel.getRecruiterName(),
                     messageModel.getMessageTime(),
@@ -178,7 +179,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
              * Insert the message received into the DB first.
              */
             DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(), 0);
-            addMessageToAdapter(message);
+
+            if(mBinder.messages.getAdapter() == null){
+                mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
+                mBinder.messages.setAdapter(mAdapter);
+            }
+            scrollToBottom();
+
         }
 
     }
@@ -187,8 +194,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     public void onSentMsgAcknowledgement(final MessageAcknowledgementEvent event) {
         if (event != null) {
             DBHelper.getInstance().insertIntoDB(recruiterId, event.getmMessage(), recruiterName, 0);
-            addMessageToAdapter(event.getmMessage());
-
+            scrollToBottom();
         }
 
     }
@@ -225,10 +231,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
-    private void addMessageToAdapter(Message message) {
-        mAdapter.addMessage(message);
-        scrollToBottom();
-    }
+//    private void addMessageToAdapter(Message message) {
+//        mAdapter.addMessage(message);
+//        scrollToBottom();
+//    }
 
     private void updateUI(Intent intent) {
         if (intent.hasExtra(Constants.EXTRA_CHAT_MODEL)) {
@@ -254,22 +260,30 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
              * Connect to socket and request past chats to update the recycler view.
              */
             SocketManager.getInstance().attachPersonalListener(this, recruiterId);
-
+            /**
+             * Update all unread chats corresponding to this recruiterID and update server and local Db about it.
+             */
+            SocketManager.getInstance().updateMsgRead(recruiterId, userId);
             if (!dbModel.isDBUpdated()) {
 
                 if (Utils.isConnected(this)) {
                     SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
                     DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
+
                 } else {
-                    for (Message message : dbModel.getUserChats()) {
-                        addMessageToAdapter(message);
-                    }
+//                    for (Message message : dbModel.getUserChats()) {
+//                        addMessageToAdapter(message);
+//                    }
+                    mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
+                    mBinder.messages.setAdapter(mAdapter);
                 }
 
             } else {
-                for (Message message : dbModel.getUserChats()) {
-                    addMessageToAdapter(message);
-                }
+//                for (Message message : dbModel.getUserChats()) {
+//                    addMessageToAdapter(message);
+//                }
+                mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
+                mBinder.messages.setAdapter(mAdapter);
             }
 
         }

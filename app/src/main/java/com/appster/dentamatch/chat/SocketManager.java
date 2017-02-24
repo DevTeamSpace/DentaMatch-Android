@@ -8,6 +8,7 @@ import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.ui.messages.Message;
@@ -272,11 +273,10 @@ public class SocketManager {
 
                             DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1);
 
-                                Intent intent = new Intent(attachedGlobalActivity, ChatActivity.class);
-                                intent.putExtra(Constants.EXTRA_CHAT_MODEL, model.getFromID());
+                                Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
+                                intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent);
-
+                                Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent);
                         }
                     });
                 }

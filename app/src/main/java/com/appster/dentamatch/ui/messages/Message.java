@@ -5,7 +5,7 @@ import io.realm.RealmObject;
 public class Message extends RealmObject{
 
     public static final int TYPE_MESSAGE_SEND = 0;
-    public static final int TYPE_LOG = 1;
+    public static final int TYPE_DATE_HEADER = 1;
     public static final int TYPE_ACTION = 2;
     public static final int TYPE_MESSAGE_RECEIVED = 3;
 

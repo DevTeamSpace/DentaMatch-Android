@@ -2,9 +2,10 @@ package com.appster.dentamatch.ui.messages;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +16,25 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemChatMesssageBinding;
 import com.appster.dentamatch.util.Utils;
 
-import java.util.ArrayList;
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
 
 /**
  * Created by Appster on 08/02/17.
  */
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder> {
+public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.MyHolder> {
     private ItemChatMesssageBinding mBinding;
-    private ArrayList<Message> mChatMessages;
+//    private ArrayList<Message> mChatMessages;
+    private OrderedRealmCollection<Message> mChatMessages;
     private Context mContext;
-    private String previousDateLabel = "";
 
-    public ChatAdapter(Context ct) {
-        mContext = ct;
+    public ChatAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Message> data, boolean autoUpdate) {
+        super(context, data, autoUpdate);
+        mContext = context;
+        mChatMessages = data;
     }
+
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,7 +55,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder> {
             timeParams.setMargins(10, 0, 10, 10);
 
             if (mChatMessages.get(position).getType() == Message.TYPE_MESSAGE_RECEIVED) {
+                holder.tvDateLabel.setVisibility(View.GONE);
+                holder.tvMessage.setVisibility(View.VISIBLE);
+                holder.tvTime.setVisibility(View.VISIBLE);
                 params.addRule(RelativeLayout.ALIGN_PARENT_START);
+                params.addRule(RelativeLayout.BELOW, holder.tvDateLabel.getId());
                 holder.tvMessage.setTextColor(ContextCompat.getColor(mContext, R.color.chat_text_color_received));
                 holder.tvMessage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.background_chat_bubble_recieved));
                 holder.tvMessage.setLayoutParams(params);
@@ -59,34 +68,34 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder> {
                 timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
                 holder.tvTime.setLayoutParams(timeParams);
 
-            } else {
+            } else if(mChatMessages.get(position).getType() == Message.TYPE_MESSAGE_SEND) {
+                holder.tvDateLabel.setVisibility(View.GONE);
+                holder.tvMessage.setVisibility(View.VISIBLE);
+                holder.tvTime.setVisibility(View.VISIBLE);
                 holder.tvMessage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.background_chat_bubble_sent));
                 params.addRule(RelativeLayout.ALIGN_PARENT_END);
+                params.addRule(RelativeLayout.BELOW, holder.tvDateLabel.getId());
+
                 holder.tvMessage.setTextColor(ContextCompat.getColor(mContext, R.color.white_color));
                 holder.tvMessage.setLayoutParams(params);
                 timeParams.addRule(RelativeLayout.ALIGN_END, holder.tvMessage.getId());
                 timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
                 holder.tvTime.setLayoutParams(timeParams);
+
+            }else{
+                /**
+                 * Update date label for chat messages.
+                 */
+                holder.tvDateLabel.setVisibility(View.VISIBLE);
+                holder.tvMessage.setVisibility(View.GONE);
+                holder.tvTime.setVisibility(View.GONE);
+                holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getmMessageTime()));
             }
 
             holder.tvTime.setText(Utils.convertUTCtoLocalFromTimeStamp(mChatMessages.get(position).getmMessageTime()));
 
-            /**
-             * Update date label for chat messages.
-             */
-            if (TextUtils.isEmpty(previousDateLabel)) {
-                previousDateLabel = Utils.compareDateForDateLabel(mChatMessages.get(position).getmMessageTime());
-                holder.tvDateLabel.setVisibility(View.VISIBLE);
-                holder.tvDateLabel.setText(previousDateLabel);
-            }else {
-                if(previousDateLabel.equalsIgnoreCase(Utils.compareDateForDateLabel(mChatMessages.get(position).getmMessageTime()))){
-                    holder.tvDateLabel.setVisibility(View.GONE);
-                }else{
-                    previousDateLabel = Utils.compareDateForDateLabel(mChatMessages.get(position).getmMessageTime());
-                    holder.tvDateLabel.setVisibility(View.VISIBLE);
-                    holder.tvDateLabel.setText(previousDateLabel);
-                }
-            }
+
+
         }
     }
 
@@ -100,16 +109,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder> {
 
     }
 
-    void addMessage(Message message) {
-
-        if (mChatMessages == null) {
-            mChatMessages = new ArrayList<>();
-        }
-
-        mChatMessages.add(message);
-        notifyItemInserted(mChatMessages.size() - 1);
-
-    }
+//    void addMessage(Message message) {
+//
+//        if (mChatMessages == null) {
+//            mChatMessages = new ArrayList<>();
+//        }
+//
+//        mChatMessages.add(message);
+//        notifyItemInserted(mChatMessages.size() - 1);
+//
+//    }
 
     class MyHolder extends RecyclerView.ViewHolder {
         TextView tvMessage, tvTime, tvDateLabel;
@@ -121,4 +130,5 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder> {
             tvDateLabel = mBinding.tvChatDateLabel;
         }
     }
+
 }

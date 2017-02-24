@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.messages;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 
 import io.realm.RealmResults;
 import retrofit2.Call;
@@ -47,31 +49,31 @@ public class MessagesListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        mMessagesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_messages, container, false);
-//        initViews();
-//        mMessagesBinding.rvMessageList.setLayoutManager(mLayoutManager);
+        mMessagesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_messages, container, false);
+        initViews();
+        mMessagesBinding.rvMessageList.setLayoutManager(mLayoutManager);
 
-//        return mMessagesBinding.getRoot();
-        return inflater.inflate(R.layout.fragment_under_dev, container, false);
+        return mMessagesBinding.getRoot();
+//        return inflater.inflate(R.layout.fragment_under_dev, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //
-//        if (Utils.isConnected(getActivity())) {
-//            getChatHistory();
-//        } else {
-//            data = DBHelper.getInstance().getAllUserChats();
-//
-//            if (data != null && data.size() > 0) {
-//                mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
-//                mAdapter = new MyMessageListAdapter(getActivity(), data, true);
-//                mMessagesBinding.rvMessageList.setAdapter(mAdapter);
-//            } else {
-//                mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
-//            }
-//        }
+        if (Utils.isConnected(getActivity())) {
+            getChatHistory();
+        } else {
+            data = DBHelper.getInstance().getAllUserChats();
+
+            if (data != null && data.size() > 0) {
+                mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
+                mAdapter = new MyMessageListAdapter(getActivity(), data, true);
+                mMessagesBinding.rvMessageList.setAdapter(mAdapter);
+            } else {
+                mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
+            }
+        }
 
     }
 

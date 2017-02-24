@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -82,7 +81,8 @@ public class HomeActivity extends BaseActivity {
        else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
             bottomBar.setCurrentItem(3);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
-            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID));
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
         }
         else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
             bottomBar.setCurrentItem(4);
@@ -98,7 +98,16 @@ public class HomeActivity extends BaseActivity {
         updateToken(PreferenceUtil.getFcmToken());
     }
 
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.hasExtra(Constants.EXTRA_FROM_CHAT)) {
+            bottomBar.setCurrentItem(3);
+            String RecruiterID = intent.getStringExtra(Constants.EXTRA_FROM_CHAT);
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -254,16 +263,6 @@ public class HomeActivity extends BaseActivity {
     @Override
     public String getActivityName() {
         return null;
-    }
-
-
-    private void launchProfileFragment() {
-        fragmentTransaction = fragmentManager.beginTransaction();
-        String fragTagName = Constants.FRAGMENT_NAME.PROFILE_FRAGMENT;
-        Fragment fragment = ProfileFragment.newInstance();
-        fragmentTransaction.replace(R.id.fragment_container, fragment, fragTagName)
-                .addToBackStack(fragTagName)
-                .commit();
     }
 
     private void updateToken(String fcmToken) {

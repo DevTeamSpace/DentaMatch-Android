@@ -68,7 +68,7 @@ public class Utils {
     private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
     private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
-    private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE ,dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 am
+    private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 am
 
     @Nullable
     /*
@@ -103,6 +103,22 @@ public class Utils {
 
         //noinspection deprecation
         return context.getResources().getDrawable(drawableId);
+    }
+
+    public static boolean isMsgDateDifferent(long lastMsgTime, long receivedMsgTime){
+        DateOnlyFormat.setTimeZone(TimeZone.getDefault());
+
+        Date lastMsgDate = new Date(lastMsgTime);
+        Date receivedMsgDate = new Date(receivedMsgTime);
+
+        String lastMsgDateLabel = DateOnlyFormat.format(lastMsgDate);
+        String receivedMsgDateLabel = DateOnlyFormat.format(receivedMsgDate);
+
+        if(lastMsgDateLabel.equalsIgnoreCase(receivedMsgDateLabel)){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public static BaseResponse parseDataOnError(retrofit2.Response<BaseResponse> response) {
@@ -392,6 +408,37 @@ public class Utils {
             return receivedDateString;
         }
     }
+
+    public static String compareDateFromCurrentLocalTime(String date) {
+        FullDateFormat.setTimeZone(TimeZone.getDefault());
+        DateOnlyFormat.setTimeZone(TimeZone.getDefault());
+
+        try {
+            String currentDate = DateOnlyFormat.format(new Date(System.currentTimeMillis()));
+
+            Date convertedDate = FullDateFormat.parse(date);
+            String receivedDate = DateOnlyFormat.format(convertedDate);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+            String yesterdayDate = DateOnlyFormat.format(calendar.getTime());
+
+            if (receivedDate.equalsIgnoreCase(currentDate)) {
+                return "Today";
+
+            } else if (receivedDate.equalsIgnoreCase(yesterdayDate)) {
+                return "Yesterday";
+
+            } else {
+                return receivedDate;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
 
 
     public static String compareDateForDateLabel(String UTCDateTime) {

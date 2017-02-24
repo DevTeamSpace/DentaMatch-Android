@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
@@ -290,6 +291,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         PreferenceUtil.reset();
         PreferenceUtil.setIsOnBoarding(true);
         Utils.clearNotifications(this);
+        DBHelper.getInstance().clearDBData();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(Constants.EXTRA_IS_LOGIN, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
