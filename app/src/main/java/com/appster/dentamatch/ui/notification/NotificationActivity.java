@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,20 +15,13 @@ import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest;
-import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
-import com.appster.dentamatch.network.response.jobs.HiredJobResponse;
 import com.appster.dentamatch.network.response.notification.NotificationData;
 import com.appster.dentamatch.network.response.notification.NotificationResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.calendar.HiredJobAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
-import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -37,14 +30,13 @@ import retrofit2.Call;
 /**
  * Created by virender on 14/02/17.
  */
-public class NotificationActivity extends BaseActivity implements View.OnClickListener, NotificaionAdapter.NotificationClickListener {
+public class NotificationActivity extends BaseActivity implements View.OnClickListener, NotificationAdapter.NotificationClickListener, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = "NotificationActivity";
     private ActivityNotificationBinding mBinder;
-    private NotificaionAdapter mNotificaionAdapter;
+    private NotificationAdapter mNotificaionAdapter;
     private LinearLayoutManager mLayoutManager;
     private boolean mIsPaginationNeeded;
-    private int page=1;
-
+    private int page = 1;
 
 
     @Override
@@ -52,7 +44,7 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_notification);
         intiView();
-        getNotification(1);
+        getNotification(1, true);
     }
 
     @Override
@@ -63,11 +55,13 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
 
     private void intiView() {
         mBinder.toolbarNotification.tvToolbarGeneralLeft.setText(getString(R.string.header_notification));
+        mBinder.swipeRefreshNotification.setColorSchemeResources(R.color.colorAccent);
+        mBinder.swipeRefreshNotification.setOnRefreshListener(this);
         mLayoutManager = new LinearLayoutManager(this);
         mBinder.rvNotification.setLayoutManager(mLayoutManager);
 //        mBinder.rvNotification.addItemDecoration(new SimpleDividerItemDecoration(this));
         mBinder.toolbarNotification.ivToolBarLeft.setOnClickListener(this);
-        mNotificaionAdapter = new NotificaionAdapter(this, this);
+        mNotificaionAdapter = new NotificationAdapter(this, this);
         mBinder.rvNotification.setAdapter(mNotificaionAdapter);
         mBinder.rvNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -77,6 +71,7 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
             }
         });
     }
+
     private void checkIfItsLastItem() {
         int visibleItemCount = mLayoutManager.getChildCount();
         int totalItemCount = mLayoutManager.getItemCount();
@@ -87,11 +82,12 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                 ++page;
                 mIsPaginationNeeded = false;
                 mBinder.layPagination.setVisibility(View.VISIBLE);
-                getNotification(page);
+                getNotification(page, false);
 //                SearchJobDataHelper.getInstance().updateDataViaPagination(getActivity());
             }
         }
     }
+
     @Override
     public String getActivityName() {
         return null;
@@ -142,7 +138,7 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
 
     private void redirectNotification(int notificationType, int jobId) {
         Intent intent = null;
-        if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED) {
+        if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
             intent = new Intent(this, JobDetailActivity.class);
             intent.putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId);
 
@@ -188,9 +184,10 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private void getNotification(int page) {
-
-        processToShowDialog("", getString(R.string.please_wait), null);
+    private void getNotification(int page, boolean isFreshHit) {
+        if (isFreshHit && !mBinder.swipeRefreshNotification.isRefreshing()) {
+            processToShowDialog("", getString(R.string.please_wait), null);
+        }
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.getNotification(page).enqueue(new BaseCallback<NotificationResponse>(this) {
@@ -198,16 +195,31 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
             public void onSuccess(NotificationResponse response) {
                 /**
                  */
-                if (response.getStatus() == 1) {
 
-                    mNotificaionAdapter.setJobList(response.getNotificationResponseData().getNotificationList());
-//                    if (mNotificaionAdapter.getList() == null || mNotificaionAdapter.getList().size() == 0) {
-//                        mBinder.
-//                    } else {
-//                        mBinder.rvNotification.setVisibility(View.VISIBLE);
-//                    }
+
+                if (response.getStatus() == 1) {
+                    mIsPaginationNeeded = true;
+                    if (mBinder.swipeRefreshNotification.isRefreshing()) {
+                        mBinder.swipeRefreshNotification.setRefreshing(false);
+                        mNotificaionAdapter.resetJobList(response.getNotificationResponseData().getNotificationList());
+
+                    } else {
+
+                        mNotificaionAdapter.setJobList(response.getNotificationResponseData().getNotificationList());
+                    }
+
                 } else {
                     showToast(response.getMessage());
+                }
+                mBinder.layPagination.setVisibility(View.GONE);
+                mBinder.swipeRefreshNotification.setRefreshing(false);
+                if (mNotificaionAdapter.getList() == null || mNotificaionAdapter.getList().size() == 0) {
+                    mBinder.layoutEmptyNotification.setVisibility(View.VISIBLE);
+
+                } else {
+//                    mBinder.rvNotification.setVisibility(View.VISIBLE);
+                    mBinder.layoutEmptyNotification.setVisibility(View.GONE);
+
                 }
 
             }
@@ -221,4 +233,9 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    @Override
+    public void onRefresh() {
+        page = 1;
+        getNotification(page, true);
+    }
 }

@@ -129,7 +129,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private Intent redirectNotification(int notiifcationType, int jobId) {
         Intent intent = null;
-        if (notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED) {
+        if (notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED|| notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
             intent = new Intent(this, JobDetailActivity.class);
             intent.putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId);
         } else if (notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE || notiifcationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC) {

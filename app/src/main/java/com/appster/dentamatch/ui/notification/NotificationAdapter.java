@@ -21,14 +21,14 @@ import java.util.ArrayList;
 /**
  * Created by virender on 14/02/17.
  */
-public class NotificaionAdapter extends RecyclerView.Adapter<NotificaionAdapter.MyHolder> {
+public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolder> {
     private ItemNotificationBinding mBinding;
     private Context mContext;
     private ArrayList<NotificationData> mNotificationList = new ArrayList<>();
     private NotificationClickListener mListener;
 
 
-    public NotificaionAdapter(Context context, NotificationClickListener listener) {
+    public NotificationAdapter(Context context, NotificationClickListener listener) {
         mContext = context;
         mListener = listener;
     }
