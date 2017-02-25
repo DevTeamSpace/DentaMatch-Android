@@ -14,11 +14,30 @@ public class DBModel extends RealmObject {
     @PrimaryKey
     private String recruiterId;
     private String name;
+    private String lastMsgTime;
     private int unReadChatCount;
     private int seekerHasBlocked;
     private String lastMessage;
     private boolean hasDBUpdated;
+    private String messageListId;
     private RealmList<Message> userChats;
+
+
+    public String getMessageListId() {
+        return messageListId;
+    }
+
+    public void setMessageListId(String messageListId) {
+        this.messageListId = messageListId;
+    }
+
+    public String getLastMsgTime() {
+        return lastMsgTime;
+    }
+
+    public void setLastMsgTime(String lastMsgTime) {
+        this.lastMsgTime = lastMsgTime;
+    }
 
     public boolean isDBUpdated() {
         return hasDBUpdated;

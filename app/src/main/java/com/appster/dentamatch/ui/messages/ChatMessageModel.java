@@ -13,6 +13,15 @@ public class ChatMessageModel extends RealmObject {
     private String messageTime;
     private String recruiterName;
     private String messageId;
+    private String messageListId;
+
+    public String getMessageListId() {
+        return messageListId;
+    }
+
+    public void setMessageListId(String messageListId) {
+        this.messageListId = messageListId;
+    }
 
     public String getMessageId() {
         return messageId;

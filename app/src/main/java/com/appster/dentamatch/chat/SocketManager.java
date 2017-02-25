@@ -43,15 +43,15 @@ public class SocketManager {
     private final String SOCKET_MESSAGE_ACKNOWLEDGEMENT = "Socket_acknowledgement_received";
     private final String SOCKET_PAST_CHAT_ACKNOWLEDGEMENT = "Socket_past_chat_acknowledgement_received";
 
-    private final String PARAM_FROM_ID = "fromId";
-    private final String PARAM_TO_ID = "toId";
-    private final String PARAM_USERID = "userId";
-    private final String PARAM_USERNAME = "userName";
-    private final String PARAM_SENT_TIME = "sentTime";
-    private final String PARAM_USER_MSG = "message";
-    private final String PARAM_PAGE = "pageNo";
-    private final String PARAM_RECRUITER_NAME = "fromName";
-    private final String PARAM_MESSAGE_ID = "messageId";
+    public static final String PARAM_FROM_ID = "fromId";
+    public static final String PARAM_TO_ID = "toId";
+    public static final String PARAM_USERID = "userId";
+    public static final String PARAM_USERNAME = "userName";
+    public static final String PARAM_SENT_TIME = "sentTime";
+    public static final String PARAM_USER_MSG = "message";
+    public static final String PARAM_PAGE = "pageNo";
+    public static final String PARAM_RECRUITER_NAME = "fromName";
+    public static final String PARAM_MESSAGE_ID = "messageId";
 
     private final String EMIT_USER_HISTORY = "getHistory";
     private final String EMIT_INIT = "init";
@@ -180,7 +180,7 @@ public class SocketManager {
                      */
                     final JSONObject jsonObject = (JSONObject) args[0];
                     LogUtils.LOGD(TAG, SOCKET_MESSAGE_ACKNOWLEDGEMENT + args[0]);
-                    ChatMessageModel model = parseData(jsonObject);
+                    ChatMessageModel model = Utils.parseData(jsonObject);
                     Message message = new Message(model.getMessage(),
                             model.getRecruiterName(),
                             model.getMessageTime(),
@@ -207,7 +207,7 @@ public class SocketManager {
                     attachedActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(parseDataForHistory(jsonObject)));
+                            EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(Utils.parseDataForHistory(jsonObject)));
                         }
                     });
                 }
@@ -223,8 +223,18 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, EVENT_NEW_MESSAGE + ":" + args[0]);
             final JSONObject jsonObject = (JSONObject) args[0];
+            final ChatMessageModel model;
 
-            final ChatMessageModel model = parseData(jsonObject);
+            /**
+             * A new message from a new recruiter will have a messageListId in the jsonObject and other messages wont.
+             * So we parse data based on the response type data we have received.
+             */
+            if(jsonObject.has("messageListId")){
+               model = Utils.parseDataForNewRecruiterMessage(jsonObject);
+            }else{
+                model = Utils.parseData(jsonObject);
+            }
+
 
             /**
              * If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
@@ -271,7 +281,7 @@ public class SocketManager {
                                     model.getMessageId(),
                                     Message.TYPE_MESSAGE_RECEIVED);
 
-                            DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1);
+                            DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1, model.getMessageListId());
 
                                 Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
                                 intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
@@ -392,37 +402,6 @@ public class SocketManager {
         LogUtils.LOGD(TAG, EMIT_USER_HISTORY + ":" + object.toString());
     }
 
-    private ChatMessageModel parseData(JSONObject messageData) {
-        ChatMessageModel model = new ChatMessageModel();
-
-        try {
-            model.setFromID(messageData.getString(PARAM_FROM_ID));
-            model.setRecruiterName(messageData.getString(PARAM_RECRUITER_NAME));
-            model.setToID(messageData.getString(PARAM_TO_ID));
-            model.setMessageTime(messageData.getString(PARAM_SENT_TIME));
-            model.setMessage(messageData.getString(PARAM_USER_MSG));
-            model.setMessageId(messageData.getString(PARAM_MESSAGE_ID));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return model;
-    }
-
-    private ChatMessageModel parseDataForHistory(JSONObject messageData) {
-        ChatMessageModel model = new ChatMessageModel();
-
-        try {
-            model.setFromID(messageData.getString(PARAM_FROM_ID));
-            model.setToID(messageData.getString(PARAM_TO_ID));
-            model.setMessageTime(messageData.getString(PARAM_SENT_TIME));
-            model.setMessage(messageData.getString(PARAM_USER_MSG));
-            model.setMessageId(messageData.getString(PARAM_MESSAGE_ID));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return model;
-    }
-
     public void fetchPastChatsAfterMsgID(String messageID, String toID, String fromID) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put(PARAM_MESSAGE_ID, messageID);
@@ -448,7 +427,7 @@ public class SocketManager {
                             attachedActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(parseDataForHistory(dataObject)));
+                                    EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(Utils.parseDataForHistory(dataObject)));
                                 }
                             });
 

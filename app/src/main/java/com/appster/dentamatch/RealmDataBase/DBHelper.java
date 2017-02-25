@@ -12,6 +12,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by Appster on 14/02/17.
@@ -68,10 +69,10 @@ public class DBHelper {
             return null;
         }
 
-        return mRealmInstance.where(DBModel.class).findAll();
+        return mRealmInstance.where(DBModel.class).findAllSorted("lastMsgTime", Sort.DESCENDING);
     }
 
-    public void insertIntoDB(String recruiterId, Message userMessage, String recruiterName, int unreadMsgCount) {
+    public void insertIntoDB(String recruiterId, Message userMessage, String recruiterName, int unreadMsgCount, String messageListID) {
 
         if (mRealmInstance == null) {
             LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
@@ -89,6 +90,7 @@ public class DBHelper {
                     }
 
                     retrievedModel.setHasDBUpdated(true);
+                    retrievedModel.setLastMsgTime(userMessage.getmMessageTime());
                     retrievedModel.setLastMessage(userMessage.getMessage());
                     retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
 
@@ -109,6 +111,8 @@ public class DBHelper {
                 DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
                 newModel.setLastMessage(userMessage.getMessage());
                 newModel.setHasDBUpdated(false);
+                newModel.setMessageListId(messageListID);
+                newModel.setLastMsgTime(userMessage.getmMessageTime());
                 newModel.setUnReadChatCount(unreadMsgCount);
                 newModel.setSeekerHasBlocked(0); // Set unblocked as default.
                 newModel.setName(recruiterName);
@@ -205,7 +209,7 @@ public class DBHelper {
 
     public void setSyncNeeded() {
         mRealmInstance.beginTransaction();
-        RealmResults<DBModel> DBData = DBHelper.getInstance().getAllUserChats();
+        RealmResults<DBModel> DBData = getAllUserChats();
         for (DBModel model : DBData) {
             model.setHasDBUpdated(false);
         }
@@ -221,6 +225,8 @@ public class DBHelper {
             e.printStackTrace();
         }
     }
+
+
 
 
 }

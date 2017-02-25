@@ -60,7 +60,6 @@ public class MessagesListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//
         if (Utils.isConnected(getActivity())) {
             getChatHistory();
         } else {
@@ -101,7 +100,7 @@ public class MessagesListFragment extends BaseFragment {
                                     model.getTimestamp(),
                                     String.valueOf(model.getMessageId()),
                                     Message.TYPE_MESSAGE_RECEIVED);
-                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), Integer.parseInt(model.getUnreadCount()));
+                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), Integer.parseInt(model.getUnreadCount()), String.valueOf(model.getMessageListId()));
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();

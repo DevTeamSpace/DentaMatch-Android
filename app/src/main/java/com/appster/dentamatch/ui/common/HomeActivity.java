@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.widget.FrameLayout;
@@ -44,9 +42,6 @@ import retrofit2.Call;
 public class HomeActivity extends BaseActivity {
     private final String TAG = "Home Screen";
     private AHBottomNavigation bottomBar;
-    private FragmentTransaction fragmentTransaction;
-    private FragmentManager fragmentManager;
-
     private ProfileFragment mProfileFragment;
     private JobsFragment mJobsFragment;
     private MessagesListFragment mMessagesFragment;
@@ -127,7 +122,6 @@ public class HomeActivity extends BaseActivity {
      * initViews is used to initialize this view at app launch
      */
     private void initViews() {
-        fragmentManager = getSupportFragmentManager();
         bottomBar = (AHBottomNavigation) findViewById(R.id.ntb_horizontal);
         bottomBar.setTitleTextSize(Utils.convertSpToPixels(10.0f, this), Utils.convertSpToPixels(10.0f, this));
         bottomBar.addItem(new AHBottomNavigationItem(getString(R.string.nav_job), R.drawable.img_nav_jobs));

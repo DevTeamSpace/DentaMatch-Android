@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,11 +58,20 @@ public class MyMessageListAdapter extends RealmRecyclerViewAdapter<DBModel, MyMe
 
         if (messagesData.get(position) != null) {
             DBModel dataModel = messagesData.get(position);
-            holder.tvRecruiterName.setText(dataModel.getName());
-            holder.tvLastMessage.setText(dataModel.getLastMessage());
-            holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel
-                            .getUserChats()
-                            .get(dataModel.getUserChats().size() - 1).getmMessageTime()));
+            if(!TextUtils.isEmpty(dataModel.getName())) {
+                holder.tvRecruiterName.setText(dataModel.getName());
+            }
+
+            if(!TextUtils.isEmpty(dataModel.getLastMessage())) {
+                holder.tvLastMessage.setText(dataModel.getLastMessage());
+            }
+
+            if(dataModel.getUserChats() != null &&
+                    !TextUtils.isEmpty(dataModel.getUserChats().get(dataModel.getUserChats().size() - 1).getmMessageTime())) {
+                holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel
+                        .getUserChats()
+                        .get(dataModel.getUserChats().size() - 1).getmMessageTime()));
+            }
 
             dataModel.getUnReadChatCount();
 

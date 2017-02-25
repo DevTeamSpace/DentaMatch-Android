@@ -42,9 +42,14 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -572,10 +577,58 @@ public class Utils {
         }
 
 
-        NotificationManager manager = (NotificationManager) ct.getSystemService(ct.NOTIFICATION_SERVICE);
+        NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_VIBRATE;
         manager.notify(NOTIFICATION_CODE, notification);
+    }
+
+    public static ChatMessageModel parseData(JSONObject messageData) {
+        ChatMessageModel model = new ChatMessageModel();
+
+        try {
+            model.setFromID(messageData.getString(SocketManager.PARAM_FROM_ID));
+            model.setRecruiterName(messageData.getString(SocketManager.PARAM_RECRUITER_NAME));
+            model.setToID(messageData.getString(SocketManager.PARAM_TO_ID));
+            model.setMessageTime(messageData.getString(SocketManager.PARAM_SENT_TIME));
+            model.setMessage(messageData.getString(SocketManager.PARAM_USER_MSG));
+            model.setMessageId(messageData.getString(SocketManager.PARAM_MESSAGE_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
+
+    public static ChatMessageModel parseDataForHistory(JSONObject messageData) {
+        ChatMessageModel model = new ChatMessageModel();
+
+        try {
+            model.setFromID(messageData.getString(SocketManager.PARAM_FROM_ID));
+            model.setToID(messageData.getString(SocketManager.PARAM_TO_ID));
+            model.setMessageTime(messageData.getString(SocketManager.PARAM_SENT_TIME));
+            model.setMessage(messageData.getString(SocketManager.PARAM_USER_MSG));
+            model.setMessageId(messageData.getString(SocketManager.PARAM_MESSAGE_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
+
+    public static ChatMessageModel parseDataForNewRecruiterMessage(JSONObject messageData){
+        ChatMessageModel model = new ChatMessageModel();
+
+        try{
+            model.setFromID(messageData.getString("recruiterId"));
+            model.setToID(messageData.getString("seekerId"));
+            model.setMessageTime(messageData.getString("timestamp"));
+            model.setMessageId(messageData.getString("messageId"));
+            model.setMessage(messageData.getString("messageId"));
+            model.setMessageListId(messageData.getString("messageListId"));
+            model.setRecruiterName(messageData.getString("name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
     }
 
     public static boolean isValidEmailAddress(String email) {
