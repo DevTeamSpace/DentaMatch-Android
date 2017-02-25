@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -11,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -179,13 +179,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void processToShowDialog(String title, String msg, View view) {
         try {
-            mProgressDialog = ProgressDialog.show(new ContextThemeWrapper(BaseActivity.this,
-                    android.R.style.Theme_Holo_Light), title, msg, true, false);
-            if (view != null)
-                mProgressDialog.setContentView(view);
-            // Change as per your view
-            /*else
-                mProgressDialog.setContentView(R.layout.progress_view);*/
+            mProgressDialog =  ProgressDialog.show(this,null,null);
+            mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setContentView(View.inflate(this, R.layout.progress_bar, null));
+//            mProgressDialog = ProgressDialog.show(new ContextThemeWrapper(BaseActivity.this,
+//                    android.R.style.Theme_Holo_Light), title, msg, true, false);
+//            if (view != null)
+//                mProgressDialog.setContentView(view);
+//            // Change as per your view
+//            /*else
+//                mProgressDialog.setContentView(R.layout.progress_view);*/
         } catch (Exception e) {
             e.printStackTrace();
         }

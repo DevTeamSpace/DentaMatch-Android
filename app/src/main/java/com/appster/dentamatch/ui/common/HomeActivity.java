@@ -280,7 +280,6 @@ public class HomeActivity extends BaseActivity {
                 @Override
                 public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
                     LogUtils.LOGD(TAG, "onFail");
-
                 }
             });
         } catch (Exception e) {
