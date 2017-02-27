@@ -42,9 +42,14 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -67,7 +72,8 @@ public class Utils {
     private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
-    private static final SimpleDateFormat chatDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
+    private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
+    private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 am
 
     @Nullable
     /*
@@ -102,6 +108,22 @@ public class Utils {
 
         //noinspection deprecation
         return context.getResources().getDrawable(drawableId);
+    }
+
+    public static boolean isMsgDateDifferent(long lastMsgTime, long receivedMsgTime){
+        DateOnlyFormat.setTimeZone(TimeZone.getDefault());
+
+        Date lastMsgDate = new Date(lastMsgTime);
+        Date receivedMsgDate = new Date(receivedMsgTime);
+
+        String lastMsgDateLabel = DateOnlyFormat.format(lastMsgDate);
+        String receivedMsgDateLabel = DateOnlyFormat.format(receivedMsgDate);
+
+        if(lastMsgDateLabel.equalsIgnoreCase(receivedMsgDateLabel)){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public static BaseResponse parseDataOnError(retrofit2.Response<BaseResponse> response) {
@@ -363,8 +385,8 @@ public class Utils {
     public static String convertUTCtoLocalFromTimeStamp(String UTCDateTime) {
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
-        chatDateFormat.setTimeZone(TimeZone.getDefault());
-        return chatDateFormat.format(date);
+        chatTimeFormat.setTimeZone(TimeZone.getDefault());
+        return chatTimeFormat.format(date);
     }
 
     public static String convertUTCToTimeLabel(String UTCDateTime) {
@@ -391,7 +413,6 @@ public class Utils {
             return receivedDateString;
         }
     }
-
 
     public static String compareDateFromCurrentLocalTime(String date) {
         FullDateFormat.setTimeZone(TimeZone.getDefault());
@@ -421,6 +442,35 @@ public class Utils {
         }
 
         return "";
+    }
+
+
+
+    public static String compareDateForDateLabel(String UTCDateTime) {
+        Long time = Long.parseLong(UTCDateTime);
+        Date date = new Date(time);
+        chatDateLabelFormat.setTimeZone(TimeZone.getDefault());
+
+
+            String currentDate = chatDateLabelFormat.format(new Date(System.currentTimeMillis()));
+
+            String receivedDate = chatDateLabelFormat.format(date);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+            String yesterdayDate = chatDateLabelFormat.format(calendar.getTime());
+
+            if (receivedDate.equalsIgnoreCase(currentDate)) {
+                return "Today";
+
+            } else if (receivedDate.equalsIgnoreCase(yesterdayDate)) {
+                return "Yesterday";
+
+            } else {
+                return receivedDate;
+            }
+
+
     }
 
 
@@ -527,10 +577,58 @@ public class Utils {
         }
 
 
-        NotificationManager manager = (NotificationManager) ct.getSystemService(ct.NOTIFICATION_SERVICE);
+        NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_VIBRATE;
         manager.notify(NOTIFICATION_CODE, notification);
+    }
+
+    public static ChatMessageModel parseData(JSONObject messageData) {
+        ChatMessageModel model = new ChatMessageModel();
+
+        try {
+            model.setFromID(messageData.getString(SocketManager.PARAM_FROM_ID));
+            model.setRecruiterName(messageData.getString(SocketManager.PARAM_RECRUITER_NAME));
+            model.setToID(messageData.getString(SocketManager.PARAM_TO_ID));
+            model.setMessageTime(messageData.getString(SocketManager.PARAM_SENT_TIME));
+            model.setMessage(messageData.getString(SocketManager.PARAM_USER_MSG));
+            model.setMessageId(messageData.getString(SocketManager.PARAM_MESSAGE_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
+
+    public static ChatMessageModel parseDataForHistory(JSONObject messageData) {
+        ChatMessageModel model = new ChatMessageModel();
+
+        try {
+            model.setFromID(messageData.getString(SocketManager.PARAM_FROM_ID));
+            model.setToID(messageData.getString(SocketManager.PARAM_TO_ID));
+            model.setMessageTime(messageData.getString(SocketManager.PARAM_SENT_TIME));
+            model.setMessage(messageData.getString(SocketManager.PARAM_USER_MSG));
+            model.setMessageId(messageData.getString(SocketManager.PARAM_MESSAGE_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
+
+    public static ChatMessageModel parseDataForNewRecruiterMessage(JSONObject messageData){
+        ChatMessageModel model = new ChatMessageModel();
+
+        try{
+            model.setFromID(messageData.getString("recruiterId"));
+            model.setToID(messageData.getString("seekerId"));
+            model.setMessageTime(messageData.getString("timestamp"));
+            model.setMessageId(messageData.getString("messageId"));
+            model.setMessage(messageData.getString("messageId"));
+            model.setMessageListId(messageData.getString("messageListId"));
+            model.setRecruiterName(messageData.getString("name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
     }
 
     public static boolean isValidEmailAddress(String email) {

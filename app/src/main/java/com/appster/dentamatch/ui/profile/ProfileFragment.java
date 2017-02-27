@@ -226,9 +226,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.tv_edit:
                 startActivity(new Intent(getActivity(), UpdateProfileActivity.class)
                         .putExtra(Constants.EXTRA_PROFILE_DATA, profileResponseData));
-
-
                 break;
+
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;

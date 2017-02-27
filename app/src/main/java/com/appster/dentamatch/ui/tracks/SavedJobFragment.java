@@ -79,7 +79,9 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onResume() {
         super.onResume();
-        TrackJobsDataHelper.getInstance().requestData(getActivity(), Constants.SEARCHJOBTYPE.SAVED.getValue());
+        if(isActive() && isVisible()) {
+            TrackJobsDataHelper.getInstance().requestData(getActivity(), Constants.SEARCHJOBTYPE.SAVED.getValue());
+        }
     }
 
     private void initViews() {

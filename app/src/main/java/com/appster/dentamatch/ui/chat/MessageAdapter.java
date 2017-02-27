@@ -15,7 +15,6 @@ import java.util.List;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
-import io.realm.RealmResults;
 
 
 
@@ -37,9 +36,9 @@ public class MessageAdapter extends RealmRecyclerViewAdapter<ChatMessage, Messag
 //        case Message.TYPE_MESSAGE:
 //            layout = R.layout.item_message;
 //            break;
-        case Message.TYPE_LOG:
-            layout = R.layout.item_log;
-            break;
+//        case Message.TYPE_LOG:
+//            layout = R.layout.item_log;
+//            break;
         case Message.TYPE_ACTION:
             layout = R.layout.item_action;
             break;

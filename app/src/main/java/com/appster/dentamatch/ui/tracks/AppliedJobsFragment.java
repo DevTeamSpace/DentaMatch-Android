@@ -89,7 +89,9 @@ import retrofit2.Call;
         @Override
         public void onResume() {
             super.onResume();
-            TrackJobsDataHelper.getInstance().requestData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
+            if(isActive() && isVisible()) {
+                TrackJobsDataHelper.getInstance().requestData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
+            }
         }
 
         private void initViews() {

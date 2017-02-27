@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.widget.FrameLayout;
@@ -45,9 +42,6 @@ import retrofit2.Call;
 public class HomeActivity extends BaseActivity {
     private final String TAG = "Home Screen";
     private AHBottomNavigation bottomBar;
-    private FragmentTransaction fragmentTransaction;
-    private FragmentManager fragmentManager;
-
     private ProfileFragment mProfileFragment;
     private JobsFragment mJobsFragment;
     private MessagesListFragment mMessagesFragment;
@@ -82,7 +76,8 @@ public class HomeActivity extends BaseActivity {
        else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
             bottomBar.setCurrentItem(3);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
-            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID));
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
         }
         else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
             bottomBar.setCurrentItem(4);
@@ -98,7 +93,16 @@ public class HomeActivity extends BaseActivity {
         updateToken(PreferenceUtil.getFcmToken());
     }
 
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.hasExtra(Constants.EXTRA_FROM_CHAT)) {
+            bottomBar.setCurrentItem(3);
+            String RecruiterID = intent.getStringExtra(Constants.EXTRA_FROM_CHAT);
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -118,7 +122,6 @@ public class HomeActivity extends BaseActivity {
      * initViews is used to initialize this view at app launch
      */
     private void initViews() {
-        fragmentManager = getSupportFragmentManager();
         bottomBar = (AHBottomNavigation) findViewById(R.id.ntb_horizontal);
         bottomBar.setTitleTextSize(Utils.convertSpToPixels(10.0f, this), Utils.convertSpToPixels(10.0f, this));
         bottomBar.addItem(new AHBottomNavigationItem(getString(R.string.nav_job), R.drawable.img_nav_jobs));
@@ -256,16 +259,6 @@ public class HomeActivity extends BaseActivity {
         return null;
     }
 
-
-    private void launchProfileFragment() {
-        fragmentTransaction = fragmentManager.beginTransaction();
-        String fragTagName = Constants.FRAGMENT_NAME.PROFILE_FRAGMENT;
-        Fragment fragment = ProfileFragment.newInstance();
-        fragmentTransaction.replace(R.id.fragment_container, fragment, fragTagName)
-                .addToBackStack(fragTagName)
-                .commit();
-    }
-
     private void updateToken(String fcmToken) {
         try {
             UpdateFcmTokenRequest request = new UpdateFcmTokenRequest();
@@ -287,7 +280,6 @@ public class HomeActivity extends BaseActivity {
                 @Override
                 public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
                     LogUtils.LOGD(TAG, "onFail");
-
                 }
             });
         } catch (Exception e) {

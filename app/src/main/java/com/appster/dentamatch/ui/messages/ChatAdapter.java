@@ -2,6 +2,8 @@ package com.appster.dentamatch.ui.messages;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,20 +16,25 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemChatMesssageBinding;
 import com.appster.dentamatch.util.Utils;
 
-import java.util.ArrayList;
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
 
 /**
  * Created by Appster on 08/02/17.
  */
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder> {
+public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.MyHolder> {
     private ItemChatMesssageBinding mBinding;
-    private ArrayList<Message> mChatMessages;
+//    private ArrayList<Message> mChatMessages;
+    private OrderedRealmCollection<Message> mChatMessages;
     private Context mContext;
 
-    public ChatAdapter(Context ct){
-        mContext = ct;
+    public ChatAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Message> data, boolean autoUpdate) {
+        super(context, data, autoUpdate);
+        mContext = context;
+        mChatMessages = data;
     }
+
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,69 +44,91 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder> {
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        if(mChatMessages.get(position) != null){
+        if (mChatMessages.get(position) != null) {
             holder.tvMessage.setText(mChatMessages.get(position).getMessage());
 
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(20,20,20,20);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(20, 20, 20, 20);
 
-        RelativeLayout.LayoutParams timeParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        timeParams.setMargins(10, 0, 10, 10);
+            RelativeLayout.LayoutParams timeParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            timeParams.setMargins(10, 0, 10, 10);
 
-        if(mChatMessages.get(position).getType() == Message.TYPE_MESSAGE_RECEIVED) {
-            params.addRule(RelativeLayout.ALIGN_PARENT_START);
-            holder.tvMessage.setTextColor(ContextCompat.getColor(mContext, R.color.chat_text_color_received));
-            holder.tvMessage.setBackground(ContextCompat.getDrawable(mContext,R.drawable.background_chat_bubble_recieved));
-            holder.tvMessage.setLayoutParams(params);
+            if (mChatMessages.get(position).getType() == Message.TYPE_MESSAGE_RECEIVED) {
+                holder.tvDateLabel.setVisibility(View.GONE);
+                holder.tvMessage.setVisibility(View.VISIBLE);
+                holder.tvTime.setVisibility(View.VISIBLE);
+                params.addRule(RelativeLayout.ALIGN_PARENT_START);
+                params.addRule(RelativeLayout.BELOW, holder.tvDateLabel.getId());
+                holder.tvMessage.setTextColor(ContextCompat.getColor(mContext, R.color.chat_text_color_received));
+                holder.tvMessage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.background_chat_bubble_recieved));
+                holder.tvMessage.setLayoutParams(params);
 
-            timeParams.addRule(RelativeLayout.ALIGN_START, holder.tvMessage.getId());
-            timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
-            holder.tvTime.setLayoutParams(timeParams);
+                timeParams.addRule(RelativeLayout.ALIGN_START, holder.tvMessage.getId());
+                timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
+                holder.tvTime.setLayoutParams(timeParams);
 
-        }else{
-            holder.tvMessage.setBackground(ContextCompat.getDrawable(mContext,R.drawable.background_chat_bubble_sent));
-            params.addRule(RelativeLayout.ALIGN_PARENT_END);
-            holder.tvMessage.setTextColor(ContextCompat.getColor(mContext, R.color.white_color));
-            holder.tvMessage.setLayoutParams(params);
-            timeParams.addRule(RelativeLayout.ALIGN_END, holder.tvMessage.getId());
-            timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
-            holder.tvTime.setLayoutParams(timeParams);
-        }
+            } else if(mChatMessages.get(position).getType() == Message.TYPE_MESSAGE_SEND) {
+                holder.tvDateLabel.setVisibility(View.GONE);
+                holder.tvMessage.setVisibility(View.VISIBLE);
+                holder.tvTime.setVisibility(View.VISIBLE);
+                holder.tvMessage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.background_chat_bubble_sent));
+                params.addRule(RelativeLayout.ALIGN_PARENT_END);
+                params.addRule(RelativeLayout.BELOW, holder.tvDateLabel.getId());
 
-        holder.tvTime.setText(Utils.convertUTCtoLocalFromTimeStamp(mChatMessages.get(position).getmMessageTime()));
+                holder.tvMessage.setTextColor(ContextCompat.getColor(mContext, R.color.white_color));
+                holder.tvMessage.setLayoutParams(params);
+                timeParams.addRule(RelativeLayout.ALIGN_END, holder.tvMessage.getId());
+                timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
+                holder.tvTime.setLayoutParams(timeParams);
+
+            }else{
+                /**
+                 * Update date label for chat messages.
+                 */
+                holder.tvDateLabel.setVisibility(View.VISIBLE);
+                holder.tvMessage.setVisibility(View.GONE);
+                holder.tvTime.setVisibility(View.GONE);
+                holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getmMessageTime()));
+            }
+
+            holder.tvTime.setText(Utils.convertUTCtoLocalFromTimeStamp(mChatMessages.get(position).getmMessageTime()));
+
+
 
         }
     }
 
     @Override
     public int getItemCount() {
-        if(mChatMessages != null){
+        if (mChatMessages != null) {
             return mChatMessages.size();
-        }else{
+        } else {
             return 0;
         }
 
     }
 
-     void addMessage(Message message){
+//    void addMessage(Message message) {
+//
+//        if (mChatMessages == null) {
+//            mChatMessages = new ArrayList<>();
+//        }
+//
+//        mChatMessages.add(message);
+//        notifyItemInserted(mChatMessages.size() - 1);
+//
+//    }
 
-        if(mChatMessages == null){
-            mChatMessages = new ArrayList<>();
-        }
+    class MyHolder extends RecyclerView.ViewHolder {
+        TextView tvMessage, tvTime, tvDateLabel;
 
-        mChatMessages.add(message);
-        notifyItemInserted(mChatMessages.size() - 1);
-
-    }
-
-     class MyHolder extends RecyclerView.ViewHolder {
-        TextView tvMessage, tvTime;
-
-         MyHolder(View itemView) {
+        MyHolder(View itemView) {
             super(itemView);
             tvMessage = mBinding.tvChatMessage;
-             tvTime = mBinding.tvChatTime;
+            tvTime = mBinding.tvChatTime;
+            tvDateLabel = mBinding.tvChatDateLabel;
         }
     }
+
 }
