@@ -341,4 +341,6 @@
     <string name="weeks">WEEKS AGO </string>
     <string name="months">MONTHS AGO </string>
     <string name="years">YEARS AGO </string>
+    <string name="txt_accept">Accept</string>
+    <string name="txt_reject">Reject</string>
 </resources>

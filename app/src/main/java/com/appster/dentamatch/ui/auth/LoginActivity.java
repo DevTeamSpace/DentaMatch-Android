@@ -24,6 +24,7 @@ import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.auth.SearchFilterModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
@@ -398,9 +399,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         request.setJobTitle(searchFilters.getJobTitle());
                         request.setPage(1);
 
-                        if(searchFilters.getParttimeDays() != null && searchFilters.getParttimeDays().size() >0) {
+                        if (searchFilters.getParttimeDays() != null && searchFilters.getParttimeDays().size() > 0) {
                             request.setParttimeDays(searchFilters.getParttimeDays());
-                        }else{
+                        } else {
                             request.setParttimeDays(new ArrayList<String>());
                         }
 
@@ -421,9 +422,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
                     PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
                     PreferenceUtil.setUserChatId(response.getLoginResponseData().getUserDetail().getId());
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    startActivity(intent);
-                    finish();
+                    if (response.getLoginResponseData().getUserDetail().getProfileCompleted() == 1) {
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }

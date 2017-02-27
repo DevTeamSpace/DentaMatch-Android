@@ -33,7 +33,7 @@ public class CalendarViewSetAvaliablity extends LinearLayout {
     private ImageView previousButton, nextButton;
     private TextView currentDate;
     private GridView calendarGridView;
-    private int count = 3;
+    private int count = 6;
     private static int MAX_CALENDAR_COLUMN = 42;
     private int month, year;
     private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);

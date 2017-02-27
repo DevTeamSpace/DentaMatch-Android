@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
  * Class to hold constant values.
  */
 public class Constants {
-    public static final int MAX_MONTH_COUNT = 7;
+    public static final int MAX_MONTH_COUNT = 13;
     public static final String DEVICE_TYPE = "ANDROID";
     public static String CHAT_SERVER_URL = "http://172.16.16.188:3000";
 
