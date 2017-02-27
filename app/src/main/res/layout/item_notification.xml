@@ -84,6 +84,46 @@
             android:textSize="@dimen/text_size_small"
             app:customFont="@string/font_regular" />
 
+
+        <LinearLayout
+            android:id="@+id/layout_invite_notification"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginBottom="@dimen/margin_19"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_19"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_accept"
+                style="@style/text_view_normal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/margin_small_3"
+                android:text="@string/txt_accept"
+                android:textColor="@color/color_forgot_pwd"
+                android:textSize="@dimen/text_size_17"
+                app:customFont="@string/font_medium" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_reject"
+                style="@style/text_view_normal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/margin_small_3"
+                android:text="@string/txt_reject"
+                android:textColor="@color/red_color"
+                android:textSize="@dimen/text_size_17"
+                app:customFont="@string/font_medium" />
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"

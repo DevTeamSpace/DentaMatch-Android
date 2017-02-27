@@ -14,9 +14,13 @@ public class UserDetail {
     private String email;
     private String zipCode;
     private String preferredJobLocation;
+    private int profileCompleted;
 
     public String getImageUrl() {
         return imageUrl;
+    }
+    public int getProfileCompleted() {
+        return profileCompleted;
     }
 
     public String getId() {

@@ -280,10 +280,10 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     private GetAvailabilityRequest prepareGetAvailableRequest() {
         GetAvailabilityRequest request = new GetAvailabilityRequest();
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, -3);
+        calendar.add(Calendar.MONTH, -6);
         Date startDate = calendar.getTime();
         Calendar endDateCalendar = Calendar.getInstance();
-        endDateCalendar.add(Calendar.MONTH, 3);
+        endDateCalendar.add(Calendar.MONTH, 6);
 
         /**
          * to get  the number of days  in month

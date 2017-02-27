@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
@@ -45,7 +47,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public void resetJobList(ArrayList<NotificationData> jobList) {
         mNotificationList.clear();
-        mNotificationList .addAll(jobList);
+        mNotificationList.addAll(jobList);
         notifyDataSetChanged();
     }
 
@@ -90,10 +92,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 } else if (data.getJobDetailModel().getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
                     holder.tvJobType.setText(mContext.getString(R.string.txt_temporary));
                     holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
+                    if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == 0) {
+                        holder.layoutInVite.setVisibility(View.VISIBLE);
+
+                    } else {
+                        holder.layoutInVite.setVisibility(View.GONE);
+                    }
 
                 } else if (data.getJobDetailModel().getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                     holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
-
                     holder.tvJobType.setText(mContext.getString(R.string.txt_full_time));
 
                 }
@@ -107,8 +114,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), mNotificationList.get((int) view.getTag()).getnotificationType());
-
+                    if (mNotificationList.get((int) view.getTag()).getnotificationType() != Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
+                        mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), mNotificationList.get((int) view.getTag()).getnotificationType());
+                    }
                 }
             });
 
@@ -127,8 +135,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
     class MyHolder extends RecyclerView.ViewHolder {
-        private CustomTextView tvDesc, tvAddress, tvDuration, tvJobType;
+        private CustomTextView tvDesc, tvAddress, tvDuration, tvJobType, tvAccept, tvReject;
         private ImageView ivRead, ivRightArrow;
+        private LinearLayout layoutInVite;
 
         MyHolder(View itemView) {
             super(itemView);
@@ -136,6 +145,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             tvJobType = mBinding.tvJobType;
             tvAddress = mBinding.tvAddress;
             tvDuration = mBinding.tvTime;
+            tvDuration = mBinding.tvAccept;
+            tvDuration = mBinding.tvReject;
+            layoutInVite = mBinding.layoutInviteNotification;
             ivRead = mBinding.ivRead;
             ivRightArrow = mBinding.ivRightArrow;
         }
@@ -143,6 +155,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface NotificationClickListener {
         public void onNotificationItemClick(int position, int notifId, int notificationType);
+
+//        public void onAcceptRejectClick(int position, int notifId, int notificationType, int inviteStatus);
     }
 
 }
