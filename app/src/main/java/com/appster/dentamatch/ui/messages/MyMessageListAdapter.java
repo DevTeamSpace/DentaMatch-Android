@@ -66,8 +66,8 @@ public class MyMessageListAdapter extends RealmRecyclerViewAdapter<DBModel, MyMe
                 holder.tvLastMessage.setText(dataModel.getLastMessage());
             }
 
-            if(dataModel.getUserChats() != null &&
-                    !TextUtils.isEmpty(dataModel.getUserChats().get(dataModel.getUserChats().size() - 1).getmMessageTime())) {
+            if(dataModel.getUserChats() != null && dataModel.getUserChats().size() > 0
+                   && !TextUtils.isEmpty(dataModel.getUserChats().get(dataModel.getUserChats().size() - 1).getmMessageTime())) {
                 holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel
                         .getUserChats()
                         .get(dataModel.getUserChats().size() - 1).getmMessageTime()));

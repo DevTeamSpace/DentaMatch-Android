@@ -13,6 +13,7 @@ import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.RealmDataBase.DBModel;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
+import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
 import com.appster.dentamatch.network.BaseCallback;
@@ -27,6 +28,9 @@ import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 
@@ -168,12 +172,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
              */
             DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(), 0, messageModel.getMessageListId());
 
-            if(mBinder.messages.getAdapter() == null){
+            if (mBinder.messages.getAdapter() == null) {
                 mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
                 mBinder.messages.setAdapter(mAdapter);
             }
 
-            hideProgressBar();
             scrollToBottom();
 
         }
@@ -185,6 +188,28 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         if (event != null) {
             DBHelper.getInstance().insertIntoDB(recruiterId, event.getmMessage(), recruiterName, 0, dbModel.getMessageListId());
             scrollToBottom();
+        }
+
+    }
+
+    @Subscribe
+    public void onChatHistoryRetrieved(ChatHistoryRetrievedEvent event) {
+        if (event != null) {
+            processToShowDialog("","",null);
+            JSONArray chatArray = event.getModel();
+
+            try {
+                for (int i = 0; i < chatArray.length(); i++) {
+
+                    JSONObject dataObject = chatArray.getJSONObject(i);
+                    ChatMessageModel chatData = Utils.parseDataForHistory(dataObject);
+                    onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }finally {
+                hideProgressBar();
+            }
         }
 
     }
@@ -253,9 +278,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
                 if (Utils.isConnected(this)) {
                     /**
-                     * Show loader in case of fetching data from the server.
+                     * Show loader in case of fetching data from the server and clear all past chats of the user for corresponding
+                     * recruiterID.
                      */
-                    processToShowDialog("",getString(R.string.please_wait),null);
+                    DBHelper.getInstance().clearRecruiterChats(recruiterId);
                     SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
                     DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
 

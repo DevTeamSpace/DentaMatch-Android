@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.RealmDataBase.DBHelper;
+import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
 import com.appster.dentamatch.ui.common.HomeActivity;
@@ -19,7 +20,6 @@ import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -53,6 +53,9 @@ public class SocketManager {
     public static final String PARAM_RECRUITER_NAME = "fromName";
     public static final String PARAM_MESSAGE_ID = "messageId";
 
+    public static final int ON_RESUME = 0;
+    public static final int ON_PAUSE = 1;
+
     private final String EMIT_USER_HISTORY = "getHistory";
     private final String EMIT_INIT = "init";
     private final String EMIT_SEND_MSG = "sendMessage";
@@ -73,8 +76,6 @@ public class SocketManager {
     private Activity attachedActivity;
     private String attachedRecruiterID;
     private Activity attachedGlobalActivity;
-    public static final int ON_RESUME = 0;
-    public static final int ON_PAUSE = 1;
 
     private SocketManager() {
         getSocket();
@@ -147,6 +148,7 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECT);
             isConnected = true;
+            raiseSyncNeeded();
             init();
         }
     };
@@ -156,7 +158,6 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
             isConnected = false;
-            raiseSyncNeeded();
         }
     };
 
@@ -165,7 +166,6 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
             isConnected = false;
-            raiseSyncNeeded();
         }
     };
 
@@ -372,7 +372,7 @@ public class SocketManager {
         });
     }
 
-    public void init() {
+    private void init() {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
@@ -415,31 +415,26 @@ public class SocketManager {
         onHistory = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-
                 LogUtils.LOGD(TAG, EVENT_CHAT_HISTORY + ":" + args[0]);
                 final JSONArray jsonArray = (JSONArray) args[0];
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
-                        final JSONObject dataObject = jsonArray.getJSONObject(i);
-
-                        if (attachedActivity != null) {
-                            attachedActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(Utils.parseDataForHistory(dataObject)));
-                                }
-                            });
-
-
+                if (attachedActivity != null) {
+                    attachedActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+//                            try {
+//                                for (int i = 0; i < jsonArray.length(); i++) {
+//                                    JSONObject dataObject = jsonArray.getJSONObject(i);
+//                                    EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(Utils.parseDataForHistory(dataObject)));
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+                            EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray));
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    });
                 }
             }
-
-
         };
     }
 

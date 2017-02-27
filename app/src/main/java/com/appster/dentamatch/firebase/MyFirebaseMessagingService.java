@@ -114,29 +114,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     JSONObject object = new JSONObject(data);
                     if (object.has("messageListId")) {
                         model = Utils.parseDataForNewRecruiterMessage(object);
-//                        try{
-//                            model.setFromID(dataPayload.get("recruiterId"));
-//                            model.setToID(dataPayload.get("seekerId"));
-//                            model.setMessageTime(dataPayload.get("timestamp"));
-//                            model.setMessageId(dataPayload.get("messageId"));
-//                            model.setMessage(dataPayload.get("messageId"));
-//                            model.setMessageListId(dataPayload.get("messageListId"));
-//                            model.setRecruiterName(dataPayload.get("name"));
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
                     }else {
                         model = Utils.parseData(object);
-//                        try{
-//                            model.setFromID(dataPayload.get("fromId"));
-//                            model.setRecruiterName(dataPayload.get("fromName"));
-//                            model.setToID(dataPayload.get("toId"));
-//                            model.setMessageTime(dataPayload.get("sentTime"));
-//                            model.setMessage(dataPayload.get("message"));
-//                            model.setMessageId(dataPayload.get("messageId"));
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
                     }
 
                     final Message notificationMessage = new Message(model.getMessage(), model.getRecruiterName(), model.getMessageTime(), model.getMessageId(), Message.TYPE_MESSAGE_RECEIVED);
