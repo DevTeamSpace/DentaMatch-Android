@@ -50,7 +50,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/margin_29"
-                android:visibility="gone" />
+                android:padding="@dimen/margin_10"
+                android:visibility="visible" />
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/txv_toolbar_general_right"

@@ -29,6 +29,7 @@
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_8">8sp</dimen>
     <dimen name="text_size_normal">15sp</dimen>
     <dimen name="text_size_small">10sp</dimen>
     <dimen name="text_size_13">13sp</dimen>
@@ -61,6 +62,7 @@
     <dimen name="margin_18">18dp</dimen>
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_9">9dp</dimen>
 
     <dimen name="margin_chips_layout_left">10dp</dimen>
     <dimen name="margin_chips_layout_right">20dp</dimen>

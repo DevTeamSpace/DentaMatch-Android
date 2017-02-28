@@ -92,22 +92,30 @@
             android:layout_marginBottom="@dimen/margin_19"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_19"
+            android:background="@drawable/bg_upload_certificate"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/tv_accept"
                 style="@style/text_view_normal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_margin="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lineSpacingExtra="@dimen/margin_small_3"
+                android:padding="0dp"
                 android:text="@string/txt_accept"
                 android:textColor="@color/color_forgot_pwd"
                 android:textSize="@dimen/text_size_17"
                 app:customFont="@string/font_medium" />
+
+            <View
+                android:layout_width="@dimen/line_height"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark" />
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/tv_reject"
@@ -115,9 +123,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
+                android:layout_margin="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lineSpacingExtra="@dimen/margin_small_3"
+                android:padding="0dp"
                 android:text="@string/txt_reject"
                 android:textColor="@color/red_color"
                 android:textSize="@dimen/text_size_17"

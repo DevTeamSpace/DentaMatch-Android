@@ -20,6 +20,7 @@ import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 public class DentaApp extends MultiDexApplication {
     private static DentaApp appController;
     private static Context mAppContext;
+    public static int NOTIFICATION_COUNTER=0;
 
 
     @Override

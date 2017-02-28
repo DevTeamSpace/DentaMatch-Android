@@ -1,6 +1,7 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.request.Notification.AcceptRejectInviteRequest;
 import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest;
 import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
 import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
@@ -93,6 +94,7 @@ public interface AuthWebServices {
     String USER_CHAT_HISTORY = "users/chat-user-list";
     String GET_NOTIFICATION = "users/notification-list";
     String RAED_NOTIFICATION = "users/notification-read";
+    String ACCEPT_REJECT_NOTIFICATION = "/users/acceptreject-job";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
     String UPDATE_FCM_TOKEN = "users/update-devicetoken";
 
@@ -186,6 +188,9 @@ public interface AuthWebServices {
 
     @POST(RAED_NOTIFICATION)
     Call<BaseResponse> readNotification(@Body ReadNotificationRequest notificationRequest);
+
+    @POST(ACCEPT_REJECT_NOTIFICATION)
+    Call<BaseResponse> acceptRejectNotification(@Body AcceptRejectInviteRequest request);
 
     @GET(CERTIFICATION_LIST)
     Call<CertificateResponse> getCertificationList();

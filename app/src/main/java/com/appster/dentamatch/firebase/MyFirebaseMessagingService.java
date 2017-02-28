@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.ui.common.HomeActivity;
@@ -60,6 +61,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         LogUtils.LOGD(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
+        DentaApp.NOTIFICATION_COUNTER=DentaApp.NOTIFICATION_COUNTER++;
         if (remoteMessage.getData().size() > 0) {
             LogUtils.LOGD(TAG, "Message data payload: " + remoteMessage.getData());
         }
@@ -189,7 +191,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(DentaApp.NOTIFICATION_COUNTER /* ID of notification */, notificationBuilder.build());
     }
 
     private Intent redirectNotification(int notiifcationType, int jobId) {
