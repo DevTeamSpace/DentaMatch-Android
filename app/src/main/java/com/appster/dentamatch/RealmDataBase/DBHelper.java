@@ -89,7 +89,6 @@ public class DBHelper {
                         retrievedModel.setName(recruiterName);
                     }
 
-                    retrievedModel.setHasDBUpdated(true);
                     retrievedModel.setLastMsgTime(userMessage.getmMessageTime());
                     retrievedModel.setLastMessage(userMessage.getMessage());
                     retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
@@ -97,20 +96,20 @@ public class DBHelper {
                     /**
                      * Checking for date changes which needs to be shown on the ChatActivity as date header above messages. Eg. Today, yesterday etc.
                      */
-                    if (Utils.isMsgDateDifferent(Long.parseLong(retrievedModel.getUserChats().get(retrievedModel.getUserChats().size() - 1).getmMessageTime()),
-                            Long.parseLong(userMessage.getmMessageTime()))) {
-                        Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
-                        retrievedModel.getUserChats().add(dateHeaderMessage);
+                    if (retrievedModel.getUserChats().size() > 0) {
+                        if (Utils.isMsgDateDifferent(Long.parseLong(retrievedModel.getUserChats().get(retrievedModel.getUserChats().size() - 1).getmMessageTime()),
+                                Long.parseLong(userMessage.getmMessageTime()))) {
+                            Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
+                            retrievedModel.getUserChats().add(dateHeaderMessage);
+                        }
                     }
 
                     retrievedModel.getUserChats().add(userMessage);
-
                 }
             } else {
 
                 DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
                 newModel.setLastMessage(userMessage.getMessage());
-                newModel.setHasDBUpdated(false);
                 newModel.setMessageListId(messageListID);
                 newModel.setLastMsgTime(userMessage.getmMessageTime());
                 newModel.setUnReadChatCount(unreadMsgCount);
@@ -195,6 +194,16 @@ public class DBHelper {
 
             mRealmInstance.commitTransaction();
 
+        }
+    }
+
+    public void clearRecruiterChats(String recruiterID){
+        DBModel retrievedModel = mRealmInstance.where(DBModel.class).equalTo(DB_PRIMARY_KEY, recruiterID).findFirst();
+
+        if(retrievedModel != null){
+            mRealmInstance.beginTransaction();
+            retrievedModel.getUserChats().clear();
+            mRealmInstance.commitTransaction();
         }
     }
 

@@ -558,6 +558,7 @@ public class Utils {
     }
 
     public static void showNotification(Context ct, String title, String message, Intent intent) {
+        int uniqueID = (int)(System.currentTimeMillis() & 0xfffffff);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -572,7 +573,7 @@ public class Utils {
                 .setAutoCancel(true);
 
         if (intent != null) {
-            PendingIntent Pendingintent = PendingIntent.getActivity(ct, NOTIFICATION_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent Pendingintent = PendingIntent.getActivity(ct, uniqueID, intent, PendingIntent.FLAG_ONE_SHOT);
             builder.setContentIntent(Pendingintent);
         }
 
@@ -580,7 +581,7 @@ public class Utils {
         NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_VIBRATE;
-        manager.notify(NOTIFICATION_CODE, notification);
+        manager.notify(uniqueID, notification);
     }
 
     public static ChatMessageModel parseData(JSONObject messageData) {
@@ -622,7 +623,7 @@ public class Utils {
             model.setToID(messageData.getString("seekerId"));
             model.setMessageTime(messageData.getString("timestamp"));
             model.setMessageId(messageData.getString("messageId"));
-            model.setMessage(messageData.getString("messageId"));
+            model.setMessage(messageData.getString("message"));
             model.setMessageListId(messageData.getString("messageListId"));
             model.setRecruiterName(messageData.getString("name"));
         } catch (JSONException e) {
