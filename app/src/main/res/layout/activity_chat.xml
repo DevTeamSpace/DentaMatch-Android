@@ -12,7 +12,7 @@
             layout="@layout/toolbar_general" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rcvChat"
+            android:id="@+id/messages"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -76,6 +76,7 @@
 
             <com.appster.dentamatch.widget.CustomTextView
                 style="@style/text_view_normal"
+                android:id="@+id/tv_unblock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

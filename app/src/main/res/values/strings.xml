@@ -36,6 +36,7 @@
     <string name="digits_alpha_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_only">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_email">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
+    <string name="digits_other">0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-/</string>
     <string name="digits_alpha_numeric_special">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_./:;,&amp;amp;</string>
     <string name="digits_address">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
     <string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
@@ -50,7 +51,7 @@
     <string name="blank_postal_code">Unable to find postal code in the address, please retry or choose near by location on map.</string>
     <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
     <string name="valid_email_alert">Please provide a valid Email Id.</string>
-    <string name="valid_mobile_alert">Please provide a valid mobile number.</string>
+    <string name="valid_mobile_alert">Please provide a valid phone number of 10 digits.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
     <string name="password_contains_space">Password can not contain spaces.</string>
     <string name="error_something_wrong">Something went wrong!</string>
@@ -58,6 +59,7 @@
     <string name="error_unable_reterive_email">Unable to retrieve email address from your social account.</string>
     <string name="error_unable_access_account">Unable to access to your account.</string>
     <string name="error_empty_address">Please select an address.</string>
+    <string name="alert_empty_notification">You don’t have any Notifications right now.</string>
 
     <!--register & Login & Forgot password screen-->
     <string name="email_label">Email</string>
@@ -80,7 +82,7 @@
     <string name="old_password_label">Old Password</string>
     <string name="new_password_label">New Password</string>
     <string name="confirm_password_label">Confirm Password</string>
-    <string name="save_label">save</string>
+    <string name="save_label">Save</string>
 
     <!--  Bottom sheet string-->
     <string name="label_take_photo">Take photo</string>
@@ -179,7 +181,7 @@
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
     <string name="licence_number_blnk_space_alert">Licence number should not contain blank spaces</string>
     <string name="licence_number_hyfen_alert">Licence number can not begin or end with the hyphen (-) </string>
-    <string name="blank_state_alert">State text can not be left blank.</string>
+    <string name="blank_state_alert">State text field can not be left blank.</string>
     <string name="state_max_length">State can not be exceed 30 characters</string>
     <string name="state_blank_space_alert">State can not contain blank spaces</string>
     <string name="invalid_exp_selection">Experience can never be zero.</string>
@@ -194,7 +196,7 @@
     <string name="blank_year_alert">Please select experience.</string>
     <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
     <string name="blank_phone_number_alert">Phone number can never be blank</string>
-    <string name="complete_reference">Please complete the reference.</string>
+    <string name="complete_reference">Please add the Reference 1 first.</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="blank_certificate_photo_alert">Please upload atleast one certificate</string>
@@ -245,7 +247,7 @@
     <string name="error_no_job_type">Job type  cannot be empty</string>
     <string name="error_no_location">Location cannot be empty</string>
     <string name="error_no_description">Introduction cannot be empty</string>
-    <string name="alert_upload_phot_first">Please upload your document first.</string>
+    <string name="alert_upload_phot_first">Please upload certificate image first</string>
     <!--search job-->
     <string name="job_title">JOB TITLE</string>
     <string name="full_time">Full Time</string>
@@ -258,7 +260,7 @@
     <string name="friday">Fr</string>
     <string name="saturday">Sa</string>
     <string name="header_search_job">SEARCH JOBS</string>
-    <string name="header_set_availability">SET AVAILBILITY</string>
+    <string name="header_set_availability">SET AVAILABILITY</string>
     <string name="job_tile_search">You can select more than one job title</string>
     <string name="button_search">SEARCH</string>
 
@@ -280,14 +282,14 @@
     <string name="txt_days_ago">DAYS AGO</string>
     <string name="txt_day_ago">" DAY AGO"</string>
     <string name="txt_miles">" miles"</string>
-    <string name="txt_monday">Monday</string>
-    <string name="txt_tuesday">Tuesday</string>
-    <string name="txt_wednesday">Wednesday</string>
-    <string name="txt_thursday">Thursday</string>
-    <string name="txt_friday">Friday</string>
-    <string name="txt_saturday">Saturday</string>
-    <string name="txt_sunday">Sunday</string>
-    <string name="not_applicable">NA</string>
+    <string name="txt_monday">Mon</string>
+    <string name="txt_tuesday">Tue</string>
+    <string name="txt_wednesday">Wed</string>
+    <string name="txt_thursday">Thu</string>
+    <string name="txt_friday">Fri</string>
+    <string name="txt_saturday">Sat</string>
+    <string name="txt_sunday">Sun</string>
+    <string name="not_applicable">N/A</string>
     <string name="txt_read_more">READ MORE</string>
     <string name="text_show_label">SHOW LESS</string>
     <string name="txt_applied">Applied</string>
@@ -299,9 +301,46 @@
     <string name="fri">FR</string>
     <string name="sat">SA</string>
     <string name="last_date">30</string>
+    <string name="booked_job">BOOKED JOBS</string>
     <string name="txt_show_less">SHOW LESS</string>
+    <string name="txt_full_sunday">Sunday</string>
+    <string name="txt_full_monday">Monday</string>
+    <string name="txt_full_tuesday">Tuesday</string>
+    <string name="txt_full_wednesday">Wednesday</string>
+    <string name="txt_full_thursday">Thursday</string>
+    <string name="txt_full_friday">Friday</string>
+    <string name="txt_full_saturday">Saturday</string>
+    <string name="msg_empty_job_title">please select a job title</string>
+    <string name="msg_empty_job_type">please select job type</string>
+    <string name="msg_empty_part_days">please select part time days</string>
+    <string name="msg_empty_location">please select a location</string>
+    <string name="msg_empty_zip_code">please enter zip code</string>
+    <string name="msg_unsave_warning">Are you sure you want to unsave the job?</string>
+    <string name="txt_ok">OK</string>
+    <string name="txt_cancel">CANCEL</string>
+    <string name="alert_past_date">You can not edit past date availability.</string>
+    <string name="alert_next_month_click">You can set up to next three months availability from current month.</string>
+    <string name="alert_next_month_job">You can view up to next three months job from current month.</string>
+    <string name="alert_previous_month_click">You can view last three months availability from current month.</string>
     <string name="txt_no_chat_messages">No message in your chats yet.</string>
     <string name="txt_text_message">Text message</string>
     <string name="txt_unblock">UNBLOCK</string>
-
+    <string name="header_notification">NOTIFICATIONS</string>
+    <string name="alert_empty_hired_job">You don’t have any booked jobs on this date yet.</string>
+    <string name="alert_invalid_part_time">Please select at least one day.</string>
+    <string name="alert_invalid_temp_job">Please select at least one  day for temporary job.</string>
+    <string name="header_calendar">Calendar</string>
+    <string name="text_todays">Today</string>
+    <string name="alert_cancel_job">Are you sure you want to cancel the job?</string>
+    <string name="alert_reason_cancel_job">Please enter a reason for cancelling the job.</string>
+    <string name="alert_select_job_type">Please select at least one available option.</string>
+    <string name="sec">SEC AGO </string>
+    <string name="min">MIN AGO </string>
+    <string name="hrs">HRS AGO </string>
+    <string name="days">DAYS AGO </string>
+    <string name="weeks">WEEKS AGO </string>
+    <string name="months">MONTHS AGO </string>
+    <string name="years">YEARS AGO </string>
+    <string name="txt_accept">Accept</string>
+    <string name="txt_reject">Reject</string>
 </resources>

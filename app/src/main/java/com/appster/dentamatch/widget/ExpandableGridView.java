@@ -10,7 +10,7 @@ import android.widget.GridView;
  */
 public class ExpandableGridView extends GridView {
 
-        boolean expanded = false;
+        boolean expanded = true;
 
         public ExpandableGridView(Context context)
         {

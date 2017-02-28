@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--The accent color of the progress bar works only on lollipop that is 5.0 and above-->
+<!--For the lower versions we use the custom drawable for that purpose and apply to progressDrawable-->
+<ProgressBar
+    style="?android:attr/progressBarStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/progressBar"
+    android:indeterminateTint="@color/colorAccent"
+    android:indeterminateTintMode="src_in"
+    android:layout_gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+

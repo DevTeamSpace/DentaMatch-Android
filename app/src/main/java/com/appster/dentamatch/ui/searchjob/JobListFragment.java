@@ -137,13 +137,12 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         /**
          * Request data helper to provide data for user's filter set.
          */
-        SearchJobDataHelper.getInstance().requestData(getActivity());
-
+            SearchJobDataHelper.getInstance().requestData(getActivity());
     }
 
     private void initViews(){

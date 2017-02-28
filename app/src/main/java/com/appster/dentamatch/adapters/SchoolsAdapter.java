@@ -85,6 +85,10 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public HashMap<Integer, PostSchoolData> getPostMapData() {
         return mHashMap;
     }
+    public void setSchoolMapData(HashMap<Integer, PostSchoolData> data) {
+//        mHashMap.clear();
+        mHashMap=data;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -151,6 +155,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 data.setYearOfGraduation(schoolType.getOtherList().get(0).getYearOfGraduation());
                 data.setSchoolId(schoolType.getOtherList().get(0).getSchoolId());
                 data.setSchoolName(schoolType.getOtherList().get(0).getOtherSchooling());
+                data.setParentSchoolName(schoolType.getSchoolTypeName());
                 data.setOtherId("" + schoolType.getOtherList().get(0).getSchoolId());
 
                 holder.autoCompleteTextView.setText(schoolType.getOtherList().get(0).getOtherSchooling());
@@ -171,6 +176,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     data.setSchoolName(school.getSchoolName());
                     data.setOtherId("" + school.getSchoolTypeId());
                     holder.autoCompleteTextView.setText(school.getSchoolName());
+                    data.setParentSchoolName(schoolType.getSchoolTypeName());
+
                     holder.etYearOfGraduation.setText(school.getYearOfGraduation());
                     year = school.getYearOfGraduation();
 
@@ -232,8 +239,9 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 //                            }
 //                        }
 //                    } else {
-                        school.setSchoolName(editable.toString());
-                        mHashMap.put(key, school);
+                    school.setSchoolName(editable.toString());
+                    school.setParentSchoolName(mSchoolList.get(key).getSchoolTypeName());
+                    mHashMap.put(key, school);
 //                    }
 
                 }
@@ -266,6 +274,9 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         PostSchoolData school = getSchool((Integer) holder.spinnerYears.getTag());
                         school.setYearOfGraduation(mYearsList.get(position));
                         school.setOtherId("" + mSchoolList.get((Integer) holder.etYearOfGraduation.getTag()).getSchoolTypeId());
+
+                        mHashMap.put((Integer) holder.spinnerYears.getTag(), school);
+
                     } else {
                         holder.etYearOfGraduation.setTextColor(mContext.getResources().getColor(R.color.edt_hint_color));
 
@@ -308,6 +319,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 for (int i = 0; i < mYearsList.size(); i++) {
                     if (mYearsList.get(i).equals(year)) {
                         holder.spinnerYears.setSelection(i);
+                        year = "";
                     }
                 }
             }

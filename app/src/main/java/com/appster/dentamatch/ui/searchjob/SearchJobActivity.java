@@ -6,31 +6,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
 import com.appster.dentamatch.model.JobTitleList;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
-import com.appster.dentamatch.network.response.profile.JobTitleResponse;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
-import com.appster.dentamatch.util.Utils;
-import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
 
 /**
  * Created by virender on 26/01/17.
@@ -43,6 +33,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<JobTitleList> mChosenTitles;
     private String mSelectedZipCode;
     private boolean isFirstTime;
+    private String mSelectedAddress;
     private boolean isPartTime, isFullTime, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
 
 
@@ -61,10 +52,10 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         }
 
         initViews();
-//        getUserSelectedData();
+        setUserSelectedData();
     }
 
-    private void getUserSelectedData() {
+    private void setUserSelectedData() {
 
         if( PreferenceUtil.getJobFilter() !=  null) {
             SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
@@ -73,9 +64,9 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             isFullTime = (request.getIsFulltime() == 1);
             isPartTime = (request.getIsParttime() == 1);
 
-            if(isPartTime){
-                mPartTimeDays = request.getParttimeDays();
-            }
+//            if(isPartTime){
+//                mPartTimeDays = request.getParttimeDays();
+//            }
 
             mSelectedZipCode = request.getZipCode();
             mSelectedLat = request.getLat();
@@ -92,42 +83,74 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 mBinder.dayLayout.setVisibility(View.VISIBLE);
                 mBinder.cbPartTimeCheckBox.setChecked(true);
 
-                for (String days : mPartTimeDays){
+                for (String days : request.getParttimeDays()){
                     switch(days){
                         case "Sunday":
-                            mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
+//                            mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                           onClick(mBinder.tvSunday);
                             break;
 
                         case "Monday":
-                            mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
+//                            mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            onClick(mBinder.tvMonday);
+
                             break;
 
                         case "Tuesday":
-                            mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+//                            mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            onClick(mBinder.tvTuesday);
+
                             break;
 
                         case "Wednesday":
-                            mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+//                            mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            onClick(mBinder.tvWednesday);
+
                             break;
 
                         case "Thursday":
-                            mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
+//                            mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            onClick(mBinder.tvThursday);
+
                             break;
 
                         case "Friday":
-                            mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
+//                            mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            onClick(mBinder.tvFriday);
+
                             break;
 
                         case "Saturday":
-                            mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
+//                            mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
+                            onClick(mBinder.tvSaturday);
+
                             break;
 
                         default: break;
                     }
                 }
+            }else{
+                mBinder.dayLayout.setVisibility(View.GONE);
             }
 
-            callJobListApi();
+            mSelectedAddress = request.getAddress();
+
+            if(!TextUtils.isEmpty(mSelectedAddress )) {
+                mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
+                mBinder.tvFetchedLoation.setText(mSelectedAddress);
+            }
+
+            mChosenTitles = request.getSelectedJobTitles();
+
+            if(mChosenTitles != null && mChosenTitles.size() > 0) {
+                mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
+
+                for (JobTitleList items : mChosenTitles) {
+                    addTitleToLayout(items, false);
+                }
+            }
+
+
         }
 
     }
@@ -161,7 +184,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         switch (view.getId()) {
 
             case R.id.tv_current_location:
-                startActivityForResult(new Intent(SearchJobActivity.this, PlacesMapActivity.class), Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
+                Intent intent = new Intent(SearchJobActivity.this, PlacesMapActivity.class);
+                intent.putExtra(Constants.EXTRA_LATITUDE, mSelectedLat);
+                intent.putExtra(Constants.EXTRA_LONGITUDE, mSelectedLng);
+                intent.putExtra(Constants.EXTRA_POSTAL_CODE,mSelectedZipCode);
+                intent.putExtra(Constants.EXTRA_PLACE_NAME, mSelectedAddress);
+
+                startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
                 break;
 
             case R.id.tv_job_title:
@@ -177,11 +206,11 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_sunday:
                 if (isSunday) {
                     isSunday = false;
-                    mPartTimeDays.remove("Sunday");
+                    mPartTimeDays.remove(getString(R.string.txt_full_sunday));
                     mBinder.tvSunday.setBackground(null);
                     mBinder.tvSunday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                 } else {
-                    mPartTimeDays.add("Sunday");
+                    mPartTimeDays.add(getString(R.string.txt_full_sunday));
                     isSunday = true;
                     mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvSunday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
@@ -191,13 +220,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_monday:
                 if (isMonday) {
                     isMonday = false;
-                    mPartTimeDays.remove("Monday");
+                    mPartTimeDays.remove(getString(R.string.txt_full_monday));
                     mBinder.tvMonday.setBackground(null);
                     mBinder.tvMonday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
 
                 } else {
                     isMonday = true;
-                    mPartTimeDays.add("Monday");
+                    mPartTimeDays.add(getString(R.string.txt_full_monday));
                     mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvMonday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
                 }
@@ -206,13 +235,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_tuesday:
                 if (isTuesday) {
                     isTuesday = false;
-                    mPartTimeDays.remove("Tuesday");
+                    mPartTimeDays.remove(getString(R.string.txt_full_tuesday));
                     mBinder.tvTuesday.setBackground(null);
                     mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
 
                 } else {
                     isTuesday = true;
-                    mPartTimeDays.add("Tuesday");
+                    mPartTimeDays.add(getString(R.string.txt_full_tuesday));
                     mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
 
@@ -222,12 +251,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_wednesday:
                 if (isWednesday) {
                     isWednesday = false;
-                    mPartTimeDays.remove("Wednesday");
+                    mPartTimeDays.remove(getString(R.string.txt_full_wednesday));
                     mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                     mBinder.tvWednesday.setBackground(null);
                 } else {
                     isWednesday = true;
-                    mPartTimeDays.add("Wednesday");
+                    mPartTimeDays.add(getString(R.string.txt_full_wednesday));
                     mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
 
@@ -237,12 +266,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_thursday:
                 if (isThursday) {
                     isThursday = false;
-                    mPartTimeDays.remove("Thursday");
+                    mPartTimeDays.remove(getString(R.string.txt_full_thursday));
                     mBinder.tvThursday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                     mBinder.tvThursday.setBackground(null);
                 } else {
                     isThursday = true;
-                    mPartTimeDays.add("Thursday");
+                    mPartTimeDays.add(getString(R.string.txt_full_thursday));
                     mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvThursday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
 
@@ -252,12 +281,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_friday:
                 if (isFriday) {
                     isFriday = false;
-                    mPartTimeDays.remove("Friday");
+                    mPartTimeDays.remove(getString(R.string.txt_full_friday));
                     mBinder.tvFriday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                     mBinder.tvFriday.setBackground(null);
                 } else {
                     isFriday = true;
-                    mPartTimeDays.add("Friday");
+                    mPartTimeDays.add(getString(R.string.txt_full_friday));
                     mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvFriday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
                 }
@@ -266,12 +295,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_saturday:
                 if (isSaturday) {
                     isSaturday = false;
-                    mPartTimeDays.remove("Saturday");
+                    mPartTimeDays.remove(getString(R.string.txt_full_saturday));
                     mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.brownish_grey));
                     mBinder.tvSaturday.setBackground(null);
                 } else {
                     isSaturday = true;
-                    mPartTimeDays.add("Saturday");
+                    mPartTimeDays.add(getString(R.string.txt_full_saturday));
                     mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SearchJobActivity.this, R.color.white_color));
                 }
@@ -284,14 +313,18 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 break;
 
             case R.id.iv_tool_bar_left:
-
-                    onBackPressed();
+                onBackPressed();
                 break;
 
             default:
                 break;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     @Override
@@ -349,6 +382,9 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         request.setPage(1);
         request.setParttimeDays(mPartTimeDays);
         request.setZipCode(mSelectedZipCode);
+        request.setAddress(mSelectedAddress);
+
+        request.setSelectedJobTitles(mChosenTitles);
         /**
          * This value is set in order to redirect user from login or splash screen.
          */
@@ -367,25 +403,24 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
     private boolean isValidData() {
         if (mSelectedJobID.size() == 0) {
-            showToast("please select a job title");
+            showToast(getString(R.string.msg_empty_job_title));
             return false;
 
         } else if (!isFullTime && !isPartTime) {
-            showToast("please select job type");
+            showToast(getString(R.string.msg_empty_job_type));
             return false;
 
         } else if (isPartTime && mPartTimeDays.size() == 0) {
-            showToast("please select part time days");
+            showToast(getString(R.string.msg_empty_part_days));
             return false;
 
         } else if (TextUtils.isEmpty(mBinder.tvFetchedLoation.getText())) {
-            showToast("please select a location");
+            showToast(getString(R.string.msg_empty_location));
             return false;
 
         } else if (TextUtils.isEmpty(mSelectedZipCode)) {
-            showToast("please enter zip code");
+            showToast(getString(R.string.msg_empty_zip_code));
             return false;
-
         } else {
             return true;
         }
@@ -407,16 +442,17 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                     addTitleToLayout(item, true);
                 }
 
+
             }
 
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS) {
 
             if (data != null && data.hasExtra(Constants.EXTRA_PLACE_NAME)) {
                 mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
-                String address = data.getStringExtra(Constants.EXTRA_PLACE_NAME)
+                mSelectedAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME)
                         .concat(" ")
                         .concat(data.getStringExtra(Constants.EXTRA_POSTAL_CODE));
-                mBinder.tvFetchedLoation.setText(address);
+                mBinder.tvFetchedLoation.setText(mSelectedAddress);
                 mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                 mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
                 mSelectedZipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
@@ -431,61 +467,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             mSelectedJobID.add(jobTitleListItem.getId());
         }
 
-        FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
-                FlowLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(20, 0, 20, 20);
+        com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(mBinder.flowLayoutJobTitle.getContext())
+                .inflate(R.layout.item_flow_child, mBinder.flowLayoutJobTitle, false));
 
-        TextView textView = new TextView(this);
-        textView.setLayoutParams(layoutParams);
-        textView.setSingleLine();
-        textView.setPadding(10,10,10,10);
-        textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setBackgroundResource(R.drawable.edit_text_selector);
-        textView.setText(text);
-        mBinder.flowLayoutJobTitle.addView(textView, layoutParams);
-    }
-
-    private void callJobListApi() {
-        processToShowDialog("", getString(R.string.please_wait), null);
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        webServices.jobTitle().enqueue(new BaseCallback<JobTitleResponse>(SearchJobActivity.this) {
-            @Override
-            public void onSuccess(JobTitleResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
-
-                if (response.getStatus() == 1) {
-                    mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
-                    PreferenceUtil.setSearchJobTitleList(response.getJobTitleResponseData().getJobTitleList());
-
-                    for (JobTitleList title :response.getJobTitleResponseData().getJobTitleList()){
-                        for (Integer jobId : mSelectedJobID) {
-                            if(jobId == title.getId()) {
-                                addTitleToLayout(title, false);
-                                if(mChosenTitles == null){
-                                    mChosenTitles = new ArrayList<JobTitleList>();
-                                }
-                                mChosenTitles.add(title);
-                            }
-                        }
-                    }
-
-                } else {
-                    Utils.showToast(getApplicationContext(), response.getMessage());
-
-                }
-            }
-
-            @Override
-            public void onFail(Call<JobTitleResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
-
-
-
-            }
-        });
+        flowBinding.flowChild.setText(text);
+        mBinder.flowLayoutJobTitle.addView(flowBinding.getRoot());
 
     }
-
 
 
 }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.FragmentTracksBinding;
 import com.appster.dentamatch.ui.common.BaseFragment;
 
 /**
@@ -17,10 +16,10 @@ import com.appster.dentamatch.ui.common.BaseFragment;
  */
 
 public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
-    private FragmentTracksBinding mBinding;
+    private com.appster.dentamatch.databinding.FragmentTracksBinding mBinding;
     private SavedJobFragment savedJobsFragment ;
     private AppliedJobsFragment appliedJobsFragment ;
-    private ShortlistedJobsFragment shortListedJobsFragment ;
+    private ShortlistedJobsFragment shortListedJobsFragment;
 
     public static TrackFragment newInstance(){
         return new TrackFragment();
@@ -29,6 +28,21 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
     public String getFragmentName() {
         return null;
     }
+
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if(!EventBus.getDefault().isRegistered(this)){
+//            EventBus.getDefault().register(this);
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        EventBus.getDefault().unregister(this);
+//        super.onDetach();
+//
+//    }
 
     @Nullable
     @Override

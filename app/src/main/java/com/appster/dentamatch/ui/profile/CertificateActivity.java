@@ -48,6 +48,7 @@ import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 
 /**
@@ -266,7 +267,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onDateSelection(String date, int pos) {
-        tvTemp.setText(date);
+        tvTemp.setText(Utils.dateFormatYYYYMMMMDD(date));
         certificateList.get(position).setValidityDate(date);
     }
 
@@ -341,10 +342,10 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
 
 
                     hideKeyboard();
-                    if(certificateList.get(position).isImageUploaded()) {
+                    if (certificateList.get(position).isImageUploaded()) {
                         callBottomSheetDate((Integer) ivCertificate.getTag());
-                    }else{
-                        Utils.showToast(getApplicationContext(),getString(R.string.alert_upload_phot_first));
+                    } else {
+                        Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_phot_first));
                     }
                 }
             });

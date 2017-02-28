@@ -131,7 +131,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         if (currentItem.getJobSeekerAffiliationStatus() == 1) {
-                            mAffiliationList.get((Integer) itemHolder.ivCheckBox.getTag() - 1).setOtherAffiliation(charSequence.toString());
+                            mAffiliationList.get((Integer) itemHolder.ivCheckBox.getTag() - 1).setOtherAffiliation(charSequence.toString().trim());
                         }
                     }
 

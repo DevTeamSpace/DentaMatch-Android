@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.messages;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,9 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.RealmDataBase.DBHelper;
+import com.appster.dentamatch.RealmDataBase.DBModel;
 import com.appster.dentamatch.databinding.FragmentMessagesBinding;
 import com.appster.dentamatch.model.ChatListModel;
-import com.appster.dentamatch.model.ChatUserUnBlockedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -21,12 +21,10 @@ import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.Utils;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-
+import io.realm.RealmResults;
 import retrofit2.Call;
 
 /**
@@ -36,8 +34,8 @@ import retrofit2.Call;
 public class MessagesListFragment extends BaseFragment {
     private FragmentMessagesBinding mMessagesBinding;
     private RecyclerView.LayoutManager mLayoutManager;
-    private MessageListAdapter mAdapter;
-    private ArrayList<ChatListModel> mData;
+    private MyMessageListAdapter mAdapter;
+    RealmResults<DBModel> data;
 
     public static MessagesListFragment newInstance() {
         return new MessagesListFragment();
@@ -48,39 +46,33 @@ public class MessagesListFragment extends BaseFragment {
         return null;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        EventBus.getDefault().unregister(this);
-        super.onDetach();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mMessagesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_messages, container, false);
         initViews();
         mMessagesBinding.rvMessageList.setLayoutManager(mLayoutManager);
-        mMessagesBinding.rvMessageList.setAdapter(mAdapter);
-
-//        ItemHelperCallback callback = new ItemHelperCallback(0, ItemTouchHelper.LEFT);
-//        ItemTouchHelper itemHelper = new ItemTouchHelper(callback);
-//        itemHelper.attachToRecyclerView(mMessagesBinding.rvMessageList);
 
         return mMessagesBinding.getRoot();
+//        return inflater.inflate(R.layout.fragment_under_dev, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getChatHistory();
+        if (Utils.isConnected(getActivity())) {
+            getChatHistory();
+        } else {
+            data = DBHelper.getInstance().getAllUserChats();
+
+            if (data != null && data.size() > 0) {
+                mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
+                mAdapter = new MyMessageListAdapter(getActivity(), data, true);
+                mMessagesBinding.rvMessageList.setAdapter(mAdapter);
+            } else {
+                mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
+            }
+        }
 
     }
 
@@ -101,8 +93,21 @@ public class MessagesListFragment extends BaseFragment {
                             response.getResult().getList() != null &&
                             response.getResult().getList().size() > 0) {
                         mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
-                        mData.addAll(response.getResult().getList());
-                        mAdapter.notifyDataSetChanged();
+
+                        for (ChatListModel model : response.getResult().getList()) {
+                            Message message = new Message(model.getMessage(),
+                                    model.getName(),
+                                    model.getTimestamp(),
+                                    String.valueOf(model.getMessageId()),
+                                    Message.TYPE_MESSAGE_RECEIVED);
+                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), Integer.parseInt(model.getUnreadCount()), String.valueOf(model.getMessageListId()));
+                        }
+
+                        data = DBHelper.getInstance().getAllUserChats();
+                        LogUtils.LOGD("REALM", "" + data);
+                        mAdapter = new MyMessageListAdapter(getActivity(), data, true);
+                        mMessagesBinding.rvMessageList.setAdapter(mAdapter);
+
 
                     } else {
                         mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
@@ -118,25 +123,10 @@ public class MessagesListFragment extends BaseFragment {
     }
 
     private void initViews() {
-        mData = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new MessageListAdapter(getActivity(), mData);
         mMessagesBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getString(R.string.nav_message));
         mMessagesBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setAllCaps(true);
         mMessagesBinding.toolbarFragmentJobs.ivToolBarLeft.setVisibility(View.GONE);
-
     }
 
-    @Subscribe
-    public void onUserUnblocked(ChatUserUnBlockedEvent event){
-        if(event != null){
-
-            for (ChatListModel model: mData) {
-                if(model.getRecruiterId() == event.getRecruiterID()){
-                    model.setRecruiterBlock(0);
-                    break;
-                }
-            }
-        }
-    }
 }

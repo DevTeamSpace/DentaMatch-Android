@@ -1,14 +1,43 @@
 package com.appster.dentamatch.ui.messages;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Appster on 13/02/17.
  */
 
-public class ChatMessageModel {
+public class ChatMessageModel extends RealmObject {
     private String message;
     private String fromID;
     private String toID;
     private String messageTime;
+    private String recruiterName;
+    private String messageId;
+    private String messageListId;
+
+    public String getMessageListId() {
+        return messageListId;
+    }
+
+    public void setMessageListId(String messageListId) {
+        this.messageListId = messageListId;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
+    public String getRecruiterName() {
+        return recruiterName;
+    }
+
+    public void setRecruiterName(String recruiterName) {
+        this.recruiterName = recruiterName;
+    }
 
     public String getMessage() {
         return message;

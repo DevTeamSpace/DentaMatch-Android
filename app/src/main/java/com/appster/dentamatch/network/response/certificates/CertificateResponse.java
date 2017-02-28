@@ -9,7 +9,8 @@ import com.google.gson.annotations.SerializedName;
 public class CertificateResponse extends BaseResponse {
 
     @SerializedName("result")
-    private   CertificateResponseData certificateResponseData;
+    private CertificateResponseData certificateResponseData;
+
     public CertificateResponseData getCertificateResponseData() {
         return certificateResponseData;
     }

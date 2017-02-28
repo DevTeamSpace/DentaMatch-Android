@@ -13,10 +13,10 @@
             layout="@layout/toolbar_general" />
 
         <ScrollView
-            android:layout_below="@+id/toolbar_search_job"
-            android:layout_above="@+id/btn_job_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_job_search"
+            android:layout_below="@+id/toolbar_search_job">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -29,52 +29,48 @@
                     style="@style/text_view_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/margin_33"
-                    android:paddingStart="@dimen/margin_normal"
-                    android:paddingEnd="@dimen/margin_normal"
-                    android:paddingTop="@dimen/margin_33"
                     android:drawableEnd="@drawable/ic_arrow_right"
+                    android:paddingBottom="@dimen/margin_33"
+                    android:paddingEnd="@dimen/margin_normal"
+                    android:paddingStart="@dimen/margin_normal"
+                    android:paddingTop="@dimen/margin_33"
                     android:text="@string/job_title"
                     android:textColor="@color/graish_brown_color"
                     android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_medium" />
 
                 <com.wefika.flowlayout.FlowLayout
-                    android:visibility="gone"
                     android:id="@+id/flow_layout_job_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    android:layout_marginRight="@dimen/margin_normal" />
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_height"
-                    android:background="@color/line_divider"
-
-                    />
+                    android:background="@color/line_divider" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_20"
-                    android:background="@color/white5_color"
-
-                    />
+                    android:background="@color/white5_color" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_height"
-                    android:background="@color/line_divider"
-
-                    />
+                    android:background="@color/line_divider" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_job_type"
                     style="@style/text_view_normal"
                     android:layout_marginBottom="@dimen/margin_small"
-                    android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginEnd="@dimen/margin_normal"
+                    android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_17"
                     android:text="@string/job_type"
                     android:textAllCaps="true"
@@ -110,8 +106,8 @@
                         style="@style/text_view_normal"
                         android:layout_width="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/iv_full_time"
                         android:layout_marginStart="@dimen/margin_xlarge"
+                        android:layout_toEndOf="@+id/iv_full_time"
                         android:text="@string/full_time"
                         android:textColor="@color/grayish_two"
                         android:textSize="@dimen/text_size_13"
@@ -124,8 +120,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/margin_normal"
-                        android:button="@drawable/checkbox_check_selector"
-                        />
+                        android:button="@drawable/checkbox_check_selector" />
 
                 </RelativeLayout>
 
@@ -152,9 +147,9 @@
                         android:id="@+id/tv_part_time"
                         style="@style/text_view_normal"
                         android:layout_width="wrap_content"
-                        android:layout_toEndOf="@+id/iv_part_time"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_xlarge"
+                        android:layout_toEndOf="@+id/iv_part_time"
                         android:text="@string/part_time"
                         android:textColor="@color/grayish_two"
                         android:textSize="@dimen/text_size_13"
@@ -167,8 +162,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/margin_normal"
-                        android:button="@drawable/checkbox_check_selector"
-                        />
+                        android:button="@drawable/checkbox_check_selector" />
                 </RelativeLayout>
 
                 <View
@@ -178,18 +172,17 @@
 
                 <LinearLayout
                     android:id="@+id/day_layout"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_74"
-                    android:layout_marginLeft="@dimen/margin_medium"
-                    android:layout_marginRight="@dimen/margin_medium"
+                    android:layout_marginLeft="@dimen/margin_6"
+                    android:layout_marginRight="@dimen/margin_6"
                     android:background="@color/white_six"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_sunday"
-
                         style="@style/text_view_normal"
                         android:layout_width="@dimen/circular_text_dimen"
                         android:layout_height="@dimen/circular_text_dimen"
@@ -234,7 +227,6 @@
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_wednesday"
-
                         style="@style/text_view_normal"
                         android:layout_width="@dimen/circular_text_dimen"
                         android:layout_height="@dimen/circular_text_dimen"
@@ -242,7 +234,6 @@
                         android:layout_marginLeft="@dimen/margin_6"
                         android:layout_marginRight="@dimen/margin_6"
                         android:gravity="center"
-
                         android:text="@string/wednesday"
                         android:textColor="@color/brownish_grey"
                         android:textSize="@dimen/text_size_17"
@@ -250,7 +241,6 @@
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_thursday"
-
                         style="@style/text_view_normal"
                         android:layout_width="@dimen/circular_text_dimen"
                         android:layout_height="@dimen/circular_text_dimen"
@@ -340,9 +330,9 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:textAllCaps="true"
-                    android:visibility="gone"
                     android:textColor="@color/greyish_color"
                     android:textSize="@dimen/text_size_13"
+                    android:visibility="gone"
                     app:customFont="@string/font_medium" />
 
             </LinearLayout>
@@ -354,8 +344,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary"
+            android:text="@string/button_search"
             android:textColor="@color/white_color"
-            app:customFont="@string/font_bold"
-            android:text="@string/button_search"/>
+            app:customFont="@string/font_bold" />
     </RelativeLayout>
 </layout>

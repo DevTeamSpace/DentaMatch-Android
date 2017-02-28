@@ -15,7 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateCertificateBinding;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
@@ -30,26 +29,18 @@ import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.CameraUtil;
-import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.PermissionUtils;
-import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.util.*;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetDatePicker;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-
-import org.apache.http.params.CoreConnectionPNames;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import org.greenrobot.eventbus.EventBus;
-import org.w3c.dom.Text;
+import retrofit2.Call;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
 
 /**
  * Created by virender on 20/01/17.
@@ -101,9 +92,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 mBinder.tvValidityDatePicker.setVisibility(View.GONE);
             } else {
                 mBinder.tvValidityDatePicker.setVisibility(View.VISIBLE);
-
             }
-            mBinder.tvValidityDatePicker.setText(data.getValidityDate());
+            mBinder.tvValidityDatePicker.setText(Utils.dateFormatYYYYMMMMDD(data.getValidityDate()));
         }
     }
 
@@ -126,13 +116,17 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                     }
                     uploadDentaImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
                 } else {
+                    if (!TextUtils.isEmpty(data.getImage())||!TextUtils.isEmpty(mFilePath)) {
 
+                        if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
+                            Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date, data.getCertificateName()));
+                            return;
+                        }
+                        postCertificateData(preparePostValidation());
+                    } else {
+                        Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_phot_first));
 
-                    if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
-                        Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date));
-                        return;
                     }
-                    postCertificateData(preparePostValidation());
                 }
                 break;
 
@@ -147,7 +141,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         ArrayList<UpdateCertificates> updateCertificatesArrayList = new ArrayList<>();
         UpdateCertificates updateCertificates = new UpdateCertificates();
         updateCertificates.setId(data.getId());
-        updateCertificates.setValue(mBinder.tvValidityDatePicker.getText().toString());
+        updateCertificates.setValue(Utils.getRequriedServerDateFormet(mBinder.tvValidityDatePicker.getText().toString()));
         updateCertificatesArrayList.add(updateCertificates);
         certificateRequest.setUpdateCertificatesList(updateCertificatesArrayList);
         return certificateRequest;
@@ -272,7 +266,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void onDateSelection(String date, int position) {
-        mBinder.tvValidityDatePicker.setText(date);
+        mBinder.tvValidityDatePicker.setText(Utils.dateFormatYYYYMMMMDD(date));
+
     }
 
     private void uploadCertificateImageApi(final String filePath, String certificateId) {

@@ -2,6 +2,7 @@ package com.appster.dentamatch.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,9 @@ import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
+import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
@@ -65,7 +68,8 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         SearchJobModel data = mJobListData.get(position);
 
         if (data != null) {
-            holder.itemView.setTag(data.getId());
+//            holder.itemView.setTag(data.getId());
+            holder.itemView.setTag(position);
             holder.itemView.setOnClickListener(this);
             holder.tvName.setText(data.getJobTitleName());
 
@@ -132,7 +136,6 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 holder.tvDate.setText(partTimeDays);
 
                 final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.BELOW, holder.tvName.getId());
                 params.addRule(RelativeLayout.END_OF, holder.tvJobType.getId());
                 params.addRule(RelativeLayout.START_OF, holder.tvDistance.getId());
                 params.setMargins(Utils.dpToPx(mContext, 12), 0, Utils.dpToPx(mContext, 10), 0);
@@ -141,13 +144,15 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                     @Override
                     public void run() {
                         if (holder.tvDate.getLineCount() == 1) {
-                            params.addRule(RelativeLayout.ALIGN_BASELINE, holder.tvJobType.getId());
+                            params.addRule(RelativeLayout.ALIGN_BOTTOM, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
                         } else {
+                            params.addRule(RelativeLayout.ALIGN_BASELINE, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
+                            holder.tvDate.setPadding(0, 4, 0, 0);
                         }
                     }
-                }, 200);
+                }, 100);
 
 
             } else if (data.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
@@ -162,10 +167,24 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
             }
 
             holder.tvDocAddress.setText(data.getAddress());
-            String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
-            holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
+            if (data.getDays() == 0) {
+                holder.tvDuration.setText(mContext.getString(R.string.text_todays));
+
+            } else {
+                String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+                holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
+            }
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDocName.setText(data.getOfficeName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int jobID = mJobListData.get((int) view.getTag()).getId();
+
+                    mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
+                            .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID));
+                }
+            });
         }
     }
 
@@ -181,7 +200,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.cb_job_selection:
                 final int position = (int) v.getTag();
                 Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
@@ -199,14 +218,14 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                         dialog.dismiss();
                     }
                 });
-            break;
 
-            default: break;
+            default:
+                break;
         }
 
     }
 
-    private void unSaveJob(final int JobID, final int position) {
+    public void unSaveJob(final int JobID, final int position) {
         SaveUnSaveRequest request = new SaveUnSaveRequest();
         request.setJobId(JobID);
         request.setStatus(0);
@@ -219,7 +238,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
             public void onSuccess(BaseResponse response) {
                 ((BaseActivity) mContext).showToast(response.getMessage());
 
-                if(response.getStatus() == 1){
+                if (response.getStatus() == 1) {
                     mJobListData.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, mJobListData.size());
@@ -227,7 +246,12 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                     /**
                      * Update the search job screens for un-save events.
                      */
-                    EventBus.getDefault().post(new SaveUnSaveEvent(JobID,0));
+                    EventBus.getDefault().post(new SaveUnSaveEvent(JobID, 0));
+
+                    /**
+                     * Notify the helper class to update the data from the server.
+                     */
+                    TrackJobsDataHelper.getInstance().updateSavedData();
                 }
 
             }
@@ -249,7 +273,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 Bundle bundle = new Bundle();
                 bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getId());
                 dialogFragment.setArguments(bundle);
-                dialogFragment.show(((BaseActivity)mContext).getSupportFragmentManager(),null);
+                dialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), null);
             }
 
             @Override
@@ -260,16 +284,16 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         return false;
     }
 
-    public void cancelJob(int JobID){
-       for(int i = 0; i < mJobListData.size(); i++){
+    public void cancelJob(int JobID) {
+        for (int i = 0; i < mJobListData.size(); i++) {
 
-           if(mJobListData.get(i).getId() == JobID){
-               mJobListData.remove(i);
-               notifyItemRemoved(i);
-               notifyItemRangeChanged(i,mJobListData.size());
-               break;
-           }
-       }
+            if (mJobListData.get(i).getId() == JobID) {
+                mJobListData.remove(i);
+                notifyItemRemoved(i);
+                notifyItemRangeChanged(i, mJobListData.size());
+                break;
+            }
+        }
     }
 
     class MyHolder extends RecyclerView.ViewHolder {

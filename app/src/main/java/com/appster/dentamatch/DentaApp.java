@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
 import com.appster.dentamatch.chat.RealmManager;
+import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
@@ -29,7 +30,11 @@ public class DentaApp extends Application {
         mAppContext = this.getApplicationContext();
         NetworkMonitor.initialize(mAppContext);
 
-        RealmManager.initializeRealmConfig(getAppContext());
+        /**
+         * Initialize DB Helper class.
+         */
+        DBHelper.getInstance().initializeRealmConfig(mAppContext);
+
 
         if (BuildConfig.DEBUG) {
             LeakCanary.install(this);
@@ -76,13 +81,13 @@ public class DentaApp extends Application {
             //Fabric.with(this, new Crashlytics());
         }
 
+
         // GoogleAnalytics initialize
         //AnalyticsHelper.prepareAnalytics(this);
 
-        // Push Notification initialize
+        // Push ReadNotificationRequest initialize
         FirebaseApp.initializeApp(mAppContext);
     }
-
 
     public static Context getAppContext() {
         return mAppContext;

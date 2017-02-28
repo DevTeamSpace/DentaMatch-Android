@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -160,10 +161,14 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
 
         for (ParentSkill parentSkill : mParentSkillList) {
             if (parentSkill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
-                UpdateCertificates obj = new UpdateCertificates();
-                obj.setId(parentSkill.getId());
-                obj.setValue(parentSkill.getOtherSkill());
-                othersList.add(obj);
+                    if (!TextUtils.isEmpty(parentSkill.getOtherSkill())) {
+                        UpdateCertificates obj = new UpdateCertificates();
+                        obj.setId(parentSkill.getId());
+                        obj.setValue(parentSkill.getOtherSkill().trim());
+                        othersList.add(obj);
+                    }
+
+
             }
             for (SubSkill subSkill : parentSkill.getSubSkills()) {
                 if (subSkill.getIsSelected() == 1) {
@@ -172,7 +177,10 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                     } else {
                         UpdateCertificates obj = new UpdateCertificates();
                         obj.setId(subSkill.getId());
-                        obj.setValue(subSkill.getOtherText());
+                        if (!TextUtils.isEmpty(subSkill.getOtherText())) {
+
+                            obj.setValue(subSkill.getOtherText().trim());
+                        }
                         othersList.add(obj);
                     }
                 }

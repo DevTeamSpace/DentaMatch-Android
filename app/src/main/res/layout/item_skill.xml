@@ -18,8 +18,7 @@
             <RelativeLayout
                 android:id="@+id/layout_skills_inner"
                 android:layout_width="match_parent"
-                android:paddingTop="@dimen/margin_large"
-                android:paddingBottom="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
                 android:layout_height="wrap_content">
 
                 <com.appster.dentamatch.widget.CustomTextView
@@ -29,7 +28,7 @@
                     android:ellipsize="end"
                     android:layout_centerVertical="true"
                     android:textColor="@color/color_forgot_pwd"
-                    android:textSize="@dimen/text_size_large"
+                    android:textSize="@dimen/text_size_normal"
                     app:customFont="@string/font_bold" />
 
                 <ImageView
@@ -45,7 +44,10 @@
             <com.wefika.flowlayout.FlowLayout
                 android:id="@+id/flow_layout_chips"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                >
                 </com.wefika.flowlayout.FlowLayout>
 
             <com.appster.dentamatch.widget.CustomEditText
@@ -56,9 +58,10 @@
                 android:background="@drawable/edit_text_selector"
                 android:layout_marginBottom="10dp"
                 android:inputType="textCapSentences"
-                android:digits="@string/digits_alpha_numeric_only"
+                android:digits="@string/digits_other"
                 android:focusableInTouchMode="true"
                 android:imeOptions="actionDone"
+                android:imeActionLabel="DONE"
                 android:visibility="visible" />
 
         </LinearLayout>

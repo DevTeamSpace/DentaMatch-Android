@@ -49,7 +49,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
 
-        if(validate()) {
+        if (validate()) {
             Intent intent = new Intent();
             intent.putExtra(Constants.EXTRA_SUB_SKILLS, subSkills);
 
@@ -63,7 +63,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         int position = subSkills.size() - 1;
         boolean checked = subSkills.get(position).getIsSelected() == 1;
         String skillName = subSkills.get(position).getSkillName();
-        boolean otherTextEmpty = TextUtils.isEmpty(subSkills.get(position).getOtherText());
+        boolean otherTextEmpty = TextUtils.isEmpty(subSkills.get(position).getOtherText())?true:TextUtils.isEmpty(subSkills.get(position).getOtherText().trim());
 
         if (checked && skillName.equalsIgnoreCase(Constants.OTHERS) && otherTextEmpty) {
             Utils.showToastLong(this, getString(R.string.blank_other_alert));

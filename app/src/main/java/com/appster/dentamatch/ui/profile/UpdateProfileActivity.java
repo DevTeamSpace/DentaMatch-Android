@@ -92,10 +92,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mSelectedLat = mProfileData.getUser().getLatitude();
             mSelectedLng = mProfileData.getUser().getLongitude();
             mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
-            if(mSelectedJobTitleID == 0){
+            if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText("Please select a job");
 
-            }else{
+            } else {
                 mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
 
             }
@@ -138,11 +138,24 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 break;
 
             case R.id.btn_save:
+                hideKeyboard();
+
+
                 validateAndUpdate();
                 break;
 
             case R.id.et_location:
-                startActivityForResult(new Intent(UpdateProfileActivity.this, PlacesMapActivity.class), REQUEST_CODE_LOCATION);
+                Intent intent = new Intent(UpdateProfileActivity.this, PlacesMapActivity.class);
+                if (mProfileData != null && mProfileData.getUser() != null) {
+
+                    intent.putExtra(Constants.EXTRA_LATITUDE, mProfileData.getUser().getLatitude());
+                    intent.putExtra(Constants.EXTRA_LONGITUDE, mProfileData.getUser().getLongitude());
+                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mProfileData.getUser().getPostalCode());
+                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mProfileData.getUser().getPreferredJobLocation());
+                }
+                startActivityForResult(intent, REQUEST_CODE_LOCATION);
+
+
                 break;
 
             case R.id.create_profile1_iv_profile_icon:
@@ -223,10 +236,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (TextUtils.isEmpty(mBinding.etJobTitle.getText())) {
             showToast(getString(R.string.error_no_job_type));
 
-        }else if(mBinding.etJobTitle.getText().toString().equalsIgnoreCase("Please select a job")){
+        } else if (mBinding.etJobTitle.getText().toString().equalsIgnoreCase("Please select a job")) {
             showToast(getString(R.string.error_no_job_type));
 
-        }else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
+        } else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
             showToast(getString(R.string.error_no_location));
 
         } else if (TextUtils.isEmpty(mBinding.etDesc.getText())) {

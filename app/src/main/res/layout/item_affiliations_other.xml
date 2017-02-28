@@ -37,11 +37,15 @@
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
             android:background="@drawable/bg_edit_text"
+            android:digits="@string/digits_alpha_numeric_only"
             android:gravity="top"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:textColor="@color/graish_brown_color"
             android:textSize="@dimen/text_size_normal"
-            android:digits="@string/digits_alpha_numeric_only"
-            android:visibility="gone" />
+            android:visibility="gone"
+
+            />
 
         <View
             android:id="@+id/view_line"

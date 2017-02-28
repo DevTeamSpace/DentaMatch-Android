@@ -24,10 +24,12 @@ public class Alert {
         else
             dialog.setTitle("Information");
         dialog.setMessage(message);
+        dialog.setCancelable(false);
+
         return dialog;
     }
 
-    public static AlertDialog.Builder createYesNoAlert(Context context,String btnPositive,String btnNegative,
+    public static AlertDialog.Builder createYesNoAlert(Context context, String btnPositive, String btnNegative,
                                                        String title, String message, final OnAlertClickListener listener) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(
                 new ContextThemeWrapper(context,
@@ -51,6 +53,7 @@ public class Alert {
                     listener.onNegative(dialogInterface);
             }
         });
+        dialog.setCancelable(false);
         dialog.show();
         return dialog;
     }
@@ -84,6 +87,8 @@ public class Alert {
                         }
                     });
         }
+        dialog.setCancelable(false);
+
         if (showLogo)
             dialog.setIcon(R.mipmap.ic_launcher);
         try {

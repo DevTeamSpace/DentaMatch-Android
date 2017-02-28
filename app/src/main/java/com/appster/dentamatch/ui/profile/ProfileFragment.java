@@ -63,7 +63,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private FragmentManager fragmentManager;
     private FragmentProfileBinding profileBinding;
     private String TAG = "ProfileFragment-";
-    private int tempValue = 0;
     private ProfileResponseData profileResponseData;
     private ItemProfileCellCertificateBinding cellCertificateBinding;
 
@@ -227,8 +226,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.tv_edit:
                 startActivity(new Intent(getActivity(), UpdateProfileActivity.class)
                         .putExtra(Constants.EXTRA_PROFILE_DATA, profileResponseData));
-
                 break;
+
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
@@ -302,14 +301,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 }
 
             } else {
-                profileBinding.expInflater.setVisibility(View.GONE);
+//                profileBinding.expInflater.setVisibility(View.GONE);
 
                 profileBinding.flowLayout.setVisibility(View.GONE);
                 visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
             }
 
-            if (response.getLicence() != null) {
-                goneViews(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
+            if (response.getLicence() != null && !TextUtils.isEmpty(response.getLicence().getLicenseNumber()) && !TextUtils.isEmpty(response.getLicence().getState())) {
+//                goneViews(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
+                profileBinding.cellLicence.tvAddCertificates.setVisibility(View.GONE);
+                profileBinding.cellLicence.tvEditCell.setVisibility(View.VISIBLE);
                 profileBinding.layoutLicenceData.setVisibility(View.VISIBLE);
 
                 profileBinding.tvLicenceNumber.setText(response.getLicence().getLicenseNumber());
@@ -317,8 +318,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
 
             } else {
+                profileBinding.cellLicence.tvAddCertificates.setVisibility(View.VISIBLE);
+                profileBinding.cellLicence.tvEditCell.setVisibility(View.GONE);
                 profileBinding.layoutLicenceData.setVisibility(View.GONE);
-                visibleView(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
+//                visibleView(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
 
             }
             if (response.getCertificatesLists() != null && response.getCertificatesLists().size() > 0) {
@@ -330,7 +333,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.VISIBLE);
                 profileBinding.cellDentalStateBoard.tvCertificateValidityDate.setVisibility(View.GONE);
-                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
+                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
+
+//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
+                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
 
                 if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
                     Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.cellDentalStateBoard.ivCertificateImage);
@@ -341,6 +347,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.GONE);
                 profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
+                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
 
 
             }
@@ -376,7 +383,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < skillArrayList.size(); i++) {
             skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.keySkillInflater.getContext())
                     .inflate(R.layout.item_profile_skill, profileBinding.keySkillInflater, false));
-            skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName());
+            skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName().toUpperCase());
 
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
                 CustomTextView textView = new CustomTextView(getActivity());
@@ -385,6 +392,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 textView.setLayoutParams(lp);
                 textView.setBackgroundResource(R.drawable.bg_edit_text);
                 textView.setPadding(30, 10, 30, 10);
+//                textView.setTextSize(getResources().getDimension(R.dimen.text_size_12));
                 textView.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
                 skillBinding.skillFlowLayout.addView(textView, lp);
 
@@ -410,10 +418,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private void inflateExperience(ArrayList<WorkExpRequest> expList) {
         profileBinding.expInflater.setVisibility(View.VISIBLE);
         profileBinding.expInflater.removeAllViews();
-        ItemProfileWorkExpBinding expBinding;
+//        ItemProfileWorkExpBinding expBinding;
         for (int i = 0; i < expList.size(); i++) {
             boolean isNoContactInfo = false;
-            expBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
+            ItemProfileWorkExpBinding expBinding
+                    = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
                     .inflate(R.layout.item_profile_work_exp, profileBinding.expInflater, false));
             expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
@@ -490,7 +499,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < certificateList.size(); i++) {
 
             cellCertificateBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.certificationInflater.getContext())
-                    .inflate(R.layout.item_profile_cell_certificate, profileBinding.expInflater, false));
+                    .inflate(R.layout.item_profile_cell_certificate, profileBinding.certificationInflater, false));
             final View tempView = cellCertificateBinding.getRoot();
             tempView.setTag(i);
             cellCertificateBinding.tvEdit.setId(i);
@@ -507,7 +516,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             } else {
                 cellCertificateBinding.tvCertificateValidityText.setVisibility(View.VISIBLE);
-                cellCertificateBinding.tvCertificateValidityDate.setText(certificate.getValidityDate());
+                cellCertificateBinding.tvCertificateValidityDate.setText(Utils.dateFormatYYYYMMMMDD(certificate.getValidityDate()));
 
             }
 
@@ -521,6 +530,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.VISIBLE);
                 cellCertificateBinding.tvEdit.setVisibility(View.GONE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.GONE);
+                cellCertificateBinding.layoutValidationDate.setVisibility(View.GONE);
+
 
             }
 

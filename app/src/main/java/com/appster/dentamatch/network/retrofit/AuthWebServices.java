@@ -1,13 +1,18 @@
 package com.appster.dentamatch.network.retrofit;
 
 import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest;
+import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
 import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
 import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest;
+import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
+import com.appster.dentamatch.network.request.jobs.HiredJobRequest;
 import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
 import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
 import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
@@ -21,11 +26,14 @@ import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
 import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
+import com.appster.dentamatch.network.response.jobs.HiredJobResponse;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
+import com.appster.dentamatch.network.response.notification.NotificationResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
@@ -53,6 +61,7 @@ public interface AuthWebServices {
     String FORGOT_PASSWORD = "users/forgot-password";
     String UPDATE_LICENCE = "users/update-license";
     String JOB_TITLE_LIST = "list-jobtitle";
+    String JOB_HIRED_LIST = "jobs/hired-jobs";
     String SKILLS_LIST = "list-skills";
     String SKILLS_UPDATE = "users/update-skill";
     String SCHOOL_LIST = "users/school-list";
@@ -78,9 +87,14 @@ public interface AuthWebServices {
     String SAVE_UNSAVE_JOB = "users/save-job";
     String TRACK_JOBS = "users/job-list";
     String CANCEL_JOB = "users/cancel-job";
+    String AVAILABLE_LIST = "users/availability-list";
+    String SAVE_AVAILABILITY = "users/update-availability";
     String UPDATE_USER_LOCATION = "users/user-location-update";
     String USER_CHAT_HISTORY = "users/chat-user-list";
+    String GET_NOTIFICATION = "users/notification-list";
+    String RAED_NOTIFICATION = "users/notification-read";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
+    String UPDATE_FCM_TOKEN = "users/update-devicetoken";
 
 
     @POST(USER_CHAT_BLOCK_UNBLOCK)
@@ -89,6 +103,9 @@ public interface AuthWebServices {
 
     @GET(USER_CHAT_HISTORY)
     Call<ChatHistoryResponse> getChatHistory();
+
+    @GET(GET_NOTIFICATION)
+    Call<NotificationResponse> getNotification(@Query("page") int page);
 
     @POST(UPDATE_USER_LOCATION)
     Call<BaseResponse> updateUserLocation(@Body ChangeUserLocation request);
@@ -106,11 +123,17 @@ public interface AuthWebServices {
     @POST(APPLY_JOB)
     Call<BaseResponse> applyJob(@Body JobApplyRequest request);
 
+    @POST(UPDATE_FCM_TOKEN)
+    Call<BaseResponse> updateFcmToekn(@Body UpdateFcmTokenRequest request);
+
     @POST(JOB_DETAILS)
     Call<JobDetailResponse> getJobDetail(@Body JobDetailRequest request);
 
     @POST(SEARCH_JOBS)
     Call<SearchJobResponse> searchJob(@Body SearchJobRequest request);
+
+    @POST(JOB_HIRED_LIST)
+    Call<HiredJobResponse> getHiredJob(@Body HiredJobRequest hiredJobRequest);
 
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
@@ -148,6 +171,7 @@ public interface AuthWebServices {
     @GET(JOB_TITLE_LIST)
     Call<JobTitleResponse> jobTitle();
 
+
     @GET(SKILLS_LIST)
     Call<SkillsResponse> getSkillsList();
 
@@ -160,6 +184,9 @@ public interface AuthWebServices {
     @POST(SCHOOL_ADD)
     Call<BaseResponse> addSchooling(@Body AddSchoolRequest schoolRequest);
 
+    @POST(RAED_NOTIFICATION)
+    Call<BaseResponse> readNotification(@Body ReadNotificationRequest notificationRequest);
+
     @GET(CERTIFICATION_LIST)
     Call<CertificateResponse> getCertificationList();
 
@@ -168,6 +195,12 @@ public interface AuthWebServices {
 
     @GET(GET_PROFILE)
     Call<ProfileResponse> getProfile();
+
+    @POST(AVAILABLE_LIST)
+    Call<AvailabilityResponse> getAvailabilityList(@Body GetAvailabilityRequest getAvailabilityRequest);
+
+    @POST(SAVE_AVAILABILITY)
+    Call<BaseResponse> saveAvailability(@Body SaveAvailabilityRequest saveAvailabiltyRequest);
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);

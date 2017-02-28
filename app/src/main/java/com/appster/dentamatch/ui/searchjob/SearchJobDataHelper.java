@@ -1,9 +1,9 @@
 package com.appster.dentamatch.ui.searchjob;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.appster.dentamatch.R;
 import com.appster.dentamatch.model.JobDataReceivedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -26,7 +26,7 @@ import retrofit2.Call;
  */
 
 public class SearchJobDataHelper {
-    private ProgressDialog mProgressDialog;
+//    private ProgressDialog mProgressDialog;
     private static SearchJobDataHelper ourInstance;
     private ArrayList<SearchJobModel> jobDataList;
     private boolean mIsPaginationRequired;
@@ -47,15 +47,14 @@ public class SearchJobDataHelper {
     }
 
     private void showProgress(Context ct) {
-        mProgressDialog = new ProgressDialog(ct);
-        mProgressDialog.setMessage("Please wait...");
-        mProgressDialog.show();
+//        mProgressDialog = new ProgressDialog(ct);
+//        mProgressDialog.setMessage("Please wait...");
+//        mProgressDialog.show();
+        ((BaseActivity)ct).processToShowDialog("", ct.getString(R.string.please_wait), null);
     }
 
-    private void hideProgress() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
+    private void hideProgress(Context ct) {
+        ((BaseActivity)ct).hideProgressBar();
     }
 
     private void searchJob(final Context ct, final boolean isPaginationLoading) {
@@ -70,7 +69,7 @@ public class SearchJobDataHelper {
             }
 
             request.setPage(mPageNumber);
-            AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
             webServices.searchJob(request).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) ct) {
                 @Override
                 public void onSuccess(SearchJobResponse response) {
@@ -78,7 +77,7 @@ public class SearchJobDataHelper {
                      * Once data has been loaded from the filter changes we can dismiss this filter.
                      */
                     PreferenceUtil.setFilterChanged(false);
-                    hideProgress();
+                    hideProgress(ct);
                     if (response.getStatus() == 1) {
                         if (!isPaginationLoading) {
                             jobDataList.clear();
@@ -98,7 +97,7 @@ public class SearchJobDataHelper {
                 @Override
                 public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
                     EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
-                    hideProgress();
+                    hideProgress(ct);
 
                 }
             });
@@ -120,7 +119,6 @@ public class SearchJobDataHelper {
     public void requestData(Context ct) {
         /**
          * In case the filter is changed we clear all previous data and hit API again to refresh the data.
-         *
          */
         if (PreferenceUtil.isFilterChanged() ) {
             jobDataList.clear();

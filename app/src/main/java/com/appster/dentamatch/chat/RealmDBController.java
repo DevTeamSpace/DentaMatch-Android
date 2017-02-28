@@ -8,19 +8,19 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-public class RealmController {
+public class RealmDBController {
     private final String TAG = "RealmController";
 
     public Realm realm;
 
     //This constructor must be called only for UI Thread
     //Don't call this method from worker thread, it will throw exception otherwise
-    public RealmController() {
+    public RealmDBController() {
 //        realm = RealmManager.getRealm();
     }
 
     //This constructor must be called for each worker Thread
-    public RealmController(Realm realm) {
+    public RealmDBController(Realm realm) {
         this.realm = realm;
     }
 

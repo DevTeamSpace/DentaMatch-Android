@@ -1,9 +1,15 @@
 package com.appster.dentamatch.util;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Class to hold constant values.
  */
 public class Constants {
+    public static final int MAX_MONTH_COUNT = 13;
     public static final String DEVICE_TYPE = "ANDROID";
     public static String CHAT_SERVER_URL = "http://172.16.16.188:3000";
 
@@ -19,6 +25,8 @@ public class Constants {
     public static final String EXTRA_IS_LOGIN = "display_login";
     public static final String EXTRA_JOB_ID = "EXTRA_JOB_ID";
     public static final String EXTRA_IS_FIRST_TIME = "EXTRA_IS_FIRST_TIME";
+    public static final String EXTRA_FROM_CHAT = "EXTRA_FROM_CHAT";
+    public static final String EXTRA_FROM_JOB_DETAIL = "EXTRA_FROM_JOB_DETAIL";
 
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";
@@ -86,6 +94,11 @@ public class Constants {
         String SUB_SKILLS = "sub_skills";
     }
 
+    public interface DateFormet {
+        String YYYYMMDD = "yyyy-MM-dd";
+        String YYYYMMDDHHMMSS = "yyyy-MM-dd hh:mm:ss";
+    }
+
     public interface APIS {
         String PRIVACY_POLICY = "privacy-policy";
         String TERM_CONDITION = "term-condition";
@@ -93,6 +106,21 @@ public class Constants {
         String IMAGE_TYPE_STATE_BOARD = "dental_state_board";
         String ACTION_ADD = "add";
         String ACTION_EDIT = "edit";
+        String NOTIFICATION_TYPE="notification_type";
+        String NOTIFICATION_ID="id";
+        String ID="id";
+    }
+
+    public interface NOTIFICATIONTYPES {
+        int NOTIFICATION_ACCEPT_JOB = 1;
+        int NOTIFICATION_HIRED = 2;
+        int NOTIFICATION_CANCEL = 3;
+        int NOTIFICATION_DELETE = 4;
+        int NOTIFICATION_VERIFY_DOC = 5;
+        int NOTIFICATION_COMPLETE_PROFILE = 6;
+        int NOTIFICATION_CHAT_MSG = 7;
+        int NOTIFICATION_OTHER = 8;
+        int NOTIFICATION_INVITE = 9;
     }
 
     public interface REQUEST_CODE {

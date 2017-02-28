@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.ChatMessage;
-import com.appster.dentamatch.chat.RealmController;
+import com.appster.dentamatch.chat.RealmDBController;
 import com.appster.dentamatch.chat.RealmManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -58,7 +58,7 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
     private Boolean isConnected = true;
 
     private Realm realm;
-    private RealmController realmController;
+    private RealmDBController realmDBController;
     RealmList<ChatMessage> realmList;
 
     @Override
@@ -70,9 +70,9 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
         gson = new Gson();
 
         realm = RealmManager.getRealm();
-        realmController = new RealmController();
+        realmDBController = new RealmDBController();
 
-        realmList = realmController.getAllMsgByThreadId(realm, "901");
+        realmList = realmDBController.getAllMsgByThreadId(realm, "901");
 
 //        mAdapter = new MessageAdapter(this, realmList);
 
@@ -80,6 +80,19 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
         mBinder.rcvChat.setAdapter(mAdapter);
 
 //        mSocket = ((DentaApp) getApplication()).getSocket();
+//        mBinder.rcvChat.setLayoutManager(new LinearLayoutManager(this));
+//        mBinder.rcvChat.setAdapter(mAdapter);
+//
+//        mSocket = ((DentaApp) getApplication()).getSocket();
+//        mSocket = ((DentaApp) getApplication()).getSocket();
+
+//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
+//        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
+//        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+//        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+//        mSocket.on("new message", onNewMessage);
+//        mSocket.on("typing", onTyping);
+//        mSocket.on("stop typing", onStopTyping);
         mSocket.connect();
 
         mBinder.sendButton.setOnClickListener(this);
@@ -138,13 +151,13 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 
         return new JSONObject(hashMap);
     }
-
-    private void addLog(String message) {
-        mMessages.add(new Message.Builder(Message.TYPE_LOG)
-                .message(message).build());
-        mAdapter.notifyItemInserted(mMessages.size() - 1);
-        scrollToBottom();
-    }
+//
+//    private void addLog(String message) {
+//        mMessages.add(new Message.Builder(Message.TYPE_LOG)
+//                .message(message).build());
+//        mAdapter.notifyItemInserted(mMessages.size() - 1);
+//        scrollToBottom();
+//    }
 
     /*private void addParticipantsLog(int numUsers) {
         addLog(getResources().getQuantityString(R.plurals.message_participants, numUsers, numUsers));
@@ -167,7 +180,7 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
 
 //        mBinder.recyclerView.setAdapter(mAdapter);
 
-        realmController.saveChatMessage(realm, msg);
+        realmDBController.saveChatMessage(realm, msg);
 
         for(ChatMessage chat:realmList) {
             LogUtils.LOGD(TAG, "RealmList " + chat.getMsgText());
@@ -183,12 +196,12 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
     }
 //    }
 
-    private void addTyping(String username) {
-        mMessages.add(new Message.Builder(Message.TYPE_ACTION)
-                .username(username).build());
-        mAdapter.notifyItemInserted(mMessages.size() - 1);
-        scrollToBottom();
-    }
+//    private void addTyping(String username) {
+//        mMessages.add(new Message.Builder(Message.TYPE_ACTION)
+//                .username(username).build());
+//        mAdapter.notifyItemInserted(mMessages.size() - 1);
+//        scrollToBottom();
+//    }
 
     private void removeTyping(String username) {
         for (int i = mMessages.size() - 1; i >= 0; i--) {
@@ -351,24 +364,24 @@ public class TestChatActivity extends BaseActivity implements View.OnClickListen
         }
     };*/
 
-    private Emitter.Listener onTyping = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            TestChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String username;
-                    try {
-                        username = data.getString("username");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    addTyping(username);
-                }
-            });
-        }
-    };
+//    private Emitter.Listener onTyping = new Emitter.Listener() {
+//        @Override
+//        public void call(final Object... args) {
+//            TestChatActivity.this.runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    JSONObject data = (JSONObject) args[0];
+//                    String username;
+//                    try {
+//                        username = data.getString("username");
+//                    } catch (JSONException e) {
+//                        return;
+//                    }
+//                    addTyping(username);
+//                }
+//            });
+//        }
+//    };
 
     private Emitter.Listener onStopTyping = new Emitter.Listener() {
         @Override

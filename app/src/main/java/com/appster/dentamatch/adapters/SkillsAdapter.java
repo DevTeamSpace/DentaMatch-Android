@@ -143,7 +143,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        mSkillList.get(position - 1).setOtherSkill(s.toString());
+                            mSkillList.get(position - 1).setOtherSkill(s.toString().trim());
                     }
                 });
             } else {
@@ -202,13 +202,13 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 if (text.equalsIgnoreCase(Constants.OTHERS)) {
 //                    text = Constants.OTHERS;
-                    text =listSkills.get(i).getOtherText();
+                    text = listSkills.get(i).getOtherText().trim();
                 }
 
                 TextView textView = new TextView(mContext);
                 textView.setSingleLine();
                 textView.setEllipsize(TextUtils.TruncateAt.END);
-                textView.setBackgroundResource(R.drawable.edit_text_selector);
+                textView.setBackgroundResource(R.drawable.bg_bricks_shaded);
                 textView.setText(text);
 
                 flowLayout.addView(textView, layoutParams);

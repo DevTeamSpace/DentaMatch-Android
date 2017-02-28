@@ -1,11 +1,9 @@
 package com.appster.dentamatch.ui.common;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.widget.FrameLayout;
@@ -14,13 +12,20 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.model.LocationEvent;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
+import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.MessagesListFragment;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -29,16 +34,14 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import retrofit2.Call;
+
 /**
  * Created by virender on 17/01/17.
  */
 public class HomeActivity extends BaseActivity {
-
-    //   categoryId valid for maximum 6 level
+    private final String TAG = "Home Screen";
     private AHBottomNavigation bottomBar;
-    private FragmentTransaction fragmentTransaction;
-    private FragmentManager fragmentManager;
-
     private ProfileFragment mProfileFragment;
     private JobsFragment mJobsFragment;
     private MessagesListFragment mMessagesFragment;
@@ -48,9 +51,15 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        /**
+         * Connect Socket for chatting initialization.
+         */
+        SocketManager.getInstance().connect(this);
+
         setContentView(R.layout.activity_home);
         initViews();
 
@@ -62,16 +71,43 @@ public class HomeActivity extends BaseActivity {
         }
 
         /**
+         * Launch job message fragment if redirected from notification click.
+         */
+       else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
+            bottomBar.setCurrentItem(3);
+            String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+        }
+        else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
+            bottomBar.setCurrentItem(4);
+        }else{
+            bottomBar.setCurrentItem(0);
+
+        }
+
+        /**
          * Retrieve user's current location.
          */
         LocationUtils.addFragment(this);
-
+        updateToken(PreferenceUtil.getFcmToken());
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.hasExtra(Constants.EXTRA_FROM_CHAT)) {
+            bottomBar.setCurrentItem(3);
+            String RecruiterID = intent.getStringExtra(Constants.EXTRA_FROM_CHAT);
+            startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+        }
+    }
 
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        SocketManager.getInstance().disconnect();
         super.onDestroy();
 
     }
@@ -86,7 +122,6 @@ public class HomeActivity extends BaseActivity {
      * initViews is used to initialize this view at app launch
      */
     private void initViews() {
-        fragmentManager = getSupportFragmentManager();
         bottomBar = (AHBottomNavigation) findViewById(R.id.ntb_horizontal);
         bottomBar.setTitleTextSize(Utils.convertSpToPixels(10.0f, this), Utils.convertSpToPixels(10.0f, this));
         bottomBar.addItem(new AHBottomNavigationItem(getString(R.string.nav_job), R.drawable.img_nav_jobs));
@@ -155,7 +190,7 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-        bottomBar.setCurrentItem(4);
+//        bottomBar.setCurrentItem(0);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -164,6 +199,7 @@ public class HomeActivity extends BaseActivity {
                 setTitleMargins(1);
                 setTitleMargins(2);
                 setTitleMargins(3);
+                setTitleMargins(4);
             }
         }, 1000);
 
@@ -204,6 +240,14 @@ public class HomeActivity extends BaseActivity {
                 tvTitle3.setLayoutParams(llp3);
                 break;
 
+            case 4:
+                TextView tvTitle4 = (TextView) bottomBar.getViewAtPosition(4).findViewById(R.id.bottom_navigation_item_title);
+                FrameLayout.LayoutParams llp4 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                llp4.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
+                llp4.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                tvTitle4.setLayoutParams(llp4);
+                break;
+
             default:
                 break;
         }
@@ -215,32 +259,32 @@ public class HomeActivity extends BaseActivity {
         return null;
     }
 
-    @Override
-    protected void onStart() {
-        super.onResume();
-        /**
-         * Connect Socket for chatting initialization.
-         */
-        SocketManager.getInstance().connect();
-        SocketManager.getInstance().init(PreferenceUtil.getUserChatId(), PreferenceUtil.getFirstName());
-    }
+    private void updateToken(String fcmToken) {
+        try {
+            UpdateFcmTokenRequest request = new UpdateFcmTokenRequest();
+            request.setUpdateDeviceToken(fcmToken);
+            LogUtils.LOGD(TAG, "Update token");
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+            webServices.updateFcmToekn(request).enqueue(new BaseCallback<BaseResponse>(this) {
+                @Override
+                public void onSuccess(BaseResponse response) {
+                    LogUtils.LOGD(TAG, "onSuccess");
+                    if (response.getStatus() == 1) {
+                        LogUtils.LOGD(TAG, "token updated successfully");
+                    } else {
+                        LogUtils.LOGD(TAG, "token  not updated fails");
 
-    @Override
-    protected void onStop() {
-        /**
-         * Socket disconnected.
-         */
-        SocketManager.getInstance().disconnect();
-        super.onStop();
-    }
+                    }
+                }
 
-    private void launchProfileFragment() {
-        fragmentTransaction = fragmentManager.beginTransaction();
-        String fragTagName = Constants.FRAGMENT_NAME.PROFILE_FRAGMENT;
-        Fragment fragment = ProfileFragment.newInstance();
-        fragmentTransaction.replace(R.id.fragment_container, fragment, fragTagName)
-                .addToBackStack(fragTagName)
-                .commit();
+                @Override
+                public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+                    LogUtils.LOGD(TAG, "onFail");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -183,7 +183,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 break;
 
             case R.id.tv_add_more_reference:
-                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName))) {
+//                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName))) {
+                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)) && TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail)) && TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile))) {
+
                     Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
                 } else {
                     mBinder.includeLayoutRefrence2.tvRefrenceDelete.setVisibility(View.VISIBLE);

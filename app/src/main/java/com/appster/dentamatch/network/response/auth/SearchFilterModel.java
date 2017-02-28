@@ -1,5 +1,7 @@
 package com.appster.dentamatch.network.response.auth;
 
+import com.appster.dentamatch.model.JobTitleList;
+
 import java.util.ArrayList;
 
 /**
@@ -13,7 +15,17 @@ public class SearchFilterModel {
     private String lat;
     private String lng;
     private int page;
+    private String address;
     private ArrayList<String> parttimeDays;
+    private ArrayList<JobTitleList> selectedJobTitles;
+
+    public ArrayList<JobTitleList> getSelectedJobTitles() {
+        return selectedJobTitles;
+    }
+
+    public String getAddress() {
+        return address;
+    }
 
     public int getIsFulltime() {
         return isFulltime;

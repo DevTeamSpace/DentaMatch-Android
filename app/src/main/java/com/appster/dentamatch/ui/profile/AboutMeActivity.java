@@ -22,6 +22,9 @@ import com.appster.dentamatch.util.Utils;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import retrofit2.Call;
 
 /**
@@ -76,7 +79,7 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
     }
 
     private boolean checkValidation() {
-        if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString())) {
+        if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString().trim())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_summary_alert));
             return false;
         }
@@ -115,4 +118,6 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
         });
 
     }
+
+
 }
