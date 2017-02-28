@@ -1,4 +1,4 @@
-package com.appster.dentamatch.RealmDataBase;
+package com.appster.dentamatch.chat;
 
 
 import android.content.Context;

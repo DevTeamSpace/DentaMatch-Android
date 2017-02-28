@@ -1,16 +1,21 @@
 package com.appster.dentamatch.ui.messages;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.RealmDataBase.DBHelper;
-import com.appster.dentamatch.RealmDataBase.DBModel;
+import com.appster.dentamatch.chat.DBHelper;
+import com.appster.dentamatch.chat.DBModel;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
@@ -28,10 +33,14 @@ import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.Executor;
+
+import io.realm.RealmList;
 import retrofit2.Call;
 
 /**
@@ -146,10 +155,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
      *
      * @param event : received message from server.
      */
-    @Subscribe
-    public void onNewMessageReceived(ChatPersonalMessageReceivedEvent event) {
+    @Subscribe()
+    public void onNewMessageReceived(final ChatPersonalMessageReceivedEvent event) {
         if (event != null) {
-            ChatMessageModel messageModel = event.getModel();
+            final ChatMessageModel messageModel = event.getModel();
             int messageType = 0;
 
             if (messageModel.getToID().equalsIgnoreCase(userId)) {
@@ -161,7 +170,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             /**
              * Add the received message to the chat adapter for viewing.
              */
-            Message message = new Message(messageModel.getMessage(),
+            final Message message = new Message(messageModel.getMessage(),
                     messageModel.getRecruiterName(),
                     messageModel.getMessageTime(),
                     messageModel.getMessageId(),
@@ -171,6 +180,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
              * Insert the message received into the DB first.
              */
             DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(), 0, messageModel.getMessageListId());
+
 
             if (mBinder.messages.getAdapter() == null) {
                 mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
@@ -183,7 +193,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    @Subscribe
+    @Subscribe()
     public void onSentMsgAcknowledgement(final MessageAcknowledgementEvent event) {
         if (event != null) {
             DBHelper.getInstance().insertIntoDB(recruiterId, event.getmMessage(), recruiterName, 0, dbModel.getMessageListId());
@@ -192,27 +202,26 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    @Subscribe
-    public void onChatHistoryRetrieved(ChatHistoryRetrievedEvent event) {
-        if (event != null) {
-            processToShowDialog("","",null);
-            JSONArray chatArray = event.getModel();
+    @Subscribe()
+    public void onChatHistoryRetrieved(final ChatHistoryRetrievedEvent event) {
 
-            try {
-                for (int i = 0; i < chatArray.length(); i++) {
+        JSONArray chatArray = event.getModel();
 
-                    JSONObject dataObject = chatArray.getJSONObject(i);
-                    ChatMessageModel chatData = Utils.parseDataForHistory(dataObject);
-                    onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }finally {
-                hideProgressBar();
-            }
-        }
+//        try {
+//            for (int i = 0; i < chatArray.length(); i++) {
+//                JSONObject dataObject = chatArray.getJSONObject(i);
+//                ChatMessageModel chatData = Utils.parseDataForHistory(dataObject);
+//                onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } finally {
+//            hideProgressBar();
+//        }
 
     }
+
+
 
     private void UnBlockUser() {
         BlockUnBlockRequest request = new BlockUnBlockRequest();

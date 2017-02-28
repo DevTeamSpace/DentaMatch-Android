@@ -17,7 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.RealmDataBase.DBHelper;
+import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;

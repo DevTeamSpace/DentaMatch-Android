@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.RealmDataBase.DBHelper;
-import com.appster.dentamatch.RealmDataBase.DBModel;
+import com.appster.dentamatch.chat.DBHelper;
+import com.appster.dentamatch.chat.DBModel;
 import com.appster.dentamatch.databinding.FragmentMessagesBinding;
 import com.appster.dentamatch.model.ChatListModel;
 import com.appster.dentamatch.network.BaseCallback;
@@ -34,7 +34,7 @@ import retrofit2.Call;
 public class MessagesListFragment extends BaseFragment {
     private FragmentMessagesBinding mMessagesBinding;
     private RecyclerView.LayoutManager mLayoutManager;
-    private MyMessageListAdapter mAdapter;
+    private MessageListAdapter mAdapter;
     RealmResults<DBModel> data;
 
     public static MessagesListFragment newInstance() {
@@ -67,7 +67,7 @@ public class MessagesListFragment extends BaseFragment {
 
             if (data != null && data.size() > 0) {
                 mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
-                mAdapter = new MyMessageListAdapter(getActivity(), data, true);
+                mAdapter = new MessageListAdapter(getActivity(), data, true);
                 mMessagesBinding.rvMessageList.setAdapter(mAdapter);
             } else {
                 mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
@@ -105,7 +105,7 @@ public class MessagesListFragment extends BaseFragment {
 
                         data = DBHelper.getInstance().getAllUserChats();
                         LogUtils.LOGD("REALM", "" + data);
-                        mAdapter = new MyMessageListAdapter(getActivity(), data, true);
+                        mAdapter = new MessageListAdapter(getActivity(), data, true);
                         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
 
 

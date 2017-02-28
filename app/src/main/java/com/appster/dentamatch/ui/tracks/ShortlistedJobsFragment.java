@@ -204,7 +204,6 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         webServices.fetchTrackJobs(type, mPage, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) getActivity()) {
             @Override
             public void onSuccess(SearchJobResponse response) {
-                showToast(response.getMessage());
 
                 if (response.getStatus() == 1) {
 
@@ -216,6 +215,8 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
                     }
 
                     mJobAdapter.notifyDataSetChanged();
+                }else{
+                    showToast(response.getMessage());
                 }
 
                 if (mBinding.swipeRefreshJobList.isRefreshing()) {

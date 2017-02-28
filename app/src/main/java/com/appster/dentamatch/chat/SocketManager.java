@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.appster.dentamatch.BuildConfig;
-import com.appster.dentamatch.RealmDataBase.DBHelper;
 import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;

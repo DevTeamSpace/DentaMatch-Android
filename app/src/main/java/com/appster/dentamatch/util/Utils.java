@@ -126,6 +126,7 @@ public class Utils {
         }
     }
 
+
     public static BaseResponse parseDataOnError(retrofit2.Response<BaseResponse> response) {
         Gson gson = new Gson();
         BaseResponse apiResponse = null;

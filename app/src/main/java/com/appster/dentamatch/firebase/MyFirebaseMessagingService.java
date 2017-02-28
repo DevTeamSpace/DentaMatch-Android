@@ -14,7 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.RealmDataBase.DBHelper;
+import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.ui.messages.Message;

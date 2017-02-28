@@ -115,7 +115,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                             params.addRule(RelativeLayout.ALIGN_BOTTOM, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
                         } else {
-                            params.addRule(RelativeLayout.ALIGN_BASELINE, holder.tvJobType.getId());
+                            params.addRule(RelativeLayout.ALIGN_TOP, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
                             holder.tvDate.setPadding(0, 4, 0, 0);
                         }

@@ -25,7 +25,7 @@ import io.realm.RealmRecyclerViewAdapter;
 
 public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.MyHolder> {
     private ItemChatMesssageBinding mBinding;
-//    private ArrayList<Message> mChatMessages;
+    //    private ArrayList<Message> mChatMessages;
     private OrderedRealmCollection<Message> mChatMessages;
     private Context mContext;
 
@@ -48,8 +48,11 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
             holder.tvMessage.setText(mChatMessages.get(position).getMessage());
 
 
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(20, 20, 20, 20);
+            RelativeLayout.LayoutParams receivedParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            receivedParams.setMargins(20, 20, 200, 20);
+
+            RelativeLayout.LayoutParams sentParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            sentParams.setMargins(200, 20, 20, 20);
 
             RelativeLayout.LayoutParams timeParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             timeParams.setMargins(10, 0, 10, 10);
@@ -58,31 +61,31 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
                 holder.tvDateLabel.setVisibility(View.GONE);
                 holder.tvMessage.setVisibility(View.VISIBLE);
                 holder.tvTime.setVisibility(View.VISIBLE);
-                params.addRule(RelativeLayout.ALIGN_PARENT_START);
-                params.addRule(RelativeLayout.BELOW, holder.tvDateLabel.getId());
+                receivedParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+                receivedParams.addRule(RelativeLayout.BELOW, holder.tvDateLabel.getId());
                 holder.tvMessage.setTextColor(ContextCompat.getColor(mContext, R.color.chat_text_color_received));
                 holder.tvMessage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.background_chat_bubble_recieved));
-                holder.tvMessage.setLayoutParams(params);
+                holder.tvMessage.setLayoutParams(receivedParams);
 
                 timeParams.addRule(RelativeLayout.ALIGN_START, holder.tvMessage.getId());
                 timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
                 holder.tvTime.setLayoutParams(timeParams);
 
-            } else if(mChatMessages.get(position).getType() == Message.TYPE_MESSAGE_SEND) {
+            } else if (mChatMessages.get(position).getType() == Message.TYPE_MESSAGE_SEND) {
                 holder.tvDateLabel.setVisibility(View.GONE);
                 holder.tvMessage.setVisibility(View.VISIBLE);
                 holder.tvTime.setVisibility(View.VISIBLE);
                 holder.tvMessage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.background_chat_bubble_sent));
-                params.addRule(RelativeLayout.ALIGN_PARENT_END);
-                params.addRule(RelativeLayout.BELOW, holder.tvDateLabel.getId());
+                sentParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+                sentParams.addRule(RelativeLayout.BELOW, holder.tvDateLabel.getId());
 
                 holder.tvMessage.setTextColor(ContextCompat.getColor(mContext, R.color.white_color));
-                holder.tvMessage.setLayoutParams(params);
+                holder.tvMessage.setLayoutParams(sentParams);
                 timeParams.addRule(RelativeLayout.ALIGN_END, holder.tvMessage.getId());
                 timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
                 holder.tvTime.setLayoutParams(timeParams);
 
-            }else{
+            } else {
                 /**
                  * Update date label for chat messages.
                  */
@@ -93,7 +96,6 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
             }
 
             holder.tvTime.setText(Utils.convertUTCtoLocalFromTimeStamp(mChatMessages.get(position).getmMessageTime()));
-
 
 
         }

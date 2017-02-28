@@ -7,7 +7,7 @@ package com.appster.dentamatch;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
-import com.appster.dentamatch.RealmDataBase.DBHelper;
+import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
