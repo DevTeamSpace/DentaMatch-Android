@@ -63,6 +63,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         if (data != null) {
             holder.itemView.setTag(position);
+            holder.tvReject.setTag(position);
+            holder.tvAccept.setTag(position);
 
             holder.tvDesc.setText(data.getNotificationData());
             if (data.getSeen() == 0) {
@@ -116,7 +118,31 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 public void onClick(View view) {
                     if (mNotificationList.get((int) view.getTag()).getnotificationType() != Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
                         mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), mNotificationList.get((int) view.getTag()).getnotificationType());
+                    } else if (mNotificationList.get((int) view.getTag()).getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && mNotificationList.get((int) view.getTag()).getSeen() == 0) {
+                        mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), mNotificationList.get((int) view.getTag()).getnotificationType());
+
                     }
+                }
+            });
+            holder.tvReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), 1);
+                }
+            });
+            holder.tvAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onAcceptRejectClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), 0);
+
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mListener.onDelete((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), mNotificationList.get((int) view.getTag()).getnotificationType());
+
+                    return false;
                 }
             });
 
@@ -145,8 +171,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             tvJobType = mBinding.tvJobType;
             tvAddress = mBinding.tvAddress;
             tvDuration = mBinding.tvTime;
-            tvDuration = mBinding.tvAccept;
-            tvDuration = mBinding.tvReject;
+            tvAccept = mBinding.tvAccept;
+            tvReject = mBinding.tvReject;
             layoutInVite = mBinding.layoutInviteNotification;
             ivRead = mBinding.ivRead;
             ivRightArrow = mBinding.ivRightArrow;
@@ -155,8 +181,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface NotificationClickListener {
         public void onNotificationItemClick(int position, int notifId, int notificationType);
-
-//        public void onAcceptRejectClick(int position, int notifId, int notificationType, int inviteStatus);
+        public void onAcceptRejectClick(int position, int notifId, int inviteStatus);
+        public void onDelete(int position, int notifId, int notificationType);
     }
 
 }

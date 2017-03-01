@@ -73,7 +73,7 @@ public class CalendarViewEvent extends LinearLayout {
         }
         mHiredListData = new ArrayList<>();
 
-        mHiredListData = hiredListData;
+        mHiredListData.addAll(hiredListData);
         if (mAdapter != null) {
             mAdapter.setJobList(mHiredListData);
         }

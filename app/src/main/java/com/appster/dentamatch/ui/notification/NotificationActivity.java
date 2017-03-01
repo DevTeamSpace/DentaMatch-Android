@@ -14,6 +14,7 @@ import com.appster.dentamatch.databinding.ActivityNotificationBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.Notification.AcceptRejectInviteRequest;
 import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest;
 import com.appster.dentamatch.network.response.notification.NotificationData;
 import com.appster.dentamatch.network.response.notification.NotificationResponse;
@@ -182,6 +183,95 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
             readNotification(position, notifId, notificationType);
 
         }
+    }
+
+    @Override
+    public void onAcceptRejectClick(int position, int notifId, int inviteStatus) {
+
+        callInviteStatusApi(position, notifId, inviteStatus);
+
+    }
+
+    @Override
+    public void onDelete(int position, int notifId, int notificationType) {
+//        callDeleteNotificationApi(notifId, position);
+
+    }
+
+    private void callDeleteNotificationApi(final int notificationId, final int position) {
+        processToShowDialog("", getString(R.string.please_wait), null);
+
+        ReadNotificationRequest request = new ReadNotificationRequest();
+        request.setNotificationId(notificationId);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.readNotification(request).enqueue(new BaseCallback<BaseResponse>(this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                /**
+                 * Once data has been loaded from the filter changes we can dismiss this filter.
+                 */
+
+
+                if (response.getStatus() == 1) {
+                    ArrayList<NotificationData> list = new ArrayList<NotificationData>();
+                    list.addAll(mNotificaionAdapter.getList());
+
+                    list.remove(position);
+                    mNotificaionAdapter.resetJobList(list);
+                    if (mNotificaionAdapter.getList().size() == 0) {
+                        mBinder.layoutEmptyNotification.setVisibility(View.VISIBLE);
+                    } else {
+                        mBinder.layoutEmptyNotification.setVisibility(View.GONE);
+                    }
+
+                } else {
+                    showToast(response.getMessage());
+                }
+            }
+
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "Failed job hired");
+            }
+        });
+    }
+
+    private void callInviteStatusApi(final int position, int notifId, int inviteStatus) {
+
+        processToShowDialog("", getString(R.string.please_wait), null);
+
+        AcceptRejectInviteRequest request = new AcceptRejectInviteRequest();
+        request.setNotificationId(notifId);
+        request.setAcceptStatus(inviteStatus);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.acceptRejectNotification(request).enqueue(new BaseCallback<BaseResponse>(this) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                /**
+                 * Once data has been loaded from the filter changes we can dismiss this filter.
+                 */
+
+                if (response.getStatus() == 1) {
+                    ArrayList<NotificationData> list = new ArrayList<NotificationData>();
+                    list.addAll(mNotificaionAdapter.getList());
+                    LogUtils.LOGD(TAG, "size is---" + list.size());
+                    list.get(position).setSeen(1);
+                    mNotificaionAdapter.resetJobList(list);
+                } else {
+                    showToast(response.getMessage());
+                }
+            }
+
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+                LogUtils.LOGD(TAG, "Failed job hired");
+            }
+        });
+
     }
 
     private void getNotification(int page, boolean isFreshHit) {

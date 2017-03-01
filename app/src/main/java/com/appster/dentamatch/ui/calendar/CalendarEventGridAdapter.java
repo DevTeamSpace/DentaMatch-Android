@@ -45,7 +45,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
             mJobList = null;
         }
         mJobList = new ArrayList<>();
-        mJobList = list;
+        mJobList.addAll(list);
 
         notifyDataSetChanged();
 

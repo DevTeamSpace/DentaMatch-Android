@@ -202,7 +202,8 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
                         mJobAdapter.notifyDataSetChanged();
                     }
-                    calendarBinding.customCalendar.setHiredListData(mAllJobLIst);
+                    calendarBinding.customCalendar.setHiredListData(mJobAdapter.getList());
+                    mJobAdapter.setJobList(mJobAdapter.getList());
                 }
             }
 
