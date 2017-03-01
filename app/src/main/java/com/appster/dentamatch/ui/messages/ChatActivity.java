@@ -207,18 +207,15 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
         JSONArray chatArray = event.getModel();
 
-//        try {
-//            for (int i = 0; i < chatArray.length(); i++) {
-//                JSONObject dataObject = chatArray.getJSONObject(i);
-//                ChatMessageModel chatData = Utils.parseDataForHistory(dataObject);
-//                onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        } finally {
-//            hideProgressBar();
-//        }
-
+        try {
+            for (int i = 0; i < chatArray.length(); i++) {
+                JSONObject dataObject = chatArray.getJSONObject(i);
+                ChatMessageModel chatData = Utils.parseDataForHistory(dataObject);
+                onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
