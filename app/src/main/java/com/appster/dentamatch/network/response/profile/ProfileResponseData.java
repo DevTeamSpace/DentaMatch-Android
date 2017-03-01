@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.appster.dentamatch.model.DentalStateBoard;
+import com.appster.dentamatch.model.JobTitleList;
 import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.model.ProfileSchool;
 import com.appster.dentamatch.model.ProfileSkill;
@@ -38,6 +39,8 @@ public class ProfileResponseData implements Parcelable {
     private ArrayList<LocationEvent.Affiliation> affiliationList;
     @SerializedName("certifications")
     private ArrayList<CertificatesList> certificatesLists;
+    @SerializedName("joblists")
+    private ArrayList<JobTitleList> jobTitleLists;
 
 
     private ProfileResponseData(Parcel in) {
@@ -96,6 +99,10 @@ public class ProfileResponseData implements Parcelable {
 
     public ArrayList<CertificatesList> getCertificatesLists() {
         return certificatesLists;
+    }
+
+    public ArrayList<JobTitleList> getJobTitleLists() {
+        return jobTitleLists;
     }
 
 }

@@ -45,8 +45,8 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_btch_count"
                     style="@style/text_view_normal"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="@dimen/batch_count_dimen"
+                    android:layout_height="@dimen/batch_count_dimen"
                     android:layout_gravity="right"
                     android:layout_marginTop="@dimen/margin_5"
                     android:background="@drawable/shape_batch_count"

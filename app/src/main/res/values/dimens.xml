@@ -91,6 +91,7 @@
     <dimen name="circular_text_dimen">35dp</dimen>
     <dimen name="calendar_height">330dp</dimen>
     <dimen name="calendar_cell_height">40dp</dimen>
+    <dimen name="batch_count_dimen">15dp</dimen>
 
 
 </resources>

@@ -185,10 +185,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
             case R.id.tv_current_location:
                 Intent intent = new Intent(SearchJobActivity.this, PlacesMapActivity.class);
-                intent.putExtra(Constants.EXTRA_LATITUDE, mSelectedLat);
-                intent.putExtra(Constants.EXTRA_LONGITUDE, mSelectedLng);
-                intent.putExtra(Constants.EXTRA_POSTAL_CODE,mSelectedZipCode);
-                intent.putExtra(Constants.EXTRA_PLACE_NAME, mSelectedAddress);
+                if(mSelectedLat!=null&&mSelectedLng!=null) {
+                    intent.putExtra(Constants.EXTRA_LATITUDE, mSelectedLat);
+                    intent.putExtra(Constants.EXTRA_LONGITUDE, mSelectedLng);
+                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mSelectedZipCode);
+                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mSelectedAddress);
+                }
 
                 startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
                 break;

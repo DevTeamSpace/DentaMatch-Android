@@ -35,6 +35,7 @@ import com.appster.dentamatch.network.response.jobs.HiredJobResponse;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.response.notification.NotificationResponse;
+import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
@@ -77,6 +78,7 @@ public interface AuthWebServices {
     //    String WORK_EXP_DELETE="users/work-experience-delete{id}";
     String WORK_EXP_DELETE = "users/work-experience-delete";
     String AFFILIATION_LIST = "users/affiliation-list";
+    String UNREAD_NOTIFICATION_COUNT = "users/unread-notification";
     String GET_PROFILE = "users/user-profile";
     String AFFILIATION_SAVE = "users/affiliation-save";
     String CHANGE_PASSWORD = "users/change-password";
@@ -94,6 +96,7 @@ public interface AuthWebServices {
     String USER_CHAT_HISTORY = "users/chat-user-list";
     String GET_NOTIFICATION = "users/notification-list";
     String RAED_NOTIFICATION = "users/notification-read";
+    String DELETE_NOTIFICATION = "users/delete-notification";
     String ACCEPT_REJECT_NOTIFICATION = "/users/acceptreject-job";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
     String UPDATE_FCM_TOKEN = "users/update-devicetoken";
@@ -188,6 +191,8 @@ public interface AuthWebServices {
 
     @POST(RAED_NOTIFICATION)
     Call<BaseResponse> readNotification(@Body ReadNotificationRequest notificationRequest);
+    @POST(DELETE_NOTIFICATION)
+    Call<BaseResponse> deleteNotification(@Body ReadNotificationRequest notificationRequest);
 
     @POST(ACCEPT_REJECT_NOTIFICATION)
     Call<BaseResponse> acceptRejectNotification(@Body AcceptRejectInviteRequest request);
@@ -197,6 +202,9 @@ public interface AuthWebServices {
 
     @GET(AFFILIATION_LIST)
     Call<AffiliationResponse> getAffiliationList();
+
+    @GET(UNREAD_NOTIFICATION_COUNT)
+    Call<UnReadNotificationCountResponse> getUnreadNotificationCount();
 
     @GET(GET_PROFILE)
     Call<ProfileResponse> getProfile();
