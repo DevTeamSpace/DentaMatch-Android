@@ -300,7 +300,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         intent.putExtra(Constants.EXTRA_IS_LOGIN, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
     }
 
     public void logOut() {

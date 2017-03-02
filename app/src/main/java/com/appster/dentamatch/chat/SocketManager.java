@@ -8,6 +8,8 @@ import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
+import com.appster.dentamatch.model.SocketConnectionEvent;
+import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
@@ -19,6 +21,7 @@ import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -114,7 +117,7 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        registerEvents();
+        registerConnectionEvents();
         mSocket.connect();
         attachedGlobalActivity = act;
 
@@ -125,7 +128,7 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        unRegisterEvents();
+        unRegisterConnectionEvents();
         mSocket.disconnect();
     }
 
@@ -147,7 +150,14 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECT);
             isConnected = true;
+            registerListenerEvents();
             raiseSyncNeeded();
+            /**
+             * Notify user if user is on chat screen about the socket connection .
+             */
+            if(attachedActivity != null){
+                EventBus.getDefault().post(new SocketConnectionEvent(isConnected));
+            }
             init();
         }
     };
@@ -157,6 +167,13 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
             isConnected = false;
+            unRegisterListenerEvents();
+            /**
+             * Notify user if user is on chat screen about the socket connection event.
+             */
+            if(attachedActivity != null){
+                EventBus.getDefault().post(new SocketConnectionEvent(isConnected));
+            }
         }
     };
 
@@ -165,6 +182,7 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
             isConnected = false;
+            unRegisterListenerEvents();
         }
     };
 
@@ -280,17 +298,55 @@ public class SocketManager {
                                     model.getMessageId(),
                                     Message.TYPE_MESSAGE_RECEIVED);
 
-                            DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1, model.getMessageListId());
 
+                            /**
+                             * Don't shoot another notification in case the message has the same ID. Server has the tendency
+                             * to send the same msg multiple times.
+                             */
+                            if (!DBHelper.getInstance().checkIfMessageAlreadyExists(model.getFromID(), message)) {
+                                DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1, model.getMessageListId());
                                 Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
                                 intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
                                 Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent);
+                            }
                         }
                     });
                 }
             }
 
+        }
+    };
+
+    private Emitter.Listener onUserSessionExpired = new Emitter.Listener() {
+
+        @Override
+        public void call(Object... args) {
+            try {
+            LogUtils.LOGD(TAG,""+args[0]);
+            JSONObject object = (JSONObject) args[0];
+                boolean status = Boolean.parseBoolean(object.getString("logout"));
+                if(status){
+                    if(attachedActivity != null){
+                        attachedActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((BaseActivity)attachedActivity).localLogOut();
+                            }
+                        });
+                    }else if(attachedGlobalActivity != null){
+                        attachedGlobalActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((BaseActivity)attachedGlobalActivity).localLogOut();
+                            }
+                        });
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -319,7 +375,16 @@ public class SocketManager {
     }
 
 
-    private void registerEvents() {
+    private void registerListenerEvents() {
+        if (mSocket == null) {
+            LogUtils.LOGD(TAG, SOCKET_ERROR);
+            return;
+        }
+        mSocket.on("logoutPreviousSession", onUserSessionExpired);
+        mSocket.on(EVENT_NEW_MESSAGE, onNewMessage);
+    }
+
+    private void registerConnectionEvents(){
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
@@ -329,10 +394,19 @@ public class SocketManager {
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.on(EVENT_NEW_MESSAGE, onNewMessage);
     }
 
-    private void unRegisterEvents() {
+    private void unRegisterListenerEvents() {
+        if (mSocket == null) {
+            LogUtils.LOGD(TAG, SOCKET_ERROR);
+            return;
+        }
+
+        mSocket.off(EVENT_NEW_MESSAGE, onNewMessage);
+
+    }
+
+    private void unRegisterConnectionEvents(){
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
@@ -342,8 +416,6 @@ public class SocketManager {
         mSocket.off(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.off(EVENT_NEW_MESSAGE, onNewMessage);
-
     }
 
     public void sendMessage(String fromId, String toId, String msg) {
@@ -421,14 +493,6 @@ public class SocketManager {
                     attachedActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-//                            try {
-//                                for (int i = 0; i < jsonArray.length(); i++) {
-//                                    JSONObject dataObject = jsonArray.getJSONObject(i);
-//                                    EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(Utils.parseDataForHistory(dataObject)));
-//                                }
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
                             EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray));
                         }
                     });
@@ -439,7 +503,6 @@ public class SocketManager {
 
     /**
      * Messages sent from recruiter ID to user ID, need to be updated.
-     *
      * @param fromId
      * @param toId
      */

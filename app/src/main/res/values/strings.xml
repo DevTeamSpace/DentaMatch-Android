@@ -292,7 +292,6 @@
     <string name="not_applicable">N/A</string>
     <string name="txt_read_more">READ MORE</string>
     <string name="text_show_label">SHOW LESS</string>
-    <string name="txt_applied">Applied</string>
     <string name="sun">SU</string>
     <string name="mon">MO</string>
     <string name="tue">TU</string>
@@ -343,4 +342,16 @@
     <string name="years">YEARS AGO </string>
     <string name="txt_accept">Accept</string>
     <string name="txt_reject">Reject</string>
+    <string name="error_socket_connection">Unable to connect to server, Please try again later.</string>
+    <string name="error_internet_connection">Internet connection problem, please check your connection.</string>
+
+    <!--job status-->
+    <string name="txt_applied">Applied</string>
+    <string name="txt_invited">Invited</string>
+    <string name="txt_shortlisted">Shortlisted</string>
+    <string name="txt_hired">Hired</string>
+    <string name="txt_rejected">Rejected</string>
+    <string name="txt_cancelled">Cancelled</string>
+    <string name="msg_socket_connection_success">Connection established</string>
+
 </resources>

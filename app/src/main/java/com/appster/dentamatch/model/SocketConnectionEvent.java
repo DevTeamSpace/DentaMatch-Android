@@ -5,13 +5,13 @@ package com.appster.dentamatch.model;
  */
 
 public class SocketConnectionEvent {
-    private String status;
+    private boolean connectionStatus;
 
-    public SocketConnectionEvent(String status){
-        this.status = status;
+    public SocketConnectionEvent(boolean status){
+        this.connectionStatus = status;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean getStatus() {
+        return connectionStatus;
     }
 }

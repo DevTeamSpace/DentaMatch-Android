@@ -385,6 +385,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         request.setAddress(mSelectedAddress);
 
         request.setSelectedJobTitles(mChosenTitles);
+
         /**
          * This value is set in order to redirect user from login or splash screen.
          */

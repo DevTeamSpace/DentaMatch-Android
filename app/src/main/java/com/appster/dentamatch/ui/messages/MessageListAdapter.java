@@ -58,29 +58,26 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
 
         if (messagesData.get(position) != null) {
             DBModel dataModel = messagesData.get(position);
-            if(!TextUtils.isEmpty(dataModel.getName())) {
-                holder.tvRecruiterName.setText(dataModel.getName());
-            }
+            holder.tvRecruiterName.setText(dataModel.getName());
+            holder.tvLastMessage.setText(dataModel.getLastMessage());
 
-            if(!TextUtils.isEmpty(dataModel.getLastMessage())) {
-                holder.tvLastMessage.setText(dataModel.getLastMessage());
-            }
-
-            if(dataModel.getUserChats() != null && dataModel.getUserChats().size() > 0
-                   && !TextUtils.isEmpty(dataModel.getUserChats().get(dataModel.getUserChats().size() - 1).getmMessageTime())) {
+            if (dataModel.getUserChats() != null && dataModel.getUserChats().size() > 0){
+//                    && !TextUtils.isEmpty(dataModel.getUserChats().get(dataModel.getUserChats().size() - 1).getmMessageTime())) {
                 holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel
                         .getUserChats()
                         .get(dataModel.getUserChats().size() - 1).getmMessageTime()));
+            }else{
+                holder.tvDate.setText("");
             }
 
             dataModel.getUnReadChatCount();
 
-            if(dataModel.getUnReadChatCount() == 0){
+            if (dataModel.getUnReadChatCount() == 0) {
                 holder.tvUnreadChatCount.setVisibility(View.GONE);
-            }else if(dataModel.getUnReadChatCount() >= 100){
+            } else if (dataModel.getUnReadChatCount() >= 100) {
                 holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
                 holder.tvUnreadChatCount.setText("999");
-            }else{
+            } else {
                 holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
                 holder.tvUnreadChatCount.setText(String.valueOf(dataModel.getUnReadChatCount()));
             }
@@ -114,7 +111,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        if(messagesData.get(position).getSeekerHasBlocked() == 0) {
+        if (messagesData.get(position).getSeekerHasBlocked() == 0) {
             Alert.createYesNoAlert(mContext,
                     mContext.getString(R.string.block),
                     mContext.getString(R.string.cancel),
@@ -136,12 +133,12 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
         return false;
     }
 
-    private void blockUnBlockUser(final String status, final String recruiterID){
+    private void blockUnBlockUser(final String status, final String recruiterID) {
         BlockUnBlockRequest request = new BlockUnBlockRequest();
         request.setBlockStatus(String.valueOf(status));
         request.setRecruiterId(String.valueOf(recruiterID));
 
-        ((BaseActivity)mContext). processToShowDialog("", mContext.getString(R.string.please_wait), null);
+        ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
         AuthWebServices client = RequestController.createService(AuthWebServices.class);
         client.blockUnBlockUser(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
             @Override

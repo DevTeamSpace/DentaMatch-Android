@@ -1,17 +1,12 @@
 package com.appster.dentamatch.ui.messages;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.DBHelper;
@@ -21,6 +16,7 @@ import com.appster.dentamatch.databinding.ActivityChatBinding;
 import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
+import com.appster.dentamatch.model.SocketConnectionEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -38,9 +34,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.Executor;
-
-import io.realm.RealmList;
 import retrofit2.Call;
 
 /**
@@ -122,11 +115,15 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 String msg = mBinder.messageInput.getText().toString().trim();
 
                 if (!TextUtils.isEmpty(msg)) {
-                    if (SocketManager.getInstance().isConnected()) {
-                        SocketManager.getInstance().sendMessage(userId, recruiterId, msg);
-                        mBinder.messageInput.setText("");
+                    if (Utils.isConnected(ChatActivity.this)) {
+                        if (SocketManager.getInstance().isConnected()) {
+                            SocketManager.getInstance().sendMessage(userId, recruiterId, msg);
+                            mBinder.messageInput.setText("");
+                        } else {
+                            ChatActivity.this.showToast(getString(R.string.error_socket_connection));
+                        }
                     } else {
-                        ChatActivity.this.showToast("Internet connection problem, please check your connection.");
+                        ChatActivity.this.showToast(getString(R.string.error_internet_connection));
                     }
                 }
                 break;
@@ -152,7 +149,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * Callback called in case of new message and in case of history received.
-     *
      * @param event : received message from server.
      */
     @Subscribe()
@@ -188,7 +184,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             }
 
             scrollToBottom();
-
         }
 
     }
@@ -211,6 +206,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             for (int i = 0; i < chatArray.length(); i++) {
                 JSONObject dataObject = chatArray.getJSONObject(i);
                 ChatMessageModel chatData = Utils.parseDataForHistory(dataObject);
+                /**
+                 * In case of history the recruiter name comes out to be blank so we add the recruiter
+                 * name from the DB.
+                 */
+                chatData.setRecruiterName(recruiterName);
                 onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
             }
         } catch (JSONException e) {
@@ -218,6 +218,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSocketConnectionStatusChanged(SocketConnectionEvent event) {
+        if (event != null) {
+            if (event.getStatus()) {
+                showToast(getString(R.string.msg_socket_connection_success));
+            } else {
+                showToast(getString(R.string.error_socket_connection));
+            }
+        }
+    }
 
 
     private void UnBlockUser() {
@@ -283,23 +293,29 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             if (!dbModel.isDBUpdated()) {
 
                 if (Utils.isConnected(this)) {
-                    /**
-                     * Show loader in case of fetching data from the server and clear all past chats of the user for corresponding
-                     * recruiterID.
-                     */
-                    DBHelper.getInstance().clearRecruiterChats(recruiterId);
-                    SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
-                    DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
+                    if (SocketManager.getInstance().isConnected()) {
+                        /**
+                         * Show loader in case of fetching data from the server and clear all past chats of the user for corresponding
+                         * recruiterID.
+                         */
+                        ChatActivity.this.showToast("Syncing chat. Please Wait...");
+                        DBHelper.getInstance().clearRecruiterChats(recruiterId);
+                        SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
+                        DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
+                    } else {
+                        ChatActivity.this.showToast(getString(R.string.error_socket_connection));
+                    }
 
                 } else {
-                    mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
-                    mBinder.messages.setAdapter(mAdapter);
+                    ChatActivity.this.showToast(getString(R.string.error_internet_connection));
+
                 }
 
             } else {
                 mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
                 mBinder.messages.setAdapter(mAdapter);
             }
+
 
         }
     }

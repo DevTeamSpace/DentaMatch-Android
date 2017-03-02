@@ -88,6 +88,26 @@ public class Constants {
         }
     }
 
+    public enum JOBSTATUS {
+        INVITED(1),
+        APPLIED(2),
+        SHORTLISTED(3),
+        HIRED(4),
+        REJECTED(5),
+        CANCELLED(6);
+
+        private int value;
+
+        JOBSTATUS(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+    }
+
     public interface BundleKey {
         String LAYOUT_ID = "layoutResId";
         String INDEX = "INDEX";

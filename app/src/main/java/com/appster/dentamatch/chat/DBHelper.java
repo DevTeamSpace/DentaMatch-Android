@@ -84,11 +84,10 @@ public class DBHelper {
              * Check if the entry exists in the DB , if not then insert a new entry into the DB.
              */
             if (retrievedModel != null) {
-                if (!checkIfMessageAlreadyExists(retrievedModel.getUserChats(), userMessage)) {
+                if (!checkIfMessageAlreadyExists(recruiterId, userMessage)) {
                     if (!TextUtils.isEmpty(recruiterName)) {
                         retrievedModel.setName(recruiterName);
                     }
-
                     retrievedModel.setLastMsgTime(userMessage.getmMessageTime());
                     retrievedModel.setLastMessage(userMessage.getMessage());
                     retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
@@ -99,6 +98,7 @@ public class DBHelper {
                     if (retrievedModel.getUserChats().size() > 0) {
                         if (Utils.isMsgDateDifferent(Long.parseLong(retrievedModel.getUserChats().get(retrievedModel.getUserChats().size() - 1).getmMessageTime()),
                                 Long.parseLong(userMessage.getmMessageTime()))) {
+
                             Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
                             retrievedModel.getUserChats().add(dateHeaderMessage);
                         }
@@ -122,9 +122,8 @@ public class DBHelper {
                 Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
                 newModel.getUserChats().add(dateHeaderMessage);
                 newModel.getUserChats().add(userMessage);
-
-
             }
+
             mRealmInstance.commitTransaction();
         }
     }
@@ -133,16 +132,18 @@ public class DBHelper {
      * Check if the message adding into the DB is already contained in the DB or not. If
      * not then we add or else we don't.
      */
-    private boolean checkIfMessageAlreadyExists(RealmList<Message> chatArray, Message messageObj) {
+    public boolean checkIfMessageAlreadyExists(String recruiterID, Message messageObj) {
         boolean isAlreadyAdded = false;
+        DBModel retrievedData = getDBData(recruiterID);
 
-        if (chatArray.size() > 0) {
-            for (Message message : chatArray) {
+        if (retrievedData != null && retrievedData.getUserChats()!= null && retrievedData.getUserChats().size() > 0) {
+            for (Message message : retrievedData.getUserChats()) {
                 if (message.getmMessageId().equalsIgnoreCase(messageObj.getmMessageId())) {
                     isAlreadyAdded = true;
                     break;
                 }
             }
+
         } else {
             /**
              * Since ChatArray provided has no entries of chat in it , thus we conclude that
@@ -197,10 +198,10 @@ public class DBHelper {
         }
     }
 
-    public void clearRecruiterChats(String recruiterID){
+    public void clearRecruiterChats(String recruiterID) {
         DBModel retrievedModel = mRealmInstance.where(DBModel.class).equalTo(DB_PRIMARY_KEY, recruiterID).findFirst();
 
-        if(retrievedModel != null){
+        if (retrievedModel != null) {
             mRealmInstance.beginTransaction();
             retrievedModel.getUserChats().clear();
             mRealmInstance.commitTransaction();
@@ -225,17 +226,15 @@ public class DBHelper {
         mRealmInstance.commitTransaction();
     }
 
-    public void clearDBData(){
+    public void clearDBData() {
         try {
             mRealmInstance.beginTransaction();
             mRealmInstance.deleteAll();
             mRealmInstance.commitTransaction();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 
 
 }

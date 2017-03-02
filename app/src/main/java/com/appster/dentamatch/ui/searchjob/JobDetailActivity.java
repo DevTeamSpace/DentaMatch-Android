@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -333,7 +334,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     } else {
                         params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailType.getId());
                         mBinding.tvJobDetailDate.setLayoutParams(params);
-                        mBinding.tvJobDetailDate.setPadding(0, 4, 0, 0);
+                        mBinding.tvJobDetailDate.setPadding(0, 0, 0, 0);
                     }
                 }
             }, 200);
@@ -380,15 +381,59 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             }
         }, 200);
 
+        if(dataModel.getIsApplied() != 0) {
+            switch (Constants.JOBSTATUS.values()[dataModel.getIsApplied() - 1]) {
 
-        if (dataModel.getIsApplied() == 0) {
+                case APPLIED:
+                    mBinding.tvJobStatus.setText(getString(R.string.txt_applied));
+                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
+                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                    mBinding.btnApplyJob.setVisibility(View.GONE);
+                    break;
 
+                case INVITED:
+                    mBinding.tvJobStatus.setText(getString(R.string.txt_invited));
+                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
+                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                    mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                    break;
+
+                case SHORTLISTED:
+                    mBinding.tvJobStatus.setText(getString(R.string.txt_shortlisted));
+                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
+                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                    mBinding.btnApplyJob.setVisibility(View.GONE);
+                    break;
+
+                case HIRED:
+                    mBinding.tvJobStatus.setText(getString(R.string.txt_hired));
+                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
+                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                    mBinding.btnApplyJob.setVisibility(View.GONE);
+                    break;
+
+                case REJECTED:
+                    mBinding.tvJobStatus.setText(getString(R.string.txt_applied));
+                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.red_color));
+                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                    mBinding.btnApplyJob.setVisibility(View.GONE);
+                    break;
+
+                case CANCELLED:
+                    mBinding.tvJobStatus.setText(getString(R.string.txt_cancelled));
+                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                    mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                    break;
+
+                default:
+                    mBinding.tvJobStatus.setVisibility(View.GONE);
+                    mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }else{
             mBinding.tvJobStatus.setVisibility(View.GONE);
             mBinding.btnApplyJob.setVisibility(View.VISIBLE);
-        } else {
-            mBinding.btnApplyJob.setVisibility(View.GONE);
-            mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-
         }
 
         if (dataModel.getIsSaved() == 1) {
