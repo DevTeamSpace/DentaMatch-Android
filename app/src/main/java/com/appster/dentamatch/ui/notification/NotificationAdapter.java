@@ -99,17 +99,19 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 } else if (data.getJobDetailModel().getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
                     holder.tvJobType.setText(mContext.getString(R.string.txt_temporary));
                     holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
-                    if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == 0) {
-                        holder.layoutInVite.setVisibility(View.VISIBLE);
 
-                    } else {
-                        holder.layoutInVite.setVisibility(View.GONE);
-                    }
 
                 } else if (data.getJobDetailModel().getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                     holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
                     holder.tvJobType.setText(mContext.getString(R.string.txt_full_time));
 
+                }
+
+                if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == 0) {
+                    holder.layoutInVite.setVisibility(View.VISIBLE);
+
+                } else {
+                    holder.layoutInVite.setVisibility(View.GONE);
                 }
                 holder.tvAddress.setText(data.getJobDetailModel().getAddress());
 
@@ -132,7 +134,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.tvReject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), 1);
+                    mListener.onAcceptRejectClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), 0);
+
                 }
             });
             holder.tvAccept.setOnClickListener(new View.OnClickListener() {

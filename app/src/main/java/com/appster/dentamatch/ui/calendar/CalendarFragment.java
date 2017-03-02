@@ -202,8 +202,9 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
                         mJobAdapter.notifyDataSetChanged();
                     }
-                    calendarBinding.customCalendar.setHiredListData(mJobAdapter.getList());
                     mJobAdapter.setJobList(mJobAdapter.getList());
+                    calendarBinding.customCalendar.setHiredListData(mJobAdapter.getList());
+
                 }
             }
 
@@ -265,6 +266,10 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                     }
 
                 }
+           if( isFullTime){
+               calendarBinding.customCalendar.isFullTimeJob(isFullTime);
+
+           }
                 if (selectedDateJobList != null && selectedDateJobList.size() > 0) {
                     calendarBinding.customCalendar.isFullTimeJob(isFullTime);
                     calendarBinding.rvBookedJob.setVisibility(View.VISIBLE);

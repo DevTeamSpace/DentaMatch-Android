@@ -97,7 +97,7 @@ public interface AuthWebServices {
     String GET_NOTIFICATION = "users/notification-list";
     String RAED_NOTIFICATION = "users/notification-read";
     String DELETE_NOTIFICATION = "users/delete-notification";
-    String ACCEPT_REJECT_NOTIFICATION = "/users/acceptreject-job";
+    String ACCEPT_REJECT_NOTIFICATION = "users/acceptreject-job";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
     String UPDATE_FCM_TOKEN = "users/update-devicetoken";
 

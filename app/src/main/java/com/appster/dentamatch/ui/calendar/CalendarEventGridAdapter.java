@@ -134,6 +134,9 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                         }
                     }
                 }
+            }else{
+                dot2.setVisibility(View.GONE);
+                dot3.setVisibility(View.GONE);
             }
 
 
@@ -145,56 +148,6 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
 
             view.setTag(-1);
         }
-//
-//        Calendar eventCalendar = Calendar.getInstance();
-////        eventCalendar.setTime(mDate);
-//
-//        if (eventCalendar.get(Calendar.MONTH) + 1 == displayMonth && eventCalendar.get(Calendar.YEAR) == displayYear) {
-//
-//            if (!mIsSetCurrentDate) {
-//                if (monthlyDates.get(position).isSelected()) {
-//                    view.setBackgroundResource(R.drawable.shape_date_selection);
-//
-//                } else {
-//                    view.setBackgroundResource(0);
-//
-//                }
-//            }
-//            if (mJobList != null && mJobList.size() > 0) {
-//                String date = Utils.dateFormetyyyyMMdd(mDate);
-//                eventCalendar.setTime(mDate);
-//                String day = Utils.getDayOfWeek(date);
-//                dot2.setVisibility(View.GONE);
-//                for (int k = 0; k < mJobList.size(); k++) {
-//                    if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_monday)) && mJobList.get(k).getIsMonday() == 1) {
-//                        dot2.setVisibility(View.VISIBLE);
-//                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_tuesday)) && mJobList.get(k).getIsTuesday() == 1) {
-//                        dot2.setVisibility(View.VISIBLE);
-//                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_wednesday)) && mJobList.get(k).getIsWednesday() == 1) {
-//                        dot2.setVisibility(View.VISIBLE);
-//                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_thursday)) && mJobList.get(k).getIsThursday() == 1) {
-//                        dot2.setVisibility(View.VISIBLE);
-//                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_friday)) && mJobList.get(k).getIsFriday() == 1) {
-//                        dot2.setVisibility(View.VISIBLE);
-//                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_saturday)) && mJobList.get(k).getIsSaturday() == 1) {
-//                        dot2.setVisibility(View.VISIBLE);
-//                    } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_sunday)) && mJobList.get(k).getIsSunday() == 1) {
-//                        dot2.setVisibility(View.VISIBLE);
-//                    }
-//                    for (int i = 0; i < mJobList.get(k).getTemporaryJobDates().size(); i++) {
-//                        if (mJobList.get(k).getTemporaryJobDates().get(i).getJobDate().equalsIgnoreCase(date)) {
-//                            dot3.setVisibility(View.VISIBLE);
-//
-//                        }
-////                        else {
-////                            dot3.setVisibility(View.GONE);
-////
-////                        }
-//                    }
-//                }
-//            }
-//        }
-
 
         return view;
     }

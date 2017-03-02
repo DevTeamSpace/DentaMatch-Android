@@ -132,8 +132,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
 
                 } else {
                     mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.VISIBLE);
-
-//                    mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText(response.getUnReadNotificationResponse().getNotificationCount());
+                    mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText(""+response.getUnReadNotificationResponse().getNotificationCount());
 
                 }
             }

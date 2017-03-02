@@ -46,7 +46,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
 
     public void setJobList(ArrayList<HiredJobs> jobList) {
         mJobListData.clear();
-        mJobListData = jobList;
+        mJobListData.addAll(jobList) ;
         notifyDataSetChanged();
     }
 
