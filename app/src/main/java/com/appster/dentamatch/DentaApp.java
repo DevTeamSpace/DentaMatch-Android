@@ -78,6 +78,7 @@ public class DentaApp extends MultiDexApplication {
             // TODO: 10/11/16 Uncomment if using Crashylytics
             //Fabric.with(this, new Crashlytics());
         }
+//        Fabric.with(this, new Crashlytics());
 
 
         // GoogleAnalytics initialize

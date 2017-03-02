@@ -1,7 +1,9 @@
 package com.appster.dentamatch.ui.notification;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +16,9 @@ import android.widget.RelativeLayout;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
 import com.appster.dentamatch.network.response.notification.NotificationData;
+import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
+import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
@@ -94,17 +99,19 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 } else if (data.getJobDetailModel().getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
                     holder.tvJobType.setText(mContext.getString(R.string.txt_temporary));
                     holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
-                    if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == 0) {
-                        holder.layoutInVite.setVisibility(View.VISIBLE);
 
-                    } else {
-                        holder.layoutInVite.setVisibility(View.GONE);
-                    }
 
                 } else if (data.getJobDetailModel().getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                     holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
                     holder.tvJobType.setText(mContext.getString(R.string.txt_full_time));
 
+                }
+
+                if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == 0) {
+                    holder.layoutInVite.setVisibility(View.VISIBLE);
+
+                } else {
+                    holder.layoutInVite.setVisibility(View.GONE);
                 }
                 holder.tvAddress.setText(data.getJobDetailModel().getAddress());
 
@@ -127,7 +134,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.tvReject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                        mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), 1);
+                    mListener.onAcceptRejectClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), 0);
+
                 }
             });
             holder.tvAccept.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +148,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    mListener.onDelete((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), mNotificationList.get((int) view.getTag()).getnotificationType());
+                    final int pos = (int) view.getTag();
+                    Alert.createYesNoAlert(mContext, mContext.getString(R.string.ok), mContext.getString(R.string.cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.alert_dlt_notification), new Alert.OnAlertClickListener() {
+                        @Override
+                        public void onPositive(DialogInterface dialog) {
+                            mListener.onDelete(pos, mNotificationList.get(pos).getId(), mNotificationList.get(pos).getnotificationType());
+
+                        }
+
+                        @Override
+                        public void onNegative(DialogInterface dialog) {
+                            dialog.dismiss();
+                        }
+                    });
+
 
                     return false;
                 }
@@ -181,7 +202,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface NotificationClickListener {
         public void onNotificationItemClick(int position, int notifId, int notificationType);
+
         public void onAcceptRejectClick(int position, int notifId, int inviteStatus);
+
         public void onDelete(int position, int notifId, int notificationType);
     }
 

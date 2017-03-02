@@ -16,13 +16,22 @@ import com.appster.dentamatch.adapters.JobListAdapter;
 import com.appster.dentamatch.databinding.FragmentJobListBinding;
 import com.appster.dentamatch.model.JobDataReceivedEvent;
 import com.appster.dentamatch.model.SaveUnSaveEvent;
+import com.appster.dentamatch.network.BaseCallback;
+import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.Notification.AcceptRejectInviteRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
+import com.appster.dentamatch.network.response.notification.NotificationData;
+import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
 
 /**
  * Created by Appster on 24/01/17.
@@ -42,7 +51,7 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -65,19 +74,19 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
      * @param event: the event class with jobList, mIsPaginationNeeded boolean and total result count.
      */
     @Subscribe
-    public void onDataUpdated(JobDataReceivedEvent event){
-        if(event != null){
+    public void onDataUpdated(JobDataReceivedEvent event) {
+        if (event != null) {
             mJobListData.clear();
             mJobListData.addAll(event.getJobList());
             mIsPaginationNeeded = event.isPaginationNeeded();
 
-            if(mJobListData.size() > 0 ) {
+            if (mJobListData.size() > 0) {
                 mJobListBinding.tvNoDataFound.setVisibility(View.GONE);
                 mJobListBinding.tvJobResultCount.setVisibility(View.VISIBLE);
                 mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" results found"));
                 mJobAdapter.notifyDataSetChanged();
 
-            }else{
+            } else {
                 mJobListBinding.tvNoDataFound.setVisibility(View.VISIBLE);
                 mJobListBinding.tvJobResultCount.setVisibility(View.GONE);
             }
@@ -85,31 +94,31 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
             /**
              * Hide pagination loader if it is visible.
              */
-            if(mJobListBinding.layJobListPagination.getVisibility() == View.VISIBLE){
+            if (mJobListBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
                 mJobListBinding.layJobListPagination.setVisibility(View.GONE);
             }
             /**
              * Stop refreshing if the swipe loader is refreshing.
              */
-            if(mJobListBinding.swipeRefreshJobList.isRefreshing()){
+            if (mJobListBinding.swipeRefreshJobList.isRefreshing()) {
                 mJobListBinding.swipeRefreshJobList.setRefreshing(false);
             }
         }
     }
 
     @Subscribe
-    public void onJobSavedUnsaved(SaveUnSaveEvent event){
-        if(event != null){
+    public void onJobSavedUnsaved(SaveUnSaveEvent event) {
+        if (event != null) {
 
-           for(SearchJobModel model : mJobListData){
+            for (SearchJobModel model : mJobListData) {
 
-               if(model.getId() == event.getJobID()){
-                   model.setIsSaved(event.getStatus());
-                   mJobAdapter.updateData(model);
-                   SearchJobDataHelper.getInstance().notifyItemsChanged(model);
-                   break;
-               }
-           }
+                if (model.getId() == event.getJobID()) {
+                    model.setIsSaved(event.getStatus());
+                    mJobAdapter.updateData(model);
+                    SearchJobDataHelper.getInstance().notifyItemsChanged(model);
+                    break;
+                }
+            }
         }
     }
 
@@ -142,10 +151,10 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
         /**
          * Request data helper to provide data for user's filter set.
          */
-            SearchJobDataHelper.getInstance().requestData(getActivity());
+        SearchJobDataHelper.getInstance().requestData(getActivity());
     }
 
-    private void initViews(){
+    private void initViews() {
         mJobListData = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
         mJobAdapter = new JobListAdapter(getActivity(), mJobListData);
@@ -174,4 +183,7 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
     public void onRefresh() {
         SearchJobDataHelper.getInstance().requestRefreshData(getActivity());
     }
+
+
+
 }

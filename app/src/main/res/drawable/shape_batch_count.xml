@@ -5,7 +5,7 @@
     <solid android:color="@color/red_color"/>
 
     <size
-        android:width="@dimen/margin_15"
-        android:height="@dimen/margin_15" />
+        android:width="@dimen/batch_count_dimen"
+        android:height="@dimen/batch_count_dimen" />
 
     </shape>

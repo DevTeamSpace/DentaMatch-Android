@@ -194,7 +194,7 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onDelete(int position, int notifId, int notificationType) {
-//        callDeleteNotificationApi(notifId, position);
+        callDeleteNotificationApi(notifId, position);
 
     }
 

@@ -244,6 +244,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 if (response.getStatus() == 1) {
                     profileResponseData = response.getProfileResponseData();
                     if (isAlive()) {
+                        PreferenceUtil.setJobTitleList(response.getProfileResponseData().getJobTitleLists());
+
                         setViewData(response.getProfileResponseData());
                     }
                 } else {

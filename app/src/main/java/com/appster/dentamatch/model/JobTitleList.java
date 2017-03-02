@@ -12,7 +12,7 @@ public class JobTitleList implements Parcelable{
 
 
     private int id;
-    @SerializedName("jobtitle_name")
+    @SerializedName("jobtitleName")
     private String jobTitle;
     private boolean isSelected;
 
