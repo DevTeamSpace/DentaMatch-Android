@@ -28,6 +28,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
 import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import retrofit2.Call;
 
@@ -46,7 +47,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
         mContext = context;
     }
 
-
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_message_list, parent, false);
@@ -61,12 +61,12 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
             holder.tvRecruiterName.setText(dataModel.getName());
             holder.tvLastMessage.setText(dataModel.getLastMessage());
 
-            if (dataModel.getUserChats() != null && dataModel.getUserChats().size() > 0){
+            if (dataModel.getUserChats() != null && dataModel.getUserChats().size() > 0) {
 //                    && !TextUtils.isEmpty(dataModel.getUserChats().get(dataModel.getUserChats().size() - 1).getmMessageTime())) {
                 holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel
                         .getUserChats()
                         .get(dataModel.getUserChats().size() - 1).getmMessageTime()));
-            }else{
+            } else {
                 holder.tvDate.setText("");
             }
 
@@ -87,7 +87,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
             holder.itemView.setOnClickListener(this);
             holder.itemView.setOnLongClickListener(this);
         }
-
     }
 
     @Override
@@ -102,9 +101,9 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
     @Override
     public void onClick(View v) {
         int position = (int) v.getTag();
-
         mContext.startActivity(new Intent(mContext, ChatActivity.class)
                 .putExtra(Constants.EXTRA_CHAT_MODEL, messagesData.get(position).getRecruiterId()));
+
     }
 
 
@@ -164,7 +163,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
 
         MyHolder(View itemView) {
             super(itemView);
-
             tvRecruiterName = mBinding.tvMessageRecruiterName;
             tvUnreadChatCount = mBinding.tvMessageChatCount;
             tvLastMessage = mBinding.tvMessageChat;

@@ -252,7 +252,6 @@ public class SocketManager {
                 model = Utils.parseData(jsonObject);
             }
 
-
             /**
              * If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
              * Else send the message to the global message list listener to update data.
@@ -518,8 +517,9 @@ public class SocketManager {
         mSocket.emit(EMIT_UPDATE_READ_COUNT, new JSONObject(hashMap), new Ack() {
             @Override
             public void call(Object... args) {
-                if (attachedActivity != null) {
-                    attachedActivity.runOnUiThread(new Runnable() {
+
+                if (attachedGlobalActivity != null) {
+                    attachedGlobalActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             /**
@@ -529,7 +529,7 @@ public class SocketManager {
                         }
                     });
                 } else {
-                    LogUtils.LOGD(TAG, "attachedActivity == null");
+                    LogUtils.LOGD(TAG, "attachedGlobalActivity == null");
                 }
             }
         });

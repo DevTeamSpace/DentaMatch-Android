@@ -108,7 +108,6 @@ public class MessagesListFragment extends BaseFragment {
                         mAdapter = new MessageListAdapter(getActivity(), data, true);
                         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
 
-
                     } else {
                         mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
                     }

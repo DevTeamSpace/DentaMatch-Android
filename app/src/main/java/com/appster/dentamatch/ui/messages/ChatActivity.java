@@ -34,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.realm.RealmList;
 import retrofit2.Call;
 
 /**
@@ -139,9 +140,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        /**
-         * Disconnect to socket and request past chats to update the recycler view.
-         */
         SocketManager.getInstance().detachPersonalListener();
         hideKeyboard();
         finish();
@@ -269,6 +267,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             userId = PreferenceUtil.getUserChatId();
             recruiterName = dbModel.getName();
             mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(recruiterName);
+            /**
+             * Start new adapter for the new message received.
+             */
+            mBinder.messages.setAdapter(null);
 
             /**
              * Change the UI based on recruiter is blocked or not.
@@ -315,7 +317,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
                 mBinder.messages.setAdapter(mAdapter);
             }
-
 
         }
     }
