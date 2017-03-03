@@ -117,9 +117,11 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        registerConnectionEvents();
-        mSocket.connect();
-        attachedGlobalActivity = act;
+        if(!isConnected) {
+            registerConnectionEvents();
+            mSocket.connect();
+            attachedGlobalActivity = act;
+        }
 
     }
 
@@ -204,7 +206,7 @@ public class SocketManager {
                             model.getMessageId(),
                             Message.TYPE_MESSAGE_SEND);
 
-                    EventBus.getDefault().post(new MessageAcknowledgementEvent(message));
+                    EventBus.getDefault().post(new MessageAcknowledgementEvent(message, model.getToID()));
                 }
             });
 
@@ -276,7 +278,7 @@ public class SocketManager {
                                 Intent intent = new Intent(attachedActivity, ChatActivity.class);
                                 intent.putExtra(Constants.EXTRA_CHAT_MODEL, model.getFromID());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent);
+                                Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent, model.getFromID());
                             }
                         }
                     });
@@ -308,7 +310,7 @@ public class SocketManager {
                                 intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-                                Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent);
+                                Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent, model.getFromID());
                             }
                         }
                     });

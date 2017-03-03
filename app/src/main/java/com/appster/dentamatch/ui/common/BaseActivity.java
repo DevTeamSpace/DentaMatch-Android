@@ -294,7 +294,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         PreferenceUtil.setFcmToken("");
         PreferenceUtil.reset();
         PreferenceUtil.setIsOnBoarding(true);
-        Utils.clearNotifications(this);
+        Utils.clearAllNotifications(this);
         DBHelper.getInstance().clearDBData();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(Constants.EXTRA_IS_LOGIN, true);

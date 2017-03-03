@@ -173,7 +173,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             /**
              * Insert the message received into the DB first.
              */
-            DBHelper.getInstance().insertIntoDB(recruiterId, message, event.getModel().getRecruiterName(), 0, messageModel.getMessageListId());
+            DBHelper.getInstance()
+                    .insertIntoDB(messageModel.getFromID(), message, event.getModel().getRecruiterName(), 0, messageModel.getMessageListId());
 
 
             if (mBinder.messages.getAdapter() == null) {
@@ -189,7 +190,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Subscribe()
     public void onSentMsgAcknowledgement(final MessageAcknowledgementEvent event) {
         if (event != null) {
-            DBHelper.getInstance().insertIntoDB(recruiterId, event.getmMessage(), recruiterName, 0, dbModel.getMessageListId());
+            DBHelper.getInstance().insertIntoDB(event.getmRecruiterId(), event.getmMessage(), recruiterName, 0, dbModel.getMessageListId());
             scrollToBottom();
         }
 
@@ -271,6 +272,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
              * Start new adapter for the new message received.
              */
             mBinder.messages.setAdapter(null);
+            Utils.clearRecruiterNotification(this,recruiterId);
 
             /**
              * Change the UI based on recruiter is blocked or not.

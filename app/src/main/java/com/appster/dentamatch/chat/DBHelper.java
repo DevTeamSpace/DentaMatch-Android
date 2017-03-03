@@ -85,9 +85,8 @@ public class DBHelper {
              */
             if (retrievedModel != null) {
                 if (!checkIfMessageAlreadyExists(recruiterId, userMessage)) {
-                    if (!TextUtils.isEmpty(recruiterName)) {
-                        retrievedModel.setName(recruiterName);
-                    }
+
+                    retrievedModel.setName(recruiterName);
                     retrievedModel.setLastMsgTime(userMessage.getmMessageTime());
                     retrievedModel.setLastMessage(userMessage.getMessage());
                     retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
@@ -103,7 +102,6 @@ public class DBHelper {
                             retrievedModel.getUserChats().add(dateHeaderMessage);
                         }
                     }
-
                     retrievedModel.getUserChats().add(userMessage);
                 }
             } else {
@@ -136,7 +134,7 @@ public class DBHelper {
         boolean isAlreadyAdded = false;
         DBModel retrievedData = getDBData(recruiterID);
 
-        if (retrievedData != null && retrievedData.getUserChats()!= null && retrievedData.getUserChats().size() > 0) {
+        if (retrievedData != null && retrievedData.getUserChats() != null && retrievedData.getUserChats().size() > 0) {
             for (Message message : retrievedData.getUserChats()) {
                 if (message.getmMessageId().equalsIgnoreCase(messageObj.getmMessageId())) {
                     isAlreadyAdded = true;

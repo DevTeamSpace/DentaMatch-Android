@@ -22,6 +22,7 @@ import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 import android.text.Editable;
 import android.text.InputType;
@@ -528,9 +529,9 @@ public class Utils {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static void clearNotifications(Context ct) {
+    public static void clearAllNotifications(Context ct) {
         NotificationManager notificationManager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(NOTIFICATION_CODE);
+        notificationManager.cancelAll();
     }
 
     public static boolean isAppIsInBackground(Context context) {
@@ -558,7 +559,7 @@ public class Utils {
         return isInBackground;
     }
 
-    public static void showNotification(Context ct, String title, String message, Intent intent) {
+    public static void showNotification(Context ct, String title, String message, Intent intent, String recruiterID) {
         int uniqueID = (int)(System.currentTimeMillis() & 0xfffffff);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -570,6 +571,7 @@ public class Utils {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setSmallIcon(R.drawable.app_logo_small)
+                .setColor(ContextCompat.getColor(ct, R.color.colorPrimary))
                 .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(), R.mipmap.ic_launcher))
                 .setAutoCancel(true);
 
@@ -582,7 +584,12 @@ public class Utils {
         NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_VIBRATE;
-        manager.notify(uniqueID, notification);
+        manager.notify(Integer.parseInt(recruiterID), notification);
+    }
+
+    public static void clearRecruiterNotification(Context ct, String RecruiterID){
+        NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(Integer.parseInt(RecruiterID));
     }
 
     public static ChatMessageModel parseData(JSONObject messageData) {
