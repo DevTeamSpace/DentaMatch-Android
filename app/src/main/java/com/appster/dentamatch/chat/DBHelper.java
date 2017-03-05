@@ -86,7 +86,7 @@ public class DBHelper {
             if (retrievedModel != null) {
                 if (!checkIfMessageAlreadyExists(recruiterId, userMessage)) {
 
-                    retrievedModel.setName(recruiterName);
+//                    retrievedModel.setName(recruiterName);
                     retrievedModel.setLastMsgTime(userMessage.getmMessageTime());
                     retrievedModel.setLastMessage(userMessage.getMessage());
                     retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);

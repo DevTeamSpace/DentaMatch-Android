@@ -73,7 +73,7 @@ public class SocketManager {
     private static Socket mSocket;
     private static SocketManager socketManager;
     private Emitter.Listener onHistory;
-    private boolean isConnected;
+    private boolean isConnected = false;
     private int attachedActivityStatus;
     private Activity attachedActivity;
     private String attachedRecruiterID;
@@ -130,6 +130,7 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
+        isConnected = false;
         unRegisterConnectionEvents();
         mSocket.disconnect();
     }

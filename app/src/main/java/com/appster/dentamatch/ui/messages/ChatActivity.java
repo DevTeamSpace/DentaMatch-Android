@@ -154,11 +154,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         if (event != null) {
             final ChatMessageModel messageModel = event.getModel();
             int messageType = 0;
+            String recruiterID;
 
             if (messageModel.getToID().equalsIgnoreCase(userId)) {
                 messageType = Message.TYPE_MESSAGE_RECEIVED;
+                recruiterID = messageModel.getFromID();
             } else {
                 messageType = Message.TYPE_MESSAGE_SEND;
+                recruiterID = messageModel.getToID();
             }
 
             /**
@@ -174,7 +177,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
              * Insert the message received into the DB first.
              */
             DBHelper.getInstance()
-                    .insertIntoDB(messageModel.getFromID(), message, event.getModel().getRecruiterName(), 0, messageModel.getMessageListId());
+                    .insertIntoDB(recruiterID, message, event.getModel().getRecruiterName(), 0, messageModel.getMessageListId());
 
 
             if (mBinder.messages.getAdapter() == null) {
@@ -196,7 +199,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    @Subscribe()
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onChatHistoryRetrieved(final ChatHistoryRetrievedEvent event) {
 
         JSONArray chatArray = event.getModel();
@@ -214,6 +217,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }finally {
+            DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
         }
     }
 
@@ -293,7 +298,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             /**
              * Update all unread chats corresponding to this recruiterID and update server and local Db about it.
              */
-            SocketManager.getInstance().updateMsgRead(recruiterId, userId);
+            if(SocketManager.getInstance().isConnected()) {
+                SocketManager.getInstance().updateMsgRead(recruiterId, userId);
+            }
+
             if (!dbModel.isDBUpdated()) {
 
                 if (Utils.isConnected(this)) {
@@ -305,7 +313,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                         ChatActivity.this.showToast("Syncing chat. Please Wait...");
                         DBHelper.getInstance().clearRecruiterChats(recruiterId);
                         SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
-                        DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
                     } else {
                         ChatActivity.this.showToast(getString(R.string.error_socket_connection));
                     }
