@@ -70,14 +70,16 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         mBinder.createProfile1BtnNotNow.setOnClickListener(this);
         mBinder.createProfile1BtnNext.setOnClickListener(this);
         mBinder.createProfile1IvProfileIcon.setOnClickListener(this);
-        if(!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())){
 
+        if(!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())){
+            mFilePath = PreferenceUtil.getProfileImagePath();
             Picasso.with(CreateProfileActivity1.this).load(PreferenceUtil.getProfileImagePath())
                     .centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .into(mBinder.createProfile1IvProfileIcon);
         }
+
         mBinder.etJobTitle.setOnClickListener(this);
         mBinder.createProfileTvName.setText(getString(R.string.hi_user, PreferenceUtil.getFirstName()));
     }

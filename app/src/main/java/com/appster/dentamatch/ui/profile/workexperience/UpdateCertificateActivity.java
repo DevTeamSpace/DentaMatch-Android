@@ -93,6 +93,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             } else {
                 mBinder.tvValidityDatePicker.setVisibility(View.VISIBLE);
             }
+
             mBinder.tvValidityDatePicker.setText(Utils.dateFormatYYYYMMMMDD(data.getValidityDate()));
         }
     }

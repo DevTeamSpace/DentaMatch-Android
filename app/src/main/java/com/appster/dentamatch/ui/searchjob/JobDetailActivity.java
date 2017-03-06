@@ -395,7 +395,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.tvJobStatus.setText(getString(R.string.txt_invited));
                     mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
                     mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-                    mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                    mBinding.btnApplyJob.setVisibility(View.GONE);
                     break;
 
                 case SHORTLISTED:

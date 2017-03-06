@@ -125,7 +125,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 public void onClick(View view) {
                     if (mNotificationList.get((int) view.getTag()).getnotificationType() != Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
                         mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), mNotificationList.get((int) view.getTag()).getnotificationType());
-                    } else if (mNotificationList.get((int) view.getTag()).getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && mNotificationList.get((int) view.getTag()).getSeen() == 0) {
+                    } else if (mNotificationList.get((int) view.getTag()).getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && mNotificationList.get((int) view.getTag()).getSeen() == 1) {
                         mListener.onNotificationItemClick((int) view.getTag(), mNotificationList.get((int) view.getTag()).getId(), mNotificationList.get((int) view.getTag()).getnotificationType());
 
                     }
