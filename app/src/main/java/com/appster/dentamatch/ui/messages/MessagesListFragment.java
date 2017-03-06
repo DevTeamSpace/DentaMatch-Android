@@ -61,7 +61,7 @@ public class MessagesListFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (Utils.isConnected(getActivity())) {
-            getChatHistory();
+            getAllUserChats();
         } else {
             data = DBHelper.getInstance().getAllUserChats();
 
@@ -81,7 +81,7 @@ public class MessagesListFragment extends BaseFragment {
         super.onResume();
     }
 
-    private void getChatHistory() {
+    private void getAllUserChats() {
         showProgressBar(getString(R.string.please_wait));
         AuthWebServices client = RequestController.createService(AuthWebServices.class, true);
         client.getChatHistory().enqueue(new BaseCallback<ChatHistoryResponse>((BaseActivity) getActivity()) {
@@ -104,10 +104,9 @@ public class MessagesListFragment extends BaseFragment {
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();
-                        LogUtils.LOGD("REALM", "" + data);
+                        LogUtils.LOGD("DentaChat", "" + data);
                         mAdapter = new MessageListAdapter(getActivity(), data, true);
                         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
-
 
                     } else {
                         mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);

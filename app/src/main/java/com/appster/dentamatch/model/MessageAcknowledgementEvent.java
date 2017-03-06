@@ -8,9 +8,15 @@ import com.appster.dentamatch.ui.messages.Message;
 
 public class MessageAcknowledgementEvent {
     private Message mMessage;
+    private String mRecruiterId;
 
-    public MessageAcknowledgementEvent(Message message){
+    public MessageAcknowledgementEvent(Message message, String recruiterId){
         mMessage = message;
+        mRecruiterId = recruiterId;
+    }
+
+    public String getmRecruiterId() {
+        return mRecruiterId;
     }
 
     public Message getmMessage() {

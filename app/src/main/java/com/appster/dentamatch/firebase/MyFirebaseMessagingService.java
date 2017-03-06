@@ -111,9 +111,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }else{
             try {
                 if(remoteMessage.getData() != null) {
-                     ChatMessageModel model = new ChatMessageModel();
+                     ChatMessageModel model;
                     String data = dataPayload.get("data");
                     JSONObject object = new JSONObject(data);
+
                     if (object.has("messageListId")) {
                         model = Utils.parseDataForNewRecruiterMessage(object);
                     }else {
@@ -121,6 +122,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
 
                     final Message notificationMessage = new Message(model.getMessage(), model.getRecruiterName(), model.getMessageTime(), model.getMessageId(), Message.TYPE_MESSAGE_RECEIVED);
+
                     Handler handler = new Handler(Looper.getMainLooper());
                     final ChatMessageModel finalModel = model;
                     handler.post(new Runnable() {
@@ -133,7 +135,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    Utils.showNotification(this, model.getRecruiterName(), model.getMessage(), intent);
+                    Utils.showNotification(this, model.getRecruiterName(), model.getMessage(), intent, finalModel.getFromID());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

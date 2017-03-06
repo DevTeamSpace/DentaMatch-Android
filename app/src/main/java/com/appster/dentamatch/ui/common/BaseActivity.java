@@ -292,11 +292,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void localLogOut() {
         LogUtils.LOGD(TAG, "Local logout");
         String fcmToken= PreferenceUtil.getFcmToken();
-
         PreferenceUtil.reset();
         PreferenceUtil.setFcmToken(fcmToken);
         PreferenceUtil.setIsOnBoarding(true);
-        Utils.clearNotifications(this);
+        Utils.clearAllNotifications(this);
         DBHelper.getInstance().clearDBData();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(Constants.EXTRA_IS_LOGIN, true);

@@ -48,4 +48,5 @@ public class Message extends RealmObject{
         return mMessageId;
     }
 
+
 }

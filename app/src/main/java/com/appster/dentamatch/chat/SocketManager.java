@@ -73,7 +73,7 @@ public class SocketManager {
     private static Socket mSocket;
     private static SocketManager socketManager;
     private Emitter.Listener onHistory;
-    private boolean isConnected;
+    private boolean isConnected = false;
     private int attachedActivityStatus;
     private Activity attachedActivity;
     private String attachedRecruiterID;
@@ -117,9 +117,11 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        registerConnectionEvents();
-        mSocket.connect();
-        attachedGlobalActivity = act;
+        if(!isConnected) {
+            registerConnectionEvents();
+            mSocket.connect();
+            attachedGlobalActivity = act;
+        }
 
     }
 
@@ -128,6 +130,7 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
+        isConnected = false;
         unRegisterConnectionEvents();
         mSocket.disconnect();
     }
@@ -183,6 +186,8 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
             isConnected = false;
             unRegisterListenerEvents();
+            disconnectFromChat();
+
         }
     };
 
@@ -204,7 +209,7 @@ public class SocketManager {
                             model.getMessageId(),
                             Message.TYPE_MESSAGE_SEND);
 
-                    EventBus.getDefault().post(new MessageAcknowledgementEvent(message));
+                    EventBus.getDefault().post(new MessageAcknowledgementEvent(message, model.getToID()));
                 }
             });
 
@@ -252,7 +257,6 @@ public class SocketManager {
                 model = Utils.parseData(jsonObject);
             }
 
-
             /**
              * If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
              * Else send the message to the global message list listener to update data.
@@ -277,7 +281,7 @@ public class SocketManager {
                                 Intent intent = new Intent(attachedActivity, ChatActivity.class);
                                 intent.putExtra(Constants.EXTRA_CHAT_MODEL, model.getFromID());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent);
+                                Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent, model.getFromID());
                             }
                         }
                     });
@@ -309,7 +313,7 @@ public class SocketManager {
                                 intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-                                Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent);
+                                Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent, model.getFromID());
                             }
                         }
                     });
@@ -438,7 +442,7 @@ public class SocketManager {
         mSocket.emit("notOnChat", new JSONObject(hashMap), new Ack() {
             @Override
             public void call(Object... args) {
-
+                LogUtils.LOGD(TAG, "notOnChat" + ":" + args[0]);
             }
         });
     }
@@ -518,8 +522,9 @@ public class SocketManager {
         mSocket.emit(EMIT_UPDATE_READ_COUNT, new JSONObject(hashMap), new Ack() {
             @Override
             public void call(Object... args) {
-                if (attachedActivity != null) {
-                    attachedActivity.runOnUiThread(new Runnable() {
+
+                if (attachedGlobalActivity != null) {
+                    attachedGlobalActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             /**
@@ -529,7 +534,7 @@ public class SocketManager {
                         }
                     });
                 } else {
-                    LogUtils.LOGD(TAG, "attachedActivity == null");
+                    LogUtils.LOGD(TAG, "attachedGlobalActivity == null");
                 }
             }
         });
