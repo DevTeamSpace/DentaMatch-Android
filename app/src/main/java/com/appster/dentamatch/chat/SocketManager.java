@@ -186,6 +186,8 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
             isConnected = false;
             unRegisterListenerEvents();
+            disconnectFromChat();
+
         }
     };
 
@@ -440,7 +442,7 @@ public class SocketManager {
         mSocket.emit("notOnChat", new JSONObject(hashMap), new Ack() {
             @Override
             public void call(Object... args) {
-
+                LogUtils.LOGD(TAG, "notOnChat" + ":" + args[0]);
             }
         });
     }

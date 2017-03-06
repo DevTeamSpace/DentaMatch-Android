@@ -122,6 +122,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
 
                     final Message notificationMessage = new Message(model.getMessage(), model.getRecruiterName(), model.getMessageTime(), model.getMessageId(), Message.TYPE_MESSAGE_RECEIVED);
+
                     Handler handler = new Handler(Looper.getMainLooper());
                     final ChatMessageModel finalModel = model;
                     handler.post(new Runnable() {
