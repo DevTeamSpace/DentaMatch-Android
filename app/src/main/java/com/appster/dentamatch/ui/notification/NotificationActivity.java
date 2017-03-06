@@ -260,6 +260,8 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                     LogUtils.LOGD(TAG, "size is---" + list.size());
                     list.get(position).setSeen(1);
                     mNotificaionAdapter.resetJobList(list);
+                    showToast(response.getMessage());
+
                 } else {
                     showToast(response.getMessage());
                 }
