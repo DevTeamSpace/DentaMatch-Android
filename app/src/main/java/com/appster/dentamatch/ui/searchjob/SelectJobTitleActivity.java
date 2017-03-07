@@ -88,7 +88,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
     private void callJobListApi() {
         LogUtils.LOGD(TAG, "job title list");
         processToShowDialog("", getString(R.string.please_wait), null);
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.jobTitle().enqueue(new BaseCallback<JobTitleResponse>(SelectJobTitleActivity.this) {
             @Override
             public void onSuccess(JobTitleResponse response) {

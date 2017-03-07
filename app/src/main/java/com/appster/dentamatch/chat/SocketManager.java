@@ -219,21 +219,21 @@ public class SocketManager {
     private Ack pastChatReceivedAcknowledgement = new Ack() {
         @Override
         public void call(Object... args) {
-            final JSONObject jsonObject = (JSONObject) args[0];
             LogUtils.LOGD(TAG, SOCKET_PAST_CHAT_ACKNOWLEDGEMENT + args[0]);
+            final JSONArray jsonArray = (JSONArray) args[0];
             /**
              * chat json is not empty
              */
-            if (jsonObject.length() > 0) {
                 if (attachedActivity != null) {
+
                     attachedActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(Utils.parseDataForHistory(jsonObject)));
+                            EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray));
                         }
                     });
                 }
-            }
+
         }
     };
 
@@ -308,7 +308,40 @@ public class SocketManager {
                              * to send the same msg multiple times.
                              */
                             if (!DBHelper.getInstance().checkIfMessageAlreadyExists(model.getFromID(), message)) {
-                                DBHelper.getInstance().insertIntoDB(model.getFromID(), message, model.getRecruiterName(), 1, model.getMessageListId());
+                                DBModel dbModel = DBHelper.getInstance().getDBData(model.getFromID());
+
+                                if(dbModel != null) {
+                                    if (dbModel.isDBUpdated()) {
+                                        DBHelper.getInstance().insertIntoDB(model.getFromID(),
+                                                message,
+                                                model.getRecruiterName(),
+                                                1,
+                                                model.getMessageListId());
+
+                                    } else {
+                                        /**
+                                         * In case there is a sync needed , we update only the listing of messages and not the chat array
+                                         * as it will be updated with the history fetched.
+                                         */
+                                        DBHelper.getInstance().updateRecruiterDetails(model.getFromID(),
+                                                model.getRecruiterName(),
+                                                1,
+                                                model.getMessageListId(),
+                                                model.getMessage(),
+                                                model.getMessageTime());
+                                    }
+                                }else{
+                                    /**
+                                     * In case the message is from a new recruiter, directly insert it into the DB as it does not
+                                     * require any syncing.
+                                     */
+                                    DBHelper.getInstance().insertIntoDB(model.getFromID(),
+                                            message,
+                                            model.getRecruiterName(),
+                                            1,
+                                            model.getMessageListId());
+                                }
+
                                 Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
                                 intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -436,7 +469,7 @@ public class SocketManager {
 
     }
 
-    public void disconnectFromChat() {
+    private void disconnectFromChat() {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("fromId", PreferenceUtil.getUserChatId());
         mSocket.emit("notOnChat", new JSONObject(hashMap), new Ack() {

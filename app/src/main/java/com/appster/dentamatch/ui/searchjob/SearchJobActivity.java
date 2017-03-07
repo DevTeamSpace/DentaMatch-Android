@@ -326,7 +326,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        finish();
+        if(isFirstTime){
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }else {
+            finish();
+        }
     }
 
     @Override

@@ -147,6 +147,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * Callback called in case of new message and in case of history received.
+     *
      * @param event : received message from server.
      */
     @Subscribe()
@@ -179,7 +180,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             DBHelper.getInstance()
                     .insertIntoDB(recruiterID, message, event.getModel().getRecruiterName(), 0, messageModel.getMessageListId());
 
-
             if (mBinder.messages.getAdapter() == null) {
                 mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
                 mBinder.messages.setAdapter(mAdapter);
@@ -205,19 +205,26 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         JSONArray chatArray = event.getModel();
 
         try {
-            for (int i = 0; i < chatArray.length(); i++) {
-                JSONObject dataObject = chatArray.getJSONObject(i);
-                ChatMessageModel chatData = Utils.parseDataForHistory(dataObject);
-                /**
-                 * In case of history the recruiter name comes out to be blank so we add the recruiter
-                 * name from the DB.
-                 */
-                chatData.setRecruiterName(recruiterName);
-                onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
+            if(chatArray.length() > 0) {
+                for (int i = 0; i < chatArray.length(); i++) {
+                    JSONObject dataObject = chatArray.getJSONObject(i);
+                    ChatMessageModel chatData = Utils.parseDataForHistory(dataObject);
+                    /**
+                     * In case of history the recruiter name comes out to be blank so we add the recruiter
+                     * name from the DB.
+                     */
+                    chatData.setRecruiterName(recruiterName);
+                    onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
+                }
+            }else{
+                if (mBinder.messages.getAdapter() == null) {
+                    mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
+                    mBinder.messages.setAdapter(mAdapter);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
         }
     }
@@ -277,7 +284,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
              * Start new adapter for the new message received.
              */
             mBinder.messages.setAdapter(null);
-            Utils.clearRecruiterNotification(this,recruiterId);
+            Utils.clearRecruiterNotification(this, recruiterId);
 
             /**
              * Change the UI based on recruiter is blocked or not.
@@ -298,7 +305,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             /**
              * Update all unread chats corresponding to this recruiterID and update server and local Db about it.
              */
-            if(SocketManager.getInstance().isConnected()) {
+            if (SocketManager.getInstance().isConnected()) {
                 SocketManager.getInstance().updateMsgRead(recruiterId, userId);
             }
 
@@ -311,8 +318,26 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                          * recruiterID.
                          */
                         ChatActivity.this.showToast("Syncing chat. Please Wait...");
-                        DBHelper.getInstance().clearRecruiterChats(recruiterId);
-                        SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
+//                        DBHelper.getInstance().clearRecruiterChats(recruiterId);
+//                        SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
+                        if (dbModel.getUserChats().size() > 0) {
+                            Message lastMessage = dbModel.getUserChats().last();
+                            String fromID;
+                            String toID;
+
+                            if (lastMessage.getType() == Message.TYPE_MESSAGE_RECEIVED) {
+                                fromID = recruiterId;
+                                toID = userId;
+                            } else {
+                                fromID = userId;
+                                toID = recruiterId;
+                            }
+
+                            SocketManager.getInstance().fetchPastChatsAfterMsgID(lastMessage.getmMessageId(), toID, fromID);
+                        } else {
+                            SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
+                        }
+
                     } else {
                         ChatActivity.this.showToast(getString(R.string.error_socket_connection));
                     }

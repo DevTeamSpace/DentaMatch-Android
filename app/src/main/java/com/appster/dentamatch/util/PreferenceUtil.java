@@ -41,11 +41,20 @@ public final class PreferenceUtil {
     private static final String KEY_JOB_FILTER_REQUEST = "KEY_JOB_FILTER_REQUEST";
     private static final String KEY_USER_CURRENT_LOC = "KEY_USER_CURRENT_LOC";
     private static final String KEY_FCM_TOKEN = "FCM_TOKEN";
+    private static final String KEY_PROFILE_COMPLETE = "KEY_PROFILE_COMPLETE";
 
     private static final String KEY_USER_MODEL = "USER_MODEL";
 
     public static void setUserCurrentLocation(Location location) {
         Hawk.put(KEY_USER_CURRENT_LOC, location);
+    }
+
+    public static void setProfileCompleted(boolean completed){
+        Hawk.put(KEY_PROFILE_COMPLETE, completed);
+    }
+
+    public static boolean isProfileCompleted(){
+        return Hawk.get(KEY_PROFILE_COMPLETE, false);
     }
 
     public static Object getUserCurrentLocation() {

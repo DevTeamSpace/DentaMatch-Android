@@ -103,7 +103,9 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-                    Intent intent = new Intent(AboutMeActivity.this, SearchJobActivity.class);
+                    PreferenceUtil.setProfileCompleted(true);
+                    Intent intent = new Intent(AboutMeActivity.this, SearchJobActivity.class)
+                            .putExtra(Constants.EXTRA_IS_FIRST_TIME, true);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 

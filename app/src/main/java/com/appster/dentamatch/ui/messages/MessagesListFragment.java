@@ -95,12 +95,18 @@ public class MessagesListFragment extends BaseFragment {
                         mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
 
                         for (ChatListModel model : response.getResult().getList()) {
-                            Message message = new Message(model.getMessage(),
+                            DBHelper.getInstance().updateRecruiterDetails(String.valueOf(model.getRecruiterId()),
                                     model.getName(),
-                                    model.getTimestamp(),
-                                    String.valueOf(model.getMessageId()),
-                                    Message.TYPE_MESSAGE_RECEIVED);
-                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), Integer.parseInt(model.getUnreadCount()), String.valueOf(model.getMessageListId()));
+                                    Integer.parseInt(model.getUnreadCount()),
+                                    String.valueOf(model.getMessageListId()),
+                                    model.getMessage(),
+                                    model.getTimestamp());
+//                            Message message = new Message(model.getMessage(),
+//                                    model.getName(),
+//                                    model.getTimestamp(),
+//                                    String.valueOf(model.getMessageId()),
+//                                    Message.TYPE_MESSAGE_RECEIVED);
+//                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), Integer.parseInt(model.getUnreadCount()), String.valueOf(model.getMessageListId()));
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();

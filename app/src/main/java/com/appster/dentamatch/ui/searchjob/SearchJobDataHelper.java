@@ -101,6 +101,8 @@ public class SearchJobDataHelper {
 
                 }
             });
+        }else{
+            EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
         }
     }
 

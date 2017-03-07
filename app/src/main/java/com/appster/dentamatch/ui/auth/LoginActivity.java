@@ -422,12 +422,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
                     PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
                     PreferenceUtil.setUserChatId(response.getLoginResponseData().getUserDetail().getId());
+
                     if (response.getLoginResponseData().getUserDetail().getProfileCompleted() == 1) {
+                        PreferenceUtil.setProfileCompleted(true);
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                     } else {
+                        PreferenceUtil.setProfileCompleted(false);
                         Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
                         startActivity(intent);
                         finish();

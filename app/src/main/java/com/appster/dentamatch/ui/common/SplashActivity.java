@@ -11,6 +11,7 @@ import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.onboardtutorial.OnBoardingActivity;
 import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -62,7 +63,8 @@ public class SplashActivity extends Activity implements Runnable {
             if (PreferenceUtil.getIsLogined()) {
 
                 if (!PreferenceUtil.isJobFilterSet()) {
-                    startActivity(new Intent(SplashActivity.this, SearchJobActivity.class));
+                    startActivity(new Intent(SplashActivity.this, SearchJobActivity.class)
+                            .putExtra(Constants.EXTRA_IS_FIRST_TIME, true));
                 } else {
                     startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                 }

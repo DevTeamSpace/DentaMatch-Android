@@ -25,6 +25,7 @@ public class DBHelper {
     public static final String USER_CHATS = "USER_CHATS";
     public static final String IS_RECRUITED_BLOCKED = "IS_RECRUITED_BLOCKED";
     public static final String IS_SYNCED = "IS_SYNCED";
+    public static final String CHAT_DETAILS = "CHAT_DETAILS";
     private final String DB_PRIMARY_KEY = "recruiterId";
     private final String REALM_INSTANCE_ERROR = "realm instance is null";
 
@@ -70,6 +71,35 @@ public class DBHelper {
         }
 
         return mRealmInstance.where(DBModel.class).findAllSorted("lastMsgTime", Sort.DESCENDING);
+    }
+
+    public void updateRecruiterDetails(String recruiterId,String recruiterName,int unreadMsgCount, String msgListID, String msg, String timeStamp){
+
+        if (mRealmInstance == null) {
+            LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
+        } else {
+            mRealmInstance.beginTransaction();
+            DBModel retrievedModel = getDBData(recruiterId);
+
+            if (retrievedModel != null){
+                retrievedModel.setLastMessage(msg);
+                retrievedModel.setHasDBUpdated(false);
+                retrievedModel.setLastMsgTime(timeStamp);
+                retrievedModel.setMessageListId(msgListID);
+                retrievedModel.setUnReadChatCount(unreadMsgCount);
+
+            }else{
+                DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
+                newModel.setName(recruiterName);
+                newModel.setLastMessage(msg);
+                newModel.setHasDBUpdated(false);
+                newModel.setLastMsgTime(timeStamp);
+                newModel.setMessageListId(msgListID);
+                newModel.setSeekerHasBlocked(0);
+                newModel.setUnReadChatCount(unreadMsgCount);
+            }
+            mRealmInstance.commitTransaction();
+        }
     }
 
     public void insertIntoDB(String recruiterId, Message userMessage, String recruiterName, int unreadMsgCount, String messageListID) {
