@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
+import com.appster.dentamatch.interfaces.NotificationClickListener;
 import com.appster.dentamatch.network.response.notification.NotificationData;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
@@ -45,7 +46,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public void setJobList(ArrayList<NotificationData> jobList) {
-//        mNotificationData.clear();
         mNotificationList.addAll(jobList);
         notifyDataSetChanged();
     }
@@ -200,12 +200,5 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
     }
 
-    public interface NotificationClickListener {
-        public void onNotificationItemClick(int position, int notifId, int notificationType);
-
-        public void onAcceptRejectClick(int position, int notifId, int inviteStatus);
-
-        public void onDelete(int position, int notifId, int notificationType);
-    }
 
 }

@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityNotificationBinding;
+import com.appster.dentamatch.interfaces.NotificationClickListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -31,7 +33,7 @@ import retrofit2.Call;
 /**
  * Created by virender on 14/02/17.
  */
-public class NotificationActivity extends BaseActivity implements View.OnClickListener, NotificationAdapter.NotificationClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class NotificationActivity extends BaseActivity implements View.OnClickListener, NotificationClickListener, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = "NotificationActivity";
     private ActivityNotificationBinding mBinder;
     private NotificationAdapter mNotificaionAdapter;
@@ -80,7 +82,7 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
 
         if (mIsPaginationNeeded) {
             if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                ++page;
+                page++;
                 mIsPaginationNeeded = false;
                 mBinder.layPagination.setVisibility(View.VISIBLE);
                 getNotification(page, false);
@@ -172,11 +174,11 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onNotificationItemClick(int position, int notifId, int notificationType) {
         if (mNotificaionAdapter.getList().get(position).getSeen() == 1) {
+
             if (mNotificaionAdapter.getList().get(position).getJobDetailModel() != null) {
                 redirectNotification(notificationType, mNotificaionAdapter.getList().get(position).getJobDetailModel().getId());
             } else {
                 redirectNotification(notificationType, -1);
-
             }
 
         } else {
@@ -211,8 +213,6 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                 /**
                  * Once data has been loaded from the filter changes we can dismiss this filter.
                  */
-
-
                 if (response.getStatus() == 1) {
                     ArrayList<NotificationData> list = new ArrayList<NotificationData>();
                     list.addAll(mNotificaionAdapter.getList());
@@ -229,7 +229,6 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                     showToast(response.getMessage());
                 }
             }
-
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
@@ -276,6 +275,7 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
 
     }
 
+
     private void getNotification(int page, boolean isFreshHit) {
         if (isFreshHit && !mBinder.swipeRefreshNotification.isRefreshing()) {
             processToShowDialog("", getString(R.string.please_wait), null);
@@ -285,9 +285,6 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         webServices.getNotification(page).enqueue(new BaseCallback<NotificationResponse>(this) {
             @Override
             public void onSuccess(NotificationResponse response) {
-                /**
-                 */
-
 
                 if (response.getStatus() == 1) {
                     mIsPaginationNeeded = true;
@@ -296,22 +293,23 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                         mNotificaionAdapter.resetJobList(response.getNotificationResponseData().getNotificationList());
 
                     } else {
-
                         mNotificaionAdapter.setJobList(response.getNotificationResponseData().getNotificationList());
                     }
 
                 } else {
                     showToast(response.getMessage());
                 }
+
+
                 mBinder.layPagination.setVisibility(View.GONE);
                 mBinder.swipeRefreshNotification.setRefreshing(false);
+
                 if (mNotificaionAdapter.getList() == null || mNotificaionAdapter.getList().size() == 0) {
                     mBinder.layoutEmptyNotification.setVisibility(View.VISIBLE);
 
                 } else {
 //                    mBinder.rvNotification.setVisibility(View.VISIBLE);
                     mBinder.layoutEmptyNotification.setVisibility(View.GONE);
-
                 }
 
             }

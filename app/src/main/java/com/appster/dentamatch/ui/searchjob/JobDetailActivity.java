@@ -218,6 +218,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 if (response.getStatus() == 1) {
                     mBinding.tvJobStatus.setVisibility(View.VISIBLE);
                     mBinding.btnApplyJob.setVisibility(View.GONE);
+                    mBinding.tvJobStatus.setText(getString(R.string.txt_applied));
                     Alert.alert(JobDetailActivity.this, "Congratulations", "You have successfully applied for the job.");
                     TrackJobsDataHelper.getInstance().updateAppliedData();
                 } else {

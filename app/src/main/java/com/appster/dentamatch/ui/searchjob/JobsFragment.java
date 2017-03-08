@@ -17,6 +17,7 @@ import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.ui.notification.MyNotificationActivity;
 import com.appster.dentamatch.ui.notification.NotificationActivity;
 import com.appster.dentamatch.util.LogUtils;
 
@@ -46,8 +47,6 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mJobsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_jobs, container, false);
         initViews();
-        getBatchCount();
-
         /**
          * Load list job fragment as the default fragment.
          */
@@ -92,12 +91,18 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), SearchJobActivity.class));
                 break;
             case R.id.iv_tool_bar_left:
-                startActivity(new Intent(getActivity(), NotificationActivity.class));
+                startActivity(new Intent(getActivity(), MyNotificationActivity.class));
                 break;
 
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getBatchCount();
     }
 
     private void initViews() {

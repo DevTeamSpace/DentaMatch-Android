@@ -111,7 +111,7 @@ public class Utils {
         return context.getResources().getDrawable(drawableId);
     }
 
-    public static boolean isMsgDateDifferent(long lastMsgTime, long receivedMsgTime){
+    public static boolean isMsgDateDifferent(long lastMsgTime, long receivedMsgTime) {
         DateOnlyFormat.setTimeZone(TimeZone.getDefault());
 
         Date lastMsgDate = new Date(lastMsgTime);
@@ -120,9 +120,9 @@ public class Utils {
         String lastMsgDateLabel = DateOnlyFormat.format(lastMsgDate);
         String receivedMsgDateLabel = DateOnlyFormat.format(receivedMsgDate);
 
-        if(lastMsgDateLabel.equalsIgnoreCase(receivedMsgDateLabel)){
+        if (lastMsgDateLabel.equalsIgnoreCase(receivedMsgDateLabel)) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -447,30 +447,29 @@ public class Utils {
     }
 
 
-
     public static String compareDateForDateLabel(String UTCDateTime) {
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
         chatDateLabelFormat.setTimeZone(TimeZone.getDefault());
 
 
-            String currentDate = chatDateLabelFormat.format(new Date(System.currentTimeMillis()));
+        String currentDate = chatDateLabelFormat.format(new Date(System.currentTimeMillis()));
 
-            String receivedDate = chatDateLabelFormat.format(date);
+        String receivedDate = chatDateLabelFormat.format(date);
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -1);
-            String yesterdayDate = chatDateLabelFormat.format(calendar.getTime());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        String yesterdayDate = chatDateLabelFormat.format(calendar.getTime());
 
-            if (receivedDate.equalsIgnoreCase(currentDate)) {
-                return "Today";
+        if (receivedDate.equalsIgnoreCase(currentDate)) {
+            return "Today";
 
-            } else if (receivedDate.equalsIgnoreCase(yesterdayDate)) {
-                return "Yesterday";
+        } else if (receivedDate.equalsIgnoreCase(yesterdayDate)) {
+            return "Yesterday";
 
-            } else {
-                return receivedDate;
-            }
+        } else {
+            return receivedDate;
+        }
 
 
     }
@@ -560,7 +559,7 @@ public class Utils {
     }
 
     public static void showNotification(Context ct, String title, String message, Intent intent, String recruiterID) {
-        int uniqueID = (int)(System.currentTimeMillis() & 0xfffffff);
+        int uniqueID = (int) (System.currentTimeMillis() & 0xfffffff);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -587,7 +586,7 @@ public class Utils {
         manager.notify(Integer.parseInt(recruiterID), notification);
     }
 
-    public static void clearRecruiterNotification(Context ct, String RecruiterID){
+    public static void clearRecruiterNotification(Context ct, String RecruiterID) {
         NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(Integer.parseInt(RecruiterID));
     }
@@ -623,10 +622,10 @@ public class Utils {
         return model;
     }
 
-    public static ChatMessageModel parseDataForNewRecruiterMessage(JSONObject messageData){
+    public static ChatMessageModel parseDataForNewRecruiterMessage(JSONObject messageData) {
         ChatMessageModel model = new ChatMessageModel();
 
-        try{
+        try {
             model.setFromID(messageData.getString("recruiterId"));
             model.setToID(messageData.getString("seekerId"));
             model.setMessageTime(messageData.getString("timestamp"));
@@ -689,7 +688,14 @@ public class Utils {
 
     public static Date getDate(String dateStr, String dateFormet) {
         try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat inputFormat;
+            if(dateFormet != null){
+                 inputFormat = new SimpleDateFormat(dateFormet, Locale.getDefault());
+            }else {
+                 inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            }
+            inputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
             Date date = inputFormat.parse(dateStr);
             return date;
         } catch (Exception e) {

@@ -360,13 +360,14 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
             }
         } else {
-            if ((mSelectedJobTitle.equalsIgnoreCase("") || mExpMonth == 0 && Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("")
-                    || Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("")
-                    || Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")
-            ) || (!TextUtils.isEmpty(mSelectedJobTitle) && mExpMonth != 0 && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName))
-                    && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress))
-                    && !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity))
-            )) {
+            if ((mSelectedJobTitle.equalsIgnoreCase("") || mExpMonth == 0 &&
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("") ||
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("") ||
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) ||
+                    (!TextUtils.isEmpty(mSelectedJobTitle) && mExpMonth != 0 &&
+                            !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName)) &&
+                            !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress)) &&
+                            !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity)))) {
 
 
                 Alert.createYesNoAlert(WorkExpListActivity.this, getString(R.string.ok), getString(R.string.cancel), "", getString(R.string.alert_discard_exp), new Alert.OnAlertClickListener() {

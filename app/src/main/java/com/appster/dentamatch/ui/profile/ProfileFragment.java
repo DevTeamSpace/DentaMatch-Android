@@ -265,7 +265,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         if (response != null) {
             if (response.getUser() != null) {
                 if (!TextUtils.isEmpty(response.getUser().getProfilePic())) {
-                    Picasso.with(getActivity()).load(response.getUser().getProfilePic()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.ivProfileIcon);
+                    Picasso.with(getActivity())
+                            .load(response.getUser().getProfilePic())
+//                            .centerCrop()
+                            .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                            .onlyScaleDown()
+                            .placeholder(R.drawable.profile_pic_placeholder)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .into(profileBinding.ivProfileIcon);
 
                 }
 
@@ -341,7 +348,13 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
 
                 if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
-                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(profileBinding.cellDentalStateBoard.ivCertificateImage);
+                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl())
+//                            .centerCrop()
+                            .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                            .onlyScaleDown()
+                            .placeholder(R.drawable.ic_upload)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .into(profileBinding.cellDentalStateBoard.ivCertificateImage);
 
                 }
             } else {
@@ -526,7 +539,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.GONE);
                 cellCertificateBinding.tvEdit.setVisibility(View.VISIBLE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.VISIBLE);
-                Picasso.with(getActivity()).load(certificate.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(cellCertificateBinding.ivCertificateImage);
+                Picasso.with(getActivity())
+                        .load(certificate.getImage())
+//                        .centerCrop()
+                        .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                        .onlyScaleDown()
+                        .placeholder(R.drawable.ic_upload)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .into(cellCertificateBinding.ivCertificateImage);
 
             } else {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.VISIBLE);
