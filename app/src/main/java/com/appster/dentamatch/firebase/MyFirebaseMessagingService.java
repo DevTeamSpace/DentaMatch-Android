@@ -125,10 +125,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     Handler handler = new Handler(Looper.getMainLooper());
                     final ChatMessageModel finalModel = model;
+
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            DBHelper.getInstance().insertIntoDB(finalModel.getFromID(), notificationMessage, finalModel.getRecruiterName(), 1, finalModel.getMessageListId());
+//                            DBHelper.getInstance().insertIntoDB(finalModel.getFromID(), notificationMessage, finalModel.getRecruiterName(), 1, finalModel.getMessageListId());
+                            DBHelper.getInstance().updateRecruiterDetails(finalModel.getFromID(),
+                                    finalModel.getRecruiterName(),
+                                    1,
+                                    finalModel.getMessageListId(),
+                                    finalModel.getMessage(),
+                                    finalModel.getMessageTime(),
+                                    false);
                         }
                     });
 

@@ -73,7 +73,7 @@ public class DBHelper {
         return mRealmInstance.where(DBModel.class).findAllSorted("lastMsgTime", Sort.DESCENDING);
     }
 
-    public void updateRecruiterDetails(String recruiterId,String recruiterName,int unreadMsgCount, String msgListID, String msg, String timeStamp){
+    public void updateRecruiterDetails(String recruiterId,String recruiterName,int unreadMsgCount, String msgListID, String msg, String timeStamp, boolean isFromList){
 
         if (mRealmInstance == null) {
             LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
@@ -86,7 +86,11 @@ public class DBHelper {
                 retrievedModel.setHasDBUpdated(false);
                 retrievedModel.setLastMsgTime(timeStamp);
                 retrievedModel.setMessageListId(msgListID);
-                retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
+                if(isFromList){
+                    retrievedModel.setUnReadChatCount(unreadMsgCount);
+                }else {
+                    retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
+                }
 
             }else{
                 DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);

@@ -141,6 +141,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         SocketManager.getInstance().detachPersonalListener();
+        SocketManager.getInstance().disconnectFromChat();
         hideKeyboard();
         finish();
     }

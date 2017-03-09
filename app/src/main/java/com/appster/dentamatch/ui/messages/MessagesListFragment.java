@@ -100,7 +100,8 @@ public class MessagesListFragment extends BaseFragment {
                                     Integer.parseInt(model.getUnreadCount()),
                                     String.valueOf(model.getMessageListId()),
                                     model.getMessage(),
-                                    model.getTimestamp());
+                                    model.getTimestamp(),
+                                    true);
 //                            Message message = new Message(model.getMessage(),
 //                                    model.getName(),
 //                                    model.getTimestamp(),

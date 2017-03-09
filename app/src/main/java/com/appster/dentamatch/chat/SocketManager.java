@@ -152,9 +152,13 @@ public class SocketManager {
         @Override
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECT);
-            isConnected = true;
+            unRegisterListenerEvents();
             registerListenerEvents();
-            raiseSyncNeeded();
+
+            if(!isConnected) {
+                isConnected = true;
+                raiseSyncNeeded();
+            }
             /**
              * Notify user if user is on chat screen about the socket connection .
              */
@@ -170,7 +174,6 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
             isConnected = false;
-            unRegisterListenerEvents();
             /**
              * Notify user if user is on chat screen about the socket connection event.
              */
@@ -185,7 +188,6 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
             isConnected = false;
-            unRegisterListenerEvents();
             disconnectFromChat();
 
         }
@@ -328,7 +330,8 @@ public class SocketManager {
                                                 1,
                                                 model.getMessageListId(),
                                                 model.getMessage(),
-                                                model.getMessageTime());
+                                                model.getMessageTime(),
+                                                false);
                                     }
                                 }else{
                                     /**
@@ -438,8 +441,8 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-
         mSocket.off(EVENT_NEW_MESSAGE, onNewMessage);
+        mSocket.off("logoutPreviousSession", onUserSessionExpired);
 
     }
 
@@ -469,7 +472,7 @@ public class SocketManager {
 
     }
 
-    private void disconnectFromChat() {
+    public void disconnectFromChat() {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("fromId", PreferenceUtil.getUserChatId());
         mSocket.emit("notOnChat", new JSONObject(hashMap), new Ack() {

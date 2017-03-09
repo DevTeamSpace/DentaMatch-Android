@@ -8,6 +8,7 @@ public class ProfileSchool {
     private int childId;
     private String schoolName;
     private String schoolChildName;
+    private String schoolTitle;
     private String otherSchooling;
     private int yearOfGraduation;
 
@@ -25,6 +26,10 @@ public class ProfileSchool {
 
     public String getSchoolChildName() {
         return schoolChildName;
+    }
+
+    public String getSchoolTitle() {
+        return schoolTitle;
     }
 
     public String getOtherSchooling() {
