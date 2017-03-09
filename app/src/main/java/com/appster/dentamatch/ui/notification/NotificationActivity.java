@@ -219,10 +219,11 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
 
                     list.remove(position);
                     mNotificaionAdapter.resetJobList(list);
+
                     if (mNotificaionAdapter.getList().size() == 0) {
-                        mBinder.layoutEmptyNotification.setVisibility(View.VISIBLE);
+                        showHideEmptyLabel(View.VISIBLE);
                     } else {
-                        mBinder.layoutEmptyNotification.setVisibility(View.GONE);
+                        showHideEmptyLabel(View.GONE);
                     }
 
                 } else {
@@ -237,6 +238,9 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
+    public void showHideEmptyLabel(int visibility){
+        mBinder.layoutEmptyNotification.setVisibility(visibility);
+    }
     private void callInviteStatusApi(final int position, int notifId, int inviteStatus) {
 
         processToShowDialog("", getString(R.string.please_wait), null);

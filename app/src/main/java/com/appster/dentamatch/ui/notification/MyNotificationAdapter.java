@@ -22,6 +22,7 @@ import com.appster.dentamatch.network.request.Notification.ReadNotificationReque
 import com.appster.dentamatch.network.response.notification.NotificationData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
@@ -234,12 +235,20 @@ public class MyNotificationAdapter extends RecyclerView.Adapter<MyNotificationAd
             ReadNotificationRequest request = new ReadNotificationRequest();
             request.setNotificationId(mNotificationList.get(position).getId());
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-            webServices.readNotification(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
+            webServices.deleteNotification(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
                 @Override
                 public void onSuccess(BaseResponse response) {
                     if (response.getStatus() == 1) {
+                        mNotificationList.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, mNotificationList.size());
+
+                        if(mNotificationList.size() == 0){
+                            ((MyNotificationActivity)mContext).showHideEmptyLabel(View.VISIBLE);
+                        }else{
+                            ((MyNotificationActivity)mContext).showHideEmptyLabel(View.GONE);
+                        }
+
                     } else {
                         ((BaseActivity) mContext).showToast(response.getMessage());
                     }

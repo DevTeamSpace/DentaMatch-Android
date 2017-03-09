@@ -53,6 +53,10 @@ public class MyNotificationActivity extends BaseActivity implements SwipeRefresh
         getNotificationsData(false, false);
     }
 
+    public void showHideEmptyLabel(int visibility){
+        mBinder.layoutEmptyNotification.setVisibility(visibility);
+    }
+
     private void getNotificationsData(final boolean isRefreshing, boolean isPaginating) {
 
         if(!isPaginating && !isRefreshing){
@@ -77,15 +81,14 @@ public class MyNotificationActivity extends BaseActivity implements SwipeRefresh
 
                     if(response.getNotificationResponseData().getTotal() != mNotificationData.size()){
                         mIsPaginationNeeded = true;
-                        mPage++;
                     }else{
                         mIsPaginationNeeded = false;
                     }
 
                     if(mNotificationData.size() > 0){
-                        mBinder.layoutEmptyNotification.setVisibility(View.GONE);
+                        showHideEmptyLabel(View.GONE);
                     }else{
-                        mBinder.layoutEmptyNotification.setVisibility(View.VISIBLE);
+                        showHideEmptyLabel(View.VISIBLE);
                     }
 
                 }else{

@@ -86,7 +86,7 @@ public class DBHelper {
                 retrievedModel.setHasDBUpdated(false);
                 retrievedModel.setLastMsgTime(timeStamp);
                 retrievedModel.setMessageListId(msgListID);
-                retrievedModel.setUnReadChatCount(unreadMsgCount);
+                retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
 
             }else{
                 DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);

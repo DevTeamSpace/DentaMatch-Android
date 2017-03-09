@@ -65,6 +65,10 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private String mPlaceName;
     private String mLatitude;
     private String mLongitude;
+    private String mCountry;
+    private String mState;
+    private String mCity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,6 +197,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mPostalCode = address.getPostalCode() == null ? "" : address.getPostalCode();
             mLatitude = String.valueOf(address.getLatitude());
             mLongitude = String.valueOf(address.getLongitude());
+            mCountry = address.getCountryName();
+            mCity = address.getLocality();
+            mState = address.getAdminArea();
 
             mAutocompleteView.setAdapter(null);
             mAutocompleteView.setText(mPlaceName);
@@ -203,6 +210,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mPostalCode = "";
             mLatitude = "";
             mLongitude = "";
+            mCountry = "";
         }
 
         LogUtils.LOGD(TAG, "(Postal and Place) " + mPostalCode + ", " + mPlaceName);

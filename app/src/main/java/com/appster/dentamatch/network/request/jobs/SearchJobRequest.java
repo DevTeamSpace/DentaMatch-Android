@@ -19,6 +19,9 @@ public class SearchJobRequest {
     private ArrayList<String> parttimeDays;
     private ArrayList<JobTitleList> selectedJobTitles;
     private String address;
+    private String state;
+    private String city;
+    private String country;
 
     public String getAddress() {
         return address;
@@ -38,6 +41,30 @@ public class SearchJobRequest {
 
     public void setParttimeDays(ArrayList<String> parttimeDays) {
         this.parttimeDays = parttimeDays;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public void setLat(String lat) {
