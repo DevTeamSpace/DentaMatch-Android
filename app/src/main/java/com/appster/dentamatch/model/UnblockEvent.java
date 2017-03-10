@@ -5,4 +5,13 @@ package com.appster.dentamatch.model;
  */
 
 public class UnblockEvent {
+    private boolean status;
+
+    public UnblockEvent(boolean status){
+        this.status = status;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
 }

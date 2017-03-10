@@ -19,7 +19,6 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
-import com.google.android.gms.vision.text.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

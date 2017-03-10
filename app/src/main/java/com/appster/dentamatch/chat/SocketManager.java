@@ -9,6 +9,7 @@ import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
 import com.appster.dentamatch.model.SocketConnectionEvent;
+import com.appster.dentamatch.model.UnblockEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatActivity;
@@ -63,6 +64,7 @@ public class SocketManager {
     private final String EMIT_SEND_MSG = "sendMessage";
     private final String EMIT_UPDATE_READ_COUNT = "updateReadCount";
     private final String EMIT_GET_LEFT_MESSAGES = "getLeftMessages";
+    private final String EMIT_BLOCK_UNBLOCK_USER = "blockUnblock";
 
     private final String EVENT_NEW_MESSAGE = "receiveMessage";
     private final String EVENT_CHAT_HISTORY = "getMessages";
@@ -169,6 +171,46 @@ public class SocketManager {
         }
     };
 
+    public void blockUnblockUser(final String blockStatus, final String toId, final String fromId) {
+        if (mSocket == null) {
+            LogUtils.LOGD(TAG, SOCKET_ERROR);
+            return;
+        }
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("blockStatus", blockStatus);
+        hashMap.put(PARAM_TO_ID, toId);
+        hashMap.put(PARAM_FROM_ID, fromId);
+
+        mSocket.emit(EMIT_BLOCK_UNBLOCK_USER, new JSONObject(hashMap), new Ack() {
+            @Override
+            public void call(Object... args) {
+                LogUtils.LOGD(TAG, "" + args[0]);
+                JSONObject object = (JSONObject) args[0];
+
+                if (attachedGlobalActivity != null) {
+                    attachedGlobalActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DBHelper.getInstance().upDateDB(toId, DBHelper.IS_RECRUITED_BLOCKED, blockStatus, null);
+
+                            if(blockStatus.equalsIgnoreCase("0")){
+                                EventBus.getDefault().post(new UnblockEvent(true));
+                                ((BaseActivity)attachedGlobalActivity).showToast("Recruiter Unblocked");
+                            }else{
+                                ((BaseActivity)attachedGlobalActivity).showToast("Recruiter Blocked");
+                            }
+
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
+
+
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
@@ -204,14 +246,20 @@ public class SocketManager {
                      */
                     final JSONObject jsonObject = (JSONObject) args[0];
                     LogUtils.LOGD(TAG, SOCKET_MESSAGE_ACKNOWLEDGEMENT + args[0]);
-                    ChatMessageModel model = Utils.parseData(jsonObject);
-                    Message message = new Message(model.getMessage(),
-                            model.getRecruiterName(),
-                            model.getMessageTime(),
-                            model.getMessageId(),
-                            Message.TYPE_MESSAGE_SEND);
 
-                    EventBus.getDefault().post(new MessageAcknowledgementEvent(message, model.getToID()));
+                    if(jsonObject.has("blocked")){
+                        ((BaseActivity)attachedActivity).showToast("Recruiter has blocked you from messaging");
+                    }else {
+                        ChatMessageModel model = Utils.parseData(jsonObject);
+
+                        Message message = new Message(model.getMessage(),
+                                model.getRecruiterName(),
+                                model.getMessageTime(),
+                                model.getMessageId(),
+                                Message.TYPE_MESSAGE_SEND);
+
+                        EventBus.getDefault().post(new MessageAcknowledgementEvent(message, model.getToID()));
+                    }
                 }
             });
 
@@ -226,15 +274,15 @@ public class SocketManager {
             /**
              * chat json is not empty
              */
-                if (attachedActivity != null) {
+            if (attachedActivity != null) {
 
-                    attachedActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray));
-                        }
-                    });
-                }
+                attachedActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray));
+                    }
+                });
+            }
 
         }
     };
@@ -254,7 +302,7 @@ public class SocketManager {
              * So we parse data based on the response type data we have received.
              */
             if(jsonObject.has("messageListId")){
-               model = Utils.parseDataForNewRecruiterMessage(jsonObject);
+                model = Utils.parseDataForNewRecruiterMessage(jsonObject);
             }else{
                 model = Utils.parseData(jsonObject);
             }
@@ -364,8 +412,8 @@ public class SocketManager {
         @Override
         public void call(Object... args) {
             try {
-            LogUtils.LOGD(TAG,""+args[0]);
-            JSONObject object = (JSONObject) args[0];
+                LogUtils.LOGD(TAG,""+args[0]);
+                JSONObject object = (JSONObject) args[0];
                 boolean status = Boolean.parseBoolean(object.getString("logout"));
                 if(status){
                     if(attachedActivity != null){
