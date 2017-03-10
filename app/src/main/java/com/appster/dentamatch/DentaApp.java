@@ -5,12 +5,15 @@ package com.appster.dentamatch;
  */
 
 import android.content.Context;
+import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.util.NetworkMonitor;
+import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
+import com.squareup.leakcanary.LeakCanary;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 
@@ -36,29 +39,31 @@ public class DentaApp extends MultiDexApplication {
         DBHelper.getInstance().initializeRealmConfig(mAppContext);
 
 
-//        if (BuildConfig.DEBUG) {
-////            LeakCanary.install(this);
-//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-//                    .detectDiskReads()
-//                    .detectDiskWrites()
-//                    .detectNetwork()   // or .detectAll() for all detectable problems
-//                    .penaltyLog()
-//                    .build());
-//            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//                    .detectLeakedSqlLiteObjects()
-//                    .detectLeakedClosableObjects()
-//                    .detectActivityLeaks()
-//                    .penaltyLog()
-//                    //.penaltyDeath()
-//                    .build());
-//            Stetho.initialize(
-//                    Stetho.newInitializerBuilder(this)
-//                            .enableDumpapp(
-//                                    Stetho.defaultDumperPluginsProvider(this))
-//                            .enableWebKitInspector(
-//                                    Stetho.defaultInspectorModulesProvider(this))
-//                            .build());
-//        }
+        if (BuildConfig.DEBUG) {
+            LeakCanary.install(this);
+
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .detectActivityLeaks()
+                    .penaltyLog()
+                    //.penaltyDeath()
+                    .build());
+
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(
+                                    Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(
+                                    Stetho.defaultInspectorModulesProvider(this))
+                            .build());
+        }
 
         // Shared preference initialize
         Hawk.init(mAppContext).build();

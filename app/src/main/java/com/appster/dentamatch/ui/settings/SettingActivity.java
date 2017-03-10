@@ -20,6 +20,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.ResetPasswordActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
+import com.appster.dentamatch.ui.termsnprivacy.LicenseActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
@@ -55,6 +56,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         settingsBinding.tvLogout.setOnClickListener(this);
         settingsBinding.tvTermNCondition.setOnClickListener(this);
         settingsBinding.tvPrivacyPolicy.setOnClickListener(this);
+        settingsBinding.tvLicence.setOnClickListener(this);
         mUser = PreferenceUtil.getUserModel();
     }
 
@@ -102,11 +104,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
 
             case R.id.tv_privacy_policy:
-                startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, true));
+                startActivity(new Intent(this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, true));
                 break;
 
             case R.id.tv_term_n_condition:
-                startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, false));
+                startActivity(new Intent(this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, false));
+                break;
+
+            case R.id.tv_licence:
+                startActivity(new Intent(this, LicenseActivity.class));
                 break;
 
             default: break;

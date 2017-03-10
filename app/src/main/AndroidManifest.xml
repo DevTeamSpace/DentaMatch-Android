@@ -27,7 +27,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
 
         <meta-data
@@ -66,7 +66,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <activity
             android:name=".ui.auth.LoginActivity"
@@ -207,6 +206,12 @@
             android:name=".ui.messages.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
+        <activity
+            android:name=".ui.termsnprivacy.LicenseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
         <activity
             android:name=".ui.notification.MyNotificationActivity"
             android:screenOrientation="portrait"

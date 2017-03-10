@@ -13,12 +13,9 @@ import com.appster.dentamatch.util.Utils;
  */
 public class WorkExpValidationUtil {
 
-
     public static boolean checkValidation(int isReference2, String selectedJobtitle, int expMonth, String officeName, String officeAddress,
                                           String officeCity, String officeReference1Name, String reference1Email, String reference2Email,
                                           String reference2Name, String reference1Mobile, String reference2Mobile) {
-
-
         if (TextUtils.isEmpty(selectedJobtitle)) {
             Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.blank_job_title_alert));
             return false;
@@ -53,15 +50,6 @@ public class WorkExpValidationUtil {
             return false;
         }
 
-//
-//        if (TextUtils.isEmpty(officeReference1Name)) {
-//            Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.blank_refrence_name_alert));
-//            return false;
-//        }
-//        if (!TextUtils.isEmpty(reference1Email) && !android.util.Patterns.EMAIL_ADDRESS.matcher(reference1Email).matches()) {
-//            Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.valid_email_alert));
-//            return false;
-//        }
         if (!TextUtils.isEmpty(reference1Email) &&! Utils.isValidEmailAddress(reference1Email)) {
             Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.valid_email_alert));
             return false;
@@ -72,16 +60,6 @@ public class WorkExpValidationUtil {
             return false;
         }
         if (isReference2 == 0) {
-//            if (TextUtils.isEmpty(reference2Name)) {
-//                Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.blank_refrence_name_alert));
-//                return false;
-//            }
-
-//            if (!TextUtils.isEmpty(reference2Email) && !android.util.Patterns.EMAIL_ADDRESS.matcher(reference2Email).matches()) {
-//                Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.valid_email_alert));
-//                return false;
-//            }
-
             if (!TextUtils.isEmpty(reference2Email) && !Utils.isValidEmailAddress(reference2Email)) {
                 Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.valid_email_alert));
                 return false;
@@ -91,7 +69,6 @@ public class WorkExpValidationUtil {
                 return false;
             }
         }
-
 
         return true;
     }

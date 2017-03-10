@@ -97,5 +97,22 @@
             android:layout_height="@dimen/line_height"
             android:background="@color/line_divider" />
 
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_licence"
+            style="@style/text_view_normal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_height"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:drawablePadding="@dimen/margin_20"
+            android:drawableStart="@drawable/ic_help"
+            android:text="@string/settings_license"
+            android:textColor="@color/edt_hint_color"
+            app:customFont="@string/font_regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:background="@color/line_divider" />
+
     </LinearLayout>
 </layout>

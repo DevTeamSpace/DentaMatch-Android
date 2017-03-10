@@ -61,6 +61,28 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_chat);
         initViews();
         mLayoutManager.setStackFromEnd(true);
+        mBinder.rcvChat.setLayoutManager(mLayoutManager);
+        mBinder.rcvChat.setAdapter(mAdapter);
+
+        if (getIntent().hasExtra(Constants.EXTRA_CHAT_MODEL)) {
+            mChatModel = getIntent().getParcelableExtra(Constants.EXTRA_CHAT_MODEL);
+        }
+
+        /**
+         * Change the Ui based on recruiter is blocked or not.
+         */
+        if (mChatModel.getRecruiterBlock() == 1) {
+            mBinder.layUnblock.setVisibility(View.VISIBLE);
+            mBinder.layActivityChatSender.setVisibility(View.GONE);
+        } else {
+            mBinder.layUnblock.setVisibility(View.GONE);
+            mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
+        }
+
+        userId = PreferenceUtil.getUserChatId();
+        recruiterId = String.valueOf(mChatModel.getRecruiterId());
+        mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(mChatModel.getName());
+
         mBinder.messages.setLayoutManager(mLayoutManager);
         updateUI(getIntent());
     }
@@ -270,7 +292,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void scrollToBottom() {
-        mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
+        mBinder.rcvChat.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
 

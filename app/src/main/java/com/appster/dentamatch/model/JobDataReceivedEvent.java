@@ -13,13 +13,10 @@ public class JobDataReceivedEvent {
     private boolean mPaginationNeeded;
     private int mTotalItem;
 
-
-
     public JobDataReceivedEvent(ArrayList<SearchJobModel> list, boolean paginationNeeded, int totalItem){
         mJobList = list;
         mPaginationNeeded = paginationNeeded;
         mTotalItem = totalItem;
-
     }
 
     public ArrayList<SearchJobModel> getJobList() {

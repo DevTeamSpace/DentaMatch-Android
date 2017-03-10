@@ -9,6 +9,7 @@ import com.appster.dentamatch.model.LocationEvent;
 import com.appster.dentamatch.model.ProfileSchool;
 import com.appster.dentamatch.model.ProfileSkill;
 import com.appster.dentamatch.model.User;
+import com.appster.dentamatch.network.request.affiliation.Affiliation;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponseData;
@@ -36,12 +37,11 @@ public class ProfileResponseData implements Parcelable {
     @SerializedName("skills")
     private ArrayList<ProfileSkill> skillArrayList;
     @SerializedName("affiliations")
-    private ArrayList<LocationEvent.Affiliation> affiliationList;
+    private ArrayList<Affiliation> affiliationList;
     @SerializedName("certifications")
     private ArrayList<CertificatesList> certificatesLists;
     @SerializedName("joblists")
     private ArrayList<JobTitleList> jobTitleLists;
-
 
     private ProfileResponseData(Parcel in) {
         user = in.readParcelable(User.class.getClassLoader());
@@ -93,7 +93,7 @@ public class ProfileResponseData implements Parcelable {
         return skillArrayList;
     }
 
-    public ArrayList<LocationEvent.Affiliation> getAffiliationList() {
+    public ArrayList<Affiliation> getAffiliationList() {
         return affiliationList;
     }
 
