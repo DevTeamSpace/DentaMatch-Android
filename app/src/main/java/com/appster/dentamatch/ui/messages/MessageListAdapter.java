@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.chat.DBModel;
+import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ItemMessageListBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -25,6 +26,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 import io.realm.OrderedRealmCollection;
@@ -40,11 +42,14 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
     private OrderedRealmCollection<DBModel> messagesData;
     private ItemMessageListBinding mBinding;
     private Context mContext;
+    private String userID;
 
     public MessageListAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<DBModel> data, boolean autoUpdate) {
         super(context, data, autoUpdate);
         messagesData = data;
         mContext = context;
+        userID = PreferenceUtil.getUserChatId();
+
     }
 
     @Override
@@ -122,7 +127,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
 
                         @Override
                         public void onPositive(DialogInterface dialog) {
-                            blockUnBlockUser("1", messagesData.get(position).getRecruiterId());
+                            blockUnBlockUser("1", messagesData.get(position).getRecruiterId(), userID);
                         }
 
                         @Override
@@ -134,29 +139,34 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
         return false;
     }
 
-    private void blockUnBlockUser(final String status, final String recruiterID) {
-        BlockUnBlockRequest request = new BlockUnBlockRequest();
-        request.setBlockStatus(String.valueOf(status));
-        request.setRecruiterId(String.valueOf(recruiterID));
-
-        ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
-        AuthWebServices client = RequestController.createService(AuthWebServices.class);
-        client.blockUnBlockUser(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
-            @Override
-            public void onSuccess(BaseResponse response) {
-                ((BaseActivity) mContext).showToast(response.getMessage());
-
-                if (response.getStatus() == 1) {
-                    DBHelper.getInstance().upDateDB(recruiterID, DBHelper.IS_RECRUITED_BLOCKED, status, null);
-                }
-
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
+    private void blockUnBlockUser(final String status, final String recruiterID, String userID) {
+        if(SocketManager.getInstance().isConnected()){
+            SocketManager.getInstance().blockUnblockUser(status, recruiterID, userID);
+        }else{
+            ((BaseActivity)mContext).showToast(mContext.getString(R.string.error_socket_connection));
+        }
+//        BlockUnBlockRequest request = new BlockUnBlockRequest();
+//        request.setBlockStatus(String.valueOf(status));
+//        request.setRecruiterId(String.valueOf(recruiterID));
+//
+//        ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
+//        AuthWebServices client = RequestController.createService(AuthWebServices.class);
+//        client.blockUnBlockUser(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
+//            @Override
+//            public void onSuccess(BaseResponse response) {
+//                ((BaseActivity) mContext).showToast(response.getMessage());
+//
+//                if (response.getStatus() == 1) {
+//                    DBHelper.getInstance().upDateDB(recruiterID, DBHelper.IS_RECRUITED_BLOCKED, status, null);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+//
+//            }
+//        });
     }
 
     class MyHolder extends RecyclerView.ViewHolder {

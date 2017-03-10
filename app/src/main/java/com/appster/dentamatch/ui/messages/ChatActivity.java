@@ -17,6 +17,7 @@ import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
 import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.model.MessageAcknowledgementEvent;
 import com.appster.dentamatch.model.SocketConnectionEvent;
+import com.appster.dentamatch.model.UnblockEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -148,7 +149,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * Callback called in case of new message and in case of history received.
-     *
      * @param event : received message from server.
      */
     @Subscribe()
@@ -241,38 +241,54 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void recruiterUnblocked(UnblockEvent event){
+        if(event != null){
+            if(event.isStatus()){
+                mBinder.layUnblock.setVisibility(View.GONE);
+                mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
+
+            }
+        }
+    }
+
 
     private void UnBlockUser() {
-        BlockUnBlockRequest request = new BlockUnBlockRequest();
-        request.setBlockStatus(String.valueOf(0));
-        request.setRecruiterId(recruiterId);
+        if(SocketManager.getInstance().isConnected()){
+            SocketManager.getInstance().blockUnblockUser("0", recruiterId, userId);
+        }else{
+            showToast(getString(R.string.error_socket_connection));
+        }
 
-        processToShowDialog("", getString(R.string.please_wait), null);
-        AuthWebServices client = RequestController.createService(AuthWebServices.class);
-        client.blockUnBlockUser(request).enqueue(new BaseCallback<BaseResponse>(this) {
-            @Override
-            public void onSuccess(BaseResponse response) {
-
-                if (response.getStatus() == 1) {
-                    DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_RECRUITED_BLOCKED, "0", null);
-                    mBinder.layUnblock.setVisibility(View.GONE);
-                    mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
-                } else {
-                    showToast(response.getMessage());
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
+//        BlockUnBlockRequest request = new BlockUnBlockRequest();
+//        request.setBlockStatus(String.valueOf(0));
+//        request.setRecruiterId(recruiterId);
+//
+//        processToShowDialog("", getString(R.string.please_wait), null);
+//        AuthWebServices client = RequestController.createService(AuthWebServices.class);
+//        client.blockUnBlockUser(request).enqueue(new BaseCallback<BaseResponse>(this) {
+//            @Override
+//            public void onSuccess(BaseResponse response) {
+//
+//                if (response.getStatus() == 1) {
+//                    DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_RECRUITED_BLOCKED, "0", null);
+//                    mBinder.layUnblock.setVisibility(View.GONE);
+//                    mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
+//                } else {
+//                    showToast(response.getMessage());
+//                }
+//            }
+//
+//            @Override
+//            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+//
+//            }
+//        });
     }
 
     private void scrollToBottom() {
         mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
     }
-
 
     private void updateUI(Intent intent) {
         if (intent.hasExtra(Constants.EXTRA_CHAT_MODEL)) {
