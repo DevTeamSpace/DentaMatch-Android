@@ -16,7 +16,7 @@ public class SocialAuthError extends Throwable {
     /**
      * Constructor
      *
-     * @param message User readable message for the error
+     * @param message UserModel readable message for the error
      * @param e       Inner exception that may be used for further debugging
      */
     public SocialAuthError(String message, Exception e) {

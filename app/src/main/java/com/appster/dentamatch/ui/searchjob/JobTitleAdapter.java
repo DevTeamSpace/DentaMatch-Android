@@ -6,13 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.JobTitleSelected;
-import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.model.JobTitleListModel;
 
 import java.util.ArrayList;
 
@@ -21,8 +20,8 @@ import java.util.ArrayList;
  */
 public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements  View.OnClickListener {
     private Context mContext;
-    private ArrayList<JobTitleList> mAffiliationList = new ArrayList<>();
-    private ArrayList<JobTitleList> mSelectedJobTitles = new ArrayList<>();
+    private ArrayList<JobTitleListModel> mAffiliationList = new ArrayList<>();
+    private ArrayList<JobTitleListModel> mSelectedJobTitles = new ArrayList<>();
     private JobTitleSelected mListener;
 
     public JobTitleAdapter(Context context, JobTitleSelected listener) {
@@ -30,7 +29,7 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mListener = listener;
     }
 
-    public void addList(ArrayList<JobTitleList> list) {
+    public void addList(ArrayList<JobTitleListModel> list) {
         if (mAffiliationList != null) {
             mAffiliationList.clear();
             mAffiliationList.addAll(list);
@@ -39,11 +38,11 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public void setSelectedListItems(ArrayList<JobTitleList> List){
+    public void setSelectedListItems(ArrayList<JobTitleListModel> List){
         if (mAffiliationList != null  && mAffiliationList.size() > 0) {
-            for(JobTitleList mylist : mAffiliationList){
+            for(JobTitleListModel mylist : mAffiliationList){
 
-                for(JobTitleList selectedList : List){
+                for(JobTitleListModel selectedList : List){
 
                     if(mylist.getId() == selectedList.getId()){
                         mylist.setSelected(true);
@@ -56,7 +55,7 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public ArrayList<JobTitleList> getList() {
+    public ArrayList<JobTitleListModel> getList() {
         return mAffiliationList;
     }
 
@@ -67,7 +66,7 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    private JobTitleList getItem(int position) {
+    private JobTitleListModel getItem(int position) {
         return mAffiliationList != null && mAffiliationList.size() > 0 ? mAffiliationList.get(position) : null;
     }
 
@@ -84,7 +83,7 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         try {
             final ViewHolder itemHolder = (ViewHolder) holder;
-            final JobTitleList currentItem = getItem(position);
+            final JobTitleListModel currentItem = getItem(position);
             itemHolder.tvType.setText(currentItem.getJobTitle());
             itemHolder.cbCheckBox.setTag(position);
             itemHolder.cbCheckBox.setOnClickListener(this);
@@ -99,10 +98,10 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onClick(View v) {
         int position = (int) v.getTag();
         try {
-            final JobTitleList currentItem = getItem(position);
+            final JobTitleListModel currentItem = getItem(position);
             if (currentItem.isSelected()) {
 
-                for (JobTitleList i : mSelectedJobTitles) {
+                for (JobTitleListModel i : mSelectedJobTitles) {
                     if (i.getId() == currentItem.getId()) {
                         mSelectedJobTitles.remove(i);
                         break;
@@ -127,10 +126,10 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //        try {
 //        int position = (int) buttonView.getTag();
-//        final JobTitleList currentItem = getItem(position);
+//        final JobTitleListModel currentItem = getItem(position);
 //        if (!isChecked) {
 //
-//            for (JobTitleList i : mSelectedJobTitles) {
+//            for (JobTitleListModel i : mSelectedJobTitles) {
 //
 //                if (i.getId() == currentItem.getId()) {
 //                    mSelectedJobTitles.remove(i);

@@ -10,7 +10,7 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySelectJobTitleBinding;
 import com.appster.dentamatch.interfaces.JobTitleSelected;
-import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -35,7 +35,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
     private ActivitySelectJobTitleBinding mBinder;
     private LinearLayoutManager mLayoutManager;
     private JobTitleAdapter mJobTitleAdapter;
-    private ArrayList<JobTitleList> mSelectedTitleList;
+    private ArrayList<JobTitleListModel> mSelectedTitleList;
 
 
     @Override
@@ -146,7 +146,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void onJobTitleSelected(ArrayList<JobTitleList> jobTitleList) {
+    public void onJobTitleSelected(ArrayList<JobTitleListModel> jobTitleList) {
         mSelectedTitleList = jobTitleList;
     }
 }

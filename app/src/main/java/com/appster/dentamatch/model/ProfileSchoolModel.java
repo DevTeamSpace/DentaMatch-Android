@@ -3,7 +3,7 @@ package com.appster.dentamatch.model;
 /**
  * Created by virender on 21/01/17.
  */
-public class ProfileSchool {
+public class ProfileSchoolModel {
     private int id;
     private int childId;
     private String schoolName;

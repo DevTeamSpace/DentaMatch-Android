@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.auth;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +33,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -44,14 +46,15 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Login";
+
     private ActivityLoginBinding mBinder;
-    private boolean isAccepted, isLogin;
+    private boolean mIsAccepted, mIsLogin;
 
     private String mPostalCode;
     private String mPlaceName;
     private String mLatitude;
     private String mLongitude;
-    private boolean isLoginShow, isRegisterShow;
+    private boolean mIsLoginShow, mIsRegisterShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
         if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_IS_LOGIN)) {
-            isLogin = getIntent().getBooleanExtra(Constants.EXTRA_IS_LOGIN, false);
+            mIsLogin = getIntent().getBooleanExtra(Constants.EXTRA_IS_LOGIN, false);
         }
 
         initViews();
@@ -77,7 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBinder.ivAcceptPolicy.setOnClickListener(this);
 
         setPolicySpanString();
-        showSelectedView(isLogin);
+        showSelectedView(mIsLogin);
     }
 
     private void setPolicySpanString() {
@@ -131,39 +134,41 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_view_login:
-                isLogin = true;
+                mIsLogin = true;
                 hideKeyboard();
                 showSelectedView(true);
                 break;
-            case R.id.login_view_register:
-                isLogin = false;
-                hideKeyboard();
 
+            case R.id.login_view_register:
+                mIsLogin = false;
+                hideKeyboard();
                 showSelectedView(false);
                 break;
+
             case R.id.login_tv_show_password:
                 if (mBinder.loginEtPassword.getText().toString().length() > 0) {
 
-                    if (isLoginShow) {
-                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, isLoginShow, mBinder.loginTvShowPassword);
-                        isLoginShow = false;
+                    if (mIsLoginShow) {
+                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, mIsLoginShow, mBinder.loginTvShowPassword);
+                        mIsLoginShow = false;
 
                     } else {
-                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, isLoginShow, mBinder.loginTvShowPassword);
-                        isLoginShow = true;
+                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, mIsLoginShow, mBinder.loginTvShowPassword);
+                        mIsLoginShow = true;
                     }
                 }
                 break;
+
             case R.id.register_tv_show_password:
                 if (mBinder.registerEtPassword.getText().toString().length() > 0) {
 
-                    if (isRegisterShow) {
-                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, isRegisterShow, mBinder.registerTvShowPassword);
-                        isRegisterShow = false;
+                    if (mIsRegisterShow) {
+                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, mIsRegisterShow, mBinder.registerTvShowPassword);
+                        mIsRegisterShow = false;
 
                     } else {
-                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, isRegisterShow, mBinder.registerTvShowPassword);
-                        isRegisterShow = true;
+                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, mIsRegisterShow, mBinder.registerTvShowPassword);
+                        mIsRegisterShow = true;
                     }
                 }
                 break;
@@ -172,8 +177,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 hideKeyboard();
 
                 if (validateInput()) {
-
-                    if (isLogin) {
+                    if (mIsLogin) {
                         signInApi(prepareLoginRequest());
                     } else {
                         signUpApi(prepareSignUpRequest());
@@ -186,12 +190,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.iv_accept_policy:
-                if (isAccepted) {
-                    isAccepted = false;
+                if (mIsAccepted) {
+                    mIsAccepted = false;
                     mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
                 } else {
                     mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_fill);
-                    isAccepted = true;
+                    mIsAccepted = true;
                 }
                 break;
 
@@ -231,7 +235,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private boolean validateInput() {
-        if (isLogin) {
+        if (mIsLogin) {
             if (TextUtils.isEmpty(getTextFromEditText(mBinder.loginEtEmail))) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
                 mBinder.loginEtEmail.requestFocus();
@@ -304,7 +308,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
-            if (!isAccepted) {
+            if (!mIsAccepted) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_tnc_alert));
                 return false;
             }
@@ -343,7 +347,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setFistName(getTextFromEditText(mBinder.registerEtFname));
                     PreferenceUtil.setLastName(getTextFromEditText(mBinder.registerEtLname));
                     Utils.showToast(getApplicationContext(), response.getMessage());
-                    isLogin = true;
+                    mIsLogin = true;
                     showSelectedView(true);
                     clearRegistrationFields();
 
@@ -404,6 +408,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         } else {
                             request.setParttimeDays(new ArrayList<String>());
                         }
+
+                        Address address = Utils.getReverseGeoCode(LoginActivity.this,
+                                new LatLng(Double.parseDouble(searchFilters.getLat()),
+                                        Double.parseDouble(searchFilters.getLng())));
+
+                        request.setCountry(address.getCountryName());
+                        request.setCity(address.getLocality());
+                        request.setState(address.getAdminArea());
 
                         request.setZipCode(searchFilters.getZipCode());
                         request.setSelectedJobTitles(searchFilters.getSelectedJobTitles());

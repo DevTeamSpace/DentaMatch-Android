@@ -242,7 +242,6 @@ public class DBHelper {
 
     /**
      * Get the DBModel for the specified recruiterId.
-     *
      * @param recruiterId : the recruiter ID.
      */
     public DBModel getDBData(String recruiterId) {

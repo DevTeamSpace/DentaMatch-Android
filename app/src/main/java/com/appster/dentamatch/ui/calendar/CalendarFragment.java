@@ -1,10 +1,8 @@
 package com.appster.dentamatch.ui.calendar;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -12,32 +10,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.adapters.JobListAdapter;
 import com.appster.dentamatch.databinding.FragmentCalendarBinding;
-import com.appster.dentamatch.model.JobCancelEvent;
-import com.appster.dentamatch.model.JobDataReceivedEvent;
+import com.appster.dentamatch.EventBus.JobCancelEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest;
 import com.appster.dentamatch.network.request.jobs.HiredJobRequest;
-import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.request.tracks.CancelJobRequest;
 import com.appster.dentamatch.network.response.jobs.HiredJobResponse;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
-import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
-import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;

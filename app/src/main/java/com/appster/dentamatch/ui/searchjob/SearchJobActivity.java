@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -12,13 +13,15 @@ import android.widget.CompoundButton;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
-import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -30,10 +33,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private String mSelectedLat, mSelectedLng;
     private ArrayList<Integer> mSelectedJobID;
     private ArrayList<String> mPartTimeDays;
-    private ArrayList<JobTitleList> mChosenTitles;
+    private ArrayList<JobTitleListModel> mChosenTitles;
     private String mSelectedZipCode;
     private boolean isFirstTime;
     private String mSelectedAddress;
+    private String mSelectedCity;
+    private String mSelectedCountry;
+    private String mSelectedState;
+
     private boolean isPartTime, isFullTime, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
 
 
@@ -59,18 +66,20 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
         if( PreferenceUtil.getJobFilter() !=  null) {
             SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
-
-            mSelectedJobID = request.getJobTitle();
+            if(request.getJobTitle() != null) {
+                mSelectedJobID.addAll(request.getJobTitle());
+            }
             isFullTime = (request.getIsFulltime() == 1);
             isPartTime = (request.getIsParttime() == 1);
-
-//            if(isPartTime){
-//                mPartTimeDays = request.getParttimeDays();
-//            }
 
             mSelectedZipCode = request.getZipCode();
             mSelectedLat = request.getLat();
             mSelectedLng = request.getLng();
+
+
+            mSelectedCountry = request.getCountry();
+            mSelectedCity = request.getCity();
+            mSelectedState = request.getState();
 
             /**
              * Set views based on the user data obtained above.
@@ -86,42 +95,35 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 for (String days : request.getParttimeDays()){
                     switch(days){
                         case "Sunday":
-//                            mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
                            onClick(mBinder.tvSunday);
                             break;
 
                         case "Monday":
-//                            mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
                             onClick(mBinder.tvMonday);
 
                             break;
 
                         case "Tuesday":
-//                            mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
                             onClick(mBinder.tvTuesday);
 
                             break;
 
                         case "Wednesday":
-//                            mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
                             onClick(mBinder.tvWednesday);
 
                             break;
 
                         case "Thursday":
-//                            mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
                             onClick(mBinder.tvThursday);
 
                             break;
 
                         case "Friday":
-//                            mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
                             onClick(mBinder.tvFriday);
 
                             break;
 
                         case "Saturday":
-//                            mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
                             onClick(mBinder.tvSaturday);
 
                             break;
@@ -140,17 +142,17 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 mBinder.tvFetchedLoation.setText(mSelectedAddress);
             }
 
-            mChosenTitles = request.getSelectedJobTitles();
+            if(request.getSelectedJobTitles() != null ) {
+                mChosenTitles.addAll(request.getSelectedJobTitles());
+            }
 
             if(mChosenTitles != null && mChosenTitles.size() > 0) {
                 mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
 
-                for (JobTitleList items : mChosenTitles) {
+                for (JobTitleListModel items : mChosenTitles) {
                     addTitleToLayout(items, false);
                 }
             }
-
-
         }
 
     }
@@ -159,6 +161,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private void initViews() {
         mSelectedJobID = new ArrayList<>();
         mPartTimeDays = new ArrayList<>();
+        mChosenTitles = new ArrayList<>();
 
         mBinder.toolbarSearchJob.tvToolbarGeneralLeft.setText(getString(R.string.header_search_job));
         mBinder.toolbarSearchJob.ivToolBarLeft.setOnClickListener(this);
@@ -198,7 +201,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             case R.id.tv_job_title:
                 Intent jobTitleSelectionIntent = new Intent(getApplicationContext(), SelectJobTitleActivity.class);
 
-                if (mChosenTitles != null) {
+                if (mChosenTitles != null && mChosenTitles.size() > 0) {
                     jobTitleSelectionIntent.putExtra(Constants.EXTRA_CHOSEN_JOB_TITLES, mChosenTitles);
                 }
 
@@ -392,6 +395,9 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         request.setParttimeDays(mPartTimeDays);
         request.setZipCode(mSelectedZipCode);
         request.setAddress(mSelectedAddress);
+        request.setCity(mSelectedCity);
+        request.setCountry(mSelectedCountry);
+        request.setState(mSelectedState);
 
         request.setSelectedJobTitles(mChosenTitles);
 
@@ -406,13 +412,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
          */
         PreferenceUtil.setFilterChanged(true);
         startActivity(new Intent(this, HomeActivity.class)
-//                .putExtra(Constants.EXTRA_SEARCH_JOB, true)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
 
     private boolean isValidData() {
-        if (mSelectedJobID.size() == 0) {
+        if (mSelectedJobID.size() == 0 || mChosenTitles.size() == 0) {
             showToast(getString(R.string.msg_empty_job_title));
             return false;
 
@@ -444,11 +449,11 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             if (data != null && data.hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)) {
                 mSelectedJobID.clear();
                 mBinder.flowLayoutJobTitle.removeAllViews();
-                ArrayList<JobTitleList> jobTitleList = data.getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
+                ArrayList<JobTitleListModel> jobTitleList = data.getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
                 mChosenTitles = jobTitleList;
                 mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
 
-                for (JobTitleList item : jobTitleList) {
+                for (JobTitleListModel item : jobTitleList) {
                     addTitleToLayout(item, true);
                 }
 
@@ -466,11 +471,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                 mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
                 mSelectedZipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
+                mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
+                mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
+                mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
             }
         }
     }
 
-    private void addTitleToLayout(JobTitleList jobTitleListItem, boolean shouldAdd) {
+    private void addTitleToLayout(JobTitleListModel jobTitleListItem, boolean shouldAdd) {
         String text = jobTitleListItem.getJobTitle();
 
         if(shouldAdd) {

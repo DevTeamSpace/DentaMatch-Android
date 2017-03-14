@@ -1,12 +1,10 @@
 package com.appster.dentamatch.network.request.auth;
 
 
-import com.appster.dentamatch.network.BaseRequest;
-
 /**
  *
  */
-public class RefreshTokenRequest extends BaseRequest {
+public class RefreshTokenRequest {
 
     private int mUserId;
     private String mRefreshToken;

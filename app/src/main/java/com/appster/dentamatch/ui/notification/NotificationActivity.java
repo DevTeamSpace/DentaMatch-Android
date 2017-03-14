@@ -110,8 +110,6 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
                 /**
                  * Once data has been loaded from the filter changes we can dismiss this filter.
                  */
-
-
                 if (response.getStatus() == 1) {
                     ArrayList<NotificationData> list = new ArrayList<NotificationData>();
                     list.addAll(mNotificaionAdapter.getList());

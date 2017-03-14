@@ -15,6 +15,9 @@ public class Constants {
 
     public static final String EXTRA_PLACE_NAME = "place_name";
     public static final String EXTRA_POSTAL_CODE = "postal_code";
+    public static final String EXTRA_CITY_NAME = "city_name";
+    public static final String EXTRA_COUNTRY_NAME = "country_name";
+    public static final String EXTRA_STATE_NAME = "state_name";
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_SUB_SKILLS = "sub_skills";

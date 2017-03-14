@@ -15,9 +15,10 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SkillsAdapter;
 import com.appster.dentamatch.databinding.ActivitySkillsBinding;
 import com.appster.dentamatch.interfaces.EditTextSelected;
-import com.appster.dentamatch.model.ParentSkill;
-import com.appster.dentamatch.model.ProfileUpdatedEvent;
-import com.appster.dentamatch.model.SubSkill;
+import com.appster.dentamatch.interfaces.OnSkillClick;
+import com.appster.dentamatch.model.ParentSkillModel;
+import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.model.SubSkillModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -41,7 +42,7 @@ import retrofit2.Call;
 /**
  * Created by ram on 12/01/17.
  */
-public class SkillsActivity extends BaseActivity implements View.OnClickListener, SkillsAdapter.OnSkillClick, EditTextSelected {
+public class SkillsActivity extends BaseActivity implements View.OnClickListener, OnSkillClick, EditTextSelected {
     private static final String TAG = "Skills";
     private ActivitySkillsBinding mBinder;
 
@@ -50,7 +51,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
 
     private int mSkillPosition;
     private boolean isFromProfile;
-    private List<ParentSkill> mParentSkillList;
+    private List<ParentSkillModel> mParentSkillList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         LogUtils.LOGD(TAG, "onActivityResult data " + data);
 
         if (data != null) {
-            ArrayList<SubSkill> subSkills = data.getParcelableArrayListExtra(Constants.BundleKey.SUB_SKILLS);
+            ArrayList<SubSkillModel> subSkills = data.getParcelableArrayListExtra(Constants.BundleKey.SUB_SKILLS);
             LogUtils.LOGD(TAG, subSkills.size() + " items");
 
             mParentSkillList.get(mSkillPosition).setSubSkills(subSkills);
@@ -110,7 +111,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private void setAdapter(List<ParentSkill> skillArrayList) {
+    private void setAdapter(List<ParentSkillModel> skillArrayList) {
         mSkillsAdapter = new SkillsAdapter(skillArrayList, this, this, this, isFromProfile);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSkills.setLayoutManager(layoutManager);
@@ -120,7 +121,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public void onItemSelected(ArrayList<SubSkill> subSkillList, int position) {
+    public void onItemSelected(ArrayList<SubSkillModel> subSkillList, int position) {
 
         Intent intent = new Intent(SkillsActivity.this, SubSkillsActivity.class);
         intent.putExtra(Constants.BundleKey.SUB_SKILLS, subSkillList);
@@ -159,27 +160,27 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         ArrayList<Integer> skills = new ArrayList<Integer>();
         ArrayList<UpdateCertificates> othersList = new ArrayList<UpdateCertificates>();
 
-        for (ParentSkill parentSkill : mParentSkillList) {
-            if (parentSkill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
-                    if (!TextUtils.isEmpty(parentSkill.getOtherSkill())) {
+        for (ParentSkillModel parentSkillModel : mParentSkillList) {
+            if (parentSkillModel.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                    if (!TextUtils.isEmpty(parentSkillModel.getOtherSkill())) {
                         UpdateCertificates obj = new UpdateCertificates();
-                        obj.setId(parentSkill.getId());
-                        obj.setValue(parentSkill.getOtherSkill().trim());
+                        obj.setId(parentSkillModel.getId());
+                        obj.setValue(parentSkillModel.getOtherSkill().trim());
                         othersList.add(obj);
                     }
 
 
             }
-            for (SubSkill subSkill : parentSkill.getSubSkills()) {
-                if (subSkill.getIsSelected() == 1) {
-                    if (!subSkill.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
-                        skills.add(subSkill.getId());
+            for (SubSkillModel subSkillModel : parentSkillModel.getSubSkills()) {
+                if (subSkillModel.getIsSelected() == 1) {
+                    if (!subSkillModel.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                        skills.add(subSkillModel.getId());
                     } else {
                         UpdateCertificates obj = new UpdateCertificates();
-                        obj.setId(subSkill.getId());
-                        if (!TextUtils.isEmpty(subSkill.getOtherText())) {
+                        obj.setId(subSkillModel.getId());
+                        if (!TextUtils.isEmpty(subSkillModel.getOtherText())) {
 
-                            obj.setValue(subSkill.getOtherText().trim());
+                            obj.setValue(subSkillModel.getOtherText().trim());
                         }
                         othersList.add(obj);
                     }

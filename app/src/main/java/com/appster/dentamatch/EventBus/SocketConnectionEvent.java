@@ -1,4 +1,4 @@
-package com.appster.dentamatch.model;
+package com.appster.dentamatch.EventBus;
 
 /**
  * Created by Appster on 08/02/17.

@@ -75,7 +75,6 @@ public class MyNotificationActivity extends BaseActivity implements SwipeRefresh
                         mNotificationData.clear();
                     }
 
-
                     mNotificationData.addAll(response.getNotificationResponseData().getNotificationList());
                     mNotificationAdapter.notifyDataSetChanged();
 

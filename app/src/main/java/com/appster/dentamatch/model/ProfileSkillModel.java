@@ -7,13 +7,13 @@ import java.util.ArrayList;
 /**
  * Created by virender on 21/01/17.
  */
-public class ProfileSkill {
+public class ProfileSkillModel {
     @SerializedName("id")
     private int parentId;
     @SerializedName("skillName")
     private String skillsName;
     @SerializedName("children")
-    private ArrayList<ProfileSubSkill> childSkillList;
+    private ArrayList<ProfileSubSkillModel> childSkillList;
 
     public int getParentId() {
         return parentId;
@@ -23,7 +23,7 @@ public class ProfileSkill {
         return skillsName;
     }
 
-    public ArrayList<ProfileSubSkill> getChildSkillList() {
+    public ArrayList<ProfileSubSkillModel> getChildSkillList() {
         return childSkillList;
     }
 }

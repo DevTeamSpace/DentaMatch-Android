@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySetAvailabilityBinding;
-import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -25,11 +25,9 @@ import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import retrofit2.Call;
 
@@ -41,7 +39,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     private String mSelectedLat, mSelectedLng;
     private ArrayList<Integer> mSelectedJobID;
     private ArrayList<String> mPartTimeDays;
-    private ArrayList<JobTitleList> mChosenTitles;
+    private ArrayList<JobTitleListModel> mChosenTitles;
     private String mSelectedZipCode;
     private AvailabilityResponse availabilityResponse;
     private boolean isPartTime, isFullTime, isTemporary, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;

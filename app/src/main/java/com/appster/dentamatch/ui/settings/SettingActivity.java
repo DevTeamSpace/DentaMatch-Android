@@ -10,8 +10,8 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySettingsBinding;
-import com.appster.dentamatch.model.ProfileUpdatedEvent;
-import com.appster.dentamatch.model.User;
+import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -38,7 +38,7 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
  */
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private ActivitySettingsBinding settingsBinding;
-    private User mUser;
+    private UserModel mUserModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         settingsBinding.tvLogout.setOnClickListener(this);
         settingsBinding.tvTermNCondition.setOnClickListener(this);
         settingsBinding.tvPrivacyPolicy.setOnClickListener(this);
-        mUser = PreferenceUtil.getUserModel();
+        mUserModel = PreferenceUtil.getUserModel();
     }
 
     @Override
@@ -77,11 +77,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_chnage_location:
                 Intent intent = new Intent(this, PlacesMapActivity.class);
 
-                if (mUser.getLatitude() != null && mUser.getLongitude() != null) {
-                    intent.putExtra(Constants.EXTRA_LATITUDE, mUser.getLatitude());
-                    intent.putExtra(Constants.EXTRA_LONGITUDE, mUser.getLongitude());
-                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mUser.getPostalCode());
-                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mUser.getPreferredJobLocation());
+                if (mUserModel.getLatitude() != null && mUserModel.getLongitude() != null) {
+                    intent.putExtra(Constants.EXTRA_LATITUDE, mUserModel.getLatitude());
+                    intent.putExtra(Constants.EXTRA_LONGITUDE, mUserModel.getLongitude());
+                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mUserModel.getPostalCode());
+                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mUserModel.getPreferredJobLocation());
                 }
 
                 startActivityForResult(intent, REQUEST_CODE_LOCATION);
@@ -150,11 +150,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             public void onSuccess(BaseResponse response) {
                 showToast(response.getMessage());
                 if(response.getStatus() == 1){
-                    mUser.setLongitude(lng);
-                    mUser.setLatitude(lat);
-                    mUser.setPreferredJobLocation(address);
-                    mUser.setPostalCode(zipCode);
-                    PreferenceUtil.setUserModel(mUser);
+                    mUserModel.setLongitude(lng);
+                    mUserModel.setLatitude(lat);
+                    mUserModel.setPreferredJobLocation(address);
+                    mUserModel.setPostalCode(zipCode);
+                    PreferenceUtil.setUserModel(mUserModel);
                     EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                 }
             }

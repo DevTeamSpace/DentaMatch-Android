@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Appster on 23/05/16.
  */
-public class User implements Parcelable{
+public class UserModel implements Parcelable{
     private  String email;
     private String status;
     private Integer userId;
@@ -33,7 +33,7 @@ public class User implements Parcelable{
     private String preferredJobLocation;
     private int id;
 
-    private User(Parcel in) {
+    private UserModel(Parcel in) {
         email = in.readString();
         status = in.readString();
         firstName = in.readString();
@@ -85,15 +85,15 @@ public class User implements Parcelable{
         dest.writeInt(id);
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
+    public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
         @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
+        public UserModel createFromParcel(Parcel in) {
+            return new UserModel(in);
         }
 
         @Override
-        public User[] newArray(int size) {
-            return new User[size];
+        public UserModel[] newArray(int size) {
+            return new UserModel[size];
         }
     };
 

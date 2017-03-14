@@ -10,15 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SchoolsAdapter;
 import com.appster.dentamatch.databinding.ActivitySchoolingBinding;
 import com.appster.dentamatch.interfaces.EditTextSelected;
-import com.appster.dentamatch.model.ProfileUpdatedEvent;
-import com.appster.dentamatch.model.School;
-import com.appster.dentamatch.model.SchoolType;
+import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.model.SchoolTypeModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -160,7 +158,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                     checkValidation();
                 } else {
                     if (TextUtils.isEmpty(entry.getValue().getSchoolName())) {
-                        showToast("School name can never blank.");
+                        showToast("SchoolModel name can never blank.");
                         return false;
                     }
 
@@ -176,7 +174,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     }
 
 
-    private void setAdapter(List<SchoolType> schoolTypeList) {
+    private void setAdapter(List<SchoolTypeModel> schoolTypeList) {
         mSchoolsAdapter = new SchoolsAdapter(schoolTypeList, this, this, isFromProfile);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSchools.setLayoutManager(layoutManager);

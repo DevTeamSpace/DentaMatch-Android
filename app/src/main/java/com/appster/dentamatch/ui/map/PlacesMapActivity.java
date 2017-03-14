@@ -7,11 +7,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -19,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.model.LocationEvent;
+import com.appster.dentamatch.EventBus.LocationEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
@@ -38,7 +35,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 //import com.google.common.math.DoubleMath;
 
@@ -106,6 +102,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mLongitude = getIntent().getStringExtra(Constants.EXTRA_LONGITUDE);
             mPostalCode = getIntent().getStringExtra(Constants.EXTRA_POSTAL_CODE);
             mPlaceName = getIntent().getStringExtra(Constants.EXTRA_PLACE_NAME);
+            mCity = getIntent().getStringExtra(Constants.EXTRA_CITY_NAME);
+            mState = getIntent().getStringExtra(Constants.EXTRA_STATE_NAME);
+            mCountry = getIntent().getStringExtra(Constants.EXTRA_COUNTRY_NAME);
 
             mAutocompleteView.setAdapter(null);
             mAutocompleteView.setText(mPlaceName);
@@ -187,7 +186,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
-        Address address = getReverseGeoCode(latLng);
+        Address address = Utils.getReverseGeoCode(this, latLng);
         setData(address);
     }
 
@@ -211,6 +210,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mLatitude = "";
             mLongitude = "";
             mCountry = "";
+            mState = "";
+            mCity = "";
         }
 
         LogUtils.LOGD(TAG, "(Postal and Place) " + mPostalCode + ", " + mPlaceName);
@@ -221,7 +222,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng));
 
-        Address address = getReverseGeoCode(latLng);
+        Address address = Utils.getReverseGeoCode(this,latLng);
 
         setData(address);
     }
@@ -289,7 +290,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
             LogUtils.LOGD(TAG, latLng.toString());
 
-            Address address = getReverseGeoCode(latLng);
+            Address address = Utils.getReverseGeoCode(PlacesMapActivity.this,latLng);
 
             setData(address);
 
@@ -303,6 +304,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         intent.putExtra(Constants.EXTRA_POSTAL_CODE, mPostalCode);
         intent.putExtra(Constants.EXTRA_LATITUDE, mLatitude);
         intent.putExtra(Constants.EXTRA_LONGITUDE, mLongitude);
+        intent.putExtra(Constants.EXTRA_CITY_NAME, mCity);
+        intent.putExtra(Constants.EXTRA_STATE_NAME, mState);
+        intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mCountry);
 
         LogUtils.LOGD(TAG, "Postal Code " + mPostalCode + ", Place " + mPlaceName);
 
@@ -353,19 +357,5 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         return sb.toString();
     }
 
-    private Address getReverseGeoCode(LatLng latLng) {
-        Address address = null;
 
-        Geocoder geocoder = new Geocoder(this);
-        try {
-            List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            address = addressList.get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IndexOutOfBoundsException ex) {
-            ex.printStackTrace();
-        }
-
-        return address;
-    }
 }

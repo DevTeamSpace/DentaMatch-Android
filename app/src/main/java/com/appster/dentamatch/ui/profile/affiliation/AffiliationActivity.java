@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityAffiliationBinding;
-import com.appster.dentamatch.model.ProfileUpdatedEvent;
+import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;

@@ -18,10 +18,10 @@ import com.appster.dentamatch.databinding.ItemProfileCellCertificateBinding;
 import com.appster.dentamatch.databinding.ItemProfileSchoolingBinding;
 import com.appster.dentamatch.databinding.ItemProfileSkillBinding;
 import com.appster.dentamatch.databinding.ItemProfileWorkExpBinding;
-import com.appster.dentamatch.model.ProfileSchool;
-import com.appster.dentamatch.model.ProfileSkill;
-import com.appster.dentamatch.model.ProfileUpdatedEvent;
-import com.appster.dentamatch.model.User;
+import com.appster.dentamatch.model.ProfileSchoolModel;
+import com.appster.dentamatch.model.ProfileSkillModel;
+import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -390,7 +390,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
-    private void inflateSkill(ArrayList<ProfileSkill> skillArrayList) {
+    private void inflateSkill(ArrayList<ProfileSkillModel> skillArrayList) {
         profileBinding.keySkillInflater.setVisibility(View.VISIBLE);
 
         profileBinding.keySkillInflater.removeAllViews();
@@ -580,7 +580,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    private void inflateSchools(ArrayList<ProfileSchool> schoolList) {
+    private void inflateSchools(ArrayList<ProfileSchoolModel> schoolList) {
         profileBinding.schoolInflater.setVisibility(View.VISIBLE);
 
         profileBinding.schoolInflater.removeAllViews();
@@ -608,8 +608,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
-    private void saveUserProfile(User user) {
-        PreferenceUtil.setUserModel(user);
+    private void saveUserProfile(UserModel userModel) {
+        PreferenceUtil.setUserModel(userModel);
     }
 
 

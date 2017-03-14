@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by ramkumar on 12/01/17.
  */
 
-public class SubSkill implements Parcelable {
+public class SubSkillModel implements Parcelable {
     private int id;
     private int parentId;
     private String skillName;
@@ -17,7 +17,7 @@ public class SubSkill implements Parcelable {
     private int isSelected;
     private String otherSkill;
 
-    private SubSkill(Parcel in) {
+    private SubSkillModel(Parcel in) {
         id = in.readInt();
         parentId = in.readInt();
         skillName = in.readString();
@@ -25,15 +25,15 @@ public class SubSkill implements Parcelable {
         isSelected = in.readInt();
     }
 
-    public static final Creator<SubSkill> CREATOR = new Creator<SubSkill>() {
+    public static final Creator<SubSkillModel> CREATOR = new Creator<SubSkillModel>() {
         @Override
-        public SubSkill createFromParcel(Parcel in) {
-            return new SubSkill(in);
+        public SubSkillModel createFromParcel(Parcel in) {
+            return new SubSkillModel(in);
         }
 
         @Override
-        public SubSkill[] newArray(int size) {
-            return new SubSkill[size];
+        public SubSkillModel[] newArray(int size) {
+            return new SubSkillModel[size];
         }
     };
 

@@ -17,7 +17,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 /**
  * Controller class for handling all network calls.
@@ -25,11 +24,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public final class RequestController {
 
     private static String TAG = "RequestController";
+    private static String HEADER_ACCESS_TOKEN = "accessToken";
+    private static String HEADER_CONTENT_TYPE = "Content-Type";
+    private static String HEADER_ACCEPT = "accept";
+    private static String APPLICATION_JSON = "application/json";
+
     private static Retrofit retrofit;
     private static HttpLoggingInterceptor logger = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private static OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
-//            .addNetworkInterceptor(new StethoInterceptor())
             .readTimeout(1, TimeUnit.MINUTES)
             .connectTimeout(1, TimeUnit.MINUTES);
 
@@ -52,13 +55,13 @@ public final class RequestController {
                 Request original = chain.request();
                 if (isAuth) {
                     String accessToken = PreferenceUtil.getKeyUserToken();
-                    LogUtils.LOGD(TAG, "Access_ toke--=" + accessToken);
+                    LogUtils.LOGD(TAG, HEADER_ACCESS_TOKEN + " : " + accessToken);
 
                     if (!TextUtils.isEmpty(accessToken)) {
                         Request.Builder requestBuilder = original.newBuilder()
-                                .header("accessToken", accessToken)
-                                .header("Content-Type", "application/json")
-                                .header("accept", "application/json")
+                                .header(HEADER_ACCESS_TOKEN, accessToken)
+                                .header(HEADER_CONTENT_TYPE, APPLICATION_JSON)
+                                .header(HEADER_ACCEPT, APPLICATION_JSON)
                                 .method(original.method(), original.body());
                         Request request = requestBuilder.build();
                         return chain.proceed(request);

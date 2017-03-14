@@ -5,11 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.appster.dentamatch.BuildConfig;
-import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
-import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
-import com.appster.dentamatch.model.MessageAcknowledgementEvent;
-import com.appster.dentamatch.model.SocketConnectionEvent;
-import com.appster.dentamatch.model.UnblockEvent;
+import com.appster.dentamatch.R;
+import com.appster.dentamatch.EventBus.ChatHistoryRetrievedEvent;
+import com.appster.dentamatch.EventBus.ChatPersonalMessageReceivedEvent;
+import com.appster.dentamatch.EventBus.MessageAcknowledgementEvent;
+import com.appster.dentamatch.EventBus.SocketConnectionEvent;
+import com.appster.dentamatch.EventBus.UnblockEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatActivity;
@@ -55,9 +56,13 @@ public class SocketManager {
     public static final String PARAM_PAGE = "pageNo";
     public static final String PARAM_RECRUITER_NAME = "fromName";
     public static final String PARAM_MESSAGE_ID = "messageId";
+    public static final String PARAM_BLOCK_STATUS = "blockStatus";
+    public static final String PARAM_USER_TYPE = "userType";
 
     public static final int ON_RESUME = 0;
     public static final int ON_PAUSE = 1;
+    public static final String MESSAGE_LIST_ID = "messageListId";
+    public static final String BLOCKED = "blocked";
 
     private final String EMIT_USER_HISTORY = "getHistory";
     private final String EMIT_INIT = "init";
@@ -65,9 +70,11 @@ public class SocketManager {
     private final String EMIT_UPDATE_READ_COUNT = "updateReadCount";
     private final String EMIT_GET_LEFT_MESSAGES = "getLeftMessages";
     private final String EMIT_BLOCK_UNBLOCK_USER = "blockUnblock";
+    private final String EMIT_NOT_ON_CHAT = "notOnChat";
 
     private final String EVENT_NEW_MESSAGE = "receiveMessage";
     private final String EVENT_CHAT_HISTORY = "getMessages";
+    private final String EVENT_SESSION_EXPIRED = "logoutPreviousSession";
 
     private static String CHAT_SERVER_URL = BuildConfig.CHAT_URL;
 
@@ -178,7 +185,7 @@ public class SocketManager {
         }
 
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("blockStatus", blockStatus);
+        hashMap.put(PARAM_BLOCK_STATUS, blockStatus);
         hashMap.put(PARAM_TO_ID, toId);
         hashMap.put(PARAM_FROM_ID, fromId);
 
@@ -196,9 +203,9 @@ public class SocketManager {
 
                             if(blockStatus.equalsIgnoreCase("0")){
                                 EventBus.getDefault().post(new UnblockEvent(true));
-                                ((BaseActivity)attachedGlobalActivity).showToast("Recruiter Unblocked");
+                                ((BaseActivity)attachedGlobalActivity).showToast(attachedGlobalActivity.getString(R.string.msg_recruiter_unblocked));
                             }else{
-                                ((BaseActivity)attachedGlobalActivity).showToast("Recruiter Blocked");
+                                ((BaseActivity)attachedGlobalActivity).showToast(attachedGlobalActivity.getString(R.string.msg_recruiter_blocked));
                             }
 
                         }
@@ -247,8 +254,8 @@ public class SocketManager {
                     final JSONObject jsonObject = (JSONObject) args[0];
                     LogUtils.LOGD(TAG, SOCKET_MESSAGE_ACKNOWLEDGEMENT + args[0]);
 
-                    if(jsonObject.has("blocked")){
-                        ((BaseActivity)attachedActivity).showToast("Recruiter has blocked you from messaging");
+                    if(jsonObject.has(BLOCKED)){
+                        ((BaseActivity)attachedActivity).showToast(attachedActivity.getString(R.string.msg_recruiter_blocked_you));
                     }else {
                         ChatMessageModel model = Utils.parseData(jsonObject);
 
@@ -301,7 +308,7 @@ public class SocketManager {
              * A new message from a new recruiter will have a messageListId in the jsonObject and other messages wont.
              * So we parse data based on the response type data we have received.
              */
-            if(jsonObject.has("messageListId")){
+            if(jsonObject.has(MESSAGE_LIST_ID)){
                model = Utils.parseDataForNewRecruiterMessage(jsonObject);
             }else{
                 model = Utils.parseData(jsonObject);
@@ -468,7 +475,7 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        mSocket.on("logoutPreviousSession", onUserSessionExpired);
+        mSocket.on(EVENT_SESSION_EXPIRED, onUserSessionExpired);
         mSocket.on(EVENT_NEW_MESSAGE, onNewMessage);
     }
 
@@ -490,7 +497,7 @@ public class SocketManager {
             return;
         }
         mSocket.off(EVENT_NEW_MESSAGE, onNewMessage);
-        mSocket.off("logoutPreviousSession", onUserSessionExpired);
+        mSocket.off(EVENT_SESSION_EXPIRED, onUserSessionExpired);
 
     }
 
@@ -522,11 +529,11 @@ public class SocketManager {
 
     public void disconnectFromChat() {
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("fromId", PreferenceUtil.getUserChatId());
-        mSocket.emit("notOnChat", new JSONObject(hashMap), new Ack() {
+        hashMap.put(PARAM_FROM_ID, PreferenceUtil.getUserChatId());
+        mSocket.emit(EMIT_NOT_ON_CHAT, new JSONObject(hashMap), new Ack() {
             @Override
             public void call(Object... args) {
-                LogUtils.LOGD(TAG, "notOnChat" + ":" + args[0]);
+                LogUtils.LOGD(TAG,EMIT_NOT_ON_CHAT + args[0]);
             }
         });
     }
@@ -539,7 +546,7 @@ public class SocketManager {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put(PARAM_USERID, PreferenceUtil.getUserChatId());
         hashMap.put(PARAM_USERNAME, PreferenceUtil.getFirstName());
-        hashMap.put("userType", "1");
+        hashMap.put(PARAM_USER_TYPE, "1");
         JSONObject object = new JSONObject(hashMap);
         mSocket.emit(EMIT_INIT, object, new Ack() {
             @Override

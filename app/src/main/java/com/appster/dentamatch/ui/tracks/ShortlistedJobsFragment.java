@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
-import com.appster.dentamatch.model.JobCancelEvent;
+import com.appster.dentamatch.EventBus.JobCancelEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;

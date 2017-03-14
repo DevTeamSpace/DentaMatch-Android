@@ -19,7 +19,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateCertificateBinding;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
-import com.appster.dentamatch.model.ProfileUpdatedEvent;
+import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;

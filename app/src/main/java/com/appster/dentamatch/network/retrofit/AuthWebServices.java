@@ -58,6 +58,14 @@ import retrofit2.http.Query;
  * Interface to declare web service stubs.
  */
 public interface AuthWebServices {
+     String PAGE = "page";
+     String TYPE = "type";
+     String LAT = "lat";
+     String LNG = "lng";
+     String ID = "id";
+     String IMAGE_EXTENSION = "image\"; filename=\"denta_img.jpg\"";
+     String CERTIFICATE_ID = "certificateId";
+
     String SIGN_IN = "users/sign-in";
     String SIGN_UP = "users/sign-up";
     String FORGOT_PASSWORD = "users/forgot-password";
@@ -75,7 +83,6 @@ public interface AuthWebServices {
     String IMAGE_UPLOAD_CERTIFICATE = "users/update-certificate";
     String ADD_WORK_EXP = "users/work-experience-save";
     String WORK_EXP_LIST = "users/work-experience-list";
-    //    String WORK_EXP_DELETE="users/work-experience-delete{id}";
     String WORK_EXP_DELETE = "users/work-experience-delete";
     String AFFILIATION_LIST = "users/affiliation-list";
     String UNREAD_NOTIFICATION_COUNT = "users/unread-notification";
@@ -110,14 +117,17 @@ public interface AuthWebServices {
     Call<ChatHistoryResponse> getChatHistory();
 
     @GET(GET_NOTIFICATION)
-    Call<NotificationResponse> getNotification(@Query("page") int page);
+    Call<NotificationResponse> getNotification(@Query(PAGE) int page);
 
     @POST(UPDATE_USER_LOCATION)
     Call<BaseResponse> updateUserLocation(@Body ChangeUserLocation request);
 
 
     @GET(TRACK_JOBS)
-    Call<SearchJobResponse> fetchTrackJobs(@Query("type") int type, @Query("page") int page, @Query("lat") double lat, @Query("lng") double lng);
+    Call<SearchJobResponse> fetchTrackJobs(@Query(TYPE) int type,
+                                           @Query(PAGE) int page,
+                                           @Query(LAT) double lat,
+                                           @Query(LNG) double lng);
 
     @POST(SAVE_UNSAVE_JOB)
     Call<BaseResponse> saveUnSaveJob(@Body SaveUnSaveRequest request);
@@ -150,7 +160,7 @@ public interface AuthWebServices {
     Call<LoginResponse> forgotPassword(@Body LoginRequest loginRequest);
 
     @DELETE(WORK_EXP_DELETE)
-    Call<BaseResponse> workExpDelete(@Query("id") int id);
+    Call<BaseResponse> workExpDelete(@Query(ID) int id);
 
     @DELETE(LOGOUT)
     Call<BaseResponse> logout();
@@ -191,6 +201,7 @@ public interface AuthWebServices {
 
     @POST(RAED_NOTIFICATION)
     Call<BaseResponse> readNotification(@Body ReadNotificationRequest notificationRequest);
+
     @POST(DELETE_NOTIFICATION)
     Call<BaseResponse> deleteNotification(@Body ReadNotificationRequest notificationRequest);
 
@@ -223,11 +234,11 @@ public interface AuthWebServices {
 
     @Multipart
     @POST(IMAGE_UPLOAD)
-    Call<FileUploadResponse> uploadImage(@Part("type") RequestBody type,
-                                         @Part("image\"; filename=\"denta_img.jpg\"") RequestBody file);
+    Call<FileUploadResponse> uploadImage(@Part(TYPE) RequestBody type,
+                                         @Part(IMAGE_EXTENSION) RequestBody file);
 
     @Multipart
     @POST(IMAGE_UPLOAD_CERTIFICATE)
-    Call<FileUploadResponse> uploadCertificateImage(@Part("certificateId") RequestBody type,
-                                                    @Part("image\"; filename=\"denta_img.jpg\"") RequestBody file);
+    Call<FileUploadResponse> uploadCertificateImage(@Part(CERTIFICATE_ID) RequestBody type,
+                                                    @Part(IMAGE_EXTENSION) RequestBody file);
 }

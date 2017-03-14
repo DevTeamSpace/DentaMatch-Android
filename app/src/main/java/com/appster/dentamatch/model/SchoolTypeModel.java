@@ -8,21 +8,21 @@ import java.util.ArrayList;
  * Created by ramkumar on 16/01/17.
  */
 
-public class SchoolType {
+public class SchoolTypeModel {
     @SerializedName("schoolingId")
     private int schoolTypeId;
     @SerializedName("schoolName")
     private String schoolTypeName;
     @SerializedName("schoolCategory")
-    private ArrayList<School> schoolList;
+    private ArrayList<SchoolModel> schoolList;
     @SerializedName("other")
-    private ArrayList<School> otherList;
+    private ArrayList<SchoolModel> otherList;
 
-    public ArrayList<School> getOtherList() {
+    public ArrayList<SchoolModel> getOtherList() {
         return otherList;
     }
 
-    public void setOtherList(ArrayList<School> otherList) {
+    public void setOtherList(ArrayList<SchoolModel> otherList) {
         this.otherList = otherList;
     }
 
@@ -42,11 +42,11 @@ public class SchoolType {
         this.schoolTypeName = schoolTypeName;
     }
 
-    public ArrayList<School> getSchoolList() {
+    public ArrayList<SchoolModel> getSchoolList() {
         return schoolList;
     }
 
-    public void setSchoolList(ArrayList<School> schoolList) {
+    public void setSchoolList(ArrayList<SchoolModel> schoolList) {
         this.schoolList = schoolList;
     }
 }

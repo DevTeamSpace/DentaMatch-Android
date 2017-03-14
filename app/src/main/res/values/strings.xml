@@ -95,7 +95,7 @@
     <string name="lable_state">State</string>
     <string name="lable_next">Next</string>
     <string name="lable_update">UPDATE</string>
-    <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
+    <string name="text_camera_permision">Camera and storage permission is required to take photos of the userModel.</string>
     <string name="decode_stream_alert">Unable to parse this image.</string>
     <string name="lable_not_now">Not now</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
@@ -354,5 +354,8 @@
     <string name="txt_rejected">Rejected</string>
     <string name="txt_cancelled">Cancelled</string>
     <string name="msg_socket_connection_success">Connection established</string>
+    <string name="msg_recruiter_unblocked">Recruiter Unblocked</string>
+    <string name="msg_recruiter_blocked">Recruiter Blocked</string>
+    <string name="msg_recruiter_blocked_you">Recruiter has blocked you from messaging</string>
 
 </resources>

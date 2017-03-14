@@ -1,4 +1,4 @@
-package com.appster.dentamatch.model;
+package com.appster.dentamatch.EventBus;
 
 import android.location.Location;
 

@@ -1,6 +1,5 @@
 package com.appster.dentamatch.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -19,10 +18,10 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemSkillBinding;
 import com.appster.dentamatch.databinding.LayoutProfileHeaderBinding;
 import com.appster.dentamatch.interfaces.EditTextSelected;
-import com.appster.dentamatch.model.ParentSkill;
-import com.appster.dentamatch.model.SubSkill;
+import com.appster.dentamatch.interfaces.OnSkillClick;
+import com.appster.dentamatch.model.ParentSkillModel;
+import com.appster.dentamatch.model.SubSkillModel;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.widget.CustomEditText;
 import com.squareup.picasso.Picasso;
@@ -44,15 +43,13 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private ItemSkillBinding mBinder;
     private LayoutProfileHeaderBinding mBinderHeader;
 
-    private List<ParentSkill> mSkillList;
+    private List<ParentSkillModel> mSkillList;
     private Context mContext;
     private boolean mIsFromEditProfile;
-    private int windowWidth;
-    private Activity activity;
     private OnSkillClick mListener;
     private EditTextSelected mOthersSelectedListener;
 
-    public SkillsAdapter(List<ParentSkill> skillList, Context context, OnSkillClick listener, EditTextSelected othersSelectedListener, boolean isFromEditProfile) {
+    public SkillsAdapter(List<ParentSkillModel> skillList, Context context, OnSkillClick listener, EditTextSelected othersSelectedListener, boolean isFromEditProfile) {
         this.mSkillList = skillList;
         this.mContext = context;
         mListener = listener;
@@ -64,13 +61,11 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_ITEM) {
-            //inflate your layout and pass it to view holder
             mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_skill, parent, false));
 
             return new ViewHolderItem(mBinder.getRoot());
         } else if (viewType == TYPE_HEADER) {
-            //inflate your layout and pass it to view holder
             mBinderHeader = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.layout_profile_header, parent, false));
 
@@ -92,24 +87,20 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 mBinderHeader.tvTitle.setVisibility(View.GONE);
                 mBinderHeader.tvDescription.setVisibility(View.GONE);
 
-
             } else {
                 if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-                    LogUtils.LOGD("pabd", "path is--=" + PreferenceUtil.getProfileImagePath());
                     Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().
                             resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).
                             placeholder(R.drawable.profile_pic_placeholder).into(mBinderHeader.ivProfileIcon);
                 }
 
                 mBinderHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.SKILLS);
-
                 mBinderHeader.tvTitle.setText(mContext.getString(R.string.header_skills_exp));
                 mBinderHeader.tvDescription.setText(mContext.getString(R.string.lorem_ipsum));
             }
         } else {
             final ViewHolderItem holder = (ViewHolderItem) holder1;
-            final ParentSkill skill = mSkillList.get(position - 1);
-
+            final ParentSkillModel skill = mSkillList.get(position - 1);
             holder.tvSkillName.setText(skill.getSkillName());
             holder.layoutSkills.setTag(position - 1);
 
@@ -143,7 +134,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                            mSkillList.get(position - 1).setOtherSkill(s.toString().trim());
+                        mSkillList.get(position - 1).setOtherSkill(s.toString().trim());
                     }
                 });
             } else {
@@ -160,7 +151,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 holder.flowLayout.setVisibility(View.VISIBLE);
                 holder.flowLayout.removeAllViews();
-
                 setSkillsBricks(holder.flowLayout, mSkillList.get(position - 1).getSubSkills());
             }
         }
@@ -173,8 +163,9 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        if (isPositionHeader(position))
+        if (isPositionHeader(position)) {
             return TYPE_HEADER;
+        }
 
         return TYPE_ITEM;
     }
@@ -183,7 +174,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return position == 0;
     }
 
-    private void setSkillsBricks(FlowLayout flowLayout, ArrayList<SubSkill> listSkills) {
+    private void setSkillsBricks(FlowLayout flowLayout, ArrayList<SubSkillModel> listSkills) {
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -201,7 +192,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 String text = listSkills.get(i).getSkillName();
 
                 if (text.equalsIgnoreCase(Constants.OTHERS)) {
-//                    text = Constants.OTHERS;
                     text = listSkills.get(i).getOtherText().trim();
                 }
 
@@ -239,10 +229,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ivArrow = mBinder.ivRightArrow;
             etOther = mBinder.etOther;
         }
-    }
-
-    public interface OnSkillClick {
-        public void onItemSelected(ArrayList<SubSkill> subSkillList, int position);
     }
 
 

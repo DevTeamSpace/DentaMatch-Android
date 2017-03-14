@@ -2,8 +2,8 @@ package com.appster.dentamatch.util;
 
 import android.location.Location;
 
-import com.appster.dentamatch.model.JobTitleList;
-import com.appster.dentamatch.model.User;
+import com.appster.dentamatch.model.JobTitleListModel;
+import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.orhanobut.hawk.Hawk;
 
@@ -118,7 +118,7 @@ public final class PreferenceUtil {
         return Hawk.get(KEY_PROFILE_IMAGE_PATH);
     }
 
-    public static void setJobTitleList(ArrayList<JobTitleList> value) {
+    public static void setJobTitleList(ArrayList<JobTitleListModel> value) {
         Hawk.put(KEY_JOB_TITLE_LIST, value);
     }
 
@@ -130,11 +130,11 @@ public final class PreferenceUtil {
         Hawk.put(KEY_FCM_TOKEN, token);
     }
 
-    public static void setSearchJobTitleList(ArrayList<JobTitleList> value) {
+    public static void setSearchJobTitleList(ArrayList<JobTitleListModel> value) {
         Hawk.put(KEY_SEARCH_JOB_TITLE_LIST, value);
     }
 
-    public static ArrayList<JobTitleList> getJobTitleList() {
+    public static ArrayList<JobTitleListModel> getJobTitleList() {
         return Hawk.get(KEY_JOB_TITLE_LIST);
     }
 
@@ -146,7 +146,7 @@ public final class PreferenceUtil {
         return Hawk.get(KEY_DEVICE_ID);
     }
 
-    public static ArrayList<JobTitleList> getSearchJobTitleList() {
+    public static ArrayList<JobTitleListModel> getSearchJobTitleList() {
         return Hawk.get(KEY_SEARCH_JOB_TITLE_LIST);
     }
 
@@ -233,11 +233,11 @@ public final class PreferenceUtil {
         Hawk.put(KEY_IS_LOGIN, value);
     }
 
-    public static void setUserModel(User user) {
-        Hawk.put(KEY_USER_MODEL, user);
+    public static void setUserModel(UserModel userModel) {
+        Hawk.put(KEY_USER_MODEL, userModel);
     }
 
-    public static User getUserModel() {
+    public static UserModel getUserModel() {
         return Hawk.get(KEY_USER_MODEL);
     }
 

@@ -167,7 +167,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
         request.setJobId(JobID);
         request.setStatus(status);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
+        ((BaseActivity) mContext).processToShowDialog("","",null);
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
             @Override
             public void onSuccess(BaseResponse response) {

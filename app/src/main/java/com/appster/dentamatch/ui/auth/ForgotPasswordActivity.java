@@ -24,6 +24,7 @@ import retrofit2.Call;
  */
 public class ForgotPasswordActivity extends BaseActivity implements View.OnClickListener {
     private final String TAG = "ForgotPasswordActivity";
+
     private ActivityForgotPasswordBinding mBinder;
 
     @Override
@@ -78,19 +79,14 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private void forgotPasswordApi(LoginRequest loginRequest) {
-        LogUtils.LOGD(TAG, "forgot password");
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.forgotPassword(loginRequest).enqueue(new BaseCallback<LoginResponse>(ForgotPasswordActivity.this) {
             @Override
             public void onSuccess(LoginResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
                 if (response.getStatus() == 1) {
                     finish();
                 }
-//                Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-////                intent.putExtra()
-//                startActivity(intent);
             }
 
             @Override

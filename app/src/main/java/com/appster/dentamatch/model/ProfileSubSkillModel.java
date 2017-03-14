@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by virender on 21/01/17.
  */
-public class ProfileSubSkill {
+public class ProfileSubSkillModel {
     @SerializedName("id")
     private int childId;
     @SerializedName("skillName")

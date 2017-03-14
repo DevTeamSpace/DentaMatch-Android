@@ -8,12 +8,12 @@ import java.util.ArrayList;
  * Created by ramkumar on 12/01/17.
  */
 
-public class ParentSkill {
+public class ParentSkillModel {
     private int id;
     private int parentId;
     private String skillName;
     @SerializedName("children")
-    private ArrayList<SubSkill> subSkills;
+    private ArrayList<SubSkillModel> subSkills;
     private String otherSkill;
 
     public int getId() {
@@ -40,11 +40,11 @@ public class ParentSkill {
         this.skillName = skillName;
     }
 
-    public ArrayList<SubSkill> getSubSkills() {
+    public ArrayList<SubSkillModel> getSubSkills() {
         return subSkills;
     }
 
-    public void setSubSkills(ArrayList<SubSkill> subSkills) {
+    public void setSubSkills(ArrayList<SubSkillModel> subSkills) {
         this.subSkills = subSkills;
     }
 

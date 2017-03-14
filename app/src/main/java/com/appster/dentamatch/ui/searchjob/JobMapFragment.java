@@ -22,9 +22,9 @@ import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentJobsMapBinding;
-import com.appster.dentamatch.model.JobDataReceivedEvent;
-import com.appster.dentamatch.model.LocationEvent;
-import com.appster.dentamatch.model.SaveUnSaveEvent;
+import com.appster.dentamatch.EventBus.JobDataReceivedEvent;
+import com.appster.dentamatch.EventBus.LocationEvent;
+import com.appster.dentamatch.EventBus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;

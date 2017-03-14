@@ -7,7 +7,7 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import static com.appster.dentamatch.util.LogUtils.makeLogTag;
 
 /**
- * Created by User on 6/22/2015.
+ * Created by UserModel on 6/22/2015.
  */
 public class SocialMediaHelper {
     private static final String TAG = makeLogTag(SocialMediaHelper.class);

@@ -13,16 +13,11 @@ import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.chat.DBModel;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ActivityChatBinding;
-import com.appster.dentamatch.model.ChatHistoryRetrievedEvent;
-import com.appster.dentamatch.model.ChatPersonalMessageReceivedEvent;
-import com.appster.dentamatch.model.MessageAcknowledgementEvent;
-import com.appster.dentamatch.model.SocketConnectionEvent;
-import com.appster.dentamatch.model.UnblockEvent;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
+import com.appster.dentamatch.EventBus.ChatHistoryRetrievedEvent;
+import com.appster.dentamatch.EventBus.ChatPersonalMessageReceivedEvent;
+import com.appster.dentamatch.EventBus.MessageAcknowledgementEvent;
+import com.appster.dentamatch.EventBus.SocketConnectionEvent;
+import com.appster.dentamatch.EventBus.UnblockEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -34,9 +29,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import io.realm.RealmList;
-import retrofit2.Call;
 
 /**
  * Created by Appster on 09/02/17.

@@ -8,13 +8,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SubSkillsAdapter;
 import com.appster.dentamatch.databinding.ActivitySubSkillsBinding;
-import com.appster.dentamatch.model.SubSkill;
+import com.appster.dentamatch.model.SubSkillModel;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
@@ -30,7 +29,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     private ActivitySubSkillsBinding mBinder;
 
     private SubSkillsAdapter mSkillsAdapter;
-    private ArrayList<SubSkill> subSkills;
+    private ArrayList<SubSkillModel> subSkills;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,7 +96,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         overridePendingTransition(R.anim.hold_still, R.anim.pull_out);
     }
 
-    private void setAdapter(List<SubSkill> skillArrayList) {
+    private void setAdapter(List<SubSkillModel> skillArrayList) {
         if (skillArrayList == null) return;
 
         mSkillsAdapter = new SubSkillsAdapter(skillArrayList, this);

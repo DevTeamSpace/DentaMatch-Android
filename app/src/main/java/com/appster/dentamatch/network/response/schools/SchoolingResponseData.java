@@ -1,6 +1,6 @@
 package com.appster.dentamatch.network.response.schools;
 
-import com.appster.dentamatch.model.SchoolType;
+import com.appster.dentamatch.model.SchoolTypeModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ import java.util.List;
 public class SchoolingResponseData {
 
     @SerializedName("list")
-    private ArrayList<SchoolType> schoolTypeList;
+    private ArrayList<SchoolTypeModel> schoolTypeList;
 
-    public List<SchoolType> getSchoolTypeList() {
+    public List<SchoolTypeModel> getSchoolTypeList() {
         return schoolTypeList;
     }
 }

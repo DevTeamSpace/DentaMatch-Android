@@ -1,7 +1,5 @@
 package com.appster.dentamatch.network.request.schools;
 
-import com.appster.dentamatch.model.School;
-import com.appster.dentamatch.model.SchoolType;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

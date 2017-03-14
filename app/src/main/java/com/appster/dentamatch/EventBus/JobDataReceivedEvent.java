@@ -1,4 +1,4 @@
-package com.appster.dentamatch.model;
+package com.appster.dentamatch.EventBus;
 
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 

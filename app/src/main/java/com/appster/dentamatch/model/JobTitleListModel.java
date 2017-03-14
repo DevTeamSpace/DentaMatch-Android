@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by virender on 09/01/17.
  */
-public class JobTitleList implements Parcelable{
+public class JobTitleListModel implements Parcelable{
 
 
     private int id;
@@ -16,25 +16,25 @@ public class JobTitleList implements Parcelable{
     private String jobTitle;
     private boolean isSelected;
 
-    public JobTitleList(){
+    public JobTitleListModel(){
 
     }
 
-    protected JobTitleList(Parcel in) {
+    protected JobTitleListModel(Parcel in) {
         id = in.readInt();
         jobTitle = in.readString();
         isSelected = in.readByte() != 0;
     }
 
-    public static final Creator<JobTitleList> CREATOR = new Creator<JobTitleList>() {
+    public static final Creator<JobTitleListModel> CREATOR = new Creator<JobTitleListModel>() {
         @Override
-        public JobTitleList createFromParcel(Parcel in) {
-            return new JobTitleList(in);
+        public JobTitleListModel createFromParcel(Parcel in) {
+            return new JobTitleListModel(in);
         }
 
         @Override
-        public JobTitleList[] newArray(int size) {
-            return new JobTitleList[size];
+        public JobTitleListModel[] newArray(int size) {
+            return new JobTitleListModel[size];
         }
     };
 

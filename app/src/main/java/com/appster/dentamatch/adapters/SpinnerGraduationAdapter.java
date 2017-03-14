@@ -17,7 +17,6 @@ import com.appster.dentamatch.R;
 import java.util.ArrayList;
 
 class SpinnerGraduationAdapter extends ArrayAdapter<String> {
-
     private Context mContext;
     private ArrayList<String> mDataList;
     private LayoutInflater mInflater;
@@ -31,19 +30,17 @@ class SpinnerGraduationAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+        return getCustomView(position, parent);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+        return getCustomView(position, parent);
     }
 
-    private View getCustomView(int position, View convertView, ViewGroup parent) {
-
+    private View getCustomView(int position, ViewGroup parent) {
         View row = mInflater.inflate(R.layout.item_spinner_text, parent, false);
-
         TextView textSpinner = (TextView) row.findViewById(R.id.text_spinner);
 
         if (position == 0) {

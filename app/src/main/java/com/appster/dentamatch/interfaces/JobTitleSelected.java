@@ -1,7 +1,7 @@
 package com.appster.dentamatch.interfaces;
 
 
-import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.model.JobTitleListModel;
 
 import java.util.ArrayList;
 
@@ -10,5 +10,5 @@ import java.util.ArrayList;
  */
 
 public interface JobTitleSelected {
-    public void onJobTitleSelected(ArrayList<JobTitleList> jobTitleList);
+    public void onJobTitleSelected(ArrayList<JobTitleListModel> jobTitleList);
 }

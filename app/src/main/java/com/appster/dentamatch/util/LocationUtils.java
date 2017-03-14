@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.appster.dentamatch.model.LocationEvent;
+import com.appster.dentamatch.EventBus.LocationEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -112,6 +112,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
                 LogUtils.LOGI(TAG, "All location settings are satisfied.");
                 startLocationUpdates();
                 break;
+
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                 LogUtils.LOGI(TAG, "Location settings are not satisfied. Show the user a dialog to" +
                         "upgrade location settings ");
@@ -137,11 +138,11 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
-                        LogUtils.LOGI(TAG, "User agreed to make required location settings changes.");
+                        LogUtils.LOGI(TAG, "UserModel agreed to make required location settings changes.");
                         startLocationUpdates();
                         break;
                     case Activity.RESULT_CANCELED:
-                        LogUtils.LOGI(TAG, "User chose not to make required location settings changes.");
+                        LogUtils.LOGI(TAG, "UserModel chose not to make required location settings changes.");
                         break;
                 }
                 break;

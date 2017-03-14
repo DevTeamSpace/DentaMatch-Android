@@ -3,12 +3,12 @@ package com.appster.dentamatch.network.response.profile;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.appster.dentamatch.model.DentalStateBoard;
-import com.appster.dentamatch.model.JobTitleList;
-import com.appster.dentamatch.model.LocationEvent;
-import com.appster.dentamatch.model.ProfileSchool;
-import com.appster.dentamatch.model.ProfileSkill;
-import com.appster.dentamatch.model.User;
+import com.appster.dentamatch.model.DentalStateBoardModel;
+import com.appster.dentamatch.model.JobTitleListModel;
+import com.appster.dentamatch.EventBus.LocationEvent;
+import com.appster.dentamatch.model.ProfileSchoolModel;
+import com.appster.dentamatch.model.ProfileSkillModel;
+import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponseData;
@@ -22,29 +22,29 @@ import java.util.ArrayList;
 public class ProfileResponseData implements Parcelable {
 
     @SerializedName("user")
-    private User user;
+    private UserModel userModel;
     @SerializedName("workExperience")
     private WorkExpResponseData workExperience;
 
     @SerializedName("dentalStateBoard")
-    private DentalStateBoard dentalStateBoard;
+    private DentalStateBoardModel dentalStateBoard;
 
     @SerializedName("licence")
     private LicenceRequest licence;
     @SerializedName("school")
-    private ArrayList<ProfileSchool> schoolArrayList;
+    private ArrayList<ProfileSchoolModel> schoolArrayList;
     @SerializedName("skills")
-    private ArrayList<ProfileSkill> skillArrayList;
+    private ArrayList<ProfileSkillModel> skillArrayList;
     @SerializedName("affiliations")
     private ArrayList<LocationEvent.Affiliation> affiliationList;
     @SerializedName("certifications")
     private ArrayList<CertificatesList> certificatesLists;
     @SerializedName("joblists")
-    private ArrayList<JobTitleList> jobTitleLists;
+    private ArrayList<JobTitleListModel> jobTitleLists;
 
 
     private ProfileResponseData(Parcel in) {
-        user = in.readParcelable(User.class.getClassLoader());
+        userModel = in.readParcelable(UserModel.class.getClassLoader());
     }
 
     public static final Creator<ProfileResponseData> CREATOR = new Creator<ProfileResponseData>() {
@@ -66,18 +66,18 @@ public class ProfileResponseData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(user, flags);
+        dest.writeParcelable(userModel, flags);
     }
 
-    public User getUser() {
-        return user;
+    public UserModel getUser() {
+        return userModel;
     }
 
     public WorkExpResponseData getWorkExperience() {
         return workExperience;
     }
 
-    public DentalStateBoard getDentalStateBoard() {
+    public DentalStateBoardModel getDentalStateBoard() {
         return dentalStateBoard;
     }
 
@@ -85,11 +85,11 @@ public class ProfileResponseData implements Parcelable {
         return licence;
     }
 
-    public ArrayList<ProfileSchool> getSchoolArrayList() {
+    public ArrayList<ProfileSchoolModel> getSchoolArrayList() {
         return schoolArrayList;
     }
 
-    public ArrayList<ProfileSkill> getSkillArrayList() {
+    public ArrayList<ProfileSkillModel> getSkillArrayList() {
         return skillArrayList;
     }
 
@@ -101,7 +101,7 @@ public class ProfileResponseData implements Parcelable {
         return certificatesLists;
     }
 
-    public ArrayList<JobTitleList> getJobTitleLists() {
+    public ArrayList<JobTitleListModel> getJobTitleLists() {
         return jobTitleLists;
     }
 

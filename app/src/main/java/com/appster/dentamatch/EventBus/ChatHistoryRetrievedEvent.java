@@ -1,4 +1,4 @@
-package com.appster.dentamatch.model;
+package com.appster.dentamatch.EventBus;
 
 import org.json.JSONArray;
 
@@ -8,7 +8,6 @@ import org.json.JSONArray;
 
 public class ChatHistoryRetrievedEvent {
     private JSONArray model;
-
     public ChatHistoryRetrievedEvent(JSONArray model) {
         this.model = model;
     }

@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemTrackJobListBinding;
-import com.appster.dentamatch.model.SaveUnSaveEvent;
+import com.appster.dentamatch.EventBus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -68,7 +68,6 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         SearchJobModel data = mJobListData.get(position);
 
         if (data != null) {
-//            holder.itemView.setTag(data.getId());
             holder.itemView.setTag(position);
             holder.itemView.setOnClickListener(this);
             holder.tvName.setText(data.getJobTitleName());
@@ -203,7 +202,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         switch (v.getId()) {
             case R.id.cb_job_selection:
                 final int position = (int) v.getTag();
-                Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
+                Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {
                         unSaveJob(mJobListData.get(position).getId(), position);
@@ -230,9 +229,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         request.setJobId(JobID);
         request.setStatus(0);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-
-        ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
-
+        ((BaseActivity) mContext).processToShowDialog("","",null);
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
             @Override
             public void onSuccess(BaseResponse response) {
@@ -266,21 +263,24 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to cancel the job?", new Alert.OnAlertClickListener() {
-            @Override
-            public void onPositive(DialogInterface dialog) {
-                CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getId());
-                dialogFragment.setArguments(bundle);
-                dialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), null);
-            }
+        Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok),
+                mContext.getString(R.string.txt_cancel),
+                mContext.getString(R.string.app_name),
+                mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {
+                    @Override
+                    public void onPositive(DialogInterface dialog) {
+                        CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getId());
+                        dialogFragment.setArguments(bundle);
+                        dialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), null);
+                    }
 
-            @Override
-            public void onNegative(DialogInterface dialog) {
-                dialog.dismiss();
-            }
-        });
+                    @Override
+                    public void onNegative(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
         return false;
     }
 

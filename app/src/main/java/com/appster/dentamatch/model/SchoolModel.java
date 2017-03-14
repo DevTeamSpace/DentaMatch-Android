@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by ramkumar on 16/01/17.
  */
 
-public class School {
+public class SchoolModel {
     @SerializedName("schoolingChildId")
     private int schoolId;
     @SerializedName("schoolChildName")

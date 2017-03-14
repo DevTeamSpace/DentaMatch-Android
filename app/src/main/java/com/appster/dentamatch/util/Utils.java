@@ -13,6 +13,8 @@ import android.content.pm.ResolveInfo;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -46,6 +48,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
@@ -125,6 +128,22 @@ public class Utils {
         } else {
             return true;
         }
+    }
+
+    public static Address getReverseGeoCode(Context ct,LatLng latLng) {
+        Address address = null;
+
+        Geocoder geocoder = new Geocoder(ct);
+        try {
+            List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            address = addressList.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException ex) {
+            ex.printStackTrace();
+        }
+
+        return address;
     }
 
 
@@ -558,7 +577,7 @@ public class Utils {
         return isInBackground;
     }
 
-    public static void showNotification(Context ct, String title, String message, Intent intent, String recruiterID) {
+    public static void showNotification(Context ct, String title, String message, Intent intent, String notificationId) {
         int uniqueID = (int) (System.currentTimeMillis() & 0xfffffff);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -579,11 +598,10 @@ public class Utils {
             builder.setContentIntent(Pendingintent);
         }
 
-
         NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_VIBRATE;
-        manager.notify(Integer.parseInt(recruiterID), notification);
+        manager.notify(Integer.parseInt(notificationId), notification);
     }
 
     public static void clearRecruiterNotification(Context ct, String RecruiterID) {

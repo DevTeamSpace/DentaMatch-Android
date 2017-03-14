@@ -13,7 +13,6 @@ def serverProperties = new Properties()
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 serverProperties.load(new FileInputStream(serverConfigPropertiesFile))
-
 android {
     dexOptions {
         javaMaxHeapSize "4g"
@@ -24,6 +23,8 @@ android {
 
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
+    def code = 1;
+
 
     defaultConfig {
         applicationId "com.appster.dentamatch"
@@ -106,13 +107,13 @@ android {
 
 ext {
     //supportLibrary Version
-    supportLibrary = '25.0.1'
+    supportLibrary = '25.2.0'
 
     //Play services Version
-    playServiceVersion = '10.0.0'
+    playServiceVersion = '10.2.0'
 
     //fireBase Version
-    fireBaseLibrary = '10.0.0'
+    fireBaseLibrary = '10.2.0'
 
     //leakCanary Version
     leakCanaryLibrary = '1.5'
@@ -130,7 +131,7 @@ dependencies {
     })
 
     compile 'com.google.maps.android:android-maps-utils:0.4'
-    compile 'com.google.android.gms:play-services:10.0.0'
+    compile "com.google.android.gms:play-services:${playServiceVersion}"
 
     //Firebase libs
     compile "com.google.firebase:firebase-messaging:${fireBaseLibrary}"

@@ -57,7 +57,7 @@ public class SocialProfile implements Serializable {
     /**
      * Updates the first name
      *
-     * @param firstName the first name of User
+     * @param firstName the first name of UserModel
      */
     public void setFirstName(final String firstName) {
         this.firstName = firstName;
@@ -75,7 +75,7 @@ public class SocialProfile implements Serializable {
     /**
      * Updates the last name
      *
-     * @param lastName the last name of User
+     * @param lastName the last name of UserModel
      */
     public void setLastName(final String lastName) {
         this.lastName = lastName;
@@ -84,7 +84,7 @@ public class SocialProfile implements Serializable {
     /**
      * Returns the email address.
      *
-     * @return email address of the User
+     * @return email address of the UserModel
      */
     public String getEmail() {
         return email;
@@ -93,7 +93,7 @@ public class SocialProfile implements Serializable {
     /**
      * Updates the email
      *
-     * @param email the email of User
+     * @param email the email of UserModel
      */
     public void setEmail(final String email) {
         this.email = email;
@@ -111,7 +111,7 @@ public class SocialProfile implements Serializable {
     /**
      * Updates the profile image URL
      *
-     * @param profileImageURL profile image URL of User
+     * @param profileImageURL profile image URL of UserModel
      */
     public void setProfileImageURL(final String profileImageURL) {
         this.profileImageURL = profileImageURL;

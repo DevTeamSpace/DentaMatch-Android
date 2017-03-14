@@ -14,24 +14,15 @@ import android.view.ViewGroup;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.JobListAdapter;
 import com.appster.dentamatch.databinding.FragmentJobListBinding;
-import com.appster.dentamatch.model.JobDataReceivedEvent;
-import com.appster.dentamatch.model.SaveUnSaveEvent;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.Notification.AcceptRejectInviteRequest;
+import com.appster.dentamatch.EventBus.JobDataReceivedEvent;
+import com.appster.dentamatch.EventBus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.network.response.notification.NotificationData;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
-import com.appster.dentamatch.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
 
 /**
  * Created by Appster on 24/01/17.
