@@ -33,6 +33,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -382,7 +383,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return et.getText().toString().trim();
     }
 
-    private void signInApi(LoginRequest loginRequest) {
+    private void logUser(String email, String userName,String userID) {
+        Crashlytics.setUserIdentifier(userID);
+        Crashlytics.setUserEmail(email);
+        Crashlytics.setUserName(userName);
+    }
+
+
+    private void signInApi(final LoginRequest loginRequest) {
         LogUtils.LOGD(TAG, "signInApi");
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
@@ -434,6 +442,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
                     PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
                     PreferenceUtil.setUserChatId(response.getLoginResponseData().getUserDetail().getId());
+
+                    logUser(loginRequest.getEmail(),
+                            response.getLoginResponseData().getUserDetail().getFirstName()
+                                    .concat(" ")
+                                    .concat(response.getLoginResponseData().getUserDetail().getLastName()),
+                            response.getLoginResponseData().getUserDetail().getId());
 
                     if (response.getLoginResponseData().getUserDetail().getProfileCompleted() == 1) {
                         PreferenceUtil.setProfileCompleted(true);

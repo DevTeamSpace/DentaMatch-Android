@@ -38,6 +38,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private String KEY_NOTIFICATION_DETAIL = "notification_details";
     private String KEY_MESSAGE_LIST_ID ="messageListId";
     private String KEY_DATA = "data";
+    private String KEY_NOTIFICATION_DATA = "notification_data";
     private boolean isChatMessage = false;
 
     @Override
@@ -78,7 +79,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     JSONObject notificationObject = new JSONObject(notificationData);
                     id = notificationObject.optInt(Constants.APIS.NOTIFICATION_ID);
                     type = notificationObject.optInt((Constants.APIS.NOTIFICATION_TYPE));
-                    messageBody = notificationObject.getString("notification_data");
+                    messageBody = notificationObject.getString(KEY_NOTIFICATION_DATA);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

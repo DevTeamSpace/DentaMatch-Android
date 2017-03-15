@@ -9,6 +9,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -131,7 +132,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mMap = googleMap;
         setMap();
 
-        if (mLatitude != null) {
+        if (mLatitude != null && mLongitude != null && !TextUtils.isEmpty(mLatitude) && !TextUtils.isEmpty(mLongitude)) {
             Location location = new Location("");
             double lat = Double.parseDouble(mLatitude);
             double longi = Double.parseDouble(mLongitude);

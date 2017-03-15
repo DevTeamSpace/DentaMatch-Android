@@ -9,10 +9,12 @@ import android.support.multidex.MultiDexApplication;
 
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.util.NetworkMonitor;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
+import io.fabric.sdk.android.Fabric;
 
 //import com.facebook.stetho.Stetho;
 //import com.squareup.leakcanary.LeakCanary;
@@ -26,6 +28,7 @@ public class DentaApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         appController = this;
         mAppContext = this.getApplicationContext();
         NetworkMonitor.initialize(mAppContext);
