@@ -588,10 +588,11 @@ public class Utils {
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setSmallIcon(R.drawable.app_logo_small)
+                .setSmallIcon(R.drawable.bg_notification_icon)
                 .setColor(ContextCompat.getColor(ct, R.color.colorPrimary))
                 .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(), R.mipmap.ic_launcher))
                 .setAutoCancel(true);
+
 
         if (intent != null) {
             PendingIntent Pendingintent = PendingIntent.getActivity(ct, uniqueID, intent, PendingIntent.FLAG_ONE_SHOT);

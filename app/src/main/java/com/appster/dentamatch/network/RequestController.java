@@ -33,6 +33,7 @@ public final class RequestController {
     private static HttpLoggingInterceptor logger = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private static OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
+            .addInterceptor(logger)
             .readTimeout(1, TimeUnit.MINUTES)
             .connectTimeout(1, TimeUnit.MINUTES);
 
@@ -73,7 +74,7 @@ public final class RequestController {
             }
         });
 
-        okHttpClient.addInterceptor(logger);
+//        okHttpClient.addInterceptor(logger);
         Retrofit retrofit = builder.client(okHttpClient.build()).build();
         return retrofit.create(serviceClass);
     }

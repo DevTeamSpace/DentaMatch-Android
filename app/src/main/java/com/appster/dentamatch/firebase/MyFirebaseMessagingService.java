@@ -64,6 +64,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Map<String, String> dataPayload = remoteMessage.getData();
         int type = 0, id, jobId = 0;
+        String messageBody = "";
 
         if (dataPayload != null && dataPayload.size() > 0) {
             Set<String> keys = dataPayload.keySet();
@@ -77,10 +78,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     JSONObject notificationObject = new JSONObject(notificationData);
                     id = notificationObject.optInt(Constants.APIS.NOTIFICATION_ID);
                     type = notificationObject.optInt((Constants.APIS.NOTIFICATION_TYPE));
+                    messageBody = notificationObject.getString("notification_data");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+
             if (!TextUtils.isEmpty(jobData)) {
                 isChatMessage = false;
 
@@ -101,9 +104,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         /**
          * Check if message contains a notification payload.
          */
-        if (remoteMessage.getNotification() != null && !isChatMessage) {
-            LogUtils.LOGD(TAG, "Message ReadNotificationRequest Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getBody(), type, jobId);
+        if (!isChatMessage) {
+            sendNotification(messageBody, type, jobId);
 
         } else {
             try {
