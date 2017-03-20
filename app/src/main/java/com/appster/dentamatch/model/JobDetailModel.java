@@ -30,6 +30,7 @@ public class JobDetailModel {
     private String thursdayStart;
     private String thursdayEnd;
     private String fridayStart;
+    private String fridayEnd;
     private String saturdayStart;
     private String saturdayEnd;
     private String sundayStart;
@@ -37,6 +38,7 @@ public class JobDetailModel {
     @SerializedName("jobtitleName")
     private String jobTitleName;
     private String officeName;
+    private String officeDesc;
     private String address;
     @SerializedName("zipcode")
     private int zipCode;
@@ -210,5 +212,13 @@ public class JobDetailModel {
 
     public int getIsSaved() {
         return isSaved;
+    }
+
+    public String getOfficeDesc() {
+        return officeDesc;
+    }
+
+    public String getFridayEnd() {
+        return fridayEnd;
     }
 }

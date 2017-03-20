@@ -153,7 +153,13 @@ public class MyNotificationAdapter extends RecyclerView.Adapter<MyNotificationAd
                         updateSeenStatus(position, false);
 
                     } else {
-                        redirectToDetail(data.getJobDetailModel().getId());
+                        /**
+                         * In case of recruiter deleted the job then user doesn't get the
+                         * jobDetailModel.
+                         */
+                        if(data.getJobDetailModel() != null) {
+                            redirectToDetail(data.getJobDetailModel().getId());
+                        }
                     }
                 }
                 break;
@@ -180,7 +186,9 @@ public class MyNotificationAdapter extends RecyclerView.Adapter<MyNotificationAd
                     notifyItemChanged(position);
 
                     if (!isInvite) {
-                        redirectToDetail(data.getJobDetailModel().getId());
+                       if( data.getJobDetailModel() != null) {
+                           redirectToDetail(data.getJobDetailModel().getId());
+                       }
                     }
 
                 } else {

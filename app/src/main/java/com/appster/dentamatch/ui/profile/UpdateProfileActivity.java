@@ -139,8 +139,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
             case R.id.btn_save:
                 hideKeyboard();
-
-
                 validateAndUpdate();
                 break;
 

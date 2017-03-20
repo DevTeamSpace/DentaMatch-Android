@@ -393,7 +393,7 @@ public class Utils {
     public static String convertUTCtoLocal(String UTCDateTime) {
         Date myDate = null;
         try {
-            timeOnlyDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            timeOnlyDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             myDate = timeOnlyDateFormat.parse(UTCDateTime);
         } catch (ParseException e) {
             e.printStackTrace();
