@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.EventBus.LocationEvent;
+import com.appster.dentamatch.eventbus.LocationEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
@@ -41,9 +40,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.io.IOException;
-import java.util.List;
 
 public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener {

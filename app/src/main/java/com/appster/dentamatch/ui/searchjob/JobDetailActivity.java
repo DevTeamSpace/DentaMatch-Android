@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityJobDetailBinding;
 import com.appster.dentamatch.model.JobDetailModel;
-import com.appster.dentamatch.EventBus.SaveUnSaveEvent;
+import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -272,16 +272,16 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                         mJobDetailModel = response.getResult();
                         mBinding.layJobDetailHolder.setVisibility(View.VISIBLE);
 
-                        if(response.getResult() != null) {
+                        if (response.getResult() != null) {
                             setDetailData(response.getResult());
                         }
 
-                    }else if(response.getStatusCode() == 201) {
+                    } else if (response.getStatusCode() == 201) {
                         mBinding.tvJobNotFound.setVisibility(View.VISIBLE);
                         mBinding.layJobDetailHolder.setVisibility(View.GONE);
                         mBinding.btnApplyJob.setVisibility(View.GONE);
 
-                    }else {
+                    } else {
                         mBinding.tvJobNotFound.setVisibility(View.GONE);
                         showToast(response.getMessage());
                         mBinding.layJobDetailHolder.setVisibility(View.GONE);
@@ -294,234 +294,271 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             @Override
             public void onFail(Call<JobDetailResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "FAiled");
+                LogUtils.LOGD(TAG, "Failed");
             }
         });
     }
 
     private void setDetailData(JobDetailModel dataModel) {
-        mBinding.tvJobDetailName.setText(dataModel.getJobTitleName());
+        try {
+            mBinding.tvJobDetailName.setText(dataModel.getJobTitleName());
 
-        if (dataModel.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
-            mBinding.tvJobDetailType.setText(getString(R.string.txt_part_time));
-            mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_part_time);
+            if (dataModel.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
+                mBinding.tvJobDetailType.setText(getString(R.string.txt_part_time));
+                mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_part_time);
 
-            ArrayList<String> partTimeDaysArray = new ArrayList<>();
-            if (dataModel.getIsMonday() == 1) {
-                partTimeDaysArray.add(getString(R.string.txt_monday));
+                ArrayList<String> partTimeDaysArray = new ArrayList<>();
+                if (dataModel.getIsMonday() == 1) {
+                    partTimeDaysArray.add(getString(R.string.txt_monday));
+                }
+
+                if (dataModel.getIsTuesday() == 1) {
+                    partTimeDaysArray.add(getString(R.string.txt_tuesday));
+                }
+
+                if (dataModel.getIsWednesday() == 1) {
+                    partTimeDaysArray.add(getString(R.string.txt_wednesday));
+                }
+
+                if (dataModel.getIsThursday() == 1) {
+                    partTimeDaysArray.add(getString(R.string.txt_thursday));
+                }
+
+                if (dataModel.getIsFriday() == 1) {
+                    partTimeDaysArray.add(getString(R.string.txt_friday));
+                }
+
+                if (dataModel.getIsSaturday() == 1) {
+                    partTimeDaysArray.add(getString(R.string.txt_saturday));
+                }
+
+                if (dataModel.getIsSunday() == 1) {
+                    partTimeDaysArray.add(getString(R.string.txt_sunday));
+                }
+
+                String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
+                mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
+                mBinding.tvJobDetailDate.setText(partTimeDays);
+
+                final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
+                params.addRule(RelativeLayout.END_OF, mBinding.tvJobDetailType.getId());
+                params.setMargins(Utils.dpToPx(this, 12), 0, Utils.dpToPx(this, 10), 0);
+
+                mBinding.tvJobDetailDate.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mBinding.tvJobDetailDate.getLineCount() == 1) {
+                            params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
+                            mBinding.tvJobDetailDate.setLayoutParams(params);
+                        } else {
+                            params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailType.getId());
+                            mBinding.tvJobDetailDate.setLayoutParams(params);
+                            mBinding.tvJobDetailDate.setPadding(0, 0, 0, 0);
+                        }
+                    }
+                }, 200);
+
+            } else if (dataModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
+                mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_full_time);
+                mBinding.tvJobDetailDate.setVisibility(View.GONE);
+                mBinding.tvJobDetailType.setText(getString(R.string.txt_full_time));
+
+            } else if (dataModel.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
+                mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_temporary);
+                mBinding.tvJobDetailDate.setVisibility(View.GONE);
+                mBinding.tvJobDetailType.setText(getString(R.string.txt_temporary));
+                ArrayList<String> tempDates = new ArrayList<>();
+
+                if(dataModel.getJobTypeDates() != null && dataModel.getJobTypeDates().size() > 0) {
+                    for (int i = 0; i < dataModel.getJobTypeDates().size(); i++) {
+
+                        if (Utils.parseDateForTemp(dataModel.getJobTypeDates().get(i)) != null) {
+                            tempDates.add(Utils.parseDateForTemp(dataModel.getJobTypeDates().get(i)));
+                        }
+
+                    }
+                    mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
+
+                    if (tempDates.size() > 2) {
+                        mBinding.tvJobDetailDate.setText(tempDates.get(0).concat(", ").concat(tempDates.get(1)).concat("..."));
+                    } else {
+                        mBinding.tvJobDetailDate.setText(tempDates.get(0).concat(", ").concat(tempDates.get(1)));
+                    }
+                }
+
             }
 
-            if (dataModel.getIsTuesday() == 1) {
-                partTimeDaysArray.add(getString(R.string.txt_tuesday));
-            }
+            String endMessage = dataModel.getJobPostedTimeGap() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
+            mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
 
-            if (dataModel.getIsWednesday() == 1) {
-                partTimeDaysArray.add(getString(R.string.txt_wednesday));
-            }
+            mBinding.tvJobDetailDocName.setText(dataModel.getOfficeName());
+            mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
+            mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
+            mBinding.tvJobDetailDocOfficeType.setText(dataModel.getOfficeTypeName());
 
-            if (dataModel.getIsThursday() == 1) {
-                partTimeDaysArray.add(getString(R.string.txt_thursday));
-            }
-
-            if (dataModel.getIsFriday() == 1) {
-                partTimeDaysArray.add(getString(R.string.txt_friday));
-            }
-
-            if (dataModel.getIsSaturday() == 1) {
-                partTimeDaysArray.add(getString(R.string.txt_saturday));
-            }
-
-            if (dataModel.getIsSunday() == 1) {
-                partTimeDaysArray.add(getString(R.string.txt_sunday));
-            }
-
-            String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
-            mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
-            mBinding.tvJobDetailDate.setText(partTimeDays);
-
-            final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
-            params.addRule(RelativeLayout.END_OF, mBinding.tvJobDetailType.getId());
-            params.setMargins(Utils.dpToPx(this, 12), 0, Utils.dpToPx(this, 10), 0);
-
-            mBinding.tvJobDetailDate.postDelayed(new Runnable() {
+            mBinding.tvJobDetailDocDescription.setText(dataModel.getTemplateDesc());
+            mBinding.tvJobDetailDocDescription.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (mBinding.tvJobDetailDate.getLineCount() == 1) {
-                        params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
-                        mBinding.tvJobDetailDate.setLayoutParams(params);
+                    if (mBinding.tvJobDetailDocDescription.getLineCount() > 4) {
+                        mBinding.tvJobDetailDocDescription.setMaxLines(4);
+                        mBinding.tvJobDetailDocReadMore.setVisibility(View.VISIBLE);
+                        mBinding.tvJobDetailDocReadMore.setOnClickListener(JobDetailActivity.this);
+
                     } else {
-                        params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailType.getId());
-                        mBinding.tvJobDetailDate.setLayoutParams(params);
-                        mBinding.tvJobDetailDate.setPadding(0, 0, 0, 0);
+                        mBinding.tvJobDetailDocReadMore.setVisibility(View.GONE);
+                        mBinding.tvJobDetailDocReadMore.setOnClickListener(null);
                     }
                 }
             }, 200);
 
-        } else if (dataModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
-            mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_full_time);
-            mBinding.tvJobDetailDate.setVisibility(View.GONE);
-            mBinding.tvJobDetailType.setText(getString(R.string.txt_full_time));
 
-        } else if (dataModel.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
-            mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_temporary);
-            mBinding.tvJobDetailDate.setVisibility(View.GONE);
-            mBinding.tvJobDetailType.setText(getString(R.string.txt_temporary));
-        }
+            mBinding.tvJobDetailOfficeDescription.setText(dataModel.getOfficeDesc());
+            mBinding.tvJobDetailOfficeDescription.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mBinding.tvJobDetailOfficeDescription.getLineCount() > 4) {
+                        mBinding.tvJobDetailOfficeDescription.setMaxLines(4);
+                        mBinding.tvJobDetailOfficeReadMore.setVisibility(View.VISIBLE);
+                        mBinding.tvJobDetailOfficeReadMore.setOnClickListener(JobDetailActivity.this);
 
-        String endMessage = dataModel.getJobPostedTimeGap() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
-        mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
+                    } else {
+                        mBinding.tvJobDetailOfficeReadMore.setVisibility(View.GONE);
+                        mBinding.tvJobDetailOfficeReadMore.setOnClickListener(null);
+                    }
+                }
+            }, 200);
 
-        mBinding.tvJobDetailDocName.setText(dataModel.getOfficeName());
-        mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
-        mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
-        mBinding.tvJobDetailDocOfficeType.setText(dataModel.getOfficeTypeName());
 
-        mBinding.tvJobDetailDocDescription.setText(dataModel.getTemplateDesc());
-        mBinding.tvJobDetailDocDescription.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mBinding.tvJobDetailDocDescription.getLineCount() > 4) {
-                    mBinding.tvJobDetailDocDescription.setMaxLines(4);
-                    mBinding.tvJobDetailDocReadMore.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailDocReadMore.setOnClickListener(JobDetailActivity.this);
+            if (dataModel.getIsApplied() != 0) {
+                switch (Constants.JOBSTATUS.values()[dataModel.getIsApplied() - 1]) {
 
-                } else {
-                    mBinding.tvJobDetailDocReadMore.setVisibility(View.GONE);
-                    mBinding.tvJobDetailDocReadMore.setOnClickListener(null);
+                    case APPLIED:
+                        mBinding.tvJobStatus.setText(getString(R.string.txt_applied));
+                        mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
+                        mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                        mBinding.btnApplyJob.setVisibility(View.GONE);
+                        break;
+
+                    case INVITED:
+                        mBinding.tvJobStatus.setText(getString(R.string.txt_invited));
+                        mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
+                        mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                        mBinding.btnApplyJob.setVisibility(View.GONE);
+                        break;
+
+                    case SHORTLISTED:
+                        mBinding.tvJobStatus.setText(getString(R.string.txt_shortlisted));
+                        mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
+                        mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                        mBinding.btnApplyJob.setVisibility(View.GONE);
+                        break;
+
+                    case HIRED:
+                        mBinding.tvJobStatus.setText(getString(R.string.txt_hired));
+                        mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
+                        mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                        mBinding.btnApplyJob.setVisibility(View.GONE);
+                        break;
+
+                    case REJECTED:
+                        mBinding.tvJobStatus.setText(getString(R.string.txt_rejected));
+                        mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.red_color));
+                        mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+                        mBinding.btnApplyJob.setVisibility(View.GONE);
+                        break;
+
+                    case CANCELLED:
+                        mBinding.tvJobStatus.setText(getString(R.string.txt_cancelled));
+                        mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                        mBinding.tvJobStatus.setVisibility(View.VISIBLE);
+
+                        if (dataModel.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
+                            mBinding.btnApplyJob.setVisibility(View.GONE);
+                        } else {
+                            mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                        }
+                        break;
+
+                    default:
+                        mBinding.tvJobStatus.setVisibility(View.GONE);
+                        mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                        break;
+                }
+            } else {
+                mBinding.tvJobStatus.setVisibility(View.GONE);
+                mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+            }
+
+            if (dataModel.getIsSaved() == 1) {
+                mBinding.cbJobSelection.setChecked(true);
+            } else {
+                mBinding.cbJobSelection.setChecked(false);
+            }
+
+
+            if (dataModel.getWorkEverydayStart() != null && dataModel.getWorkEverydayEnd() != null) {
+                mBinding.tvJobDetailFull.setVisibility(View.VISIBLE);
+                mBinding.tvJobDetailFull.setText("All Days: " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd()));
+            } else {
+                if (dataModel.getMondayStart() != null && dataModel.getMondayEnd() != null) {
+                    mBinding.tvJobDetailMon.setVisibility(View.VISIBLE);
+                    mBinding.tvJobDetailMon.setText("Monday: " + Utils.convertUTCtoLocal(dataModel.getMondayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
+
+                }
+
+                if (dataModel.getTuesdayStart() != null && dataModel.getTuesdayEnd() != null) {
+                    mBinding.tvJobDetailTue.setVisibility(View.VISIBLE);
+                    mBinding.tvJobDetailTue.setText("Tuesday: " + Utils.convertUTCtoLocal(dataModel.getTuesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getTuesdayEnd()));
+
+                }
+
+                if (dataModel.getWednesdayStart() != null && dataModel.getWednesdayEnd() != null) {
+                    mBinding.tvJobDetailWed.setVisibility(View.VISIBLE);
+                    mBinding.tvJobDetailWed.setText("Wednesday: " + Utils.convertUTCtoLocal(dataModel.getWednesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWednesdayEnd()));
+
+                }
+
+                if (dataModel.getThursdayStart() != null && dataModel.getThursdayEnd() != null) {
+                    mBinding.tvJobDetailThu.setVisibility(View.VISIBLE);
+                    mBinding.tvJobDetailThu.setText("Thursday: " + Utils.convertUTCtoLocal(dataModel.getThursdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getThursdayEnd()));
+
+                }
+
+                if (dataModel.getFridayStart() != null && dataModel.getFridayEnd() != null) {
+                    mBinding.tvJobDetailFri.setVisibility(View.VISIBLE);
+                    mBinding.tvJobDetailFri.setText("Friday: " + Utils.convertUTCtoLocal(dataModel.getFridayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getFridayEnd()));
+
+                }
+
+                if (dataModel.getSaturdayStart() != null && dataModel.getSaturdayEnd() != null) {
+                    mBinding.tvJobDetailSat.setVisibility(View.VISIBLE);
+                    mBinding.tvJobDetailSat.setText("Saturday: " + Utils.convertUTCtoLocal(dataModel.getSaturdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSaturdayEnd()));
+
+                }
+
+                if (dataModel.getSundayStart() != null && dataModel.getSundayEnd() != null) {
+                    mBinding.tvJobDetailSun.setVisibility(View.VISIBLE);
+                    mBinding.tvJobDetailSun.setText("Sunday: " + Utils.convertUTCtoLocal(dataModel.getSundayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSundayEnd()));
+
                 }
             }
-        }, 200);
 
-
-        mBinding.tvJobDetailOfficeDescription.setText(dataModel.getOfficeDesc());
-        mBinding.tvJobDetailOfficeDescription.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mBinding.tvJobDetailOfficeDescription.getLineCount() > 4) {
-                    mBinding.tvJobDetailOfficeDescription.setMaxLines(4);
-                    mBinding.tvJobDetailOfficeReadMore.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailOfficeReadMore.setOnClickListener(JobDetailActivity.this);
-
-                } else {
-                    mBinding.tvJobDetailOfficeReadMore.setVisibility(View.GONE);
-                    mBinding.tvJobDetailOfficeReadMore.setOnClickListener(null);
-                }
+            if (dataModel.getNoOfJobs() != 0) {
+                mBinding.tvJobDetailJobOpenings.setVisibility(View.VISIBLE);
+                mBinding.tvJobDetailTotalJobLabel.setVisibility(View.VISIBLE);
+                mBinding.tvJobDetailJobOpenings.setText(String.valueOf(dataModel.getNoOfJobs()));
+            } else {
+                mBinding.tvJobDetailJobOpenings.setVisibility(View.GONE);
+                mBinding.tvJobDetailTotalJobLabel.setVisibility(View.GONE);
             }
-        }, 200);
 
+            addMarker(dataModel.getLatitude(), dataModel.getLongitude(), true);
 
-
-        if(dataModel.getIsApplied() != 0) {
-            switch (Constants.JOBSTATUS.values()[dataModel.getIsApplied() - 1]) {
-
-                case APPLIED:
-                    mBinding.tvJobStatus.setText(getString(R.string.txt_applied));
-                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
-                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-                    mBinding.btnApplyJob.setVisibility(View.GONE);
-                    break;
-
-                case INVITED:
-                    mBinding.tvJobStatus.setText(getString(R.string.txt_invited));
-                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
-                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-                    mBinding.btnApplyJob.setVisibility(View.GONE);
-                    break;
-
-                case SHORTLISTED:
-                    mBinding.tvJobStatus.setText(getString(R.string.txt_shortlisted));
-                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
-                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-                    mBinding.btnApplyJob.setVisibility(View.GONE);
-                    break;
-
-                case HIRED:
-                    mBinding.tvJobStatus.setText(getString(R.string.txt_hired));
-                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
-                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-                    mBinding.btnApplyJob.setVisibility(View.GONE);
-                    break;
-
-                case REJECTED:
-                    mBinding.tvJobStatus.setText(getString(R.string.txt_rejected));
-                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.red_color));
-                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-                    mBinding.btnApplyJob.setVisibility(View.GONE);
-                    break;
-
-                case CANCELLED:
-                    mBinding.tvJobStatus.setText(getString(R.string.txt_cancelled));
-                    mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-                    mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-                    mBinding.btnApplyJob.setVisibility(View.VISIBLE);
-                    break;
-
-                default:
-                    mBinding.tvJobStatus.setVisibility(View.GONE);
-                    mBinding.btnApplyJob.setVisibility(View.VISIBLE);
-                    break;
-            }
-        }else{
-            mBinding.tvJobStatus.setVisibility(View.GONE);
-            mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if (dataModel.getIsSaved() == 1) {
-            mBinding.cbJobSelection.setChecked(true);
-        } else {
-            mBinding.cbJobSelection.setChecked(false);
-        }
-
-
-        if(dataModel.getWorkEverydayStart() != null && dataModel.getWorkEverydayEnd() != null){
-            mBinding.tvJobDetailFull.setVisibility(View.VISIBLE);
-            mBinding.tvJobDetailFull.setText("All Days: "+ Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd()));
-        }else{
-            if(dataModel.getMondayStart() != null && dataModel.getMondayEnd() != null){
-                mBinding.tvJobDetailMon.setVisibility(View.VISIBLE);
-                mBinding.tvJobDetailMon.setText("Monday: "+ Utils.convertUTCtoLocal(dataModel.getMondayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
-
-            }
-
-            if(dataModel.getTuesdayStart() != null && dataModel.getTuesdayEnd() != null){
-                mBinding.tvJobDetailTue.setVisibility(View.VISIBLE);
-                mBinding.tvJobDetailTue.setText("Tuesday: "+ Utils.convertUTCtoLocal(dataModel.getTuesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getTuesdayEnd()));
-
-            }
-
-            if(dataModel.getWednesdayStart() != null && dataModel.getWednesdayEnd() != null){
-                mBinding.tvJobDetailWed.setVisibility(View.VISIBLE);
-                mBinding.tvJobDetailWed.setText("Wednesday: "+ Utils.convertUTCtoLocal(dataModel.getWednesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWednesdayEnd()));
-
-            }
-
-            if(dataModel.getThursdayStart() != null && dataModel.getThursdayEnd() != null){
-                mBinding.tvJobDetailThu.setVisibility(View.VISIBLE);
-                mBinding.tvJobDetailThu.setText("Thursday: "+ Utils.convertUTCtoLocal(dataModel.getThursdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getThursdayEnd()));
-
-            }
-
-            if(dataModel.getFridayStart() != null && dataModel.getFridayEnd() != null){
-                mBinding.tvJobDetailFri.setVisibility(View.VISIBLE);
-                mBinding.tvJobDetailFri.setText("Friday: "+ Utils.convertUTCtoLocal(dataModel.getFridayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getFridayEnd()));
-
-            }
-
-            if(dataModel.getSaturdayStart() != null && dataModel.getSaturdayEnd() != null){
-                mBinding.tvJobDetailSat.setVisibility(View.VISIBLE);
-                mBinding.tvJobDetailSat.setText("Saturday: "+ Utils.convertUTCtoLocal(dataModel.getSaturdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSaturdayEnd()));
-
-            }
-
-            if(dataModel.getSundayStart() != null && dataModel.getSundayEnd() != null){
-                mBinding.tvJobDetailSun.setVisibility(View.VISIBLE);
-                mBinding.tvJobDetailSun.setText("Sunday: "+ Utils.convertUTCtoLocal(dataModel.getMondayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
-
-            }
-        }
-
-        addMarker(dataModel.getLatitude(), dataModel.getLongitude(), true);
     }
 
 

@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
-import com.appster.dentamatch.EventBus.SaveUnSaveEvent;
-import com.appster.dentamatch.EventBus.TrackJobListRetrievedEvent;
+import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
+import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Constants;

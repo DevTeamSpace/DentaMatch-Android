@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.EventBus.JobDataReceivedEvent;
+import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;

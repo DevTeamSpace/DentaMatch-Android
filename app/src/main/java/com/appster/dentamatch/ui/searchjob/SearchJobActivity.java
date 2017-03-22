@@ -464,16 +464,15 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
             if (data != null && data.hasExtra(Constants.EXTRA_PLACE_NAME)) {
                 mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
-                mSelectedAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME)
-                        .concat(" ")
-                        .concat(data.getStringExtra(Constants.EXTRA_POSTAL_CODE));
-                mBinder.tvFetchedLoation.setText(mSelectedAddress);
+                mSelectedAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
                 mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                 mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
                 mSelectedZipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
                 mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
                 mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
                 mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
+                mBinder.tvFetchedLoation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
+
             }
         }
     }

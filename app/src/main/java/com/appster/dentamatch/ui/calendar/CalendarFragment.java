@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentCalendarBinding;
-import com.appster.dentamatch.EventBus.JobCancelEvent;
+import com.appster.dentamatch.eventbus.JobCancelEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -189,11 +189,20 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
                     } else {
                         calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
-                        mJobAdapter.notifyDataSetChanged();
+                        calendarBinding.rvBookedJob.setVisibility(View.GONE);
                     }
-                    mJobAdapter.setJobList(mJobAdapter.getList());
-                    calendarBinding.customCalendar.setHiredListData(mJobAdapter.getList());
 
+                    for(int i = 0; i < mAllJobLIst.size(); i++){
+                        if(mAllJobLIst.get(i).getId() == jobId){
+                            mAllJobLIst.remove(i);
+                            i = 0;
+                        }
+                    }
+
+                    calendarBinding.customCalendar.setHiredListData(mAllJobLIst);
+
+                }else{
+                    showToast(response.getMessage());
                 }
             }
 
@@ -221,14 +230,14 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
     private void arrangeJobData(String date) {
         ArrayList<HiredJobs> selectedDateJobList = new ArrayList<>();
         boolean isFullTime = false;
-        if (mAllJobLIst != null && mAllJobLIst.size() > 0) {
-            for (int i = 0; i < mAllJobLIst.size(); i++) {
+        try {
+            if (mAllJobLIst != null && mAllJobLIst.size() > 0) {
+                for (int i = 0; i < mAllJobLIst.size(); i++) {
 //                if (Utils.getDate(mAllJobLIst.get(i).getJobDate()).compareTo(Utils.parseDate(Calendar.getInstance().getTime())) >= 0) {
                     if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                         isFullTime = true;
 //                        selectedDateJobList.add(mAllJobLIst.get(i));
-                    } else
-                    if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
+                    } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                         String day = Utils.getDayOfWeek(date);
                         if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
@@ -246,30 +255,40 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                             selectedDateJobList.add(mAllJobLIst.get(i));
                         }
                     } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
-                        for (int t = 0; t < mAllJobLIst.get(i).getTemporaryJobDates().size(); t++) {
-                            if (mAllJobLIst.get(i).getTemporaryJobDates().get(t).getJobDate().equalsIgnoreCase(date)) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-
-                            }
+                        if(mAllJobLIst.get(i).getTempDates().equalsIgnoreCase(date)){
+                            selectedDateJobList.add(mAllJobLIst.get(i));
                         }
+//                        for (int t = 0; t < mAllJobLIst.get(i).getTemporaryJobDates().size(); t++) {
+//                            if (mAllJobLIst.get(i).getTemporaryJobDates().get(t).getJobDate().equalsIgnoreCase(date)) {
+//                                selectedDateJobList.add(mAllJobLIst.get(i));
+//
+//                            }
+//                        }
                     }
 
                 }
-           if( isFullTime){
-               calendarBinding.customCalendar.isFullTimeJob(isFullTime);
 
-           }
-                if (selectedDateJobList != null && selectedDateJobList.size() > 0) {
+                if (isFullTime) {
                     calendarBinding.customCalendar.isFullTimeJob(isFullTime);
+
+                }
+
+                if (selectedDateJobList.size() > 0) {
+                    calendarBinding.layoutBlankAlert.setVisibility(View.GONE);
+                    calendarBinding.customCalendar.isFullTimeJob(isFullTime);
+                    calendarBinding.rvBookedJob.setFocusable(true);
+
                     calendarBinding.rvBookedJob.setVisibility(View.VISIBLE);
                     mJobAdapter.setJobList(selectedDateJobList);
-//                mJobAdapter.notifyDataSetChanged();
                 } else {
                     calendarBinding.rvBookedJob.setVisibility(View.GONE);
                     calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
 
                 }
-//            }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -277,7 +296,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
     public void jobCancelled(JobCancelEvent event) {
         if (event != null) {
             for (HiredJobs model : mAllJobLIst) {
-
                 if (model.getId() == event.getJobID()) {
                     cancelJob(event.getJobID(), event.getMsg());
                     break;

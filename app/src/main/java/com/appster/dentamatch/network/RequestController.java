@@ -9,6 +9,7 @@ import com.appster.dentamatch.util.PreferenceUtil;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,6 +17,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Header;
 
 
 /**
@@ -30,7 +32,8 @@ public final class RequestController {
     private static String APPLICATION_JSON = "application/json";
 
     private static Retrofit retrofit;
-    private static HttpLoggingInterceptor logger = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+    private static HttpLoggingInterceptor logger = new HttpLoggingInterceptor()
+            .setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private static OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
             .addInterceptor(logger)
@@ -64,12 +67,14 @@ public final class RequestController {
                                 .header(HEADER_CONTENT_TYPE, APPLICATION_JSON)
                                 .header(HEADER_ACCEPT, APPLICATION_JSON)
                                 .method(original.method(), original.body());
+
                         Request request = requestBuilder.build();
                         return chain.proceed(request);
                     }
                 } else {
                     return chain.proceed(original);
                 }
+
                 return chain.proceed(original);
             }
         });

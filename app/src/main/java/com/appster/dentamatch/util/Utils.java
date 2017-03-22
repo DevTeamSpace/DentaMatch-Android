@@ -77,8 +77,8 @@ public class Utils {
     private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
     private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
-    private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 am
-
+    private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
+    private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
     @Nullable
     /*
     * get device id
@@ -87,6 +87,8 @@ public class Utils {
 //        return Settings.Secure.getString(context.getContentResolver(),
 //                Settings.Secure.ANDROID_ID);
 //    }
+
+
 
     public synchronized static String getDeviceID(Context context) {
         String uniqueID = PreferenceUtil.getDeviceId();
@@ -97,6 +99,18 @@ public class Utils {
         }
 
         return uniqueID;
+    }
+
+    public static String parseDateForTemp(String date){
+        SimpleDateFormat serverDateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            Date serverDate = serverDateOnlyFormat.parse(date);
+            return DateFormatMMDDYY.format(serverDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+       return null;
     }
 
     public static String getDeviceToken() {

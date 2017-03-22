@@ -3,6 +3,7 @@ package com.appster.dentamatch.adapters;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -90,22 +91,23 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        RecyclerView.ViewHolder holder = null;
         if (viewType == TYPE_ITEM) {
             mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_school, parent, false));
 
-            return new ViewHolderItem(mBinder.getRoot());
+            holder = new ViewHolderItem(mBinder.getRoot());
 
-        } else if (viewType == TYPE_HEADER) {
+        } else {
             mBinderHeader = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.layout_profile_header, parent, false));
 
-            return new ViewHolderHeader(mBinderHeader.getRoot());
+            holder =  new ViewHolderHeader(mBinderHeader.getRoot());
 
         }
 
-        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        return holder;
+//        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
     @Override
@@ -236,14 +238,14 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     holder.etYearOfGraduation.setText(mYearsList.get(position));
 
                     if (position != 0) {
-                        holder.etYearOfGraduation.setTextColor(mContext.getResources().getColor(R.color.text_default_color));
+                        holder.etYearOfGraduation.setTextColor(ContextCompat.getColor(mContext,R.color.text_default_color));
                         PostSchoolData school = getSchool((Integer) holder.spinnerYears.getTag());
                         school.setYearOfGraduation(mYearsList.get(position));
-                        school.setOtherId("" + mSchoolList.get((Integer) holder.etYearOfGraduation.getTag()).getSchoolTypeId());
+                        school.setOtherId(String.valueOf(mSchoolList.get((Integer) holder.etYearOfGraduation.getTag()).getSchoolTypeId()));
                         mHashMap.put((Integer) holder.spinnerYears.getTag(), school);
 
                     } else {
-                        holder.etYearOfGraduation.setTextColor(mContext.getResources().getColor(R.color.edt_hint_color));
+                        holder.etYearOfGraduation.setTextColor(ContextCompat.getColor(mContext,R.color.edt_hint_color));
                         PostSchoolData school = getSchool((Integer) holder.spinnerYears.getTag());
                         school.setYearOfGraduation("");
                     }
@@ -299,8 +301,9 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        if (isPositionHeader(position))
+        if (isPositionHeader(position)) {
             return TYPE_HEADER;
+        }
 
         return TYPE_ITEM;
     }

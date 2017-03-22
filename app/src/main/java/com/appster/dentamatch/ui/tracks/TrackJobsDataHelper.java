@@ -5,7 +5,7 @@ import android.content.Context;
 import android.location.Location;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.EventBus.TrackJobListRetrievedEvent;
+import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;

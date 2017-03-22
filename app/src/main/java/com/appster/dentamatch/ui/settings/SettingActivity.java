@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySettingsBinding;
-import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;

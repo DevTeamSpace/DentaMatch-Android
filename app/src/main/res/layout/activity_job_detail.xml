@@ -497,6 +497,7 @@
                         android:layout_height="wrap_content"
                         android:text="Monday"
                         android:visibility="gone"
+                        android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"
@@ -511,6 +512,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_medium"
+                        android:layout_marginStart="@dimen/margin_normal"
                         android:text="Monday"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"
@@ -525,6 +527,7 @@
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:layout_below="@+id/tv_job_detail_wed"
                         android:visibility="gone"
+                        android:layout_marginStart="@dimen/margin_normal"
                         android:text="Monday"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"
@@ -539,6 +542,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Monday"
+                        android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"
                         app:customFont="@string/font_bold" />
@@ -552,6 +556,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Monday"
+                        android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"
                         app:customFont="@string/font_bold" />
@@ -565,6 +570,7 @@
                         android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:text="Monday"
+                        android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"
                         app:customFont="@string/font_bold" />

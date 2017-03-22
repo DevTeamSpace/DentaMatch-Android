@@ -131,14 +131,17 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                 /**
                  * Once data has been loaded from the filter changes we can dismiss this filter.
                  */
+                if(response.getStatus() == 1) {
+                    if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
+                        mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.GONE);
 
-                if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
-                    mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.GONE);
+                    } else {
+                        mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.VISIBLE);
+                        mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText("" + response.getUnReadNotificationResponse().getNotificationCount());
 
-                } else {
-                    mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.VISIBLE);
-                    mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText(""+response.getUnReadNotificationResponse().getNotificationCount());
-
+                    }
+                }else{
+                    showToast(response.getMessage());
                 }
             }
 

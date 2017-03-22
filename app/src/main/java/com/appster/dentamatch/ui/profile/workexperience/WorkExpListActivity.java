@@ -14,7 +14,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityWorkExpListBinding;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
-import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;

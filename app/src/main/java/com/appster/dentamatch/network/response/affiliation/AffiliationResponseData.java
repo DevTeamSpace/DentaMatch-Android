@@ -1,6 +1,6 @@
 package com.appster.dentamatch.network.response.affiliation;
 
-import com.appster.dentamatch.EventBus.LocationEvent;
+import com.appster.dentamatch.eventbus.LocationEvent;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

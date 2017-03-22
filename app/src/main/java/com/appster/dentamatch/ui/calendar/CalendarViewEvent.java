@@ -52,6 +52,7 @@ public class CalendarViewEvent extends LinearLayout {
     public CalendarViewEvent(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+        mHiredListData = new ArrayList<>();
         initializeUILayout();
         setUpCalendarAdapter();
         setPreviousButtonClickEvent();
@@ -68,12 +69,12 @@ public class CalendarViewEvent extends LinearLayout {
     }
 
     public void setHiredListData(ArrayList<HiredJobs> hiredListData) {
-        if (mHiredListData != null) {
-            mHiredListData = null;
+        if (mHiredListData != null && mHiredListData.size() > 0) {
+            mHiredListData.clear();
         }
-        mHiredListData = new ArrayList<>();
 
         mHiredListData.addAll(hiredListData);
+
         if (mAdapter != null) {
             mAdapter.setJobList(mHiredListData);
         }
@@ -103,12 +104,7 @@ public class CalendarViewEvent extends LinearLayout {
         previousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                initializeUILayout();
-
-//                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
                 --count;
-
-
                 cal.add(Calendar.MONTH, -1);
                 mDateSelectedListener.onMonthChanged(cal);
                 setUpCalendarAdapter();
@@ -121,10 +117,7 @@ public class CalendarViewEvent extends LinearLayout {
         nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(context, "under development", Toast.LENGTH_SHORT).show();
                 if (count < Constants.MAX_MONTH_COUNT - 1) {
-//                    initializeUILayout();
-
                     ++count;
                     cal.add(Calendar.MONTH, 1);
                     mDateSelectedListener.onMonthChanged(cal);
@@ -142,7 +135,6 @@ public class CalendarViewEvent extends LinearLayout {
         calendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(context, "Clicked " + (Integer)view.getTag(), Toast.LENGTH_LONG).show();
                 if ((Integer) view.getTag() != -1) {
                     if (!mDayList.get(position).isSelected()) {
 
@@ -153,19 +145,12 @@ public class CalendarViewEvent extends LinearLayout {
                         oldClickedPos = position;
 
                         view.setBackgroundResource(R.drawable.shape_date_selection);
-//                        mAdapter.setCurrentMonthDate(false);
                         mAdapter.setJobList(mHiredListData);
 
                     }
 
-//                    view.setBackgroundResource(R.drawable.shape_date_selection);
-
                     mDateSelectedListener.selectedDate(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
                 }
-
-
-//                    view.setBackgroundResource(R.drawable.shape_date_selection);
-
             }
         });
     }

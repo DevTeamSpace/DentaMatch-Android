@@ -15,7 +15,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SchoolsAdapter;
 import com.appster.dentamatch.databinding.ActivitySchoolingBinding;
 import com.appster.dentamatch.interfaces.EditTextSelected;
-import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.SchoolTypeModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;

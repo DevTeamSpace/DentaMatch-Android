@@ -36,15 +36,14 @@ android {
         enabled true;
     }
 
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
-    def code = 1;
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
 
 
     defaultConfig {
         applicationId "com.appster.dentamatch"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -122,7 +121,7 @@ android {
 
 ext {
     //supportLibrary Version
-    supportLibrary = '25.2.0'
+    supportLibrary = '23.0.0'
 
     //Play services Version
     playServiceVersion = '10.2.0'
@@ -135,6 +134,9 @@ ext {
 
     //Retrofit Version
     retrofitVersion = '2.1.0'
+
+    //Build tools  Version
+//    buildToolsVersion '23.0.1'
 
 }
 

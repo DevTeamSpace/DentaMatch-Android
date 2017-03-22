@@ -29,6 +29,7 @@ public class HiredJobs {
     private int zipcode;
     private double latitude;
     private double longitude;
+    private String tempDates;
     @SerializedName("tempJobDates")
     private ArrayList<TemporaryJobDates> temporaryJobDates;
 
@@ -70,6 +71,10 @@ public class HiredJobs {
 
     public int getIsSunday() {
         return isSunday;
+    }
+
+    public String getTempDates() {
+        return tempDates;
     }
 
     public String getJobtitleName() {

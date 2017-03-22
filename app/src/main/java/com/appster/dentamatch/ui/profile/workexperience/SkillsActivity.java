@@ -17,7 +17,7 @@ import com.appster.dentamatch.databinding.ActivitySkillsBinding;
 import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.interfaces.OnSkillClick;
 import com.appster.dentamatch.model.ParentSkillModel;
-import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.SubSkillModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;

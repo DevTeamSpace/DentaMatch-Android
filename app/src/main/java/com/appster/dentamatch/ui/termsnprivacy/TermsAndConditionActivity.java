@@ -86,19 +86,16 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
             view.loadUrl(url);
             return true;
         }
-
-        @TargetApi(Build.VERSION_CODES.N)
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            view.loadUrl(request.getUrl().toString());
-            return true;
-        }
+            //TODO: Uncomment this code when we change this to target Version N.
+//        @TargetApi(Build.VERSION_CODES.N)
+//        @Override
+//        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//            view.loadUrl(request.getUrl().toString());
+//            return true;
+//        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-
-            // TODO Auto-generated method stub
-
             super.onPageFinished(view, url);
             hideProgressBar();
         }

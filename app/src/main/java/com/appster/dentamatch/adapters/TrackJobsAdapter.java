@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemTrackJobListBinding;
-import com.appster.dentamatch.EventBus.SaveUnSaveEvent;
+import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -263,7 +263,8 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok),
+        Alert.createYesNoAlert(mContext,
+                mContext.getString(R.string.txt_ok),
                 mContext.getString(R.string.txt_cancel),
                 mContext.getString(R.string.app_name),
                 mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {

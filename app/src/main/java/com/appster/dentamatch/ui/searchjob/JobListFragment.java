@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.JobListAdapter;
 import com.appster.dentamatch.databinding.FragmentJobListBinding;
-import com.appster.dentamatch.EventBus.JobDataReceivedEvent;
-import com.appster.dentamatch.EventBus.SaveUnSaveEvent;
+import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
+import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.ui.common.BaseFragment;
 

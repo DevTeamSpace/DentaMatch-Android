@@ -54,6 +54,9 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
                     forgotPasswordApi(prepareForgotPasswordRequest());
                 }
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -67,6 +70,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
             Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
             return false;
         }
+
         return true;
     }
 

@@ -6,11 +6,11 @@ import android.content.Intent;
 
 import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.EventBus.ChatHistoryRetrievedEvent;
-import com.appster.dentamatch.EventBus.ChatPersonalMessageReceivedEvent;
-import com.appster.dentamatch.EventBus.MessageAcknowledgementEvent;
-import com.appster.dentamatch.EventBus.SocketConnectionEvent;
-import com.appster.dentamatch.EventBus.UnblockEvent;
+import com.appster.dentamatch.eventbus.ChatHistoryRetrievedEvent;
+import com.appster.dentamatch.eventbus.ChatPersonalMessageReceivedEvent;
+import com.appster.dentamatch.eventbus.MessageAcknowledgementEvent;
+import com.appster.dentamatch.eventbus.SocketConnectionEvent;
+import com.appster.dentamatch.eventbus.UnblockEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatActivity;

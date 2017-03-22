@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentDialogCancelBinding;
-import com.appster.dentamatch.EventBus.JobCancelEvent;
+import com.appster.dentamatch.eventbus.JobCancelEvent;
 import com.appster.dentamatch.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 public class CancelReasonDialogFragment extends android.support.v4.app.DialogFragment implements View.OnClickListener {
     private FragmentDialogCancelBinding mBinding;
     private int mJobID;
+    private String mCancelDate;
 
     public static CancelReasonDialogFragment newInstance(){
         return new CancelReasonDialogFragment();

@@ -1,4 +1,4 @@
-package com.appster.dentamatch.EventBus;
+package com.appster.dentamatch.eventbus;
 
 import org.json.JSONArray;
 

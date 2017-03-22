@@ -46,7 +46,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
 
     public void setJobList(ArrayList<HiredJobs> jobList) {
         mJobListData.clear();
-        mJobListData.addAll(jobList) ;
+        mJobListData.addAll(jobList);
         notifyDataSetChanged();
     }
 
@@ -228,7 +228,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
                 notifyItemRangeChanged(i, mJobListData.size());
                 break;
             }
-        }
 
+        }
     }
 }

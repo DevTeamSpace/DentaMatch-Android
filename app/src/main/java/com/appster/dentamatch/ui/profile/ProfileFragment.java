@@ -20,7 +20,7 @@ import com.appster.dentamatch.databinding.ItemProfileSkillBinding;
 import com.appster.dentamatch.databinding.ItemProfileWorkExpBinding;
 import com.appster.dentamatch.model.ProfileSchoolModel;
 import com.appster.dentamatch.model.ProfileSkillModel;
-import com.appster.dentamatch.EventBus.ProfileUpdatedEvent;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;

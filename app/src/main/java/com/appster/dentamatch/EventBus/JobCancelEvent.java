@@ -1,4 +1,4 @@
-package com.appster.dentamatch.EventBus;
+package com.appster.dentamatch.eventbus;
 
 /**
  * Created by Appster on 03/02/17.
@@ -20,4 +20,5 @@ public class JobCancelEvent {
     public String getMsg() {
         return msg;
     }
+
 }

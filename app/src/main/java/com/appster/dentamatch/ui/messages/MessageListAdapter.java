@@ -136,7 +136,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
                         }
                     });
         }
-        return false;
+        return true;
     }
 
     private void blockUnBlockUser(final String status, final String recruiterID, String userID) {

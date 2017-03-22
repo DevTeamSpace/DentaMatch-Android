@@ -59,21 +59,22 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
 
         if (viewType == TYPE_ITEM) {
             mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_skill, parent, false));
 
-            return new ViewHolderItem(mBinder.getRoot());
-        } else if (viewType == TYPE_HEADER) {
+            viewHolder = new ViewHolderItem(mBinder.getRoot());
+        } else {
             mBinderHeader = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.layout_profile_header, parent, false));
-
-            return new ViewHolderHeader(mBinderHeader.getRoot());
+            viewHolder = new ViewHolderHeader(mBinderHeader.getRoot());
         }
 
-        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        return viewHolder;
     }
+
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder1, final int position) {
@@ -206,30 +207,30 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private class ViewHolderHeader extends RecyclerView.ViewHolder {
-        ViewHolderHeader(View view) {
-            super(view);
-        }
+private class ViewHolderHeader extends RecyclerView.ViewHolder {
+    ViewHolderHeader(View view) {
+        super(view);
     }
+}
 
-    private class ViewHolderItem extends RecyclerView.ViewHolder {
-        LinearLayout layoutSkills;
-        RelativeLayout layoutSkillsInner;
-        FlowLayout flowLayout;
-        TextView tvSkillName;
-        ImageView ivArrow;
-        CustomEditText etOther;
+private class ViewHolderItem extends RecyclerView.ViewHolder {
+    LinearLayout layoutSkills;
+    RelativeLayout layoutSkillsInner;
+    FlowLayout flowLayout;
+    TextView tvSkillName;
+    ImageView ivArrow;
+    CustomEditText etOther;
 
-        ViewHolderItem(View view) {
-            super(view);
-            layoutSkills = mBinder.layoutSkillsTop;
-            layoutSkillsInner = mBinder.layoutSkillsInner;
-            flowLayout = mBinder.flowLayoutChips;
-            tvSkillName = mBinder.tvSkillName;
-            ivArrow = mBinder.ivRightArrow;
-            etOther = mBinder.etOther;
-        }
+    ViewHolderItem(View view) {
+        super(view);
+        layoutSkills = mBinder.layoutSkillsTop;
+        layoutSkillsInner = mBinder.layoutSkillsInner;
+        flowLayout = mBinder.flowLayoutChips;
+        tvSkillName = mBinder.tvSkillName;
+        ivArrow = mBinder.ivRightArrow;
+        etOther = mBinder.etOther;
     }
+}
 
 
 }

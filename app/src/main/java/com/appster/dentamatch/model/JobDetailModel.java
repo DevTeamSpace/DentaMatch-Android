@@ -2,6 +2,8 @@ package com.appster.dentamatch.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by Appster on 01/02/17.
  */
@@ -10,6 +12,7 @@ public class JobDetailModel {
 
     private int id;
     private int jobType;
+    private int noOfJobs;
     private int isMonday;
     private int isTuesday;
     private int isWednesday;
@@ -53,6 +56,11 @@ public class JobDetailModel {
     private int isApplied;
     private int isSaved;
     private String partTimeDays;
+    private ArrayList<String> jobTypeDates;
+
+    public ArrayList<String> getJobTypeDates() {
+        return jobTypeDates;
+    }
 
     public void setIsSaved(int isSaved) {
         this.isSaved = isSaved;
@@ -220,5 +228,9 @@ public class JobDetailModel {
 
     public String getFridayEnd() {
         return fridayEnd;
+    }
+
+    public int getNoOfJobs() {
+        return noOfJobs;
     }
 }

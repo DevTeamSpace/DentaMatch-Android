@@ -64,10 +64,7 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
 
         } else {
             if (response.raw().code() == HttpURLConnection.HTTP_BAD_REQUEST) {
-//                BaseResponse error = ErrorUtils.parseError(response);
-//                if (error.getStatusCode() == NOT_AUTHORISED) {
-//                Utils.logOut(act);
-                //   }
+
             } else {
                 act.showSnackBar(act.getResources().getString(R.string.server_error));
             }
