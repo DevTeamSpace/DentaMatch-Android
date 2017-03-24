@@ -1,6 +1,8 @@
 package com.appster.dentamatch.network.response.auth;
 
 import com.appster.dentamatch.model.JobTitleListModel;
+import com.appster.dentamatch.model.SelectedJobTitleModel;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -17,9 +19,10 @@ public class SearchFilterModel {
     private int page;
     private String address;
     private ArrayList<String> parttimeDays;
-    private ArrayList<JobTitleListModel> selectedJobTitles;
+    @SerializedName("jobTitles")
+    private ArrayList<SelectedJobTitleModel> selectedJobTitles;
 
-    public ArrayList<JobTitleListModel> getSelectedJobTitles() {
+    public ArrayList<SelectedJobTitleModel> getSelectedJobTitles() {
         return selectedJobTitles;
     }
 

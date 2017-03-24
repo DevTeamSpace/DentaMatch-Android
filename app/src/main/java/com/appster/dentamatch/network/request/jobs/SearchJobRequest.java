@@ -1,6 +1,8 @@
 package com.appster.dentamatch.network.request.jobs;
 
 import com.appster.dentamatch.model.JobTitleListModel;
+import com.appster.dentamatch.model.SelectedJobTitleModel;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -17,7 +19,8 @@ public class SearchJobRequest {
     private int isFulltime;
     private int isParttime;
     private ArrayList<String> parttimeDays;
-    private ArrayList<JobTitleListModel> selectedJobTitles;
+    @SerializedName("jobTitles")
+    private ArrayList<SelectedJobTitleModel> selectedJobTitles;
     private String address;
     private String state;
     private String city;
@@ -31,11 +34,11 @@ public class SearchJobRequest {
         this.address = address;
     }
 
-    public ArrayList<JobTitleListModel> getSelectedJobTitles() {
+    public ArrayList<SelectedJobTitleModel> getSelectedJobTitles() {
         return selectedJobTitles;
     }
 
-    public void setSelectedJobTitles(ArrayList<JobTitleListModel> selectedJobTitles) {
+    public void setSelectedJobTitles(ArrayList<SelectedJobTitleModel> selectedJobTitles) {
         this.selectedJobTitles = selectedJobTitles;
     }
 

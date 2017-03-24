@@ -194,11 +194,17 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mLatitude = String.valueOf(address.getLatitude());
             mLongitude = String.valueOf(address.getLongitude());
             mCountry = address.getCountryName();
-            mCity = address.getLocality();
+
+            if(address.getLocality() != null ) {
+                mCity = address.getLocality();
+            }else{
+                mCity = address.getSubLocality();
+            }
+
             mState = address.getAdminArea();
 
             mAutocompleteView.setAdapter(null);
-            mAutocompleteView.setText(mPlaceName);
+            mAutocompleteView.setText(mPlaceName.concat(" ").concat(mPostalCode));
             mAutocompleteView.setAdapter(mAdapter);
 
         } else {
@@ -336,18 +342,26 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         if (address.getAddressLine(0) != null) {
             sb.append(address.getAddressLine(0));
         }
+
         if (address.getAddressLine(1) != null) {
             sb.append(", ");
             sb.append(address.getAddressLine(1));
         }
+
         if (address.getSubAdminArea() != null) {
             sb.append(", ");
             sb.append(address.getSubAdminArea());
         }
+
         if (address.getAdminArea() != null) {
             sb.append(", ");
             sb.append(address.getAdminArea());
         }
+
+//        if(address.getPostalCode() != null){
+//            sb.append(", ");
+//            sb.append(address.getPostalCode());
+//        }
 
         LogUtils.LOGD(TAG, "convertAddressToString " + sb.toString());
 

@@ -129,7 +129,7 @@
         android:text="1.0 miles"
         android:textColor="@color/black_color"
         android:layout_marginEnd="@dimen/margin_25"
-        android:paddingTop="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_9"
         android:paddingBottom="@dimen/margin_small"
         android:layout_width="wrap_content"
         android:layout_alignParentEnd="true"

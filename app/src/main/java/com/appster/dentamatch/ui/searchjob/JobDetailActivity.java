@@ -378,13 +378,23 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                         }
 
                     }
+
                     mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
+                    String tempDatesToSet = "";
 
                     if (tempDates.size() > 2) {
-                        mBinding.tvJobDetailDate.setText(tempDates.get(0).concat(", ").concat(tempDates.get(1)).concat("..."));
+                        tempDatesToSet = tempDates.get(0).concat(", ").concat(tempDates.get(1)).concat("...");
                     } else {
-                        mBinding.tvJobDetailDate.setText(tempDates.get(0).concat(", ").concat(tempDates.get(1)));
+                        for(int i = 0; i < tempDates.size(); i++) {
+                            if(i != tempDates.size() - 1){
+                                tempDatesToSet =  tempDatesToSet.concat(tempDates.get(i)).concat(", ");
+                            }else{
+                                tempDatesToSet = tempDatesToSet.concat(tempDates.get(i));
+                            }
+                        }
                     }
+
+                    mBinding.tvJobDetailDate.setText(tempDatesToSet);
                 }
 
             }
@@ -550,6 +560,8 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 mBinding.tvJobDetailTotalJobLabel.setVisibility(View.VISIBLE);
                 mBinding.tvJobDetailJobOpenings.setText(String.valueOf(dataModel.getNoOfJobs()));
             } else {
+                //TODO: add layout margin below.
+//                mBinding.tvJobDetailDocOfficeType.
                 mBinding.tvJobDetailJobOpenings.setVisibility(View.GONE);
                 mBinding.tvJobDetailTotalJobLabel.setVisibility(View.GONE);
             }

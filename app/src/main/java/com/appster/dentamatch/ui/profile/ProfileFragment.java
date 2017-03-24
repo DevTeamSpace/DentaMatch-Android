@@ -439,6 +439,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             ItemProfileWorkExpBinding expBinding
                     = DataBindingUtil.bind(LayoutInflater.from(profileBinding.expInflater.getContext())
                     .inflate(R.layout.item_profile_work_exp, profileBinding.expInflater, false));
+
             expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
             expBinding.tvAddress.setText(expList.get(i).getOfficeAddress());
@@ -502,7 +503,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             }
 
 
-            expBinding.tvExpDuration.setText("" + expList.get(i).getMonthsOfExpereince() / 12 + "." + (expList.get(i).getMonthsOfExpereince() % 12) + " " + getString(R.string.yrs));
+            int months = expList.get(i).getMonthsOfExpereince() % 12;
+            int years = expList.get(i).getMonthsOfExpereince() / 12;
+
+            if(months == 0){
+                expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs)));
+            }else{
+                expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs).concat(" ").concat(String.valueOf(months).concat("months"))));
+            }
+
             profileBinding.expInflater.addView(expBinding.getRoot());
         }
 
@@ -589,9 +598,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < schoolList.size(); i++) {
             schoolBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.schoolInflater.getContext())
                     .inflate(R.layout.item_profile_schooling, profileBinding.schoolInflater, false));
-            schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolName() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
+            schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolTitle() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
 //            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName());
-            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolTitle());
+            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolName());
             profileBinding.schoolInflater.addView(schoolBinding.getRoot());
         }
 

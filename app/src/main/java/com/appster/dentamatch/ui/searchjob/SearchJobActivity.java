@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
 import com.appster.dentamatch.model.JobTitleListModel;
+import com.appster.dentamatch.model.SelectedJobTitleModel;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
@@ -34,6 +35,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<Integer> mSelectedJobID;
     private ArrayList<String> mPartTimeDays;
     private ArrayList<JobTitleListModel> mChosenTitles;
+    private ArrayList<SelectedJobTitleModel> mSelectedJobTitles;
     private String mSelectedZipCode;
     private boolean isFirstTime;
     private String mSelectedAddress;
@@ -139,11 +141,19 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
             if(!TextUtils.isEmpty(mSelectedAddress )) {
                 mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
-                mBinder.tvFetchedLoation.setText(mSelectedAddress);
+                mBinder.tvFetchedLoation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
             }
 
             if(request.getSelectedJobTitles() != null ) {
-                mChosenTitles.addAll(request.getSelectedJobTitles());
+                mSelectedJobTitles = request.getSelectedJobTitles();
+                for(SelectedJobTitleModel model : mSelectedJobTitles) {
+                    JobTitleListModel jobModel = new JobTitleListModel();
+                    jobModel.setSelected(true);
+                    jobModel.setId(model.getId());
+                    jobModel.setJobTitle(model.getJobTitle());
+
+                    mChosenTitles.add(jobModel);
+                }
             }
 
             if(mChosenTitles != null && mChosenTitles.size() > 0) {
@@ -162,12 +172,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         mSelectedJobID = new ArrayList<>();
         mPartTimeDays = new ArrayList<>();
         mChosenTitles = new ArrayList<>();
+        mSelectedJobTitles = new ArrayList<>();
 
         mBinder.toolbarSearchJob.tvToolbarGeneralLeft.setText(getString(R.string.header_search_job));
         mBinder.toolbarSearchJob.ivToolBarLeft.setOnClickListener(this);
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.cbPartTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.tvCurrentLocation.setOnClickListener(this);
+        mBinder.tvFetchedLoation.setOnClickListener(this);
         mBinder.tvJobTitle.setOnClickListener(this);
         mBinder.tvSaturday.setOnClickListener(this);
         mBinder.tvSunday.setOnClickListener(this);
@@ -186,8 +198,10 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
 
+            case R.id.tv_fetched_loation:
             case R.id.tv_current_location:
                 Intent intent = new Intent(SearchJobActivity.this, PlacesMapActivity.class);
+
                 if(mSelectedLat!=null&&mSelectedLng!=null) {
                     intent.putExtra(Constants.EXTRA_LATITUDE, mSelectedLat);
                     intent.putExtra(Constants.EXTRA_LONGITUDE, mSelectedLng);
@@ -399,7 +413,8 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         request.setCountry(mSelectedCountry);
         request.setState(mSelectedState);
 
-        request.setSelectedJobTitles(mChosenTitles);
+
+        request.setSelectedJobTitles(mSelectedJobTitles);
 
         /**
          * This value is set in order to redirect user from login or splash screen.
@@ -417,7 +432,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
 
     private boolean isValidData() {
-        if (mSelectedJobID.size() == 0 || mChosenTitles.size() == 0) {
+        if (mSelectedJobID.size() == 0 || mChosenTitles.size() == 0 || mSelectedJobTitles.size() == 0) {
             showToast(getString(R.string.msg_empty_job_title));
             return false;
 
@@ -444,36 +459,51 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE) {
+        try {
+            if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE) {
 
-            if (data != null && data.hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)) {
-                mSelectedJobID.clear();
-                mBinder.flowLayoutJobTitle.removeAllViews();
-                ArrayList<JobTitleListModel> jobTitleList = data.getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
-                mChosenTitles = jobTitleList;
-                mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
+                if (data != null && data.hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)) {
+                    mSelectedJobID.clear();
+                    mBinder.flowLayoutJobTitle.removeAllViews();
+                    ArrayList<JobTitleListModel> jobTitleList = data.getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
+                    mChosenTitles = jobTitleList;
 
-                for (JobTitleListModel item : jobTitleList) {
-                    addTitleToLayout(item, true);
+                    mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
+                    mSelectedJobTitles.clear();
+
+                    if (mChosenTitles.size() > 0) {
+                        for (JobTitleListModel model : mChosenTitles) {
+                            SelectedJobTitleModel jobModel = new SelectedJobTitleModel();
+                            jobModel.setJobTitle(model.getJobTitle());
+                            jobModel.setId(model.getId());
+                            mSelectedJobTitles.add(jobModel);
+                        }
+                    }
+
+                    for (JobTitleListModel item : jobTitleList) {
+                        addTitleToLayout(item, true);
+                    }
+
+
                 }
 
+            } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS) {
 
+                if (data != null && data.hasExtra(Constants.EXTRA_PLACE_NAME)) {
+                    mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
+                    mSelectedAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
+                    mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
+                    mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
+                    mSelectedZipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
+                    mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
+                    mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
+                    mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
+                    mBinder.tvFetchedLoation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
+
+                }
             }
-
-        } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS) {
-
-            if (data != null && data.hasExtra(Constants.EXTRA_PLACE_NAME)) {
-                mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
-                mSelectedAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
-                mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
-                mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
-                mSelectedZipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
-                mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
-                mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
-                mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
-                mBinder.tvFetchedLoation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
-
-            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

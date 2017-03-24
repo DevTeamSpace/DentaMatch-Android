@@ -59,6 +59,14 @@ public class JobTitleListModel implements Parcelable{
         return 0;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);

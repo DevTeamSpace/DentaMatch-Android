@@ -98,6 +98,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     private AddSchoolRequest prepareRequest() {
         HashMap<Integer, PostSchoolData> hashMap = mSchoolsAdapter.getPostMapData();
         ArrayList<PostSchoolData> requestList = new ArrayList<>();
+
         for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
             PostSchoolData school = new PostSchoolData();
             boolean isMatchScoolName = false;

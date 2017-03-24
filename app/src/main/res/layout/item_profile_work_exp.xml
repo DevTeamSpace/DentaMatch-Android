@@ -19,8 +19,11 @@
                 style="@style/text_view_normal"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/tv_exp_duration"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_17"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:customFont="@string/font_medium" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -28,6 +31,7 @@
                 style="@style/text_view_normal"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_10"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_12"
                 app:customFont="@string/font_bold" />

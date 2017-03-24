@@ -147,6 +147,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (schoolTypeModel.getOtherList() != null &&
                     schoolTypeModel.getOtherList().size() > 0 &&
                     schoolTypeModel.getOtherList().get(0).getIsSelected() == 1) {
+
                 PostSchoolData data = new PostSchoolData();
                 data.setOtherSchooling(schoolTypeModel.getOtherList().get(0).getOtherSchooling());
                 data.setYearOfGraduation(schoolTypeModel.getOtherList().get(0).getYearOfGraduation());
@@ -183,6 +184,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 } else {
                     holder.autoCompleteTextView.setHint(mContext.getString(R.string.hint_type_to_search));
                     holder.etYearOfGraduation.setHint(mContext.getString(R.string.hint_year_of_graduation));
+                    holder.etYearOfGraduation.setTextColor(ContextCompat.getColor(mContext, R.color.edt_hint_color));
                 }
             }
 
@@ -255,7 +257,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onNothingSelected(AdapterView<?> parent) {
                     holder.etYearOfGraduation.setText("");
                     holder.etYearOfGraduation.setHint(mContext.getString(R.string.hint_year_of_graduation));
-                    holder.etYearOfGraduation.setTextColor(mContext.getResources().getColor(R.color.edt_hint_color));
+                    holder.etYearOfGraduation.setTextColor(ContextCompat.getColor(mContext, R.color.edt_hint_color));
                     ((BaseActivity) mContext).hideKeyboard(holder.etSchoolName);
                 }
             });

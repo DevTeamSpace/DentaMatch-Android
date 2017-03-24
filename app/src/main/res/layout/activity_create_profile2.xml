@@ -55,8 +55,10 @@
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_name"
                 style="@style/text_view_normal"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
                 android:textColor="@color/black_color"
-                android:textSize="@dimen/text_size_xlarge"
+                android:textSize="@dimen/text_size_normal"
                 app:customFont="@string/font_bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -108,7 +110,7 @@
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:text="@string/label_upload_photo"
                 android:textColor="@color/edt_hint_color"
-                android:textSize="@dimen/text_size_xlarge"
+                android:textSize="@dimen/text_size_normal"
                 app:customFont="@string/font_regular" />
 
             <View

@@ -153,8 +153,6 @@ public class Utils {
             address = addressList.get(0);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (IndexOutOfBoundsException ex) {
-            ex.printStackTrace();
         }
 
         return address;

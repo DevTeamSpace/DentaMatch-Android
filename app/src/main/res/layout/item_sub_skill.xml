@@ -29,19 +29,23 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_check_unselected" />
+
+
         </RelativeLayout>
 
         <EditText
             android:id="@+id/et_other"
+            android:padding="@dimen/margin_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginEnd="@dimen/margin_large"
-            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
             android:background="@drawable/edit_text_selector_blue"
             android:digits="@string/digits_alpha_numeric_only"
             android:textColor="@color/white_color"
-            android:visibility="gone" />
+            android:visibility="visible" />
+
 
     </LinearLayout>
 </layout>
