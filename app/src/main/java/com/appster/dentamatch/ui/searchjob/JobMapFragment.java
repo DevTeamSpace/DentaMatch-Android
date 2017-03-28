@@ -453,7 +453,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                 final int status = (model.getIsSaved() == 1) ? 0 : 1;
 
                 if(status == 0) {
-                    Alert.createYesNoAlert(getActivity(), "OK", "CANCEL", getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
+                    Alert.createYesNoAlert(getActivity(), "OK", "CANCEL", getString(R.string.txt_alert_title), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
                         @Override
                         public void onPositive(DialogInterface dialog) {
                             saveUnSaveJob(model.getId(), status, model);

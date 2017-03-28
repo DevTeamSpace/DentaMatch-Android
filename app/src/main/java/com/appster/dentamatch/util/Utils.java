@@ -56,6 +56,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -64,6 +65,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Utils for app
@@ -75,7 +77,7 @@ public class Utils {
     private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-    private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("h a", Locale.getDefault()); // DATE FORMAT : 9 am
+    private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
     private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
     private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
     private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
@@ -412,6 +414,9 @@ public class Utils {
         }
 
         hourOnlyDateFormat.setTimeZone(TimeZone.getDefault());
+        DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
+        symbols.setAmPmStrings(new String[] { "am", "pm" });
+        hourOnlyDateFormat.setDateFormatSymbols(symbols);
         return hourOnlyDateFormat.format(myDate);
     }
 
@@ -768,45 +773,54 @@ public class Utils {
 
     public static String getDuration(Date createdDate, Context context) {
         String time = "";
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(createdDate);
-        long createMillis = cal.getTimeInMillis();
-        long currentMillis = System.currentTimeMillis();
-        long reqTime = currentMillis - createMillis;
-        long sec = reqTime / 1000;
-        time = sec + " " + context.getString(R.string.sec);
-        if (sec >= 60) {
-            long minute = sec / 60;
-            time = minute + " " + context.getString(R.string.min);
+        try {
+            FullDateFormat.setTimeZone(TimeZone.getDefault());
+            String currentTime = FullDateFormat.format(new Date(System.currentTimeMillis()));
+            Date currentDateTime = FullDateFormat.parse(currentTime);
 
-            if (minute >= 60) {
-                long hrs = minute / 60;
-                time = hrs + " " + context.getString(R.string.hrs);
+            long currentMillis = currentDateTime.getTime();
+            long createMillis = createdDate.getTime();
+            long reqTime = (currentMillis - createMillis);
+            long sec = reqTime / 1000;
+            time = sec + " " + context.getString(R.string.sec);
 
-                if (hrs > 24) {
-                    int days = (int) hrs / 24;
-                    time = days + " " + context.getString(R.string.days);
+            if (sec >= 60) {
+                long minute = sec / 60;
+                time = minute + " " + context.getString(R.string.min);
 
-                    if (days >= 7) {
-                        int week = days / 7;
-                        time = week + " " + context.getString(R.string.weeks);
+                if (minute >= 60) {
+                    long hrs = minute / 60;
+                    time = hrs + " " + context.getString(R.string.hrs);
 
-                        if (days >= 30) {
-                            int month = days / 30;
-                            time = month + " " + context.getString(R.string.mon);
+                    if (hrs > 24) {
+                        int days = (int) hrs / 24;
+                        time = days + " " + context.getString(R.string.days);
 
-                            if (month >= 12) {
-                                int year = month / 12;
-                                time = year + " " + context.getString(R.string.years);
+                        if (days >= 7) {
+                            int week = days / 7;
+                            time = week + " " + context.getString(R.string.weeks);
 
+                            if (days >= 30) {
+                                int month = days / 30;
+                                time = month + " " + context.getString(R.string.months);
+
+                                if (month >= 12) {
+                                    int year = month / 12;
+                                    time = year + " " + context.getString(R.string.years);
+
+                                }
                             }
                         }
                     }
                 }
             }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return time;
     }
+
 
 
 }

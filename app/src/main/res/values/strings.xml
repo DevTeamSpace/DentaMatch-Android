@@ -357,5 +357,6 @@
     <string name="msg_recruiter_unblocked">Recruiter Unblocked</string>
     <string name="msg_recruiter_blocked">Recruiter Blocked</string>
     <string name="msg_recruiter_blocked_you">Recruiter has blocked you from messaging</string>
+    <string name="txt_alert_title">Confirm your action</string>
 
 </resources>

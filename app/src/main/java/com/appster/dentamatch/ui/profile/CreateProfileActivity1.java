@@ -78,6 +78,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .into(mBinder.createProfile1IvProfileIcon);
+            mImageUploaded = true;
         }
 
         mBinder.etJobTitle.setOnClickListener(this);
@@ -98,8 +99,12 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.create_profile1_btn_next:
-                if (mImageUploaded) {
-                    launchNextActivity();
+                if (mImageUploaded ) {
+                    if (TextUtils.isEmpty(selectedJobtitle)) {
+                        Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
+                    }else {
+                        launchNextActivity();
+                    }
                 } else {
                     if (checkValidation()) {
 //                    Intent intent = new Intent(this, CreateProfileActivity2.class);
@@ -162,7 +167,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             public void onSuccess(FileUploadResponse response) {
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
-                if (response != null && response.getStatus() == 1) {
+                if (response.getStatus() == 1) {
                     mImageUploaded = true;
                     PreferenceUtil.setProfileImagePath(response.getFileUploadResponseData().getImageUrl());
                     launchNextActivity();

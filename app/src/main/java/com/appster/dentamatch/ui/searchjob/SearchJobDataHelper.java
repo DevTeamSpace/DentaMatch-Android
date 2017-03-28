@@ -1,6 +1,7 @@
 package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Context;
+import android.location.Location;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
@@ -59,6 +60,12 @@ public class SearchJobDataHelper {
 
     private void searchJob(final Context ct, final boolean isPaginationLoading) {
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+        Location userCurrentLocation = (Location) PreferenceUtil.getUserCurrentLocation();
+
+        if(userCurrentLocation != null) {
+            request.setLat(String.valueOf(userCurrentLocation.getLatitude()));
+            request.setLng(String.valueOf(userCurrentLocation.getLongitude()));
+        }
 
         if (request != null) {
             /**

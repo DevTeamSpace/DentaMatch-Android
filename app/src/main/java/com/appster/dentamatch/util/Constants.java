@@ -144,6 +144,7 @@ public class Constants {
         int NOTIFICATION_CHAT_MSG = 7;
         int NOTIFICATION_OTHER = 8;
         int NOTIFICATION_INVITE = 9;
+        int NOTIFICATION_REJECTED_JOB = 14;
     }
 
     public interface REQUEST_CODE {

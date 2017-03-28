@@ -6,12 +6,12 @@
     android:orientation="vertical">
 
     <com.appster.dentamatch.widget.CustomTextView
+        style="@style/TextInputEditTextStyle"
         android:id="@+id/text_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_medium"
         android:textColor="@color/text_default_color"
-        android:textSize="@dimen/text_size_13"
         app:customFont="@string/font_regular" />
 
 </LinearLayout>

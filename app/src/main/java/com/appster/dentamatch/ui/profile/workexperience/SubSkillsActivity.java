@@ -59,7 +59,15 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
 
     private boolean validate() {
         hideKeyboard();
-        int position = subSkills.size() - 1;
+        int position = 0;
+
+        for(int i = 0 ; i < subSkills.size(); i++){
+            if(subSkills.get(i).getSkillName().equalsIgnoreCase("Other")){
+                position = i;
+                break;
+            }
+        }
+
         boolean checked = subSkills.get(position).getIsSelected() == 1;
         String skillName = subSkills.get(position).getSkillName();
         boolean otherTextEmpty = TextUtils.isEmpty(subSkills.get(position).getOtherText())?true:TextUtils.isEmpty(subSkills.get(position).getOtherText().trim());

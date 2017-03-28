@@ -70,7 +70,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
     private void initViews() {
         ivProfile = (ImageView) findViewById(R.id.create_profile_iv_profile_icon);
-        ivUpload = (ImageView) findViewById(R.id.create_profile_iv_upoload_icon);
+//        ivUpload = (ImageView) findViewById(R.id.create_profile_iv_upoload_icon);
         ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
         btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
         tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
@@ -79,7 +79,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         etState = (EditText) findViewById(R.id.create_profile_et_state);
         tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
-        ivUpload.setOnClickListener(this);
+//        ivUpload.setOnClickListener(this);
         btnNext.setOnClickListener(this);
         ivToolbarLeft.setOnClickListener(this);
         mProgressBar.setProgress(Constants.PROFILE_PERCENTAGE.PROFILE_2);
@@ -106,9 +106,10 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.create_profile_iv_upoload_icon:
-                callBottomSheet();
-                break;
+//            case R.id.create_profile_iv_upoload_icon:
+//                callBottomSheet();
+//                break;
+
             case R.id.iv_tool_bar_left:
                 hideKeyboard();
                 onBackPressed();
@@ -128,10 +129,10 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private boolean checkInputValidator() {
-        if (TextUtils.isEmpty(mFilePath)) {
-            Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_satate_board_photo_alert));
-            return false;
-        }
+//        if (TextUtils.isEmpty(mFilePath)) {
+//            Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_satate_board_photo_alert));
+//            return false;
+//        }
         if (TextUtils.isEmpty(etLicenceNumber.getText().toString().trim())) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_licence_number));
             return false;

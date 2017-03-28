@@ -60,6 +60,10 @@ public class MessagesListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(Utils.isConnected(getActivity())){
+            getAllUserChats();
+        }
         if (Utils.isConnected(getActivity())) {
             getAllUserChats();
         } else {
@@ -79,6 +83,15 @@ public class MessagesListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+//        if(data != null && data.size() > 0){
+//            LogUtils.LOGD("DentaChat", "" + data);
+//            mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
+//            mAdapter = new MessageListAdapter(getActivity(), data, true);
+//            mMessagesBinding.rvMessageList.setAdapter(mAdapter);
+//        }else{
+//            mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void getAllUserChats() {
@@ -111,7 +124,6 @@ public class MessagesListFragment extends BaseFragment {
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();
-                        LogUtils.LOGD("DentaChat", "" + data);
                         mAdapter = new MessageListAdapter(getActivity(), data, true);
                         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
 

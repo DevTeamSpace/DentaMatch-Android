@@ -137,7 +137,11 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
 
             if(event.getType() == Constants.SEARCHJOBTYPE.SAVED.getValue()) {
                 mJobListData.clear();
-                mJobListData.addAll(event.getmData());
+
+                for(SearchJobModel model : event.getmData()){
+                    model.setIsSaved(1);
+                    mJobListData.add(model);
+                }
 
                 if(mJobListData.size() == 0){
                     mBinding.tvNoJobs.setVisibility(View.VISIBLE);

@@ -68,7 +68,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String messageBody = "";
 
         if (dataPayload != null && dataPayload.size() > 0) {
-            Set<String> keys = dataPayload.keySet();
             String notificationData = parsePayloadData(dataPayload, KEY_NOTIFICATION_DETAIL);
             String jobData = parsePayloadData(dataPayload, KEY_JOB_DETAIL);
 
@@ -97,7 +96,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
             if (TextUtils.isEmpty(jobData) && TextUtils.isEmpty(notificationData)) {
-                isChatMessage = true;
+                try {
+                    JSONObject object = new JSONObject(dataPayload.get("data"));
+                    Log.d("object ", object.toString());
+                    String message = parsePayLoadForAdminMsg(object, "notificationData");
+
+                    if (TextUtils.isEmpty(message)) {
+                        isChatMessage = true;
+
+                    } else {
+                        isChatMessage = false;
+                        messageBody = parsePayLoadForAdminMsg(object, "notificationData");
+                        type = Integer.parseInt(parsePayLoadForAdminMsg(object, "notificationType"));
+                        jobId = Integer.parseInt(parsePayLoadForAdminMsg(object, "sender_id"));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
         }
@@ -151,7 +166,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String messageBody, int notificationType, int jobId) {
         Intent intent = redirectNotification(notificationType, jobId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         Utils.showNotification(this, getString(R.string.app_name),
                 messageBody,
@@ -177,10 +192,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } else {
             intent = new Intent(this, NotificationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
         }
 
         return intent;
+    }
+
+    private String parsePayLoadForAdminMsg(JSONObject object , String key){
+        String value = null;
+
+        try{
+        value = object.getString(key);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return value;
     }
 
     private String parsePayloadData(Map<String, String> dataPayload, String key) {

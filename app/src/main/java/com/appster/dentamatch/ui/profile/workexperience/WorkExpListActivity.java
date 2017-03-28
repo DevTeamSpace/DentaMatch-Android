@@ -143,6 +143,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 hideKeyboard();
                 new BottomSheetJobTitle(WorkExpListActivity.this, this, 0);
                 break;
+
             case R.id.btn_next_work_exp_lsit:
                 hideKeyboard();
                 if (workExpList.size() == 0) {
@@ -151,6 +152,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     launchNextActivity();
                 }
                 break;
+
             case R.id.tv_refrence_delete:
                 mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
 
@@ -159,6 +161,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.setText("");
                 mBinder.includeLayoutRefrence2.etOfficeReferenceName.setText("");
                 break;
+
             case R.id.tv_add_more_reference:
                 if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)) && TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail)) && TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile))) {
                     Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
@@ -170,10 +173,12 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     mBinder.layoutReference2.setVisibility(View.VISIBLE);
                 }
                 break;
+
             case R.id.tv_add_more_experience:
                 prepareRequestForAdd(false);
 
                 break;
+
             case R.id.tv_experince_work_exp:
                 int year = 0, month = 0;
                 if (!TextUtils.isEmpty(mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString())) {

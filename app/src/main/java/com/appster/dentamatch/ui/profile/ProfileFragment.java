@@ -106,7 +106,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void initViews() {
-        profileBinding.cellDentalStateBoard.tvAddCertificates.setText(getString(R.string.add_dental_state_board));
+//        profileBinding.cellDentalStateBoard.tvAddCertificates.setText(getString(R.string.add_dental_state_board));
         profileBinding.cellAffiliation.tvAddCertificates.setText(getString(R.string.add_affilitaion));
         profileBinding.cellExp.tvAddCertificates.setText(getString(R.string.add_more_exp));
         profileBinding.cellKeySkill.tvAddCertificates.setText(getString(R.string.add_key_skill));
@@ -134,31 +134,31 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(licenseIntent);
             }
         });
-        profileBinding.cellDentalStateBoard.tvEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-                CertificatesList data = new CertificatesList();
-                if (TextUtils.isEmpty(profileResponseData.getDentalStateBoard().getImageUrl())) {
-                    data.setImage("");
-
-                } else {
-                    data.setImage(profileResponseData.getDentalStateBoard().getImageUrl());
-                }
-                data.setCertificateName(getString(R.string.dental_state_board));
-
-                intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
-                intent.putExtra(Constants.INTENT_KEY.DATA, data);
-                startActivity(intent);
-            }
-        });
-        profileBinding.cellDentalStateBoard.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                profileBinding.cellDentalStateBoard.tvEdit.performClick();
-
-            }
-        });
+//        profileBinding.cellDentalStateBoard.tvEdit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
+//                CertificatesList data = new CertificatesList();
+//                if (TextUtils.isEmpty(profileResponseData.getDentalStateBoard().getImageUrl())) {
+//                    data.setImage("");
+//
+//                } else {
+//                    data.setImage(profileResponseData.getDentalStateBoard().getImageUrl());
+//                }
+//                data.setCertificateName(getString(R.string.dental_state_board));
+//
+//                intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
+//                intent.putExtra(Constants.INTENT_KEY.DATA, data);
+//                startActivity(intent);
+//            }
+//        });
+//        profileBinding.cellDentalStateBoard.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                profileBinding.cellDentalStateBoard.tvEdit.performClick();
+//
+//            }
+//        });
 
 
         profileBinding.cellAffiliation.tvEditCell.setOnClickListener(new View.OnClickListener() {
@@ -336,36 +336,36 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             if (response.getCertificatesLists() != null && response.getCertificatesLists().size() > 0) {
                 inflateCertification(response.getCertificatesLists());
             }
-            if (response.getDentalStateBoard() != null && !TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
-                profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.GONE);
-                profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.VISIBLE);
-                profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
-                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.VISIBLE);
-                profileBinding.cellDentalStateBoard.tvCertificateValidityDate.setVisibility(View.GONE);
-                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
-
-//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
-                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
-
-                if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
-                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl())
-//                            .centerCrop()
-                            .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
-                            .onlyScaleDown()
-                            .placeholder(R.drawable.ic_upload)
-                            .memoryPolicy(MemoryPolicy.NO_CACHE)
-                            .into(profileBinding.cellDentalStateBoard.ivCertificateImage);
-
-                }
-            } else {
-                profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.VISIBLE);
-                profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.GONE);
-                profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.GONE);
-                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
-                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
-
-
-            }
+//            if (response.getDentalStateBoard() != null && !TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
+//                profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.GONE);
+//                profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.VISIBLE);
+//                profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
+//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.VISIBLE);
+//                profileBinding.cellDentalStateBoard.tvCertificateValidityDate.setVisibility(View.GONE);
+//                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
+//
+////                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
+//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
+//
+//                if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
+//                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl())
+////                            .centerCrop()
+//                            .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+//                            .onlyScaleDown()
+//                            .placeholder(R.drawable.ic_upload)
+//                            .memoryPolicy(MemoryPolicy.NO_CACHE)
+//                            .into(profileBinding.cellDentalStateBoard.ivCertificateImage);
+//
+//                }
+//            } else {
+//                profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.VISIBLE);
+//                profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.GONE);
+//                profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.GONE);
+//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
+//                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
+//
+//
+//            }
             if (response.getSchoolArrayList() != null && response.getSchoolArrayList().size() > 0) {
                 profileBinding.cellSchooling.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellSchooling.tvEditCell.setVisibility(View.VISIBLE);

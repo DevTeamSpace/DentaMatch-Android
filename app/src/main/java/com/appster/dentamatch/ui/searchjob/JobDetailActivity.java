@@ -3,10 +3,15 @@ package com.appster.dentamatch.ui.searchjob;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -30,6 +35,7 @@ import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -171,7 +177,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             case R.id.cb_job_selection:
                 final int status = mJobDetailModel.getIsSaved() == 1 ? 0 : 1;
                 if (status == 0) {
-                    Alert.createYesNoAlert(JobDetailActivity.this, "OK", "CANCEL", getString(R.string.app_name), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
+                    Alert.createYesNoAlert(JobDetailActivity.this, "OK", "CANCEL", getString(R.string.txt_alert_title), getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
                         @Override
                         public void onPositive(DialogInterface dialog) {
                             saveUnSaveJob(jobID, status);
@@ -258,7 +264,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
     private void getJobDetail() {
         JobDetailRequest request = new JobDetailRequest();
+        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
         request.setJobId(jobID);
+        request.setLat(userLocation.getLatitude());
+        request.setLng(userLocation.getLongitude());
+
         processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {
@@ -398,9 +408,13 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 }
 
             }
+            if (dataModel.getJobPostedTimeGap() == 0) {
+                mBinding.tvJobDocTime.setText(getString(R.string.text_todays));
+            }else {
+                String endMessage = dataModel.getJobPostedTimeGap() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
+                mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
+            }
 
-            String endMessage = dataModel.getJobPostedTimeGap() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
-            mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
 
             mBinding.tvJobDetailDocName.setText(dataModel.getOfficeName());
             mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
@@ -510,58 +524,80 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             if (dataModel.getWorkEverydayStart() != null && dataModel.getWorkEverydayEnd() != null) {
                 mBinding.tvJobDetailFull.setVisibility(View.VISIBLE);
-                mBinding.tvJobDetailFull.setText("All Days: " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd()));
+                SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("All Days: " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd()));
+                SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                mBinding.tvJobDetailFull.setText(SpanBuilder);
             } else {
                 if (dataModel.getMondayStart() != null && dataModel.getMondayEnd() != null) {
                     mBinding.tvJobDetailMon.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailMon.setText("Monday: " + Utils.convertUTCtoLocal(dataModel.getMondayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Monday: " + Utils.convertUTCtoLocal(dataModel.getMondayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    mBinding.tvJobDetailMon.setText(SpanBuilder);
 
                 }
 
                 if (dataModel.getTuesdayStart() != null && dataModel.getTuesdayEnd() != null) {
                     mBinding.tvJobDetailTue.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailTue.setText("Tuesday: " + Utils.convertUTCtoLocal(dataModel.getTuesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getTuesdayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Tuesday: " + Utils.convertUTCtoLocal(dataModel.getTuesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getTuesdayEnd()));
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    mBinding.tvJobDetailTue.setText(SpanBuilder);
 
                 }
 
                 if (dataModel.getWednesdayStart() != null && dataModel.getWednesdayEnd() != null) {
                     mBinding.tvJobDetailWed.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailWed.setText("Wednesday: " + Utils.convertUTCtoLocal(dataModel.getWednesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWednesdayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Wednesday: " + Utils.convertUTCtoLocal(dataModel.getWednesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWednesdayEnd()));
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    mBinding.tvJobDetailWed.setText(SpanBuilder);
 
                 }
 
                 if (dataModel.getThursdayStart() != null && dataModel.getThursdayEnd() != null) {
                     mBinding.tvJobDetailThu.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailThu.setText("Thursday: " + Utils.convertUTCtoLocal(dataModel.getThursdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getThursdayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Thursday: " + Utils.convertUTCtoLocal(dataModel.getThursdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getThursdayEnd()));
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    mBinding.tvJobDetailThu.setText(SpanBuilder);
 
                 }
 
                 if (dataModel.getFridayStart() != null && dataModel.getFridayEnd() != null) {
                     mBinding.tvJobDetailFri.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailFri.setText("Friday: " + Utils.convertUTCtoLocal(dataModel.getFridayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getFridayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Friday: " + Utils.convertUTCtoLocal(dataModel.getFridayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getFridayEnd()));
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    mBinding.tvJobDetailFri.setText(SpanBuilder);
 
                 }
 
                 if (dataModel.getSaturdayStart() != null && dataModel.getSaturdayEnd() != null) {
                     mBinding.tvJobDetailSat.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailSat.setText("Saturday: " + Utils.convertUTCtoLocal(dataModel.getSaturdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSaturdayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Saturday: " + Utils.convertUTCtoLocal(dataModel.getSaturdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSaturdayEnd()));
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    mBinding.tvJobDetailSat.setText(SpanBuilder);
 
                 }
 
                 if (dataModel.getSundayStart() != null && dataModel.getSundayEnd() != null) {
                     mBinding.tvJobDetailSun.setVisibility(View.VISIBLE);
-                    mBinding.tvJobDetailSun.setText("Sunday: " + Utils.convertUTCtoLocal(dataModel.getSundayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSundayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Sunday: " + Utils.convertUTCtoLocal(dataModel.getSundayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSundayEnd()));
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    mBinding.tvJobDetailSun.setText(SpanBuilder);
 
                 }
             }
 
+            RelativeLayout.LayoutParams officeTypeParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            officeTypeParams.addRule(RelativeLayout.ALIGN_START, mBinding.tvOfficeLocationLabel.getId());
+            officeTypeParams.addRule(RelativeLayout.BELOW, mBinding.tvJobDetailOfficeTypeLabel.getId());
+
             if (dataModel.getNoOfJobs() != 0) {
+                officeTypeParams.setMargins(0, 0, 0, 0);
+                mBinding.tvJobDetailDocOfficeType.setLayoutParams(officeTypeParams);
                 mBinding.tvJobDetailJobOpenings.setVisibility(View.VISIBLE);
                 mBinding.tvJobDetailTotalJobLabel.setVisibility(View.VISIBLE);
                 mBinding.tvJobDetailJobOpenings.setText(String.valueOf(dataModel.getNoOfJobs()));
             } else {
-                //TODO: add layout margin below.
-//                mBinding.tvJobDetailDocOfficeType.
+                officeTypeParams.setMargins(0, 0, 0, Utils.dpToPx(this, 20));
+                mBinding.tvJobDetailDocOfficeType.setLayoutParams(officeTypeParams);
                 mBinding.tvJobDetailJobOpenings.setVisibility(View.GONE);
                 mBinding.tvJobDetailTotalJobLabel.setVisibility(View.GONE);
             }

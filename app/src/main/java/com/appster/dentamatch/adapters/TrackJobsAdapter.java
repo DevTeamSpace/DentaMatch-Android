@@ -74,6 +74,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
             if (mIsSaved) {
                 holder.cbSelect.setVisibility(View.VISIBLE);
+                holder.cbSelect.setChecked(data.getIsSaved() == 1);
                 holder.ivChat.setVisibility(View.GONE);
                 holder.cbSelect.setTag(position);
                 holder.cbSelect.setOnClickListener(this);
@@ -202,7 +203,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         switch (v.getId()) {
             case R.id.cb_job_selection:
                 final int position = (int) v.getTag();
-                Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
+                Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.txt_alert_title), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {
                         unSaveJob(mJobListData.get(position).getId(), position);
@@ -266,7 +267,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         Alert.createYesNoAlert(mContext,
                 mContext.getString(R.string.txt_ok),
                 mContext.getString(R.string.txt_cancel),
-                mContext.getString(R.string.app_name),
+                mContext.getString(R.string.txt_alert_title),
                 mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {

@@ -162,11 +162,16 @@ public class NotificationActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_tool_bar_left:
-                finish();
+              onBackPressed();
                 break;
 
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     @Override

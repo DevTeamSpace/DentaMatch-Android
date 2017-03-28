@@ -118,7 +118,8 @@
         android:layout_alignParentEnd="true"
         android:button="@drawable/checkbox_star_selector"
         android:layout_alignTop="@+id/tv_job_name"
-        android:layout_marginEnd="@dimen/margin_25"
+        android:layout_marginEnd="@dimen/margin_21"
+        android:padding="@dimen/margin_small"
         android:src="@drawable/img_job_star"
         android:layout_height="wrap_content" />
 

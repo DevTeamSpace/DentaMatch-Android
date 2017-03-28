@@ -171,7 +171,7 @@ public final class PreferenceUtil {
     }
 
     public static int getJobTitleId() {
-        return Hawk.get(KEY_JOB_TITLE_ID);
+        return Hawk.get(KEY_JOB_TITLE_ID, 0);
     }
 
     public static void setFistName(String value) {

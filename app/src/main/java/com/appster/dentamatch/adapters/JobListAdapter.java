@@ -194,7 +194,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                 final int position = (int) v.getTag();
                 final int status = mJobListData.get(position).getIsSaved() == 1 ? 0 : 1;
                 if (status == 0) {
-                    Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
+                    Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.txt_alert_title), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
                         @Override
                         public void onPositive(DialogInterface dialog) {
                             saveUnSaveJob(mJobListData.get(position).getId(), status, position);

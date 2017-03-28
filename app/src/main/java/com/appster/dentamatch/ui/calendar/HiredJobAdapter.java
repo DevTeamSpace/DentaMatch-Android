@@ -201,7 +201,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext, mContext.getString(R.string.ok), mContext.getString(R.string.cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {
+        Alert.createYesNoAlert(mContext, mContext.getString(R.string.ok), mContext.getString(R.string.cancel), mContext.getString(R.string.txt_alert_title), mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {
             @Override
             public void onPositive(DialogInterface dialog) {
                 CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();

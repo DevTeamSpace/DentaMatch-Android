@@ -128,9 +128,9 @@
                 android:textSize="@dimen/text_size_normal"
                 app:customFont="@string/font_regular" />
 
-            <include
-                android:id="@+id/cell_dental_state_board"
-                layout="@layout/item_profile_cell_certificate" />
+            <!--<include-->
+                <!--android:id="@+id/cell_dental_state_board"-->
+                <!--layout="@layout/item_profile_cell_certificate" />-->
 
             <include
                 android:id="@+id/cell_exp"

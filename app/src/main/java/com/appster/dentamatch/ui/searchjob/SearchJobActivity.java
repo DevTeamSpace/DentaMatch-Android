@@ -464,6 +464,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
                 if (data != null && data.hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)) {
                     mSelectedJobID.clear();
+                    mChosenTitles.clear();
                     mBinder.flowLayoutJobTitle.removeAllViews();
                     ArrayList<JobTitleListModel> jobTitleList = data.getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
                     mChosenTitles = jobTitleList;
