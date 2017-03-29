@@ -54,7 +54,6 @@ public class MessagesListFragment extends BaseFragment {
         mMessagesBinding.rvMessageList.setLayoutManager(mLayoutManager);
 
         return mMessagesBinding.getRoot();
-//        return inflater.inflate(R.layout.fragment_under_dev, container, false);
     }
 
     @Override
@@ -80,19 +79,6 @@ public class MessagesListFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-//        if(data != null && data.size() > 0){
-//            LogUtils.LOGD("DentaChat", "" + data);
-//            mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
-//            mAdapter = new MessageListAdapter(getActivity(), data, true);
-//            mMessagesBinding.rvMessageList.setAdapter(mAdapter);
-//        }else{
-//            mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
-//        }
-    }
 
     private void getAllUserChats() {
         showProgressBar(getString(R.string.please_wait));
@@ -115,12 +101,6 @@ public class MessagesListFragment extends BaseFragment {
                                     model.getMessage(),
                                     model.getTimestamp(),
                                     true);
-//                            Message message = new Message(model.getMessage(),
-//                                    model.getName(),
-//                                    model.getTimestamp(),
-//                                    String.valueOf(model.getMessageId()),
-//                                    Message.TYPE_MESSAGE_RECEIVED);
-//                            DBHelper.getInstance().insertIntoDB(String.valueOf(model.getRecruiterId()), message, model.getName(), Integer.parseInt(model.getUnreadCount()), String.valueOf(model.getMessageListId()));
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();

@@ -127,7 +127,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     String zipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
 
                     if(TextUtils.isEmpty(zipCode)){
-                        showToast("Please select a zip code");
+                        showToast(getString(R.string.msg_empty_zip_code));
                     }else {
                         updateUserLocation(lat, lng, zipCode, address);
                     }
@@ -161,7 +161,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
             }
         });
     }
@@ -173,16 +172,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         webServices.logout().enqueue(new BaseCallback<BaseResponse>(SettingActivity.this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
-
                 localLogOut();
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
 

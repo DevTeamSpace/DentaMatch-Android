@@ -35,7 +35,6 @@ import org.json.JSONObject;
  */
 
 public class ChatActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG = "ChatActivity";
     private ActivityChatBinding mBinder;
     private ChatAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -252,31 +251,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }else{
             showToast(getString(R.string.error_socket_connection));
         }
-
-//        BlockUnBlockRequest request = new BlockUnBlockRequest();
-//        request.setBlockStatus(String.valueOf(0));
-//        request.setRecruiterId(recruiterId);
-//
-//        processToShowDialog("", getString(R.string.please_wait), null);
-//        AuthWebServices client = RequestController.createService(AuthWebServices.class);
-//        client.blockUnBlockUser(request).enqueue(new BaseCallback<BaseResponse>(this) {
-//            @Override
-//            public void onSuccess(BaseResponse response) {
-//
-//                if (response.getStatus() == 1) {
-//                    DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_RECRUITED_BLOCKED, "0", null);
-//                    mBinder.layUnblock.setVisibility(View.GONE);
-//                    mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
-//                } else {
-//                    showToast(response.getMessage());
-//                }
-//            }
-//
-//            @Override
-//            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-//
-//            }
-//        });
     }
 
     private void scrollToBottom() {
@@ -327,9 +301,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                          * Show loader in case of fetching data from the server and clear all past chats of the user for corresponding
                          * recruiterID.
                          */
-                        ChatActivity.this.showToast("Syncing chat. Please Wait...");
-//                        DBHelper.getInstance().clearRecruiterChats(recruiterId);
-//                        SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
+                        ChatActivity.this.showToast(getString(R.string.msg_syncing_chat));
                         if (dbModel.getUserChats().size() > 0) {
                             Message lastMessage = dbModel.getUserChats().last();
                             String fromID;

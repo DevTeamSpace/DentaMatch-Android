@@ -26,7 +26,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     private ActivityResetPasswordBinding mBinder;
     private boolean isOldSHow, isNewShow, isConfirmShow;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +59,17 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 if (mBinder.etConfirmPassword.getText().toString().length() > 0) {
 
                     if (isConfirmShow) {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etConfirmPassword, isConfirmShow, mBinder.tvShowConfirmPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etConfirmPassword,
+                                isConfirmShow,
+                                mBinder.tvShowConfirmPassword);
                         isConfirmShow = false;
 
                     } else {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etConfirmPassword, isConfirmShow, mBinder.tvShowConfirmPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etConfirmPassword,
+                                isConfirmShow,
+                                mBinder.tvShowConfirmPassword);
                         isConfirmShow = true;
                     }
                 }
@@ -74,11 +79,17 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 if (mBinder.etOldPassword.getText().toString().length() > 0) {
 
                     if (isOldSHow) {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etOldPassword, isOldSHow, mBinder.tvShowOldPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etOldPassword,
+                                isOldSHow,
+                                mBinder.tvShowOldPassword);
                         isOldSHow = false;
 
                     } else {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etOldPassword, isOldSHow, mBinder.tvShowOldPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etOldPassword,
+                                isOldSHow,
+                                mBinder.tvShowOldPassword);
                         isOldSHow = true;
                     }
                 }
@@ -87,11 +98,17 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 if (mBinder.etNewPassword.getText().toString().length() > 0) {
 
                     if (isNewShow) {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etNewPassword, isNewShow, mBinder.tvShowNewPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etNewPassword,
+                                isNewShow,
+                                mBinder.tvShowNewPassword);
                         isNewShow = false;
 
                     } else {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etNewPassword, isNewShow, mBinder.tvShowNewPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etNewPassword,
+                                isNewShow,
+                                mBinder.tvShowNewPassword);
                         isNewShow = true;
                     }
                 }
@@ -144,7 +161,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
 
     private ChangePasswordRequest prepareRequest() {
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
-
         changePasswordRequest.setConfirmNewPassword(mBinder.etConfirmPassword.getText().toString());
         changePasswordRequest.setOldPassword(mBinder.etOldPassword.getText().toString());
         changePasswordRequest.setNewPassword(mBinder.etNewPassword.getText().toString());
@@ -157,7 +173,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
         webServices.changePassword(request).enqueue(new BaseCallback<BaseResponse>(ResetPasswordActivity.this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
@@ -167,7 +182,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
                 Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });

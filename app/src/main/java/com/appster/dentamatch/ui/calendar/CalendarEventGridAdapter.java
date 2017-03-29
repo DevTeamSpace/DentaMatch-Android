@@ -46,6 +46,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
         if (mJobList != null) {
             mJobList = null;
         }
+
         mJobList = new ArrayList<>();
         mJobList.addAll(list);
 
@@ -58,49 +59,50 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-            Date mDate = monthlyDates.get(position).getDate();
-            Calendar dateCal = Calendar.getInstance();
-            dateCal.setTime(mDate);
-            int dayValue = dateCal.get(Calendar.DAY_OF_MONTH);
-            int displayMonth = dateCal.get(Calendar.MONTH) + 1;
-            int displayYear = dateCal.get(Calendar.YEAR);
-            int currentMonth = currentDate.get(Calendar.MONTH) + 1;
-            int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
-            int currentYear = currentDate.get(Calendar.YEAR);
-            View view = convertView;
-            if (view == null) {
-                view = mInflater.inflate(R.layout.single_cell_layout, parent, false);
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        Date mDate = monthlyDates.get(position).getDate();
+        Calendar dateCal = Calendar.getInstance();
+        dateCal.setTime(mDate);
+        int dayValue = dateCal.get(Calendar.DAY_OF_MONTH);
+        int displayMonth = dateCal.get(Calendar.MONTH) + 1;
+        int displayYear = dateCal.get(Calendar.YEAR);
+        int currentMonth = currentDate.get(Calendar.MONTH) + 1;
+        int currentYear = currentDate.get(Calendar.YEAR);
+        View view = convertView;
+
+        if (view == null) {
+            view = mInflater.inflate(R.layout.single_cell_layout, parent, false);
+        }
+
+        /**
+         * Add day to calendar
+         */
+        TextView cellNumber = (TextView) view.findViewById(R.id.calendar_date_id);
+        ImageView dot2 = (ImageView) view.findViewById(R.id.dot2);
+        ImageView dot3 = (ImageView) view.findViewById(R.id.dot3);
+        view.setVisibility(View.VISIBLE);
+
+        if (displayMonth == currentMonth && displayYear == currentYear) {
+            cellNumber.setText(String.valueOf(dayValue));
+            view.setTag(position);
+
+            if (monthlyDates.get(position).isSelected()) {
+                cellNumber.setTextColor(ContextCompat.getColor(mContext, R.color.white_color));
+                view.setBackgroundResource(R.drawable.shape_date_selection);
+
+            } else {
+                cellNumber.setTextColor(ContextCompat.getColor(mContext, R.color.graish_brown_color));
+                view.setBackgroundResource(0);
             }
 
-            //Add day to calendar
-            TextView cellNumber = (TextView) view.findViewById(R.id.calendar_date_id);
-            ImageView dot2 = (ImageView) view.findViewById(R.id.dot2);
-            ImageView dot3 = (ImageView) view.findViewById(R.id.dot3);
-            view.setVisibility(View.VISIBLE);
-
-            if (displayMonth == currentMonth && displayYear == currentYear) {
-                LogUtils.LOGD(TAG, "date is displayed=" + displayYear + "-" + displayMonth + "-" + dayValue);
-
-                cellNumber.setText(String.valueOf(dayValue));
-                view.setTag(position);
-
-                if (monthlyDates.get(position).isSelected()) {
-                    cellNumber.setTextColor(ContextCompat.getColor(mContext, R.color.white_color));
-                    view.setBackgroundResource(R.drawable.shape_date_selection);
-
-                } else {
-                    cellNumber.setTextColor(ContextCompat.getColor(mContext, R.color.graish_brown_color));
-                    view.setBackgroundResource(0);
-                }
-
-                if (mJobList != null && mJobList.size() > 0) {
-                    String date = Utils.dateFormetyyyyMMdd(mDate);
-                    Calendar eventCalendar = Calendar.getInstance();
-                    eventCalendar.setTime(mDate);
-                    String day = Utils.getDayOfWeek(date);
-                    dot2.setVisibility(GONE);
-                    dot3.setVisibility(GONE);
+            if (mJobList != null && mJobList.size() > 0) {
+                String date = Utils.dateFormetyyyyMMdd(mDate);
+                Calendar eventCalendar = Calendar.getInstance();
+                eventCalendar.setTime(mDate);
+                String day = Utils.getDayOfWeek(date);
+                dot2.setVisibility(GONE);
+                dot3.setVisibility(GONE);
+                try {
                     for (int k = 0; k < mJobList.size(); k++) {
                         if (Utils.getDate(mJobList.get(k).getJobDate(), Constants.DateFormet.YYYYMMDD).compareTo(Utils.parseDate(mDate)) <= 0) {
                             if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_monday)) && mJobList.get(k).getIsMonday() == 1) {
@@ -120,24 +122,25 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                             }
                         }
 
-                        if((mJobList.get(k).getTempDates() != null && mJobList.get(k).getTempDates().equalsIgnoreCase(date))){
+                        if ((mJobList.get(k).getTempDates() != null && mJobList.get(k).getTempDates().equalsIgnoreCase(date))) {
                             dot3.setVisibility(View.VISIBLE);
                         }
                     }
-                } else {
-                    dot2.setVisibility(GONE);
-                    dot3.setVisibility(GONE);
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-
             } else {
-                view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white_color));
-                view.setVisibility(GONE);
-
-                view.setTag(-1);
+                dot2.setVisibility(GONE);
+                dot3.setVisibility(GONE);
             }
 
-            return view;
+        } else {
+            view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white_color));
+            view.setVisibility(GONE);
+            view.setTag(-1);
+        }
 
+        return view;
     }
 
     @Override

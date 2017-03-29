@@ -63,7 +63,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
     private FragmentProfileBinding profileBinding;
-    private String TAG = "ProfileFragment-";
     private ProfileResponseData profileResponseData;
     private ItemProfileCellCertificateBinding cellCertificateBinding;
 
@@ -170,18 +169,21 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(affiliationIntent);
             }
         });
+
         profileBinding.cellAffiliation.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 profileBinding.cellAffiliation.tvEditCell.performClick();
             }
         });
+
         profileBinding.cellSchooling.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 profileBinding.cellSchooling.tvAddCertificates.performClick();
             }
         });
+
         profileBinding.cellSchooling.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,12 +192,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(skillIntent);
             }
         });
+
         profileBinding.cellKeySkill.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 profileBinding.cellKeySkill.tvAddCertificates.performClick();
             }
         });
+
         profileBinding.cellKeySkill.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -204,6 +208,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(skillIntent);
             }
         });
+
         profileBinding.cellExp.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,6 +217,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(workIntent);
             }
         });
+
         profileBinding.cellExp.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -232,6 +238,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
+
+            default: break;
+
         }
     }
 
@@ -241,12 +250,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         webServices.getProfile().enqueue(new BaseCallback<ProfileResponse>(getBaseActivity()) {
             @Override
             public void onSuccess(ProfileResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
                     profileResponseData = response.getProfileResponseData();
                     if (isAlive()) {
                         PreferenceUtil.setJobTitleList(response.getProfileResponseData().getJobTitleLists());
-
                         setViewData(response.getProfileResponseData());
                     }
                 } else {
@@ -256,7 +263,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             @Override
             public void onFail(Call<ProfileResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
             }
         });
 
@@ -264,11 +270,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private void setViewData(ProfileResponseData response) {
         if (response != null) {
+
             if (response.getUser() != null) {
+
                 if (!TextUtils.isEmpty(response.getUser().getProfilePic())) {
                     Picasso.with(getActivity())
                             .load(response.getUser().getProfilePic())
-//                            .centerCrop()
                             .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                             .onlyScaleDown()
                             .placeholder(R.drawable.profile_pic_placeholder)
@@ -281,22 +288,21 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.tvAboutMe.setText(response.getUser().getAboutMe());
                 profileBinding.tvJobTitle.setText(response.getUser().getJobTitle());
                 profileBinding.tvLocation.setText(response.getUser().getPreferredJobLocation());
-
                 saveUserProfile(response.getUser());
             }
 
             if (response.getWorkExperience() != null && response.getWorkExperience().getSaveList().size() > 0) {
                 goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
-
                 inflateExperience(response.getWorkExperience().getSaveList());
             } else {
                 visibleView(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
-
             }
+
             if (response.getAffiliationList() != null && response.getAffiliationList().size() > 0) {
                 profileBinding.flowLayout.setVisibility(View.VISIBLE);
                 goneViews(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
                 profileBinding.flowLayout.removeAllViews();
+
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
                     CustomTextView textView = new CustomTextView(getActivity());
                     FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
@@ -311,29 +317,25 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 }
 
             } else {
-//                profileBinding.expInflater.setVisibility(View.GONE);
-
                 profileBinding.flowLayout.setVisibility(View.GONE);
                 visibleView(profileBinding.cellAffiliation.tvAddCertificates, profileBinding.cellAffiliation.tvEditCell);
             }
 
-            if (response.getLicence() != null && !TextUtils.isEmpty(response.getLicence().getLicenseNumber()) && !TextUtils.isEmpty(response.getLicence().getState())) {
-//                goneViews(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
+            if (response.getLicence() != null &&
+                    !TextUtils.isEmpty(response.getLicence().getLicenseNumber()) &&
+                    !TextUtils.isEmpty(response.getLicence().getState())) {
                 profileBinding.cellLicence.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellLicence.tvEditCell.setVisibility(View.VISIBLE);
                 profileBinding.layoutLicenceData.setVisibility(View.VISIBLE);
-
                 profileBinding.tvLicenceNumber.setText(response.getLicence().getLicenseNumber());
                 profileBinding.tvLicenceState.setText(response.getLicence().getState());
-
 
             } else {
                 profileBinding.cellLicence.tvAddCertificates.setVisibility(View.VISIBLE);
                 profileBinding.cellLicence.tvEditCell.setVisibility(View.GONE);
                 profileBinding.layoutLicenceData.setVisibility(View.GONE);
-//                visibleView(profileBinding.cellLicence.tvAddCertificates, profileBinding.cellLicence.tvEditCell);
-
             }
+
             if (response.getCertificatesLists() != null && response.getCertificatesLists().size() > 0) {
                 inflateCertification(response.getCertificatesLists());
             }
@@ -403,51 +405,39 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
 
-
                 com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(getActivity())
                         .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout , false));
                 flowBinding.flowChild.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
-
                 skillBinding.skillFlowLayout.addView(flowBinding.getRoot());
-
-//                CustomTextView textView = new CustomTextView(getActivity());
-
-//                FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
-//                        FlowLayout.LayoutParams.WRAP_CONTENT);
-//                lp.setMargins(10, 10, 10, 10);
-//                textView.setLayoutParams(lp);
-//                textView.setFitsSystemWindows(true);
-//                textView.setMaxLines(1);
-//                textView.setEllipsize(TextUtils.TruncateAt.END);
-//                textView.setBackgroundResource(R.drawable.bg_edit_text);
-//                textView.setPadding(15, 10, 15, 10);
-////                textView.setTextSize(getResources().getDimension(R.dimen.text_size_12));
-//                textView.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
-//                skillBinding.skillFlowLayout.addView(textView, lp);
-
             }
             profileBinding.keySkillInflater.addView(skillBinding.getRoot());
         }
     }
 
     private void visibleView(TextView tvAdd, TextView tvEdit) {
-        if (tvAdd != null)
+        if (tvAdd != null) {
             tvAdd.setVisibility(View.VISIBLE);
-        if (tvEdit != null)
+        }
+
+        if (tvEdit != null) {
             tvEdit.setVisibility(View.GONE);
+        }
     }
 
     private void goneViews(TextView tvAdd, TextView tvEdit) {
-        if (tvAdd != null)
+        if (tvAdd != null) {
             tvAdd.setVisibility(View.GONE);
-        if (tvEdit != null)
+        }
+
+        if (tvEdit != null) {
             tvEdit.setVisibility(View.VISIBLE);
+        }
     }
 
     private void inflateExperience(ArrayList<WorkExpRequest> expList) {
         profileBinding.expInflater.setVisibility(View.VISIBLE);
         profileBinding.expInflater.removeAllViews();
-//        ItemProfileWorkExpBinding expBinding;
+
         for (int i = 0; i < expList.size(); i++) {
             boolean isNoContactInfo = false;
             ItemProfileWorkExpBinding expBinding
@@ -457,38 +447,43 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
             expBinding.tvAddress.setText(expList.get(i).getOfficeAddress());
-            if (TextUtils.isEmpty(expList.get(i).getReference1Email()) && TextUtils.isEmpty(expList.get(i).getReference1Mobile()) && TextUtils.isEmpty(expList.get(i).getReference1Name())) {
+
+            if (TextUtils.isEmpty(expList.get(i).getReference1Email()) &&
+                    TextUtils.isEmpty(expList.get(i).getReference1Mobile()) &&
+                    TextUtils.isEmpty(expList.get(i).getReference1Name())) {
                 isNoContactInfo = true;
                 expBinding.tvReference1Email.setVisibility(View.GONE);
                 expBinding.tvReference1Name.setVisibility(View.GONE);
                 expBinding.tvReference1PhoneNumber.setVisibility(View.GONE);
+
             } else {
                 if (TextUtils.isEmpty(expList.get(i).getReference1Email())) {
                     expBinding.tvReference1Email.setText(getString(R.string.not_applicable));
-
                 } else {
                     expBinding.tvReference1Email.setText(expList.get(i).getReference1Email());
-
                 }
+
                 if (TextUtils.isEmpty(expList.get(i).getReference1Name())) {
                     expBinding.tvReference1Name.setText(getString(R.string.not_applicable));
-
                 } else {
                     expBinding.tvReference1Name.setText(expList.get(i).getReference1Name());
-
                 }
+
                 if (TextUtils.isEmpty(expList.get(i).getReference1Mobile())) {
                     expBinding.tvReference1PhoneNumber.setText(getString(R.string.not_applicable));
-
                 } else {
                     expBinding.tvReference1PhoneNumber.setText(expList.get(i).getReference1Mobile());
-
                 }
             }
-            if (TextUtils.isEmpty(expList.get(i).getReference2Email()) && TextUtils.isEmpty(expList.get(i).getReference2Mobile()) && TextUtils.isEmpty(expList.get(i).getReference2Name())) {
+
+            if (TextUtils.isEmpty(expList.get(i).getReference2Email()) &&
+                    TextUtils.isEmpty(expList.get(i).getReference2Mobile()) &&
+                    TextUtils.isEmpty(expList.get(i).getReference2Name())) {
+
                 if (isNoContactInfo) {
                     expBinding.tvContactInfo.setVisibility(View.GONE);
                 }
+
                 expBinding.tvReference2Email.setVisibility(View.GONE);
                 expBinding.tvReference2Name.setVisibility(View.GONE);
                 expBinding.tvReference2PhoneNumber.setVisibility(View.GONE);
@@ -498,22 +493,20 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
                 } else {
                     expBinding.tvReference2Email.setText(expList.get(i).getReference2Email());
-
                 }
+
                 if (TextUtils.isEmpty(expList.get(i).getReference2Name())) {
                     expBinding.tvReference2Name.setText(getString(R.string.not_applicable));
-
                 } else {
                     expBinding.tvReference2Name.setText(expList.get(i).getReference2Name());
-
                 }
+
                 if (TextUtils.isEmpty(expList.get(i).getReference2Mobile())) {
                     expBinding.tvReference2PhoneNumber.setText(getString(R.string.not_applicable));
-
                 } else {
                     expBinding.tvReference2PhoneNumber.setText(expList.get(i).getReference2Mobile());
-
                 }
+
             }
 
 
@@ -523,7 +516,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             if(months == 0){
                 expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs)));
             }else{
-                expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs).concat(" ").concat(String.valueOf(months).concat("months"))));
+                expBinding.tvExpDuration.setText(String.valueOf(years)
+                        .concat(getString(R.string.yrs))
+                        .concat(" ")
+                        .concat(String.valueOf(months).concat("months")));
             }
 
             profileBinding.expInflater.addView(expBinding.getRoot());
@@ -535,7 +531,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.certificationInflater.removeAllViews();
 
         for (int i = 0; i < certificateList.size(); i++) {
-
             cellCertificateBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.certificationInflater.getContext())
                     .inflate(R.layout.item_profile_cell_certificate, profileBinding.certificationInflater, false));
             final View tempView = cellCertificateBinding.getRoot();
@@ -547,6 +542,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             CertificatesList certificate = certificateList.get(i);
             cellCertificateBinding.tvCertificatesName.setText(certificate.getCertificateName());
             cellCertificateBinding.tvCertificateImageName.setText(certificate.getCertificateName());
+
             if (TextUtils.isEmpty(certificate.getValidityDate())) {
                 cellCertificateBinding.tvCertificateValidityDate.setVisibility(View.GONE);
                 cellCertificateBinding.tvCertificateValidityText.setVisibility(View.GONE);
@@ -562,9 +558,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.GONE);
                 cellCertificateBinding.tvEdit.setVisibility(View.VISIBLE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.VISIBLE);
+
                 Picasso.with(getActivity())
                         .load(certificate.getImage())
-//                        .centerCrop()
                         .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                         .onlyScaleDown()
                         .placeholder(R.drawable.ic_upload)
@@ -576,15 +572,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 cellCertificateBinding.tvEdit.setVisibility(View.GONE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.GONE);
                 cellCertificateBinding.layoutValidationDate.setVisibility(View.GONE);
-
-
             }
 
             cellCertificateBinding.tvEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-//                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) cellCertificateBinding.tvEdit.getId()));
                     intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) tempView.getTag()));
                     startActivity(intent);
                 }
@@ -593,11 +586,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-//                    intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) cellCertificateBinding.tvAddCertificates.getId()));
                     intent.putExtra(Constants.INTENT_KEY.DATA, certificateList.get((Integer) tempView.getTag()));
                     startActivity(intent);
                 }
             });
+
             profileBinding.certificationInflater.addView(cellCertificateBinding.getRoot());
         }
 
@@ -612,12 +605,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < schoolList.size(); i++) {
             schoolBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.schoolInflater.getContext())
                     .inflate(R.layout.item_profile_schooling, profileBinding.schoolInflater, false));
-            schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolTitle() + "(" + schoolList.get(i).getYearOfGraduation() + ")");
-//            schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolChildName());
+            schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolTitle()
+                    .concat( "(")
+                    .concat(String.valueOf(schoolList.get(i).getYearOfGraduation()))
+                    .concat(")"));
+
             schoolBinding.tvCourseName.setText(schoolList.get(i).getSchoolName());
             profileBinding.schoolInflater.addView(schoolBinding.getRoot());
         }
-
     }
 
     public String getFragmentName() {

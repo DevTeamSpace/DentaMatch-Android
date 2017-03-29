@@ -318,9 +318,9 @@
     <string name="txt_ok">OK</string>
     <string name="txt_cancel">CANCEL</string>
     <string name="alert_past_date">You can not edit past date availability.</string>
-    <string name="alert_next_month_click">You can set up to next three months availability from current month.</string>
-    <string name="alert_next_month_job">You can view up to next three months job from current month.</string>
-    <string name="alert_previous_month_click">You can view last three months availability from current month.</string>
+    <string name="alert_next_month_click">You can set up to next six months availability from current month.</string>
+    <string name="alert_next_month_job">You can view up to next six months job from current month.</string>
+    <string name="alert_previous_month_click">You can view last six months availability from current month.</string>
     <string name="txt_no_chat_messages">No message in your chats yet.</string>
     <string name="txt_text_message">Text message</string>
     <string name="txt_unblock">UNBLOCK</string>
@@ -362,5 +362,28 @@
     <string name="msg_choose_college">please choose at least one college/school</string>
     <string name="msg_school_name_bank">School name can never be blank.</string>
     <string name="msg_select_year_of_graduation">"Please select year of graduation for  "</string>
+    <string name="txt_error_contacting_api">"Error contacting API: "</string>
+    <string name="msg_syncing_chat">Syncing chat. Please Wait...</string>
+    <string name="txt_max_notification_count">999</string>
+    <string name="msg_warning_delete_notification">Are you sure you want to delete the notification?</string>
+    <string name="txt_gallery_header">Select File</string>
+    <string name="txt_job_title_hint">Please select a job</string>
+    <string name="txt_congratulations">Congratulations</string>
+    <string name="msg_successfully_applied_job">You have successfully applied for the job.</string>
+    <string name="txt_complete_profile">Complete your profile</string>
+    <string name="txt_all_days">"All Days: "</string>
+    <string name="hyphen">" - "</string>
+    <string name="txt_monday_colon">"Monday: "</string>
+    <string name="txt_tuesday_colon">"Tuesday: "</string>
+    <string name="txt_wednesday_colon">"Wednesday: "</string>
+    <string name="txt_thursday_colon">"Thursday: "</string>
+    <string name="txt_friday_colon">"Friday: "</string>
+    <string name="txt_saturday_colon">"Saturday: "</string>
+    <string name="txt_sunday_colon">"Sunday: "</string>
+    <string name="msg_empty_country">Unable to fetch country, please check internet connection and try again</string>
+    <string name="msg_empty_city">Unable to fetch city, please check internet connection and try again</string>
+    <string name="msg_empty_state">Unable to fetch state, please check internet connection and try again</string>
+    <string name="msg_select_job">Please select at least one job to proceed</string>
+    <string name="txt_saved">SAVED</string>
 
 </resources>

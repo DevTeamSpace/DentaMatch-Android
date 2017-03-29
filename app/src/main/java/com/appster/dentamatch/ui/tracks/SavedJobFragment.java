@@ -29,7 +29,6 @@ import java.util.ArrayList;
  */
 
 public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String DATA_ARRAY = "DATA_ARRAY";
     private com.appster.dentamatch.databinding.FragmentSavedJobsBinding mBinding;
     private LinearLayoutManager mLayoutManager;
     private TrackJobsAdapter mJobAdapter;

@@ -44,10 +44,6 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_select_job_title);
         initViews();
 
-        if(getIntent().hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)){
-            mSelectedTitleList = getIntent().getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
-        }
-
         if (PreferenceUtil.getSearchJobTitleList() != null && PreferenceUtil.getSearchJobTitleList().size() > 0) {
             mJobTitleAdapter.addList(PreferenceUtil.getSearchJobTitleList());
         } else {
@@ -73,6 +69,10 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarJobTitle.ivToolBarLeft.setOnClickListener(this);
         mLayoutManager = new LinearLayoutManager(this);
 
+        if(getIntent().hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)){
+            mSelectedTitleList = getIntent().getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
+        }
+
         mBinder.recyclerAjobTitle.setLayoutManager(mLayoutManager);
         mBinder.recyclerAjobTitle.addItemDecoration(new SimpleDividerItemDecoration(this));
         mJobTitleAdapter = new JobTitleAdapter(this, this);
@@ -86,16 +86,12 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
 
 
     private void callJobListApi() {
-        LogUtils.LOGD(TAG, "job title list");
         processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.jobTitle().enqueue(new BaseCallback<JobTitleResponse>(SelectJobTitleActivity.this) {
             @Override
             public void onSuccess(JobTitleResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
-                    LogUtils.LOGD(TAG, "Size is--=" + response.getJobTitleResponseData().getJobTitleList().size());
-
                     PreferenceUtil.setSearchJobTitleList(response.getJobTitleResponseData().getJobTitleList());
                     mJobTitleAdapter.addList(response.getJobTitleResponseData().getJobTitleList());
 
@@ -105,16 +101,12 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
 
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
-
                 }
             }
 
             @Override
             public void onFail(Call<JobTitleResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
                 mJobTitleAdapter.addList(PreferenceUtil.getSearchJobTitleList());
-
-
             }
         });
 
@@ -134,13 +126,16 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
 
             case R.id.txv_toolbar_general_right:
                 if(mSelectedTitleList.size() == 0) {
-                    showToast("Please select at least one job to proceed");
+                    showToast(getString(R.string.msg_select_job));
                 }else{
                     Intent intent = getIntent();
                     intent.putExtra(Constants.EXTRA_CHOSEN_JOB_TITLES,mSelectedTitleList);
                     setResult(Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE,intent);
                     finish();
                 }
+                break;
+
+            default:
                 break;
         }
     }

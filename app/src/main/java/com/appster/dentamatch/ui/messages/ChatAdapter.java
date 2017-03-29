@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ItemChatMesssageBinding;
+import com.appster.dentamatch.databinding.ItemChatMessageBinding;
 import com.appster.dentamatch.util.Utils;
 
 import io.realm.OrderedRealmCollection;
@@ -24,8 +24,7 @@ import io.realm.RealmRecyclerViewAdapter;
  */
 
 public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.MyHolder> {
-    private ItemChatMesssageBinding mBinding;
-    //    private ArrayList<Message> mChatMessages;
+    private ItemChatMessageBinding mBinding;
     private OrderedRealmCollection<Message> mChatMessages;
     private Context mContext;
 
@@ -38,7 +37,7 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_chat_messsage, parent, false);
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_chat_message, parent, false);
         return new MyHolder(mBinding.getRoot());
     }
 
@@ -110,17 +109,6 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
         }
 
     }
-
-//    void addMessage(Message message) {
-//
-//        if (mChatMessages == null) {
-//            mChatMessages = new ArrayList<>();
-//        }
-//
-//        mChatMessages.add(message);
-//        notifyItemInserted(mChatMessages.size() - 1);
-//
-//    }
 
     class MyHolder extends RecyclerView.ViewHolder {
         TextView tvMessage, tvTime, tvDateLabel;

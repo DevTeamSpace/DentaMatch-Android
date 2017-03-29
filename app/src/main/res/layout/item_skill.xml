@@ -61,8 +61,7 @@
                 android:digits="@string/digits_other"
                 android:focusableInTouchMode="true"
                 android:imeOptions="actionDone"
-                android:imeActionLabel="DONE"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
         </LinearLayout>
 

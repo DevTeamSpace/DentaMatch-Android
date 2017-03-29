@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentCalendarBinding;
 import com.appster.dentamatch.eventbus.JobCancelEvent;
+import com.appster.dentamatch.interfaces.OnDateSelected;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -42,7 +43,7 @@ import retrofit2.Call;
  * Created by Appster on 23/01/17.
  */
 
-public class CalendarFragment extends BaseFragment implements View.OnClickListener, CalendarViewEvent.OnDateSelected {
+public class CalendarFragment extends BaseFragment implements View.OnClickListener, OnDateSelected {
     private FragmentCalendarBinding calendarBinding;
     private LinearLayoutManager mLayoutManager;
     private HiredJobAdapter mJobAdapter;
@@ -95,7 +96,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
     private HiredJobRequest prepareRequest(Calendar calendar) {
         HiredJobRequest request = new HiredJobRequest();
-
         /**
          * to get  the number of days  in month
          */
@@ -108,9 +108,8 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         String[] splitEndDate = Utils.dateFormetyyyyMMdd(date).split("-");
         request.setJobStartDate(startStr);
         request.setJobEndDate(splitEndDate[0] + "-" + splitEndDate[1] + "-" + days);
+
         return request;
-
-
     }
 
     @Override
@@ -126,6 +125,8 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
             case R.id.iv_tool_bar_right:
                 startActivity(new Intent(getActivity(), SetAvailabilityActivity.class));
                 break;
+
+            default: break;
         }
 
     }
@@ -145,13 +146,16 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                     mAllJobLIst = response.getHiredJobResponseData().getJobList();
                     calendarBinding.customCalendar.setHiredListData(mAllJobLIst);
                     arrangeJobData(date);
+
                 } else {
                     calendarBinding.customCalendar.isFullTimeJob(false);
                     calendarBinding.rvBookedJob.setVisibility(View.GONE);
                     calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);
+
                     if (mAllJobLIst != null) {
                         mAllJobLIst.clear();
                     }
+
                     calendarBinding.customCalendar.setHiredListData(mAllJobLIst);
                     Utils.showToast(getActivity(), response.getMessage());
                 }
@@ -161,7 +165,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
             @Override
             public void onFail(Call<HiredJobResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "Failed job hired");
             }
         });
 
@@ -194,14 +197,15 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                     }
 
                     for(int i = 0; i < mAllJobLIst.size(); i++){
+
                         if(mAllJobLIst.get(i).getId() == jobId){
                             mAllJobLIst.remove(i);
                             i = 0;
                         }
+
                     }
 
                     calendarBinding.customCalendar.setHiredListData(mAllJobLIst);
-
                 }else{
                     showToast(response.getMessage());
                 }
@@ -209,7 +213,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "Fail");
             }
         });
     }
@@ -222,9 +225,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onMonthChanged(Calendar cal) {
-        ViewGroup.LayoutParams params = calendarBinding.customCalendar.getLayoutParams();
         getBookedJob(prepareRequest(cal), Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()));
-
     }
 
 
@@ -233,7 +234,9 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         boolean isFullTime = false;
         try {
             if (mAllJobLIst != null && mAllJobLIst.size() > 0) {
+
                 for (int i = 0; i < mAllJobLIst.size(); i++) {
+
                     if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                         isFullTime = true;
 
@@ -274,16 +277,16 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                 }
 
                 if (isFullTime) {
-                    calendarBinding.customCalendar.isFullTimeJob(isFullTime);
+                    calendarBinding.customCalendar.isFullTimeJob(true);
                 }
 
                 if (selectedDateJobList.size() > 0) {
                     calendarBinding.layoutBlankAlert.setVisibility(View.GONE);
                     calendarBinding.customCalendar.isFullTimeJob(isFullTime);
                     calendarBinding.rvBookedJob.setFocusable(true);
-
                     calendarBinding.rvBookedJob.setVisibility(View.VISIBLE);
                     mJobAdapter.setJobList(selectedDateJobList);
+
                 } else {
                     calendarBinding.rvBookedJob.setVisibility(View.GONE);
                     calendarBinding.layoutBlankAlert.setVisibility(View.VISIBLE);

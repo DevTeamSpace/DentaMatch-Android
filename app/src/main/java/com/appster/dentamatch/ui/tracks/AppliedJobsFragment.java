@@ -37,9 +37,7 @@ import retrofit2.Call;
  * Created by Appster on 02/02/17.
  */
 
-//public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-        private static final String DATA_ARRAY = "DATA_ARRAY";
         private com.appster.dentamatch.databinding.FragmentAppliedJobsBinding mBinding;
         private LinearLayoutManager mLayoutManager;
         private TrackJobsAdapter mJobAdapter;
@@ -203,7 +201,6 @@ import retrofit2.Call;
         }
 
     }
-
 
     @Override
         public void onRefresh() {

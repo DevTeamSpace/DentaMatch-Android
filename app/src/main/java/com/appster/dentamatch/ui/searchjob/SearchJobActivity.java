@@ -55,11 +55,6 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_search_job);
-
-        if(getIntent().hasExtra(Constants.EXTRA_IS_FIRST_TIME)){
-            isFirstTime = getIntent().getBooleanExtra(Constants.EXTRA_IS_FIRST_TIME,false);
-        }
-
         initViews();
         setUserSelectedData();
     }
@@ -68,17 +63,17 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
         if( PreferenceUtil.getJobFilter() !=  null) {
             SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+
             if(request.getJobTitle() != null) {
                 mSelectedJobID.addAll(request.getJobTitle());
             }
+
             isFullTime = (request.getIsFulltime() == 1);
             isPartTime = (request.getIsParttime() == 1);
 
             mSelectedZipCode = request.getZipCode();
             mSelectedLat = request.getLat();
             mSelectedLng = request.getLng();
-
-
             mSelectedCountry = request.getCountry();
             mSelectedCity = request.getCity();
             mSelectedState = request.getState();
@@ -189,6 +184,11 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         mBinder.tvThursday.setOnClickListener(this);
         mBinder.tvFriday.setOnClickListener(this);
         mBinder.btnJobSearch.setOnClickListener(this);
+
+
+        if(getIntent().hasExtra(Constants.EXTRA_IS_FIRST_TIME)){
+            isFirstTime = getIntent().getBooleanExtra(Constants.EXTRA_IS_FIRST_TIME,false);
+        }
 
 
     }
@@ -453,15 +453,15 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             return false;
 
         }else if(TextUtils.isEmpty(mSelectedCountry)) {
-            showToast("Unable to fetch country, please check internet connection and try again");
+            showToast(getString(R.string.msg_empty_country));
             return false;
 
         }else if (TextUtils.isEmpty(mSelectedCity)){
-            showToast("Unable to fetch city, please check internet connection and try again");
+            showToast(getString(R.string.msg_empty_city));
             return false;
 
         }else if (TextUtils.isEmpty(mSelectedState)){
-            showToast("Unable to fetch state, please check internet connection and try again");
+            showToast(getString(R.string.msg_empty_state));
             return false;
 
         }else {

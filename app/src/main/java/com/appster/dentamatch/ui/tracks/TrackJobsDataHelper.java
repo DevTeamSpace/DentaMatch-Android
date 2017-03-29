@@ -77,11 +77,7 @@ public class TrackJobsDataHelper {
             } else {
                 EventBus.getDefault().post(new TrackJobListRetrievedEvent(mAppliedJobData, TrackJobType));
             }
-        } else {
-            //TODO : Call shortlisted api
         }
-
-
     }
 
     public void requestPaginatedData(Context ct, int TrackJobType) {
@@ -140,7 +136,6 @@ public class TrackJobsDataHelper {
 
     private void getAllSavedJobs(final boolean isPaginationLoading, final Context ct) {
 
-//        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
 
         if(request != null) {
@@ -187,9 +182,8 @@ public class TrackJobsDataHelper {
     }
 
     private void getAllAppliedJobs(final boolean isPaginationLoading, final Context ct){
-
-//        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+
         if(request != null) {
             int type = Constants.SEARCHJOBTYPE.APPLIED.getValue();
             double lat = Double.parseDouble(request.getLat());

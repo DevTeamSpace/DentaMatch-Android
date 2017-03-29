@@ -73,6 +73,7 @@
                 android:background="@drawable/edit_text_selector"
                 android:ellipsize="end"
                 android:hint="@string/hint_type_to_search"
+                android:imeOptions="actionDone"
                 android:paddingBottom="@dimen/margin_15"
                 app:customFont="@string/font_regular"
                 android:digits="@string/digits_alpha_numeric_only"

@@ -315,31 +315,31 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
                 if (jobModel.getIsMonday() == 1) {
-                    partTimeDaysArray.add("Monday");
+                    partTimeDaysArray.add(getString(R.string.txt_full_monday));
                 }
 
                 if (jobModel.getIsTuesday() == 1) {
-                    partTimeDaysArray.add("Tuesday");
+                    partTimeDaysArray.add(getString(R.string.txt_full_tuesday));
                 }
 
                 if (jobModel.getIsWednesday() == 1) {
-                    partTimeDaysArray.add("Wednesday");
+                    partTimeDaysArray.add(getString(R.string.txt_full_wednesday));
                 }
 
                 if (jobModel.getIsThursday() == 1) {
-                    partTimeDaysArray.add("Thursday");
+                    partTimeDaysArray.add(getString(R.string.txt_full_thursday));
                 }
 
                 if (jobModel.getIsFriday() == 1) {
-                    partTimeDaysArray.add("Friday");
+                    partTimeDaysArray.add(getString(R.string.txt_full_friday));
                 }
 
                 if (jobModel.getIsSaturday() == 1) {
-                    partTimeDaysArray.add("Saturday");
+                    partTimeDaysArray.add(getString(R.string.txt_full_saturday));
                 }
 
                 if (jobModel.getIsSunday() == 1) {
-                    partTimeDaysArray.add("Sunday");
+                    partTimeDaysArray.add(getString(R.string.txt_full_sunday));
                 }
 
                 String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
@@ -453,7 +453,11 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                 final int status = (model.getIsSaved() == 1) ? 0 : 1;
 
                 if(status == 0) {
-                    Alert.createYesNoAlert(getActivity(), "OK", "CANCEL", getString(R.string.txt_alert_title), "Are you sure you want to unsave the job?", new Alert.OnAlertClickListener() {
+                    Alert.createYesNoAlert(getActivity(), getString(R.string.txt_ok),
+                            getString(R.string.txt_cancel),
+                            getString(R.string.txt_alert_title),
+                            getString(R.string.msg_unsave_warning),
+                            new Alert.OnAlertClickListener() {
                         @Override
                         public void onPositive(DialogInterface dialog) {
                             saveUnSaveJob(model.getId(), status, model);

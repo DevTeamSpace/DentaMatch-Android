@@ -38,9 +38,9 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private boolean mIsFromEditProfile;
 
 
-    public AffiliationAdapter(Context context,boolean isFromEditProfile) {
+    public AffiliationAdapter(Context context, boolean isFromEditProfile) {
         mContext = context;
-        mIsFromEditProfile=isFromEditProfile;
+        mIsFromEditProfile = isFromEditProfile;
     }
 
     void addList(ArrayList<LocationEvent.Affiliation> list) {
@@ -56,19 +56,8 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mAffiliationList;
     }
 
-    public String getOtherData() {
-        if (etOtherTemp != null) {
-            return etOtherTemp.getText().toString().trim();
-        }
-        return null;
-    }
-
     private LocationEvent.Affiliation getItem(int position) {
         return mAffiliationList != null && mAffiliationList.size() > 0 ? mAffiliationList.get(position - 1) : null;
-    }
-
-    private boolean isPositionOther(int position) {
-        return position == mAffiliationList.size();
     }
 
     private boolean isPositionProfileHeader(int position) {
@@ -80,12 +69,12 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (viewType == TYPE_ITEM_PROFILE) {
             View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_profile_header, parent, false);
             return new ViewHolderProfile(rowView);
-        } else if (viewType == TYPE_ITEM_DEFAULT) {
-            View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_affiliations_other, parent, false);
 
+        } else {
+            View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_affiliations_other, parent, false);
             return new ViewHolder(rowView);
+
         }
-        return null;
 
     }
 
@@ -93,15 +82,15 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderProfile) {
             ViewHolderProfile itemProfileHolder = (ViewHolderProfile) holder;
-            if(mIsFromEditProfile){
+
+            if (mIsFromEditProfile) {
                 itemProfileHolder.tvTitleScreen.setVisibility(View.VISIBLE);
                 itemProfileHolder.tvTitleScreen.setText(mContext.getString(R.string.header_affiliation));
                 itemProfileHolder.progressLayout.setVisibility(View.GONE);
                 itemProfileHolder.tvTitle.setVisibility(View.GONE);
                 itemProfileHolder.tvDesc.setVisibility(View.GONE);
 
-
-            }else {
+            } else {
                 itemProfileHolder.progressBar.setProgress(80);
                 itemProfileHolder.tvTitle.setText(mContext.getString(R.string.title_affiliation));
                 if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
@@ -116,6 +105,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 final LocationEvent.Affiliation currentItem = getItem(position);
                 itemHolder.tvType.setText(currentItem.getAffiliationName());
                 itemHolder.ivCheckBox.setTag(position);
+
                 if (currentItem.getJobSeekerAffiliationStatus() == 0) {
                     itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
                 } else {
@@ -152,10 +142,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
 
                 } else {
-//                    itemHolder.etOther.setVisibility(View.GONE);
                     itemHolder.viewUnderLine.setVisibility(View.VISIBLE);
-
-
                 }
 
                 itemHolder.ivCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +162,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         if (currentItem.getAffiliationName().equalsIgnoreCase(Constants.OTHERS)) {
                             itemHolder.etOther.setVisibility(View.VISIBLE);
                             etOtherTemp = itemHolder.etOther;
+
                             if (currentItem.getJobSeekerAffiliationStatus() == 0) {
                                 itemHolder.etOther.setVisibility(View.GONE);
                                 etOtherTemp = itemHolder.etOther;
@@ -182,7 +170,6 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 etOtherTemp.setText("");
 
                             }
-
 
                         } else {
                             itemHolder.etOther.setText("");
@@ -207,6 +194,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (isPositionProfileHeader(position)) {
             return TYPE_ITEM_PROFILE;
         }
+
         return TYPE_ITEM_DEFAULT;
     }
 
@@ -226,15 +214,15 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public static class ViewHolderProfile extends RecyclerView.ViewHolder {
+     private class ViewHolderProfile extends RecyclerView.ViewHolder {
 
-        public TextView tvTitle;
-        public TextView tvDesc,tvTitleScreen;
-        public ImageView ivProfile;
-        public ProgressBar progressBar;
-        public RelativeLayout progressLayout;
+         TextView tvTitle;
+         TextView tvDesc, tvTitleScreen;
+         ImageView ivProfile;
+         ProgressBar progressBar;
+         RelativeLayout progressLayout;
 
-        public ViewHolderProfile(View itemLayoutView) {
+         ViewHolderProfile(View itemLayoutView) {
             super(itemLayoutView);
             tvTitle = (TextView) itemLayoutView.findViewById(R.id.tv_title);
             tvDesc = (TextView) itemLayoutView.findViewById(R.id.tv_description);

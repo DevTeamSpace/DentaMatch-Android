@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.interfaces.OnDateSelected;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
@@ -27,19 +28,18 @@ import java.util.Locale;
 import okhttp3.internal.Util;
 
 public class CalendarViewEvent extends LinearLayout {
+    private static int MAX_CALENDAR_COLUMN = 35;
     private static final String TAG = CalendarViewEvent.class.getSimpleName();
+
     private ImageView previousButton, nextButton;
     private TextView currentDate;
     private GridView calendarGridView;
-    //    private static  int MAX_CALENDAR_COLUMN = 42;
-    private static int MAX_CALENDAR_COLUMN = 35;
-    private int month, year;
     private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
     private Context context;
     private CalendarEventGridAdapter mAdapter;
     private int oldClickedPos = -1;
-    private int count = 3;
+    private int count = 6;
     private OnDateSelected mDateSelectedListener;
     private ArrayList<HiredJobs> mHiredListData;
     private ImageView ivFullTime;
@@ -69,29 +69,34 @@ public class CalendarViewEvent extends LinearLayout {
     }
 
     public void setHiredListData(ArrayList<HiredJobs> hiredListData) {
-        if (mHiredListData != null && mHiredListData.size() > 0) {
-            mHiredListData.clear();
-        }
+        try {
+            if (mHiredListData != null && mHiredListData.size() > 0) {
+                mHiredListData.clear();
+            }
 
-        mHiredListData.addAll(hiredListData);
+            mHiredListData.addAll(hiredListData);
 
-        if (mAdapter != null) {
-            mAdapter.setJobList(mHiredListData);
+            if (mAdapter != null) {
+                mAdapter.setJobList(mHiredListData);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
 
     public void isFullTimeJob(boolean isFullTime) {
+
         if (isFullTime) {
             ivFullTime.setVisibility(View.VISIBLE);
         } else {
             ivFullTime.setVisibility(View.GONE);
-
         }
+
     }
 
     private void initializeUILayout() {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = LayoutInflater.from(context);
         View calendarView = inflater.inflate(R.layout.calendar_layout, this);
         previousButton = (ImageView) calendarView.findViewById(R.id.previous_month);
         nextButton = (ImageView) calendarView.findViewById(R.id.next_month);
@@ -163,40 +168,36 @@ public class CalendarViewEvent extends LinearLayout {
         mCal.add(Calendar.DAY_OF_MONTH, -firstDayOfTheMonth);
         mCal.get(Calendar.DAY_OF_WEEK);
         mCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
-
         int days = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
         if (firstDayOfTheMonth == 6 && (days == 30 || days == 31) || (firstDayOfTheMonth == 5 && days == 31)) {
             MAX_CALENDAR_COLUMN = 42;
         } else {
             MAX_CALENDAR_COLUMN = 35;
         }
 
-//        while (dayValueInCells.size() < MAX_CALENDAR_COLUMN) {
-        boolean reqPos=false;
+        boolean reqPos = false;
+
         for (int i = 0; i < MAX_CALENDAR_COLUMN; i++) {
-            LogUtils.LOGD(TAG, "firstDayOfTheMonth==" + firstDayOfTheMonth + "=i=" + i);
             CalenderAvailableCellModel data = new CalenderAvailableCellModel();
             data.setDate(mCal.getTime());
             mCal.add(Calendar.DAY_OF_MONTH, 1);
-//            if (isCurrentMonth&&Calendar.getInstance().get(Calendar.MONTH) == cal.get(Calendar.MONTH) && Calendar.getInstance().get(Calendar.YEAR) == cal.get(Calendar.YEAR)) {
-            LogUtils.LOGD(TAG,"dis date####"+ Utils.dateFormetyyyyMMdd(mCal.getTime()));
-            LogUtils.LOGD(TAG,"curent date####"+ Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()));
+
             if (Utils.dateFormetyyyyMMdd(mCal.getTime()).equalsIgnoreCase(Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()))) {
-                LogUtils.LOGD(TAG, "match");
-                reqPos=true;
-//                oldClickedPos = i;
-//                data.setSelected(true);
+                reqPos = true;
+
             } else if (i == firstDayOfTheMonth && !(Calendar.getInstance().get(Calendar.MONTH) == cal.get(Calendar.MONTH) && Calendar.getInstance().get(Calendar.YEAR) == cal.get(Calendar.YEAR))) {
                 oldClickedPos = i;
                 data.setSelected(true);
+
             } else {
                 data.setSelected(false);
+
             }
-            //                data.setSelected(true);
+
             if (!Utils.dateFormetyyyyMMdd(mCal.getTime()).equalsIgnoreCase(Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime()))) {
 
                 if (reqPos) {
-                    LogUtils.LOGD(TAG, "match");
                     reqPos = false;
                     data.setSelected(true);
                     oldClickedPos = i;
@@ -205,7 +206,7 @@ public class CalendarViewEvent extends LinearLayout {
 
             dayValueInCells.add(data);
         }
-        LogUtils.LOGD(TAG, "Number of date " + dayValueInCells.size());
+
         String sDate = formatter.format(cal.getTime());
         currentDate.setText(sDate);
         mDayList = dayValueInCells;
@@ -214,9 +215,4 @@ public class CalendarViewEvent extends LinearLayout {
     }
 
 
-    public interface OnDateSelected {
-        public void selectedDate(String date);
-
-        public void onMonthChanged(Calendar cal);
-    }
 }

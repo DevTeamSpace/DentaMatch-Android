@@ -46,8 +46,6 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
  * Created by virender on 13/12/16.
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG = "Login";
-
     private ActivityLoginBinding mBinder;
     private boolean mIsAccepted, mIsLogin;
 
@@ -335,14 +333,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void signUpApi(LoginRequest loginRequest) {
-        LogUtils.LOGD(TAG, "signUpApi");
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.signUp(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
             @Override
             public void onSuccess(LoginResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
 
                 if (response.getStatus() == 1) {
                     PreferenceUtil.setFistName(getTextFromEditText(mBinder.registerEtFname));
@@ -352,9 +348,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     showSelectedView(true);
                     clearRegistrationFields();
 
-//                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-//                    startActivity(intent);
-//                    finish();
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -391,13 +384,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     private void signInApi(final LoginRequest loginRequest) {
-        LogUtils.LOGD(TAG, "signInApi");
-
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.signIn(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
             @Override
             public void onSuccess(LoginResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
 
                     if (response.getLoginResponseData().getSearchFilters() != null) {
@@ -416,11 +406,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         } else {
                             request.setParttimeDays(new ArrayList<String>());
                         }
-
-//                        Address address = Utils.getReverseGeoCode(LoginActivity.this,
-//                                new LatLng(Double.parseDouble(searchFilters.getLat()),
-//                                        Double.parseDouble(searchFilters.getLng())));
-
 
                         request.setCountry(searchFilters.getCountry());
                         request.setCity(searchFilters.getCity());
@@ -470,8 +455,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
-//                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
     }
@@ -510,9 +493,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBinder.tvPreferredJobLocation.setText("");
         mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
     }
-
-    private void clearLoginFields() {
-        mBinder.loginEtEmail.getText().clear();
-        mBinder.loginEtPassword.getText().clear();
-    }
 }
+

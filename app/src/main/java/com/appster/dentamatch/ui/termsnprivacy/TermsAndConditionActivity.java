@@ -19,7 +19,6 @@ import com.appster.dentamatch.util.Constants;
  * Created by virender on 03/01/17.
  */
 public class TermsAndConditionActivity extends BaseActivity implements View.OnClickListener {
-    //    private ActivityT mBinder;
     private ActivityTermsAndConditionBinding mBinder;
     private boolean isPrivacyPolicy;
     private String url = "";
@@ -28,9 +27,11 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_terms_and_condition);
+
         if (getIntent() != null) {
             isPrivacyPolicy = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
         }
+
         initViews();
     }
 
@@ -38,16 +39,12 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
         mBinder.toolbarPrivacyPolicy.ivToolBarLeft.setOnClickListener(this);
         if (isPrivacyPolicy) {
             url = BuildConfig.BASE_URL + Constants.APIS.PRIVACY_POLICY;
-
             mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_privacy));
-
         } else {
             url = BuildConfig.BASE_URL + Constants.APIS.TERM_CONDITION;
-
             mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_term));
-
-
         }
+
         mBinder.webviewTermAndCondition.post(new Runnable() {
             @Override
             public void run() {
@@ -69,6 +66,9 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
         switch (view.getId()) {
             case R.id.iv_tool_bar_left:
                 onBackPressed();
+                break;
+
+            default:
                 break;
         }
     }

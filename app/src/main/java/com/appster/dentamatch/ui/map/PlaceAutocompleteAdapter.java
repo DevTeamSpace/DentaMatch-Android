@@ -18,6 +18,7 @@ package com.appster.dentamatch.ui.map;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.text.style.CharacterStyle;
 import android.text.style.StyleSpan;
 import android.view.View;
@@ -29,6 +30,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appster.dentamatch.R;
 import com.appster.dentamatch.util.LogUtils;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -113,20 +115,26 @@ public class PlaceAutocompleteAdapter
         return mResultList.get(position);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View row = super.getView(position, convertView, parent);
 
-        // Sets the primary and secondary text for a row.
-        // Note that getPrimaryText() and getSecondaryText() return a CharSequence that may contain
-        // styling based on the given CharacterStyle.
-
+        /**
+         * Sets the primary and secondary text for a row.
+         * Note that getPrimaryText() and getSecondaryText() return a CharSequence that may contain
+         * styling based on the given CharacterStyle.
+         */
         AutocompletePrediction item = getItem(position);
+        try {
+            TextView textView1 = (TextView) row.findViewById(android.R.id.text1);
+            TextView textView2 = (TextView) row.findViewById(android.R.id.text2);
+            textView1.setText(item.getPrimaryText(STYLE_BOLD));
+            textView2.setText(item.getSecondaryText(STYLE_BOLD));
 
-        TextView textView1 = (TextView) row.findViewById(android.R.id.text1);
-        TextView textView2 = (TextView) row.findViewById(android.R.id.text2);
-        textView1.setText(item.getPrimaryText(STYLE_BOLD));
-        textView2.setText(item.getSecondaryText(STYLE_BOLD));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return row;
     }
@@ -134,24 +142,32 @@ public class PlaceAutocompleteAdapter
     /**
      * Returns the filter for the current set of autocomplete results.
      */
+    @NonNull
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-
-                // We need a separate list to store the results, since
-                // this is run asynchronously.
+                /**
+                 * We need a separate list to store the results, since
+                 * this is run asynchronously.
+                 */
                 ArrayList<AutocompletePrediction> filterData = new ArrayList<>();
 
-                // Skip the autocomplete query if no constraints are given.
+                /**
+                 * Skip the autocomplete query if no constraints are given.
+                 */
+
                 if (constraint != null) {
-                    // Query the autocomplete API for the (constraint) search string.
+                    /**
+                     *  Query the autocomplete API for the (constraint) search string.
+                     */
                     filterData = getAutocomplete(constraint);
                 }
 
                 results.values = filterData;
+
                 if (filterData != null) {
                     results.count = filterData.size();
                 } else {
@@ -165,24 +181,31 @@ public class PlaceAutocompleteAdapter
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
                 if (results != null && results.count > 0) {
-                    // The API returned at least one result, update the data.
+                    /**
+                     * The API returned at least one result, update the data.
+                     */
                     mResultList = (ArrayList<AutocompletePrediction>) results.values;
                     notifyDataSetChanged();
                 } else {
-                    // The API did not return any results, invalidate the data set.
+                    /**
+                     * The API did not return any results, invalidate the data set.
+                     */
                     notifyDataSetInvalidated();
                 }
             }
 
             @Override
             public CharSequence convertResultToString(Object resultValue) {
-                // Override this method to display a readable result in the AutocompleteTextView
-                // when clicked.
+                /**
+                 * Override this method to display a readable result in the AutocompleteTextView
+                 * when clicked.
+                 */
                 if (resultValue instanceof AutocompletePrediction) {
                     return ((AutocompletePrediction) resultValue).getFullText(null);
                 } else {
                     return super.convertResultToString(resultValue);
                 }
+
             }
         };
     }
@@ -204,25 +227,30 @@ public class PlaceAutocompleteAdapter
      */
     private ArrayList<AutocompletePrediction> getAutocomplete(CharSequence constraint) {
         if (mGoogleApiClient.isConnected()) {
-            LogUtils.LOGD(TAG, "Starting autocomplete query for: " + constraint);
-
-            // Submit the query to the autocomplete API and retrieve a PendingResult that will
-            // contain the results when the query completes.
+            /**
+             * Submit the query to the autocomplete API and retrieve a PendingResult that will
+             * contain the results when the query completes.
+             */
             PendingResult<AutocompletePredictionBuffer> results =
                     Places.GeoDataApi
                             .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
                                     mBounds, mPlaceFilter);
 
-            // This method should have been called off the main UI thread. Block and wait for at most 60s
-            // for a result from the API.
+            /**
+             * This method should have been called off the main UI thread. Block and wait for at most 60s
+             * for a result from the API.
+             */
             AutocompletePredictionBuffer autocompletePredictions = results
                     .await(60, TimeUnit.SECONDS);
-
-            // Confirm that the query completed successfully, otherwise return null
+            /**
+             * Confirm that the query completed successfully, otherwise return null
+             */
             final Status status = autocompletePredictions.getStatus();
+
             if (!status.isSuccess()) {
-                Toast.makeText(getContext(), "Error contacting API: " + status.toString(),
+                Toast.makeText(getContext(), getContext().getString(R.string.txt_error_contacting_api) + status.toString(),
                         Toast.LENGTH_SHORT).show();
+
                 LogUtils.LOGE(TAG, "Error getting autocomplete prediction API call: " + status.toString());
                 autocompletePredictions.release();
                 return null;
@@ -231,9 +259,12 @@ public class PlaceAutocompleteAdapter
             LogUtils.LOGI(TAG, "Query completed. Received " + autocompletePredictions.getCount()
                     + " predictions.");
 
-            // Freeze the results immutable representation that can be stored safely.
+            /**
+             * Freeze the results immutable representation that can be stored safely.
+             */
             return DataBufferUtils.freezeAndClose(autocompletePredictions);
         }
+
         LogUtils.LOGE(TAG, "Google API client is not connected for autocomplete query.");
         return null;
     }

@@ -27,7 +27,6 @@ import retrofit2.Call;
  */
 
 public class SearchJobDataHelper {
-//    private ProgressDialog mProgressDialog;
     private static SearchJobDataHelper ourInstance;
     private ArrayList<SearchJobModel> jobDataList;
     private boolean mIsPaginationRequired;
@@ -48,9 +47,6 @@ public class SearchJobDataHelper {
     }
 
     private void showProgress(Context ct) {
-//        mProgressDialog = new ProgressDialog(ct);
-//        mProgressDialog.setMessage("Please wait...");
-//        mProgressDialog.show();
         ((BaseActivity)ct).processToShowDialog("", ct.getString(R.string.please_wait), null);
     }
 

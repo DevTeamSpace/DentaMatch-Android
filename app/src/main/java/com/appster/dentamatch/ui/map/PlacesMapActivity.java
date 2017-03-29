@@ -67,11 +67,12 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places_map);
-
-        // Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
-        // functionality, which automatically sets up the API client to handle Activity lifecycle
-        // events. If your activity does not extend FragmentActivity, make sure to call connect()
-        // and disconnect() explicitly.
+        /**
+         * Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
+         * functionality, which automatically sets up the API client to handle Activity lifecycle
+         * events. If your activity does not extend FragmentActivity, make sure to call connect()
+         * and disconnect() explicitly.
+         */
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)
                 .addApi(Places.GEO_DATA_API)
@@ -80,14 +81,16 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
         mImgClear = (ImageView) findViewById(R.id.img_clear);
         mLayout = (RelativeLayout) findViewById(R.id.layout_done);
-
-        // Register a listener that receives callbacks when a suggestion has been selected
+        /**
+         * Register a listener that receives callbacks when a suggestion has been selected
+         */
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
         mImgClear.setOnClickListener(this);
         mLayout.setOnClickListener(this);
-
-        // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
-        // the entire world.
+        /**
+         * Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
+         * the entire world.
+         */
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, null, null);
         mAutocompleteView.setAdapter(mAdapter);
 
@@ -120,7 +123,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        if (connectionResult.getErrorMessage() != null) {
+            LogUtils.LOGD(TAG, connectionResult.getErrorMessage());
+        }
     }
 
     @Override
@@ -154,6 +159,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.img_clear:
                 mAutocompleteView.setText("");
                 mMap.clear();
@@ -161,6 +167,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
             case R.id.layout_done:
                 hideKeyboard();
+
                 if (mAutocompleteView.getText().toString().trim().isEmpty()) {
                     Utils.showToast(this, getString(R.string.error_empty_address));
                     return;
@@ -169,10 +176,16 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 setResult(RESULT_OK, prepareIntent());
                 finish();
                 break;
+
+
+            default:
+                break;
         }
     }
 
-    // This method will be called when Event is posted.
+    /**
+     * This method will be called when Event is posted.
+     */
     @Subscribe
     public void onEvent(LocationEvent locationEvent) {
         Location location = locationEvent.getMessage();
@@ -195,9 +208,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mLongitude = String.valueOf(address.getLongitude());
             mCountry = address.getCountryName();
 
-            if(address.getLocality() != null ) {
+            if (address.getLocality() != null) {
                 mCity = address.getLocality();
-            }else{
+            } else {
                 mCity = address.getSubLocality();
             }
 
@@ -217,16 +230,13 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             mCity = "";
         }
 
-        LogUtils.LOGD(TAG, "(Postal and Place) " + mPostalCode + ", " + mPlaceName);
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng));
-
-        Address address = Utils.getReverseGeoCode(this,latLng);
-
+        Address address = Utils.getReverseGeoCode(this, latLng);
         setData(address);
     }
 
@@ -244,10 +254,10 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             /*
-             Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
-             read the place ID and title.
-              */
+             * Retrieve the place ID of the selected item from the Adapter.
+             * The adapter stores each Place suggestion in a AutocompletePrediction from which we
+             * read the place ID and title.
+             */
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
             final CharSequence primaryText = item.getPrimaryText(null);
@@ -255,17 +265,14 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             LogUtils.LOGD(TAG, "Autocomplete item selected: " + primaryText);
 
             /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
-             details about the place.
-              */
+             * Issue a request to the Places Geo Data API to retrieve a Place object with additional
+             * details about the place.
+             */
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-//            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-//                    Toast.LENGTH_SHORT).show();
             LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
-
             hideKeyboard();
         }
     };
@@ -279,12 +286,14 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         @Override
         public void onResult(PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
-                // Request did not complete successfully
                 LogUtils.LOGE(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
                 places.release();
                 return;
             }
-            // Get the Place object from the buffer.
+
+            /**
+             * Get the Place object from the buffer.
+             */
             final Place place = places.get(0);
             LatLng latLng = place.getLatLng();
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
@@ -293,7 +302,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
             LogUtils.LOGD(TAG, latLng.toString());
 
-            Address address = Utils.getReverseGeoCode(PlacesMapActivity.this,latLng);
+            Address address = Utils.getReverseGeoCode(PlacesMapActivity.this, latLng);
 
             setData(address);
 
@@ -358,13 +367,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
             sb.append(address.getAdminArea());
         }
 
-//        if(address.getPostalCode() != null){
-//            sb.append(", ");
-//            sb.append(address.getPostalCode());
-//        }
-
         LogUtils.LOGD(TAG, "convertAddressToString " + sb.toString());
-
         return sb.toString();
     }
 

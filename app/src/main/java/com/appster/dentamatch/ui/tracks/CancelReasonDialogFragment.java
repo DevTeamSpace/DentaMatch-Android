@@ -25,7 +25,6 @@ import org.greenrobot.eventbus.EventBus;
 public class CancelReasonDialogFragment extends android.support.v4.app.DialogFragment implements View.OnClickListener {
     private FragmentDialogCancelBinding mBinding;
     private int mJobID;
-    private String mCancelDate;
 
     public static CancelReasonDialogFragment newInstance(){
         return new CancelReasonDialogFragment();

@@ -122,36 +122,6 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-//    @Override
-//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//        try {
-//        int position = (int) buttonView.getTag();
-//        final JobTitleListModel currentItem = getItem(position);
-//        if (!isChecked) {
-//
-//            for (JobTitleListModel i : mSelectedJobTitles) {
-//
-//                if (i.getId() == currentItem.getId()) {
-//                    mSelectedJobTitles.remove(i);
-//                    break;
-//                }
-//
-//            }
-//
-//            currentItem.setSelected(false);
-//
-//        } else {
-//            mSelectedJobTitles.add(currentItem);
-//            currentItem.setSelected(true);
-//        }
-//
-//        mListener.onJobTitleSelected(mSelectedJobTitles);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvType;

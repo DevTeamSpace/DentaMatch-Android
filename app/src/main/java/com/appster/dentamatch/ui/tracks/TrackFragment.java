@@ -29,21 +29,6 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
         return null;
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if(!EventBus.getDefault().isRegistered(this)){
-//            EventBus.getDefault().register(this);
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        EventBus.getDefault().unregister(this);
-//        super.onDetach();
-//
-//    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,9 +47,9 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
     }
 
     private void initViews() {
-        mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText("SAVED"));
-        mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText("APPLIED"));
-        mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText("SHORTLISTED"));
+        mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText(getString(R.string.txt_saved).toUpperCase()));
+        mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText(getString(R.string.txt_applied).toUpperCase()));
+        mBinding.layTabFragmentTracks.addTab(mBinding.layTabFragmentTracks.newTab().setText(getString(R.string.txt_shortlisted).toUpperCase()));
         savedJobsFragment = SavedJobFragment.newInstance();
         appliedJobsFragment = AppliedJobsFragment.newInstance();
         shortListedJobsFragment = ShortlistedJobsFragment.newInstance();

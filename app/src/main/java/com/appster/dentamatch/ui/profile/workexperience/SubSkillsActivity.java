@@ -25,7 +25,6 @@ import java.util.List;
  * Created by ram on 12/01/17.
  */
 public class SubSkillsActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG = "SubSkills";
     private ActivitySubSkillsBinding mBinder;
 
     private SubSkillsAdapter mSkillsAdapter;
@@ -37,17 +36,11 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_sub_skills);
         initViews();
         overridePendingTransition(R.anim.pull_in, R.anim.hold_still);
-
-        if (getIntent() != null) {
-            subSkills = getIntent().getParcelableArrayListExtra(Constants.BundleKey.SUB_SKILLS);
-        }
-
         setAdapter(subSkills);
     }
 
     @Override
     public void onBackPressed() {
-
         if (validate()) {
             Intent intent = new Intent();
             intent.putExtra(Constants.EXTRA_SUB_SKILLS, subSkills);
@@ -70,7 +63,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
 
         boolean checked = subSkills.get(position).getIsSelected() == 1;
         String skillName = subSkills.get(position).getSkillName();
-        boolean otherTextEmpty = TextUtils.isEmpty(subSkills.get(position).getOtherText())?true:TextUtils.isEmpty(subSkills.get(position).getOtherText().trim());
+        boolean otherTextEmpty = TextUtils.isEmpty(subSkills.get(position).getOtherText()) || TextUtils.isEmpty(subSkills.get(position).getOtherText().trim());
 
         if (checked && skillName.equalsIgnoreCase(Constants.OTHERS) && otherTextEmpty) {
             Utils.showToastLong(this, getString(R.string.blank_other_alert));
@@ -81,6 +74,11 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initViews() {
+
+        if (getIntent() != null) {
+            subSkills = getIntent().getParcelableArrayListExtra(Constants.BundleKey.SUB_SKILLS);
+        }
+
         mBinder.ivLeft.setOnClickListener(this);
     }
 
@@ -91,9 +89,14 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()) {
+
             case R.id.iv_left:
                 onBackPressed();
+                break;
+
+            default:
                 break;
         }
     }
@@ -114,7 +117,6 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
         mBinder.recyclerSkills.setAdapter(mSkillsAdapter);
         mSkillsAdapter.notifyDataSetChanged();
 
-
         mBinder.recyclerSkills.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -124,14 +126,9 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
                 if (dy < 0) {
                     // Recycle view scrolling up...
                     hideKeyboard();
-
-
-                } else if (dy > 0) {
-                    // Recycle view scrolling down...
 
                 }
             }

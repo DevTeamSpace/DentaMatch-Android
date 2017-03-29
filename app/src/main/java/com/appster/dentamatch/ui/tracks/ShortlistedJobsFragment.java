@@ -172,7 +172,7 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         if (getArguments().getParcelableArrayList(DATA_ARRAY) != null) {
             ArrayList<SearchJobModel> jobData = getArguments().getParcelableArrayList(DATA_ARRAY);
 
-            if(jobData.size() > 0) {
+            if(jobData != null && jobData.size() > 0) {
                 mJobListData.addAll(jobData);
             }else{
                 getAllShortListedJobs(false, true);

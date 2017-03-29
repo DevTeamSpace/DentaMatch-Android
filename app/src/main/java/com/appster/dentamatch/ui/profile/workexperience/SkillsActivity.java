@@ -57,9 +57,6 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_skills);
-        if (getIntent() != null) {
-            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
-        }
         initViews();
         getSkillsListApi();
     }
@@ -68,11 +65,17 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         btnNext = mBinder.btnNext;
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
+
         if (isFromProfile) {
             mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
             mBinder.btnNext.setText(getString(R.string.save_label));
 
         }
+
+        if (getIntent() != null) {
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
+
         btnNext.setOnClickListener(this);
     }
 
@@ -85,6 +88,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.iv_tool_bar_left:
                 hideKeyboard();
                 onBackPressed();
@@ -93,17 +97,18 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
             case R.id.btn_next:
                 updateSkillsListApi(prepareSkillsUpdateRequest());
                 break;
+
+            default:
+                break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        LogUtils.LOGD(TAG, "onActivityResult data " + data);
 
         if (data != null) {
             ArrayList<SubSkillModel> subSkills = data.getParcelableArrayListExtra(Constants.BundleKey.SUB_SKILLS);
-            LogUtils.LOGD(TAG, subSkills.size() + " items");
             mParentSkillList.get(mSkillPosition).setSubSkills(subSkills);
             mSkillsAdapter.notifyDataSetChanged();
         }
@@ -129,25 +134,25 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void getSkillsListApi() {
-        LogUtils.LOGD(TAG, "getSkillsListApi");
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.getSkillsList().enqueue(new BaseCallback<SkillsResponse>(this) {
             @Override
             public void onSuccess(SkillsResponse response) {
+
                 if (response.getStatus() == 1) {
                     mParentSkillList = response.getSkillsResponseData().getSkillsList();
                     setAdapter(mParentSkillList);
+
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+
                 }
             }
 
             @Override
             public void onFail(Call<SkillsResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "getSkillsListApi onFail...");
-
             }
         });
     }
@@ -159,6 +164,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         ArrayList<UpdateCertificates> othersList = new ArrayList<UpdateCertificates>();
 
         for (ParentSkillModel parentSkillModel : mParentSkillList) {
+
             if (parentSkillModel.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                     if (!TextUtils.isEmpty(parentSkillModel.getOtherSkill())) {
                         UpdateCertificates obj = new UpdateCertificates();
@@ -166,20 +172,22 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                         obj.setValue(parentSkillModel.getOtherSkill().trim());
                         othersList.add(obj);
                     }
-
-
             }
+
             for (SubSkillModel subSkillModel : parentSkillModel.getSubSkills()) {
+
                 if (subSkillModel.getIsSelected() == 1) {
+
                     if (!subSkillModel.getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                         skills.add(subSkillModel.getId());
                     } else {
                         UpdateCertificates obj = new UpdateCertificates();
                         obj.setId(subSkillModel.getId());
-                        if (!TextUtils.isEmpty(subSkillModel.getOtherText())) {
 
+                        if (!TextUtils.isEmpty(subSkillModel.getOtherText())) {
                             obj.setValue(subSkillModel.getOtherText().trim());
                         }
+
                         othersList.add(obj);
                     }
                 }
@@ -193,7 +201,6 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void updateSkillsListApi(final SkillsUpdateRequest skillsUpdateRequest) {
-        LogUtils.LOGD(TAG, "updateSkillsListApi");
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
@@ -201,20 +208,20 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onSuccess(BaseResponse response) {
                 if (response.getStatus() == 1) {
-                    LogUtils.LOGD(TAG, "updateSkillsListApi success");
                     Utils.showToast(SkillsActivity.this, response.getMessage());
+
                     if (isFromProfile) {
                         EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                         finish();
                     } else {
                         startActivity(new Intent(SkillsActivity.this, AffiliationActivity.class));
                     }
+
                 }
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "updateSkillsListApi onFail...");
             }
         });
     }

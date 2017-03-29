@@ -66,10 +66,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
             holder.tvLastMessage.setText(dataModel.getLastMessage());
 
             if (!TextUtils.isEmpty(dataModel.getLastMsgTime())) {
-//                    && !TextUtils.isEmpty(dataModel.getUserChats().get(dataModel.getUserChats().size() - 1).getmMessageTime())) {
-//                holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel
-//                        .getUserChats()
-//                        .get(dataModel.getUserChats().size() - 1).getmMessageTime()));
                 holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel.getLastMsgTime()));
             } else {
                 holder.tvDate.setText("");
@@ -81,7 +77,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
                 holder.tvUnreadChatCount.setVisibility(View.GONE);
             } else if (dataModel.getUnReadChatCount() >= 100) {
                 holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
-                holder.tvUnreadChatCount.setText("999");
+                holder.tvUnreadChatCount.setText(R.string.txt_max_notification_count);
             } else {
                 holder.tvUnreadChatCount.setVisibility(View.VISIBLE);
                 holder.tvUnreadChatCount.setText(String.valueOf(dataModel.getUnReadChatCount()));
@@ -143,28 +139,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
         }else{
             ((BaseActivity)mContext).showToast(mContext.getString(R.string.error_socket_connection));
         }
-//        BlockUnBlockRequest request = new BlockUnBlockRequest();
-//        request.setBlockStatus(String.valueOf(status));
-//        request.setRecruiterId(String.valueOf(recruiterID));
-//
-//        ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
-//        AuthWebServices client = RequestController.createService(AuthWebServices.class);
-//        client.blockUnBlockUser(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
-//            @Override
-//            public void onSuccess(BaseResponse response) {
-//                ((BaseActivity) mContext).showToast(response.getMessage());
-//
-//                if (response.getStatus() == 1) {
-//                    DBHelper.getInstance().upDateDB(recruiterID, DBHelper.IS_RECRUITED_BLOCKED, status, null);
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-//
-//            }
-//        });
     }
 
     class MyHolder extends RecyclerView.ViewHolder {

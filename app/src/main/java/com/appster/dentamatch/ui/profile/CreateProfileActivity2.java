@@ -70,7 +70,6 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
     private void initViews() {
         ivProfile = (ImageView) findViewById(R.id.create_profile_iv_profile_icon);
-//        ivUpload = (ImageView) findViewById(R.id.create_profile_iv_upoload_icon);
         ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
         btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
         tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
@@ -79,14 +78,13 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         etState = (EditText) findViewById(R.id.create_profile_et_state);
         tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
-//        ivUpload.setOnClickListener(this);
+
         btnNext.setOnClickListener(this);
         ivToolbarLeft.setOnClickListener(this);
         mProgressBar.setProgress(Constants.PROFILE_PERCENTAGE.PROFILE_2);
         tvToolbarLeft.setText(getString(R.string.header_create_profile));
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-            LogUtils.LOGD(TAG, "path is--=" + PreferenceUtil.getProfileImagePath());
             Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop()
                     .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                     .placeholder(R.drawable.profile_pic_placeholder)
@@ -106,18 +104,17 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.create_profile_iv_upoload_icon:
-//                callBottomSheet();
-//                break;
 
             case R.id.iv_tool_bar_left:
                 hideKeyboard();
                 onBackPressed();
                 break;
+
             case R.id.create_profile_iv_profile_icon:
 //                mSelectedImage = 0;
 //                callBottomSheet();
                 break;
+
             case R.id.create_profile2_btn_next:
                 hideKeyboard();
 
@@ -133,19 +130,22 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 //            Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_satate_board_photo_alert));
 //            return false;
 //        }
+
         if (TextUtils.isEmpty(etLicenceNumber.getText().toString().trim())) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_licence_number));
             return false;
         }
+
         if (etLicenceNumber.getText().toString().trim().length() > Constants.LICENCE_MAX_LENGTH) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.licence_number_length));
-
             return false;
         }
+
         if (etLicenceNumber.getText().toString().trim().contains(" ")) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.licence_number_blnk_space_alert));
             return false;
         }
+
         if (etLicenceNumber.getText().toString().trim().charAt(0) == '-' || etLicenceNumber.getText().toString().trim().charAt(etLicenceNumber.getText().toString().trim().length() - 1) == '-') {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.licence_number_hyfen_alert));
             return false;
@@ -155,6 +155,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_state_alert));
             return false;
         }
+
         if (etState.getText().toString().trim().length() >= Constants.DEFAULT_FIELD_LENGTH) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.state_max_length));
             return false;
@@ -174,12 +175,11 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
     private void callLicenceApi(LicenceRequest licenceRequest) {
         try {
-            LogUtils.LOGD(TAG, "Update Licence");
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
             webServices.updateLicence(licenceRequest).enqueue(new BaseCallback<LicenceUpdateResponse>(CreateProfileActivity2.this) {
                 @Override
                 public void onSuccess(LicenceUpdateResponse response) {
-                    LogUtils.LOGD(TAG, "onSuccess");
+
                     if (response.getStatus() == 1) {
                         startActivity(new Intent(CreateProfileActivity2.this, WorkExperienceActivity.class));
 
@@ -191,7 +191,6 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
                 @Override
                 public void onFail(Call<LicenceUpdateResponse> call, BaseResponse baseResponse) {
-                    LogUtils.LOGD(TAG, "onFail");
 
                 }
             });
@@ -214,17 +213,13 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             public void onSuccess(FileUploadResponse response) {
                     Utils.showToast(getApplicationContext(), response.getMessage());
 
-                if (response != null && response.getStatus() == 1) {
-                    // showSnackBarFromTop(response.getMessage(), false);
+                if (response.getStatus() == 1) {
 //                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
-
                 }
             }
 
             @Override
             public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGE(TAG, " ImageUpload failed!");
-
             }
         });
     }
@@ -246,7 +241,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 Snackbar.make(ivProfile, getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction("OK", new View.OnClickListener() {
+                        .setAction(getString(R.string.txt_ok), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 PermissionUtils.requestPermission(CreateProfileActivity2.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
@@ -270,11 +265,12 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Snackbar.make(ivProfile, this.getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Accept", new View.OnClickListener() {
+                        .setAction(getString(R.string.txt_accept), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                PermissionUtils.requestPermission(CreateProfileActivity2.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-
+                                PermissionUtils.requestPermission(CreateProfileActivity2.this,
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                        Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
                             }
                         }).show();
             } else {
@@ -305,6 +301,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+
             if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
@@ -314,7 +311,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                 mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
             }
-            Log.d("Tag", "file path" + mFilePath);
+
+
 
             if (mFilePath != null) {
                 Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
@@ -328,9 +326,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
 
-        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-
-            LogUtils.LOGD("Tag", "request permisison called if granted --");
+        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
             if (imageSourceType == 0) {
                 takePhoto();
             } else {

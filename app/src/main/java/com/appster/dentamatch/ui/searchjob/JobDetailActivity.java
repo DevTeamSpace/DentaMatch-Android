@@ -177,8 +177,14 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             case R.id.cb_job_selection:
                 final int status = mJobDetailModel.getIsSaved() == 1 ? 0 : 1;
+
                 if (status == 0) {
-                    Alert.createYesNoAlert(JobDetailActivity.this, "OK", "CANCEL", getString(R.string.txt_alert_title), getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
+                    Alert.createYesNoAlert(JobDetailActivity.this, getString(R.string.txt_ok),
+                            getString(R.string.txt_cancel),
+                            getString(R.string.txt_alert_title),
+                            getString(R.string.msg_unsave_warning),
+                            new Alert.OnAlertClickListener() {
+
                         @Override
                         public void onPositive(DialogInterface dialog) {
                             saveUnSaveJob(jobID, status);
@@ -208,7 +214,6 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 } else {
                     mBinding.tvJobDetailOfficeDescription.setMaxLines(4);
                     mBinding.tvJobDetailOfficeReadMore.setText(getString(R.string.txt_read_more));
-
                 }
                 break;
 
@@ -231,13 +236,18 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.tvJobStatus.setVisibility(View.VISIBLE);
                     mBinding.btnApplyJob.setVisibility(View.GONE);
                     mBinding.tvJobStatus.setText(getString(R.string.txt_applied));
-                    Alert.alert(JobDetailActivity.this, "Congratulations", "You have successfully applied for the job.");
+                    Alert.alert(JobDetailActivity.this, getString(R.string.txt_congratulations), getString(R.string.msg_successfully_applied_job));
                     TrackJobsDataHelper.getInstance().updateAppliedData();
                 } else {
                     mBinding.tvJobStatus.setVisibility(View.GONE);
                     mBinding.btnApplyJob.setVisibility(View.VISIBLE);
                     if (response.getStatusCode() == 202) {
-                        Alert.createYesNoAlert(JobDetailActivity.this, "Yes", "No", "Complete your profile", response.getMessage(), new Alert.OnAlertClickListener() {
+                        Alert.createYesNoAlert(JobDetailActivity.this,
+                                getString(R.string.yes),
+                                getString(R.string.no),
+                                getString(R.string.txt_complete_profile),
+                                response.getMessage(),
+                                new Alert.OnAlertClickListener() {
                             @Override
                             public void onPositive(DialogInterface dialog) {
                                 startActivity(new Intent(JobDetailActivity.this, HomeActivity.class)
@@ -258,14 +268,12 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
             }
         });
     }
 
     private void getJobDetail() {
         JobDetailRequest request = new JobDetailRequest();
-//        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
         SearchJobRequest searchRequest = (SearchJobRequest) PreferenceUtil.getJobFilter();
         request.setJobId(jobID);
         request.setLat(Double.parseDouble(searchRequest.getLat()));
@@ -306,7 +314,6 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             @Override
             public void onFail(Call<JobDetailResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "Failed");
             }
         });
     }
@@ -527,13 +534,22 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             if (dataModel.getWorkEverydayStart() != null && dataModel.getWorkEverydayEnd() != null) {
                 mBinding.tvJobDetailFull.setVisibility(View.VISIBLE);
-                SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("All Days: " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd()));
+
+                SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_all_days))
+                        .append(Utils.convertUTCtoLocal(dataModel.getWorkEverydayStart()))
+                        .append(getString(R.string.hyphen))
+                        .append(Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd()));
+
                 SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 mBinding.tvJobDetailFull.setText(SpanBuilder);
             } else {
                 if (dataModel.getMondayStart() != null && dataModel.getMondayEnd() != null) {
                     mBinding.tvJobDetailMon.setVisibility(View.VISIBLE);
-                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Monday: " + Utils.convertUTCtoLocal(dataModel.getMondayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_monday_colon))
+                            .append( Utils.convertUTCtoLocal(dataModel.getMondayStart()))
+                            .append(getString(R.string.hyphen))
+                            .append( Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
+
                     SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailMon.setText(SpanBuilder);
 
@@ -541,7 +557,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
                 if (dataModel.getTuesdayStart() != null && dataModel.getTuesdayEnd() != null) {
                     mBinding.tvJobDetailTue.setVisibility(View.VISIBLE);
-                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Tuesday: " + Utils.convertUTCtoLocal(dataModel.getTuesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getTuesdayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_tuesday_colon))
+                            .append(Utils.convertUTCtoLocal(dataModel.getTuesdayStart()))
+                            .append(getString(R.string.hyphen))
+                            .append(Utils.convertUTCtoLocal(dataModel.getTuesdayEnd()));
+
                     SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailTue.setText(SpanBuilder);
 
@@ -549,7 +569,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
                 if (dataModel.getWednesdayStart() != null && dataModel.getWednesdayEnd() != null) {
                     mBinding.tvJobDetailWed.setVisibility(View.VISIBLE);
-                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Wednesday: " + Utils.convertUTCtoLocal(dataModel.getWednesdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getWednesdayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_wednesday_colon))
+                            .append(Utils.convertUTCtoLocal(dataModel.getWednesdayStart()))
+                            .append(getString(R.string.hyphen))
+                            .append( Utils.convertUTCtoLocal(dataModel.getWednesdayEnd()));
+
                     SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailWed.setText(SpanBuilder);
 
@@ -557,7 +581,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
                 if (dataModel.getThursdayStart() != null && dataModel.getThursdayEnd() != null) {
                     mBinding.tvJobDetailThu.setVisibility(View.VISIBLE);
-                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Thursday: " + Utils.convertUTCtoLocal(dataModel.getThursdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getThursdayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_thursday_colon))
+                            .append(Utils.convertUTCtoLocal(dataModel.getThursdayStart()))
+                            .append(getString(R.string.hyphen))
+                            .append(Utils.convertUTCtoLocal(dataModel.getThursdayEnd()));
+
                     SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailThu.setText(SpanBuilder);
 
@@ -565,7 +593,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
                 if (dataModel.getFridayStart() != null && dataModel.getFridayEnd() != null) {
                     mBinding.tvJobDetailFri.setVisibility(View.VISIBLE);
-                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Friday: " + Utils.convertUTCtoLocal(dataModel.getFridayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getFridayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_friday_colon))
+                            .append(Utils.convertUTCtoLocal(dataModel.getFridayStart()))
+                            .append(getString(R.string.hyphen))
+                            .append( Utils.convertUTCtoLocal(dataModel.getFridayEnd()));
+
                     SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailFri.setText(SpanBuilder);
 
@@ -573,7 +605,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
                 if (dataModel.getSaturdayStart() != null && dataModel.getSaturdayEnd() != null) {
                     mBinding.tvJobDetailSat.setVisibility(View.VISIBLE);
-                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Saturday: " + Utils.convertUTCtoLocal(dataModel.getSaturdayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSaturdayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_saturday_colon))
+                            .append(Utils.convertUTCtoLocal(dataModel.getSaturdayStart()))
+                            .append(getString(R.string.hyphen))
+                            .append( Utils.convertUTCtoLocal(dataModel.getSaturdayEnd()));
+
                     SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailSat.setText(SpanBuilder);
 
@@ -581,7 +617,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
                 if (dataModel.getSundayStart() != null && dataModel.getSundayEnd() != null) {
                     mBinding.tvJobDetailSun.setVisibility(View.VISIBLE);
-                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder("Sunday: " + Utils.convertUTCtoLocal(dataModel.getSundayStart()) + " - " + Utils.convertUTCtoLocal(dataModel.getSundayEnd()));
+                    SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_sunday_colon))
+                            .append(Utils.convertUTCtoLocal(dataModel.getSundayStart()))
+                            .append(getString(R.string.hyphen))
+                            .append( Utils.convertUTCtoLocal(dataModel.getSundayEnd()));
+
                     SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailSun.setText(SpanBuilder);
 

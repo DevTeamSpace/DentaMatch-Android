@@ -34,7 +34,6 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     private Context mContext;
     private ArrayList<HiredJobs> mJobListData;
 
-
     public HiredJobAdapter(Context context, ArrayList<HiredJobs> jobListData) {
         mContext = context;
         mJobListData = jobListData;
@@ -127,7 +126,6 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
 
                 holder.tvDate.setEllipsize(TextUtils.TruncateAt.END);
 
-
             } else if (data.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
                 holder.tvDate.setVisibility(View.GONE);
@@ -140,6 +138,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
             }
 
             holder.tvDocAddress.setText(data.getAddress());
+
             if (data.getDays() == 0) {
                 holder.tvDuration.setText(mContext.getString(R.string.text_todays));
 
@@ -147,6 +146,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
                 String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
                 holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             }
+
             holder.tvDocName.setText(data.getOfficeName());
         }
 
@@ -167,11 +167,11 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     public void onClick(View v) {
         switch (v.getId()) {
 
-
             case R.id.lay_item_job_list:
                 int jobID = mJobListData.get((int) v.getTag()).getRecruiterJobId();
                 mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID).putExtra(Constants.INTENT_KEY.FROM_WHERE, true));
+                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
+                        .putExtra(Constants.INTENT_KEY.FROM_WHERE, true));
                 break;
 
             default:
@@ -179,7 +179,6 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
         }
 
     }
-
 
     class MyHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvJobType, tvDate, tvDocName, tvDocAddress, tvDuration, tvDistance;
@@ -201,7 +200,13 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext, mContext.getString(R.string.ok), mContext.getString(R.string.cancel), mContext.getString(R.string.txt_alert_title), mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {
+        Alert.createYesNoAlert(mContext,
+                mContext.getString(R.string.ok),
+                mContext.getString(R.string.cancel),
+                mContext.getString(R.string.txt_alert_title),
+                mContext.getString(R.string.alert_cancel_job),
+                new Alert.OnAlertClickListener() {
+
             @Override
             public void onPositive(DialogInterface dialog) {
                 CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
@@ -216,6 +221,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
                 dialog.dismiss();
             }
         });
+
         return false;
     }
 

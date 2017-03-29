@@ -23,8 +23,6 @@ import retrofit2.Call;
  * Created by virender on 30/12/16.
  */
 public class ForgotPasswordActivity extends BaseActivity implements View.OnClickListener {
-    private final String TAG = "ForgotPasswordActivity";
-
     private ActivityForgotPasswordBinding mBinder;
 
     @Override
@@ -95,7 +93,6 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
             }
         });
     }

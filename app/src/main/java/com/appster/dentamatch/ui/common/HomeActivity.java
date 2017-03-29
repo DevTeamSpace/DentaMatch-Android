@@ -51,6 +51,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -59,7 +60,6 @@ public class HomeActivity extends BaseActivity {
          * Connect Socket for chatting initialization.
          */
         SocketManager.getInstance().connect(this);
-
         setContentView(R.layout.activity_home);
         initViews();
 
@@ -68,19 +68,19 @@ public class HomeActivity extends BaseActivity {
          */
         if (getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)) {
             bottomBar.setCurrentItem(0);
-        }
 
-        /**
-         * Launch job message fragment if redirected from notification click.
-         */
-       else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
+        } else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
+            /**
+             * Launch job message fragment if redirected from notification click.
+             */
             bottomBar.setCurrentItem(3);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
-        }
-        else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
+
+        } else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
             bottomBar.setCurrentItem(4);
+
         }else{
             bottomBar.setCurrentItem(0);
 
@@ -96,12 +96,14 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
         if (intent.hasExtra(Constants.EXTRA_FROM_CHAT)) {
             bottomBar.setCurrentItem(3);
             String RecruiterID = intent.getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
         }
+
     }
 
     @Override
@@ -139,6 +141,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 switch (position) {
+
                     case 0:
                         if (mJobsFragment != null) {
                             pushFragment(mJobsFragment, null, ANIMATION_TYPE.FADE);
@@ -185,12 +188,16 @@ public class HomeActivity extends BaseActivity {
                             pushFragment(mProfileFragment, null, ANIMATION_TYPE.FADE);
                         }
                         break;
+
+                    default:
+                        break;
+
                 }
+
                 return true;
             }
         });
 
-//        bottomBar.setCurrentItem(0);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -263,12 +270,11 @@ public class HomeActivity extends BaseActivity {
         try {
             UpdateFcmTokenRequest request = new UpdateFcmTokenRequest();
             request.setUpdateDeviceToken(fcmToken);
-            LogUtils.LOGD(TAG, "Update token");
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
             webServices.updateFcmToekn(request).enqueue(new BaseCallback<BaseResponse>(this) {
                 @Override
                 public void onSuccess(BaseResponse response) {
-                    LogUtils.LOGD(TAG, "onSuccess");
+
                     if (response.getStatus() == 1) {
                         LogUtils.LOGD(TAG, "token updated successfully");
                     } else {
@@ -279,9 +285,9 @@ public class HomeActivity extends BaseActivity {
 
                 @Override
                 public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                    LogUtils.LOGD(TAG, "onFail");
                 }
             });
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 public class CalendarGridAdapter extends ArrayAdapter {
-    private static final String TAG = CalendarGridAdapter.class.getSimpleName();
     private LayoutInflater mInflater;
     private List<CalenderAvailableCellModel> monthlyDates;
     private Calendar currentDate;
@@ -39,7 +38,7 @@ public class CalendarGridAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         Date mDate = monthlyDates.get(position).getDate();
         Calendar dateCal = Calendar.getInstance();
         dateCal.setTime(mDate);
@@ -47,7 +46,6 @@ public class CalendarGridAdapter extends ArrayAdapter {
         int displayMonth = dateCal.get(Calendar.MONTH) + 1;
         int displayYear = dateCal.get(Calendar.YEAR);
         int currentMonth = currentDate.get(Calendar.MONTH) + 1;
-        int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
         int currentYear = currentDate.get(Calendar.YEAR);
         View view = convertView;
 
@@ -55,7 +53,9 @@ public class CalendarGridAdapter extends ArrayAdapter {
             view = mInflater.inflate(R.layout.single_cell_layout, parent, false);
         }
 
-        //Add day to calendar
+        /**
+         * Add day to calendar
+         */
         TextView cellNumber = (TextView) view.findViewById(R.id.calendar_date_id);
 
         if (displayMonth == currentMonth && displayYear == currentYear) {

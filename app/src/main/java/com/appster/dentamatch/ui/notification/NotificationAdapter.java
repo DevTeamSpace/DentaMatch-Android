@@ -275,7 +275,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                 @Override
                 public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                    LogUtils.LOGD(TAG, "Failed job hired");
                 }
             });
         }
@@ -309,7 +308,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                 @Override
                 public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                    LogUtils.LOGD(TAG, "Failed job hired");
                 }
             });
         }
@@ -319,7 +317,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext, "OK", "CANCEL", mContext.getString(R.string.app_name), "Are you sure you want to delete the notification?", new Alert.OnAlertClickListener() {
+        Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.msg_warning_delete_notification), new Alert.OnAlertClickListener() {
 
             @Override
             public void onPositive(DialogInterface dialog) {

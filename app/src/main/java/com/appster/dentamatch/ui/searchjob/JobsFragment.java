@@ -49,11 +49,6 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
         /**
          * Load list job fragment as the default fragment.
          */
-//        getActivity().getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.lay_container, mJobListFragment)
-//                .commit();
-
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.lay_container, mJobListFragment)
                 .commit();
@@ -140,7 +135,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
 
                     } else {
                         mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.VISIBLE);
-                        mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText("" + response.getUnReadNotificationResponse().getNotificationCount());
+                        mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText(String.valueOf(response.getUnReadNotificationResponse().getNotificationCount()));
 
                     }
                 }else{
@@ -151,7 +146,6 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public void onFail(Call<UnReadNotificationCountResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "Failed job hired");
             }
         });
 

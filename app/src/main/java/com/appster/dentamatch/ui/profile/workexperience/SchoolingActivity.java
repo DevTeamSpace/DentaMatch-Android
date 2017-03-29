@@ -51,11 +51,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_schooling);
-        if (getIntent() != null) {
-            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
-        }
         initViews();
-
         getSchoolListApi();
     }
 
@@ -67,8 +63,12 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
             mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
             mBinder.btnNext.setText(getString(R.string.save_label));
 
-
         }
+
+        if (getIntent() != null) {
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
+
         mBinder.btnNext.setOnClickListener(this);
     }
 
@@ -80,6 +80,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.iv_tool_bar_left:
                 hideKeyboard();
                 onBackPressed();
@@ -87,10 +88,12 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.btn_next:
                 if (checkValidation()) {
-
                     addSchoolListApi(prepareRequest());
-
                 }
+
+                break;
+
+            default:
                 break;
         }
     }
@@ -102,9 +105,11 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
         for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
             PostSchoolData school = new PostSchoolData();
             boolean isMatchScoolName = false;
+
             for (int i = 0; i < mSchoolsAdapter.getList().size(); i++) {
 
                 for (int j = 0; j < mSchoolsAdapter.getList().get(i).getSchoolList().size(); j++) {
+
                     if (entry.getValue().getSchoolName().equalsIgnoreCase(mSchoolsAdapter.getList().get(i).getSchoolList().get(j).getSchoolName())) {
                         isMatchScoolName = true;
                         school.setSchoolName(entry.getValue().getSchoolName());
@@ -113,10 +118,8 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                         break;
                     }
 
-
                 }
             }
-
 
             if (!isMatchScoolName) {
                 school.setSchoolId(Integer.parseInt(entry.getValue().getOtherId()));
@@ -127,6 +130,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
             school.setYearOfGraduation(entry.getValue().getYearOfGraduation());
             requestList.add(school);
         }
+
         AddSchoolRequest request = new AddSchoolRequest();
         request.setSchoolingData(requestList);
         return request;
@@ -136,10 +140,13 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
     private boolean checkValidation() {
         HashMap<Integer, PostSchoolData> hashMap = mSchoolsAdapter.getPostMapData();
+
         if (hashMap == null || hashMap.size() == 0) {
             showToast(getString(R.string.msg_choose_college));
             return false;
+
         } else {
+
             for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
                 boolean isRemoveSchool = false;
                 if (TextUtils.isEmpty(entry.getValue().getSchoolName()) && TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
@@ -158,12 +165,12 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
                 if (isRemoveSchool) {
                     checkValidation();
+
                 } else {
                     if (TextUtils.isEmpty(entry.getValue().getSchoolName())) {
                         showToast(getString(R.string.msg_school_name_bank));
                         return false;
                     }
-
 
                     if (TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
                         showToast(getString(R.string.msg_select_year_of_graduation) + entry.getValue().getParentSchoolName());
@@ -172,6 +179,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         }
+
         return true;
     }
 
@@ -186,7 +194,6 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getSchoolListApi() {
-        LogUtils.LOGD(TAG, "getSchoolListApi");
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
@@ -202,13 +209,11 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onFail(Call<SchoolingResponse> call, BaseResponse baseResponse) {
-                Log.d(TAG, "onFial");
             }
         });
     }
 
     private void addSchoolListApi(AddSchoolRequest addSchoolRequest) {
-        LogUtils.LOGD(TAG, "addSchoolListApi");
         processToShowDialog("", getString(R.string.please_wait), null);
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
@@ -218,9 +223,11 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
+
                     if (isFromProfile) {
                         EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                         finish();
+
                     } else {
                         startActivity(new Intent(SchoolingActivity.this, SkillsActivity.class));
 
@@ -231,7 +238,6 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
             }
         });
     }
@@ -241,8 +247,4 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
         mBinder.recyclerSchools.smoothScrollToPosition(position);
     }
 
-//    private AddSchoolRequest prepareAddSchoolRequest() {
-//        AddSchoolRequest request = new AddSchoolRequest();
-//        request.getSchoolingData();
-//    }
 }

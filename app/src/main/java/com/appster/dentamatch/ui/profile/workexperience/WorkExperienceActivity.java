@@ -46,7 +46,6 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
             Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.createProfileIvProfileIcon);
-
         }
 
         selectedJobtitle = PreferenceUtil.getJobTitle();
@@ -67,6 +66,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.btn_next_work_exp:
                 if (checkValidation()) {
                     PreferenceUtil.setOfficeName(Utils.getStringFromEditText(mBinder.etOfficeName));
@@ -88,6 +88,9 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
             case R.id.tv_experince_work_exp:
                 hideKeyboard();
                 new BottomSheetPicker(this, this, 0, 0);
+                break;
+
+            default:
                 break;
         }
     }

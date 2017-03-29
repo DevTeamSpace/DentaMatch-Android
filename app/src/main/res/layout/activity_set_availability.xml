@@ -291,14 +291,14 @@
 
                     />
 
-                <com.appster.dentamatch.ui.calendar.CalendarViewSetAvaliablity
+                <com.appster.dentamatch.ui.calendar.CalendarViewSetAvailability
                     android:id="@+id/custom_calendar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
-                    android:visibility="gone"></com.appster.dentamatch.ui.calendar.CalendarViewSetAvaliablity>
+                    android:visibility="gone"></com.appster.dentamatch.ui.calendar.CalendarViewSetAvailability>
 
             </LinearLayout>
         </ScrollView>

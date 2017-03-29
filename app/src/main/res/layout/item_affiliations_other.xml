@@ -39,10 +39,11 @@
             android:background="@drawable/bg_edit_text"
             android:digits="@string/digits_alpha_numeric_only"
             android:gravity="top"
+            android:inputType="textMultiLine"
             android:maxLines="6"
             android:textColor="@color/graish_brown_color"
             android:textSize="@dimen/text_size_normal"
-            android:visibility="visible"
+            android:visibility="gone"
 
             />
 

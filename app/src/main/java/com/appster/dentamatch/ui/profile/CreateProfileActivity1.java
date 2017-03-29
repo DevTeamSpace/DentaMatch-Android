@@ -53,7 +53,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private String TAG = "CreateProfileActivity1";
     private String mFilePath;
     private ActivityCreateProfile1Binding mBinder;
-    private String selectedJobtitle = "";
+    private String selectedJobTitle = "";
     private byte imageSourceType;
     private boolean mImageUploaded;
 
@@ -61,7 +61,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_create_profile1);
-
         initViews();
         callJobListApi();
     }
@@ -94,29 +93,34 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
             case R.id.et_job_title:
                 hideKeyboard();
-                if(PreferenceUtil.getJobTitleList()!=null && PreferenceUtil.getJobTitleList().size()>0)
-                new BottomSheetJobTitle(CreateProfileActivity1.this, this, 0);
+                if(PreferenceUtil.getJobTitleList()!=null && PreferenceUtil.getJobTitleList().size()>0) {
+                    new BottomSheetJobTitle(CreateProfileActivity1.this, this, 0);
+                }
                 break;
 
             case R.id.create_profile1_btn_next:
                 if (mImageUploaded ) {
-                    if (TextUtils.isEmpty(selectedJobtitle)) {
+
+                    if (TextUtils.isEmpty(selectedJobTitle)) {
                         Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
                     }else {
                         launchNextActivity();
                     }
+
                 } else {
                     if (checkValidation()) {
-//                    Intent intent = new Intent(this, CreateProfileActivity2.class);
-//                    startActivity(intent);
                         uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                     }
                 }
-
                 break;
-            case R.id.create_profile1_btn_not_now:
 
-                Alert.createYesNoAlert(CreateProfileActivity1.this, getString(R.string.ok), getString(R.string.cancel), "", getString(R.string.alert_profile), new Alert.OnAlertClickListener() {
+            case R.id.create_profile1_btn_not_now:
+                Alert.createYesNoAlert(CreateProfileActivity1.this,
+                        getString(R.string.ok),
+                        getString(R.string.cancel),
+                        "",
+                        getString(R.string.alert_profile),
+                        new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {
                         if(PreferenceUtil.isJobFilterSet()){
@@ -135,6 +139,9 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     }
                 });
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -143,11 +150,13 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     }
 
     private boolean checkValidation() {
+
         if (TextUtils.isEmpty(mFilePath)) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_photo_alert));
             return false;
         }
-        if (TextUtils.isEmpty(selectedJobtitle)) {
+
+        if (TextUtils.isEmpty(selectedJobTitle)) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
             return false;
         }
@@ -176,27 +185,18 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
             @Override
             public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGE(TAG, " ImageUpload failed!");
             }
         });
     }
 
     private void callJobListApi() {
-        LogUtils.LOGD(TAG, "job title list");
         processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class,true);
         webServices.jobTitle().enqueue(new BaseCallback<JobTitleResponse>(CreateProfileActivity1.this) {
             @Override
             public void onSuccess(JobTitleResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
-                    LogUtils.LOGD(TAG, "Size is--=" + response.getJobTitleResponseData().getJobTitleList().size());
-
                     PreferenceUtil.setJobTitleList(response.getJobTitleResponseData().getJobTitleList());
-//                    String title[] = new String[response.getJobTitleResponseData().getJobTitleList().size()];
-//                    for (int i = 0; i < response.getJobTitleResponseData().getJobTitleList().size(); i++) {
-//                        title[i] = response.getJobTitleResponseData().getJobTitleList().get(i).getJobTitle();
-//                    }
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -204,7 +204,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
             @Override
             public void onFail(Call<JobTitleResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
             }
         });
     }
@@ -222,7 +221,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 Snackbar.make(mBinder.createProfileTvName, getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction("OK", new View.OnClickListener() {
+                        .setAction(getString(R.string.txt_ok), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
@@ -246,15 +245,18 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Snackbar.make(mBinder.createProfileTvName, this.getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Accept", new View.OnClickListener() {
+                        .setAction(getString(R.string.txt_accept), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                PermissionUtils.requestPermission(CreateProfileActivity1.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-
+                                PermissionUtils.requestPermission(CreateProfileActivity1.this,
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                        Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
                             }
                         }).show();
             } else {
-                PermissionUtils.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+                PermissionUtils.requestPermission(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
             }
         }
     }
@@ -294,7 +296,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
             }
-            LogUtils.LOGD(TAG, "file path" + mFilePath);
 
             if (mFilePath != null) {
                 mImageUploaded = false;
@@ -307,11 +308,10 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        LogUtils.LOGD(TAG, "request permisison called --" + grantResults.length);
 
-        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-
-            LogUtils.LOGD(TAG, "request permisison called if granted --");
+        if (grantResults.length > 0 &&
+                (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             if (imageSourceType == 0) {
                 takePhoto();
@@ -332,7 +332,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         PreferenceUtil.setJobTitleId(titleId);
         PreferenceUtil.setJobTitlePosition(position);
         mBinder.etJobTitle.setText(title);
-        selectedJobtitle = title;
+        selectedJobTitle = title;
     }
 }
 

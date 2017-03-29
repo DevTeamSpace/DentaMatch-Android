@@ -119,12 +119,10 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
 
     private void callLicenceApi(LicenceRequest licenceRequest) {
         try {
-            LogUtils.LOGD(TAG, "Update Licence");
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
             webServices.updateLicence(licenceRequest).enqueue(new BaseCallback<LicenceUpdateResponse>(UpdateLicenseActivity.this) {
                 @Override
                 public void onSuccess(LicenceUpdateResponse response) {
-                    LogUtils.LOGD(TAG, "onSuccess");
                     if (response.getStatus() == 1) {
                         EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                         finish();
@@ -136,13 +134,15 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
 
                 @Override
                 public void onFail(Call<LicenceUpdateResponse> call, BaseResponse baseResponse) {
-                    LogUtils.LOGD(TAG, "onFail");
 
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
+
+        }finally {
             hideProgressBar();
+
         }
     }
 }

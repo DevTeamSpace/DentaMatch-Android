@@ -31,7 +31,6 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
         mBinder.pagerOnboarding.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                LogUtils.LOGD("tag", "posiition--onPageScrolled--" + position);
                 if (position == 3) {
                     mBinder.tvSkipOnboarding.setText(getString(R.string.get_started));
                 } else {
@@ -58,21 +57,25 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
         mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
         mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
         mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
+
         if (pos == 0) {
             mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_selected);
             mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
+
         } else if (pos == 1) {
             mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_selected);
             mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
+
         } else if (pos == 2) {
             mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_selected);
             mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
+
         } else if (pos == 3) {
             mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
             mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);

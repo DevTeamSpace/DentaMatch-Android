@@ -72,8 +72,10 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
 
                 if (checkValidation()) {
                     postboutMeAData(prepareRequest());
-
                 }
+                break;
+
+            default:
                 break;
         }
     }
@@ -99,7 +101,6 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
         webServices.saveAboutMe(aboutMeRequest).enqueue(new BaseCallback<BaseResponse>(AboutMeActivity.this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
@@ -114,8 +115,6 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
 

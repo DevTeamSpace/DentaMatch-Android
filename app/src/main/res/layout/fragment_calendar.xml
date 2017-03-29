@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_medium"
             android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"></com.appster.dentamatch.ui.calendar.CalendarViewEvent>
+            android:layout_marginRight="@dimen/margin_normal"/>
 
         <View
             android:layout_width="match_parent"

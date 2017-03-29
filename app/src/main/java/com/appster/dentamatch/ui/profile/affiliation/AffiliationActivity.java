@@ -131,8 +131,6 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
         webServices.getAffiliationList().enqueue(new BaseCallback<AffiliationResponse>(AffiliationActivity.this) {
             @Override
             public void onSuccess(AffiliationResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
-
                 if (response.getStatus() == 1) {
                     affiliationAdapter.addList(response.getAffiliationResponseData().getAffiliationList());
                 } else {
@@ -142,7 +140,6 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
 
             @Override
             public void onFail(Call<AffiliationResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
             }
         });
 
@@ -182,7 +179,6 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
         webServices.saveAffiliation(affiliationPostRequest).enqueue(new BaseCallback<BaseResponse>(AffiliationActivity.this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
@@ -197,7 +193,6 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
             }
         });
     }
