@@ -21,7 +21,6 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
     private DateSelectedListener mDateSelectedListener;
     private int currentYear, currentMonth, currentDay;
     private Context mContext;
-    private final String[] monthArray = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
     public BottomSheetDatePicker(final Context context, final DateSelectedListener dateSelectedListener, final int position) {
         mDateSelectedListener = dateSelectedListener;
@@ -76,10 +75,6 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
                     Utils.showToast(mContext, mContext.getString(R.string.alert_pervious_date));
 
                 }
-
-
-//                mYearslYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
-
             }
         });
 
@@ -98,30 +93,14 @@ public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
         currentMonth = datePicker.getMonth();
         currentDay = datePicker.getDayOfMonth();
         datePicker.init(currentYear, currentMonth, currentDay, this);
-
-//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            int daySpinnerId = Resources.getSystem().getIdentifier("day", "id", "android");
-//            if (daySpinnerId != 0) {
-//                View daySpinner = datePicker.findViewById(daySpinnerId);
-//                if (daySpinner != null) {
-//                    daySpinner.setVisibility(View.GONE);
-//                }
-//            }
-//        }
-
     }
 
     private void selectedDate(DatePicker datePicker, int pos) {
-
-//        mDateSelectedListener.onDateSelection(datePicker.getDayOfMonth() + " " + monthArray[datePicker.getMonth()] + ", " + datePicker.getYear());
-//        mDateSelectedListener.onDateSelection(datePicker.getDayOfMonth() + "-" + datePicker.getMonth() + ", " + datePicker.getYear());
         mDateSelectedListener.onDateSelection(datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth(), pos);
     }
 
     @Override
     public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-//        Utils.showToast(mContext, "date is--" + datePicker.getDayOfMonth() + "," + datePicker.getMonth() + ", " + datePicker.getYear());
-
 
     }
 }

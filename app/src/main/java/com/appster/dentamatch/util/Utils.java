@@ -690,10 +690,10 @@ public class Utils {
 
     public static String dateFormatYYYYMMMMDD(String dateStr) {
         try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date date = inputFormat.parse(dateStr);
 
-            SimpleDateFormat reqFormat = new SimpleDateFormat("dd MMMM yyyy");
+            SimpleDateFormat reqFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
             String formattedDate = reqFormat.format(date);
             return formattedDate;
         } catch (Exception e) {
@@ -703,7 +703,7 @@ public class Utils {
     }
 
     public static String dateFormetyyyyMMdd(Date mydate) {
-        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         // myDate is the java.util.Date in yyyy-mm-dd format
         // Converting it into String using formatter
         String strDate = sm.format(mydate);
@@ -713,10 +713,10 @@ public class Utils {
 
     public static String getRequriedServerDateFormet(String dateStr) {
         try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("dd MMMM yyyy");
+            SimpleDateFormat inputFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
             Date date = inputFormat.parse(dateStr);
 
-            SimpleDateFormat reqFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat reqFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             String formattedDate = reqFormat.format(date);
             return formattedDate;
         } catch (Exception e) {
@@ -746,10 +746,10 @@ public class Utils {
     public static String getDayOfWeek(String dateStr) {
         try {
 
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date date = inputFormat.parse(dateStr);
 
-            SimpleDateFormat reqFormat = new SimpleDateFormat("EEEE");
+            SimpleDateFormat reqFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
             String formattedDate = reqFormat.format(date);
             return formattedDate;
         } catch (Exception e) {
@@ -762,7 +762,7 @@ public class Utils {
         try {
 
 
-            SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             // myDate is the java.util.Date in yyyy-mm-dd format
             // Converting it into String using formatter
             String strDate = sm.format(date);

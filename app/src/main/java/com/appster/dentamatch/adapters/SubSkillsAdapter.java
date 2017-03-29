@@ -49,8 +49,9 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder,  int position) {
         final SubSkillModel skill = mSkillList.get(position);
+        final int refPosition = position;
 
         holder.tvSkillName.setText(skill.getSkillName());
         holder.etOther.setVisibility(View.GONE);
@@ -75,7 +76,7 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean checked = mSkillList.get(position).getIsSelected() == 1;
+                boolean checked = mSkillList.get(refPosition).getIsSelected() == 1;
 
                 if (!checked) {
                     holder.ivSelected.setBackgroundResource(R.drawable.ic_check_selected);
@@ -83,7 +84,7 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
                     holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
                 }
 
-                if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                if (mSkillList.get(refPosition).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                     if (!checked) {
                         holder.etOther.setVisibility(View.VISIBLE);
 
@@ -97,7 +98,7 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
 
                 }
 
-                mSkillList.get(position).setIsSelected(!checked ? 1 : 0);
+                mSkillList.get(refPosition).setIsSelected(!checked ? 1 : 0);
                 notifyDataSetChanged();
             }
         });
@@ -115,7 +116,7 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
 
             @Override
             public void afterTextChanged(Editable s) {
-                mSkillList.get(position).setOtherText(s.toString());
+                mSkillList.get(refPosition).setOtherText(s.toString());
             }
         });
     }

@@ -23,7 +23,7 @@
                 android:background="@color/red_color"
                 android:padding="@dimen/default_padding"
                 android:layout_height="match_parent"
-                android:text="DELETE"/>
+                android:text="@string/txt_delete"/>
         </FrameLayout>
 
 <RelativeLayout

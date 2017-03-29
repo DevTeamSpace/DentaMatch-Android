@@ -60,8 +60,6 @@ import retrofit2.Call;
  */
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
     private static int instanceCount = 1;
-    private FragmentTransaction fragmentTransaction;
-    private FragmentManager fragmentManager;
     private FragmentProfileBinding profileBinding;
     private ProfileResponseData profileResponseData;
     private ItemProfileCellCertificateBinding cellCertificateBinding;
@@ -78,8 +76,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         profileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
-        fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
         initViews();
         return profileBinding.getRoot();
 

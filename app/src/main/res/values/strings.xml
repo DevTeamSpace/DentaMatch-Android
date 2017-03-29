@@ -385,5 +385,19 @@
     <string name="msg_empty_state">Unable to fetch state, please check internet connection and try again</string>
     <string name="msg_select_job">Please select at least one job to proceed</string>
     <string name="txt_saved">SAVED</string>
+    <string name="txt_reason_for_the_cancellation">Reason for the cancellation</string>
+    <string name="hint_user_name">User Name</string>
+    <string name="txt_no_applied_jobs">You don’t have any applied jobs</string>
+    <string name="txt_no_saved_jobs">You don’t have any saved jobs</string>
+    <string name="txt_no_shortlisted_jobs">You don’t have any shortlisted jobs</string>
+    <string name="txt_no_jobs_found">No jobs found</string>
+    <string name="txt_delete">DELETE</string>
+    <string name="txt_note">Note</string>
+    <string name="txt_under_development">This part of application is\n under development.</string>
+    <string name="txt_current_date">current date</string>
+    <string name="hint_short_desc">Please write a short description.</string>
+    <string name="txt_submit">SUBMIT</string>
+    <string name="txt_recruiter_blocked">You have blocked this recruiter.</string>
+    <string name="txt_job_expired">This Job no longer exists</string>
 
 </resources>

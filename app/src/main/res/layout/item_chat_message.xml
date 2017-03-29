@@ -7,7 +7,6 @@
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_chat_date_label"
-            android:text="Fri, 03 Aug"
             android:layout_marginTop="@dimen/margin_23"
             android:textColor="@color/text_color_chat"
             android:textSize="@dimen/text_size_12"
@@ -18,7 +17,6 @@
 
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/tv_chat_message"
-        android:text="Hi Bob, you are awesome"
         android:layout_below="@+id/tv_chat_date_label"
         android:layout_width="wrap_content"
         android:textSize="@dimen/text_size_13"
@@ -33,7 +31,6 @@
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_chat_time"
             android:layout_below="@+id/tv_chat_message"
-            android:text="4:30pm"
             android:textColor="@color/text_color_chat"
             android:textSize="@dimen/text_size_12"
             android:layout_alignStart="@+id/tv_chat_message"

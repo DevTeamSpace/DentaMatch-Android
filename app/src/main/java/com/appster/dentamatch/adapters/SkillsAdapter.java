@@ -77,8 +77,8 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder1, final int position) {
-
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder1, int position) {
+        final int refPosition = position;
 
         if (holder1 instanceof ViewHolderHeader) {
             if (mIsFromEditProfile) {
@@ -117,7 +117,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     public void onFocusChange(View v, boolean hasFocus) {
                         v.requestFocus();
                         if (hasFocus) {
-                            mOthersSelectedListener.onEditTextSelected(position);
+                            mOthersSelectedListener.onEditTextSelected(refPosition);
                         }
                     }
                 });
@@ -135,7 +135,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        mSkillList.get(position - 1).setOtherSkill(s.toString().trim());
+                        mSkillList.get(refPosition - 1).setOtherSkill(s.toString().trim());
                     }
                 });
             } else {

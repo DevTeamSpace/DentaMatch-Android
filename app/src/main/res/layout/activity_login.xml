@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
@@ -435,7 +436,8 @@
                         android:ellipsize="end"
                         android:fontFeatureSettings="@string/font_regular"
                         android:hint="@string/preferred_location_label"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        tools:targetApi="lollipop" />
 
                     <com.appster.dentamatch.widget.CustomTextView
                         style="@style/text_view_normal"

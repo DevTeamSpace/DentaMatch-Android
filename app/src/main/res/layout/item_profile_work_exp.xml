@@ -97,7 +97,6 @@
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
-            android:text="Dr Nancy"
             android:textColor="@color/graish_brown_color"
             android:textSize="@dimen/text_size_12"
             app:customFont="@string/font_medium" />

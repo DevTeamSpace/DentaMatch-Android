@@ -234,7 +234,6 @@
                         android:layout_marginBottom="@dimen/margin_20"
                         android:paddingBottom="@dimen/margin_small"
                         android:paddingTop="@dimen/margin_small"
-                        android:text="2"
                         android:textColor="@color/graish_brown_color"
                         app:customFont="@string/font_regular" />
 
@@ -485,7 +484,6 @@
                         style="@style/text_view_normal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monday"
                         android:visibility="gone"
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_medium"
@@ -500,7 +498,6 @@
                         android:layout_below="@+id/tv_job_detail_mon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monday"
                         android:visibility="gone"
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginBottom="@dimen/margin_medium"
@@ -518,7 +515,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:layout_marginStart="@dimen/margin_normal"
-                        android:text="Monday"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"/>
                         <!--app:customFont="@string/font_bold" />-->
@@ -533,7 +529,6 @@
                         android:layout_below="@+id/tv_job_detail_wed"
                         android:visibility="gone"
                         android:layout_marginStart="@dimen/margin_normal"
-                        android:text="Monday"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"/>
                         <!--app:customFont="@string/font_bold" />-->
@@ -546,7 +541,6 @@
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monday"
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"/>
@@ -560,7 +554,6 @@
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monday"
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"/>
@@ -574,7 +567,6 @@
                         android:layout_below="@+id/tv_job_detail_sat"
                         android:visibility="gone"
                         android:layout_height="wrap_content"
-                        android:text="Monday"
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:textColor="@color/black_color"/>
@@ -586,7 +578,6 @@
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Monday"
                         android:visibility="gone"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:layout_marginStart="@dimen/margin_normal"
@@ -648,7 +639,7 @@
             android:paddingBottom="@dimen/margin_small"
             android:paddingTop="@dimen/margin_small"
             android:layout_centerInParent="true"
-            android:text="This Job no longer exists"
+            android:text="@string/txt_job_expired"
             android:textColor="@color/colorPrimary"
             app:customFont="@string/font_medium" />
     </RelativeLayout>

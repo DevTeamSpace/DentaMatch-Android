@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="4dp"
-                android:text="current date"
+                android:text="@string/txt_current_date"
                 android:textColor="@color/graish_brown_color"
                 app:customFont="@string/font_regular" />
 

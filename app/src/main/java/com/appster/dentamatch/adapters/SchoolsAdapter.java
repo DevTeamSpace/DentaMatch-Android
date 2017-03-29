@@ -301,7 +301,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final List<String> listSchools = new ArrayList<String>();
 
         if (holder instanceof ViewHolderHeader) {
@@ -362,10 +362,11 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             /**
              * we scroll the autocomplete textview to center in order for it to take focus
              */
+            final int refPosition = position;
             holder1.autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    mNameSelectedListener.onEditTextSelected(position);
+                    mNameSelectedListener.onEditTextSelected(refPosition);
                     return false;
                 }
             });

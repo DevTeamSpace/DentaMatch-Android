@@ -14,7 +14,6 @@
         android:layout_marginEnd="@dimen/margin_small_3"
         android:background="@drawable/bg_edit_text"
         android:ellipsize="end"
-        android:text="Resultant Health Dentist Practisioner From Dubai to Mosco"
         android:maxLines="1"
         android:paddingBottom="@dimen/margin_5"
         android:paddingLeft="@dimen/margin_7"

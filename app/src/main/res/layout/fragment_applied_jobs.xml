@@ -13,7 +13,7 @@
             android:gravity="center"
             android:drawableTop="@drawable/img_placeholder_track"
             android:drawablePadding="@dimen/margin_23"
-            android:text="You don’t have any applied jobs"
+            android:text="@string/txt_no_applied_jobs"
             android:id="@+id/tv_no_jobs"/>
 
         <android.support.v4.widget.SwipeRefreshLayout

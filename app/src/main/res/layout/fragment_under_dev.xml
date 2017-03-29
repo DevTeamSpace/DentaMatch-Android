@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:drawableTop="@mipmap/ic_launcher"
-            android:text="This part of application is\n under development."
+            android:text="@string/txt_under_development"
             android:textColor="@color/colorPrimary" />
 
     </RelativeLayout>
