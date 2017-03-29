@@ -152,7 +152,9 @@ public class Utils {
         Geocoder geocoder = new Geocoder(ct);
         try {
             List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            address = addressList.get(0);
+            if(addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
+                address = addressList.get(0);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -672,6 +674,7 @@ public class Utils {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return model;
     }
 

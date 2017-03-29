@@ -5,10 +5,12 @@ import android.content.Context;
 import android.location.Location;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
@@ -138,86 +140,95 @@ public class TrackJobsDataHelper {
 
     private void getAllSavedJobs(final boolean isPaginationLoading, final Context ct) {
 
-        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
-        int type = Constants.SEARCHJOBTYPE.SAVED.getValue();
-        double lat = userLocation.getLatitude();
-        double lng = userLocation.getLongitude();
+//        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
+        SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
 
-        if (!isPaginationLoading) {
-            ((BaseActivity) ct).showProgressBar(ct.getString(R.string.please_wait));
-        }
+        if(request != null) {
+            int type = Constants.SEARCHJOBTYPE.SAVED.getValue();
+            double lat = Double.parseDouble(request.getLat());
+            double lng = Double.parseDouble(request.getLng());
 
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.fetchTrackJobs(type, mSearchPageNum, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) ct) {
-            @Override
-            public void onSuccess(SearchJobResponse response) {
-                if (response.getStatus() == 1) {
-                    if (response.getSearchJobResponseData().getList() != null && response.getSearchJobResponseData().getList().size() > 0) {
-                        mSavedJobData.addAll(response.getSearchJobResponseData().getList());
+            if (!isPaginationLoading) {
+                ((BaseActivity) ct).showProgressBar(ct.getString(R.string.please_wait));
+            }
+
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+            webServices.fetchTrackJobs(type, mSearchPageNum, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) ct) {
+                @Override
+                public void onSuccess(SearchJobResponse response) {
+                    if (response.getStatus() == 1) {
+                        if (response.getSearchJobResponseData().getList() != null && response.getSearchJobResponseData().getList().size() > 0) {
+                            mSavedJobData.addAll(response.getSearchJobResponseData().getList());
+                        }
+
+                        mSearchTotal = response.getSearchJobResponseData().getTotal();
+                        mSavedPaginationNeeded = !(mSearchTotal == mSavedJobData.size());
+
+                    } else {
+                        ((BaseActivity) ct).showToast(response.getMessage());
                     }
 
-                    mSearchTotal = response.getSearchJobResponseData().getTotal();
-                    mSavedPaginationNeeded = !(mSearchTotal == mSavedJobData.size());
+                    /**
+                     * Notify activity for data changes.
+                     */
+                    EventBus.getDefault().post(new TrackJobListRetrievedEvent(mSavedJobData, Constants.SEARCHJOBTYPE.SAVED.getValue()));
 
-                } else {
-                    ((BaseActivity) ct).showToast(response.getMessage());
                 }
 
-                /**
-                 * Notify activity for data changes.
-                 */
-                EventBus.getDefault().post(new TrackJobListRetrievedEvent(mSavedJobData, Constants.SEARCHJOBTYPE.SAVED.getValue()));
+                @Override
+                public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
 
-            }
-
-            @Override
-            public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
+                }
+            });
+        }else{
+            EventBus.getDefault().post(new TrackJobListRetrievedEvent(mSavedJobData, Constants.SEARCHJOBTYPE.SAVED.getValue()));
+        }
 
     }
 
     private void getAllAppliedJobs(final boolean isPaginationLoading, final Context ct){
 
-        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
-        int type = Constants.SEARCHJOBTYPE.APPLIED.getValue();
-        double lat = userLocation.getLatitude();
-        double lng = userLocation.getLongitude();
+//        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
+        SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+        if(request != null) {
+            int type = Constants.SEARCHJOBTYPE.APPLIED.getValue();
+            double lat = Double.parseDouble(request.getLat());
+            double lng = Double.parseDouble(request.getLng());
 
-        if (!isPaginationLoading) {
-            ((BaseActivity) ct).showProgressBar(ct.getString(R.string.please_wait));
-        }
+            if (!isPaginationLoading) {
+                ((BaseActivity) ct).showProgressBar(ct.getString(R.string.please_wait));
+            }
 
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        webServices.fetchTrackJobs(type, mAppliedPageNum, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) ct) {
-            @Override
-            public void onSuccess(SearchJobResponse response) {
-                if (response.getStatus() == 1) {
-                    if (response.getSearchJobResponseData().getList() != null && response.getSearchJobResponseData().getList().size() > 0) {
-                        mAppliedJobData.addAll(response.getSearchJobResponseData().getList());
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+            webServices.fetchTrackJobs(type, mAppliedPageNum, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) ct) {
+                @Override
+                public void onSuccess(SearchJobResponse response) {
+                    if (response.getStatus() == 1) {
+                        if (response.getSearchJobResponseData().getList() != null && response.getSearchJobResponseData().getList().size() > 0) {
+                            mAppliedJobData.addAll(response.getSearchJobResponseData().getList());
+                        }
+
+                        mAppliedTotal = response.getSearchJobResponseData().getTotal();
+                        mAppliedPaginationNeeded = !(mAppliedTotal == mAppliedJobData.size());
+
+                    } else {
+                        ((BaseActivity) ct).showToast(response.getMessage());
                     }
 
-                    mAppliedTotal = response.getSearchJobResponseData().getTotal();
-                    mAppliedPaginationNeeded = !(mAppliedTotal == mAppliedJobData.size());
-
-                } else {
-                    ((BaseActivity) ct).showToast(response.getMessage());
+                    /**
+                     * Notify activity for data changes.
+                     */
+                    EventBus.getDefault().post(new TrackJobListRetrievedEvent(mAppliedJobData, Constants.SEARCHJOBTYPE.APPLIED.getValue()));
                 }
 
-                /**
-                 * Notify activity for data changes.
-                 */
-                EventBus.getDefault().post(new TrackJobListRetrievedEvent(mAppliedJobData, Constants.SEARCHJOBTYPE.APPLIED.getValue()));
+                @Override
+                public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
 
-
-            }
-
-            @Override
-            public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
+                }
+            });
+        }else{
+            EventBus.getDefault().post(new TrackJobListRetrievedEvent(mAppliedJobData, Constants.SEARCHJOBTYPE.APPLIED.getValue()));
+        }
     }
 
 

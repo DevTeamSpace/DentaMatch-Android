@@ -17,7 +17,6 @@ import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
-import com.appster.dentamatch.ui.notification.MyNotificationActivity;
 import com.appster.dentamatch.ui.notification.NotificationActivity;
 import com.appster.dentamatch.util.LogUtils;
 
@@ -50,8 +49,12 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
         /**
          * Load list job fragment as the default fragment.
          */
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
+//        getActivity().getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.lay_container, mJobListFragment)
+//                .commit();
+
+        getChildFragmentManager().beginTransaction()
                 .replace(R.id.lay_container, mJobListFragment)
                 .commit();
         mIsList = true;
@@ -69,7 +72,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                     mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setImageResource(R.drawable.img_map);
                     mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_map_view));
 
-                    getActivity().getSupportFragmentManager()
+                    getChildFragmentManager()
                             .beginTransaction()
                             .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
                             .replace(R.id.lay_container, mJobMapFragment).commit();
@@ -78,7 +81,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                 } else {
                     mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setImageResource(R.drawable.img_list);
                     mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_list_view));
-                    getActivity().getSupportFragmentManager()
+                    getChildFragmentManager()
                             .beginTransaction()
                             .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right)
                             .replace(R.id.lay_container, mJobListFragment).commit();
@@ -91,7 +94,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), SearchJobActivity.class));
                 break;
             case R.id.iv_tool_bar_left:
-                startActivity(new Intent(getActivity(), MyNotificationActivity.class));
+                startActivity(new Intent(getActivity(), NotificationActivity.class));
                 break;
 
             default:

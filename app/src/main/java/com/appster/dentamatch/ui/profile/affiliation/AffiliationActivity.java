@@ -43,11 +43,12 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_affiliation);
+
         if (getIntent() != null) {
             isFromEditProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
         }
-        initViews();
 
+        initViews();
         getAffiliation();
     }
 
@@ -58,17 +59,15 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
 
     private void initViews() {
         mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_affiliation));
+
         if (isFromEditProfile) {
             mBinder.btnNext.setText(getString(R.string.save_label));
-
             mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
-
         }
-//        mBinder.includeProfileHeader.tvTitle.setText(getString(R.string.title_affiliation));
+
         mLayoutManager = new LinearLayoutManager(this);
 
         mBinder.recyclerAffiliation.setLayoutManager(mLayoutManager);
-//        mBinder.recyclerAffiliation.addItemDecoration(new SimpleDividerItemDecoration(this));
         affiliationAdapter = new AffiliationAdapter(this, isFromEditProfile);
         mBinder.recyclerAffiliation.setAdapter(affiliationAdapter);
         mBinder.toolbarAffiliation.ivToolBarLeft.setOnClickListener(this);
@@ -78,14 +77,20 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.iv_tool_bar_left:
                 finish();
                 break;
+
             case R.id.btn_next:
                 hideKeyboard();
+
                 if (checkValidation()) {
                     postAffiliationData(preParePostAffiliationRequest());
                 }
+                break;
+
+            default:
                 break;
         }
     }
@@ -101,7 +106,9 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                 if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation())) {
                     Utils.showToast(AffiliationActivity.this, getString(R.string.blank_other_alert));
                     return false;
+
                 } else {
+
                     if (TextUtils.isEmpty(affiliationAdapter.getList().get(i).getOtherAffiliation())) {
                         Utils.showToast(AffiliationActivity.this, getString(R.string.blank_other_alert));
                         return false;
@@ -125,6 +132,7 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             @Override
             public void onSuccess(AffiliationResponse response) {
                 LogUtils.LOGD(TAG, "onSuccess");
+
                 if (response.getStatus() == 1) {
                     affiliationAdapter.addList(response.getAffiliationResponseData().getAffiliationList());
                 } else {
@@ -142,11 +150,15 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
 
     private AffiliationPostRequest preParePostAffiliationRequest() {
         AffiliationPostRequest postRequest = new AffiliationPostRequest();
-        ArrayList<Integer> idlist = new ArrayList<>();
+        ArrayList<Integer> idList = new ArrayList<>();
         ArrayList<OtherAffiliationRequest> otherList = new ArrayList<>();
+
         for (int i = 0; i < affiliationAdapter.getList().size(); i++) {
-            if (!affiliationAdapter.getList().get(i).getAffiliationName().equalsIgnoreCase(Constants.OTHERS) && affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
-                idlist.add(affiliationAdapter.getList().get(i).getAffiliationId());
+
+            if (!affiliationAdapter.getList().get(i).getAffiliationName().equalsIgnoreCase(Constants.OTHERS) &&
+                    affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
+                idList.add(affiliationAdapter.getList().get(i).getAffiliationId());
+
             } else {
                 if (affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
                     OtherAffiliationRequest otherAffiliationRequest = new OtherAffiliationRequest();
@@ -155,8 +167,10 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                     otherList.add(otherAffiliationRequest);
                 }
             }
+
         }
-        postRequest.setIdList(idlist);
+
+        postRequest.setIdList(idList);
         postRequest.setOtherAffiliationList(otherList);
 
         return postRequest;
@@ -174,7 +188,6 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                 if (response.getStatus() == 1) {
                     if (getIntent() != null && getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false)) {
                         EventBus.getDefault().post(new ProfileUpdatedEvent(true));
-
                         finish();
                     } else {
                         startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));

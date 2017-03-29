@@ -49,7 +49,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
         messagesData = data;
         mContext = context;
         userID = PreferenceUtil.getUserChatId();
-
     }
 
     @Override
@@ -66,7 +65,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
             holder.tvRecruiterName.setText(dataModel.getName());
             holder.tvLastMessage.setText(dataModel.getLastMessage());
 
-//            if (dataModel.getUserChats() != null && dataModel.getUserChats().size() > 0) {
             if (!TextUtils.isEmpty(dataModel.getLastMsgTime())) {
 //                    && !TextUtils.isEmpty(dataModel.getUserChats().get(dataModel.getUserChats().size() - 1).getmMessageTime())) {
 //                holder.tvDate.setText(Utils.convertUTCToTimeLabel(dataModel

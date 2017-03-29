@@ -31,6 +31,7 @@ import java.util.ArrayList;
 class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int TYPE_ITEM_PROFILE = 1;
     private final int TYPE_ITEM_DEFAULT = 2;
+
     private Context mContext;
     private ArrayList<LocationEvent.Affiliation> mAffiliationList = new ArrayList<>();
     private EditText etOtherTemp;
@@ -46,6 +47,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (mAffiliationList != null) {
             mAffiliationList.clear();
         }
+
         mAffiliationList.addAll(list);
         notifyDataSetChanged();
     }

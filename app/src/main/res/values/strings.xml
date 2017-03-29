@@ -358,5 +358,9 @@
     <string name="msg_recruiter_blocked">Recruiter Blocked</string>
     <string name="msg_recruiter_blocked_you">Recruiter has blocked you from messaging</string>
     <string name="txt_alert_title">Confirm your action</string>
+    <string name="error_school_name">Please enter school name first</string>
+    <string name="msg_choose_college">please choose at least one college/school</string>
+    <string name="msg_school_name_bank">School name can never be blank.</string>
+    <string name="msg_select_year_of_graduation">"Please select year of graduation for  "</string>
 
 </resources>

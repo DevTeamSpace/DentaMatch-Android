@@ -60,12 +60,6 @@ public class SearchJobDataHelper {
 
     private void searchJob(final Context ct, final boolean isPaginationLoading) {
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
-        Location userCurrentLocation = (Location) PreferenceUtil.getUserCurrentLocation();
-
-        if(userCurrentLocation != null) {
-            request.setLat(String.valueOf(userCurrentLocation.getLatitude()));
-            request.setLng(String.valueOf(userCurrentLocation.getLongitude()));
-        }
 
         if (request != null) {
             /**

@@ -104,9 +104,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         if (data != null) {
             ArrayList<SubSkillModel> subSkills = data.getParcelableArrayListExtra(Constants.BundleKey.SUB_SKILLS);
             LogUtils.LOGD(TAG, subSkills.size() + " items");
-
             mParentSkillList.get(mSkillPosition).setSubSkills(subSkills);
-
             mSkillsAdapter.notifyDataSetChanged();
         }
     }

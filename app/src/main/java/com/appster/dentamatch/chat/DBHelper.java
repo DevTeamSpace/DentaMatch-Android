@@ -112,51 +112,53 @@ public class DBHelper {
             LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
         } else {
             mRealmInstance.beginTransaction();
-            DBModel retrievedModel = getDBData(recruiterId);
-
-            /**
-             * Check if the entry exists in the DB , if not then insert a new entry into the DB.
-             */
-            if (retrievedModel != null) {
-                if (!checkIfMessageAlreadyExists(recruiterId, userMessage)) {
-
-//                    retrievedModel.setName(recruiterName);
-                    retrievedModel.setLastMsgTime(userMessage.getmMessageTime());
-                    retrievedModel.setLastMessage(userMessage.getMessage());
-                    retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
-
-                    /**
-                     * Checking for date changes which needs to be shown on the ChatActivity as date header above messages. Eg. Today, yesterday etc.
-                     */
-                    if (retrievedModel.getUserChats().size() > 0) {
-                        if (Utils.isMsgDateDifferent(Long.parseLong(retrievedModel.getUserChats().get(retrievedModel.getUserChats().size() - 1).getmMessageTime()),
-                                Long.parseLong(userMessage.getmMessageTime()))) {
-
-                            Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
-                            retrievedModel.getUserChats().add(dateHeaderMessage);
-                        }
-                    }
-                    retrievedModel.getUserChats().add(userMessage);
-                }
-            } else {
-
-                DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
-                newModel.setLastMessage(userMessage.getMessage());
-                newModel.setMessageListId(messageListID);
-                newModel.setLastMsgTime(userMessage.getmMessageTime());
-                newModel.setUnReadChatCount(unreadMsgCount);
-                newModel.setSeekerHasBlocked(0); // Set unblocked as default.
-                newModel.setName(recruiterName);
+            if (!TextUtils.isEmpty(recruiterId)) {
+                DBModel retrievedModel = getDBData(recruiterId);
 
                 /**
-                 * Adding date label on the new entry.
+                 * Check if the entry exists in the DB , if not then insert a new entry into the DB.
                  */
-                Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
-                newModel.getUserChats().add(dateHeaderMessage);
-                newModel.getUserChats().add(userMessage);
-            }
+                if (retrievedModel != null) {
+                    if (!checkIfMessageAlreadyExists(recruiterId, userMessage)) {
 
-            mRealmInstance.commitTransaction();
+//                    retrievedModel.setName(recruiterName);
+                        retrievedModel.setLastMsgTime(userMessage.getmMessageTime());
+                        retrievedModel.setLastMessage(userMessage.getMessage());
+                        retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
+
+                        /**
+                         * Checking for date changes which needs to be shown on the ChatActivity as date header above messages. Eg. Today, yesterday etc.
+                         */
+                        if (retrievedModel.getUserChats().size() > 0) {
+                            if (Utils.isMsgDateDifferent(Long.parseLong(retrievedModel.getUserChats().get(retrievedModel.getUserChats().size() - 1).getmMessageTime()),
+                                    Long.parseLong(userMessage.getmMessageTime()))) {
+
+                                Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
+                                retrievedModel.getUserChats().add(dateHeaderMessage);
+                            }
+                        }
+                        retrievedModel.getUserChats().add(userMessage);
+                    }
+                } else {
+
+                    DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
+                    newModel.setLastMessage(userMessage.getMessage());
+                    newModel.setMessageListId(messageListID);
+                    newModel.setLastMsgTime(userMessage.getmMessageTime());
+                    newModel.setUnReadChatCount(unreadMsgCount);
+                    newModel.setSeekerHasBlocked(0); // Set unblocked as default.
+                    newModel.setName(recruiterName);
+
+                    /**
+                     * Adding date label on the new entry.
+                     */
+                    Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
+                    newModel.getUserChats().add(dateHeaderMessage);
+                    newModel.getUserChats().add(userMessage);
+                }
+
+                mRealmInstance.commitTransaction();
+            }
         }
     }
 
@@ -194,39 +196,41 @@ public class DBHelper {
      * @param value :the value of the parameter to be sorted with.
      */
     public void upDateDB(String recruiterId, String key, String value, Message message) {
-        DBModel retrievedModel = mRealmInstance.where(DBModel.class).equalTo(DB_PRIMARY_KEY, recruiterId).findFirst();
+        if(!TextUtils.isEmpty(recruiterId)) {
+            DBModel retrievedModel = mRealmInstance.where(DBModel.class).equalTo(DB_PRIMARY_KEY, recruiterId).findFirst();
 
-        if (retrievedModel != null) {
-            mRealmInstance.beginTransaction();
-            switch (key) {
+            if (retrievedModel != null) {
+                mRealmInstance.beginTransaction();
+                switch (key) {
 
-                case UNREAD_MSG_COUNT:
-                    retrievedModel.setUnReadChatCount(Integer.parseInt(value));
-                    break;
+                    case UNREAD_MSG_COUNT:
+                        retrievedModel.setUnReadChatCount(Integer.parseInt(value));
+                        break;
 
-                case LAST_MSG:
-                    retrievedModel.setLastMessage(value);
-                    break;
+                    case LAST_MSG:
+                        retrievedModel.setLastMessage(value);
+                        break;
 
-                case USER_CHATS:
-                    retrievedModel.getUserChats().add(message);
-                    break;
+                    case USER_CHATS:
+                        retrievedModel.getUserChats().add(message);
+                        break;
 
-                case IS_RECRUITED_BLOCKED:
-                    retrievedModel.setSeekerHasBlocked(Integer.parseInt(value));
-                    break;
+                    case IS_RECRUITED_BLOCKED:
+                        retrievedModel.setSeekerHasBlocked(Integer.parseInt(value));
+                        break;
 
-                case IS_SYNCED:
-                    retrievedModel.setHasDBUpdated(Boolean.parseBoolean(value));
-                    break;
+                    case IS_SYNCED:
+                        retrievedModel.setHasDBUpdated(Boolean.parseBoolean(value));
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+
+                }
+
+                mRealmInstance.commitTransaction();
 
             }
-
-            mRealmInstance.commitTransaction();
-
         }
     }
 

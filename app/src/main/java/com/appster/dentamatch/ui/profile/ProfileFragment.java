@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -304,7 +305,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     textView.setSingleLine(true);
 
                     textView.setBackgroundResource(R.drawable.bg_edit_text);
-                    textView.setPadding(30, 10, 30, 10);
+                    textView.setPadding(15, 10, 15, 10);
                     textView.setText(response.getAffiliationList().get(i).getAffiliationName());
                     profileBinding.flowLayout.addView(textView, lp);
                 }
@@ -392,24 +393,37 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private void inflateSkill(ArrayList<ProfileSkillModel> skillArrayList) {
         profileBinding.keySkillInflater.setVisibility(View.VISIBLE);
-
         profileBinding.keySkillInflater.removeAllViews();
         ItemProfileSkillBinding skillBinding;
+
         for (int i = 0; i < skillArrayList.size(); i++) {
             skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.keySkillInflater.getContext())
                     .inflate(R.layout.item_profile_skill, profileBinding.keySkillInflater, false));
             skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName().toUpperCase());
 
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
-                CustomTextView textView = new CustomTextView(getActivity());
-                FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(10, 10, 10, 10);
-                textView.setLayoutParams(lp);
-                textView.setBackgroundResource(R.drawable.bg_edit_text);
-                textView.setPadding(30, 10, 30, 10);
-//                textView.setTextSize(getResources().getDimension(R.dimen.text_size_12));
-                textView.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
-                skillBinding.skillFlowLayout.addView(textView, lp);
+
+
+                com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                        .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout , false));
+                flowBinding.flowChild.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
+
+                skillBinding.skillFlowLayout.addView(flowBinding.getRoot());
+
+//                CustomTextView textView = new CustomTextView(getActivity());
+
+//                FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
+//                        FlowLayout.LayoutParams.WRAP_CONTENT);
+//                lp.setMargins(10, 10, 10, 10);
+//                textView.setLayoutParams(lp);
+//                textView.setFitsSystemWindows(true);
+//                textView.setMaxLines(1);
+//                textView.setEllipsize(TextUtils.TruncateAt.END);
+//                textView.setBackgroundResource(R.drawable.bg_edit_text);
+//                textView.setPadding(15, 10, 15, 10);
+////                textView.setTextSize(getResources().getDimension(R.dimen.text_size_12));
+//                textView.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
+//                skillBinding.skillFlowLayout.addView(textView, lp);
 
             }
             profileBinding.keySkillInflater.addView(skillBinding.getRoot());

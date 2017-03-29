@@ -27,6 +27,7 @@ import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
 import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
 import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
+import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -264,10 +265,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
     private void getJobDetail() {
         JobDetailRequest request = new JobDetailRequest();
-        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
+//        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
+        SearchJobRequest searchRequest = (SearchJobRequest) PreferenceUtil.getJobFilter();
         request.setJobId(jobID);
-        request.setLat(userLocation.getLatitude());
-        request.setLng(userLocation.getLongitude());
+        request.setLat(Double.parseDouble(searchRequest.getLat()));
+        request.setLng(Double.parseDouble(searchRequest.getLng()));
 
         processToShowDialog("", getString(R.string.please_wait), null);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
@@ -428,6 +430,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     if (mBinding.tvJobDetailDocDescription.getLineCount() > 4) {
                         mBinding.tvJobDetailDocDescription.setMaxLines(4);
                         mBinding.tvJobDetailDocReadMore.setVisibility(View.VISIBLE);
+                        mBinding.tvJobDetailDocReadMore.setText(getString(R.string.txt_read_more));
                         mBinding.tvJobDetailDocReadMore.setOnClickListener(JobDetailActivity.this);
 
                     } else {

@@ -16,9 +16,14 @@ public class SearchFilterModel {
     private ArrayList<Integer> jobTitle;
     private String lat;
     private String lng;
+    private String city;
+    private String country;
+    private String state;
     private int page;
     private String address;
     private ArrayList<String> parttimeDays;
+    private String zipCode;
+
     @SerializedName("jobTitles")
     private ArrayList<SelectedJobTitleModel> selectedJobTitles;
 
@@ -62,5 +67,15 @@ public class SearchFilterModel {
         return zipCode;
     }
 
-    private String zipCode;
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getState() {
+        return state;
+    }
 }

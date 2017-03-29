@@ -451,7 +451,20 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         } else if (TextUtils.isEmpty(mSelectedZipCode)) {
             showToast(getString(R.string.msg_empty_zip_code));
             return false;
-        } else {
+
+        }else if(TextUtils.isEmpty(mSelectedCountry)) {
+            showToast("Unable to fetch country, please check internet connection and try again");
+            return false;
+
+        }else if (TextUtils.isEmpty(mSelectedCity)){
+            showToast("Unable to fetch city, please check internet connection and try again");
+            return false;
+
+        }else if (TextUtils.isEmpty(mSelectedState)){
+            showToast("Unable to fetch state, please check internet connection and try again");
+            return false;
+
+        }else {
             return true;
         }
     }

@@ -213,7 +213,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".ui.notification.MyNotificationActivity"
+            android:name=".ui.notification.NotificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 

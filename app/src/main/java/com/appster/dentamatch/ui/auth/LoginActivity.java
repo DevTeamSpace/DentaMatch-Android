@@ -383,7 +383,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return et.getText().toString().trim();
     }
 
-    private void logUser(String email, String userName,String userID) {
+    private void logUser(String email, String userName, String userID) {
         Crashlytics.setUserIdentifier(userID);
         Crashlytics.setUserEmail(email);
         Crashlytics.setUserName(userName);
@@ -417,13 +417,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             request.setParttimeDays(new ArrayList<String>());
                         }
 
-                        Address address = Utils.getReverseGeoCode(LoginActivity.this,
-                                new LatLng(Double.parseDouble(searchFilters.getLat()),
-                                        Double.parseDouble(searchFilters.getLng())));
+//                        Address address = Utils.getReverseGeoCode(LoginActivity.this,
+//                                new LatLng(Double.parseDouble(searchFilters.getLat()),
+//                                        Double.parseDouble(searchFilters.getLng())));
 
-                        request.setCountry(address.getCountryName());
-                        request.setCity(address.getLocality());
-                        request.setState(address.getAdminArea());
+
+                        request.setCountry(searchFilters.getCountry());
+                        request.setCity(searchFilters.getCity());
+                        request.setState(searchFilters.getState());
 
                         request.setZipCode(searchFilters.getZipCode());
                         request.setSelectedJobTitles(searchFilters.getSelectedJobTitles());

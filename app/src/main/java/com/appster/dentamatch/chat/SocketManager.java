@@ -126,7 +126,8 @@ public class SocketManager {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
         }
-        if(!isConnected) {
+
+        if (!isConnected) {
             registerConnectionEvents();
             mSocket.connect();
             attachedGlobalActivity = act;
@@ -164,14 +165,14 @@ public class SocketManager {
             unRegisterListenerEvents();
             registerListenerEvents();
 
-            if(!isConnected) {
+            if (!isConnected) {
                 isConnected = true;
                 raiseSyncNeeded();
             }
             /**
              * Notify user if user is on chat screen about the socket connection .
              */
-            if(attachedActivity != null){
+            if (attachedActivity != null) {
                 EventBus.getDefault().post(new SocketConnectionEvent(isConnected));
             }
             init();
@@ -201,11 +202,11 @@ public class SocketManager {
                         public void run() {
                             DBHelper.getInstance().upDateDB(toId, DBHelper.IS_RECRUITED_BLOCKED, blockStatus, null);
 
-                            if(blockStatus.equalsIgnoreCase("0")){
+                            if (blockStatus.equalsIgnoreCase("0")) {
                                 EventBus.getDefault().post(new UnblockEvent(true));
-                                ((BaseActivity)attachedGlobalActivity).showToast(attachedGlobalActivity.getString(R.string.msg_recruiter_unblocked));
-                            }else{
-                                ((BaseActivity)attachedGlobalActivity).showToast(attachedGlobalActivity.getString(R.string.msg_recruiter_blocked));
+                                ((BaseActivity) attachedGlobalActivity).showToast(attachedGlobalActivity.getString(R.string.msg_recruiter_unblocked));
+                            } else {
+                                ((BaseActivity) attachedGlobalActivity).showToast(attachedGlobalActivity.getString(R.string.msg_recruiter_blocked));
                             }
 
                         }
@@ -217,7 +218,6 @@ public class SocketManager {
     }
 
 
-
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
@@ -226,7 +226,7 @@ public class SocketManager {
             /**
              * Notify user if user is on chat screen about the socket connection event.
              */
-            if(attachedActivity != null){
+            if (attachedActivity != null) {
                 EventBus.getDefault().post(new SocketConnectionEvent(isConnected));
             }
         }
@@ -254,9 +254,9 @@ public class SocketManager {
                     final JSONObject jsonObject = (JSONObject) args[0];
                     LogUtils.LOGD(TAG, SOCKET_MESSAGE_ACKNOWLEDGEMENT + args[0]);
 
-                    if(jsonObject.has(BLOCKED)){
-                        ((BaseActivity)attachedActivity).showToast(attachedActivity.getString(R.string.msg_recruiter_blocked_you));
-                    }else {
+                    if (jsonObject.has(BLOCKED)) {
+                        ((BaseActivity) attachedActivity).showToast(attachedActivity.getString(R.string.msg_recruiter_blocked_you));
+                    } else {
                         ChatMessageModel model = Utils.parseData(jsonObject);
 
                         Message message = new Message(model.getMessage(),
@@ -281,15 +281,15 @@ public class SocketManager {
             /**
              * chat json is not empty
              */
-                if (attachedActivity != null) {
+            if (attachedActivity != null) {
 
-                    attachedActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray));
-                        }
-                    });
-                }
+                attachedActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray));
+                    }
+                });
+            }
 
         }
     };
@@ -308,9 +308,9 @@ public class SocketManager {
              * A new message from a new recruiter will have a messageListId in the jsonObject and other messages wont.
              * So we parse data based on the response type data we have received.
              */
-            if(jsonObject.has(MESSAGE_LIST_ID)){
-               model = Utils.parseDataForNewRecruiterMessage(jsonObject);
-            }else{
+            if (jsonObject.has(MESSAGE_LIST_ID)) {
+                model = Utils.parseDataForNewRecruiterMessage(jsonObject);
+            } else {
                 model = Utils.parseData(jsonObject);
             }
 
@@ -419,22 +419,22 @@ public class SocketManager {
         @Override
         public void call(Object... args) {
             try {
-            LogUtils.LOGD(TAG,""+args[0]);
-            JSONObject object = (JSONObject) args[0];
+                LogUtils.LOGD(TAG, "" + args[0]);
+                JSONObject object = (JSONObject) args[0];
                 boolean status = Boolean.parseBoolean(object.getString("logout"));
-                if(status){
-                    if(attachedActivity != null){
+                if (status) {
+                    if (attachedActivity != null) {
                         attachedActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((BaseActivity)attachedActivity).localLogOut();
+                                ((BaseActivity) attachedActivity).localLogOut();
                             }
                         });
-                    }else if(attachedGlobalActivity != null){
+                    } else if (attachedGlobalActivity != null) {
                         attachedGlobalActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ((BaseActivity)attachedGlobalActivity).localLogOut();
+                                ((BaseActivity) attachedGlobalActivity).localLogOut();
                             }
                         });
                     }
@@ -479,7 +479,7 @@ public class SocketManager {
         mSocket.on(EVENT_NEW_MESSAGE, onNewMessage);
     }
 
-    private void registerConnectionEvents(){
+    private void registerConnectionEvents() {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
@@ -501,7 +501,7 @@ public class SocketManager {
 
     }
 
-    private void unRegisterConnectionEvents(){
+    private void unRegisterConnectionEvents() {
         if (mSocket == null) {
             LogUtils.LOGD(TAG, SOCKET_ERROR);
             return;
@@ -533,7 +533,7 @@ public class SocketManager {
         mSocket.emit(EMIT_NOT_ON_CHAT, new JSONObject(hashMap), new Ack() {
             @Override
             public void call(Object... args) {
-                LogUtils.LOGD(TAG,EMIT_NOT_ON_CHAT + args[0]);
+                LogUtils.LOGD(TAG, EMIT_NOT_ON_CHAT + args[0]);
             }
         });
     }
@@ -598,6 +598,7 @@ public class SocketManager {
 
     /**
      * Messages sent from recruiter ID to user ID, need to be updated.
+     *
      * @param fromId
      * @param toId
      */

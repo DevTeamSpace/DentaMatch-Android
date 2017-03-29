@@ -137,7 +137,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     private boolean checkValidation() {
         HashMap<Integer, PostSchoolData> hashMap = mSchoolsAdapter.getPostMapData();
         if (hashMap == null || hashMap.size() == 0) {
-            showToast("please choose at least one college/school");
+            showToast(getString(R.string.msg_choose_college));
             return false;
         } else {
             for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
@@ -145,8 +145,9 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 if (TextUtils.isEmpty(entry.getValue().getSchoolName()) && TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
                     hashMap.remove(entry.getKey());
                     mSchoolsAdapter.setSchoolMapData(hashMap);
-                    if (hashMap == null || hashMap.size() == 0) {
-                        showToast("please choose at least one college/school");
+
+                    if (hashMap.size() == 0) {
+                        showToast(getString(R.string.msg_choose_college));
                         return false;
                     } else {
                         isRemoveSchool = true;
@@ -159,13 +160,13 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                     checkValidation();
                 } else {
                     if (TextUtils.isEmpty(entry.getValue().getSchoolName())) {
-                        showToast("SchoolModel name can never blank.");
+                        showToast(getString(R.string.msg_school_name_bank));
                         return false;
                     }
 
 
                     if (TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
-                        showToast("Please select year of graduation for  " + entry.getValue().getParentSchoolName());
+                        showToast(getString(R.string.msg_select_year_of_graduation) + entry.getValue().getParentSchoolName());
                         return false;
                     }
                 }

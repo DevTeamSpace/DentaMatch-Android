@@ -53,7 +53,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
         /**
          * Load list job fragment as the default fragment.
          */
-        getActivity().getSupportFragmentManager()
+       getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.lay_container_fragment_tracks, savedJobsFragment)
                 .commit();
@@ -78,7 +78,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
         switch (tab.getPosition()){
 
             case 0:
-                getActivity().getSupportFragmentManager()
+               getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.lay_container_fragment_tracks, savedJobsFragment)
                         .commit();
@@ -86,7 +86,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
                 break;
 
             case 1:
-                getActivity().getSupportFragmentManager()
+               getChildFragmentManager()
                     .beginTransaction()
                     .replace(R.id.lay_container_fragment_tracks, appliedJobsFragment)
                     .commit();
@@ -94,7 +94,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
                 break;
 
             case 2:
-                getActivity().getSupportFragmentManager()
+               getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.lay_container_fragment_tracks, shortListedJobsFragment)
                         .commit();

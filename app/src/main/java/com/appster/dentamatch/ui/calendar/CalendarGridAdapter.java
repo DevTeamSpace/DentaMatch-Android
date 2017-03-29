@@ -40,7 +40,6 @@ public class CalendarGridAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        Date mDate = monthlyDates.get(position);
         Date mDate = monthlyDates.get(position).getDate();
         Calendar dateCal = Calendar.getInstance();
         dateCal.setTime(mDate);
@@ -51,24 +50,27 @@ public class CalendarGridAdapter extends ArrayAdapter {
         int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
         int currentYear = currentDate.get(Calendar.YEAR);
         View view = convertView;
+
         if (view == null) {
             view = mInflater.inflate(R.layout.single_cell_layout, parent, false);
         }
+
         //Add day to calendar
         TextView cellNumber = (TextView) view.findViewById(R.id.calendar_date_id);
 
         if (displayMonth == currentMonth && displayYear == currentYear) {
             cellNumber.setText(String.valueOf(dayValue));
             view.setTag(position);
-            view.setBackgroundColor(mContext.getResources().getColor(R.color.white_color));
+            view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white_color));
+
             if (monthlyDates.get(position).isSelected()) {
                 view.setBackgroundResource(R.drawable.shape_temporary_date_selection);
                 cellNumber.setTextColor(ContextCompat.getColor(mContext, R.color.white_color));
             } else {
                 cellNumber.setTextColor(ContextCompat.getColor(mContext, R.color.graish_brown_color));
                 view.setBackgroundResource(0);
-
             }
+
         } else {
             view.setBackgroundColor(mContext.getResources().getColor(R.color.white_color));
             view.setTag(-1);

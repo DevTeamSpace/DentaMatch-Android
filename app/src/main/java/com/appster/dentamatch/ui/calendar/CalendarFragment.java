@@ -102,7 +102,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
         int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         Date date = calendar.getTime();
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String startStr = Utils.dateFormetyyyyMMdd(date);
         startStr = startStr.substring(0, startStr.lastIndexOf("-"));
         startStr = startStr + "-01";
@@ -119,9 +118,11 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         switch (view.getId()) {
             case R.id.iv_tool_bar_left:
                 break;
+
             case R.id.txv_toolbar_general_right:
                 startActivity(new Intent(getActivity(), SetAvailabilityActivity.class));
                 break;
+
             case R.id.iv_tool_bar_right:
                 startActivity(new Intent(getActivity(), SetAvailabilityActivity.class));
                 break;
@@ -233,44 +234,47 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         try {
             if (mAllJobLIst != null && mAllJobLIst.size() > 0) {
                 for (int i = 0; i < mAllJobLIst.size(); i++) {
-//                if (Utils.getDate(mAllJobLIst.get(i).getJobDate()).compareTo(Utils.parseDate(Calendar.getInstance().getTime())) >= 0) {
                     if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                         isFullTime = true;
-//                        selectedDateJobList.add(mAllJobLIst.get(i));
+
                     } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                         String day = Utils.getDayOfWeek(date);
+
                         if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
+
                         } else if (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
+
                         } else if (day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
+
                         } else if (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
+
                         } else if (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
+
                         } else if (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
+
                         } else if (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
+
                         }
+
                     } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
+
                         if(mAllJobLIst.get(i).getTempDates().equalsIgnoreCase(date)){
                             selectedDateJobList.add(mAllJobLIst.get(i));
                         }
-//                        for (int t = 0; t < mAllJobLIst.get(i).getTemporaryJobDates().size(); t++) {
-//                            if (mAllJobLIst.get(i).getTemporaryJobDates().get(t).getJobDate().equalsIgnoreCase(date)) {
-//                                selectedDateJobList.add(mAllJobLIst.get(i));
-//
-//                            }
-//                        }
+
                     }
 
                 }
 
                 if (isFullTime) {
                     calendarBinding.customCalendar.isFullTimeJob(isFullTime);
-
                 }
 
                 if (selectedDateJobList.size() > 0) {

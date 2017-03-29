@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/flow_child"
+        android:fitsSystemWindows="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_6"
-        android:layout_marginStart="@dimen/margin_6"
+        android:layout_marginStart="@dimen/margin_small_3"
+        android:layout_marginEnd="@dimen/margin_small_3"
         android:background="@drawable/bg_edit_text"
         android:ellipsize="end"
+        android:text="Resultant Health Dentist Practisioner From Dubai to Mosco"
         android:maxLines="1"
         android:paddingBottom="@dimen/margin_5"
-        android:paddingLeft="@dimen/margin_15"
-        android:paddingRight="@dimen/margin_15"
+        android:paddingLeft="@dimen/margin_7"
+        android:paddingRight="@dimen/margin_7"
         android:paddingTop="@dimen/margin_5" />
-
+    </RelativeLayout>
 </layout>

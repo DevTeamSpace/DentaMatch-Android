@@ -42,7 +42,6 @@ import java.util.List;
  */
 
 public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
-
     private static final String TAG = "SchoolsAdapter";
 
     private static final int TYPE_HEADER = 0;
@@ -114,7 +113,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         return holder;
-//        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
 //    @Override
@@ -340,6 +338,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             holder1.spinnerYears.setTag(position - 1);
 
             holder1.autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -449,20 +448,26 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     TextView text = (TextView) view.findViewById(R.id.text_spinner);
 
-                    if (position != 0) {
-                        text.setTextColor(ContextCompat.getColor(mContext, R.color.text_default_color));
-                        PostSchoolData school = getSchool((Integer) holder1.spinnerYears.getTag());
-                        school.setYearOfGraduation(mYearsList.get(position));
-                        school.setOtherId(String.valueOf(mSchoolList.get((Integer) holder1.etYearOfGraduation.getTag()).getSchoolTypeId()));
-                        mHashMap.put((Integer) holder1.spinnerYears.getTag(), school);
+                    if(!TextUtils.isEmpty(holder1.autoCompleteTextView.getText().toString())) {
+                        if (position != 0) {
+                            text.setTextColor(ContextCompat.getColor(mContext, R.color.text_default_color));
+                            PostSchoolData school = getSchool((Integer) holder1.spinnerYears.getTag());
+                            school.setYearOfGraduation(mYearsList.get(position));
+                            school.setOtherId(String.valueOf(mSchoolList.get((Integer) holder1.etYearOfGraduation.getTag()).getSchoolTypeId()));
+                            mHashMap.put((Integer) holder1.spinnerYears.getTag(), school);
 
-                    } else {
+                        } else {
+                            text.setTextColor(ContextCompat.getColor(mContext, R.color.edt_hint_color));
+                            PostSchoolData school = getSchool((Integer) holder1.spinnerYears.getTag());
+                            school.setYearOfGraduation("");
+                        }
+                    }else{
+                        ((BaseActivity)mContext).showToast(mContext.getString(R.string.error_school_name));
+                        text.setText(mContext.getString(R.string.hint_year_of_graduation));
                         text.setTextColor(ContextCompat.getColor(mContext, R.color.edt_hint_color));
-                        PostSchoolData school = getSchool((Integer) holder1.spinnerYears.getTag());
-                        school.setYearOfGraduation("");
+                        mBinder.spinnerGraduation.setSelection(0);
                     }
 
-//                    mBinder.spinnerGraduation.setSelection(position);
                 }
 
                 @Override
@@ -479,8 +484,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                 }
             });
-
-
 
         }
 
@@ -520,7 +523,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         EditText etYearOfGraduation;
         Spinner spinnerYears;
         AutoCompleteTextView autoCompleteTextView;
-        TextInputLayout textInputLayout;
 
         ViewHolderItem(View view) {
             super(view);
@@ -529,7 +531,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             etYearOfGraduation = mBinder.etGraduation;
             autoCompleteTextView = mBinder.etSchoolName;
             spinnerYears = mBinder.spinnerGraduation;
-//            textInputLayout = mBinder.tilGraduation;
         }
     }
 
