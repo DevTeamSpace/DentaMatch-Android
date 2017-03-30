@@ -67,7 +67,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.tvAddMoreExperience.setOnClickListener(this);
         mBinder.tvExperienceDelete.setOnClickListener(this);
         mBinder.tvAddMoreReference.setOnClickListener(this);
-        mBinder.btnNextWorkExpLsit.setOnClickListener(this);
+        mBinder.btnNextWorkExpList.setOnClickListener(this);
         mBinder.includeLayoutRefrence2.tvRefrenceDelete.setOnClickListener(this);
 
 
@@ -83,14 +83,14 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         }
 
         UsPhoneNumberFormat addLineNumberFormatter = new UsPhoneNumberFormat(
-                new WeakReference<EditText>(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile));
-        mBinder.includeLayoutRefrence1.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter);
+                new WeakReference<EditText>(mBinder.includeLayoutReference1.etOfficeReferenceMobile));
+        mBinder.includeLayoutReference1.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter);
         UsPhoneNumberFormat addLineNumberFormatter2 = new UsPhoneNumberFormat(
                 new WeakReference<EditText>(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
         mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter2);
 
         if (isFromProfile) {
-            mBinder.btnNextWorkExpLsit.setText(getString(R.string.save_label));
+            mBinder.btnNextWorkExpList.setText(getString(R.string.save_label));
             mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
         }
 
@@ -179,7 +179,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.tv_add_more_reference:
-                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)) && TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail)) && TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile))) {
+                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName)) && TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail)) && TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile))) {
                     Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
                 } else {
                     mBinder.includeLayoutRefrence2.tvRefrenceDelete.setVisibility(View.VISIBLE);
@@ -216,8 +216,8 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
-                Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName),
-                Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
                 Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
                 Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
 
@@ -230,9 +230,9 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
-                    Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName),
-                    Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile),
-                    Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
+                    Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                    Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
+                    Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
                     Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
                     Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
                     Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
@@ -246,9 +246,9 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         mBinder.includeWorkExpList.etOfficeAddress.setText("");
         mBinder.includeWorkExpList.etOfficeCity.setText("");
         mBinder.includeWorkExpList.etOfficeName.setText("");
-        mBinder.includeLayoutRefrence1.etOfficeReferenceEmail.setText("");
-        mBinder.includeLayoutRefrence1.etOfficeReferenceMobile.setText("");
-        mBinder.includeLayoutRefrence1.etOfficeReferenceName.setText("");
+        mBinder.includeLayoutReference1.etOfficeReferenceEmail.setText("");
+        mBinder.includeLayoutReference1.etOfficeReferenceMobile.setText("");
+        mBinder.includeLayoutReference1.etOfficeReferenceName.setText("");
         mBinder.includeLayoutRefrence2.etOfficeReferenceEmail.setText("");
         mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.setText("");
         mBinder.includeLayoutRefrence2.etOfficeReferenceName.setText("");

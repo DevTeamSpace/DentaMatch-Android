@@ -32,7 +32,6 @@
 
                 <include
                     android:id="@+id/include_layout_reference1"
-
                     layout="@layout/layout_reference" />
 
                 <LinearLayout
@@ -44,9 +43,7 @@
 
                     <include
                         android:id="@+id/include_layout_refrence2"
-
                         layout="@layout/layout_reference" />
-
                 </LinearLayout>
 
                 <com.appster.dentamatch.widget.CustomTextView

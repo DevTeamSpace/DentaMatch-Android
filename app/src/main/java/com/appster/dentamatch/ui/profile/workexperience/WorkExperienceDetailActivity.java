@@ -85,7 +85,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         switch (view.getId()) {
             case R.id.tv_add_more_reference:
 
-                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceName))) {
+                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceName))) {
                     Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
                 } else {
                     mBinder.includeRefrence2.tvRefrenceDelete.setVisibility(View.VISIBLE);
@@ -113,8 +113,8 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                         Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeName),
                         Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress),
                         Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeCity),
-                        Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceName),
-                        Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceEmail),
+                        Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceName),
+                        Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceEmail),
                         Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
                         Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName));
 
@@ -127,9 +127,9 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                             Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeName),
                             Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress),
                             Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeCity),
-                            Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceName),
-                            Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceMobile),
-                            Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceEmail),
+                            Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceName),
+                            Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceMobile),
+                            Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceEmail),
                             Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
                             Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName),
                             Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceMobile)));

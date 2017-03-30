@@ -72,8 +72,8 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
 
         hideKeyboard();
         UsPhoneNumberFormat addLineNumberFormatter = new UsPhoneNumberFormat(
-                new WeakReference<EditText>(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile));
-        mBinder.includeLayoutRefrence1.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter);
+                new WeakReference<EditText>(mBinder.includeLayoutReference1.etOfficeReferenceMobile));
+        mBinder.includeLayoutReference1.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter);
         UsPhoneNumberFormat addLineNumberFormatter2 = new UsPhoneNumberFormat(
                 new WeakReference<EditText>(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
         mBinder.includeLayoutRefrence2.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter2);
@@ -88,9 +88,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         mBinder.layoutWorkExpViewEdit.etJobTitle.setText(workExpList.get(position).getJobTitleName());
         mBinder.layoutWorkExpViewEdit.tvExperinceWorkExp.setText(Utils.getExpYears(workExpList.get(position).getMonthsOfExpereince()));
         mBinder.layoutWorkExpViewEdit.etOfficeAddress.setText(workExpList.get(position).getOfficeAddress());
-        mBinder.includeLayoutRefrence1.etOfficeReferenceMobile.setText(workExpList.get(position).getReference1Mobile());
-        mBinder.includeLayoutRefrence1.etOfficeReferenceName.setText(workExpList.get(position).getReference1Name());
-        mBinder.includeLayoutRefrence1.etOfficeReferenceEmail.setText(workExpList.get(position).getReference1Email());
+        mBinder.includeLayoutReference1.etOfficeReferenceMobile.setText(workExpList.get(position).getReference1Mobile());
+        mBinder.includeLayoutReference1.etOfficeReferenceName.setText(workExpList.get(position).getReference1Name());
+        mBinder.includeLayoutReference1.etOfficeReferenceEmail.setText(workExpList.get(position).getReference1Email());
 
         if (!TextUtils.isEmpty(workExpList.get(position).getReference2Name()) || !TextUtils.isEmpty(workExpList.get(position).getReference2Email()) || !TextUtils.isEmpty(workExpList.get(position).getReference2Mobile())) {
             mBinder.layoutRefrence2.setVisibility(View.VISIBLE);
@@ -137,8 +137,8 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                         Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
                         Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
                         Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
+                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
                         Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
                         Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
 
@@ -151,9 +151,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                             Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
                             Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
                             Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
-                            Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName),
-                            Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile),
-                            Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
+                            Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                            Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
+                            Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
                             Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
                             Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
                             Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
@@ -182,9 +182,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 break;
 
             case R.id.tv_add_more_reference:
-                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName)) &&
-                        TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail)) &&
-                        TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile))) {
+                if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName)) &&
+                        TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail)) &&
+                        TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile))) {
 
                     Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
                 } else {
