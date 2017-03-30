@@ -44,6 +44,8 @@
     <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_empty_address">Please select an address.</string>
     <string name="alert_empty_notification">You don’t have any Notifications right now.</string>
+    <string name="msg_reference_name_1_blank">Reference 1 name cannot be blank. </string>
+    <string name="msg_reference_name_2_blank">Reference 2 name cannot be blank. </string>
 
     <!--register & Login & Forgot password screen-->
     <string name="email_label">Email</string>
@@ -161,7 +163,7 @@
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
     <string name="licence_number_blnk_space_alert">Licence number should not contain blank spaces</string>
     <string name="licence_number_hyfen_alert">Licence number can not begin or end with the hyphen (-) </string>
-    <string name="blank_state_alert">State text field can not be left blank.</string>
+    <string name="blank_state_alert">State field can not be left blank.</string>
     <string name="state_max_length">State can not be exceed 30 characters</string>
     <string name="invalid_exp_selection">Experience can never be zero.</string>
     <string name="blank_job_title_alert">Please select job title</string>
@@ -365,5 +367,7 @@
     <string name="txt_submit">SUBMIT</string>
     <string name="txt_recruiter_blocked">You have blocked this recruiter.</string>
     <string name="txt_job_expired">This Job no longer exists</string>
+    <string name="txt_discard">Discard</string>
+    <string name="msg_discard_partial_experience">You have partially filled experience. Do you want to discard this ?</string>
 
 </resources>

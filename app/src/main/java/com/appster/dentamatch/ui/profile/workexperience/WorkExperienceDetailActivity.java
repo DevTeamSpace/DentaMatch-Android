@@ -107,16 +107,16 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 
             case R.id.tv_add_more_experience:
                 boolean isMoveForward = false;
-                isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(),
-                        selectedJobTitle,
-                        expMonth,
-                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeName),
-                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress),
-                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeCity),
-                        Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceName),
-                        Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName));
+//                isMoveForward = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(),
+//                        selectedJobTitle,
+//                        expMonth,
+//                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeName),
+//                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress),
+//                        Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeCity),
+//                        Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceName),
+//                        Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceEmail),
+//                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
+//                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName));
 
                 if (isMoveForward) {
                     hideKeyboard();

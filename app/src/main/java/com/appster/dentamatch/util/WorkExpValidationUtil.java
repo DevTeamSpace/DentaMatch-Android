@@ -1,5 +1,6 @@
 package com.appster.dentamatch.util;
 
+import android.content.DialogInterface;
 import android.text.TextUtils;
 
 import com.appster.dentamatch.DentaApp;
@@ -8,83 +9,94 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by virender on 13/01/17.
  */
 public class WorkExpValidationUtil {
+    private static HashMap<Boolean, String> returnValue = new HashMap<>();
 
+    public static HashMap<Boolean, String> checkValidation(int isReference2, String selectedJobtitle, int expMonth, String officeName, String officeAddress,
+                                                           String officeCity, String reference1Email, String reference2Email,
+                                                           String reference1Mobile, String reference2Mobile, String referenceName1, String referenceName2) {
 
-    public static boolean checkValidation(int isReference2, String selectedJobtitle, int expMonth, String officeName, String officeAddress,
-                                          String officeCity, String reference1Email, String reference2Email,
-                                          String reference1Mobile, String reference2Mobile) {
-
-
+        returnValue.clear();
         if (TextUtils.isEmpty(selectedJobtitle)) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_job_title_alert));
-            return false;
-        }
-        if (expMonth == 0) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_year_alert));
-            return false;
-        }
-        if (TextUtils.isEmpty(officeName)) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_office_name_alert));
-            return false;
-        }
-        if (officeName.length() > Constants.DEFAULT_FIELD_LENGTH) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.office_name_length_alert));
-            return false;
-        }
-
-        if (TextUtils.isEmpty(officeAddress)) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_office_addrerss_alert));
-            return false;
-        }
-        if (officeAddress.length() > Constants.DEFAULT_FIELD_LENGTH) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.office_address_length_alert));
-            return false;
-        }
-        if (TextUtils.isEmpty(officeCity)) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_city_alert));
-            return false;
-        }
-        if (officeCity.length() > Constants.DEFAULT_FIELD_LENGTH) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.city_length_alert));
-            return false;
-        }
-
-//
-//        if (TextUtils.isEmpty(officeReference1Name)) {
-//            Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.blank_refrence_name_alert));
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_job_title_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_job_title_alert));
 //            return false;
-//        }
-//        if (!TextUtils.isEmpty(reference1Email) && !android.util.Patterns.EMAIL_ADDRESS.matcher(reference1Email).matches()) {
-//            Utils.showToast(DentaApp.getAppContext(), DentaApp.getAppContext().getString(R.string.valid_email_alert));
+        } else if (expMonth == 0) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_year_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_year_alert));
 //            return false;
-//        }
-        if (!TextUtils.isEmpty(reference1Email) &&! Utils.isValidEmailAddress(reference1Email)) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.valid_email_alert));
-            return false;
-        }
 
-        if (!TextUtils.isEmpty(reference1Mobile) && reference1Mobile.length() < 13) {
-            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.valid_mobile_alert));
-            return false;
-        }
-        if (isReference2 == 0) {
+        } else if (TextUtils.isEmpty(officeName)) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_office_name_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_office_name_alert));
+//            return false;
+
+        } else if (officeName.length() > Constants.DEFAULT_FIELD_LENGTH) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.office_name_length_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.office_name_length_alert));
+//            return false;
+
+        } else if (TextUtils.isEmpty(officeAddress)) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_office_addrerss_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_office_addrerss_alert));
+//            return false;
+
+        } else if (officeAddress.length() > Constants.DEFAULT_FIELD_LENGTH) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.office_address_length_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.office_address_length_alert));
+//            return false;
+
+        } else if (TextUtils.isEmpty(officeCity)) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_city_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.blank_city_alert));
+//            return false;
+
+        } else if (officeCity.length() > Constants.DEFAULT_FIELD_LENGTH) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.city_length_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.city_length_alert));
+//            return false;
+
+        } else if (!TextUtils.isEmpty(reference1Email) && !Utils.isValidEmailAddress(reference1Email)) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.valid_email_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.valid_email_alert));
+//            return false;
+
+        } else if (!TextUtils.isEmpty(reference1Mobile) && reference1Mobile.length() < 13) {
+            returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_mobile_alert));
+//            Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.valid_mobile_alert));
+//            return false;
+
+        } else if (isReference2 == 0) {
 
             if (!TextUtils.isEmpty(reference2Email) && !Utils.isValidEmailAddress(reference2Email)) {
-                Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.valid_email_alert));
-                return false;
+                returnValue.put(false, DentaApp.getInstance().getString(R.string.valid_email_alert));
+//                Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.valid_email_alert));
+//                return false;
             }
+
             if (!TextUtils.isEmpty(reference2Mobile) && reference2Mobile.length() < 13) {
-                Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.valid_mobile_alert));
-                return false;
+                returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_mobile_alert));
+//                Utils.showToast(DentaApp.getInstance(), DentaApp.getInstance().getString(R.string.valid_mobile_alert));
+//                return false;
             }
+        }else if((!TextUtils.isEmpty(reference1Mobile) || !TextUtils.isEmpty(reference1Email)) && TextUtils.isEmpty(referenceName1)) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.msg_reference_name_1_blank));
+
+        }else if((!TextUtils.isEmpty(reference2Mobile) || !TextUtils.isEmpty(reference2Email)) && TextUtils.isEmpty(referenceName2)){
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.msg_reference_name_2_blank));
+
+        }else {
+            returnValue.put(true, "");
         }
 
 
-        return true;
+        return returnValue;
     }
 
     public static WorkExpRequest prepareWorkExpRequest(int isReference2, String action, int jobTitleId, int expMonth, String officeName, String officeAddress, String officeCity, String officeReference1Name, String reference1Mobile, String reference1Email, String reference2Email, String reference2Name, String reference2Mobile) {
@@ -108,5 +120,6 @@ public class WorkExpValidationUtil {
         }
         return workExpRequest;
     }
+
 
 }

@@ -1,21 +1,27 @@
 package com.appster.dentamatch.ui.common;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.ui.auth.LoginActivity;
@@ -25,6 +31,12 @@ import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -38,6 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private Toast mToast;
     public static PermissionCallback permissionResult;
+    private String mCurrentPhotoPath;
 
     public static BaseFragment getFragment(Constants.FRAGMENTS fragmentId) {
         BaseFragment fragment = null;
@@ -305,5 +318,63 @@ public abstract class BaseActivity extends AppCompatActivity {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         view.requestFocus();
         inputMethodManager.showSoftInput(view, 0);
+    }
+
+//    public void takePhoto(){
+//        try {
+//            dispatchTakePictureIntent();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    private void dispatchTakePictureIntent() throws IOException {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                return;
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI =  FileProvider.getUriForFile(this,
+                        BuildConfig.APPLICATION_ID + ".provider",
+                        createImageFile());
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+            }
+        }
+    }
+
+    public String getCameraPhotoPath(){
+        return mCurrentPhotoPath;
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM), "DentaMatch");
+
+        if(!storageDir.isDirectory()){
+            storageDir.mkdirs();
+        }
+
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
     }
 }

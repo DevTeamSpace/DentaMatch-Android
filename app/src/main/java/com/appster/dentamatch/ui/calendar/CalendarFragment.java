@@ -63,8 +63,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         mCalendarBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false);
         initViews();
         return mCalendarBinding.getRoot();
-
-
     }
 
     private void initViews() {
@@ -240,29 +238,34 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         isFullTime = true;
 
                     } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
-                        String day = Utils.getDayOfWeek(date);
+                        Date jobHireDate = Utils.getDate(mAllJobLIst.get(i).getJobDate(), Constants.DateFormat.YYYYMMDD);
+                        Date currentDate = Utils.getDate(date, Constants.DateFormat.YYYYMMDD);
 
-                        if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
-                            selectedDateJobList.add(mAllJobLIst.get(i));
+                        if(jobHireDate.compareTo(currentDate) <= 0) {
+                            String day = Utils.getDayOfWeek(date);
 
-                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1) {
-                            selectedDateJobList.add(mAllJobLIst.get(i));
+                            if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
 
-                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1) {
-                            selectedDateJobList.add(mAllJobLIst.get(i));
+                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
 
-                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1) {
-                            selectedDateJobList.add(mAllJobLIst.get(i));
+                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
 
-                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1) {
-                            selectedDateJobList.add(mAllJobLIst.get(i));
+                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
 
-                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1) {
-                            selectedDateJobList.add(mAllJobLIst.get(i));
+                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
 
-                        } else if (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1) {
-                            selectedDateJobList.add(mAllJobLIst.get(i));
+                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
 
+                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
+
+                            }
                         }
 
                     } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
@@ -272,7 +275,6 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         }
 
                     }
-
                 }
 
                 if (isFullTime) {

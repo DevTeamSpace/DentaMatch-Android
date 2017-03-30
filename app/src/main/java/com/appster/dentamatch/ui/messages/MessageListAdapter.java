@@ -36,7 +36,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
     private Context mContext;
     private String userID;
 
-    public MessageListAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<DBModel> data, boolean autoUpdate) {
+    public MessageListAdapter(Context context, @Nullable OrderedRealmCollection<DBModel> data, boolean autoUpdate) {
         super(context, data, autoUpdate);
         messagesData = data;
         mContext = context;
@@ -45,7 +45,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_message_list, parent, false);
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.item_message_list, parent, false);
         return new MessageListAdapter.MyHolder(mBinding.getRoot());
     }
 

@@ -156,7 +156,7 @@ public class CalendarViewEvent extends LinearLayout {
     }
 
     private void setUpCalendarAdapter() {
-        List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<CalenderAvailableCellModel>();
+        List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<>();
         Calendar mCal = (Calendar) this.mCal.clone();
         mCal.set(Calendar.DAY_OF_MONTH, 1);
         int firstDayOfTheMonth = mCal.get(Calendar.DAY_OF_WEEK) - 1;

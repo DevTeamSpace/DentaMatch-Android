@@ -82,6 +82,7 @@ public class Utils {
     private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
     private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
     private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
+
     @Nullable
     /*
     * get device id
@@ -90,7 +91,6 @@ public class Utils {
 //        return Settings.Secure.getString(context.getContentResolver(),
 //                Settings.Secure.ANDROID_ID);
 //    }
-
 
 
     public synchronized static String getDeviceID() {
@@ -104,7 +104,7 @@ public class Utils {
         return uniqueID;
     }
 
-    public static String parseDateForTemp(String date){
+    public static String parseDateForTemp(String date) {
         SimpleDateFormat serverDateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {
             Date serverDate = serverDateOnlyFormat.parse(date);
@@ -113,7 +113,7 @@ public class Utils {
             e.printStackTrace();
         }
 
-       return null;
+        return null;
     }
 
     public static String getDeviceToken() {
@@ -143,13 +143,13 @@ public class Utils {
         return !lastMsgDateLabel.equalsIgnoreCase(receivedMsgDateLabel);
     }
 
-    public static Address getReverseGeoCode(Context ct,LatLng latLng) {
+    public static Address getReverseGeoCode(Context ct, LatLng latLng) {
         Address address = null;
 
         Geocoder geocoder = new Geocoder(ct);
         try {
             List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if(addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
+            if (addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
                 address = addressList.get(0);
             }
         } catch (IOException e) {
@@ -403,7 +403,7 @@ public class Utils {
 
         hourOnlyDateFormat.setTimeZone(TimeZone.getDefault());
         DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
-        symbols.setAmPmStrings(new String[] { "am", "pm" });
+        symbols.setAmPmStrings(new String[]{"am", "pm"});
         hourOnlyDateFormat.setDateFormatSymbols(symbols);
         return hourOnlyDateFormat.format(myDate);
     }
@@ -710,12 +710,11 @@ public class Utils {
     public static Date getDate(String dateStr, String dateFormet) {
         try {
             SimpleDateFormat inputFormat;
-            if(dateFormet != null){
-                 inputFormat = new SimpleDateFormat(dateFormet, Locale.getDefault());
-            }else {
-                 inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            if (dateFormet != null) {
+                inputFormat = new SimpleDateFormat(dateFormet, Locale.getDefault());
+            } else {
+                inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             }
-            inputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
             return inputFormat.parse(dateStr);
         } catch (Exception e) {
@@ -803,7 +802,6 @@ public class Utils {
         }
         return time;
     }
-
 
 
 }

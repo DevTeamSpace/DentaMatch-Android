@@ -185,8 +185,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
             if (resultCode == RESULT_OK) {
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
-                mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
-
+                mFilePath = CameraUtil.getInstance().compressImage(getCameraPhotoPath(), this);
                 if (mFilePath != null) {
                     Picasso.with(UpdateProfileActivity.this)
                             .load(new File(mFilePath)).centerCrop()
@@ -195,7 +194,8 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                             .placeholder(R.drawable.profile_pic_placeholder)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .into(mBinding.createProfile1IvProfileIcon);
-                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
+
+                    uploadImageApi(getCameraPhotoPath(), Constants.APIS.IMAGE_TYPE_PIC);
                 }
             }
 
@@ -243,7 +243,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     }
 
     private void updateProfileData() {
-
         UpdateUserProfileRequest request = new UpdateUserProfileRequest();
         request.setFirstName(Utils.getStringFromEditText(mBinding.etFname));
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
@@ -340,7 +339,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     public void galleryClicked() {
         imageSourceType = 1;
 
-        if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
+        if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) &&
+                PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        this)) {
             getImageFromGallery();
 
         } else {

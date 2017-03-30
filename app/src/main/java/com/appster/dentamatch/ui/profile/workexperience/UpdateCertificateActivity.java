@@ -1,6 +1,7 @@
 package com.appster.dentamatch.ui.profile.workexperience;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -226,11 +227,6 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
     private void takePhoto() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            //TODO: REPLACE CODE FOR FILE PATH WITH THIS CODE BECAUSE FILE USE HAS BEEN DEPRECATED IN 'N' VERSION
-//        ContentValues values = new ContentValues(1);
-//        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
-//        Uri CameraTempUri = getContentResolver()
-//                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
