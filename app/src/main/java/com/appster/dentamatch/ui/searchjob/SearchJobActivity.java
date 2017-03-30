@@ -131,8 +131,8 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             mSelectedAddress = request.getAddress();
 
             if(!TextUtils.isEmpty(mSelectedAddress )) {
-                mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
-                mBinder.tvFetchedLoation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
+                mBinder.tvFetchedLocation.setVisibility(View.VISIBLE);
+                mBinder.tvFetchedLocation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
             }
 
             if(request.getSelectedJobTitles() != null ) {
@@ -170,7 +170,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.cbPartTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.tvCurrentLocation.setOnClickListener(this);
-        mBinder.tvFetchedLoation.setOnClickListener(this);
+        mBinder.tvFetchedLocation.setOnClickListener(this);
         mBinder.tvJobTitle.setOnClickListener(this);
         mBinder.tvSaturday.setOnClickListener(this);
         mBinder.tvSunday.setOnClickListener(this);
@@ -440,7 +440,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             showToast(getString(R.string.msg_empty_part_days));
             return false;
 
-        } else if (TextUtils.isEmpty(mBinder.tvFetchedLoation.getText())) {
+        } else if (TextUtils.isEmpty(mBinder.tvFetchedLocation.getText())) {
             showToast(getString(R.string.msg_empty_location));
             return false;
 
@@ -500,7 +500,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS) {
 
                 if (data != null && data.hasExtra(Constants.EXTRA_PLACE_NAME)) {
-                    mBinder.tvFetchedLoation.setVisibility(View.VISIBLE);
+                    mBinder.tvFetchedLocation.setVisibility(View.VISIBLE);
                     mSelectedAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
                     mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                     mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
@@ -508,7 +508,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                     mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
                     mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
                     mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
-                    mBinder.tvFetchedLoation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
+                    mBinder.tvFetchedLocation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
 
                 }
             }

@@ -143,7 +143,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
             tvUnreadChatCount = mBinding.tvMessageChatCount;
             tvLastMessage = mBinding.tvMessageChat;
             tvDate = mBinding.tvMessageDate;
-            RemovableView = mBinding.swipebleView;
+            RemovableView = mBinding.swipeableView;
             ConstantView = mBinding.constantView;
         }
     }
