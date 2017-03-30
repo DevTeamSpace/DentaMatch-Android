@@ -16,7 +16,6 @@
 
     <!--Default padding-->
     <dimen name="default_padding">10dp</dimen>
-    <dimen name="default_padding_20">20dp</dimen>
     <dimen name="pagination_view_height">50dp</dimen>
 
     <!--Text sizes-->
@@ -64,8 +63,6 @@
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_9">9dp</dimen>
 
-    <dimen name="margin_chips_layout_left">10dp</dimen>
-    <dimen name="margin_chips_layout_right">20dp</dimen>
     <dimen name="padding_drawable">10dp</dimen>
     <dimen name="padding_input_layout">3dp</dimen>
     <dimen name="line_height">1dp</dimen>
@@ -84,12 +81,10 @@
     <dimen name="edit_height">62dp</dimen>
     <dimen name="edit_height_about_me">160dp</dimen>
     <dimen name="profile_header_height">280dp</dimen>
-    <dimen name="on_baording_text_layout_size">220dp</dimen>
 
     <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_74">74dp</dimen>
     <dimen name="circular_text_dimen">35dp</dimen>
-    <dimen name="calendar_height">330dp</dimen>
     <dimen name="calendar_cell_height">40dp</dimen>
     <dimen name="batch_count_dimen">15dp</dimen>
     <dimen name="user_profile_pic_dimen">91dp</dimen>

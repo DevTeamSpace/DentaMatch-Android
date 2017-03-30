@@ -18,7 +18,6 @@ import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.SimpleDividerItemDecoration;
@@ -86,7 +85,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
 
 
     private void callJobListApi() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.jobTitle().enqueue(new BaseCallback<JobTitleResponse>(SelectJobTitleActivity.this) {
             @Override

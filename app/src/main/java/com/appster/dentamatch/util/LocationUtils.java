@@ -51,7 +51,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         fragmentTransaction.commit();
     }
 
-    public static LocationUtils newInstance() {
+    private static LocationUtils newInstance() {
         return new LocationUtils();
     }
 
@@ -110,7 +110,9 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
                 LogUtils.LOGI(TAG, "All location settings are satisfied.");
-                startLocationUpdates();
+                if(googleApiClient != null && googleApiClient.isConnected()) {
+                    startLocationUpdates();
+                }
                 break;
 
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -139,7 +141,9 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
                 switch (resultCode) {
                     case Activity.RESULT_OK:
                         LogUtils.LOGI(TAG, "UserModel agreed to make required location settings changes.");
-                        startLocationUpdates();
+                        if(googleApiClient != null && googleApiClient.isConnected()) {
+                            startLocationUpdates();
+                        }
                         break;
                     case Activity.RESULT_CANCELED:
                         LogUtils.LOGI(TAG, "UserModel chose not to make required location settings changes.");
@@ -149,7 +153,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         }
     }
 
-    public void startUpdates() {
+    private void startUpdates() {
         checkLocationSettings();
     }
 
@@ -182,7 +186,10 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         if (requestCode == REQUEST_LOCATION_PERMISSION && !StringUtils.isNullOrEmpty(grantResults)
                 &&grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             LogUtils.LOGV(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
-            startLocationUpdates();
+
+            if(googleApiClient != null && googleApiClient.isConnected()) {
+                startLocationUpdates();
+            }
         }
     }
 
@@ -251,12 +258,12 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = location;
-        //PreferenceUtils.setCurrentLocation(location);
         LogUtils.LOGD(TAG, "Lat : " + location.getLatitude() + ", " + "Long : " + location.getLongitude());
-        //Toast.makeText(getActivity(), "Location changed", Toast.LENGTH_SHORT).show();
-        // This method will be called when a HelloWorldEvent is posted
         EventBus.getDefault().post(new LocationEvent(location));
-        stopLocationUpdates();
+
+        if(googleApiClient != null && googleApiClient.isConnected()) {
+            stopLocationUpdates();
+        }
     }
 
     @Override

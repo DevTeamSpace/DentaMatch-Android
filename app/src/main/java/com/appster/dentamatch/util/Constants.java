@@ -1,10 +1,5 @@
 package com.appster.dentamatch.util;
 
-import android.support.annotation.IntDef;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 /**
  * Class to hold constant values.
  */
@@ -117,7 +112,7 @@ public class Constants {
         String SUB_SKILLS = "sub_skills";
     }
 
-    public interface DateFormet {
+    public interface DateFormat {
         String YYYYMMDD = "yyyy-MM-dd";
         String YYYYMMDDHHMMSS = "yyyy-MM-dd hh:mm:ss";
     }

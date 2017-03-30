@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,7 +33,6 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -48,7 +46,6 @@ import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.internal.Util;
 import retrofit2.Call;
 
 /**
@@ -159,7 +156,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
         return true;
     }
 
-    public void getImageFromGallery() {
+    private void getImageFromGallery() {
         Intent gIntent = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -169,7 +166,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
     }
 
-    public void takePhoto() {
+    private void takePhoto() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
@@ -203,7 +200,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
 
             } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
                 Uri selectedImageUri = data.getData();
-                mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
+                mFilePath = CameraUtil.getInstance().getGalleryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
             }
 
@@ -290,7 +287,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void callCertificateListApi() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.getCertificationList().enqueue(new BaseCallback<CertificateResponse>(CertificateActivity.this) {
             @Override
@@ -326,7 +323,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     false);
 
             final ImageView ivCertificate = (ImageView) certificatesView.findViewById(R.id.iv_certificate_upoload_icon);
-            TextView tvUplodPhoto = (TextView) certificatesView.findViewById(R.id.tv_upload_photo);
+            TextView tvUploadPhoto = (TextView) certificatesView.findViewById(R.id.tv_upload_photo);
             TextView tvDatePicker = (TextView) certificatesView.findViewById(R.id.tv_validity_date_picker);
             final TextView tvCertificateName = (TextView) certificatesView.findViewById(R.id.tv_certificates_name);
             tvCertificateName.setText(certificateList.get(i).getCertificateName());
@@ -346,7 +343,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                         .into(ivCertificate);
             }
 
-            tvUplodPhoto.setTag(i);
+            tvUploadPhoto.setTag(i);
             ivCertificate.setTag(i);
             tvDatePicker.setTag(i);
 
@@ -370,7 +367,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     if (certificateList.get(position).isImageUploaded()) {
                         callBottomSheetDate((Integer) ivCertificate.getTag());
                     } else {
-                        Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_phot_first));
+                        Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_photo_first));
                     }
                 }
             });
@@ -405,7 +402,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void postCertificateData(CertificateRequest certificateRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.saveCertificate(certificateRequest).enqueue(new BaseCallback<BaseResponse>(CertificateActivity.this) {
             @Override

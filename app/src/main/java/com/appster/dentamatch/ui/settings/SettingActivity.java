@@ -23,7 +23,6 @@ import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
@@ -143,7 +142,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         request.setPreferredLocation(address);
         request.setZipCode(Integer.valueOf(zipCode));
 
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.updateUserLocation(request).enqueue(new BaseCallback<BaseResponse>(this) {
             @Override
@@ -167,7 +166,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void callLogoutApi() {
 
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.logout().enqueue(new BaseCallback<BaseResponse>(SettingActivity.this) {
             @Override

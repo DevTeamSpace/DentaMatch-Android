@@ -1,7 +1,6 @@
 package com.appster.dentamatch.network.response.calendar;
 
 import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.response.certificates.CertificateResponseData;
 import com.google.gson.annotations.SerializedName;
 
 /**

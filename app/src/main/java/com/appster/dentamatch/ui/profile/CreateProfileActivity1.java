@@ -31,7 +31,6 @@ import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -190,7 +189,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     }
 
     private void callJobListApi() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class,true);
         webServices.jobTitle().enqueue(new BaseCallback<JobTitleResponse>(CreateProfileActivity1.this) {
             @Override
@@ -293,7 +292,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
             } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
                 Uri selectedImageUri = data.getData();
-                mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
+                mFilePath = CameraUtil.getInstance().getGalleryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
             }
 

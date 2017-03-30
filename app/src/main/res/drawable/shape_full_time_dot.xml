@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <solid android:color="@color/job_type_background_full_time"></solid>
+    <solid android:color="@color/job_type_background_full_time"/>
 
     <size
         android:width="5dp"

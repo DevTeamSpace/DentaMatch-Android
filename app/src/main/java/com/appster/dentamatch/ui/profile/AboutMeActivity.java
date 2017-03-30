@@ -16,14 +16,10 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import retrofit2.Call;
 
@@ -71,7 +67,7 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                 hideKeyboard();
 
                 if (checkValidation()) {
-                    postboutMeAData(prepareRequest());
+                    postaboutMeAData(prepareRequest());
                 }
                 break;
 
@@ -95,8 +91,8 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
         return aboutMeRequest;
     }
 
-    private void postboutMeAData(AboutMeRequest aboutMeRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+    private void postaboutMeAData(AboutMeRequest aboutMeRequest) {
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.saveAboutMe(aboutMeRequest).enqueue(new BaseCallback<BaseResponse>(AboutMeActivity.this) {
             @Override

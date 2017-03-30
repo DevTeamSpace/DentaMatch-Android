@@ -60,7 +60,7 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
     private void getNotificationsData(final boolean isRefreshing, boolean isPaginating) {
 
         if(!isPaginating && !isRefreshing){
-            processToShowDialog("", getString(R.string.please_wait), null);
+            processToShowDialog();
         }
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
@@ -78,11 +78,7 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
                     mNotificationData.addAll(response.getNotificationResponseData().getNotificationList());
                     mNotificationAdapter.notifyDataSetChanged();
 
-                    if(response.getNotificationResponseData().getTotal() != mNotificationData.size()){
-                        mIsPaginationNeeded = true;
-                    }else{
-                        mIsPaginationNeeded = false;
-                    }
+                    mIsPaginationNeeded = response.getNotificationResponseData().getTotal() != mNotificationData.size();
 
                     if(mNotificationData.size() > 0){
                         showHideEmptyLabel(View.GONE);

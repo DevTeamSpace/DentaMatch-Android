@@ -2,7 +2,6 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.location.Address;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -21,9 +20,6 @@ import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
-import com.appster.dentamatch.util.Utils;
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 
 /**
@@ -198,7 +194,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.tv_fetched_loation:
+            case R.id.tv_fetched_location:
             case R.id.tv_current_location:
                 Intent intent = new Intent(SearchJobActivity.this, PlacesMapActivity.class);
 

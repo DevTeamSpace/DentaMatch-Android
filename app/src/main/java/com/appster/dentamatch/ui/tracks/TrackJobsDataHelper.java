@@ -2,10 +2,7 @@ package com.appster.dentamatch.ui.tracks;
 
 
 import android.content.Context;
-import android.location.Location;
-
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -112,10 +109,8 @@ public class TrackJobsDataHelper {
     public boolean isPaginationNeeded(int type) {
         if (type == Constants.SEARCHJOBTYPE.SAVED.getValue()) {
             return mSavedPaginationNeeded;
-        } else if(type == Constants.SEARCHJOBTYPE.APPLIED.getValue()){
-            return mAppliedPaginationNeeded;
-        }else{
-            return false;
+        } else {
+            return type == Constants.SEARCHJOBTYPE.APPLIED.getValue() && mAppliedPaginationNeeded;
         }
     }
 

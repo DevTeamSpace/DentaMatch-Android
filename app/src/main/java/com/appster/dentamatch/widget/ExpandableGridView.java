@@ -9,37 +9,30 @@ import android.widget.GridView;
  * Created by anjali on 04/07/16.
  */
 public class ExpandableGridView extends GridView {
+    private boolean expanded = true;
 
-        boolean expanded = true;
+    public ExpandableGridView(Context context) {
+        super(context);
+    }
 
-        public ExpandableGridView(Context context)
-        {
-            super(context);
-        }
+    public ExpandableGridView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-        public ExpandableGridView(Context context, AttributeSet attrs)
-        {
-            super(context, attrs);
-        }
-
-        public ExpandableGridView(Context context, AttributeSet attrs,
-        int defStyle)
-        {
-            super(context, attrs, defStyle);
-        }
+    public ExpandableGridView(Context context, AttributeSet attrs,
+                              int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
 
-    public boolean isExpanded()
-    {
+    private boolean isExpanded() {
         return expanded;
     }
 
     @Override
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // HACK! TAKE THAT ANDROID!
-        if (isExpanded())
-        {
+        if (isExpanded()) {
             // Calculate entire height by providing a very large height hint.
             // But do not use the highest 2 bits of this integer; those are
             // reserved for the MeasureSpec mode.
@@ -49,15 +42,12 @@ public class ExpandableGridView extends GridView {
 
             ViewGroup.LayoutParams params = getLayoutParams();
             params.height = getMeasuredHeight();
-        }
-        else
-        {
+        } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
 
-    public void setExpanded(boolean expanded)
-    {
+    public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
 

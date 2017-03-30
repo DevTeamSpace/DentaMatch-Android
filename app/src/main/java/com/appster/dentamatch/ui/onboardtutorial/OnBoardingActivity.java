@@ -11,7 +11,6 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityOnboardingBinding;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 /**

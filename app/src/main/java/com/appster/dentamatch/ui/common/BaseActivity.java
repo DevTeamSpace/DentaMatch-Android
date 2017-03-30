@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -176,16 +175,16 @@ public abstract class BaseActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        processToShowDialog(title, msg, view);
+                        processToShowDialog();
                     }
                 }, delayTime);
             } else {
-                processToShowDialog(title, msg, view);
+                processToShowDialog();
             }
         }
     }
 
-    public void processToShowDialog(String title, String msg, View view) {
+    public void processToShowDialog() {
         try {
             mProgressDialog =  ProgressDialog.show(this,null,null);
             mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

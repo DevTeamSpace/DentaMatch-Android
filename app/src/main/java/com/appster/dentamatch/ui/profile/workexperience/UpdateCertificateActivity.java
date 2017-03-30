@@ -1,7 +1,6 @@
 package com.appster.dentamatch.ui.profile.workexperience;
 
 import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -14,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateCertificateBinding;
@@ -77,7 +75,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
         if (getIntent() != null) {
             isFromDentalStateBoard = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
-            data = (CertificatesList) getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
+            data =  getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             setViewData();
         }
     }
@@ -134,7 +132,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
                             postCertificateData(preparePostValidation());
                     } else {
-                        Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_phot_first));
+                        Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_photo_first));
                     }
                 }
                 break;
@@ -250,7 +248,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
             } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
                 Uri selectedImageUri = intent.getData();
-                mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
+                mFilePath = CameraUtil.getInstance().getGalleryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
             }
 
@@ -341,7 +339,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     }
 
     private void postCertificateData(CertificateRequest certificateRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.saveCertificate(certificateRequest).enqueue(new BaseCallback<BaseResponse>(UpdateCertificateActivity.this) {
             @Override

@@ -95,11 +95,6 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
         setArguments(new Bundle());
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     /**
      * if the recycler view has reached its last item , update data via pagination if required.
      */

@@ -10,7 +10,6 @@ import com.appster.dentamatch.util.Utils;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -178,12 +177,6 @@ public class DBHelper {
                 }
             }
 
-        } else {
-            /**
-             * Since ChatArray provided has no entries of chat in it , thus we conclude that
-             * the chatArray needs to be updated.
-             */
-            isAlreadyAdded = false;
         }
 
         return isAlreadyAdded;

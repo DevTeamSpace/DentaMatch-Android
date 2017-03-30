@@ -1,7 +1,6 @@
 package com.appster.dentamatch.network.response.notification;
 
 import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.response.jobs.HiredJobResponseData;
 import com.google.gson.annotations.SerializedName;
 
 /**

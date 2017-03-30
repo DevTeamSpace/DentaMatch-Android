@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +31,6 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.CameraUtil;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -165,7 +163,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private LicenceRequest prepareLicenceRequest() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         LicenceRequest licenceRequest = new LicenceRequest();
         licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
         licenceRequest.setLicense(etLicenceNumber.getText().toString());
@@ -308,7 +306,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
             } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
                 Uri selectedImageUri = data.getData();
-                mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
+                mFilePath = CameraUtil.getInstance().getGalleryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
             }
 

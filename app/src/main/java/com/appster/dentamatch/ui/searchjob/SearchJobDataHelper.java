@@ -1,10 +1,7 @@
 package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Context;
-import android.location.Location;
 import android.widget.Toast;
-
-import com.appster.dentamatch.R;
 import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -47,7 +44,7 @@ public class SearchJobDataHelper {
     }
 
     private void showProgress(Context ct) {
-        ((BaseActivity)ct).processToShowDialog("", ct.getString(R.string.please_wait), null);
+        ((BaseActivity)ct).processToShowDialog();
     }
 
     private void hideProgress(Context ct) {

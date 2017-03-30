@@ -2,7 +2,6 @@ package com.appster.dentamatch.ui.tracks;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;

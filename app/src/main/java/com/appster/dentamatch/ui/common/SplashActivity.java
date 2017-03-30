@@ -10,11 +10,8 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.onboardtutorial.OnBoardingActivity;
 import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
-import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
-import com.appster.dentamatch.util.Utils;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 /*
@@ -31,16 +28,6 @@ public class SplashActivity extends Activity implements Runnable {
         manageFirebaseDeviceToken();
         handler.postDelayed(SplashActivity.this, SPLASH_TIME);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override

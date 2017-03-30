@@ -21,7 +21,6 @@ import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import io.realm.RealmResults;
@@ -35,7 +34,7 @@ public class MessagesListFragment extends BaseFragment {
     private FragmentMessagesBinding mMessagesBinding;
     private RecyclerView.LayoutManager mLayoutManager;
     private MessageListAdapter mAdapter;
-    RealmResults<DBModel> data;
+    private RealmResults<DBModel> data;
 
     public static MessagesListFragment newInstance() {
         return new MessagesListFragment();

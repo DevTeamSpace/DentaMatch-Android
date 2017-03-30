@@ -28,8 +28,8 @@
                 android:layout_width="5dp"
                 android:layout_height="5dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_6"
-                android:layout_toLeftOf="@+id/display_current_date"
+                android:layout_marginEnd="@dimen/margin_6"
+                android:layout_toStartOf="@+id/display_current_date"
                 android:background="@drawable/shape_full_time_dot"
                 android:visibility="gone" />
 
@@ -40,7 +40,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="4dp"
                 android:text="@string/txt_current_date"
-                android:textColor="@color/graish_brown_color"
+                android:textColor="@color/grayish_brown_color"
                 app:customFont="@string/font_regular" />
 
             <ImageView
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_gravity="left|center_horizontal"
+                android:layout_gravity="start|center_horizontal"
                 android:contentDescription="@string/app_name"
                 android:padding="@dimen/margin_medium"
 

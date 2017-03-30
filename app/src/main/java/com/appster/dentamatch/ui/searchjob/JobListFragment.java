@@ -55,7 +55,7 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
 
     /**
      * This is the method which is returned from SearchJobDataHelper class whenever requestData()
-     * method is called or updateDataViaPagination() method is called or refersh method is called.
+     * method is called or updateDataViaPagination() method is called or refresh method is called.
      * This method contains event which has the updated joblist array with handling based on
      * pagination already done from the Helper class. We need to simply clear the joblist array
      * present in this class and add the value of list from event to it.

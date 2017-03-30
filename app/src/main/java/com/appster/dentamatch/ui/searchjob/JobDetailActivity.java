@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -35,7 +34,6 @@ import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -227,7 +225,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         JobApplyRequest request = new JobApplyRequest();
         request.setJobId(jobID);
 
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.applyJob(request).enqueue(new BaseCallback<BaseResponse>(this) {
             @Override
@@ -279,7 +277,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         request.setLat(Double.parseDouble(searchRequest.getLat()));
         request.setLng(Double.parseDouble(searchRequest.getLng()));
 
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {
             @Override
@@ -659,8 +657,6 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
         if (isSelected) {
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_selected_large));
-        } else {
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
         }
 
         mGoogleMap.addMarker(options);
@@ -673,7 +669,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         request.setJobId(JobID);
         request.setStatus(status);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>(this) {
             @Override
             public void onSuccess(BaseResponse response) {

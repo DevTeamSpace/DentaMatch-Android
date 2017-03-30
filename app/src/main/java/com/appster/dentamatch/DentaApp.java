@@ -13,44 +13,32 @@ import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
 import com.orhanobut.hawk.Hawk;
 
-import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import io.fabric.sdk.android.Fabric;
 
 
 public class DentaApp extends MultiDexApplication {
-    private static DentaApp appController;
-    private static Context mAppContext;
+    private static DentaApp mAppContext;
     public static int NOTIFICATION_COUNTER=0;
-
 
     @Override
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        appController = this;
-        mAppContext = this.getApplicationContext();
-        NetworkMonitor.initialize(mAppContext);
+        mAppContext = this;
 
         /**
          * Initialize DB Helper class.
          */
         DBHelper.getInstance().initializeRealmConfig(mAppContext);
         Hawk.init(mAppContext).build();
-        NetworkMonitor.initialize(getApplicationContext());
+        NetworkMonitor.initialize();
 
         // Push ReadNotificationRequest initialize
         FirebaseApp.initializeApp(mAppContext);
     }
 
-    public static Context getAppContext() {
+    public static DentaApp getInstance(){
         return mAppContext;
     }
-
-
-    public static DentaApp getInstance() {
-        return appController;
-    }
-
-
 
 }

@@ -31,7 +31,7 @@
                     layout="@layout/layout_work_exp" />
 
                 <include
-                    android:id="@+id/include_layout_refrence1"
+                    android:id="@+id/include_layout_reference1"
 
                     layout="@layout/layout_reference" />
 

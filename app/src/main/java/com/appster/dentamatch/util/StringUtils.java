@@ -31,10 +31,7 @@ public class StringUtils {
     }
 
     public static boolean isValidEmail(String s) {
-        if (isNullOrEmpty(s)) {
-            return false;
-        }
-        return Pattern.compile("^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$").matcher(s).find();
+        return !isNullOrEmpty(s) && Pattern.compile("^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$").matcher(s).find();
     }
 
 

@@ -30,7 +30,6 @@
 
                 android:layout_marginBottom="@dimen/margin_15"
                 android:layout_marginTop="@dimen/margin_25">
-                <!--android:background="@drawable/circular_shape"-->
 
                 <ProgressBar
                     android:id="@+id/create_profile_progress_bar"
@@ -131,7 +130,7 @@
                 android:gravity="start|bottom"
                 android:paddingBottom="@dimen/margin_medium"
                 android:paddingStart="@dimen/margin_normal"
-                android:text="@string/lable_licence"
+                android:text="@string/label_licence"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_13"
                 app:customFont="@string/font_medium" />
@@ -196,7 +195,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/button_bg_color"
         android:gravity="center"
-        android:text="@string/lable_next"
+        android:text="@string/label_next"
         android:textColor="@color/white_color"
         android:textSize="@dimen/text_size_normal"
         app:customBackground="@string/font_bold" />

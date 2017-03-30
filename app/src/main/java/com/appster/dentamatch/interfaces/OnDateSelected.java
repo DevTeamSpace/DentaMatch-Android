@@ -7,6 +7,6 @@ import java.util.Calendar;
  */
 
 public interface OnDateSelected {
-    public void selectedDate(String date);
-    public void onMonthChanged(Calendar cal);
+     void selectedDate(String date);
+     void onMonthChanged(Calendar cal);
 }

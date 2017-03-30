@@ -1,6 +1,5 @@
 package com.appster.dentamatch.network.response.notification;
 
-import com.appster.dentamatch.network.response.jobs.HiredJobs;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

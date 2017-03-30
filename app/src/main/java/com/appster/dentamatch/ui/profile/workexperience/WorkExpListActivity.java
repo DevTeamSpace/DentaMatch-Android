@@ -25,7 +25,6 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.UsPhoneNumberFormat;
 import com.appster.dentamatch.util.Utils;
@@ -130,7 +129,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     }
 
     private WorkExpListRequest prepareListRequest() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         WorkExpListRequest workExpListRequest = new WorkExpListRequest();
         workExpListRequest.setLimit(Constants.WORK_EXP_LIST_LIMIT);
@@ -220,9 +219,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName),
                 Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
                 Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
-                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
-                Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile),
-                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
 
         if (isMoveForward) {
             hideKeyboard();
@@ -292,7 +289,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void callAddExpApi(WorkExpRequest workExpRequest, final boolean isMoveNext) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.addWorkExp(workExpRequest).enqueue(new BaseCallback<WorkExpResponse>(WorkExpListActivity.this) {

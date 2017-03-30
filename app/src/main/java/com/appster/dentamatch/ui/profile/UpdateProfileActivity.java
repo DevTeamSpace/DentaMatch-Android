@@ -31,7 +31,6 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -203,7 +202,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
             if (resultCode == RESULT_OK) {
                 Uri selectedImageUri = data.getData();
-                mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
+                mFilePath = CameraUtil.getInstance().getGalleryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
 
                 if (mFilePath != null) {

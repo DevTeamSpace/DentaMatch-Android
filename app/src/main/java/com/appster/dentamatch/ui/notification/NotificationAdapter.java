@@ -27,7 +27,6 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
@@ -88,7 +87,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
              */
             if (data.getCreatedAt() != null) {
                 holder.tvDuration.setVisibility(View.VISIBLE);
-                holder.tvDuration.setText(Utils.getDuration(Utils.getDate(data.getCreatedAt(), Constants.DateFormet.YYYYMMDDHHMMSS), mContext));
+                holder.tvDuration.setText(Utils.getDuration(Utils.getDate(data.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS), mContext));
             } else {
                 holder.tvDuration.setVisibility(View.GONE);
             }
@@ -217,7 +216,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     private void updateSeenStatus(final int position, final boolean isInvite) {
-        ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
+        ((BaseActivity) mContext).processToShowDialog();
         ReadNotificationRequest request = new ReadNotificationRequest();
         request.setNotificationId(mNotificationList.get(position).getId());
 
@@ -251,7 +250,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private void callInviteStatusApi(final int position, int inviteStatus) {
 
         if (mNotificationList.get(position) != null) {
-            ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
+            ((BaseActivity) mContext).processToShowDialog();
             AcceptRejectInviteRequest request = new AcceptRejectInviteRequest();
             request.setNotificationId(mNotificationList.get(position).getId());
             request.setAcceptStatus(inviteStatus);
@@ -283,7 +282,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private void callDeleteNotificationApi(final int position) {
         if (mNotificationList.get(position) != null) {
-            ((BaseActivity) mContext).processToShowDialog("", mContext.getString(R.string.please_wait), null);
+            ((BaseActivity) mContext).processToShowDialog();
             ReadNotificationRequest request = new ReadNotificationRequest();
             request.setNotificationId(mNotificationList.get(position).getId());
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);

@@ -32,7 +32,7 @@
                     android:layout_marginTop="@dimen/margin_17"
                     android:text="@string/job_type"
                     android:textAllCaps="true"
-                    android:textColor="@color/graish_brown_color"
+                    android:textColor="@color/grayish_brown_color"
                     android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_medium" />
 
@@ -142,7 +142,7 @@
                         android:layout_width="@dimen/circular_text_dimen"
                         android:layout_height="@dimen/circular_text_dimen"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/margin_6"
+                        android:layout_marginEnd="@dimen/margin_6"
                         android:gravity="center"
                         android:src="@drawable/shape_circular_text_view"
                         android:text="@string/sunday"
@@ -298,7 +298,7 @@
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
-                    android:visibility="gone"></com.appster.dentamatch.ui.calendar.CalendarViewSetAvailability>
+                    android:visibility="gone"/>
 
             </LinearLayout>
         </ScrollView>

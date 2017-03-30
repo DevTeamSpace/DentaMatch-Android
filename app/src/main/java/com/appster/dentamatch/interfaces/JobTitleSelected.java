@@ -10,5 +10,5 @@ import java.util.ArrayList;
  */
 
 public interface JobTitleSelected {
-    public void onJobTitleSelected(ArrayList<JobTitleListModel> jobTitleList);
+     void onJobTitleSelected(ArrayList<JobTitleListModel> jobTitleList);
 }

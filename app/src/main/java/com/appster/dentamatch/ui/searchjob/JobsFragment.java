@@ -18,7 +18,6 @@ import com.appster.dentamatch.network.response.notification.UnReadNotificationCo
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.notification.NotificationActivity;
-import com.appster.dentamatch.util.LogUtils;
 
 import retrofit2.Call;
 

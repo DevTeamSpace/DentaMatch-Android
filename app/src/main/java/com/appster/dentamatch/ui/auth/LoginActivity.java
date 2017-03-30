@@ -3,7 +3,6 @@ package com.appster.dentamatch.ui.auth;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -34,7 +33,6 @@ import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -84,7 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void setPolicySpanString() {
         SpannableString spanString = new SpannableString(
-                getString(R.string.label_accept_term_ncondition));
+                getString(R.string.label_accept_term_n_condition));
 
         ClickableSpan termsAndCondition = new ClickableSpan() {
             @Override
@@ -116,16 +114,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         };
 
-        int tncStart = getString(R.string.label_accept_term_ncondition).indexOf("Term");
-        int tncEnd = getString(R.string.label_accept_term_ncondition).lastIndexOf("and") - 1;
+        int tncStart = getString(R.string.label_accept_term_n_condition).indexOf("Term");
+        int tncEnd = getString(R.string.label_accept_term_n_condition).lastIndexOf("and") - 1;
         Utils.setSpannClickEvent(spanString, tncStart, tncEnd, termsAndCondition);
         Utils.setSpannColor(spanString, tncStart, tncEnd, ContextCompat.getColor(this, R.color.button_bg_color));
-        Utils.setSpannUnderline(spanString, tncStart, tncEnd);
 
-        int privacyStart = getString(R.string.label_accept_term_ncondition).indexOf("Privacy");
+        int privacyStart = getString(R.string.label_accept_term_n_condition).indexOf("Privacy");
         Utils.setSpannClickEvent(spanString, privacyStart + 1, spanString.length(), privacy);
         Utils.setSpannColor(spanString, privacyStart, spanString.length(), ContextCompat.getColor(this, R.color.button_bg_color));
-        Utils.setSpannUnderline(spanString, privacyStart + 1, spanString.length());
         Utils.setSpannCommanProperty(mBinder.tvTermNPolicy, spanString);
     }
 
@@ -317,7 +313,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private LoginRequest prepareSignUpRequest() {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setDeviceId(Utils.getDeviceID(getApplicationContext()));
+        loginRequest.setDeviceId(Utils.getDeviceID());
         loginRequest.setDeviceToken(Utils.getDeviceToken());
         loginRequest.setDeviceType(Constants.DEVICE_TYPE);
         loginRequest.setEmail(getTextFromEditText(mBinder.registerEtEmail));
@@ -333,7 +329,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void signUpApi(LoginRequest loginRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.signUp(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
@@ -362,9 +358,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private LoginRequest prepareLoginRequest() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setDeviceId(Utils.getDeviceID(getApplicationContext()));
+        loginRequest.setDeviceId(Utils.getDeviceID());
         loginRequest.setDeviceToken(Utils.getDeviceToken());
         loginRequest.setDeviceType(Constants.DEVICE_TYPE);
         loginRequest.setEmail(getTextFromEditText(mBinder.loginEtEmail));

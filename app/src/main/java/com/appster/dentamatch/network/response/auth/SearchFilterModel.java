@@ -1,6 +1,5 @@
 package com.appster.dentamatch.network.response.auth;
 
-import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.model.SelectedJobTitleModel;
 import com.google.gson.annotations.SerializedName;
 

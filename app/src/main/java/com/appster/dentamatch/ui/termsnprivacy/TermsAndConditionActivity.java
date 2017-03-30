@@ -1,12 +1,8 @@
 package com.appster.dentamatch.ui.termsnprivacy;
 
-import android.annotation.TargetApi;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 
 import com.appster.dentamatch.BuildConfig;
@@ -48,7 +44,7 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
         mBinder.webviewTermAndCondition.post(new Runnable() {
             @Override
             public void run() {
-                processToShowDialog("", getString(R.string.please_wait), null);
+                processToShowDialog();
                 mBinder.webviewTermAndCondition.setWebViewClient(new WebViewClient());
                 mBinder.webviewTermAndCondition.loadUrl(url);
             }
@@ -74,11 +70,6 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
     }
 
     private class WebViewClient extends android.webkit.WebViewClient {
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
-            super.onPageStarted(view, url, favicon);
-        }
 
         @SuppressWarnings("deprecation")
         @Override

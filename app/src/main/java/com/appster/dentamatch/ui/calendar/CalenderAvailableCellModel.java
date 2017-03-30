@@ -8,22 +8,22 @@ import java.util.Date;
  */
 public class CalenderAvailableCellModel {
 
-    private Date date;
-    private boolean isSelected;
+    private Date mDate;
+    private boolean mIsSelected;
 
     public Date getDate() {
-        return date;
+        return mDate;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.mDate = date;
     }
 
     public boolean isSelected() {
-        return isSelected;
+        return mIsSelected;
     }
 
     public void setSelected(boolean selected) {
-        isSelected = selected;
+        mIsSelected = selected;
     }
 }

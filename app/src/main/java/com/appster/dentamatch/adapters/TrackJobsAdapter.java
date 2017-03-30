@@ -230,7 +230,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         request.setJobId(JobID);
         request.setStatus(0);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        ((BaseActivity) mContext).processToShowDialog("","",null);
+        ((BaseActivity) mContext).processToShowDialog();
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
             @Override
             public void onSuccess(BaseResponse response) {

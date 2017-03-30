@@ -49,20 +49,20 @@ public class SocketManager {
 
     public static final String PARAM_FROM_ID = "fromId";
     public static final String PARAM_TO_ID = "toId";
-    public static final String PARAM_USERID = "userId";
-    public static final String PARAM_USERNAME = "userName";
+    private static final String PARAM_USERID = "userId";
+    private static final String PARAM_USERNAME = "userName";
     public static final String PARAM_SENT_TIME = "sentTime";
     public static final String PARAM_USER_MSG = "message";
-    public static final String PARAM_PAGE = "pageNo";
+    private static final String PARAM_PAGE = "pageNo";
     public static final String PARAM_RECRUITER_NAME = "fromName";
     public static final String PARAM_MESSAGE_ID = "messageId";
-    public static final String PARAM_BLOCK_STATUS = "blockStatus";
-    public static final String PARAM_USER_TYPE = "userType";
+    private static final String PARAM_BLOCK_STATUS = "blockStatus";
+    private static final String PARAM_USER_TYPE = "userType";
 
     public static final int ON_RESUME = 0;
     public static final int ON_PAUSE = 1;
-    public static final String MESSAGE_LIST_ID = "messageListId";
-    public static final String BLOCKED = "blocked";
+    private static final String MESSAGE_LIST_ID = "messageListId";
+    private static final String BLOCKED = "blocked";
 
     private final String EMIT_USER_HISTORY = "getHistory";
     private final String EMIT_INIT = "init";

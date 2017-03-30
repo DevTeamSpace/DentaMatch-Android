@@ -80,7 +80,7 @@
                     android:layout_marginTop="@dimen/margin_medium"
 
                     android:gravity="center_horizontal"
-                    android:text="@string/lable_job_title"
+                    android:text="@string/label_job_title"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_normal"
                     app:customFont="@string/font_medium" />

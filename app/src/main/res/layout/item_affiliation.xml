@@ -15,7 +15,7 @@
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_15"
-            android:textColor="@color/graish_brown_color"
+            android:textColor="@color/grayish_brown_color"
             android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_medium" />
 

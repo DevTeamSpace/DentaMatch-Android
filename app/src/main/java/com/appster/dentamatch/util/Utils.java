@@ -1,6 +1,7 @@
 
 package com.appster.dentamatch.util;
 
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,6 +25,7 @@ import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 import android.text.Editable;
@@ -65,7 +67,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Utils for app
@@ -92,7 +93,7 @@ public class Utils {
 
 
 
-    public synchronized static String getDeviceID(Context context) {
+    public synchronized static String getDeviceID() {
         String uniqueID = PreferenceUtil.getDeviceId();
 
         if (uniqueID == null) {
@@ -139,11 +140,7 @@ public class Utils {
         String lastMsgDateLabel = DateOnlyFormat.format(lastMsgDate);
         String receivedMsgDateLabel = DateOnlyFormat.format(receivedMsgDate);
 
-        if (lastMsgDateLabel.equalsIgnoreCase(receivedMsgDateLabel)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !lastMsgDateLabel.equalsIgnoreCase(receivedMsgDateLabel);
     }
 
     public static Address getReverseGeoCode(Context ct,LatLng latLng) {
@@ -250,17 +247,6 @@ public class Utils {
 
     public static void showToastLong(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-    }
-
-    /**
-     * to set underline on a specific string
-     *
-     * @param spanUnderline
-     * @param start
-     * @param end
-     */
-    public static void setSpannUnderline(SpannableString spanUnderline, int start, int end) {
-//        spanUnderline.setSpan(new UnderlineSpan(), start, end, 0);
     }
 
     /**
@@ -516,7 +502,7 @@ public class Utils {
     public static String getExpYears(int month) {
 
         if (month != 0) {
-            return month / 12 + " " + DentaApp.getAppContext().getString(R.string.year) + " " + month % 12 + " " + DentaApp.getAppContext().getString(R.string.month);
+            return month / 12 + " " + DentaApp.getInstance().getString(R.string.year) + " " + month % 12 + " " + DentaApp.getInstance().getString(R.string.month);
         }
         return "";
     }
@@ -571,6 +557,8 @@ public class Utils {
         notificationManager.cancelAll();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -586,8 +574,8 @@ public class Utils {
                 }
             }
         } else {
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            List<ActivityManager.AppTask> taskInfo = am.getAppTasks();
+            ComponentName componentInfo = taskInfo.get(0).getTaskInfo().topActivity;
             if (componentInfo.getPackageName().equals(context.getPackageName())) {
                 isInBackground = false;
             }
@@ -679,10 +667,7 @@ public class Utils {
     }
 
     public static boolean isValidEmailAddress(String email) {
-//        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-
         String ePattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-//        String ePattern = "\"^[_A-Za-z0-9-]+(\\\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,})$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
@@ -694,8 +679,7 @@ public class Utils {
             Date date = inputFormat.parse(dateStr);
 
             SimpleDateFormat reqFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
-            String formattedDate = reqFormat.format(date);
-            return formattedDate;
+            return reqFormat.format(date);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -706,9 +690,8 @@ public class Utils {
         SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         // myDate is the java.util.Date in yyyy-mm-dd format
         // Converting it into String using formatter
-        String strDate = sm.format(mydate);
         //Converting the String back to java.util.Date
-        return strDate;
+        return sm.format(mydate);
     }
 
     public static String getRequriedServerDateFormet(String dateStr) {
@@ -717,8 +700,7 @@ public class Utils {
             Date date = inputFormat.parse(dateStr);
 
             SimpleDateFormat reqFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            String formattedDate = reqFormat.format(date);
-            return formattedDate;
+            return reqFormat.format(date);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -735,8 +717,7 @@ public class Utils {
             }
             inputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-            Date date = inputFormat.parse(dateStr);
-            return date;
+            return inputFormat.parse(dateStr);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -750,8 +731,7 @@ public class Utils {
             Date date = inputFormat.parse(dateStr);
 
             SimpleDateFormat reqFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-            String formattedDate = reqFormat.format(date);
-            return formattedDate;
+            return reqFormat.format(date);
         } catch (Exception e) {
             e.printStackTrace();
             return "";

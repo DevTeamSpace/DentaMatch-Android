@@ -116,9 +116,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                         Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceName),
                         Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceEmail),
                         Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName),
-                        Utils.getStringFromEditText(mBinder.includeRefrence1.etOfficeReferenceMobile),
-                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceMobile));
+                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName));
 
                 if (isMoveForward) {
                     hideKeyboard();

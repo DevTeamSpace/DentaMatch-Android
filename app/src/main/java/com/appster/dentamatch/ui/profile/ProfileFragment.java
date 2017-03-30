@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +37,6 @@ import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
 import com.appster.dentamatch.ui.profile.workexperience.WorkExpListActivity;
 import com.appster.dentamatch.ui.settings.SettingActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
@@ -103,7 +99,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private void initViews() {
 //        profileBinding.cellDentalStateBoard.tvAddCertificates.setText(getString(R.string.add_dental_state_board));
-        profileBinding.cellAffiliation.tvAddCertificates.setText(getString(R.string.add_affilitaion));
+        profileBinding.cellAffiliation.tvAddCertificates.setText(getString(R.string.add_affiliation));
         profileBinding.cellExp.tvAddCertificates.setText(getString(R.string.add_more_exp));
         profileBinding.cellKeySkill.tvAddCertificates.setText(getString(R.string.add_key_skill));
         profileBinding.cellSchooling.tvAddCertificates.setText(getString(R.string.add_school));

@@ -100,11 +100,6 @@ import retrofit2.Call;
             mBinding.swipeRefreshJobList.setOnRefreshListener(this);
         }
 
-        @Override
-        public void onPause() {
-            super.onPause();
-        }
-
         /**
          * if the recycler view has reached its last item , update data via pagination if required.
          */

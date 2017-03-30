@@ -14,7 +14,6 @@ import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import retrofit2.Call;
@@ -73,7 +72,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private LoginRequest prepareForgotPasswordRequest() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(mBinder.etEmail.getText().toString());

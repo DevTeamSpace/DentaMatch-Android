@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
     private static final String TAG = CalendarEventGridAdapter.class.getSimpleName();
     private LayoutInflater mInflater;
     private List<CalenderAvailableCellModel> monthlyDates;
-    private Calendar currentDate;
+    private Calendar mCurrentDate;
     private Context mContext;
     private ArrayList<HiredJobs> mJobList;
 
@@ -36,7 +35,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
     public CalendarEventGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate) {
         super(context, R.layout.single_cell_layout);
         this.monthlyDates = monthlyDates;
-        this.currentDate = currentDate;
+        this.mCurrentDate = currentDate;
         mContext = context;
         mInflater = LayoutInflater.from(context);
     }
@@ -66,8 +65,8 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
         int dayValue = dateCal.get(Calendar.DAY_OF_MONTH);
         int displayMonth = dateCal.get(Calendar.MONTH) + 1;
         int displayYear = dateCal.get(Calendar.YEAR);
-        int currentMonth = currentDate.get(Calendar.MONTH) + 1;
-        int currentYear = currentDate.get(Calendar.YEAR);
+        int currentMonth = mCurrentDate.get(Calendar.MONTH) + 1;
+        int currentYear = mCurrentDate.get(Calendar.YEAR);
         View view = convertView;
 
         if (view == null) {
@@ -91,7 +90,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                 view.setBackgroundResource(R.drawable.shape_date_selection);
 
             } else {
-                cellNumber.setTextColor(ContextCompat.getColor(mContext, R.color.graish_brown_color));
+                cellNumber.setTextColor(ContextCompat.getColor(mContext, R.color.grayish_brown_color));
                 view.setBackgroundResource(0);
             }
 
@@ -104,7 +103,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                 dot3.setVisibility(GONE);
                 try {
                     for (int k = 0; k < mJobList.size(); k++) {
-                        if (Utils.getDate(mJobList.get(k).getJobDate(), Constants.DateFormet.YYYYMMDD).compareTo(Utils.parseDate(mDate)) <= 0) {
+                        if (Utils.getDate(mJobList.get(k).getJobDate(), Constants.DateFormat.YYYYMMDD).compareTo(Utils.parseDate(mDate)) <= 0) {
                             if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_monday)) && mJobList.get(k).getIsMonday() == 1) {
                                 dot2.setVisibility(View.VISIBLE);
                             } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_tuesday)) && mJobList.get(k).getIsTuesday() == 1) {

@@ -134,7 +134,7 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvType = (TextView) itemLayoutView.findViewById(R.id.tv_affiliation_type);
             cbCheckBox = (CheckBox) itemLayoutView.findViewById(R.id.cb_check_box);
             etOther = (EditText) itemLayoutView.findViewById(R.id.et_other);
-            viewUnderLine = (View) itemLayoutView.findViewById(R.id.view_line);
+            viewUnderLine = itemLayoutView.findViewById(R.id.view_line);
 
         }
     }

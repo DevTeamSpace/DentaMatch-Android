@@ -19,26 +19,12 @@
     <string name="skip_button">SKIP</string>
     <string name="done_button">Done</string>
 
-    <string name="joyride_page1_text1">Search</string>
-    <string name="joyride_page1_text2">An easy way to find local businesses, services and products. Get only the most relevant results. No fluff.</string>
-
-    <string name="joyride_page2_text1">Curated List</string>
-    <string name="joyride_page2_text2">Create, maintain and share your own curated list of businesses. You can also browse other people’s curated lists.</string>
-
-    <string name="joyride_page3_text1">Rate and Review</string>
-    <string name="joyride_page3_text2">Share your thoughts on local businesses and services through ratings and reviews.</string>
-
-    <string name="joyride_page4_text1">Shop</string>
-    <string name="joyride_page4_text2">Buy products and services spanning across multiple categories and track them with ease.</string>
 
     <!--Input digits-->
-    <string name="digits_numeric_only">0123456789</string>
-    <string name="digits_alpha_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_only">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_email">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
     <string name="digits_other">0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-/</string>
     <string name="digits_alpha_numeric_special">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_./:;,&amp;amp;</string>
-    <string name="digits_address">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
     <string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
 
     <!--  Error string-->
@@ -56,8 +42,6 @@
     <string name="password_contains_space">Password can not contain spaces.</string>
     <string name="error_something_wrong">Something went wrong!</string>
     <string name="error_no_network_connection">No Network Connection</string>
-    <string name="error_unable_reterive_email">Unable to retrieve email address from your social account.</string>
-    <string name="error_unable_access_account">Unable to access to your account.</string>
     <string name="error_empty_address">Please select an address.</string>
     <string name="alert_empty_notification">You don’t have any Notifications right now.</string>
 
@@ -75,7 +59,7 @@
     <string name="lname_label">Last Name</string>
     <string name="register_help_info">Helps recruiters to find you easily</string>
     <string name="login_info_label">Login using your registered email</string>
-    <string name="label_accept_term_ncondition">I agree to the Terms and Conditions and Privacy Policy </string>
+    <string name="label_accept_term_n_condition">I agree to the Terms and Conditions and Privacy Policy </string>
     <string name="forgot_password_title">Enter your email address below and we’ll send you the instructions on how to change your password.</string>
 
     <!--  Reset password string-->
@@ -86,20 +70,19 @@
 
     <!--  Bottom sheet string-->
     <string name="label_take_photo">Take photo</string>
-    <string name="label_choose_gallary">Choose from gallery</string>
+    <string name="label_choose_gallery">Choose from gallery</string>
     <string name="dental_state_board">ADD DENTAL STATE BOARD</string>
-    <string name="certificate_dental_state_board">Certificate_denta</string>
-    <string name="lable_licence">LICENSE</string>
+    <string name="label_licence">LICENSE</string>
     <string name="lable_licence_number">License Number</string>
     <string name="label_upload_photo">Upload Photo</string>
     <string name="lable_state">State</string>
-    <string name="lable_next">Next</string>
+    <string name="label_next">Next</string>
     <string name="lable_update">UPDATE</string>
     <string name="text_camera_permision">Camera and storage permission is required to take photos of the userModel.</string>
     <string name="decode_stream_alert">Unable to parse this image.</string>
     <string name="lable_not_now">Not now</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
-    <string name="lable_job_title">Current Job Title</string>
+    <string name="label_job_title">Current Job Title</string>
     <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
 
     <!--alert button-->
@@ -137,11 +120,8 @@
 
     <!--Server error-->
     <string name="authentication_error">Authentication error, please login again.</string>
-    <string name="server_invalid_response">Something went wrong.</string>
     <string name="server_error">There is some issue connecting with server.</string>
-    <string name="server_error_internal">Server internal error.</string>
     <string name="no_internet">Please check your Internet Connection.</string>
-    <string name="unidentified_error">Oops, Something went wrong..</string>
     <string name="add_more_refrence">Add More References</string>
     <string name="add_more_exp">Add More Experience</string>
 
@@ -161,7 +141,6 @@
     <string name="header_schooling_exp">SCHOOLING &amp; EXPERIENCE</string>
 
     <string name="autocomplete_hint">Search places</string>
-    <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="get_started">GET STARTED</string>
     <string name="hint_type_to_search">Type to search</string>
     <string name="hint_year_of_graduation">Year of graduation</string>
@@ -184,7 +163,6 @@
     <string name="licence_number_hyfen_alert">Licence number can not begin or end with the hyphen (-) </string>
     <string name="blank_state_alert">State text field can not be left blank.</string>
     <string name="state_max_length">State can not be exceed 30 characters</string>
-    <string name="state_blank_space_alert">State can not contain blank spaces</string>
     <string name="invalid_exp_selection">Experience can never be zero.</string>
     <string name="blank_job_title_alert">Please select job title</string>
     <string name="blank_office_name_alert">Office name can never be blank</string>
@@ -192,11 +170,8 @@
     <string name="blank_city_alert">City can never be blank</string>
     <string name="office_name_length_alert">Office name length can not exceed 30 characters</string>
     <string name="office_address_length_alert">Office address length can not exceed 30 characters</string>
-    <string name="refrence_length_alert">Reference name length can not exceed 30 characters</string>
     <string name="city_length_alert">City name length can not exceed 30 characters</string>
     <string name="blank_year_alert">Please select experience.</string>
-    <string name="blank_refrence_name_alert">Reference Name can never be blank.</string>
-    <string name="blank_phone_number_alert">Phone number can never be blank</string>
     <string name="complete_reference">Please add the Reference 1 first.</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
@@ -220,8 +195,7 @@
     <string name="title_affiliation">Affiliations</string>
     <string name="edit_label">Edit</string>
     <string name="header_edit_profile">EDIT PROFILE</string>
-    <string name="add_dental_state_board">Add dental state board</string>
-    <string name="add_affilitaion">Add professional affiliations</string>
+    <string name="add_affiliation">Add professional affiliations</string>
     <string name="add_key_skill">Add skills category</string>
     <string name="add_school">Add schooling and certification</string>
     <string name="add_licence">Add license details</string>
@@ -247,7 +221,7 @@
     <string name="error_no_job_type">Job type  cannot be empty</string>
     <string name="error_no_location">Location cannot be empty</string>
     <string name="error_no_description">Introduction cannot be empty</string>
-    <string name="alert_upload_phot_first">Please upload certificate image first</string>
+    <string name="alert_upload_photo_first">Please upload certificate image first</string>
     <!--search job-->
     <string name="job_title">JOB TITLE</string>
     <string name="full_time">Full Time</string>
@@ -271,11 +245,8 @@
     <string name="job_description_label">JOB DESCRIPTION</string>
     <string name="office_description_label">OFFICE DESCRIPTION</string>
     <string name="working_hours_label">WORKING HOURS</string>
-    <string name="dress_code_label">DRESS CODE</string>
-    <string name="parking_availability_label">PARKING AVAILABILITY</string>
     <string name="map_label">MAP</string>
     <string name="button_apply_for_job">APPLY FOR JOB</string>
-    <string name="button_already_applied">JOB ALREADY APPLIED</string>
     <string name="txt_part_time">Part Time</string>
     <string name="txt_full_time">Full Time</string>
     <string name="txt_temporary">Temporary</string>
@@ -291,7 +262,6 @@
     <string name="txt_sunday">Sun</string>
     <string name="not_applicable">N/A</string>
     <string name="txt_read_more">READ MORE</string>
-    <string name="text_show_label">SHOW LESS</string>
     <string name="sun">SU</string>
     <string name="mon">MO</string>
     <string name="tue">TU</string>
@@ -299,7 +269,6 @@
     <string name="thu">TH</string>
     <string name="fri">FR</string>
     <string name="sat">SA</string>
-    <string name="last_date">30</string>
     <string name="booked_job">BOOKED JOBS</string>
     <string name="txt_show_less">READ LESS</string>
     <string name="txt_full_sunday">Sunday</string>
@@ -331,7 +300,6 @@
     <string name="header_calendar">Calendar</string>
     <string name="text_todays">Today</string>
     <string name="alert_cancel_job">Are you sure you want to cancel the job?</string>
-    <string name="alert_dlt_notification">Are you sure you want to delete this notification?</string>
     <string name="alert_reason_cancel_job">Please enter a reason for cancelling the job.</string>
     <string name="alert_select_job_type">Please select at least one available option.</string>
     <string name="sec">SEC AGO </string>
@@ -363,7 +331,7 @@
     <string name="msg_school_name_bank">School name can never be blank.</string>
     <string name="msg_select_year_of_graduation">"Please select year of graduation for  "</string>
     <string name="txt_error_contacting_api">"Error contacting API: "</string>
-    <string name="msg_syncing_chat">Syncing chat. Please Wait...</string>
+    <string name="msg_syncing_chat">Syncing chat. Please Wait…</string>
     <string name="txt_max_notification_count">999</string>
     <string name="msg_warning_delete_notification">Are you sure you want to delete the notification?</string>
     <string name="txt_gallery_header">Select File</string>
@@ -386,14 +354,12 @@
     <string name="msg_select_job">Please select at least one job to proceed</string>
     <string name="txt_saved">SAVED</string>
     <string name="txt_reason_for_the_cancellation">Reason for the cancellation</string>
-    <string name="hint_user_name">User Name</string>
     <string name="txt_no_applied_jobs">You don’t have any applied jobs</string>
     <string name="txt_no_saved_jobs">You don’t have any saved jobs</string>
     <string name="txt_no_shortlisted_jobs">You don’t have any shortlisted jobs</string>
     <string name="txt_no_jobs_found">No jobs found</string>
     <string name="txt_delete">DELETE</string>
     <string name="txt_note">Note</string>
-    <string name="txt_under_development">This part of application is\n under development.</string>
     <string name="txt_current_date">current date</string>
     <string name="hint_short_desc">Please write a short description.</string>
     <string name="txt_submit">SUBMIT</string>

@@ -8,25 +8,19 @@
 
 
     <color name="profile_bg">#f5f5f5</color>
-    <color name="shadow">#22999999</color>
     <color name="text_color_chat">#8e9091</color>
     <color name="chat_message">#474747</color>
 
-    <color name="semi_transparent_gray">#22000000</color>
-    <color name="transparent">#00000000</color>
     <color name="warm_grey_three">#898989</color>
     <color name="light_gray">#cccccc</color>
-    <color name="start_color">#002c6c</color>
-    <color name="end_color">#950e173e</color>
-    <color name="center_color">#0e199f</color>
     <color name="white_color">#ffffff</color>
     <color name="white_1">#e5e5e5</color>
     <color name="off_white">#f9f9f9</color>
     <color name="black_color">#0f183e</color>
     <color name="red_color">#fe3824</color>
-    <color name="white_color_pacity">#50ffffff</color>
-    <color name="edt_boundry_color">#e4e4e4</color>
-    <color name="edt_boundry_highlight_color">#046dbb</color>
+    <color name="white_color_opacity">#50ffffff</color>
+    <color name="edt_boundary_color">#e4e4e4</color>
+    <color name="edt_boundary_highlight_color">#046dbb</color>
     <color name="edt_hint_color">#959595</color>
     <color name="note_color">#8a414141</color>
     <color name="register_help_color">#a6a6a6</color>
@@ -50,10 +44,9 @@
     <color name="job_type_background_temporary">#f1b85a</color>
     <color name="get_started_color">#02bbd5</color>
     <color name="cell_boundry_color">#e4e4e4</color>
-    <color name="graish_brown_color">#515151</color>
+    <color name="grayish_brown_color">#515151</color>
     <color name="graish_brown_opacity_color">#50515151</color>
     <color name="line_divider">#e5e5e5</color>
-    <color name="nav_bg_color">#b2b2b2</color>
     <color name="nav_text_default_color">#50b2b2b2</color>
     <color name="cerulean_color">#0480dc</color>
     <color name="warm_gray_color">#939393</color>

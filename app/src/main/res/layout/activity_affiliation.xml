@@ -28,7 +28,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/button_bg_color"
             android:gravity="center"
-            android:text="@string/lable_next"
+            android:text="@string/label_next"
             android:textColor="@color/white_color"
             android:textSize="@dimen/text_size_normal"
             app:customBackground="@string/font_bold" />

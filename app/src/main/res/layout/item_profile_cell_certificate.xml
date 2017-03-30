@@ -115,7 +115,7 @@
                 android:id="@+id/tv_certificate_validity_date"
                 style="@style/text_view_normal"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/margin_6"
+                android:layout_marginStart="@dimen/margin_6"
                 android:text="@string/header_certification"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_13"

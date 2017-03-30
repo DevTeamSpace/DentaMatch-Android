@@ -29,7 +29,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btn_next_work_exp_lsit"
+            android:layout_above="@+id/btn_next_work_exp_list"
             android:layout_below="@+id/tv_title_screen">
 
             <LinearLayout
@@ -51,7 +51,7 @@
                     layout="@layout/layout_work_exp" />
 
                 <include
-                    android:id="@+id/include_layout_refrence1"
+                    android:id="@+id/include_layout_reference1"
                     layout="@layout/layout_reference" />
 
                 <LinearLayout
@@ -120,14 +120,14 @@
         </ScrollView>
 
         <com.appster.dentamatch.widget.CustomButton
-            android:id="@+id/btn_next_work_exp_lsit"
+            android:id="@+id/btn_next_work_exp_list"
             style="@style/button_style"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_alignParentBottom="true"
             android:background="@color/button_bg_color"
             android:gravity="center"
-            android:text="@string/lable_next"
+            android:text="@string/label_next"
             android:textColor="@color/white_color"
             android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_regular" />

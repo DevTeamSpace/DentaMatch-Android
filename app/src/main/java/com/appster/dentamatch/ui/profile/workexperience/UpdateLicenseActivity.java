@@ -17,7 +17,6 @@ import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -110,7 +109,7 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
     }
 
     private LicenceRequest prepareLicenceRequest() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         LicenceRequest licenceRequest = new LicenceRequest();
         licenceRequest.setLicense(mBinder.etLicence.getText().toString());
         licenceRequest.setState(mBinder.etState.getText().toString());

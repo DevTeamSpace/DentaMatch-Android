@@ -14,7 +14,6 @@ import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import retrofit2.Call;
@@ -168,7 +167,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     }
 
     private void callResetPassword(ChangePasswordRequest request) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.changePassword(request).enqueue(new BaseCallback<BaseResponse>(ResetPasswordActivity.this) {
             @Override

@@ -29,7 +29,6 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -134,7 +133,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void getSkillsListApi() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.getSkillsList().enqueue(new BaseCallback<SkillsResponse>(this) {
@@ -201,7 +200,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void updateSkillsListApi(final SkillsUpdateRequest skillsUpdateRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.updateSkills(skillsUpdateRequest).enqueue(new BaseCallback<BaseResponse>(this) {

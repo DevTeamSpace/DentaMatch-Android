@@ -29,15 +29,15 @@ public class Message extends RealmObject{
 
     public int getType() {
         return mType;
-    };
+    }
 
     public String getMessage() {
         return mMessage;
-    };
+    }
 
     public String getUsername() {
         return mUsername;
-    };
+    }
 
     public String getmMessageTime() {
         return mMessageTime;

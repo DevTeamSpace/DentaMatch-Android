@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.appster.dentamatch.R;
@@ -26,7 +25,6 @@ import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -194,7 +192,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getSchoolListApi() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.getSchoolList().enqueue(new BaseCallback<SchoolingResponse>(this) {
@@ -214,7 +212,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void addSchoolListApi(AddSchoolRequest addSchoolRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.addSchooling(addSchoolRequest).enqueue(new BaseCallback<BaseResponse>(this) {

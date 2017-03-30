@@ -117,6 +117,8 @@ android {
             minSdkVersion 19
         }
     }
+
+    return void;
 }
 
 ext {

@@ -2,7 +2,6 @@ package com.appster.dentamatch.ui.calendar;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,28 +13,24 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class CalendarViewSetAvailability extends LinearLayout {
-    private static final String TAG = CalendarViewSetAvailability.class.getSimpleName();
     private static int MAX_CALENDAR_COLUMN = 42;
-    private ImageView previousButton, nextButton;
-    private TextView currentDate;
-    private GridView calendarGridView;
-    private int count = 6;
-    private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-    private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-    private Context context;
+    private ImageView mIvPreviousButton, mNextButton;
+    private TextView mCurrentDate;
+    private GridView mCalendarGridView;
+    private int mCount = 6;
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+    private Calendar mCal = Calendar.getInstance(Locale.ENGLISH);
+    private Context mContext;
     private CalendarGridAdapter mAdapter;
-    private HashMap<Integer, ArrayList<CalenderAvailableCellModel>> mDateMap = new HashMap<>();
     private ArrayList<String> mTempDateList = new ArrayList<>();
 
 
@@ -45,7 +40,7 @@ public class CalendarViewSetAvailability extends LinearLayout {
 
     public CalendarViewSetAvailability(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
+        this.mContext = context;
         initializeUILayout();
         setUpCalendarAdapter();
         setPreviousButtonClickEvent();
@@ -63,26 +58,26 @@ public class CalendarViewSetAvailability extends LinearLayout {
     }
 
     private void initializeUILayout() {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.calendar_layout, this);
-        previousButton = (ImageView) view.findViewById(R.id.previous_month);
-        nextButton = (ImageView) view.findViewById(R.id.next_month);
-        currentDate = (TextView) view.findViewById(R.id.display_current_date);
-        calendarGridView = (GridView) view.findViewById(R.id.calendar_grid);
+        mIvPreviousButton = (ImageView) view.findViewById(R.id.previous_month);
+        mNextButton = (ImageView) view.findViewById(R.id.next_month);
+        mCurrentDate = (TextView) view.findViewById(R.id.display_current_date);
+        mCalendarGridView = (GridView) view.findViewById(R.id.calendar_grid);
     }
 
     private void setPreviousButtonClickEvent() {
 
-        previousButton.setOnClickListener(new OnClickListener() {
+        mIvPreviousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (count > 0) {
-                    count--;
-                    cal.add(Calendar.MONTH, -1);
+                if (mCount > 0) {
+                    mCount--;
+                    mCal.add(Calendar.MONTH, -1);
                     setUpCalendarAdapter();
                 } else {
-                    Utils.showToast(context, context.getString(R.string.alert_previous_month_click));
+                    Utils.showToast(mContext, mContext.getString(R.string.alert_previous_month_click));
                 }
             }
         });
@@ -91,16 +86,16 @@ public class CalendarViewSetAvailability extends LinearLayout {
 
     private void setNextButtonClickEvent() {
 
-        nextButton.setOnClickListener(new OnClickListener() {
+        mNextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (count < Constants.MAX_MONTH_COUNT - 1) {
-                    ++count;
-                    cal.add(Calendar.MONTH, 1);
+                if (mCount < Constants.MAX_MONTH_COUNT - 1) {
+                    ++mCount;
+                    mCal.add(Calendar.MONTH, 1);
                     setUpCalendarAdapter();
                 } else {
-                    Utils.showToast(context, context.getString(R.string.alert_next_month_click));
+                    Utils.showToast(mContext, mContext.getString(R.string.alert_next_month_click));
                 }
             }
         });
@@ -112,7 +107,7 @@ public class CalendarViewSetAvailability extends LinearLayout {
     }
 
     private void setGridCellClickEvents() {
-        calendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mCalendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -139,7 +134,7 @@ public class CalendarViewSetAvailability extends LinearLayout {
                         mAdapter.notifyDataSetChanged();
 
                     } else {
-                        Utils.showToast(context, context.getString(R.string.alert_past_date));
+                        Utils.showToast(mContext, mContext.getString(R.string.alert_past_date));
                     }
                 }
             }
@@ -148,11 +143,11 @@ public class CalendarViewSetAvailability extends LinearLayout {
 
     private void setUpCalendarAdapter() {
         List<CalenderAvailableCellModel> dayValueInCells = new ArrayList<>();
-        Calendar mCal = (Calendar) cal.clone();
+        Calendar mCal = (Calendar) this.mCal.clone();
         mCal.set(Calendar.DAY_OF_MONTH, 1);
         int firstDayOfTheMonth = mCal.get(Calendar.DAY_OF_WEEK) - 1;
         mCal.add(Calendar.DAY_OF_MONTH, -firstDayOfTheMonth);
-        int days = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int days = this.mCal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         if (firstDayOfTheMonth == 6 && (days == 30 || days == 31) || (firstDayOfTheMonth == 5 && days == 31)) {
             MAX_CALENDAR_COLUMN = 42;
@@ -186,10 +181,10 @@ public class CalendarViewSetAvailability extends LinearLayout {
             mCal.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        String sDate = formatter.format(cal.getTime());
-        currentDate.setText(sDate);
-        mAdapter = new CalendarGridAdapter(context, dayValueInCells, cal);
-        calendarGridView.setAdapter(mAdapter);
+        String sDate = mFormatter.format(this.mCal.getTime());
+        mCurrentDate.setText(sDate);
+        mAdapter = new CalendarGridAdapter(mContext, dayValueInCells, this.mCal);
+        mCalendarGridView.setAdapter(mAdapter);
     }
 
 

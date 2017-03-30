@@ -11,8 +11,8 @@
             android:id="@+id/constant_view"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
-            android:layout_alignTop="@+id/swipeble_view"
-            android:layout_alignBottom="@+id/swipeble_view"
+            android:layout_alignTop="@+id/swipeable_view"
+            android:layout_alignBottom="@+id/swipeable_view"
             android:layout_height="wrap_content">
             <com.appster.dentamatch.widget.CustomTextView
                 style="@style/text_view_normal"
@@ -29,7 +29,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:background="@color/white_color"
-    android:id="@+id/swipeble_view"
+    android:id="@+id/swipeable_view"
     android:layout_height="wrap_content">
 
     <com.appster.dentamatch.widget.CustomTextView

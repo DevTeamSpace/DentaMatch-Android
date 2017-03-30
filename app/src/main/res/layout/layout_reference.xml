@@ -13,6 +13,7 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_19"
             android:paddingStart="@dimen/margin_medium"
+            android:paddingEnd="@dimen/margin_medium"
             android:text="@string/reference"
             android:textColor="@color/color_forgot_pwd"
             android:textSize="@dimen/text_size_16"

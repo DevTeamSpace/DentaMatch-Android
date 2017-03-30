@@ -14,15 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.chat.DBModel;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ItemMessageListBinding;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
@@ -30,9 +24,7 @@ import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 import io.realm.OrderedRealmCollection;
-import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
-import retrofit2.Call;
 
 /**
  * Created by Appster on 15/02/17.

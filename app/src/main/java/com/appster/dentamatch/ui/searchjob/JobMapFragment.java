@@ -417,7 +417,6 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         builder.include(new LatLng(mCurrentLocLat, mCurrentLocLng));
         LatLngBounds bounds = builder.build();
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_PADDING));
-
     }
 
     private void saveUnSaveJob(int JobID, final int status, final SearchJobModel model) {
@@ -425,7 +424,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         request.setJobId(JobID);
         request.setStatus(status);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        ((BaseActivity) getActivity()).processToShowDialog("", getActivity().getString(R.string.please_wait), null);
+        ((BaseActivity) getActivity()).processToShowDialog();
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
             @Override
             public void onSuccess(BaseResponse response) {

@@ -19,7 +19,6 @@ import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.UsPhoneNumberFormat;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.util.WorkExpValidationUtil;
@@ -141,9 +140,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                         Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceName),
                         Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceEmail),
                         Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence1.etOfficeReferenceMobile),
-                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
+                        Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
 
                 if (isMoveForward) {
                     hideKeyboard();
@@ -213,7 +210,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
 
 
     private void callDeleteApi() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.workExpDelete(Integer.parseInt(workExpList.get(position).getId())).enqueue(new BaseCallback<BaseResponse>(ViewAndEditWorkExperienceActivity.this) {
@@ -238,7 +235,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     }
 
     private void callUpdateExpApi(final WorkExpRequest workExpRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.addWorkExp(workExpRequest).enqueue(new BaseCallback<WorkExpResponse>(ViewAndEditWorkExperienceActivity.this) {

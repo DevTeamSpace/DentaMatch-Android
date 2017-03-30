@@ -9,7 +9,6 @@ import android.widget.CompoundButton;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySetAvailabilityBinding;
-import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -20,7 +19,6 @@ import com.appster.dentamatch.network.response.calendar.AvailabilityResponseData
 import com.appster.dentamatch.network.response.calendar.CalendarAvailability;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,8 +35,8 @@ import retrofit2.Call;
 public class SetAvailabilityActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private ActivitySetAvailabilityBinding mBinder;
     private ArrayList<String> mPartTimeDays;
-    private AvailabilityResponse availabilityResponse;
-    private boolean isPartTime, isFullTime, isTemporary, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
+    private AvailabilityResponse mAvailabilityResponse;
+    private boolean mIsPartTime, mIsFullTime, mIsTemporary, mIsSunday, mIsMonday, mIsTuesday, mIsWednesday, mIsThursday, mIsFriday, mIsSaturday;
 
 
     @Override
@@ -91,14 +89,14 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.tv_sunday:
-                if (isSunday) {
-                    isSunday = false;
+                if (mIsSunday) {
+                    mIsSunday = false;
                     mPartTimeDays.remove(getString(R.string.txt_full_sunday));
                     mBinder.tvSunday.setBackground(null);
                     mBinder.tvSunday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
                 } else {
                     mPartTimeDays.add(getString(R.string.txt_full_sunday));
-                    isSunday = true;
+                    mIsSunday = true;
                     mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvSunday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
                 }
@@ -106,13 +104,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.tv_monday:
-                if (isMonday) {
-                    isMonday = false;
+                if (mIsMonday) {
+                    mIsMonday = false;
                     mPartTimeDays.remove(getString(R.string.txt_full_monday));
                     mBinder.tvMonday.setBackground(null);
                     mBinder.tvMonday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
                 } else {
-                    isMonday = true;
+                    mIsMonday = true;
                     mPartTimeDays.add(getString(R.string.txt_full_monday));
                     mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvMonday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
@@ -121,13 +119,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.tv_tuesday:
-                if (isTuesday) {
-                    isTuesday = false;
+                if (mIsTuesday) {
+                    mIsTuesday = false;
                     mPartTimeDays.remove(getString(R.string.txt_full_tuesday));
                     mBinder.tvTuesday.setBackground(null);
                     mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
                 } else {
-                    isTuesday = true;
+                    mIsTuesday = true;
                     mPartTimeDays.add(getString(R.string.txt_full_tuesday));
                     mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
@@ -136,13 +134,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.tv_wednesday:
-                if (isWednesday) {
-                    isWednesday = false;
+                if (mIsWednesday) {
+                    mIsWednesday = false;
                     mPartTimeDays.remove(getString(R.string.txt_full_wednesday));
                     mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
                     mBinder.tvWednesday.setBackground(null);
                 } else {
-                    isWednesday = true;
+                    mIsWednesday = true;
                     mPartTimeDays.add(getString(R.string.txt_full_wednesday));
                     mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
@@ -151,13 +149,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.tv_thursday:
-                if (isThursday) {
-                    isThursday = false;
+                if (mIsThursday) {
+                    mIsThursday = false;
                     mPartTimeDays.remove(getString(R.string.txt_full_thursday));
                     mBinder.tvThursday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
                     mBinder.tvThursday.setBackground(null);
                 } else {
-                    isThursday = true;
+                    mIsThursday = true;
                     mPartTimeDays.add(getString(R.string.txt_full_thursday));
                     mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvThursday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
@@ -166,13 +164,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.tv_friday:
-                if (isFriday) {
-                    isFriday = false;
+                if (mIsFriday) {
+                    mIsFriday = false;
                     mPartTimeDays.remove(getString(R.string.txt_full_friday));
                     mBinder.tvFriday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
                     mBinder.tvFriday.setBackground(null);
                 } else {
-                    isFriday = true;
+                    mIsFriday = true;
                     mPartTimeDays.add(getString(R.string.txt_full_friday));
                     mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvFriday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
@@ -181,13 +179,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.tv_saturday:
-                if (isSaturday) {
-                    isSaturday = false;
+                if (mIsSaturday) {
+                    mIsSaturday = false;
                     mPartTimeDays.remove(getString(R.string.txt_full_saturday));
                     mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
                     mBinder.tvSaturday.setBackground(null);
                 } else {
-                    isSaturday = true;
+                    mIsSaturday = true;
                     mPartTimeDays.add(getString(R.string.txt_full_saturday));
                     mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
                     mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
@@ -205,11 +203,11 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             case R.id.cb_part_time_check_box:
 
                 if (isChecked) {
-                    isPartTime = true;
+                    mIsPartTime = true;
                     mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
                     mBinder.dayLayout.setVisibility(View.VISIBLE);
                 } else {
-                    isPartTime = false;
+                    mIsPartTime = false;
                     mBinder.dayLayout.setVisibility(View.GONE);
                     mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
                 }
@@ -220,10 +218,10 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             case R.id.cb_full_time_check_box:
 
                 if (isChecked) {
-                    isFullTime = true;
+                    mIsFullTime = true;
                     mBinder.tvFullTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
                 } else {
-                    isFullTime = false;
+                    mIsFullTime = false;
                     mBinder.tvFullTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
                 }
 
@@ -232,11 +230,11 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             case R.id.cb_temporary_check_box:
 
                 if (isChecked) {
-                    isTemporary = true;
+                    mIsTemporary = true;
                     mBinder.customCalendar.setVisibility(View.VISIBLE);
                     mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
                 } else {
-                    isTemporary = false;
+                    mIsTemporary = false;
                     mBinder.customCalendar.setVisibility(View.GONE);
                     mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
                 }
@@ -250,8 +248,8 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     }
 
     private void resetParTimeAvailability() {
-        if (availabilityResponse != null && availabilityResponse.getAvailabilityResponseData() != null && availabilityResponse.getAvailabilityResponseData().getCalendarAvailability() != null) {
-            CalendarAvailability calendarAvailability = availabilityResponse.getAvailabilityResponseData().getCalendarAvailability();
+        if (mAvailabilityResponse != null && mAvailabilityResponse.getAvailabilityResponseData() != null && mAvailabilityResponse.getAvailabilityResponseData().getCalendarAvailability() != null) {
+            CalendarAvailability calendarAvailability = mAvailabilityResponse.getAvailabilityResponseData().getCalendarAvailability();
 
             calendarAvailability.setIsParttimeMonday(0);
             calendarAvailability.setIsParttimeTuesday(0);
@@ -265,16 +263,16 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     }
 
     private boolean checkValidation() {
-        if (!isPartTime && !isFullTime && !isTemporary) {
+        if (!mIsPartTime && !mIsFullTime && !mIsTemporary) {
             showToast(getString(R.string.alert_select_job_type));
             return false;
         }
-        if (isPartTime && (!isSunday && !isMonday &&!isTuesday &&!isWednesday && !isThursday && !isFriday && !isSaturday && !isSunday)) {
+        if (mIsPartTime && (!mIsSunday && !mIsMonday &&!mIsTuesday &&!mIsWednesday && !mIsThursday && !mIsFriday && !mIsSaturday && !mIsSunday)) {
             showToast(getString(R.string.alert_invalid_part_time));
 
             return false;
         }
-        if (isTemporary && (mBinder.customCalendar.getAvailabilityList() == null || mBinder.customCalendar.getAvailabilityList().size() == 0)) {
+        if (mIsTemporary && (mBinder.customCalendar.getAvailabilityList() == null || mBinder.customCalendar.getAvailabilityList().size() == 0)) {
             showToast(getString(R.string.alert_invalid_temp_job));
             return false;
 
@@ -317,44 +315,44 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         ArrayList<String> temporaryList = new ArrayList<>();
 
 
-        if (isFullTime) {
+        if (mIsFullTime) {
             request.setIsFulltime(1);
         } else {
             request.setIsFulltime(0);
         }
-        if (isPartTime) {
+        if (mIsPartTime) {
 
-            if (isMonday) {
+            if (mIsMonday) {
                 dayList.add(getString(R.string.txt_full_monday).toLowerCase());
             }
 
-            if (isTuesday) {
+            if (mIsTuesday) {
                 dayList.add(getString(R.string.txt_full_tuesday).toLowerCase());
             }
 
-            if (isWednesday) {
+            if (mIsWednesday) {
                 dayList.add(getString(R.string.txt_full_wednesday).toLowerCase());
             }
 
-            if (isThursday) {
+            if (mIsThursday) {
                 dayList.add(getString(R.string.txt_full_thursday).toLowerCase());
             }
 
-            if (isFriday) {
+            if (mIsFriday) {
                 dayList.add(getString(R.string.txt_full_friday).toLowerCase());
             }
 
-            if (isSaturday) {
+            if (mIsSaturday) {
                 dayList.add(getString(R.string.txt_full_saturday).toLowerCase());
             }
 
-            if (isSunday) {
+            if (mIsSunday) {
                 dayList.add(getString(R.string.txt_full_sunday).toLowerCase());
             }
         }
         request.setPartTimeDays(dayList);
 
-        if (isTemporary) {
+        if (mIsTemporary) {
             temporaryList = mBinder.customCalendar.getAvailabilityList();
         }
 
@@ -364,13 +362,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
 
     private void getAvailability(GetAvailabilityRequest request) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.getAvailabilityList(request).enqueue(new BaseCallback<AvailabilityResponse>(SetAvailabilityActivity.this) {
             @Override
             public void onSuccess(AvailabilityResponse response) {
                 if (response.getStatus() == 1) {
-                        availabilityResponse = response;
+                        mAvailabilityResponse = response;
                         setViewData(response);
 
                 } else {
@@ -394,18 +392,18 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             if (calendarAvailability != null) {
 
                 if (calendarAvailability.getIsFulltime() == 1) {
-                    isFullTime = true;
+                    mIsFullTime = true;
                     mBinder.cbFullTimeCheckBox.setChecked(true);
                     mBinder.tvFullTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
                 } else {
                     mBinder.cbFullTimeCheckBox.setChecked(false);
 
-                    isFullTime = false;
+                    mIsFullTime = false;
                     mBinder.tvFullTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
                 }
 
                 if (calendarAvailability.getIsParttimeSunday() == 1 || calendarAvailability.getIsParttimeMonday() == 1 || calendarAvailability.getIsParttimeTuesday() == 1 || calendarAvailability.getIsParttimeWednesday() == 1 || calendarAvailability.getIsParttimeThursday() == 1 || calendarAvailability.getIsParttimeFriday() == 1 || calendarAvailability.getIsParttimeSaturday() == 1) {
-                    isPartTime = true;
+                    mIsPartTime = true;
                     mBinder.cbPartTimeCheckBox.setChecked(true);
 
                     mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.black_color));
@@ -415,7 +413,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 } else {
                     mBinder.cbPartTimeCheckBox.setChecked(false);
 
-                    isPartTime = false;
+                    mIsPartTime = false;
                     mBinder.dayLayout.setVisibility(View.GONE);
                     mBinder.tvPartTime.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
                 }
@@ -424,7 +422,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             mBinder.customCalendar.setAvailableDate(data.getTempDateList());
 
             if (data.getTempDateList() != null && data.getTempDateList().size() > 0) {
-                isTemporary = true;
+                mIsTemporary = true;
                 mBinder.cbTemporaryCheckBox.setChecked(true);
 
                 mBinder.customCalendar.setVisibility(View.VISIBLE);
@@ -432,7 +430,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             } else {
                 mBinder.cbTemporaryCheckBox.setChecked(false);
 
-                isTemporary = false;
+                mIsTemporary = false;
                 mBinder.customCalendar.setVisibility(View.GONE);
                 mBinder.tvTemporary.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.grayish_two));
             }
@@ -443,39 +441,39 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     private void setPartTimeDayView(CalendarAvailability calendarAvailability) {
 
         if (calendarAvailability.getIsParttimeSaturday() == 0) {
-            isSaturday = false;
+            mIsSaturday = false;
             mPartTimeDays.remove(getString(R.string.txt_full_saturday));
             mBinder.tvSaturday.setBackground(null);
             mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
         } else {
             mPartTimeDays.add(getString(R.string.txt_full_saturday));
-            isSaturday = true;
+            mIsSaturday = true;
             mBinder.tvSaturday.setBackgroundResource(R.drawable.shape_circular_text_view);
             mBinder.tvSaturday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
 
         }
 
         if (calendarAvailability.getIsParttimeSunday() == 0) {
-            isSunday = false;
+            mIsSunday = false;
             mPartTimeDays.remove(getString(R.string.txt_full_sunday));
             mBinder.tvSunday.setBackground(null);
             mBinder.tvSunday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
         } else {
             mPartTimeDays.add(getString(R.string.txt_full_sunday));
-            isSunday = true;
+            mIsSunday = true;
             mBinder.tvSunday.setBackgroundResource(R.drawable.shape_circular_text_view);
             mBinder.tvSunday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
 
         }
 
         if (calendarAvailability.getIsParttimeMonday() == 0) {
-            isMonday = false;
+            mIsMonday = false;
             mPartTimeDays.remove(getString(R.string.txt_full_monday));
             mBinder.tvMonday.setBackground(null);
             mBinder.tvMonday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
         } else {
             mPartTimeDays.add(getString(R.string.txt_full_monday));
-            isMonday = true;
+            mIsMonday = true;
             mBinder.tvMonday.setBackgroundResource(R.drawable.shape_circular_text_view);
             mBinder.tvMonday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
 
@@ -483,50 +481,50 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
 
         if (calendarAvailability.getIsParttimeTuesday() == 0) {
-            isTuesday = false;
+            mIsTuesday = false;
             mPartTimeDays.remove(getString(R.string.txt_full_tuesday));
             mBinder.tvTuesday.setBackground(null);
             mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
         } else {
             mPartTimeDays.add(getString(R.string.txt_full_tuesday));
-            isTuesday = true;
+            mIsTuesday = true;
             mBinder.tvTuesday.setBackgroundResource(R.drawable.shape_circular_text_view);
             mBinder.tvTuesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
 
         }
 
         if (calendarAvailability.getIsParttimeWednesday() == 0) {
-            isWednesday = false;
+            mIsWednesday = false;
             mPartTimeDays.remove(getString(R.string.txt_full_wednesday));
             mBinder.tvWednesday.setBackground(null);
             mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
         } else {
             mPartTimeDays.add(getString(R.string.txt_full_wednesday));
-            isWednesday = true;
+            mIsWednesday = true;
             mBinder.tvWednesday.setBackgroundResource(R.drawable.shape_circular_text_view);
             mBinder.tvWednesday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
         }
 
         if (calendarAvailability.getIsParttimeThursday() == 0) {
-            isThursday = false;
+            mIsThursday = false;
             mPartTimeDays.remove(getString(R.string.txt_full_thursday));
             mBinder.tvThursday.setBackground(null);
             mBinder.tvThursday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
         } else {
             mPartTimeDays.add(getString(R.string.txt_full_thursday));
-            isThursday = true;
+            mIsThursday = true;
             mBinder.tvThursday.setBackgroundResource(R.drawable.shape_circular_text_view);
             mBinder.tvThursday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
         }
 
         if (calendarAvailability.getIsParttimeFriday() == 0) {
-            isFriday = false;
+            mIsFriday = false;
             mPartTimeDays.remove(getString(R.string.txt_full_friday));
             mBinder.tvFriday.setBackground(null);
             mBinder.tvFriday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.brownish_grey));
         } else {
             mPartTimeDays.add(getString(R.string.txt_full_friday));
-            isFriday = true;
+            mIsFriday = true;
             mBinder.tvFriday.setBackgroundResource(R.drawable.shape_circular_text_view);
             mBinder.tvFriday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
         }
@@ -534,7 +532,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     }
 
     private void saveAvailability(SaveAvailabilityRequest request) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.saveAvailability(request).enqueue(new BaseCallback<BaseResponse>(SetAvailabilityActivity.this) {
             @Override
