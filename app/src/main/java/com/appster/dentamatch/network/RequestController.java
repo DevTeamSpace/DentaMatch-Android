@@ -21,7 +21,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Controller class for handling all network calls.
  */
 public final class RequestController {
-
     private static String TAG = "RequestController";
     private static String HEADER_ACCESS_TOKEN = "accessToken";
     private static String HEADER_CONTENT_TYPE = "Content-Type";
@@ -53,37 +52,35 @@ public final class RequestController {
 
     public static <S> S createService(Class<S> serviceClass, final boolean isAuth) {
 
-        if(headerInterceptor == null || !okHttpClient.interceptors().contains(headerInterceptor)){
-            addNetworkInterceptor(isAuth);
+        if (headerInterceptor == null || !okHttpClient.interceptors().contains(headerInterceptor)) {
+
+            if (isAuth) {
+                addNetworkInterceptor();
+            }
+
         }
 
         Retrofit retrofit = builder.client(okHttpClient.build()).build();
         return retrofit.create(serviceClass);
     }
 
-    private static void addNetworkInterceptor(final boolean isAuth) {
+    private static void addNetworkInterceptor() {
+
         headerInterceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
                 Response response = null;
 
-                if (isAuth) {
-                    String accessToken = PreferenceUtil.getKeyUserToken();
+                String accessToken = PreferenceUtil.getKeyUserToken();
+                if (!TextUtils.isEmpty(accessToken)) {
+                    Request.Builder requestBuilder = original.newBuilder()
+                            .header(HEADER_ACCESS_TOKEN, accessToken)
+                            .header(HEADER_CONTENT_TYPE, APPLICATION_JSON)
+                            .header(HEADER_ACCEPT, APPLICATION_JSON)
+                            .method(original.method(), original.body());
 
-                    if (!TextUtils.isEmpty(accessToken)) {
-                        Request.Builder requestBuilder = original.newBuilder()
-                                .header(HEADER_ACCESS_TOKEN, accessToken)
-                                .header(HEADER_CONTENT_TYPE, APPLICATION_JSON)
-                                .header(HEADER_ACCEPT, APPLICATION_JSON)
-                                .method(original.method(), original.body());
-
-                        response = chain.proceed(requestBuilder.build());
-
-                    } else {
-                        response = chain.proceed(original);
-                    }
-
+                    response = chain.proceed(requestBuilder.build());
                 } else {
                     response = chain.proceed(original);
                 }

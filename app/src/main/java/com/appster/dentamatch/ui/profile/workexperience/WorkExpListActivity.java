@@ -293,17 +293,21 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
 
                     if (workExpList.size() > 0) {
                         inflateExpList(response.getWorkExpResponseData().getSaveList());
+                        mBinder.tvExperienceDelete.setVisibility(View.VISIBLE);
                     } else {
                         jobTitlePosition = 0;
+                        mBinder.tvExperienceDelete.setVisibility(View.GONE);
                     }
 
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.tvExperienceDelete.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFail(Call<WorkExpResponse> call, BaseResponse baseResponse) {
+                mBinder.tvExperienceDelete.setVisibility(View.GONE);
             }
         });
 

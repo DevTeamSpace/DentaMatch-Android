@@ -166,6 +166,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST_CODE_LOCATION) {
             if (resultCode == RESULT_OK) {
                 if (data != null) {

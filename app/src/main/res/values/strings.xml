@@ -124,7 +124,7 @@
     <!--Server error-->
     <string name="authentication_error">Authentication error, please login again.</string>
     <string name="server_error">There is some issue connecting with server.</string>
-    <string name="no_internet">Please check your Internet Connection.</string>
+    <string name="no_internet">Please check your internet connection.</string>
     <string name="add_more_refrence">Add More References</string>
     <string name="add_more_exp">Add More Experience</string>
 
@@ -141,12 +141,12 @@
 
 
     <string name="header_skills_exp">SKILLS &amp; EXPERIENCE</string>
-    <string name="header_schooling_exp">SCHOOLING &amp; EXPERIENCE</string>
+    <string name="header_schooling_exp">SCHOOLING &amp; CERTIFICATION</string>
 
-    <string name="autocomplete_hint">Search places</string>
+    <string name="autocomplete_hint">Search Places</string>
     <string name="get_started">GET STARTED</string>
-    <string name="hint_type_to_search">Type to search</string>
-    <string name="hint_year_of_graduation">Year of graduation</string>
+    <string name="hint_type_to_search">Enter School</string>
+    <string name="hint_year_of_graduation">Year Of Graduation</string>
 
 
     <!--aler/toast error messages-->
@@ -154,7 +154,7 @@
 
     <!--certification & About me string-->
     <string name="hi_user">Hi %1$s</string>
-    <string name="valdity_date_string">Validity date</string>
+    <string name="valdity_date_string">Validity Date</string>
     <string name="cetification_title">Update Certifications</string>
     <string name="about_me_title">Executive Summary </string>
     <string name="alert_pervious_date">Please select a valid date.</string>
@@ -198,7 +198,7 @@
     <string name="title_affiliation">Affiliations</string>
     <string name="edit_label">Edit</string>
     <string name="header_edit_profile">EDIT PROFILE</string>
-    <string name="add_affiliation">Add professional affiliations</string>
+    <string name="add_affiliation">Add Professional Affiliations</string>
     <string name="add_key_skill">Add skills category</string>
     <string name="add_school">Add schooling and certification</string>
     <string name="add_licence">Add license details</string>

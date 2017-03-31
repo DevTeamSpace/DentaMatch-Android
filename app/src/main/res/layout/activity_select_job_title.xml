@@ -21,7 +21,6 @@
             android:paddingBottom="@dimen/margin_15"
             android:paddingTop="@dimen/margin_15"
             android:text="@string/job_tile_search"
-            android:textAllCaps="true"
             android:textColor="@color/black_color"
             android:textSize="@dimen/text_size_13"
             app:customFont="@string/font_medium" />
