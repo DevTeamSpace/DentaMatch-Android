@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 public class CustomEditText extends AppCompatEditText {
 

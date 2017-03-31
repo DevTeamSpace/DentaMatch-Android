@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.annotations.NonNull;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityCertificateBinding;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
@@ -174,7 +173,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull @NonNull String[] permissions, @android.support.annotation.NonNull @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull String[] permissions, @android.support.annotation.NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
