@@ -150,7 +150,6 @@ public class CameraUtil {
         options.inJustDecodeBounds = true;
 
         options.inSampleSize = calculateInSampleSize(options, convertDipToPixels(c, 150), convertDipToPixels(c, 200));
-        options.inDither = false;
         options.inJustDecodeBounds = false;
 
         scaledBitmap = BitmapFactory.decodeFile(filePath, options);
@@ -165,7 +164,6 @@ public class CameraUtil {
         scaledBitmap = BitmapFactory.decodeFile(filePath, options);
 
         options.inSampleSize = calculateInSampleSize(options, convertDipToPixels(c, width), convertDipToPixels(c, width));
-        options.inDither = false;
         options.inJustDecodeBounds = false;
 
         scaledBitmap = BitmapFactory.decodeFile(filePath, options);

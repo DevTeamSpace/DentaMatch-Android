@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.Button;
@@ -11,7 +12,7 @@ import android.widget.Button;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.util.LogUtils;
 
-public class CustomButton extends Button {
+public class CustomButton extends AppCompatButton {
     private static final String TAG = "CustomButton";
 
     public CustomButton(Context context) {
