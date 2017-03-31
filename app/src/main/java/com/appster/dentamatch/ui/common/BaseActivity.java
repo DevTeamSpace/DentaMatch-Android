@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -11,15 +12,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.chat.DBHelper;
+import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
+import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -36,11 +41,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public static BaseFragment getFragment(Constants.FRAGMENTS fragmentId) {
         BaseFragment fragment = null;
+
         switch (fragmentId) {
             case TEST_FRAGMENT:
-                //fragment = new TestFragment();
                 break;
         }
+
         return fragment;
     }
 
@@ -102,6 +108,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Fragment fragment = getSupportFragmentManager().findFragmentByTag(LocationUtils.TAG);
                 fragment.onActivityResult(requestCode, resultCode, data);
                 break;
+
+            default: break;
         }
     }
 
@@ -111,17 +119,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (requestCode != MY_PERMISSION_ACCESS_LOCATION) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         } else {
+
             if (grantResults.length == 0) {
                 if (permissionResult != null) permissionResult.permissionsDenied();
                 return;
             }
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
                     if (permissionResult != null) permissionResult.permissionsDenied();
                     return;
                 }
             }
-            if (permissionResult != null) permissionResult.permissionsGranted();
+
+            if (permissionResult != null){
+                permissionResult.permissionsGranted();
+            }
         }
     }
 
@@ -162,35 +175,38 @@ public abstract class BaseActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        processToShowDialog(title, msg, view);
+                        processToShowDialog();
                     }
                 }, delayTime);
             } else {
-                processToShowDialog(title, msg, view);
+                processToShowDialog();
             }
         }
     }
 
-    public void processToShowDialog(String title, String msg, View view) {
+    public void processToShowDialog() {
         try {
-            mProgressDialog = ProgressDialog.show(new ContextThemeWrapper(BaseActivity.this,
-                    android.R.style.Theme_Holo_Light), title, msg, true, false);
-            if (view != null)
-                mProgressDialog.setContentView(view);
-            // Change as per your view
-            /*else
-                mProgressDialog.setContentView(R.layout.progress_view);*/
+            mProgressDialog =  ProgressDialog.show(this,null,null);
+            mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setContentView(View.inflate(this, R.layout.progress_bar, null));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void hideProgressBar() {
         try {
-            if (mProgressDialog != null && mProgressDialog.isShowing())
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
                 mProgressDialog.dismiss();
+            }
+
             mProgressDialog = null;
+
         } catch (Exception x) {
+            x.printStackTrace();
         }
     }
 
@@ -198,8 +214,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     //Show toast message and cancel if any previous toast is displaying.
 
     public void showToast(String message) {
-        if (mToast != null)
+        if (mToast != null) {
             mToast.cancel();
+        }
+
         mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         mToast.show();
     }
@@ -207,7 +225,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void hideKeyboard() {
         try {
             hideKeyboard(getCurrentFocus());
+
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -219,6 +239,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -250,55 +271,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-
-
-    private void doLogin(String email, String password) {
-        showProgressBar();
-        /*LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmailId(email);
-        loginRequest.setPassword(password);
-        Call<LoginResponse> call = RequestController.createService(AuthWebServices.class, true)
-                .userAuthenticate(loginRequest);
-        call.enqueue(new BaseCallback<LoginResponse>(this) {
-            @Override
-            public void onSuccess(LoginResponse response) {
-                hideHud();
-                if (response.isSuccess()) {
-                    finish();
-                } else {
-                    showToast(TextUtils.isEmpty(response.getMessage()) ? getString(R.string.error_network_request)
-                            : response.getMessage());
-                }
-            }
-
-            @Override
-            public void onFail(Call<LoginResponse> call) {
-                hideHud();
-                //showToast(getString(R.string.error_network_request));
-            }
-        });*/
-    }
-
-
-    public void logOut() {
-
-//        AuthWebServices client = RequestController.createService(AuthWebServices.class, true);
-//        Call<BaseResponse> response = client.logout();
-//        showProgressBar();
-//        response.enqueue(new BaseCallback<BaseResponse>(this) {
-//            @Override
-//            public void onSuccess(BaseResponse response) {
-//                //LogUtils.LOGD(TAG, "login Success" + response.getResult().getUserdetails().getGmailid());
-//                Utils.logOut(BaseActivity.this);
-//            }
-//
-//            @Override
-//            public void onFail(Call<BaseResponse> call, BaseResponse response1) {
-//
-//            }
-//        });
-
-
+    public void localLogOut() {
+        LogUtils.LOGD(TAG, "Local logout");
+        String fcmToken= PreferenceUtil.getFcmToken();
+        PreferenceUtil.reset();
+        PreferenceUtil.setFcmToken(fcmToken);
+        PreferenceUtil.setIsOnBoarding(true);
+        Utils.clearAllNotifications(this);
+        DBHelper.getInstance().clearDBData();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(Constants.EXTRA_IS_LOGIN, true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     public enum ANIMATION_TYPE {

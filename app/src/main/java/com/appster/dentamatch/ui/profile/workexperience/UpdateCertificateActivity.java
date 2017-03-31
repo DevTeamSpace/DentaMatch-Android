@@ -13,11 +13,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateCertificateBinding;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.network.BaseCallback;
@@ -31,13 +31,14 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetDatePicker;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,6 +56,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     private String mFilePath;
     private byte imageSourceType;
     private CertificatesList data;
+    private boolean isFromDentalStateBoard;
+    private boolean isImageUploaded;
 
     @Override
     public String getActivityName() {
@@ -77,7 +80,8 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         mBinder.tvValidityDatePicker.setOnClickListener(this);
 
         if (getIntent() != null) {
-            data = getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
+            isFromDentalStateBoard = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+            data =  getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             setViewData();
         }
     }
@@ -85,35 +89,65 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     private void setViewData() {
         if (data != null) {
             mBinder.tvCertificatesName.setText(data.getCertificateName());
-            if (!TextUtils.isEmpty(data.getImageUrl())) {
-                Picasso.with(UpdateCertificateActivity.this).load(data.getImageUrl()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
 
+            if (!TextUtils.isEmpty(data.getImage())) {
+                Picasso.with(UpdateCertificateActivity.this).load(data.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
+                isImageUploaded = true;
             }
-            mBinder.tvValidityDatePicker.setText(data.getValidityDate());
+
+            if (isFromDentalStateBoard) {
+                mBinder.tvValidityDatePicker.setVisibility(View.GONE);
+            } else {
+                mBinder.tvValidityDatePicker.setVisibility(View.VISIBLE);
+            }
+
+            if(!TextUtils.isEmpty(data.getValidityDate())) {
+                mBinder.tvValidityDatePicker.setText(Utils.dateFormatYYYYMMMMDD(data.getValidityDate()));
+            }
         }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.iv_certificate_upoload_icon:
                 callBottomSheet();
                 break;
 
             case R.id.tv_validity_date_picker:
                 callBottomSheetDate();
-
                 break;
+
             case R.id.btn_save:
-                if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
-                    Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date));
-                    return;
+                if (isFromDentalStateBoard) {
+                    //TODO : dental State board has been removed for now , keeping the code for now for future reference.
+                    if (TextUtils.isEmpty(mFilePath)) {
+                        Utils.showToast(getApplicationContext(), getString(R.string.blank_satate_board_photo_alert));
+                        return;
+                    }
+
+                    uploadDentaImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
+                } else {
+                    if (!TextUtils.isEmpty(data.getImage())|| isImageUploaded) {
+
+                        if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
+                            Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date, data.getCertificateName()));
+                            return;
+                        }
+
+                            postCertificateData(preparePostValidation());
+                    } else {
+                        Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_photo_first));
+                    }
                 }
-                postCertificateData(preparePostValidation());
                 break;
 
             case R.id.iv_tool_bar_left:
                 finish();
+                break;
+
+            default:
                 break;
         }
     }
@@ -123,7 +157,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         ArrayList<UpdateCertificates> updateCertificatesArrayList = new ArrayList<>();
         UpdateCertificates updateCertificates = new UpdateCertificates();
         updateCertificates.setId(data.getId());
-        updateCertificates.setValue(mBinder.tvValidityDatePicker.getText().toString());
+        updateCertificates.setValue(Utils.getRequriedServerDateFormet(mBinder.tvValidityDatePicker.getText().toString()));
         updateCertificatesArrayList.add(updateCertificates);
         certificateRequest.setUpdateCertificatesList(updateCertificatesArrayList);
         return certificateRequest;
@@ -149,7 +183,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 Snackbar.make(mBinder.ivCertificateUpoloadIcon, getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction("OK", new View.OnClickListener() {
+                        .setAction(getString(R.string.txt_ok), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 PermissionUtils.requestPermission(UpdateCertificateActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
@@ -173,7 +207,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Snackbar.make(mBinder.ivCertificateUpoloadIcon, this.getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Accept", new View.OnClickListener() {
+                        .setAction(getString(R.string.txt_accept), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 PermissionUtils.requestPermission(UpdateCertificateActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
@@ -192,7 +226,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         gIntent.setType("image/*");
         startActivityForResult(
-                Intent.createChooser(gIntent, "Select File"),
+                Intent.createChooser(gIntent, getString(R.string.txt_gallery_header)),
                 Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
     }
 
@@ -206,22 +240,25 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+
         if (resultCode == RESULT_OK) {
+
             if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
 
             } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
                 Uri selectedImageUri = intent.getData();
-                mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
+                mFilePath = CameraUtil.getInstance().getGalleryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
             }
-            Log.d("Tag", "file path" + mFilePath);
 
             if (mFilePath != null) {
-//                mBinder.createProfile1IvProfileIcon.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath, this, Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN));
-                Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
-                uploadCertificateImageApi(mFilePath, "" + data.getId());
+
+                if (!isFromDentalStateBoard) {
+                    uploadCertificateImageApi(mFilePath, "" + data.getId());
+                }
+
             }
         }
     }
@@ -229,24 +266,22 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d(TAG, "request permission called --" + grantResults.length);
 
-        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
-            Log.d(TAG, "request permission called if granted --");
             if (imageSourceType == 0) {
                 takePhoto();
             } else {
                 getImageFromGallery();
             }
-
         }
-
     }
 
     @Override
     public void onDateSelection(String date, int position) {
-        mBinder.tvValidityDatePicker.setText(date);
+        mBinder.tvValidityDatePicker.setText(Utils.dateFormatYYYYMMMMDD(date));
+
     }
 
     private void uploadCertificateImageApi(final String filePath, String certificateId) {
@@ -262,37 +297,64 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             public void onSuccess(FileUploadResponse response) {
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
-                if (response != null && response.getStatus() == 1) {
+                if (response.getStatus() == 1) {
+                    isImageUploaded = true;
+                    Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
                     // showSnackBarFromTop(response.getMessage(), false);
-
+                }else{
+                    isImageUploaded = false;
                 }
             }
 
             @Override
             public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGE(TAG, " ImageUpload failed!");
+                isImageUploaded = false;
+            }
+        });
+    }
+
+    private void uploadDentaImageApi(String filePath, String imageType) {
+        showProgressBar(getString(R.string.please_wait));
+        File file = new File(filePath);
+        RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody uploadType = RequestBody.create(MediaType.parse("multipart/form-data"), imageType);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        Call<FileUploadResponse> response = webServices.uploadImage(uploadType, fbody);
+        response.enqueue(new BaseCallback<FileUploadResponse>(UpdateCertificateActivity.this) {
+            @Override
+            public void onSuccess(FileUploadResponse response) {
+                Utils.showToast(getApplicationContext(), response.getMessage());
+
+                if ( response.getStatus() == 1) {
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
 
             }
         });
     }
 
     private void postCertificateData(CertificateRequest certificateRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.saveCertificate(certificateRequest).enqueue(new BaseCallback<BaseResponse>(UpdateCertificateActivity.this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                     finish();
                 }
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
             }
         });
 

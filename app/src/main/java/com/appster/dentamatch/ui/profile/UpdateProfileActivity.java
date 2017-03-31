@@ -17,9 +17,9 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateProfileBinding;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
-import com.appster.dentamatch.model.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -31,7 +31,6 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -73,10 +72,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mProfileData = getIntent().getParcelableExtra(Constants.EXTRA_PROFILE_DATA);
         }
 
-        mSelectedLat = mProfileData.getUser().getLatitude();
-        mSelectedLng = mProfileData.getUser().getLongitude();
-        mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
-
         mBinding.etLocation.setFocusableInTouchMode(false);
         mBinding.etLocation.setCursorVisible(false);
 
@@ -93,10 +88,19 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
     private void setViewData() {
         if (mProfileData != null) {
+            mSelectedLat = mProfileData.getUser().getLatitude();
+            mSelectedLng = mProfileData.getUser().getLongitude();
+            mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
+
+            if (mSelectedJobTitleID == 0) {
+                mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
+            } else {
+                mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
+            }
+
             mBinding.toolbarProfile.tvToolbarGeneralLeft.setText(R.string.header_edit_profile);
             mBinding.etFname.setText(mProfileData.getUser().getFirstName());
             mBinding.etLname.setText(mProfileData.getUser().getLastName());
-            mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
             mBinding.etDesc.setText(mProfileData.getUser().getAboutMe());
             mBinding.etLocation.setText(mProfileData.getUser().getPreferredJobLocation());
 
@@ -133,11 +137,21 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 break;
 
             case R.id.btn_save:
+                hideKeyboard();
                 validateAndUpdate();
                 break;
 
             case R.id.et_location:
-                startActivityForResult(new Intent(UpdateProfileActivity.this, PlacesMapActivity.class), REQUEST_CODE_LOCATION);
+                Intent intent = new Intent(UpdateProfileActivity.this, PlacesMapActivity.class);
+
+                if (mProfileData != null && mProfileData.getUser() != null) {
+                    intent.putExtra(Constants.EXTRA_LATITUDE, mProfileData.getUser().getLatitude());
+                    intent.putExtra(Constants.EXTRA_LONGITUDE, mProfileData.getUser().getLongitude());
+                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mProfileData.getUser().getPostalCode());
+                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mProfileData.getUser().getPreferredJobLocation());
+                }
+
+                startActivityForResult(intent, REQUEST_CODE_LOCATION);
                 break;
 
             case R.id.create_profile1_iv_profile_icon:
@@ -156,14 +170,14 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             if (resultCode == RESULT_OK) {
                 if (data != null) {
                     mAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
-                    mAddress.concat(" - ").concat(data.getStringExtra(Constants.EXTRA_POSTAL_CODE));
+                    String finalAddress = mAddress.concat(" - ").concat(data.getStringExtra(Constants.EXTRA_POSTAL_CODE));
                     mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                     mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
 
-                    if (!TextUtils.isEmpty(mAddress)) {
+                    if (!TextUtils.isEmpty(finalAddress)) {
                         mBinding.inputLayoutLocation.setHintEnabled(true);
                         mBinding.inputLayoutLocation.setHintAnimationEnabled(true);
-                        mBinding.etLocation.setText(mAddress);
+                        mBinding.etLocation.setText(finalAddress);
                     }
                 }
             }
@@ -173,7 +187,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
                 if (mFilePath != null) {
-
                     Picasso.with(UpdateProfileActivity.this)
                             .load(new File(mFilePath)).centerCrop()
                             .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
@@ -183,25 +196,22 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                             .into(mBinding.createProfile1IvProfileIcon);
 
                     uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
-
                 }
             }
 
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_GALLERY) {
             if (resultCode == RESULT_OK) {
                 Uri selectedImageUri = data.getData();
-                mFilePath = CameraUtil.getInstance().getGallaryPAth(selectedImageUri, this);
+                mFilePath = CameraUtil.getInstance().getGalleryPAth(selectedImageUri, this);
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
 
                 if (mFilePath != null) {
-
                     Picasso.with(UpdateProfileActivity.this)
                             .load(new File(mFilePath)).centerCrop()
                             .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                             .placeholder(R.drawable.profile_pic_placeholder)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .into(mBinding.createProfile1IvProfileIcon);
-
                     uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                 }
             }
@@ -218,6 +228,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (TextUtils.isEmpty(mBinding.etJobTitle.getText())) {
             showToast(getString(R.string.error_no_job_type));
 
+        } else if (mBinding.etJobTitle.getText().toString().equalsIgnoreCase(getString(R.string.txt_job_title_hint))) {
+            showToast(getString(R.string.error_no_job_type));
+
         } else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
             showToast(getString(R.string.error_no_location));
 
@@ -230,7 +243,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     }
 
     private void updateProfileData() {
-
         UpdateUserProfileRequest request = new UpdateUserProfileRequest();
         request.setFirstName(Utils.getStringFromEditText(mBinding.etFname));
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
@@ -259,7 +271,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
                 hideProgressBar();
-                LogUtils.LOGE(TAG, " UPDATE PROFILE API failed!");
             }
         });
     }
@@ -277,8 +288,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             public void onSuccess(FileUploadResponse response) {
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
-                if (response != null && response.getStatus() == 1) {
-                    // showSnackBarFromTop(response.getMessage(), false);
+                if (response.getStatus() == 1) {
                     PreferenceUtil.setProfileImagePath(response.getFileUploadResponseData().getImageUrl());
                     showToast(response.getMessage());
 
@@ -287,7 +297,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGE(TAG, " ImageUpload failed!");
 
             }
         });
@@ -309,15 +318,19 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 Snackbar.make(mBinding.etFname, getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction("OK", new View.OnClickListener() {
+                        .setAction(getString(R.string.txt_ok), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                PermissionUtils.requestPermission(UpdateProfileActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+                                PermissionUtils.requestPermission(UpdateProfileActivity.this,
+                                        new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                        Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
 
                             }
                         }).show();
             } else {
-                PermissionUtils.requestPermission(UpdateProfileActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+                PermissionUtils.requestPermission(UpdateProfileActivity.this,
+                        new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
             }
         }
     }
@@ -326,22 +339,27 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     public void galleryClicked() {
         imageSourceType = 1;
 
-        if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) && PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
+        if (PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this) &&
+                PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        this)) {
             getImageFromGallery();
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Snackbar.make(mBinding.etFname, this.getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Accept", new View.OnClickListener() {
+                        .setAction(getString(R.string.txt_accept), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                PermissionUtils.requestPermission(UpdateProfileActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-
+                                PermissionUtils.requestPermission(UpdateProfileActivity.this,
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                        Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
                             }
                         }).show();
             } else {
-                PermissionUtils.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+                PermissionUtils.requestPermission(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
             }
         }
     }
@@ -349,15 +367,13 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-
-            LogUtils.LOGD(TAG, "request permisison called if granted --");
+        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
             if (imageSourceType == 0) {
                 takePhoto();
             } else {
                 getImageFromGallery();
             }
-
         }
     }
 
@@ -372,7 +388,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     }
 
     private void takePhoto() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);

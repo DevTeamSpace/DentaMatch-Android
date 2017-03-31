@@ -3,16 +3,15 @@ package com.appster.dentamatch.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
-
 
 import com.appster.dentamatch.R;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomTextView extends TextView {
+public class CustomTextView extends AppCompatTextView {
     private static final String TAG = "CustomTextView";
     /*
      * Caches typefaces based on their file path and name, so that they don't have to be created

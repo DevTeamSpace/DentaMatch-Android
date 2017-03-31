@@ -1,12 +1,8 @@
 package com.appster.dentamatch.ui.termsnprivacy;
 
-import android.annotation.TargetApi;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 
 import com.appster.dentamatch.BuildConfig;
@@ -19,7 +15,6 @@ import com.appster.dentamatch.util.Constants;
  * Created by virender on 03/01/17.
  */
 public class TermsAndConditionActivity extends BaseActivity implements View.OnClickListener {
-    //    private ActivityT mBinder;
     private ActivityTermsAndConditionBinding mBinder;
     private boolean isPrivacyPolicy;
     private String url = "";
@@ -28,9 +23,11 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_terms_and_condition);
+
         if (getIntent() != null) {
             isPrivacyPolicy = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
         }
+
         initViews();
     }
 
@@ -38,20 +35,16 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
         mBinder.toolbarPrivacyPolicy.ivToolBarLeft.setOnClickListener(this);
         if (isPrivacyPolicy) {
             url = BuildConfig.BASE_URL + Constants.APIS.PRIVACY_POLICY;
-
             mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_privacy));
-
         } else {
             url = BuildConfig.BASE_URL + Constants.APIS.TERM_CONDITION;
-
             mBinder.toolbarPrivacyPolicy.tvToolbarGeneralLeft.setText(getString(R.string.header_term));
-
-
         }
+
         mBinder.webviewTermAndCondition.post(new Runnable() {
             @Override
             public void run() {
-                processToShowDialog("", getString(R.string.please_wait), null);
+                processToShowDialog();
                 mBinder.webviewTermAndCondition.setWebViewClient(new WebViewClient());
                 mBinder.webviewTermAndCondition.loadUrl(url);
             }
@@ -70,15 +63,13 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
             case R.id.iv_tool_bar_left:
                 onBackPressed();
                 break;
+
+            default:
+                break;
         }
     }
 
     private class WebViewClient extends android.webkit.WebViewClient {
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
-            super.onPageStarted(view, url, favicon);
-        }
 
         @SuppressWarnings("deprecation")
         @Override
@@ -86,19 +77,16 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
             view.loadUrl(url);
             return true;
         }
-
-        @TargetApi(Build.VERSION_CODES.N)
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            view.loadUrl(request.getUrl().toString());
-            return true;
-        }
+            //TODO: Uncomment this code when we change this to target Version N.
+//        @TargetApi(Build.VERSION_CODES.N)
+//        @Override
+//        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//            view.loadUrl(request.getUrl().toString());
+//            return true;
+//        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-
-            // TODO Auto-generated method stub
-
             super.onPageFinished(view, url);
             hideProgressBar();
         }

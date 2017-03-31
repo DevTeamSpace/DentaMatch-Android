@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.appster.dentamatch.model.LocationEvent;
+import com.appster.dentamatch.eventbus.LocationEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -51,7 +51,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         fragmentTransaction.commit();
     }
 
-    public static LocationUtils newInstance() {
+    private static LocationUtils newInstance() {
         return new LocationUtils();
     }
 
@@ -110,8 +110,11 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
                 LogUtils.LOGI(TAG, "All location settings are satisfied.");
-                startLocationUpdates();
+                if(googleApiClient != null && googleApiClient.isConnected()) {
+                    startLocationUpdates();
+                }
                 break;
+
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                 LogUtils.LOGI(TAG, "Location settings are not satisfied. Show the user a dialog to" +
                         "upgrade location settings ");
@@ -137,18 +140,20 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
-                        LogUtils.LOGI(TAG, "User agreed to make required location settings changes.");
-                        startLocationUpdates();
+                        LogUtils.LOGI(TAG, "UserModel agreed to make required location settings changes.");
+                        if(googleApiClient != null && googleApiClient.isConnected()) {
+                            startLocationUpdates();
+                        }
                         break;
                     case Activity.RESULT_CANCELED:
-                        LogUtils.LOGI(TAG, "User chose not to make required location settings changes.");
+                        LogUtils.LOGI(TAG, "UserModel chose not to make required location settings changes.");
                         break;
                 }
                 break;
         }
     }
 
-    public void startUpdates() {
+    private void startUpdates() {
         checkLocationSettings();
     }
 
@@ -181,7 +186,10 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         if (requestCode == REQUEST_LOCATION_PERMISSION && !StringUtils.isNullOrEmpty(grantResults)
                 &&grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             LogUtils.LOGV(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
-            startLocationUpdates();
+
+            if(googleApiClient != null && googleApiClient.isConnected()) {
+                startLocationUpdates();
+            }
         }
     }
 
@@ -250,12 +258,12 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = location;
-        //PreferenceUtils.setCurrentLocation(location);
         LogUtils.LOGD(TAG, "Lat : " + location.getLatitude() + ", " + "Long : " + location.getLongitude());
-        //Toast.makeText(getActivity(), "Location changed", Toast.LENGTH_SHORT).show();
-        // This method will be called when a HelloWorldEvent is posted
         EventBus.getDefault().post(new LocationEvent(location));
-        stopLocationUpdates();
+
+        if(googleApiClient != null && googleApiClient.isConnected()) {
+            stopLocationUpdates();
+        }
     }
 
     @Override

@@ -34,5 +34,5 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/edt_boundry_color" />
+        android:background="@color/edt_boundary_color" />
 </RelativeLayout>

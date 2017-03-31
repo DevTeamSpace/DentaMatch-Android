@@ -11,13 +11,12 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityOnboardingBinding;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 /**
  * Created by virender on 06/01/17.
  */
-public class OnBoardingActivity extends BaseActivity implements View.OnClickListener {
+public class OnBoardingActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private ActivityOnboardingBinding mBinder;
     private OnBoardingAdapter onBoardingAdapter;
 
@@ -28,56 +27,46 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
         onBoardingAdapter = new OnBoardingAdapter(this);
         mBinder.pagerOnboarding.setAdapter(onBoardingAdapter);
         mBinder.tvSkipOnboarding.setOnClickListener(this);
-        mBinder.pagerOnboarding.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                LogUtils.LOGD("tag", "posiition--onPageScrolled--" + position);
-                if (position == 3) {
-                    mBinder.tvSkipOnboarding.setText(getString(R.string.get_started));
-                } else {
-                    mBinder.tvSkipOnboarding.setText(getString(R.string.skip_button));
-
-                }
-                setDotSlection(position);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int position) {
-
-            }
-        });
+        mBinder.pagerOnboarding.addOnPageChangeListener(this);
     }
 
-    private void setDotSlection(int pos) {
+    private void setDotSelection(int pos) {
         mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
         mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
         mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
         mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
-        if (pos == 0) {
-            mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_selected);
-            mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
-        } else if (pos == 1) {
-            mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_selected);
-            mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
-        } else if (pos == 2) {
-            mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_selected);
-            mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
-        } else if (pos == 3) {
-            mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
-            mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_selected);
+
+        switch (pos) {
+            case 0:
+                mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_selected);
+                mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
+                break;
+
+            case 1:
+                mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_selected);
+                mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
+                break;
+
+            case 2:
+                mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_selected);
+                mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_normal);
+                break;
+
+            case 3:
+                mBinder.ivDot1.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot2.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot3.setBackgroundResource(R.drawable.shape_dot_normal);
+                mBinder.ivDot4.setBackgroundResource(R.drawable.shape_dot_selected);
+                break;
+
+            default:
+                break;
 
         }
 
@@ -98,5 +87,25 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
                 break;
 
         }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (position == 3) {
+            mBinder.tvSkipOnboarding.setText(getString(R.string.get_started));
+        } else {
+            mBinder.tvSkipOnboarding.setText(getString(R.string.skip_button));
+        }
+        setDotSelection(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

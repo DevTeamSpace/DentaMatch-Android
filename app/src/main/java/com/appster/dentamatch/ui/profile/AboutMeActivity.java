@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.profile;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,15 +8,14 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.databinding.ActivityAboutMeBinding;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.profile.AboutMeRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.squareup.picasso.MemoryPolicy;
@@ -27,7 +27,7 @@ import retrofit2.Call;
  * Created by virender on 10/01/17.
  */
 public class AboutMeActivity extends BaseActivity implements View.OnClickListener {
-    private ActivityAboutMeBinding mBinder;
+    private com.appster.dentamatch.databinding.ActivityAboutMeBinding mBinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,15 +67,17 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
                 hideKeyboard();
 
                 if (checkValidation()) {
-                    postboutMeAData(prepareRequest());
-
+                    postaboutMeAData(prepareRequest());
                 }
+                break;
+
+            default:
                 break;
         }
     }
 
     private boolean checkValidation() {
-        if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString())) {
+        if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString().trim())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_summary_alert));
             return false;
         }
@@ -89,30 +91,30 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
         return aboutMeRequest;
     }
 
-    private void postboutMeAData(AboutMeRequest aboutMeRequest) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+    private void postaboutMeAData(AboutMeRequest aboutMeRequest) {
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.saveAboutMe(aboutMeRequest).enqueue(new BaseCallback<BaseResponse>(AboutMeActivity.this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
-//                    Intent intent = new Intent(AboutMeActivity.this, HomeActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
+                    PreferenceUtil.setProfileCompleted(true);
+                    Intent intent = new Intent(AboutMeActivity.this, SearchJobActivity.class)
+                            .putExtra(Constants.EXTRA_IS_FIRST_TIME, true);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
 
                 }
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
 
     }
+
+
 }

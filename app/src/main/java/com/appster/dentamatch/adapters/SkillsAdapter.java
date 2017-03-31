@@ -18,10 +18,10 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemSkillBinding;
 import com.appster.dentamatch.databinding.LayoutProfileHeaderBinding;
 import com.appster.dentamatch.interfaces.EditTextSelected;
-import com.appster.dentamatch.model.ParentSkill;
-import com.appster.dentamatch.model.SubSkill;
+import com.appster.dentamatch.interfaces.OnSkillClick;
+import com.appster.dentamatch.model.ParentSkillModel;
+import com.appster.dentamatch.model.SubSkillModel;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.widget.CustomEditText;
 import com.squareup.picasso.Picasso;
@@ -43,57 +43,65 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private ItemSkillBinding mBinder;
     private LayoutProfileHeaderBinding mBinderHeader;
 
-    private List<ParentSkill> mSkillList;
+    private List<ParentSkillModel> mSkillList;
     private Context mContext;
+    private boolean mIsFromEditProfile;
     private OnSkillClick mListener;
     private EditTextSelected mOthersSelectedListener;
 
-    public SkillsAdapter(List<ParentSkill> skillList, Context context, OnSkillClick listener,
-                         EditTextSelected othersSelectedListener) {
+    public SkillsAdapter(List<ParentSkillModel> skillList, Context context, OnSkillClick listener, EditTextSelected othersSelectedListener, boolean isFromEditProfile) {
         this.mSkillList = skillList;
         this.mContext = context;
         mListener = listener;
         mOthersSelectedListener = othersSelectedListener;
+        mIsFromEditProfile = isFromEditProfile;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
 
         if (viewType == TYPE_ITEM) {
-            //inflate your layout and pass it to view holder
             mBinder = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_skill, parent, false));
 
-            return new ViewHolderItem(mBinder.getRoot());
-        } else if (viewType == TYPE_HEADER) {
-            //inflate your layout and pass it to view holder
+            viewHolder = new ViewHolderItem(mBinder.getRoot());
+        } else {
             mBinderHeader = DataBindingUtil.bind(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.layout_profile_header, parent, false));
-
-            return new ViewHolderHeader(mBinderHeader.getRoot());
+            viewHolder = new ViewHolderHeader(mBinderHeader.getRoot());
         }
 
-        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        return viewHolder;
     }
 
+
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder1, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder1, int position) {
+        final int refPosition = position;
 
         if (holder1 instanceof ViewHolderHeader) {
-            if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-                LogUtils.LOGD(TAG, "path is--=" + PreferenceUtil.getProfileImagePath());
-                Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().
-                        resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).
-                        placeholder(R.drawable.profile_pic_placeholder).into(mBinderHeader.ivProfileIcon);
-            }
+            if (mIsFromEditProfile) {
+                mBinderHeader.tvTitleScreen.setVisibility(View.VISIBLE);
+                mBinderHeader.tvTitleScreen.setText(mContext.getString(R.string.header_skills_exp));
+                mBinderHeader.progressLayout.setVisibility(View.GONE);
+                mBinderHeader.tvTitle.setVisibility(View.GONE);
+                mBinderHeader.tvDescription.setVisibility(View.GONE);
 
-            mBinderHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.SKILLS);
-            mBinderHeader.tvTitle.setText(mContext.getString(R.string.header_skills_exp));
-            mBinderHeader.tvDescription.setText(mContext.getString(R.string.lorem_ipsum));
+            } else {
+                if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
+                    Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().
+                            resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).
+                            placeholder(R.drawable.profile_pic_placeholder).into(mBinderHeader.ivProfileIcon);
+                }
+
+                mBinderHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.SKILLS);
+                mBinderHeader.tvTitle.setText(mContext.getString(R.string.header_skills_exp));
+                mBinderHeader.tvDescription.setText(mContext.getString(R.string.lorem_ipsum));
+            }
         } else {
             final ViewHolderItem holder = (ViewHolderItem) holder1;
-            final ParentSkill skill = mSkillList.get(position - 1);
-
+            final ParentSkillModel skill = mSkillList.get(position - 1);
             holder.tvSkillName.setText(skill.getSkillName());
             holder.layoutSkills.setTag(position - 1);
 
@@ -109,7 +117,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     public void onFocusChange(View v, boolean hasFocus) {
                         v.requestFocus();
                         if (hasFocus) {
-                            mOthersSelectedListener.onEditTextSelected(position);
+                            mOthersSelectedListener.onEditTextSelected(refPosition);
                         }
                     }
                 });
@@ -127,7 +135,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        mSkillList.get(position - 1).setOtherSkill(s.toString());
+                        mSkillList.get(refPosition - 1).setOtherSkill(s.toString().trim());
                     }
                 });
             } else {
@@ -144,7 +152,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 holder.flowLayout.setVisibility(View.VISIBLE);
                 holder.flowLayout.removeAllViews();
-
                 setSkillsBricks(holder.flowLayout, mSkillList.get(position - 1).getSubSkills());
             }
         }
@@ -157,8 +164,9 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        if (isPositionHeader(position))
+        if (isPositionHeader(position)) {
             return TYPE_HEADER;
+        }
 
         return TYPE_ITEM;
     }
@@ -167,7 +175,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return position == 0;
     }
 
-    private void setSkillsBricks(FlowLayout flowLayout, ArrayList<SubSkill> listSkills) {
+    private void setSkillsBricks(FlowLayout flowLayout, ArrayList<SubSkillModel> listSkills) {
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -185,13 +193,13 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 String text = listSkills.get(i).getSkillName();
 
                 if (text.equalsIgnoreCase(Constants.OTHERS)) {
-                    text = Constants.OTHERS;
+                    text = listSkills.get(i).getOtherText().trim();
                 }
 
                 TextView textView = new TextView(mContext);
                 textView.setSingleLine();
                 textView.setEllipsize(TextUtils.TruncateAt.END);
-                textView.setBackgroundResource(R.drawable.edit_text_selector);
+                textView.setBackgroundResource(R.drawable.bg_bricks_shaded);
                 textView.setText(text);
 
                 flowLayout.addView(textView, layoutParams);
@@ -199,33 +207,32 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private class ViewHolderHeader extends RecyclerView.ViewHolder {
-        ViewHolderHeader(View view) {
-            super(view);
-        }
-    }
-
-    private class ViewHolderItem extends RecyclerView.ViewHolder {
-        LinearLayout layoutSkills;
-        RelativeLayout layoutSkillsInner;
-        FlowLayout flowLayout;
-        TextView tvSkillName;
-        ImageView ivArrow;
-        CustomEditText etOther;
-
-        ViewHolderItem(View view) {
-            super(view);
-            layoutSkills = mBinder.layoutSkillsTop;
-            layoutSkillsInner = mBinder.layoutSkillsInner;
-            flowLayout = mBinder.flowLayoutChips;
-            tvSkillName = mBinder.tvSkillName;
-            ivArrow = mBinder.ivRightArrow;
-            etOther = mBinder.etOther;
-        }
-    }
-
-    public interface OnSkillClick {
-        void onItemSelected(ArrayList<SubSkill> subSkillList, int position);
+private class ViewHolderHeader extends RecyclerView.ViewHolder {
+    ViewHolderHeader(View view) {
+        super(view);
     }
 }
+
+private class ViewHolderItem extends RecyclerView.ViewHolder {
+    LinearLayout layoutSkills;
+    RelativeLayout layoutSkillsInner;
+    FlowLayout flowLayout;
+    TextView tvSkillName;
+    ImageView ivArrow;
+    CustomEditText etOther;
+
+    ViewHolderItem(View view) {
+        super(view);
+        layoutSkills = mBinder.layoutSkillsTop;
+        layoutSkillsInner = mBinder.layoutSkillsInner;
+        flowLayout = mBinder.flowLayoutChips;
+        tvSkillName = mBinder.tvSkillName;
+        ivArrow = mBinder.ivRightArrow;
+        etOther = mBinder.etOther;
+    }
+}
+
+
+}
+
 

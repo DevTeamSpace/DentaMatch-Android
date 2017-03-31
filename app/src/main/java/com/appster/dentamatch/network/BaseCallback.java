@@ -8,6 +8,7 @@ import com.appster.dentamatch.util.LogUtils;
 
 import java.lang.ref.WeakReference;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.UnknownHostException;
 
 import retrofit2.Call;
@@ -20,12 +21,7 @@ import retrofit2.Response;
 public abstract class BaseCallback<T extends BaseResponse> implements Callback<T> {
 
     public static final String TAG = BaseCallback.class.getSimpleName();
-    private static final int HTTP_OK = 200;
-    private static final int STATUS_FAIL = 0;
     private static final int INVALID_SESSION = 204;
-    private static final int REFRESH_TOKEN = 440;
-    private static final int NOT_AUTHORISED = 604;
-    private static final int ERROR_400 = 400;
     private WeakReference<BaseActivity> ref;
     private Context mContext;
 
@@ -35,7 +31,6 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
 
     /**
      * Invoked when Successful response sent from server.
-     *
      * @param response Response from server
      */
     public abstract void onSuccess(T response);
@@ -52,33 +47,24 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
         //Generic error response code are handled at base level
         BaseActivity act = ref.get();
         act.hideProgressBar();
-        if (response.isSuccessful()) { //HTTP 200
+        if (response.isSuccessful()) {
 
             BaseResponse responseBase = response.body();
             if (responseBase == null) {
-//                act.showSnackBar(act.getResources().getString(R.string.server_error), true);
                 return;
             }
 
-//            if (responseBase.getStatus() == STATUS_FAIL) {//STATUS 0
-//                if (responseBase.getStatusCode() == INVALID_SESSION) {
-//                    act.showSnackBar(act.getResources().getString(R.string.authentication_error), true);
-//                    act.logOut();
-//                    return;
-//                }
-//                onFail(call, responseBase);
-//                //  act.showSnakBarFromTop(act.getResources().getString(R.string.server_error), true);
-//                return;
-//            } else {
+                if (responseBase.getStatusCode() == INVALID_SESSION) {
+                    act.showToast(act.getString(R.string.authentication_error));
+                    act.localLogOut();
+                    return;
+                }
+
                 onSuccess(response.body());
-//            }
 
         } else {
-            if (response.raw().code() == ERROR_400) {
-//                BaseResponse error = ErrorUtils.parseError(response);
-//                if (error.getStatusCode() == NOT_AUTHORISED) {
-//                Utils.logOut(act);
-                //   }
+            if (response.raw().code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+
             } else {
                 act.showSnackBar(act.getResources().getString(R.string.server_error));
             }

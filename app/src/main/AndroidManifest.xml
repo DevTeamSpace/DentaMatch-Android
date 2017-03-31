@@ -8,12 +8,14 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".DentaApp"
@@ -23,19 +25,53 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.appster.dentamatch.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />
+            android:value="@string/maps_api_key" />
+            <!--android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />-->
+
+        <service android:name=".firebase.MyFirebaseMessagingService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".firebase.MyFirebaseInstanceIDService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/bg_notification_icon" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/white_color" />
 
         <activity
             android:name=".ui.common.SplashActivity"
             android:screenOrientation="userPortrait"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
 
         <activity
             android:name=".ui.auth.LoginActivity"
@@ -45,8 +81,8 @@
 
         <activity
             android:name=".ui.profile.affiliation.AffiliationActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
@@ -130,10 +166,23 @@
         <activity
             android:name=".ui.profile.workexperience.SubSkillsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar.LIGHT"
+            android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".ui.common.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar">
+            <intent-filter>
+                <action android:name="home" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+
+        </activity>
+
+        <activity
+            android:name=".ui.searchjob.JobDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
@@ -150,7 +199,31 @@
             android:name=".ui.profile.workexperience.UpdateLicenseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.searchjob.SearchJobActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.searchjob.SelectJobTitleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.calendar.SetAvailabilityActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
+        <activity
+            android:name=".ui.messages.ChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ui.notification.NotificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9eed49ac8d4868c2895dcd5e531740deee71f2f5" />
     </application>
 
 </manifest>

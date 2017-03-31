@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-
             android:orientation="vertical">
 
             <RelativeLayout
@@ -41,6 +40,7 @@
                         android:layout_gravity="end|bottom"
                         android:paddingBottom="@dimen/margin_small_3"
                         android:src="@drawable/ic_profile_plus" />
+
                 </FrameLayout>
 
 
@@ -64,7 +64,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1.5dp"
+                    android:layout_height="@dimen/line_height"
                     android:layout_alignParentBottom="true"
                     android:background="@color/white_color"
 
@@ -107,7 +107,7 @@
                     android:drawableEnd="@drawable/ic_down_arrow"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/lable_job_title"
+                    android:hint="@string/label_job_title"
                     android:longClickable="false"
                     android:paddingTop="@dimen/padding_drawable" />
             </android.support.design.widget.TextInputLayout>
@@ -116,9 +116,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
-
             android:layout_alignParentBottom="true"
-
             android:background="@color/colorPrimary">
 
             <com.appster.dentamatch.widget.CustomButton
@@ -144,7 +142,7 @@
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:background="@null"
                 android:gravity="center"
-                android:text="@string/lable_next"
+                android:text="@string/label_next"
                 android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_normal"
                 app:customBackground="@string/font_bold" />

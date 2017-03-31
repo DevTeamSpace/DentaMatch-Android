@@ -1,4 +1,20 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+apply plugin: 'realm-android'
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
@@ -12,7 +28,6 @@ def serverProperties = new Properties()
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 serverProperties.load(new FileInputStream(serverConfigPropertiesFile))
-
 android {
     dexOptions {
         javaMaxHeapSize "4g"
@@ -24,6 +39,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
 
+
     defaultConfig {
         applicationId "com.appster.dentamatch"
         minSdkVersion 15
@@ -31,6 +47,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
 
@@ -75,19 +92,22 @@ android {
     productFlavors {
         Dev {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"http://52.8.112.211/api/"')
+            buildConfigField("String", "BASE_URL", '"https://dev.dentamatch.co/api/"')
+            buildConfigField("String", "CHAT_URL", '"https://dev.dentamatch.co:3000"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
         QA {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"http://52.52.216.246/api/"')
+            buildConfigField("String", "BASE_URL", '"https://qa.dentamatch.co/api/"')
+            buildConfigField("String", "CHAT_URL", '"https://qanode.dentamatch.co:8443/"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
         Staging {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://staging.dentamach/api/"')
+            buildConfigField("String", "BASE_URL", '"https://staging.dentamatch.co/api/"')
+            buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:3000"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
@@ -97,23 +117,28 @@ android {
             minSdkVersion 19
         }
     }
+
+    return void;
 }
 
 ext {
     //supportLibrary Version
-    supportLibrary = '25.0.1'
+    supportLibrary = '25.2.0'
 
     //Play services Version
-    playServiceVersion = '10.0.0'
+    playServiceVersion = '10.2.0'
 
     //fireBase Version
-    fireBaseLibrary = '10.0.0'
+    fireBaseLibrary = '10.2.0'
 
     //leakCanary Version
     leakCanaryLibrary = '1.5'
 
     //Retrofit Version
     retrofitVersion = '2.1.0'
+
+    //Build tools  Version
+//    buildToolsVersion '23.0.1'
 
 }
 
@@ -125,8 +150,7 @@ dependencies {
     })
 
     compile 'com.google.maps.android:android-maps-utils:0.4'
-    compile 'com.google.android.gms:play-services:10.0.0'
-    compile 'com.google.firebase:firebase-messaging:9.0.1'
+    compile "com.google.android.gms:play-services:${playServiceVersion}"
 
     //Firebase libs
     compile "com.google.firebase:firebase-messaging:${fireBaseLibrary}"
@@ -155,11 +179,6 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-
-//    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
-//    compile 'io.reactivex:rxjava:1.1.8'
-//    compile 'io.reactivex:rxandroid:1.2.1'
-
     testCompile 'junit:junit:4.12'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
@@ -167,6 +186,13 @@ dependencies {
     compile 'com.doodle.android:android-material-chips:1.1.0'
     compile 'org.apmem.tools:layouts:1.10@aar'
     compile 'com.wefika:flowlayout:0.4.1'
+    compile ('io.socket:socket.io-client:0.8.1') {
+        exclude group: 'org.json', module: 'json'
+    }
+    compile 'io.realm:android-adapters:1.4.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+        transitive = true;
+    }
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'

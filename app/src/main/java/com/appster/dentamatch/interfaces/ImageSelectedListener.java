@@ -5,6 +5,5 @@ package com.appster.dentamatch.interfaces;
  */
 public interface ImageSelectedListener {
     void cameraClicked();
-
     void galleryClicked();
 }

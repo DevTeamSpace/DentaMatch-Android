@@ -19,9 +19,12 @@ import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
+import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.response.auth.SearchFilterModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
@@ -29,6 +32,9 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+import com.crashlytics.android.Crashlytics;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 
@@ -38,20 +44,23 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
  * Created by virender on 13/12/16.
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG = "Login";
     private ActivityLoginBinding mBinder;
-    private boolean isAccepted, isLogin;
+    private boolean mIsAccepted, mIsLogin;
 
     private String mPostalCode;
     private String mPlaceName;
     private String mLatitude;
     private String mLongitude;
-    private boolean isLoginShow, isRegisterShow;
+    private boolean mIsLoginShow, mIsRegisterShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_login);
+
+        if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_IS_LOGIN)) {
+            mIsLogin = getIntent().getBooleanExtra(Constants.EXTRA_IS_LOGIN, false);
+        }
 
         initViews();
     }
@@ -68,12 +77,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBinder.ivAcceptPolicy.setOnClickListener(this);
 
         setPolicySpanString();
-        showSelectedView(isLogin);
+        showSelectedView(mIsLogin);
     }
 
     private void setPolicySpanString() {
         SpannableString spanString = new SpannableString(
-                getString(R.string.label_accept_term_ncondition));
+                getString(R.string.label_accept_term_n_condition));
 
         ClickableSpan termsAndCondition = new ClickableSpan() {
             @Override
@@ -105,16 +114,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         };
 
-        int tncStart = getString(R.string.label_accept_term_ncondition).indexOf("Term");
-        int tncEnd = getString(R.string.label_accept_term_ncondition).lastIndexOf("and") - 1;
+        int tncStart = getString(R.string.label_accept_term_n_condition).indexOf("Term");
+        int tncEnd = getString(R.string.label_accept_term_n_condition).lastIndexOf("and") - 1;
         Utils.setSpannClickEvent(spanString, tncStart, tncEnd, termsAndCondition);
         Utils.setSpannColor(spanString, tncStart, tncEnd, ContextCompat.getColor(this, R.color.button_bg_color));
-        Utils.setSpannUnderline(spanString, tncStart, tncEnd);
 
-        int privacyStart = getString(R.string.label_accept_term_ncondition).indexOf("Privacy");
+        int privacyStart = getString(R.string.label_accept_term_n_condition).indexOf("Privacy");
         Utils.setSpannClickEvent(spanString, privacyStart + 1, spanString.length(), privacy);
         Utils.setSpannColor(spanString, privacyStart, spanString.length(), ContextCompat.getColor(this, R.color.button_bg_color));
-        Utils.setSpannUnderline(spanString, privacyStart + 1, spanString.length());
         Utils.setSpannCommanProperty(mBinder.tvTermNPolicy, spanString);
     }
 
@@ -122,39 +129,41 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_view_login:
-                isLogin = true;
+                mIsLogin = true;
                 hideKeyboard();
                 showSelectedView(true);
                 break;
-            case R.id.login_view_register:
-                isLogin = false;
-                hideKeyboard();
 
+            case R.id.login_view_register:
+                mIsLogin = false;
+                hideKeyboard();
                 showSelectedView(false);
                 break;
+
             case R.id.login_tv_show_password:
                 if (mBinder.loginEtPassword.getText().toString().length() > 0) {
 
-                    if (isLoginShow) {
-                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, isLoginShow, mBinder.loginTvShowPassword);
-                        isLoginShow = false;
+                    if (mIsLoginShow) {
+                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, mIsLoginShow, mBinder.loginTvShowPassword);
+                        mIsLoginShow = false;
 
                     } else {
-                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, isLoginShow, mBinder.loginTvShowPassword);
-                        isLoginShow = true;
+                        Utils.showPassword(LoginActivity.this, mBinder.loginEtPassword, mIsLoginShow, mBinder.loginTvShowPassword);
+                        mIsLoginShow = true;
                     }
                 }
                 break;
+
             case R.id.register_tv_show_password:
                 if (mBinder.registerEtPassword.getText().toString().length() > 0) {
 
-                    if (isRegisterShow) {
-                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, isRegisterShow, mBinder.registerTvShowPassword);
-                        isRegisterShow = false;
+                    if (mIsRegisterShow) {
+                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, mIsRegisterShow, mBinder.registerTvShowPassword);
+                        mIsRegisterShow = false;
 
                     } else {
-                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, isRegisterShow, mBinder.registerTvShowPassword);
-                        isRegisterShow = true;
+                        Utils.showPassword(LoginActivity.this, mBinder.registerEtPassword, mIsRegisterShow, mBinder.registerTvShowPassword);
+                        mIsRegisterShow = true;
                     }
                 }
                 break;
@@ -163,8 +172,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 hideKeyboard();
 
                 if (validateInput()) {
-
-                    if (isLogin) {
+                    if (mIsLogin) {
                         signInApi(prepareLoginRequest());
                     } else {
                         signUpApi(prepareSignUpRequest());
@@ -177,17 +185,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.iv_accept_policy:
-                if (isAccepted) {
-                    isAccepted = false;
+                if (mIsAccepted) {
+                    mIsAccepted = false;
                     mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
                 } else {
                     mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_fill);
-                    isAccepted = true;
+                    mIsAccepted = true;
                 }
                 break;
 
             case R.id.tv_preferred_job_location:
-                startActivityForResult(new Intent(this, PlacesMapActivity.class), REQUEST_CODE_LOCATION);
+                Intent intent = new Intent(this, PlacesMapActivity.class);
+
+                if (mLatitude != null && mLongitude != null) {
+                    intent.putExtra(Constants.EXTRA_LATITUDE, mLatitude);
+                    intent.putExtra(Constants.EXTRA_LONGITUDE, mLongitude);
+                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mPostalCode);
+                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mPlaceName);
+                }
+
+                startActivityForResult(intent, REQUEST_CODE_LOCATION);
                 break;
         }
     }
@@ -206,14 +223,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         mLongitude = bundle.getString(Constants.EXTRA_LONGITUDE);
                         mPlaceName = bundle.getString(Constants.EXTRA_PLACE_NAME);
                         mPostalCode = bundle.getString(Constants.EXTRA_POSTAL_CODE);
-                        mBinder.tvPreferredJobLocation.setText(data.getExtras().getString(Constants.EXTRA_PLACE_NAME));
+                        mBinder.tvPreferredJobLocation.setText(mPlaceName);
                     }
                 }
         }
     }
 
     private boolean validateInput() {
-        if (isLogin) {
+        if (mIsLogin) {
             if (TextUtils.isEmpty(getTextFromEditText(mBinder.loginEtEmail))) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_email_alert));
                 mBinder.loginEtEmail.requestFocus();
@@ -286,7 +303,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
-            if (!isAccepted) {
+            if (!mIsAccepted) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_tnc_alert));
                 return false;
             }
@@ -296,7 +313,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private LoginRequest prepareSignUpRequest() {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setDeviceId(Utils.getDeviceID(getApplicationContext()));
+        loginRequest.setDeviceId(Utils.getDeviceID());
         loginRequest.setDeviceToken(Utils.getDeviceToken());
         loginRequest.setDeviceType(Constants.DEVICE_TYPE);
         loginRequest.setEmail(getTextFromEditText(mBinder.registerEtEmail));
@@ -312,26 +329,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void signUpApi(LoginRequest loginRequest) {
-        LogUtils.LOGD(TAG, "signUpApi");
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.signUp(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
             @Override
             public void onSuccess(LoginResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
 
                 if (response.getStatus() == 1) {
                     PreferenceUtil.setFistName(getTextFromEditText(mBinder.registerEtFname));
                     PreferenceUtil.setLastName(getTextFromEditText(mBinder.registerEtLname));
                     Utils.showToast(getApplicationContext(), response.getMessage());
-                    isLogin = true;
+                    mIsLogin = true;
                     showSelectedView(true);
                     clearRegistrationFields();
 
-//                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-//                    startActivity(intent);
-//                    finish();
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -346,9 +358,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private LoginRequest prepareLoginRequest() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setDeviceId(Utils.getDeviceID(getApplicationContext()));
+        loginRequest.setDeviceId(Utils.getDeviceID());
         loginRequest.setDeviceToken(Utils.getDeviceToken());
         loginRequest.setDeviceType(Constants.DEVICE_TYPE);
         loginRequest.setEmail(getTextFromEditText(mBinder.loginEtEmail));
@@ -360,22 +372,78 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return et.getText().toString().trim();
     }
 
-    private void signInApi(LoginRequest loginRequest) {
-        LogUtils.LOGD(TAG, "signInApi");
+    private void logUser(String email, String userName, String userID) {
+        Crashlytics.setUserIdentifier(userID);
+        Crashlytics.setUserEmail(email);
+        Crashlytics.setUserName(userName);
+    }
 
+
+    private void signInApi(final LoginRequest loginRequest) {
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.signIn(loginRequest).enqueue(new BaseCallback<LoginResponse>(LoginActivity.this) {
             @Override
             public void onSuccess(LoginResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 if (response.getStatus() == 1) {
+
+                    if (response.getLoginResponseData().getSearchFilters() != null) {
+                        SearchFilterModel searchFilters = response.getLoginResponseData().getSearchFilters();
+                        SearchJobRequest request = new SearchJobRequest();
+                        request.setIsParttime(searchFilters.getIsParttime());
+                        request.setIsFulltime(searchFilters.getIsFulltime());
+
+                        request.setLat(searchFilters.getLat());
+                        request.setLng(searchFilters.getLng());
+                        request.setJobTitle(searchFilters.getJobTitle());
+                        request.setPage(1);
+
+                        if (searchFilters.getParttimeDays() != null && searchFilters.getParttimeDays().size() > 0) {
+                            request.setParttimeDays(searchFilters.getParttimeDays());
+                        } else {
+                            request.setParttimeDays(new ArrayList<String>());
+                        }
+
+                        request.setCountry(searchFilters.getCountry());
+                        request.setCity(searchFilters.getCity());
+                        request.setState(searchFilters.getState());
+
+                        request.setZipCode(searchFilters.getZipCode());
+                        request.setSelectedJobTitles(searchFilters.getSelectedJobTitles());
+                        request.setAddress(searchFilters.getAddress());
+
+                        /**
+                         * This value is set in order to redirect user from login or splash screen.
+                         */
+                        PreferenceUtil.setJobFilter(true);
+                        PreferenceUtil.saveJobFilter(request);
+                    }
+
                     PreferenceUtil.setIsLogined(true);
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    startActivity(intent);
-                    finish();
+                    PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
+                    PreferenceUtil.setUserChatId(response.getLoginResponseData().getUserDetail().getId());
+
+                    logUser(loginRequest.getEmail(),
+                            response.getLoginResponseData().getUserDetail().getFirstName()
+                                    .concat(" ")
+                                    .concat(response.getLoginResponseData().getUserDetail().getLastName()),
+                            response.getLoginResponseData().getUserDetail().getId());
+
+                    if (response.getLoginResponseData().getUserDetail().getProfileCompleted() == 1) {
+                        PreferenceUtil.setProfileCompleted(true);
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        PreferenceUtil.setProfileCompleted(false);
+                        Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -383,8 +451,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });
     }
@@ -423,9 +489,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBinder.tvPreferredJobLocation.setText("");
         mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
     }
-
-    private void clearLoginFields() {
-        mBinder.loginEtEmail.getText().clear();
-        mBinder.loginEtPassword.getText().clear();
-    }
 }
+

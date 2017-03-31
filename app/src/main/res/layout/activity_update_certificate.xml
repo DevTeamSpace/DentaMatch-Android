@@ -39,13 +39,24 @@
                 android:layout_height="@dimen/line_height"
                 android:background="@color/line_divider" />
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/iv_certificate_upoload_icon"
-                android:layout_width="@dimen/camera_image_size"
-                android:layout_height="@dimen/camera_image_size"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin_25"
-                android:src="@drawable/ic_upload" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_12"
+                android:layout_marginLeft="@dimen/margin_33"
+                android:layout_marginRight="@dimen/margin_33"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:background="@drawable/bg_upload_certificate"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/iv_certificate_upoload_icon"
+                    android:layout_width="@dimen/camera_image_size"
+                    android:layout_height="@dimen/camera_image_size"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/margin_25"
+                    android:background="@drawable/ic_upload" />
+            </LinearLayout>
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/tv_upload_photo"
@@ -55,6 +66,7 @@
                 android:text="@string/label_upload_photo"
                 android:textColor="@color/edt_hint_color"
                 android:textSize="@dimen/text_size_xlarge"
+                android:visibility="invisible"
                 app:customFont="@string/font_regular" />
 
             <com.appster.dentamatch.widget.CustomTextView

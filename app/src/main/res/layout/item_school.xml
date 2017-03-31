@@ -33,30 +33,28 @@
             android:layout_below="@+id/et_school_name"
             android:layout_marginTop="@dimen/margin_15">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_graduation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
                 <com.appster.dentamatch.widget.CustomEditText
                     android:id="@+id/et_graduation"
                     style="@style/TextInputEditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_selector"
                     android:clickable="false"
+                    android:background="@drawable/edit_text_selector"
                     android:drawableEnd="@drawable/ic_down_arrow"
                     android:focusable="false"
                     app:customFont="@string/font_regular" />
-            </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spinner_graduation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_15"
-                android:background="@null" />
+                <Spinner
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:id="@+id/spinner_graduation"
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/margin_2"
+                    android:layout_alignTop="@+id/et_graduation"
+                    android:layout_alignBottom="@+id/et_graduation"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+
+
             </RelativeLayout>
 
             <AutoCompleteTextView
@@ -67,6 +65,7 @@
                 android:background="@drawable/edit_text_selector"
                 android:ellipsize="end"
                 android:hint="@string/hint_type_to_search"
+                android:imeOptions="actionDone"
                 android:paddingBottom="@dimen/margin_15"
                 app:customFont="@string/font_regular"
                 android:digits="@string/digits_alpha_numeric_only"
@@ -77,7 +76,7 @@
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/line_height"
             android:background="@color/white_1" />
     </LinearLayout>
 </layout>

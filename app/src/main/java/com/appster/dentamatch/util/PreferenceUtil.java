@@ -1,6 +1,10 @@
 package com.appster.dentamatch.util;
 
-import com.appster.dentamatch.model.JobTitleList;
+import android.location.Location;
+
+import com.appster.dentamatch.model.JobTitleListModel;
+import com.appster.dentamatch.model.UserModel;
+import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
@@ -26,13 +30,55 @@ public final class PreferenceUtil {
     private static final String KEY_JOB_TITLE = "JOB_TITLE";
     private static final String KEY_JOB_TITLE_POSITION = "JOB_TITLE_POSITION";
     private static final String KEY_JOB_TITLE_LIST = "JOB_TITLE_LIST";
+    private static final String KEY_SEARCH_JOB_TITLE_LIST = "SEARCH_JOB_TITLE_LIST";
     private static final String KEY_USER_TOKEN = "USER_TOKEN";
     private static final String KEY_JOB_TITLE_ID = "JOB_TITLE_ID";
     private static final String KEY_PROFILE_IMAGE_PATH = "PROFILE_IMAGE_PATH";
+    private static final String KEY_IS_JOB_FILTER_CHANGED = "KEY_IS_JOB_FILTER_CHANGED";
+    private static final String KEY_CHAT_USER_ID = "KEY_CHAT_USER_ID";
 
+    private static final String KEY_JOB_FILTER_SET = "KEY_JOB_FILTER_SET";
+    private static final String KEY_JOB_FILTER_REQUEST = "KEY_JOB_FILTER_REQUEST";
+    private static final String KEY_USER_CURRENT_LOC = "KEY_USER_CURRENT_LOC";
+    private static final String KEY_FCM_TOKEN = "FCM_TOKEN";
+    private static final String KEY_PROFILE_COMPLETE = "KEY_PROFILE_COMPLETE";
+
+    private static final String KEY_USER_MODEL = "USER_MODEL";
+
+    public static void setUserCurrentLocation(Location location) {
+        Hawk.put(KEY_USER_CURRENT_LOC, location);
+    }
+
+    public static void setProfileCompleted(boolean completed){
+        Hawk.put(KEY_PROFILE_COMPLETE, completed);
+    }
+
+    public static boolean isProfileCompleted(){
+        return Hawk.get(KEY_PROFILE_COMPLETE, false);
+    }
+
+    public static Object getUserCurrentLocation() {
+        return Hawk.get(KEY_USER_CURRENT_LOC);
+    }
 
     public static void saveAppState(Object state) {
         Hawk.put(KEY_APP_STATE, state);
+    }
+
+    public static void saveJobFilter(SearchJobRequest request) {
+        Hawk.put(KEY_JOB_FILTER_REQUEST, request);
+    }
+
+    public static void setFilterChanged(boolean filterChanged) {
+        Hawk.put(KEY_IS_JOB_FILTER_CHANGED, filterChanged);
+    }
+
+    public static boolean isFilterChanged() {
+        return Hawk.get(KEY_IS_JOB_FILTER_CHANGED, false);
+    }
+
+    public static Object getJobFilter() {
+        return Hawk.get(KEY_JOB_FILTER_REQUEST);
     }
 
     public static Object getAppState() {
@@ -60,15 +106,35 @@ public final class PreferenceUtil {
         Hawk.put(KEY_PROFILE_IMAGE_PATH, value);
     }
 
+    public static void setJobFilter(boolean value) {
+        Hawk.put(KEY_JOB_FILTER_SET, value);
+    }
+
+    public static boolean isJobFilterSet() {
+        return Hawk.get(KEY_JOB_FILTER_SET, false);
+    }
+
     public static String getProfileImagePath() {
         return Hawk.get(KEY_PROFILE_IMAGE_PATH);
     }
 
-    public static void setJobTitleList(ArrayList<JobTitleList> value) {
+    public static void setJobTitleList(ArrayList<JobTitleListModel> value) {
         Hawk.put(KEY_JOB_TITLE_LIST, value);
     }
 
-    public static ArrayList<JobTitleList> getJobTitleList() {
+    public static String getFcmToken() {
+        return Hawk.get(KEY_FCM_TOKEN);
+    }
+
+    public static void setFcmToken(String token) {
+        Hawk.put(KEY_FCM_TOKEN, token);
+    }
+
+    public static void setSearchJobTitleList(ArrayList<JobTitleListModel> value) {
+        Hawk.put(KEY_SEARCH_JOB_TITLE_LIST, value);
+    }
+
+    public static ArrayList<JobTitleListModel> getJobTitleList() {
         return Hawk.get(KEY_JOB_TITLE_LIST);
     }
 
@@ -78,6 +144,10 @@ public final class PreferenceUtil {
 
     public static String getDeviceId() {
         return Hawk.get(KEY_DEVICE_ID);
+    }
+
+    public static ArrayList<JobTitleListModel> getSearchJobTitleList() {
+        return Hawk.get(KEY_SEARCH_JOB_TITLE_LIST);
     }
 
     public static void setJobTitle(String value) {
@@ -93,7 +163,7 @@ public final class PreferenceUtil {
     }
 
     public static int getJobTitlePosition() {
-        return Hawk.get(KEY_JOB_TITLE_POSITION);
+        return Hawk.get(KEY_JOB_TITLE_POSITION, 0);
     }
 
     public static void setJobTitleId(int value) {
@@ -101,7 +171,7 @@ public final class PreferenceUtil {
     }
 
     public static int getJobTitleId() {
-        return Hawk.get(KEY_JOB_TITLE_ID);
+        return Hawk.get(KEY_JOB_TITLE_ID, 0);
     }
 
     public static void setFistName(String value) {
@@ -163,7 +233,23 @@ public final class PreferenceUtil {
         Hawk.put(KEY_IS_LOGIN, value);
     }
 
+    public static void setUserModel(UserModel userModel) {
+        Hawk.put(KEY_USER_MODEL, userModel);
+    }
+
+    public static UserModel getUserModel() {
+        return Hawk.get(KEY_USER_MODEL);
+    }
+
     public static void reset() {
         Hawk.deleteAll();
+    }
+
+    public static void setUserChatId(String userId) {
+        Hawk.put(KEY_CHAT_USER_ID, userId);
+    }
+
+    public static String getUserChatId() {
+        return Hawk.get(KEY_CHAT_USER_ID);
     }
 }

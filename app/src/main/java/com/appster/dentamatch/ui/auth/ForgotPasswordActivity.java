@@ -14,7 +14,6 @@ import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import retrofit2.Call;
@@ -23,7 +22,6 @@ import retrofit2.Call;
  * Created by virender on 30/12/16.
  */
 public class ForgotPasswordActivity extends BaseActivity implements View.OnClickListener {
-    private final String TAG = "ForgotPasswordActivity";
     private ActivityForgotPasswordBinding mBinder;
 
     @Override
@@ -53,6 +51,9 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
                     forgotPasswordApi(prepareForgotPasswordRequest());
                 }
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -66,11 +67,12 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
             Utils.showToast(getApplicationContext(), getString(R.string.valid_email_alert));
             return false;
         }
+
         return true;
     }
 
     private LoginRequest prepareForgotPasswordRequest() {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(mBinder.etEmail.getText().toString());
@@ -78,24 +80,18 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private void forgotPasswordApi(LoginRequest loginRequest) {
-        LogUtils.LOGD(TAG, "forgot password");
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.forgotPassword(loginRequest).enqueue(new BaseCallback<LoginResponse>(ForgotPasswordActivity.this) {
             @Override
             public void onSuccess(LoginResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
                 if (response.getStatus() == 1) {
                     finish();
                 }
-//                Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-////                intent.putExtra()
-//                startActivity(intent);
             }
 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
             }
         });
     }

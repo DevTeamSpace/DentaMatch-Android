@@ -27,10 +27,10 @@ import java.util.Locale;
  */
 public final class BitmapUtils {
 
-    public static final String TEMP_IMG_DIRECTORY = "Your App name";
+    private static final String TEMP_IMG_DIRECTORY = "Your App name";
     private static final String IMG_EXTENSION = ".jpg";
-    public static final int DEFAULT_PHOTO_WIDH = 540;
-    public static final int DEFAULT_PHOTO_HEIGHT = 960;
+    static final int DEFAULT_PHOTO_WIDH = 540;
+    static final int DEFAULT_PHOTO_HEIGHT = 960;
 
     private BitmapUtils() {
     }
@@ -75,7 +75,9 @@ public final class BitmapUtils {
         if (cursor != null) {
             int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
             cursor.moveToFirst();
-            return cursor.getString(column_index);
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
         }
         return null;
     }
@@ -141,9 +143,9 @@ public final class BitmapUtils {
      *
      * @return
      */
-    public static String tempDirectory() {
+    private static String tempDirectory() {
         File directory = new File(Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 TEMP_IMG_DIRECTORY);
         if (!directory.exists()) {
             directory.mkdirs();
@@ -201,7 +203,7 @@ public final class BitmapUtils {
      * @param bmp Bitmap to be saved.
      * @return Path of the saved Bitmap.
      */
-    public static String saveBitmap(Bitmap bmp) {
+    private static String saveBitmap(Bitmap bmp) {
         try {
             String scaledImagePath = scaledImagePath();
             OutputStream stream = new FileOutputStream(scaledImagePath);
@@ -214,8 +216,8 @@ public final class BitmapUtils {
         return null;
     }
 
-    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth,
-                                                     int reqHeight) { // BEST QUALITY MATCH
+    private static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth,
+                                                      int reqHeight) { // BEST QUALITY MATCH
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -240,11 +242,12 @@ public final class BitmapUtils {
 
     /**
      * Merge two images
+     *
      * @param bottomImage Bottom image for merge
-     * @param topImage Top image for merge
-     * @return  Merged image
+     * @param topImage    Top image for merge
+     * @return Merged image
      */
-    public static Bitmap mergeImages(Bitmap bottomImage, Bitmap topImage) {
+    private static Bitmap mergeImages(Bitmap bottomImage, Bitmap topImage) {
         final Bitmap output = Bitmap.createBitmap(bottomImage.getWidth(),
                 bottomImage.getHeight(), Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(output);

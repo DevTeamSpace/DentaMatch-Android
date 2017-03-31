@@ -2,6 +2,6 @@
     <solid android:color="@color/cell_color" />
     <stroke
         android:width="@dimen/line_height"
-        android:color="@color/edt_boundry_color" />
+        android:color="@color/edt_boundary_color" />
 
 </shape>

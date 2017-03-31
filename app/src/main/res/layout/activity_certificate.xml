@@ -47,7 +47,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/button_bg_color"
             android:gravity="center"
-            android:text="@string/lable_next"
+            android:text="@string/label_next"
             android:textColor="@color/white_color" />
     </RelativeLayout>
 </layout>

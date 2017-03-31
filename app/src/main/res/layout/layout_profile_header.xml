@@ -8,35 +8,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/layout_setting"
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_title_screen"
+            style="@style/text_view_normal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/edit_height"
-            android:visibility="gone">
+            android:layout_height="@dimen/cell_height"
+            android:background="@color/cell_color"
+            android:paddingStart="@dimen/margin_normal"
+            android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/iv_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:src="@drawable/ic_gallary" />
-
-            <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/tv_edit"
-                style="@style/text_view_normal"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="@dimen/margin_normal"
-                android:text="@string/send_label" />
-
-        </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/progress_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_margin="@dimen/margin_25">
 
             <ProgressBar
@@ -50,7 +35,7 @@
                 android:progress="25"
                 android:progressDrawable="@drawable/circuler_progress" />
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile_icon"
                 android:layout_width="@dimen/profile_image_height"
                 android:layout_height="@dimen/profile_image_height"

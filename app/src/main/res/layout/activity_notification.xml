@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_notification"
+            layout="@layout/toolbar_general" />
+
+        <RelativeLayout
+            android:id="@+id/layout_empty_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/margin_normal"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/iv_empty_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_notification_alert" />
+
+            <com.appster.dentamatch.widget.CustomTextView
+                style="@style/text_view_normal"
+                android:layout_below="@+id/iv_empty_notification"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_23"
+                android:text="@string/alert_empty_notification"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/gray_nav_bottom_unselected"
+                app:customFont="@string/font_regular"/>
+
+        </RelativeLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_notification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/lay_pagination"
+            android:layout_below="@+id/toolbar_notification">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_notification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <RelativeLayout
+            android:id="@+id/lay_pagination"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pagination_view_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white3_color"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/default_padding" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

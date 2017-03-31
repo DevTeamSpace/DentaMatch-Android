@@ -18,7 +18,6 @@ public abstract class BaseFragment extends Fragment {
     protected Handler handler = new Handler();
     protected boolean active;
     protected boolean alive;
-    String TAG = "LIFE_CYCLE";
     private Toast toast;
 
     public abstract String getFragmentName();
@@ -43,8 +42,8 @@ public abstract class BaseFragment extends Fragment {
 
     protected void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        // check if no view has focus:
         View view = getActivity().getCurrentFocus();
+
         if (view != null) {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
@@ -53,6 +52,7 @@ public abstract class BaseFragment extends Fragment {
     protected void hideKeyboard(View view) {
         if (getActivity() != null) {
             InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
             if (view != null) {
                 inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
@@ -60,10 +60,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void showToast(String message) {
+
         if (getActivity() != null && message != null) {
-            if (toast != null)
+
+            if (toast != null) {
                 toast.cancel();
-            toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_LONG);
+            }
+
+            toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -98,14 +102,15 @@ public abstract class BaseFragment extends Fragment {
     public void onStop() {
         super.onStop();
         hideKeyboard();
-//        hideHud();
         active = false;
     }
 
     protected void showProgressBar(String title, String message, View view, int delayTime) {
         try {
-            if (isAlive() && getBaseActivity() != null)
+            if (isAlive() && getBaseActivity() != null) {
                 getBaseActivity().showProgressBar(title, message, view, delayTime);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,15 +131,5 @@ public abstract class BaseFragment extends Fragment {
     public void showProgressBar(String msg, int delayTime) {
         showProgressBar(null, msg, null, delayTime);
     }
-
-
-    /*public void hideHud() {
-        try {
-            if (getBaseActivity() != null)
-                getBaseActivity().hideHud();
-        } catch (Exception e) {
-        }
-
-    }*/
 
 }

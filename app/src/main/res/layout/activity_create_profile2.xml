@@ -30,7 +30,6 @@
 
                 android:layout_marginBottom="@dimen/margin_15"
                 android:layout_marginTop="@dimen/margin_25">
-                <!--android:background="@drawable/circular_shape"-->
 
                 <ProgressBar
                     android:id="@+id/create_profile_progress_bar"
@@ -55,17 +54,22 @@
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_name"
                 style="@style/text_view_normal"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
                 android:textColor="@color/black_color"
-                android:textSize="@dimen/text_size_xlarge"
+                android:textSize="@dimen/text_size_normal"
                 app:customFont="@string/font_bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_job_title"
                 style="@style/text_view_normal"
                 android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:textColor="@color/edt_hint_color"
                 android:textSize="@dimen/text_size_xlarge"
+                android:gravity="center"
                 app:customFont="@string/font_regular" />
 
             <View
@@ -76,46 +80,46 @@
 
                 />
 
-            <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/create_profile_tv_state_board"
-                style="@style/text_view_normal"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/cell_height"
-                android:background="@color/cell_color"
-                android:gravity="start|bottom"
-                android:paddingBottom="@dimen/margin_medium"
-                android:paddingStart="@dimen/margin_normal"
-                android:text="@string/dental_state_board"
-                android:textColor="@color/text_default_color"
-                android:textSize="@dimen/text_size_13"
-                app:customFont="@string/font_medium" />
+            <!--<com.appster.dentamatch.widget.CustomTextView-->
+                <!--android:id="@+id/create_profile_tv_state_board"-->
+                <!--style="@style/text_view_normal"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/cell_height"-->
+                <!--android:background="@color/cell_color"-->
+                <!--android:gravity="start|bottom"-->
+                <!--android:paddingBottom="@dimen/margin_medium"-->
+                <!--android:paddingStart="@dimen/margin_normal"-->
+                <!--android:text="@string/dental_state_board"-->
+                <!--android:textColor="@color/text_default_color"-->
+                <!--android:textSize="@dimen/text_size_13"-->
+                <!--app:customFont="@string/font_medium" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/line_height"
-                android:background="@color/cell_boundry_color" />
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/line_height"-->
+                <!--android:background="@color/cell_boundry_color" />-->
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/create_profile_iv_upoload_icon"
-                android:layout_width="@dimen/camera_image_size"
-                android:layout_height="@dimen/camera_image_size"
-                android:layout_margin="@dimen/margin_25"
-                android:src="@drawable/ic_upload" />
+            <!--<de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                <!--android:id="@+id/create_profile_iv_upoload_icon"-->
+                <!--android:layout_width="@dimen/camera_image_size"-->
+                <!--android:layout_height="@dimen/camera_image_size"-->
+                <!--android:layout_margin="@dimen/margin_25"-->
+                <!--android:src="@drawable/ic_upload" />-->
 
-            <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/create_profile_tv_upload_photo"
-                style="@style/text_view_normal"
-                android:layout_marginBottom="@dimen/margin_medium"
-                android:text="@string/label_upload_photo"
-                android:textColor="@color/edt_hint_color"
-                android:textSize="@dimen/text_size_xlarge"
-                app:customFont="@string/font_regular" />
+            <!--<com.appster.dentamatch.widget.CustomTextView-->
+                <!--android:id="@+id/create_profile_tv_upload_photo"-->
+                <!--style="@style/text_view_normal"-->
+                <!--android:layout_marginBottom="@dimen/margin_medium"-->
+                <!--android:text="@string/label_upload_photo"-->
+                <!--android:textColor="@color/edt_hint_color"-->
+                <!--android:textSize="@dimen/text_size_normal"-->
+                <!--app:customFont="@string/font_regular" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/line_height"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:background="@color/cell_boundry_color" />
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/line_height"-->
+                <!--android:layout_marginTop="@dimen/margin_medium"-->
+                <!--android:background="@color/cell_boundry_color" />-->
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/create_profile_tv_licence"
@@ -126,7 +130,7 @@
                 android:gravity="start|bottom"
                 android:paddingBottom="@dimen/margin_medium"
                 android:paddingStart="@dimen/margin_normal"
-                android:text="@string/lable_licence"
+                android:text="@string/label_licence"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_13"
                 app:customFont="@string/font_medium" />
@@ -191,7 +195,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/button_bg_color"
         android:gravity="center"
-        android:text="@string/lable_next"
+        android:text="@string/label_next"
         android:textColor="@color/white_color"
         android:textSize="@dimen/text_size_normal"
         app:customBackground="@string/font_bold" />

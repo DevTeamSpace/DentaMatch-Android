@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     >
 
@@ -13,18 +14,21 @@
             android:id="@+id/tv_skill_name"
             style="@style/text_view_normal"
             android:layout_marginBottom="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_25"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_25"
             android:textColor="@color/dark_state_blue_color"
-            android:textSize="@dimen/text_size_12" />
+            android:textSize="@dimen/text_size_13"
+            app:customFont="@string/font_medium" />
 
         <org.apmem.tools.layouts.FlowLayout
+            app:layoutDirection="ltr"
+            android:fitsSystemWindows="true"
             android:id="@+id/skill_flow_layout"
             android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_6"
+            android:layout_marginStart="@dimen/margin_25"
+            android:layout_marginBottom="@dimen/margin_normal">
 
         </org.apmem.tools.layouts.FlowLayout>
     </LinearLayout>

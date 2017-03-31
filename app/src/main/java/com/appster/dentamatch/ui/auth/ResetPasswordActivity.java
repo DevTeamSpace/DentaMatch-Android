@@ -14,7 +14,6 @@ import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import retrofit2.Call;
@@ -25,7 +24,6 @@ import retrofit2.Call;
 public class ResetPasswordActivity extends BaseActivity implements View.OnClickListener {
     private ActivityResetPasswordBinding mBinder;
     private boolean isOldSHow, isNewShow, isConfirmShow;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +38,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
         mBinder.tvShowConfirmPassword.setOnClickListener(this);
         mBinder.tvShowNewPassword.setOnClickListener(this);
         mBinder.tvShowOldPassword.setOnClickListener(this);
+        mBinder.toolbarResetPassword.ivToolBarLeft.setOnClickListener(this);
     }
 
     @Override
@@ -54,15 +53,22 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 if (checkValidation()) {
                     callResetPassword(prepareRequest());
                 }
+                break;
             case R.id.tv_show_confirm_password:
                 if (mBinder.etConfirmPassword.getText().toString().length() > 0) {
 
                     if (isConfirmShow) {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etConfirmPassword, isConfirmShow, mBinder.tvShowConfirmPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etConfirmPassword,
+                                isConfirmShow,
+                                mBinder.tvShowConfirmPassword);
                         isConfirmShow = false;
 
                     } else {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etConfirmPassword, isConfirmShow, mBinder.tvShowConfirmPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etConfirmPassword,
+                                isConfirmShow,
+                                mBinder.tvShowConfirmPassword);
                         isConfirmShow = true;
                     }
                 }
@@ -72,11 +78,17 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 if (mBinder.etOldPassword.getText().toString().length() > 0) {
 
                     if (isOldSHow) {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etOldPassword, isOldSHow, mBinder.tvShowOldPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etOldPassword,
+                                isOldSHow,
+                                mBinder.tvShowOldPassword);
                         isOldSHow = false;
 
                     } else {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etOldPassword, isOldSHow, mBinder.tvShowOldPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etOldPassword,
+                                isOldSHow,
+                                mBinder.tvShowOldPassword);
                         isOldSHow = true;
                     }
                 }
@@ -85,15 +97,25 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                 if (mBinder.etNewPassword.getText().toString().length() > 0) {
 
                     if (isNewShow) {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etNewPassword, isNewShow, mBinder.tvShowNewPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etNewPassword,
+                                isNewShow,
+                                mBinder.tvShowNewPassword);
                         isNewShow = false;
 
                     } else {
-                        Utils.showPassword(ResetPasswordActivity.this, mBinder.etNewPassword, isNewShow, mBinder.tvShowNewPassword);
+                        Utils.showPassword(ResetPasswordActivity.this,
+                                mBinder.etNewPassword,
+                                isNewShow,
+                                mBinder.tvShowNewPassword);
                         isNewShow = true;
                     }
                 }
                 break;
+            case R.id.iv_tool_bar_left:
+                finish();
+                break;
+
         }
     }
 
@@ -138,7 +160,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
 
     private ChangePasswordRequest prepareRequest() {
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
-
         changePasswordRequest.setConfirmNewPassword(mBinder.etConfirmPassword.getText().toString());
         changePasswordRequest.setOldPassword(mBinder.etOldPassword.getText().toString());
         changePasswordRequest.setNewPassword(mBinder.etNewPassword.getText().toString());
@@ -146,12 +167,11 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     }
 
     private void callResetPassword(ChangePasswordRequest request) {
-        processToShowDialog("", getString(R.string.please_wait), null);
+        processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.changePassword(request).enqueue(new BaseCallback<BaseResponse>(ResetPasswordActivity.this) {
             @Override
             public void onSuccess(BaseResponse response) {
-                LogUtils.LOGD(TAG, "onSuccess");
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
@@ -161,7 +181,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
                 Utils.showToast(getApplicationContext(), baseResponse.getMessage());
             }
         });

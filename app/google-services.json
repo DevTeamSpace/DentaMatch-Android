@@ -1,74 +1,35 @@
 {
   "project_info": {
-    "project_number": "399120799323",
-    "firebase_url": "https://vconnect-buy.firebaseio.com",
-    "project_id": "vconnect-buy",
-    "storage_bucket": "vconnect-buy.appspot.com"
+    "project_number": "876661537055",
+    "firebase_url": "https://denta-match-90612.firebaseio.com",
+    "project_id": "denta-match-90612",
+    "storage_bucket": "denta-match-90612.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:399120799323:android:cba1bcd44ef52f2a",
+        "mobilesdk_app_id": "1:876661537055:android:802fdac5a73306a5",
         "android_client_info": {
           "package_name": "com.appster.dentamatch"
         }
       },
       "oauth_client": [
         {
-          "client_id": "399120799323-e18afc2k86h2k70rebbs4qsp1uvqu6fg.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "399120799323-sr43sh2s6cdulrs7jaa5lttpf422mmft.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD-I02_8D0L7fJm9_gEoy0P6jFlDeIEZJs"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:399120799323:android:5a1f3f65be276c8f",
-        "android_client_info": {
-          "package_name": "com.appster.dentamatch"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "399120799323-fsege7vb4f63ciff99qrr7f4i2srmukq.apps.googleusercontent.com",
+          "client_id": "876661537055-t331k8n5dvocfn9gjjuatvisqvsrereo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.vconnect.store",
-            "certificate_hash": "B40B53302ADBF94CE6A3081879C4902DCA59908E"
+            "package_name": "com.appster.dentamatch",
+            "certificate_hash": "22899DA543137417A7982CEB47AD0898C8A1D8BA"
           }
         },
         {
-          "client_id": "399120799323-e18afc2k86h2k70rebbs4qsp1uvqu6fg.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "399120799323-sr43sh2s6cdulrs7jaa5lttpf422mmft.apps.googleusercontent.com",
+          "client_id": "876661537055-jao0v5suhaf584kd9lur30gnrdlomke1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD-I02_8D0L7fJm9_gEoy0P6jFlDeIEZJs"
+          "current_key": "AIzaSyD7BciiLRJMM8MsBDmtv-y0-JFO9nlu5Ic"
         }
       ],
       "services": {
@@ -79,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "399120799323-e18afc2k86h2k70rebbs4qsp1uvqu6fg.apps.googleusercontent.com",
+              "client_id": "876661537055-jao0v5suhaf584kd9lur30gnrdlomke1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

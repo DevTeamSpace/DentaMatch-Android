@@ -25,8 +25,8 @@ class OnBoardingAdapter extends PagerAdapter {
     OnBoardingAdapter(Context context) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mTitle = mContext.getResources().getStringArray(R.array.onbording_title);
-        mDesc = mContext.getResources().getStringArray(R.array.onbording_desc);
+        mTitle = mContext.getResources().getStringArray(R.array.on_boarding_title);
+        mDesc = mContext.getResources().getStringArray(R.array.on_boarding_desc);
     }
 
     @Override

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_general"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/toolbar_color"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:id="@+id/container_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tv_toolbar_general_left"
+                style="@style/text_view_normal"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_toEndOf="@+id/layout_count"
+                android:textColor="@color/white_color"
+                android:textSize="@dimen/text_size_16"
+                app:customFont="@string/font_medium" />
+
+            <FrameLayout
+                android:id="@+id/layout_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/iv_tool_bar_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_5"
+                    android:paddingStart="@dimen/margin_normal"
+                    android:paddingTop="@dimen/margin_10"
+                    android:src="@drawable/img_notifications"
+                    android:visibility="visible" />
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_btch_count"
+                    style="@style/text_view_normal"
+                    android:layout_width="@dimen/batch_count_dimen"
+                    android:layout_height="@dimen/batch_count_dimen"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:visibility="gone"
+                    android:background="@drawable/shape_batch_count"
+                    android:gravity="center"
+                    android:textColor="@color/white_color"
+                    android:textSize="@dimen/text_size_8"
+                    app:customFont="@string/font_light" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/txv_toolbar_general_center"
+                style="@style/text_view_normal"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white_color" />
+
+            <ImageView
+                android:id="@+id/iv_tool_bar_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_29"
+                android:layout_toStartOf="@+id/txv_toolbar_general_right"
+                android:src="@drawable/img_list"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txv_toolbar_general_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:gravity="end"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+</layout>

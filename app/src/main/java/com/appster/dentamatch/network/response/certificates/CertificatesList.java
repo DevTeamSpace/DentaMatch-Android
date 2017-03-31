@@ -18,6 +18,9 @@ public class CertificatesList implements Parcelable {
     private String validityDate;
     private boolean isImageUploaded;
 
+    public CertificatesList() {
+    }
+
     private CertificatesList(Parcel in) {
         id = in.readInt();
         certificateName = in.readString();

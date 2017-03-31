@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowActionBar">false</item>
     </style>
 
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -45,9 +44,16 @@
     <!--<style name="TextViewMedium" parent="TextView">-->
     <!--<item name="android:textSize">@dimen/text_size_medium</item>-->
     <!--</style>-->
+    <style name="text_view_small" parent="TextView">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
 
     <style name="text_view_normal" parent="TextView">
         <item name="android:textSize">@dimen/text_size_normal</item>
+    </style>
+
+    <style name="text_view_large" parent="TextView">
+        <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
 

@@ -7,11 +7,31 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class UserDetail {
+    private String id;
     private String firstName;
     private String lastName;
+    private String userId;
     private String email;
     private String zipCode;
     private String preferredJobLocation;
+    private int profileCompleted;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public int getProfileCompleted() {
+        return profileCompleted;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    private String imageUrl;
 
     @SerializedName("accessToken")
     private String userToken;
@@ -62,5 +82,13 @@ public class UserDetail {
 
     public void setUserToken(String userToken) {
         this.userToken = userToken;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

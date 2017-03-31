@@ -14,8 +14,8 @@ public class Alert {
 
     private static Snackbar s_SnackBar;
 
-    public static AlertDialog.Builder createAlert(Context context,
-                                                  String title, String message) {
+    private static AlertDialog.Builder createAlert(Context context,
+                                                   String title, String message) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(
                 new ContextThemeWrapper(context,
                         R.style.CustomAlertDialogTheme));
@@ -24,10 +24,12 @@ public class Alert {
         else
             dialog.setTitle("Information");
         dialog.setMessage(message);
+        dialog.setCancelable(false);
+
         return dialog;
     }
 
-    public static AlertDialog.Builder createYesNoAlert(Context context,String btnPositive,String btnNegative,
+    public static AlertDialog.Builder createYesNoAlert(Context context, String btnPositive, String btnNegative,
                                                        String title, String message, final OnAlertClickListener listener) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(
                 new ContextThemeWrapper(context,
@@ -51,15 +53,16 @@ public class Alert {
                     listener.onNegative(dialogInterface);
             }
         });
+        dialog.setCancelable(false);
         dialog.show();
         return dialog;
     }
 
 
-    public static AlertDialog alert(BaseActivity context, String title,
-                                    String message, String defaultButton,
-                                    final Runnable defaultHandler, String alternativeButton,
-                                    final Runnable alternativeHandler, boolean showLogo, boolean isCancelable) {
+    private static AlertDialog alert(BaseActivity context, String title,
+                                     String message, String defaultButton,
+                                     final Runnable defaultHandler, String alternativeButton,
+                                     final Runnable alternativeHandler, boolean showLogo, boolean isCancelable) {
         if (!context.isActive())
             return null;
         AlertDialog.Builder dialog = createAlert(context, title, message);
@@ -84,12 +87,15 @@ public class Alert {
                         }
                     });
         }
+        dialog.setCancelable(false);
+
         if (showLogo)
             dialog.setIcon(R.mipmap.ic_launcher);
         try {
             if (context.isActive())
                 return dialog.show();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -100,7 +106,7 @@ public class Alert {
                 defaultHandler);
     }
 
-    public static void alert(BaseActivity context, String title,
+    private static void alert(BaseActivity context, String title,
                              String message, String defaultButton, final Runnable defaultHandler) {
         alert(context, title, message, defaultButton,
                 defaultHandler, null, null, false, true);
@@ -108,7 +114,7 @@ public class Alert {
 
     public static void alert(BaseActivity context, String title,
                              String message) {
-        alert(context, title, message, "OK",
+        alert(context, title, message, context.getString(R.string.txt_ok),
                 null, null, null, false, true);
     }
 
@@ -119,7 +125,7 @@ public class Alert {
         }
     }
 
-    static Snackbar getSnackBar(View view, String message) {
+    private static Snackbar getSnackBar(View view, String message) {
         dismissSnackBar();
         return s_SnackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
     }
@@ -139,9 +145,7 @@ public class Alert {
     }
 
     public interface OnAlertClickListener {
-
         void onPositive(DialogInterface dialog);
-
         void onNegative(DialogInterface dialog);
     }
 }

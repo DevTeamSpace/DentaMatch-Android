@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            style="@style/text_view_normal"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:drawableTop="@drawable/img_placeholder_track"
+            android:drawablePadding="@dimen/margin_23"
+            android:text="@string/txt_no_shortlisted_jobs"
+            android:id="@+id/tv_no_jobs"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_job_list"
+            android:layout_above="@+id/lay_job_list_pagination"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_fragment_shortlisted_jobs"
+            android:layout_width="match_parent"
+            android:layout_above="@+id/lay_job_list_pagination"
+            android:layout_height="match_parent"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white3_color"
+            android:id="@+id/lay_job_list_pagination"
+            android:visibility="gone"
+            android:layout_height="@dimen/pagination_view_height">
+
+            <ProgressBar
+                android:padding="@dimen/default_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout></layout>

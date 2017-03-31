@@ -28,7 +28,7 @@
         android:id="@+id/bottom_sheet_tv_gallray"
         style="@style/text_view_normal"
         android:layout_width="match_parent"
-        android:text="@string/label_choose_gallary"
+        android:text="@string/label_choose_gallery"
         android:textColor="@color/color_bottom_sheet_text"
         android:textSize="@dimen/text_size_large"
         android:drawablePadding="@dimen/padding_drawable"

@@ -1,6 +1,6 @@
 package com.appster.dentamatch.network.response.profile;
 
-import com.appster.dentamatch.model.JobTitleList;
+import com.appster.dentamatch.model.JobTitleListModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
  */
 public class JobTitleResponseData {
     @SerializedName("joblists")
-    private ArrayList<JobTitleList> jobTitleList;
+    private ArrayList<JobTitleListModel> jobTitleList;
 
-    public ArrayList<JobTitleList> getJobTitleList() {
+    public ArrayList<JobTitleListModel> getJobTitleList() {
         return jobTitleList;
     }
 }

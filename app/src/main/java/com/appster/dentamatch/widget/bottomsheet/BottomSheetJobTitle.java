@@ -24,7 +24,7 @@ public class BottomSheetJobTitle {
     public BottomSheetJobTitle(final Context context, JobTitleSelectionListener jobTitleSelectionListener, int postion) {
         mJobTitleSelectionListener = jobTitleSelectionListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
-        jobTitle = new String[PreferenceUtil.getJobTitleList().size()];
+        jobTitle = new String[PreferenceUtil.getJobTitleList() != null ? PreferenceUtil.getJobTitleList().size() : 0];
         View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_job_title, null);
         CustomTextView tvCancel = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
         CustomTextView tvDone = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_done);
@@ -32,7 +32,7 @@ public class BottomSheetJobTitle {
         pickerTitle.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
         pickerTitle.setMinValue(0);
-        if (PreferenceUtil.getJobTitleList() != null&&PreferenceUtil.getJobTitleList().size()>0) {
+        if (PreferenceUtil.getJobTitleList() != null && PreferenceUtil.getJobTitleList().size() > 0) {
             pickerTitle.setMaxValue(PreferenceUtil.getJobTitleList().size() - 1);
             if (postion != -1) {
                 pickerTitle.setValue(postion);
@@ -60,9 +60,9 @@ public class BottomSheetJobTitle {
                     mBottomSheetDialog.dismiss();
 
                 }
-
-                mJobTitleSelectionListener.onJobTitleSelection(PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getJobTitle(),PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getId(),pickerTitle.getValue());
-
+                if (PreferenceUtil.getJobTitleList() != null) {
+                    mJobTitleSelectionListener.onJobTitleSelection(PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getJobTitle(), PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getId(), pickerTitle.getValue());
+                }
             }
         });
 
