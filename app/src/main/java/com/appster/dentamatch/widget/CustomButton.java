@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.widget.Button;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.util.LogUtils;
