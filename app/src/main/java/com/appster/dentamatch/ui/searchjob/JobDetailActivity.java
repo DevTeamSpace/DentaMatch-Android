@@ -18,8 +18,8 @@ import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityJobDetailBinding;
-import com.appster.dentamatch.model.JobDetailModel;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
+import com.appster.dentamatch.model.JobDetailModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;

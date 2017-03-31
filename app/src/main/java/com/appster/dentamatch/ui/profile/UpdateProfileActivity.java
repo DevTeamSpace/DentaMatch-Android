@@ -17,9 +17,9 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateProfileBinding;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
-import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -185,7 +185,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
             if (resultCode == RESULT_OK) {
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
-                mFilePath = CameraUtil.getInstance().compressImage(getCameraPhotoPath(), this);
+                mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
                 if (mFilePath != null) {
                     Picasso.with(UpdateProfileActivity.this)
                             .load(new File(mFilePath)).centerCrop()
@@ -195,7 +195,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .into(mBinding.createProfile1IvProfileIcon);
 
-                    uploadImageApi(getCameraPhotoPath(), Constants.APIS.IMAGE_TYPE_PIC);
+                    uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                 }
             }
 
@@ -288,7 +288,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             public void onSuccess(FileUploadResponse response) {
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
-                if ( response.getStatus() == 1) {
+                if (response.getStatus() == 1) {
                     PreferenceUtil.setProfileImagePath(response.getFileUploadResponseData().getImageUrl());
                     showToast(response.getMessage());
 

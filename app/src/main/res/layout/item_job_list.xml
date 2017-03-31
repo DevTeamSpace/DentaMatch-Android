@@ -104,7 +104,7 @@
         android:background="@color/line_divider"
         android:layout_below="@+id/tv_job_doc_time"
         android:layout_marginTop="@dimen/margin_15"
-        android:layout_height="1dp"/>
+        android:layout_height="@dimen/line_height"/>
     
 
     <CheckBox

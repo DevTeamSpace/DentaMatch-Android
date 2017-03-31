@@ -13,7 +13,7 @@
         app:tabSelectedTextColor="@color/white_color"
         app:tabTextColor="@color/tab_normal_color"
         app:tabIndicatorColor="@color/color_forgot_pwd"
-        app:tabIndicatorHeight="4dp"
+        app:tabIndicatorHeight="@dimen/margin_small"
         app:tabGravity="center"
         android:layout_height="?attr/actionBarSize"/>
 

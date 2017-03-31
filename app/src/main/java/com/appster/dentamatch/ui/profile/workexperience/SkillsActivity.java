@@ -14,10 +14,10 @@ import android.widget.Button;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SkillsAdapter;
 import com.appster.dentamatch.databinding.ActivitySkillsBinding;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.interfaces.OnSkillClick;
 import com.appster.dentamatch.model.ParentSkillModel;
-import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.SubSkillModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -65,14 +65,14 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
 
+        if (getIntent() != null) {
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
+
         if (isFromProfile) {
             mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
             mBinder.btnNext.setText(getString(R.string.save_label));
 
-        }
-
-        if (getIntent() != null) {
-            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
         }
 
         btnNext.setOnClickListener(this);

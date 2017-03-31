@@ -17,11 +17,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <permission
-        android:name="com.appster.dentamatch.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="com.appster.dentamatch.permission.C2D_MESSAGE" />
-
     <application
         android:name=".DentaApp"
         android:allowBackup="true"
@@ -42,7 +37,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAhA4pk57QtTynvuqTgW_YDHzJdL1zKv3M" />
+            android:value="@string/maps_api_key" />
             <!--android:value="AIzaSyBFd7-rEbUH1ITYOXIXdlZvnYfnNgLmQas" />-->
 
         <service android:name=".firebase.MyFirebaseMessagingService" android:exported="false">
@@ -217,7 +212,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
-
         <activity
             android:name=".ui.messages.ChatActivity"
             android:screenOrientation="portrait"
@@ -226,10 +220,6 @@
             android:name=".ui.notification.NotificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
-
-        <!--<activity android:name=".ui.chat.ChatListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />-->
 
         <meta-data
             android:name="io.fabric.ApiKey"

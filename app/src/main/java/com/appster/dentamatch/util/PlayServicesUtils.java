@@ -17,12 +17,9 @@
 package com.appster.dentamatch.util;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 /**
  * Helper for Google Play services-related operations.

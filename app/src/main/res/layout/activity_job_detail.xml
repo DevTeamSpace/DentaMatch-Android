@@ -116,8 +116,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
 
 
                 <com.appster.dentamatch.widget.CustomTextView
@@ -138,8 +138,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -252,8 +252,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
@@ -272,8 +272,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
 
                 <RelativeLayout
                     android:id="@+id/lay_job_detail_desc_holder"
@@ -314,8 +314,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
@@ -334,8 +334,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -377,8 +377,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
@@ -510,8 +510,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     style="@style/text_view_normal"
@@ -530,8 +530,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/map_job_detail"

@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:id="@+id/constant_view"
@@ -14,6 +13,7 @@
             android:layout_alignTop="@+id/swipeable_view"
             android:layout_alignBottom="@+id/swipeable_view"
             android:layout_height="wrap_content">
+
             <com.appster.dentamatch.widget.CustomTextView
                 style="@style/text_view_normal"
                 android:layout_width="match_parent"
@@ -24,6 +24,7 @@
                 android:padding="@dimen/default_padding"
                 android:layout_height="match_parent"
                 android:text="@string/txt_delete"/>
+
         </FrameLayout>
 
 <RelativeLayout

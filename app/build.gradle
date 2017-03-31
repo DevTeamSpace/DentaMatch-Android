@@ -123,7 +123,7 @@ android {
 
 ext {
     //supportLibrary Version
-    supportLibrary = ' 25.2.0'
+    supportLibrary = '25.2.0'
 
     //Play services Version
     playServiceVersion = '10.2.0'

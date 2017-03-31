@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Context;
 import android.widget.Toast;
+
 import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;

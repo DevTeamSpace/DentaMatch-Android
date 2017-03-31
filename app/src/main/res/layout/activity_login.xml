@@ -28,7 +28,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1.5dp"
+                        android:layout_height="@dimen/line_height"
                         android:layout_alignParentBottom="true"
                         android:background="@color/white_color" />
 
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_55"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <com.appster.dentamatch.widget.CustomTextView
                         style="@style/text_view_normal"
@@ -211,7 +211,7 @@
                     android:layout_marginBottom="@dimen/margin_19"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/register_input_layout_fname"

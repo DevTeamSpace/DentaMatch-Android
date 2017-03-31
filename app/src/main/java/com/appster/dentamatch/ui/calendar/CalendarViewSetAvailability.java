@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;

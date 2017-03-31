@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">DentaMatch</string>
+    <string name="maps_api_key">AIzaSyAhA4pk57QtTynvuqTgW_YDHzJdL1zKv3M</string>
+
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
     <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -41,7 +43,6 @@
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
     <string name="password_contains_space">Password can not contain spaces.</string>
     <string name="error_something_wrong">Something went wrong!</string>
-    <string name="error_no_network_connection">No Network Connection</string>
     <string name="error_empty_address">Please select an address.</string>
     <string name="alert_empty_notification">You don’t have any Notifications right now.</string>
     <string name="msg_reference_name_1_blank">Reference 1 name cannot be blank. </string>

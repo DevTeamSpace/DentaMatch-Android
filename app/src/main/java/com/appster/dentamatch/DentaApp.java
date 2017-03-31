@@ -4,7 +4,6 @@ package com.appster.dentamatch;
  * Created by gautambisht on 10/11/16.
  */
 
-import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
 import com.appster.dentamatch.chat.DBHelper;

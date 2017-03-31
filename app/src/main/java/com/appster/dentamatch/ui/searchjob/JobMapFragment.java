@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -110,15 +111,15 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     }
 
     @Subscribe
-    public void onJobSavedUnsaved(SaveUnSaveEvent event){
-        if(event != null){
+    public void onJobSavedUnsaved(SaveUnSaveEvent event) {
+        if (event != null) {
 
-            for(SearchJobModel model1 : mJobData){
+            for (SearchJobModel model1 : mJobData) {
 
-                if(model1.getId() == event.getJobID()){
+                if (model1.getId() == event.getJobID()) {
                     model1.setIsSaved(event.getStatus());
                     SearchJobDataHelper.getInstance().notifyItemsChanged(model1);
-                    if(mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                         mMapBinding.infoWindowContent.cbJobSelection.setChecked(event.getStatus() == 1);
                         break;
                     }
@@ -155,13 +156,17 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnMapClickListener(this);
 
-        if (PermissionUtils.checkPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION, getActivity())) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            PermissionUtils.requestPermission(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
+
+        } else {
             mGoogleMap.setMyLocationEnabled(true);
             LocationUtils.addFragment((AppCompatActivity) getActivity());
-        } else {
-            PermissionUtils.requestPermission(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
         }
-
     }
 
     @Override
@@ -169,9 +174,17 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS) {
-            if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                mGoogleMap.setMyLocationEnabled(true);
-                LocationUtils.addFragment((AppCompatActivity) getActivity());
+
+            if (grantResults.length > 0 &&
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    mGoogleMap.setMyLocationEnabled(true);
+                    LocationUtils.addFragment((AppCompatActivity) getActivity());
+
+                }
             }
         }
     }

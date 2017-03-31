@@ -13,8 +13,8 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SchoolsAdapter;
 import com.appster.dentamatch.databinding.ActivitySchoolingBinding;
-import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
+import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.model.SchoolTypeModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -57,14 +57,13 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
         mBinder.toolbarSchooling.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_schooling_exp).toUpperCase());
 
+        if (getIntent() != null) {
+            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
+        }
+
         if (isFromProfile) {
             mBinder.toolbarSchooling.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
             mBinder.btnNext.setText(getString(R.string.save_label));
-
-        }
-
-        if (getIntent() != null) {
-            isFromProfile = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
         }
 
         mBinder.btnNext.setOnClickListener(this);
@@ -88,7 +87,6 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 if (checkValidation()) {
                     addSchoolListApi(prepareRequest());
                 }
-
                 break;
 
             default:

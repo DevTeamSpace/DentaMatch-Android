@@ -40,7 +40,12 @@ import retrofit2.Call;
  * Created by virender on 17/01/17.
  */
 public class HomeActivity extends BaseActivity {
-    private final String TAG = "Home Screen";
+    private final int SEARCH_JOBS_FRAGMENT_POS = 0;
+    private final int TRACKS_FRAGMENT_POS = 1;
+    private final int CALENDAR_FRAGMENT_POS = 2;
+    private final int MESSAGE_FRAGMENT_POS = 3;
+    private final int PROFILE_FRAGMENT_POS = 4;
+
     private AHBottomNavigation bottomBar;
     private ProfileFragment mProfileFragment;
     private JobsFragment mJobsFragment;
@@ -67,22 +72,22 @@ public class HomeActivity extends BaseActivity {
          * Launch job search fragment if redirected from search activity.
          */
         if (getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)) {
-            bottomBar.setCurrentItem(0);
+            bottomBar.setCurrentItem(SEARCH_JOBS_FRAGMENT_POS);
 
         } else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
             /**
              * Launch job message fragment if redirected from notification click.
              */
-            bottomBar.setCurrentItem(3);
+            bottomBar.setCurrentItem(MESSAGE_FRAGMENT_POS);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 
         } else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
-            bottomBar.setCurrentItem(4);
+            bottomBar.setCurrentItem(PROFILE_FRAGMENT_POS);
 
         }else{
-            bottomBar.setCurrentItem(0);
+            bottomBar.setCurrentItem(SEARCH_JOBS_FRAGMENT_POS);
 
         }
 
@@ -98,7 +103,7 @@ public class HomeActivity extends BaseActivity {
         super.onNewIntent(intent);
 
         if (intent.hasExtra(Constants.EXTRA_FROM_CHAT)) {
-            bottomBar.setCurrentItem(3);
+            bottomBar.setCurrentItem(MESSAGE_FRAGMENT_POS);
             String RecruiterID = intent.getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
@@ -142,7 +147,7 @@ public class HomeActivity extends BaseActivity {
             public boolean onTabSelected(int position, boolean wasSelected) {
                 switch (position) {
 
-                    case 0:
+                    case SEARCH_JOBS_FRAGMENT_POS:
                         if (mJobsFragment != null) {
                             pushFragment(mJobsFragment, null, ANIMATION_TYPE.FADE);
                         } else {
@@ -151,7 +156,7 @@ public class HomeActivity extends BaseActivity {
                         }
                         break;
 
-                    case 1:
+                    case TRACKS_FRAGMENT_POS:
                         if (mTrackFragment != null) {
                             pushFragment(mTrackFragment, null, ANIMATION_TYPE.FADE);
                         } else {
@@ -161,7 +166,7 @@ public class HomeActivity extends BaseActivity {
 
                         break;
 
-                    case 2:
+                    case CALENDAR_FRAGMENT_POS:
                         if (mCalendarFragment != null) {
                             pushFragment(mCalendarFragment, null, ANIMATION_TYPE.FADE);
                         } else {
@@ -171,7 +176,7 @@ public class HomeActivity extends BaseActivity {
 
                         break;
 
-                    case 3:
+                    case MESSAGE_FRAGMENT_POS:
                         if (mMessagesFragment != null) {
                             pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
                         } else {
@@ -180,7 +185,7 @@ public class HomeActivity extends BaseActivity {
                         }
                         break;
 
-                    case 4:
+                    case PROFILE_FRAGMENT_POS:
                         if (mProfileFragment != null) {
                             pushFragment(mProfileFragment, null, ANIMATION_TYPE.FADE);
                         } else {
@@ -202,11 +207,11 @@ public class HomeActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                setTitleMargins(0);
-                setTitleMargins(1);
-                setTitleMargins(2);
-                setTitleMargins(3);
-                setTitleMargins(4);
+                setTitleMargins(SEARCH_JOBS_FRAGMENT_POS);
+                setTitleMargins(TRACKS_FRAGMENT_POS);
+                setTitleMargins(CALENDAR_FRAGMENT_POS);
+                setTitleMargins(MESSAGE_FRAGMENT_POS);
+                setTitleMargins(PROFILE_FRAGMENT_POS);
             }
         }, 1000);
 
@@ -216,7 +221,7 @@ public class HomeActivity extends BaseActivity {
         switch (bottomBarPosition) {
 
             case 0:
-                TextView tvTitle0 = (TextView) bottomBar.getViewAtPosition(0).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle0 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp0 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp0.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp0.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -224,7 +229,7 @@ public class HomeActivity extends BaseActivity {
                 break;
 
             case 1:
-                TextView tvTitle1 = (TextView) bottomBar.getViewAtPosition(1).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle1 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp1 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp1.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp1.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -232,7 +237,7 @@ public class HomeActivity extends BaseActivity {
                 break;
 
             case 2:
-                TextView tvTitle2 = (TextView) bottomBar.getViewAtPosition(2).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle2 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp2 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp2.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp2.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -240,7 +245,7 @@ public class HomeActivity extends BaseActivity {
                 break;
 
             case 3:
-                TextView tvTitle3 = (TextView) bottomBar.getViewAtPosition(3).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle3 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp3 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp3.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp3.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -248,7 +253,7 @@ public class HomeActivity extends BaseActivity {
                 break;
 
             case 4:
-                TextView tvTitle4 = (TextView) bottomBar.getViewAtPosition(4).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle4 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp4 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp4.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp4.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;

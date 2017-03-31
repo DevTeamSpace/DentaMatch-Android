@@ -9,8 +9,6 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -21,10 +19,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
@@ -73,7 +69,6 @@ import java.util.UUID;
  */
 public class Utils {
     private static final String TAG = "Utils";
-    private static int NOTIFICATION_CODE = 00101;
 
     private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -82,15 +77,6 @@ public class Utils {
     private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
     private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
     private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
-
-    @Nullable
-    /*
-    * get device id
-    * */
-//    public static String getDeviceID(Context context) {
-//        return Settings.Secure.getString(context.getContentResolver(),
-//                Settings.Secure.ANDROID_ID);
-//    }
 
 
     public synchronized static String getDeviceID() {
@@ -124,8 +110,9 @@ public class Utils {
     }
 
     public static Drawable getDrawable(@NonNull Context context, @DrawableRes int drawableId) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return context.getDrawable(drawableId);
+        }
 
         //noinspection deprecation
         return context.getResources().getDrawable(drawableId);
@@ -146,15 +133,18 @@ public class Utils {
     public static Address getReverseGeoCode(Context ct, LatLng latLng) {
         Address address = null;
 
-        Geocoder geocoder = new Geocoder(ct);
-        try {
-            List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if (addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
-                address = addressList.get(0);
+        if (ct != null) {
+            Geocoder geocoder = new Geocoder(ct);
+            try {
+                List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                if (addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
+                    address = addressList.get(0);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
 
         return address;
     }
@@ -189,38 +179,12 @@ public class Utils {
     }
 
     public static int dpToPx(Context ct, int dp) {
-        DisplayMetrics displayMetrics = ct.getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
-    public static Drawable getGalleryIcon(Context ct) {
-        Drawable galleryIcon = null;
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setType("image/*");
-        List<ResolveInfo> allHandlers = ct.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        for (int i = 0; i < allHandlers.size(); i++) {
-            if (allHandlers.get(i).activityInfo.name.toLowerCase().contains("gallery")) {
-                galleryIcon = allHandlers.get(i).loadIcon(ct.getPackageManager());
-                break;
-            }
+        if (ct != null) {
+            DisplayMetrics displayMetrics = ct.getResources().getDisplayMetrics();
+            return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         }
 
-        return galleryIcon;
-    }
-
-    public static Drawable getCameraIcon(Context ct) {
-        Drawable cameraIcon = null;
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        List<ResolveInfo> allHandlers = ct.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        for (int i = 0; i < allHandlers.size(); i++) {
-            if (allHandlers.get(i).activityInfo.name.toLowerCase().contains("camera")) {
-                cameraIcon = allHandlers.get(i).loadIcon(ct.getPackageManager());
-                break;
-            }
-        }
-        return cameraIcon;
+        return 0;
     }
 
     public static void setSpanUnderline(SpannableString spannableString, int start, int end) {
@@ -242,11 +206,15 @@ public class Utils {
     }
 
     public static void showToast(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        if (context != null) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void showToastLong(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        if (context != null) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -344,11 +312,6 @@ public class Utils {
             }
             edtPassword.setSelection(edtPassword.length());
         }
-    }
-
-    public static void showNetowrkAlert(Context context) {
-        showToast(context, context.getString(R.string.error_no_network_connection));
-
     }
 
     public static String getStringFromEditText(EditText editText) {
@@ -547,14 +510,24 @@ public class Utils {
     }
 
     public static boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        NetworkInfo netInfo = null;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+             netInfo = cm.getActiveNetworkInfo();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return netInfo != null && netInfo.isConnectedOrConnecting();
+
     }
 
     public static void clearAllNotifications(Context ct) {
-        NotificationManager notificationManager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+        if (ct != null) {
+            NotificationManager notificationManager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
+        }
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -585,6 +558,8 @@ public class Utils {
     }
 
     public static void showNotification(Context ct, String title, String message, Intent intent, String notificationId) {
+        if (ct != null) {
+
         int uniqueID = (int) (System.currentTimeMillis() & 0xfffffff);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -610,11 +585,15 @@ public class Utils {
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_VIBRATE;
         manager.notify(Integer.parseInt(notificationId), notification);
+        }
+
     }
 
     public static void clearRecruiterNotification(Context ct, String RecruiterID) {
-        NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(Integer.parseInt(RecruiterID));
+        if (ct != null) {
+            NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.cancel(Integer.parseInt(RecruiterID));
+        }
     }
 
     public static ChatMessageModel parseData(JSONObject messageData) {

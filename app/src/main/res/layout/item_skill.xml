@@ -54,9 +54,9 @@
                 android:id="@+id/et_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/margin_5"
                 android:background="@drawable/edit_text_selector"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/margin_10"
                 android:inputType="text"
                 android:digits="@string/digits_other"
                 android:focusableInTouchMode="true"
@@ -67,7 +67,7 @@
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/line_height"
             android:background="@color/white_1" />
     </LinearLayout>
 </layout>

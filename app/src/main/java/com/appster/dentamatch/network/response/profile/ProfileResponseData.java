@@ -3,9 +3,9 @@ package com.appster.dentamatch.network.response.profile;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.appster.dentamatch.eventbus.LocationEvent;
 import com.appster.dentamatch.model.DentalStateBoardModel;
 import com.appster.dentamatch.model.JobTitleListModel;
-import com.appster.dentamatch.eventbus.LocationEvent;
 import com.appster.dentamatch.model.ProfileSchoolModel;
 import com.appster.dentamatch.model.ProfileSkillModel;
 import com.appster.dentamatch.model.UserModel;

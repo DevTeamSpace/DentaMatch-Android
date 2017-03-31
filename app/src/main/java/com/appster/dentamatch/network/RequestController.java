@@ -3,7 +3,6 @@ package com.appster.dentamatch.network;
 import android.text.TextUtils;
 
 import com.appster.dentamatch.BuildConfig;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 import java.io.IOException;
@@ -33,6 +32,8 @@ public final class RequestController {
     private static HttpLoggingInterceptor logger = new HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY);
 
+    private static Interceptor headerInterceptor;
+
     private static OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
             .addInterceptor(logger)
             .readTimeout(1, TimeUnit.MINUTES)
@@ -51,13 +52,24 @@ public final class RequestController {
     }
 
     public static <S> S createService(Class<S> serviceClass, final boolean isAuth) {
-        okHttpClient.addInterceptor(new Interceptor() {
+
+        if(headerInterceptor == null || !okHttpClient.interceptors().contains(headerInterceptor)){
+            addNetworkInterceptor(isAuth);
+        }
+
+        Retrofit retrofit = builder.client(okHttpClient.build()).build();
+        return retrofit.create(serviceClass);
+    }
+
+    private static void addNetworkInterceptor(final boolean isAuth) {
+        headerInterceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
+                Response response = null;
+
                 if (isAuth) {
                     String accessToken = PreferenceUtil.getKeyUserToken();
-                    LogUtils.LOGD(TAG, HEADER_ACCESS_TOKEN + " : " + accessToken);
 
                     if (!TextUtils.isEmpty(accessToken)) {
                         Request.Builder requestBuilder = original.newBuilder()
@@ -66,19 +78,20 @@ public final class RequestController {
                                 .header(HEADER_ACCEPT, APPLICATION_JSON)
                                 .method(original.method(), original.body());
 
-                        Request request = requestBuilder.build();
-                        return chain.proceed(request);
+                        response = chain.proceed(requestBuilder.build());
+
+                    } else {
+                        response = chain.proceed(original);
                     }
+
                 } else {
-                    return chain.proceed(original);
+                    response = chain.proceed(original);
                 }
 
-                return chain.proceed(original);
+                return response;
             }
-        });
+        };
 
-//        okHttpClient.addInterceptor(logger);
-        Retrofit retrofit = builder.client(okHttpClient.build()).build();
-        return retrofit.create(serviceClass);
+        okHttpClient.addInterceptor(headerInterceptor);
     }
 }

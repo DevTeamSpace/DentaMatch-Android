@@ -12,9 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_18"
-
-            >
+            android:layout_marginTop="@dimen/margin_18">
 
             <ImageView
                 android:id="@+id/iv_read"

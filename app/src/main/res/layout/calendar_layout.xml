@@ -25,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/iv_full_time"
-                android:layout_width="5dp"
-                android:layout_height="5dp"
+                android:layout_width="@dimen/margin_5"
+                android:layout_height="@dimen/margin_5"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/margin_6"
                 android:layout_toStartOf="@+id/display_current_date"
@@ -38,7 +38,7 @@
                 style="@style/text_view_normal"
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:text="@string/txt_current_date"
                 android:textColor="@color/grayish_brown_color"
                 app:customFont="@string/font_regular" />
@@ -62,14 +62,14 @@
             android:layout_height="wrap_content"
             android:background="@color/white_color"
             android:orientation="horizontal"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp">
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small">
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/sun"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/sun"
@@ -82,7 +82,7 @@
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/mon"
@@ -95,7 +95,7 @@
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/tue"
@@ -108,7 +108,7 @@
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/wed"
@@ -121,7 +121,7 @@
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/thu"
@@ -133,7 +133,7 @@
                 style="@style/text_view_normal"
 
                 android:layout_width="0dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/fri"
@@ -145,7 +145,7 @@
                 style="@style/text_view_normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/sat"
@@ -157,9 +157,9 @@
             android:id="@+id/calendar_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:horizontalSpacing="5dp"
+            android:horizontalSpacing="@dimen/margin_5"
             android:numColumns="7"
             android:scrollbars="none"
-            android:verticalSpacing="3dp" />
+            android:verticalSpacing="@dimen/margin_small_3" />
     </LinearLayout>
 </layout>
