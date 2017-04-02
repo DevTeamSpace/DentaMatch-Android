@@ -311,7 +311,7 @@
                                 android:layout_marginRight="@dimen/margin_normal"
                                 android:layout_marginTop="@dimen/margin_19"
                                 android:background="@drawable/edit_text_selector"
-                                android:drawablePadding="@dimen/padding_drawable"
+                                android:drawablePadding="15dp"
                                 android:drawableStart="@drawable/ic_password"
                                 android:hint="@string/password_label"
                                 android:inputType="textPassword"

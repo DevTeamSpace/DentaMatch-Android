@@ -296,16 +296,20 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.flowLayout.removeAllViews();
 
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
-                    CustomTextView textView = new CustomTextView(getActivity());
-                    FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(10, 10, 10, 10);
-                    textView.setLayoutParams(lp);
-                    textView.setSingleLine(true);
+                    com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                            .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
+                    flowBinding.flowChild.setText(response.getAffiliationList().get(i).getAffiliationName());
 
-                    textView.setBackgroundResource(R.drawable.bg_edit_text);
-                    textView.setPadding(15, 10, 15, 10);
-                    textView.setText(response.getAffiliationList().get(i).getAffiliationName());
-                    profileBinding.flowLayout.addView(textView, lp);
+//                    CustomTextView textView = new CustomTextView(getActivity());
+//                    FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
+//                    lp.setMargins(10, 10, 10, 10);
+//                    textView.setLayoutParams(lp);
+//                    textView.setSingleLine(true);
+//
+//                    textView.setBackgroundResource(R.drawable.bg_edit_text);
+//                    textView.setPadding(15, 10, 15, 10);
+//                    textView.setText(response.getAffiliationList().get(i).getAffiliationName());
+                    profileBinding.flowLayout.addView(flowBinding.getRoot());
                 }
 
             } else {
