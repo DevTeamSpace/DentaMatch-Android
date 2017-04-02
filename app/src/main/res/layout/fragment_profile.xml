@@ -172,15 +172,16 @@
                 android:id="@+id/cell_affiliation"
                 layout="@layout/layout_profile_cell_header" />
 
-            <org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.wefika.flowlayout.FlowLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/flow_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
                 android:visibility="gone"
-                app:layoutDirection="ltr">
+                >
 
-            </org.apmem.tools.layouts.FlowLayout>
+            </com.wefika.flowlayout.FlowLayout>
 
             <include
                 android:id="@+id/cell_licence"

@@ -150,7 +150,11 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 });
 
-                holder.flowLayout.setVisibility(View.VISIBLE);
+                /*
+                  Initially set its visibility to gone later check the selected skills in setSkillsBrick
+                  method and update visibility in case any skill is selected.
+                 */
+                holder.flowLayout.setVisibility(View.GONE);
                 holder.flowLayout.removeAllViews();
                 setSkillsBricks(holder.flowLayout, mSkillList.get(position - 1).getSubSkills());
             }
@@ -184,7 +188,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         for (int i = 0; i < listSkills.size(); i++) {
             if (listSkills.get(i).getIsSelected() == 1) {
-
+                flowLayout.setVisibility(View.VISIBLE);
                 FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
                         FlowLayout.LayoutParams.WRAP_CONTENT);
 
@@ -207,30 +211,30 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-private class ViewHolderHeader extends RecyclerView.ViewHolder {
-    ViewHolderHeader(View view) {
-        super(view);
+    private class ViewHolderHeader extends RecyclerView.ViewHolder {
+        ViewHolderHeader(View view) {
+            super(view);
+        }
     }
-}
 
-private class ViewHolderItem extends RecyclerView.ViewHolder {
-    LinearLayout layoutSkills;
-    RelativeLayout layoutSkillsInner;
-    FlowLayout flowLayout;
-    TextView tvSkillName;
-    ImageView ivArrow;
-    CustomEditText etOther;
+    private class ViewHolderItem extends RecyclerView.ViewHolder {
+        LinearLayout layoutSkills;
+        RelativeLayout layoutSkillsInner;
+        FlowLayout flowLayout;
+        TextView tvSkillName;
+        ImageView ivArrow;
+        CustomEditText etOther;
 
-    ViewHolderItem(View view) {
-        super(view);
-        layoutSkills = mBinder.layoutSkillsTop;
-        layoutSkillsInner = mBinder.layoutSkillsInner;
-        flowLayout = mBinder.flowLayoutChips;
-        tvSkillName = mBinder.tvSkillName;
-        ivArrow = mBinder.ivRightArrow;
-        etOther = mBinder.etOther;
+        ViewHolderItem(View view) {
+            super(view);
+            layoutSkills = mBinder.layoutSkillsTop;
+            layoutSkillsInner = mBinder.layoutSkillsInner;
+            flowLayout = mBinder.flowLayoutChips;
+            tvSkillName = mBinder.tvSkillName;
+            ivArrow = mBinder.ivRightArrow;
+            etOther = mBinder.etOther;
+        }
     }
-}
 
 
 }

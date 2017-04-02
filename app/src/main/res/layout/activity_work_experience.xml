@@ -65,6 +65,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:gravity="center_horizontal"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
                     android:text="@string/lable_relevant_exp"
                     android:textColor="@color/edt_hint_color"
                     android:textSize="@dimen/text_size_normal"

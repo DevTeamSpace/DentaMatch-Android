@@ -13,6 +13,7 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
 
+import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityLoginBinding;
 import com.appster.dentamatch.network.BaseCallback;
@@ -29,10 +30,11 @@ import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.crashlytics.android.Crashlytics;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -337,6 +339,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onSuccess(LoginResponse response) {
 
                 if (response.getStatus() == 1) {
+                    /*
+                      Track event via mixpanel.
+                     */
+                    DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_signup));
+
                     PreferenceUtil.setFistName(getTextFromEditText(mBinder.registerEtFname));
                     PreferenceUtil.setLastName(getTextFromEditText(mBinder.registerEtLname));
                     Utils.showToast(getApplicationContext(), response.getMessage());
@@ -351,7 +358,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
 
             }
         });
@@ -385,6 +391,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onSuccess(LoginResponse response) {
                 if (response.getStatus() == 1) {
+                    /*
+                      Track event via mixpanel.
+                     */
+                    try {
+                        JSONObject userDetails = new JSONObject();
+                        userDetails.put(getString(R.string.user_name_label), loginRequest.getFirstName().concat(" ").concat(loginRequest.getLastName()));
+                        userDetails.put(getString(R.string.email_label), loginRequest.getEmail());
+                        DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_login));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
                     if (response.getLoginResponseData().getSearchFilters() != null) {
                         SearchFilterModel searchFilters = response.getLoginResponseData().getSearchFilters();
@@ -479,6 +496,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        DentaApp.getInstance().getMixpanelAPI().flush();
+        super.onDestroy();
     }
 
     private void clearRegistrationFields() {

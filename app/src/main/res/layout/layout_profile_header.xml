@@ -64,6 +64,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:gravity="center_horizontal"
             android:maxLines="2"
+            android:ellipsize="end"
             android:text="@string/lable_relevant_exp"
             android:textColor="@color/edt_hint_color"
             android:textSize="@dimen/text_size_normal"

@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">DentaMatch</string>
     <string name="maps_api_key">AIzaSyAhA4pk57QtTynvuqTgW_YDHzJdL1zKv3M</string>
+    <string name="mixpanel_token">b02345abf885907d987ec5a475135671</string>
 
-    <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the \n printing and typesetting industry.</string>
     <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -31,6 +32,7 @@
 
     <!--  Error string-->
     <string name="blank_email_alert">Email Id can not be left blank.</string>
+    <string name="user_name_label">name</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
     <string name="blank_password_alert">Password can not be left blank.</string>
     <string name="blank_fname_alert">First Name text field can not be left blank.</string>
@@ -106,7 +108,7 @@
     <!--work experience-->
     <string name="where_you_work">Where do you work?</string>
     <string name="where_did_you_study">Where did you study?</string>
-    <string name="lable_relevant_exp">Relevant work experience strengthens your profile</string>
+    <string name="lable_relevant_exp">Relevant work experience strengthens \n your profile</string>
     <string name="year_of_experice">Years Of Experience</string>
     <string name="office_name">Office Name</string>
     <string name="office_address">Office Address</string>
@@ -370,5 +372,13 @@
     <string name="txt_job_expired">This Job no longer exists</string>
     <string name="txt_discard">Discard</string>
     <string name="msg_discard_partial_experience">You have partially filled experience. Do you want to discard this ?</string>
+    <string name="title_select_file">Select File</string>
+
+
+
+    <!--MixPanel events-->
+    <string name="mixpanel_event_login">Login</string>
+    <string name="mixpanel_event_signup">SignUp</string>
+    <string name="mixpanel_event_logout">Logout</string>
 
 </resources>

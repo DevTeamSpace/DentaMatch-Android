@@ -100,14 +100,17 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
             Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
             return false;
         }
+
         if (TextUtils.isEmpty(mBinder.tvExperinceWorkExp.getText().toString().trim())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_year_alert));
             return false;
         }
+
         if (TextUtils.isEmpty(mBinder.etOfficeName.getText().toString().trim())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_office_name_alert));
             return false;
         }
+
         if (mBinder.etOfficeName.getText().toString().trim().length() > Constants.DEFAULT_FIELD_LENGTH) {
             Utils.showToast(getApplicationContext(), getString(R.string.office_name_length_alert));
             return false;

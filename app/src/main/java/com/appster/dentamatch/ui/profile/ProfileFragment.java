@@ -42,8 +42,8 @@ import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import com.wefika.flowlayout.FlowLayout;
 
-import org.apmem.tools.layouts.FlowLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 

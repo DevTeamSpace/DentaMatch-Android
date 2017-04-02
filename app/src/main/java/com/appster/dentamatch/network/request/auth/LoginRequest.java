@@ -19,6 +19,14 @@ public class LoginRequest {
     private String longitude;
     private String zipCode;
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }

@@ -57,7 +57,9 @@
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:textColor="@color/black_color"
-                android:textSize="@dimen/text_size_normal"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/text_size_xlarge"
                 app:customFont="@string/font_bold" />
 
             <com.appster.dentamatch.widget.CustomTextView

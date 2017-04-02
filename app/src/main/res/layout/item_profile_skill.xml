@@ -20,8 +20,8 @@
             android:textSize="@dimen/text_size_13"
             app:customFont="@string/font_medium" />
 
-        <org.apmem.tools.layouts.FlowLayout
-            app:layoutDirection="ltr"
+        <com.wefika.flowlayout.FlowLayout
+
             android:fitsSystemWindows="true"
             android:id="@+id/skill_flow_layout"
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:layout_marginStart="@dimen/margin_25"
             android:layout_marginBottom="@dimen/margin_normal">
 
-        </org.apmem.tools.layouts.FlowLayout>
+        </com.wefika.flowlayout.FlowLayout>
     </LinearLayout>
 
 </layout>

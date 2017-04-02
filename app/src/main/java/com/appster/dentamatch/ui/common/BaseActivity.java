@@ -5,12 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,9 +26,10 @@ import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+
+import java.io.File;
 
 /**
  * Created by gautambisht on 11/11/16.
@@ -32,6 +37,7 @@ import com.appster.dentamatch.util.Utils;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BASE_ACTIVITY";
+    private final String AUTHORITY = "com.appster.dentamatch.provider";
     protected static final int MY_PERMISSION_ACCESS_LOCATION = 101;
     protected boolean mAlive;
     private boolean mActive;
@@ -67,6 +73,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean isAlive() {
         return mAlive;
     }
+
+    public void takePhoto() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
+        Uri photoUri = FileProvider.getUriForFile(this, AUTHORITY, file);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+    }
+
+    public void getImageFromGallery() {
+        Intent gIntent = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        gIntent.setType("image/*");
+        startActivityForResult(
+                Intent.createChooser(gIntent, getString(R.string.title_select_file)),
+                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -272,7 +297,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void localLogOut() {
-        LogUtils.LOGD(TAG, "Local logout");
+
         String fcmToken= PreferenceUtil.getFcmToken();
         PreferenceUtil.reset();
         PreferenceUtil.setFcmToken(fcmToken);

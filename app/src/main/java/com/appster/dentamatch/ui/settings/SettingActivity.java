@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySettingsBinding;
 import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
@@ -172,6 +173,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(BaseResponse response) {
                 Utils.showToast(getApplicationContext(), response.getMessage());
+                /*
+                 Track event via mixpanel.
+                 */
+                DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_logout));
                 localLogOut();
             }
 
@@ -180,5 +185,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        DentaApp.getInstance().getMixpanelAPI().flush();
+        super.onDestroy();
     }
 }

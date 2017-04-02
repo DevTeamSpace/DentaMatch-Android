@@ -8,7 +8,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -265,22 +264,23 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         startActivity(intent);
     }
 
-    private void getImageFromGallery() {
-        Intent gIntent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        gIntent.setType("image/*");
-        startActivityForResult(
-                Intent.createChooser(gIntent, "Select File"),
-                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-    }
+//    private void getImageFromGallery() {
+//        Intent gIntent = new Intent(
+//                Intent.ACTION_PICK,
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        gIntent.setType("image/*");
+//        startActivityForResult(
+//                Intent.createChooser(gIntent, "Select File"),
+//                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+//    }
 
-    private void takePhoto() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
-    }
+//    private void takePhoto() {
+//        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
+//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+//        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+//    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
