@@ -34,6 +34,8 @@
     <color name="bottom_sheet_center_color">#40ffffff</color>
     <color name="bottom_sheet_end_color">#ffffff</color>
     <color name="pale_blue_color">#e7f4fd</color>
+
+
     <!--create profile-->
     <color name="cell_color">#f8f8f8</color>
     <color name="cell_text_color">#383838</color>
@@ -46,7 +48,8 @@
     <color name="grayish_brown_color">#515151</color>
     <color name="graish_brown_opacity_color">#50515151</color>
     <color name="line_divider">#e5e5e5</color>
-    <color name="nav_text_default_color">#50b2b2b2</color>
+    <!--<color name="nav_text_default_color">#50b2b2b2</color>-->
+    <color name="nav_text_default_color">#E6fafafa</color>
     <color name="cerulean_color">#0480dc</color>
     <color name="warm_gray_color">#939393</color>
     <color name="gray_nav_bottom_unselected">#aaafb8</color>

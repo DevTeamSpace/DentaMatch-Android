@@ -77,7 +77,8 @@
     <dimen name="camera_image_size">142dp</dimen>
     <dimen name="profile_image_width">102dp</dimen>
     <dimen name="profile_image_height">102dp</dimen>
-    <dimen name="profile_progress_dimen">119dp</dimen>
+    <dimen name="profile_progress_dimen">112dp</dimen>
+    <!--<dimen name="profile_progress_dimen">119dp</dimen>-->
     <dimen name="cell_height">55dp</dimen>
     <dimen name="edit_height">62dp</dimen>
     <dimen name="edit_height_about_me">160dp</dimen>

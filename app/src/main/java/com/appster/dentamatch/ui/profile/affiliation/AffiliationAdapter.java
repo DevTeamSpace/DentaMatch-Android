@@ -107,9 +107,9 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 itemHolder.ivCheckBox.setTag(position);
 
                 if (currentItem.getJobSeekerAffiliationStatus() == 0) {
-                    itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
+                    itemHolder.ivCheckBox.setImageResource(R.drawable.ic_check_empty);
                 } else {
-                    itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
+                    itemHolder.ivCheckBox.setImageResource(R.drawable.ic_check_fill);
 
                 }
 
@@ -150,13 +150,13 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     public void onClick(View view) {
                         if (currentItem.getJobSeekerAffiliationStatus() == 0) {
                             currentItem.setJobSeekerAffiliationStatus(1);
-                            itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_fill);
+                            itemHolder.ivCheckBox.setImageResource(R.drawable.ic_check_fill);
 
                         } else {
                             ((BaseActivity) mContext).hideKeyboard();
                             mAffiliationList.get((Integer) itemHolder.ivCheckBox.getTag() - 1).setOtherAffiliation("");
                             currentItem.setJobSeekerAffiliationStatus(0);
-                            itemHolder.ivCheckBox.setBackgroundResource(R.drawable.ic_check_empty);
+                            itemHolder.ivCheckBox.setImageResource(R.drawable.ic_check_empty);
 
                         }
                         if (currentItem.getAffiliationName().equalsIgnoreCase(Constants.OTHERS)) {

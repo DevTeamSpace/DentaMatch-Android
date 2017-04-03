@@ -169,8 +169,8 @@ public class SocketManager {
                 isConnected = true;
                 raiseSyncNeeded();
             }
-            /**
-             * Notify user if user is on chat screen about the socket connection .
+            /*
+              Notify user if user is on chat screen about the socket connection .
              */
             if (attachedActivity != null) {
                 EventBus.getDefault().post(new SocketConnectionEvent(isConnected));
@@ -223,8 +223,8 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
             isConnected = false;
-            /**
-             * Notify user if user is on chat screen about the socket connection event.
+            /*
+              Notify user if user is on chat screen about the socket connection event.
              */
             if (attachedActivity != null) {
                 EventBus.getDefault().post(new SocketConnectionEvent(isConnected));
@@ -248,8 +248,8 @@ public class SocketManager {
             attachedActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    /**
-                     * Insert the message sent into the DB .
+                    /*
+                      Insert the message sent into the DB .
                      */
                     final JSONObject jsonObject = (JSONObject) args[0];
                     LogUtils.LOGD(TAG, SOCKET_MESSAGE_ACKNOWLEDGEMENT + args[0]);
@@ -278,8 +278,8 @@ public class SocketManager {
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_PAST_CHAT_ACKNOWLEDGEMENT + args[0]);
             final JSONArray jsonArray = (JSONArray) args[0];
-            /**
-             * chat json is not empty
+            /*
+              chat json is not empty
              */
             if (attachedActivity != null) {
 
@@ -304,9 +304,9 @@ public class SocketManager {
             final JSONObject jsonObject = (JSONObject) args[0];
             final ChatMessageModel model;
 
-            /**
-             * A new message from a new recruiter will have a messageListId in the jsonObject and other messages wont.
-             * So we parse data based on the response type data we have received.
+            /*
+              A new message from a new recruiter will have a messageListId in the jsonObject and other messages wont.
+              So we parse data based on the response type data we have received.
              */
             if (jsonObject.has(MESSAGE_LIST_ID)) {
                 model = Utils.parseDataForNewRecruiterMessage(jsonObject);
@@ -314,25 +314,25 @@ public class SocketManager {
                 model = Utils.parseData(jsonObject);
             }
 
-            /**
-             * If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
-             * Else send the message to the global message list listener to update data.
+            /*
+              If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
+              Else send the message to the global message list listener to update data.
              */
             if (attachedRecruiterID != null && model.getFromID().equalsIgnoreCase(attachedRecruiterID)) {
                 if (attachedActivity != null) {
                     attachedActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            /**
-                             * update the Unread status to read when the user has seen the message. In this case we
-                             * add the message after in the post event of eventBus because we need to update the chat adapter
-                             * in the UI, for the user to read the message.
+                            /*
+                              update the Unread status to read when the user has seen the message. In this case we
+                              add the message after in the post event of eventBus because we need to update the chat adapter
+                              in the UI, for the user to read the message.
                              */
                             updateMsgRead(model.getFromID(), model.getToID());
                             EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(model));
 
-                            /**
-                             * in case the activity goes into background and socket is still connected , update user about message through notification.
+                            /*
+                              in case the activity goes into background and socket is still connected , update user about message through notification.
                              */
                             if (attachedActivityStatus == ON_PAUSE) {
                                 Intent intent = new Intent(attachedActivity, ChatActivity.class);
@@ -345,9 +345,9 @@ public class SocketManager {
                 }
             } else {
 
-                /**
-                 * In case a global message has been received we store it to the DB directly as no UI needs to be updated,
-                 * The DB changes are directly reflected in the Adapter.
+                /*
+                  In case a global message has been received we store it to the DB directly as no UI needs to be updated,
+                  The DB changes are directly reflected in the Adapter.
                  */
                 if (attachedGlobalActivity != null) {
                     attachedGlobalActivity.runOnUiThread(new Runnable() {
@@ -360,9 +360,9 @@ public class SocketManager {
                                     Message.TYPE_MESSAGE_RECEIVED);
 
 
-                            /**
-                             * Don't shoot another notification in case the message has the same ID. Server has the tendency
-                             * to send the same msg multiple times.
+                            /*
+                              Don't shoot another notification in case the message has the same ID. Server has the tendency
+                              to send the same msg multiple times.
                              */
                             if (!DBHelper.getInstance().checkIfMessageAlreadyExists(model.getFromID(), message)) {
                                 DBModel dbModel = DBHelper.getInstance().getDBData(model.getFromID());
@@ -376,9 +376,9 @@ public class SocketManager {
                                                 model.getMessageListId());
 
                                     } else {
-                                        /**
-                                         * In case there is a sync needed , we update only the listing of messages and not the chat array
-                                         * as it will be updated with the history fetched.
+                                        /*
+                                          In case there is a sync needed , we update only the listing of messages and not the chat array
+                                          as it will be updated with the history fetched.
                                          */
                                         DBHelper.getInstance().updateRecruiterDetails(model.getFromID(),
                                                 model.getRecruiterName(),
@@ -389,9 +389,9 @@ public class SocketManager {
                                                 false);
                                     }
                                 }else{
-                                    /**
-                                     * In case the message is from a new recruiter, directly insert it into the DB as it does not
-                                     * require any syncing.
+                                    /*
+                                      In case the message is from a new recruiter, directly insert it into the DB as it does not
+                                      require any syncing.
                                      */
                                     DBHelper.getInstance().insertIntoDB(model.getFromID(),
                                             message,

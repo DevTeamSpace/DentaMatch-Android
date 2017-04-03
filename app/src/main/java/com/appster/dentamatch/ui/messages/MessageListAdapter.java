@@ -36,10 +36,11 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
     private String userID;
 
     public MessageListAdapter(Context context, @Nullable OrderedRealmCollection<DBModel> data, boolean autoUpdate) {
-        super(context, data, autoUpdate);
-        messagesData = data;
-        mContext = context;
-        userID = PreferenceUtil.getUserChatId();
+            super(context, data, autoUpdate);
+            messagesData = data;
+            mContext = context;
+            userID = PreferenceUtil.getUserChatId();
+
     }
 
     @Override

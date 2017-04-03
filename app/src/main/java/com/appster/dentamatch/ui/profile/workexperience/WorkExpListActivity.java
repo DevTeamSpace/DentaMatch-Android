@@ -148,6 +148,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.iv_tool_bar_left:
                 hideKeyboard();
                 onBackPressed();
@@ -165,10 +166,17 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
 
             case R.id.btn_next_work_exp_list:
                 hideKeyboard();
-                if (workExpList.size() == 0) {
-                    prepareRequestForAdd(true);
-                } else {
-                    launchNextActivity();
+
+                if(isFromProfile){
+                    prepareRequestForAdd(false);
+                }else {
+
+                    if (workExpList.size() == 0) {
+                        prepareRequestForAdd(true);
+                    } else {
+                        launchNextActivity();
+                    }
+
                 }
                 break;
 
@@ -334,7 +342,13 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     if (isMoveNext) {
                         launchNextActivity();
                     } else {
-                        inflateExpList(workExpList);
+
+                        if(!isFromProfile) {
+                            inflateExpList(workExpList);
+                        }else{
+                            EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                            finish();
+                        }
                     }
 
                 } else {
@@ -361,6 +375,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
 
             tvExp.setText(Utils.getExpYears(expList.get(i).getMonthsOfExpereince()));
             referenceView.setTag(i);
+
             referenceView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -412,53 +427,58 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void launchNextActivity() {
-        if (TextUtils.isEmpty(mSelectedJobTitle) &&
-                mExpMonth == 0 &&
-                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("") &&
-                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("") &&
-                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) {
+            if (TextUtils.isEmpty(mSelectedJobTitle) &&
+                    mExpMonth == 0 &&
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("") &&
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("") &&
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) {
 
-            if (isFromProfile) {
-                EventBus.getDefault().post(new ProfileUpdatedEvent(true));
-                finish();
+                if (isFromProfile) {
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                    finish();
+                } else {
+                    startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+                }
+
             } else {
-                startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
-            }
+                if ((TextUtils.isEmpty(mSelectedJobTitle) || mExpMonth == 0 &&
+                        Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("") ||
+                        Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("") ||
+                        Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) ||
+                        (!TextUtils.isEmpty(mSelectedJobTitle) && mExpMonth != 0 &&
+                                !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName)) &&
+                                !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress)) &&
+                                !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity)))) {
 
-        } else {
-            if ((mSelectedJobTitle.equalsIgnoreCase("") || mExpMonth == 0 &&
-                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName).equalsIgnoreCase("") ||
-                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress).equalsIgnoreCase("") ||
-                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity).equalsIgnoreCase("")) ||
-                    (!TextUtils.isEmpty(mSelectedJobTitle) && mExpMonth != 0 &&
-                            !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName)) &&
-                            !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress)) &&
-                            !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity)))) {
+                    Alert.createYesNoAlert(WorkExpListActivity.this,
+                            getString(R.string.ok),
+                            getString(R.string.cancel),
+                            "",
+                            getString(R.string.alert_discard_exp),
+                            new Alert.OnAlertClickListener() {
+                                @Override
+                                public void onPositive(DialogInterface dialog) {
 
-                Alert.createYesNoAlert(WorkExpListActivity.this, getString(R.string.ok), getString(R.string.cancel), "", getString(R.string.alert_discard_exp), new Alert.OnAlertClickListener() {
-                            @Override
-                            public void onPositive(DialogInterface dialog) {
+                                    if (isFromProfile) {
+                                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                                        finish();
+                                    } else {
+                                        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+                                    }
+                                }
 
-                                if (isFromProfile) {
-                                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
-                                    finish();
-                                } else {
-                                    startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+                                @Override
+                                public void onNegative(DialogInterface dialog) {
+                                    dialog.dismiss();
                                 }
                             }
 
-                            @Override
-                            public void onNegative(DialogInterface dialog) {
-                                dialog.dismiss();
-                            }
-                        }
+                    );
+                } else {
+                    startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
 
-                );
-            } else {
-                startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
-
+                }
             }
-        }
     }
 
     private void updateExperience(boolean isNext) {

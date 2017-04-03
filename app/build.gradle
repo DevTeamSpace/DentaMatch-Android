@@ -100,14 +100,14 @@ android {
         QA {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://qa.dentamatch.co/api/"')
-            buildConfigField("String", "CHAT_URL", '"https://qanode.dentamatch.co:8443/"')
+            buildConfigField("String", "CHAT_URL", '"https://qanode.dentamatch.co:8443"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
         Staging {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://staging.dentamatch.co/api/"')
-            buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:3000"')
+            buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:8443"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }

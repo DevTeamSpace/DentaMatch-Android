@@ -396,9 +396,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                      */
                     try {
                         JSONObject userDetails = new JSONObject();
-                        userDetails.put(getString(R.string.user_name_label), loginRequest.getFirstName().concat(" ").concat(loginRequest.getLastName()));
+                        userDetails.put(getString(R.string.user_name_label), response.getLoginResponseData().getUserDetail().getFirstName()
+                                .concat(" ")
+                                .concat(response.getLoginResponseData().getUserDetail().getLastName()));
                         userDetails.put(getString(R.string.email_label), loginRequest.getEmail());
-                        DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_login));
+                        DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_login), userDetails);
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }
