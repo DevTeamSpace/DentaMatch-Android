@@ -422,7 +422,9 @@ public class SocketManager {
                 LogUtils.LOGD(TAG, "" + args[0]);
                 JSONObject object = (JSONObject) args[0];
                 boolean status = Boolean.parseBoolean(object.getString("logout"));
+
                 if (status) {
+
                     if (attachedActivity != null) {
                         attachedActivity.runOnUiThread(new Runnable() {
                             @Override
@@ -438,6 +440,7 @@ public class SocketManager {
                             }
                         });
                     }
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -84,7 +84,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
 
     @Override
     public int getItemCount() {
-        if (messagesData.size() > 0) {
+        if (messagesData != null && messagesData.isValid() && messagesData.size() > 0) {
             return messagesData.size();
         }
 

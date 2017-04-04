@@ -67,7 +67,9 @@ public class MessagesListFragment extends BaseFragment {
 
             if (data != null && data.size() > 0) {
                 mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
-                mAdapter = new MessageListAdapter(getActivity(), data, true);
+                if(getActivity() != null) {
+                    mAdapter = new MessageListAdapter(getActivity(), data, true);
+                }
                 mMessagesBinding.rvMessageList.setAdapter(mAdapter);
             } else {
                 mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
@@ -102,7 +104,9 @@ public class MessagesListFragment extends BaseFragment {
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();
-                        mAdapter = new MessageListAdapter(getActivity(), data, true);
+                        if(getActivity() != null) {
+                            mAdapter = new MessageListAdapter(getActivity(), data, true);
+                        }
                         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
 
                     } else {

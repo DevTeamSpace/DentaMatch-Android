@@ -102,7 +102,7 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
 
     @Override
     public int getItemCount() {
-        if (mChatMessages != null) {
+        if (mChatMessages != null && mChatMessages.isValid()) {
             return mChatMessages.size();
         } else {
             return 0;

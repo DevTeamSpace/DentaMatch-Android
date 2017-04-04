@@ -270,27 +270,37 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void pushFragment(BaseFragment fragment, Bundle args, ANIMATION_TYPE animationType) {
         try {
-            if (fragment == null) return;
-            if (args != null)
-                fragment.setArguments(args);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            switch (animationType) {
-                case DEFAULT:
-                case SLIDE:
-                    ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-                    break;
-                case FADE:
-                    ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
-                    break;
-                case NONE:
-                    break;
+            if (fragment == null){
+                return;
             }
+
+            if (args != null) {
+                fragment.setArguments(args);
+            }
+
+            getSupportFragmentManager().executePendingTransactions();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            switch (animationType) {
+//                case DEFAULT:
+//                case SLIDE:
+//                    ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+//                    break;
+//
+//                case FADE:
+//                    ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
+//                    break;
+//
+//                case NONE:
+//                    break;
+//            }
+
             if (fragment.isAdded()) {
 
             } else {
                 ft.replace(R.id.fragment_container, fragment);
                 ft.commitAllowingStateLoss();
             }
+
         } catch (Exception x) {
             x.printStackTrace();
         }
@@ -308,6 +318,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         intent.putExtra(Constants.EXTRA_IS_LOGIN, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+
     }
 
     public enum ANIMATION_TYPE {

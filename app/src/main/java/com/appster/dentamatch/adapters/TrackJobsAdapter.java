@@ -234,22 +234,26 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
             @Override
             public void onSuccess(BaseResponse response) {
-                ((BaseActivity) mContext).showToast(response.getMessage());
+                try {
+                    ((BaseActivity) mContext).showToast(response.getMessage());
 
-                if (response.getStatus() == 1) {
-                    mJobListData.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, mJobListData.size());
+                    if (response.getStatus() == 1) {
+                        mJobListData.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, mJobListData.size());
 
-                    /**
-                     * Update the search job screens for un-save events.
+                    /*
+                      Update the search job screens for un-save events.
                      */
-                    EventBus.getDefault().post(new SaveUnSaveEvent(JobID, 0));
+                        EventBus.getDefault().post(new SaveUnSaveEvent(JobID, 0));
 
-                    /**
-                     * Notify the helper class to update the data from the server.
+                    /*
+                      Notify the helper class to update the data from the server.
                      */
-                    TrackJobsDataHelper.getInstance().updateSavedData();
+                        TrackJobsDataHelper.getInstance().updateSavedData();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
             }
@@ -287,14 +291,18 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
     }
 
     public void cancelJob(int JobID) {
-        for (int i = 0; i < mJobListData.size(); i++) {
+        try {
+            for (int i = 0; i < mJobListData.size(); i++) {
 
-            if (mJobListData.get(i).getId() == JobID) {
-                mJobListData.remove(i);
-                notifyItemRemoved(i);
-                notifyItemRangeChanged(i, mJobListData.size());
-                break;
+                if (mJobListData.get(i).getId() == JobID) {
+                    mJobListData.remove(i);
+                    notifyItemRemoved(i);
+                    notifyItemRangeChanged(i, mJobListData.size());
+                    break;
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
