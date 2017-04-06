@@ -59,12 +59,12 @@
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_description"
-
             style="@style/text_view_normal"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_35"
             android:gravity="center_horizontal"
             android:maxLines="2"
             android:ellipsize="end"

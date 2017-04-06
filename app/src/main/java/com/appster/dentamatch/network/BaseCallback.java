@@ -80,8 +80,10 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
             act.showSnackBar(act.getResources().getString(R.string.no_internet));
         } else {
             act.showSnackBar(act.getResources().getString(R.string.error_something_wrong));
-            onFail(call, null);
         }
+
+        onFail(call, null);
+
     }
 
 

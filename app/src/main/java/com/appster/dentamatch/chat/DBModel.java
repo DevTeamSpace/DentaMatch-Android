@@ -11,6 +11,7 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class DBModel extends RealmObject {
+
     @PrimaryKey
     private String recruiterId;
     private String name;

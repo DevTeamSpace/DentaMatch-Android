@@ -23,6 +23,7 @@ import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import retrofit2.Call;
 
@@ -45,6 +46,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
 
         if (PreferenceUtil.getSearchJobTitleList() != null && PreferenceUtil.getSearchJobTitleList().size() > 0) {
             mJobTitleAdapter.addList(PreferenceUtil.getSearchJobTitleList());
+            mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
         } else {
             callJobListApi();
         }
@@ -63,7 +65,6 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarJobTitle.tvToolbarGeneralLeft.setText(getString(R.string.job_title));
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setText(getString(R.string.save_label));
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setAllCaps(true);
-        mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setOnClickListener(this);
         mBinder.toolbarJobTitle.ivToolBarLeft.setOnClickListener(this);
         mLayoutManager = new LinearLayoutManager(this);
@@ -91,20 +92,42 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
             @Override
             public void onSuccess(JobTitleResponse response) {
                 if (response.getStatus() == 1) {
-                    PreferenceUtil.setSearchJobTitleList(response.getJobTitleResponseData().getJobTitleList());
-                    mJobTitleAdapter.addList(response.getJobTitleResponseData().getJobTitleList());
+                    mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
+                    ArrayList<JobTitleListModel> jobTitles = response.getJobTitleResponseData().getJobTitleList();
+
+                    for(int i = 0; i < jobTitles.size(); i++ ){
+                        if(jobTitles.get(i).getJobTitle().equalsIgnoreCase(Constants.OTHERS)){
+
+                            if(i != jobTitles.size() - 1){
+                                Collections.swap(jobTitles, i , jobTitles.size() -1);
+                            }
+
+                            break;
+                        }
+                    }
+
+                    PreferenceUtil.setSearchJobTitleList(jobTitles);
+                    mJobTitleAdapter.addList(jobTitles);
 
                     if(mSelectedTitleList != null && mSelectedTitleList.size()>0){
                         mJobTitleAdapter.setSelectedListItems(mSelectedTitleList);
+                        mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
                     }
 
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFail(Call<JobTitleResponse> call, BaseResponse baseResponse) {
+                if(PreferenceUtil.getSearchJobTitleList() != null && PreferenceUtil.getSearchJobTitleList().size() > 0){
+                    mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
+                }else{
+                    mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.GONE);
+                }
                 mJobTitleAdapter.addList(PreferenceUtil.getSearchJobTitleList());
             }
         });

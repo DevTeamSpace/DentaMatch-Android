@@ -61,22 +61,22 @@ public class HomeActivity extends BaseActivity {
             EventBus.getDefault().register(this);
         }
 
-        /**
-         * Connect Socket for chatting initialization.
+        /*
+          Connect Socket for chatting initialization.
          */
         SocketManager.getInstance().connect(this);
         setContentView(R.layout.activity_home);
         initViews();
 
-        /**
-         * Launch job search fragment if redirected from search activity.
+        /*
+          Launch job search fragment if redirected from search activity.
          */
         if (getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)) {
             bottomBar.setCurrentItem(SEARCH_JOBS_FRAGMENT_POS);
 
         } else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
-            /**
-             * Launch job message fragment if redirected from notification click.
+            /*
+              Launch job message fragment if redirected from notification click.
              */
             bottomBar.setCurrentItem(MESSAGE_FRAGMENT_POS);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
@@ -91,8 +91,8 @@ public class HomeActivity extends BaseActivity {
 
         }
 
-        /**
-         * Retrieve user's current location.
+        /*
+          Retrieve user's current location.
          */
         LocationUtils.addFragment(this);
         updateToken(PreferenceUtil.getFcmToken());

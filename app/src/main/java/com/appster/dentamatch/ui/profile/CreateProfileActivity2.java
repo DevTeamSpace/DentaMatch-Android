@@ -323,7 +323,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
 
-        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
             if (imageSourceType == 0) {
                 takePhoto();

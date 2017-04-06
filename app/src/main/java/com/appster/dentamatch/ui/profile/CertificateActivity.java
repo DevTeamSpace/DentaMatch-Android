@@ -71,6 +71,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     private void initViews() {
         mBinder.toolbarCertificates.tvToolbarGeneralLeft.setText(getString(R.string.header_certification));
         mBinder.layoutCertificatesHeader.tvTitle.setText(getString(R.string.cetification_title));
+        mBinder.layoutCertificatesHeader.tvDescription.setText(getString(R.string.lorem_ipsum));
         mBinder.btnNext.setOnClickListener(this);
         mBinder.toolbarCertificates.ivToolBarLeft.setOnClickListener(this);
 
@@ -175,7 +176,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull String[] permissions, @android.support.annotation.NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             if (imageSourceType == 0) {
@@ -203,11 +204,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
             }
 
             if (mFilePath != null) {
-                ivTemp.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath,
-                        this,
-                        Constants.IMAGE_DIME_CERTIFICATE,
-                        Constants.IMAGE_DIME_CERTIFICATE));
-
                 uploadCertificateImageApi(mFilePath, certificateId);
 
             }
@@ -298,15 +294,20 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     if (response.getCertificateResponseData().getCertificatesLists() != null) {
                         certificateList.addAll(response.getCertificateResponseData().getCertificatesLists());
                         inflateViews();
+                        mBinder.btnNext.setVisibility(View.VISIBLE);
                     }
 
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.btnNext.setVisibility(View.VISIBLE);
+
                 }
             }
 
             @Override
             public void onFail(Call<CertificateResponse> call, BaseResponse baseResponse) {
+                mBinder.btnNext.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -390,11 +391,18 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 if (response.getStatus() == 1) {
                     certificateList.get(position).setImage(filePath);
                     certificateList.get(position).setImageUploaded(true);
+                    ivTemp.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(filePath,
+                            CertificateActivity.this,
+                            Constants.IMAGE_DIME_CERTIFICATE,
+                            Constants.IMAGE_DIME_CERTIFICATE));
+                }else{
+                    ivTemp.setImageResource(R.drawable.ic_upload);
                 }
             }
 
             @Override
             public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
+                ivTemp.setImageResource(R.drawable.ic_upload);
             }
         });
     }

@@ -134,14 +134,14 @@ import retrofit2.Call;
                     mJobAdapter.notifyDataSetChanged();
                 }
 
-                /**
-                 * Hide pagination loader if it is visible.
+                /*
+                  Hide pagination loader if it is visible.
                  */
                 if(mBinding.layJobListPagination.getVisibility() == View.VISIBLE){
                     mBinding.layJobListPagination.setVisibility(View.GONE);
                 }
-                /**
-                 * Stop refreshing if the swipe loader is refreshing.
+                /*
+                  Stop refreshing if the swipe loader is refreshing.
                  */
                 if(mBinding.swipeRefreshJobList.isRefreshing()){
                     mBinding.swipeRefreshJobList.setRefreshing(false);

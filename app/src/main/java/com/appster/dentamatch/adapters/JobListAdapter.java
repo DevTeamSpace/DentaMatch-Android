@@ -177,12 +177,17 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                     mJobListData.get(position).setIsSaved(status);
                     notifyItemChanged(position);
                     SearchJobDataHelper.getInstance().notifyItemsChanged(mJobListData.get(position));
+                }else{
+                    if(TextUtils.isEmpty(response.getMessage())) {
+                        notifyItemChanged(position);
+                        ((BaseActivity) mContext).showToast(response.getMessage());
+                    }
                 }
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
+                notifyItemChanged(position);
             }
         });
     }

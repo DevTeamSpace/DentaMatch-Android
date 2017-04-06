@@ -56,8 +56,8 @@ public class SearchJobDataHelper {
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
 
         if (request != null) {
-            /**
-             * Do not show loader in case of pagination call.
+            /*
+              Do not show loader in case of pagination call.
              */
             if (!isPaginationLoading) {
                 showProgress(ct);
@@ -68,8 +68,8 @@ public class SearchJobDataHelper {
             webServices.searchJob(request).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) ct) {
                 @Override
                 public void onSuccess(SearchJobResponse response) {
-                    /**
-                     * Once data has been loaded from the filter changes we can dismiss this filter.
+                    /*
+                      Once data has been loaded from the filter changes we can dismiss this filter.
                      */
                     PreferenceUtil.setFilterChanged(false);
                     hideProgress(ct);
@@ -104,8 +104,8 @@ public class SearchJobDataHelper {
     private void processResponse(SearchJobResponse response) {
         if (response.getSearchJobResponseData() != null && response.getSearchJobResponseData().getList() != null) {
             jobDataList.addAll(response.getSearchJobResponseData().getList());
-            /**
-             * In case total item count and the job received size is equal, then pagination is not required.
+            /*
+              In case total item count and the job received size is equal, then pagination is not required.
              */
             mTotalResultCount = response.getSearchJobResponseData().getTotal();
             mIsPaginationRequired = !(mTotalResultCount == jobDataList.size());
@@ -114,8 +114,8 @@ public class SearchJobDataHelper {
     }
 
     public void requestData(Context ct) {
-        /**
-         * In case the filter is changed we clear all previous data and hit API again to refresh the data.
+        /*
+          In case the filter is changed we clear all previous data and hit API again to refresh the data.
          */
         if (PreferenceUtil.isFilterChanged() ) {
             jobDataList.clear();
@@ -155,5 +155,9 @@ public class SearchJobDataHelper {
                 break;
             }
         }
+    }
+
+    public void clearInstance(){
+        ourInstance = null;
     }
 }

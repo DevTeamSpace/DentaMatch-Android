@@ -11,7 +11,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
-            android:layout_marginTop="@dimen/margin_36"
             android:background="@color/line_divider" />
 
         <com.appster.dentamatch.widget.CustomTextView
@@ -66,6 +65,7 @@
             android:textColor="@color/text_default_color"
             android:textColorHint="@color/edt_hint_color"
             android:textSize="@dimen/text_size_13"
+            android:layout_marginBottom="@dimen/margin_35"
             app:customFont="@string/font_medium" />
 
     </LinearLayout>

@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.ui.auth.LoginActivity;
+import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
+import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
@@ -93,6 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onDestroy() {
         hideProgressBar();
@@ -143,6 +146,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
         if (requestCode != MY_PERMISSION_ACCESS_LOCATION) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         } else {
 
             if (grantResults.length == 0) {
@@ -314,6 +318,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         PreferenceUtil.setIsOnBoarding(true);
         Utils.clearAllNotifications(this);
         DBHelper.getInstance().clearDBData();
+        TrackJobsDataHelper.getInstance().clearInstance();
+        SearchJobDataHelper.getInstance().clearInstance();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(Constants.EXTRA_IS_LOGIN, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

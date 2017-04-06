@@ -132,16 +132,18 @@ public class Utils {
 
     public static Address getReverseGeoCode(Context ct, LatLng latLng) {
         Address address = null;
-
         if (ct != null) {
-            Geocoder geocoder = new Geocoder(ct);
-            try {
-                List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                if (addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
-                    address = addressList.get(0);
+
+            if(Utils.isConnected(ct)) {
+                Geocoder geocoder = new Geocoder(ct);
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    if (addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
+                        address = addressList.get(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
 

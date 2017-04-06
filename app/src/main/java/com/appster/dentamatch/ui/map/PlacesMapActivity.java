@@ -68,11 +68,11 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places_map);
-        /**
-         * Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
-         * functionality, which automatically sets up the API client to handle Activity lifecycle
-         * events. If your activity does not extend FragmentActivity, make sure to call connect()
-         * and disconnect() explicitly.
+        /*
+          Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
+          functionality, which automatically sets up the API client to handle Activity lifecycle
+          events. If your activity does not extend FragmentActivity, make sure to call connect()
+          and disconnect() explicitly.
          */
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)
@@ -82,15 +82,15 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
         mImgClear = (ImageView) findViewById(R.id.img_clear);
         mLayout = (RelativeLayout) findViewById(R.id.layout_done);
-        /**
-         * Register a listener that receives callbacks when a suggestion has been selected
+        /*
+          Register a listener that receives callbacks when a suggestion has been selected
          */
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
         mImgClear.setOnClickListener(this);
         mLayout.setOnClickListener(this);
-        /**
-         * Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
-         * the entire world.
+        /*
+          Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
+          the entire world.
          */
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, null, null);
         mAutocompleteView.setAdapter(mAdapter);

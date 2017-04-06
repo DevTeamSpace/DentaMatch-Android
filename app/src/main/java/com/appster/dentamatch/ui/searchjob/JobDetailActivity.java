@@ -271,49 +271,53 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     }
 
     private void getJobDetail() {
-        JobDetailRequest request = new JobDetailRequest();
-        SearchJobRequest searchRequest = (SearchJobRequest) PreferenceUtil.getJobFilter();
-        request.setJobId(jobID);
-        request.setLat(Double.parseDouble(searchRequest.getLat()));
-        request.setLng(Double.parseDouble(searchRequest.getLng()));
+        try {
+            JobDetailRequest request = new JobDetailRequest();
+            SearchJobRequest searchRequest = (SearchJobRequest) PreferenceUtil.getJobFilter();
+            request.setJobId(jobID);
+            request.setLat(Double.parseDouble(searchRequest.getLat()));
+            request.setLng(Double.parseDouble(searchRequest.getLng()));
 
-        processToShowDialog();
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {
-            @Override
-            public void onSuccess(JobDetailResponse response) {
-                if (response != null) {
+            processToShowDialog();
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+            webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {
+                @Override
+                public void onSuccess(JobDetailResponse response) {
+                    if (response != null) {
 
-                    if (response.getStatus() == 1) {
-                        mBinding.tvJobNotFound.setVisibility(View.GONE);
+                        if (response.getStatus() == 1) {
+                            mBinding.tvJobNotFound.setVisibility(View.GONE);
 
-                        mJobDetailModel = response.getResult();
-                        mBinding.layJobDetailHolder.setVisibility(View.VISIBLE);
+                            mJobDetailModel = response.getResult();
+                            mBinding.layJobDetailHolder.setVisibility(View.VISIBLE);
 
-                        if (response.getResult() != null) {
-                            setDetailData(response.getResult());
+                            if (response.getResult() != null) {
+                                setDetailData(response.getResult());
+                            }
+
+                        } else if (response.getStatusCode() == 201) {
+                            mBinding.tvJobNotFound.setVisibility(View.VISIBLE);
+                            mBinding.layJobDetailHolder.setVisibility(View.GONE);
+                            mBinding.btnApplyJob.setVisibility(View.GONE);
+
+                        } else {
+                            mBinding.tvJobNotFound.setVisibility(View.GONE);
+                            showToast(response.getMessage());
+                            mBinding.layJobDetailHolder.setVisibility(View.GONE);
+                            mBinding.btnApplyJob.setVisibility(View.GONE);
+                            mBinding.btnApplyJob.setOnClickListener(null);
                         }
-
-                    } else if (response.getStatusCode() == 201) {
-                        mBinding.tvJobNotFound.setVisibility(View.VISIBLE);
-                        mBinding.layJobDetailHolder.setVisibility(View.GONE);
-                        mBinding.btnApplyJob.setVisibility(View.GONE);
-
-                    } else {
-                        mBinding.tvJobNotFound.setVisibility(View.GONE);
-                        showToast(response.getMessage());
-                        mBinding.layJobDetailHolder.setVisibility(View.GONE);
-                        mBinding.btnApplyJob.setVisibility(View.GONE);
-                        mBinding.btnApplyJob.setOnClickListener(null);
                     }
                 }
-            }
 
 
-            @Override
-            public void onFail(Call<JobDetailResponse> call, BaseResponse baseResponse) {
-            }
-        });
+                @Override
+                public void onFail(Call<JobDetailResponse> call, BaseResponse baseResponse) {
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setDetailData(JobDetailModel dataModel) {
@@ -679,12 +683,18 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.cbJobSelection.setChecked(status == 1);
                     EventBus.getDefault().post(new SaveUnSaveEvent(JobID, status));
                     TrackJobsDataHelper.getInstance().updateSavedData();
+                }else{
+                    if(TextUtils.isEmpty(response.getMessage())) {
+                        showToast(response.getMessage());
+                    }
+
+                    mBinding.cbJobSelection.setChecked(!(status == 1));
                 }
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
+                mBinding.cbJobSelection.setChecked(!(status == 1));
             }
         });
     }

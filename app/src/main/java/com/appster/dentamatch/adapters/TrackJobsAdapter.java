@@ -211,8 +211,8 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
                     @Override
                     public void onNegative(DialogInterface dialog) {
-                        /**
-                         * change the star uncheck by notifying the item.
+                        /*
+                          change the star uncheck by notifying the item.
                          */
                         notifyItemChanged(position);
                         dialog.dismiss();
@@ -251,16 +251,19 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                       Notify the helper class to update the data from the server.
                      */
                         TrackJobsDataHelper.getInstance().updateSavedData();
+                    }else{
+                        notifyItemChanged(position);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
+                    notifyItemChanged(position);
                 }
 
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
+                notifyItemChanged(position);
             }
         });
     }

@@ -189,9 +189,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.iv_accept_policy:
                 if (mIsAccepted) {
                     mIsAccepted = false;
-                    mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
+                    mBinder.ivAcceptPolicy.setImageResource(R.drawable.ic_check_empty);
                 } else {
-                    mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_fill);
+                    mBinder.ivAcceptPolicy.setImageResource(R.drawable.ic_check_fill);
                     mIsAccepted = true;
                 }
                 break;

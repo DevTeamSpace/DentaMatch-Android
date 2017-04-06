@@ -29,6 +29,7 @@
             android:background="@color/button_bg_color"
             android:gravity="center"
             android:text="@string/label_next"
+            android:visibility="gone"
             android:textColor="@color/white_color"
             android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_regular" />

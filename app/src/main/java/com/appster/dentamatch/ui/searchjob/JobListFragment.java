@@ -82,14 +82,15 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
                 mJobListBinding.tvJobResultCount.setVisibility(View.GONE);
             }
 
-            /**
-             * Hide pagination loader if it is visible.
+            /*
+              Hide pagination loader if it is visible.
              */
             if (mJobListBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
                 mJobListBinding.layJobListPagination.setVisibility(View.GONE);
             }
-            /**
-             * Stop refreshing if the swipe loader is refreshing.
+
+            /*
+              Stop refreshing if the swipe loader is refreshing.
              */
             if (mJobListBinding.swipeRefreshJobList.isRefreshing()) {
                 mJobListBinding.swipeRefreshJobList.setRefreshing(false);
@@ -139,8 +140,8 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /**
-         * Request data helper to provide data for user's filter set.
+        /*
+          Request data helper to provide data for user's filter set.
          */
         SearchJobDataHelper.getInstance().requestData(getActivity());
     }

@@ -221,6 +221,10 @@ public class TrackJobsDataHelper {
         }
     }
 
+    public void clearInstance(){
+        mInstance = null;
+    }
+
 
 
 }

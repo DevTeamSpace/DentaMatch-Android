@@ -198,13 +198,19 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
             public void onSuccess(SchoolingResponse response) {
                 if (response.getStatus() == 1) {
                     setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
+                    mBinder.btnNext.setVisibility(View.VISIBLE);
+
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.btnNext.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFail(Call<SchoolingResponse> call, BaseResponse baseResponse) {
+                mBinder.btnNext.setVisibility(View.GONE);
+
             }
         });
     }

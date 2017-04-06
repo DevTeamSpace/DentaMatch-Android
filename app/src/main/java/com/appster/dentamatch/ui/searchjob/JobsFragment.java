@@ -45,8 +45,8 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mJobsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_jobs, container, false);
         initViews();
-        /**
-         * Load list job fragment as the default fragment.
+        /*
+          Load list job fragment as the default fragment.
          */
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.lay_container, mJobListFragment)
@@ -125,8 +125,8 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
         webServices.getUnreadNotificationCount().enqueue(new BaseCallback<UnReadNotificationCountResponse>(getBaseActivity()) {
             @Override
             public void onSuccess(UnReadNotificationCountResponse response) {
-                /**
-                 * Once data has been loaded from the filter changes we can dismiss this filter.
+                /*
+                  Once data has been loaded from the filter changes we can dismiss this filter.
                  */
                 if(response.getStatus() == 1) {
                     if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {

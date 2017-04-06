@@ -83,7 +83,7 @@
     <string name="lable_state">State</string>
     <string name="label_next">Next</string>
     <string name="lable_update">UPDATE</string>
-    <string name="text_camera_permision">Camera and storage permission is required to take photos of the userModel.</string>
+    <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
     <string name="decode_stream_alert">Unable to parse this image.</string>
     <string name="lable_not_now">Not now</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>

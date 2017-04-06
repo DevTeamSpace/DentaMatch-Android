@@ -132,13 +132,16 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             public void onSuccess(AffiliationResponse response) {
                 if (response.getStatus() == 1) {
                     affiliationAdapter.addList(response.getAffiliationResponseData().getAffiliationList());
+                    mBinder.btnNext.setVisibility(View.VISIBLE);
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.btnNext.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFail(Call<AffiliationResponse> call, BaseResponse baseResponse) {
+                mBinder.btnNext.setVisibility(View.GONE);
             }
         });
 

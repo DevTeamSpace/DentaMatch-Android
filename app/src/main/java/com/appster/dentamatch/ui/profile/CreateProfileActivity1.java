@@ -60,7 +60,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_create_profile1);
         initViews();
-        callJobListApi();
     }
 
     private void initViews() {
@@ -91,9 +90,13 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
             case R.id.et_job_title:
                 hideKeyboard();
+
                 if(PreferenceUtil.getJobTitleList()!=null && PreferenceUtil.getJobTitleList().size()>0) {
                     new BottomSheetJobTitle(CreateProfileActivity1.this, this, 0);
+                }else{
+                    callJobListApi();
                 }
+
                 break;
 
             case R.id.create_profile1_btn_next:
@@ -195,6 +198,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             public void onSuccess(JobTitleResponse response) {
                 if (response.getStatus() == 1) {
                     PreferenceUtil.setJobTitleList(response.getJobTitleResponseData().getJobTitleList());
+                    new BottomSheetJobTitle(CreateProfileActivity1.this, CreateProfileActivity1.this, 0);
+
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -309,7 +314,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (grantResults.length > 0 &&
-                (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             if (imageSourceType == 0) {

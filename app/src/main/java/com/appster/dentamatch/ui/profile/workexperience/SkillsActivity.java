@@ -143,15 +143,19 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 if (response.getStatus() == 1) {
                     mParentSkillList = response.getSkillsResponseData().getSkillsList();
                     setAdapter(mParentSkillList);
+                    mBinder.btnNext.setVisibility(View.VISIBLE);
 
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.btnNext.setVisibility(View.GONE);
 
                 }
             }
 
             @Override
             public void onFail(Call<SkillsResponse> call, BaseResponse baseResponse) {
+                mBinder.btnNext.setVisibility(View.GONE);
+
             }
         });
     }

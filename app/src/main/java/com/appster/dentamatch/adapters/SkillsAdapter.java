@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -55,6 +56,20 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         mListener = listener;
         mOthersSelectedListener = othersSelectedListener;
         mIsFromEditProfile = isFromEditProfile;
+        sortDataForOthers();
+
+    }
+
+    private void sortDataForOthers(){
+        try {
+            for (int i = 0; i < mSkillList.size(); i++) {
+                if (mSkillList.get(i).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                    Collections.swap(mSkillList, i, mSkillList.size() - 1);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

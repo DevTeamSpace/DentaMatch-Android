@@ -143,8 +143,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             final SchoolTypeModel schoolTypeModel = mSchoolList.get(position - 1);
             holder1.tvSchoolTypeName.setText(schoolTypeModel.getSchoolTypeName());
 
-            /**
-             * Settings tags for later reference.
+            /*
+              Settings tags for later reference.
              */
             holder1.autoCompleteTextView.setTag(position - 1);
             holder1.etYearOfGraduation.setTag(position - 1);
@@ -172,8 +172,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
 
-            /**
-             * we scroll the autocomplete textview to center in order for it to take focus
+            /*
+             we scroll the autocomplete textview to center in order for it to take focus
              */
             final int refPosition = position;
             holder1.autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -184,8 +184,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
 
-            /**
-             * Set spinner with the years of graduation.
+            /*
+             Set spinner with the years of graduation.
              */
             SpinnerGraduationAdapter adapter = new SpinnerGraduationAdapter(mContext, R.layout.item_spinner_text, mYearsList);
             holder1.spinnerYears.setAdapter(adapter);
@@ -210,8 +210,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 mHashMap.put(position - 1, data);
             } else {
 
-                /**
-                 * Look for schools which the user might have selected and fill in autocomplete.
+                /*
+                 Look for schools which the user might have selected and fill in autocomplete.
                  */
                 for (SchoolModel schoolModel : schoolTypeModel.getSchoolList()) {
                     listSchools.add(schoolModel.getSchoolName());
@@ -234,24 +234,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         mYear = "";
                     }
                 }
-            }
-
-            /**
-             * Selects the chosen year in the spinner.
-             */
-            if (TextUtils.isEmpty(mYear)) {
-                holder1.spinnerYears.setSelection(0);
-
-            } else {
-
-                for (int i = 0; i < mYearsList.size(); i++) {
-                    if (mYearsList.get(i).equals(mYear)) {
-                        holder1.spinnerYears.setSelection(i);
-                        mYear = "";
-                        break;
-                    }
-                }
-
             }
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, listSchools);
@@ -291,6 +273,24 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     ((BaseActivity) mContext).hideKeyboard(holder1.etSchoolName);
                 }
             });
+
+            /*
+             Selects the chosen year in the spinner.
+             */
+            if (TextUtils.isEmpty(mYear)) {
+                holder1.spinnerYears.setSelection(0);
+
+            } else {
+
+                for (int i = 0; i < mYearsList.size(); i++) {
+                    if (mYearsList.get(i).equals(mYear)) {
+                        holder1.spinnerYears.setSelection(i);
+                        mYear = "";
+                        break;
+                    }
+                }
+
+            }
 
             holder1.etYearOfGraduation.setOnClickListener(new View.OnClickListener() {
                 @Override
