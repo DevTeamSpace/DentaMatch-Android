@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
+        android:textColor="@color/gray_nav_bottom_unselected"
         android:drawableTop="@drawable/img_placeholder_track"
         android:drawablePadding="@dimen/margin_23"
         android:text="@string/txt_no_saved_jobs"

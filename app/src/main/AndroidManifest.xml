@@ -204,6 +204,12 @@
             android:name=".ui.searchjob.SearchJobActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
+        <activity
+            android:name=".ui.profile.workexperience.MyWorkExpListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
         <activity
             android:name=".ui.searchjob.SelectJobTitleActivity"
             android:screenOrientation="portrait"

@@ -23,7 +23,7 @@
             android:text="@string/job_tile_search"
             android:textColor="@color/black_color"
             android:textSize="@dimen/text_size_13"
-            app:customFont="@string/font_medium" />
+            app:customFont="@string/font_regular" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_ajob_title"

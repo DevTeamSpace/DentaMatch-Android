@@ -112,9 +112,9 @@
                     android:id="@+id/login_layout_login_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_55"
+                    android:layout_marginTop="@dimen/margin_46"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <com.appster.dentamatch.widget.CustomTextView
                         style="@style/text_view_normal"
@@ -128,7 +128,7 @@
                         android:id="@+id/login_input_layout_email"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edit_height"
-                        android:layout_marginTop="@dimen/margin_19"
+                        android:layout_marginTop="@dimen/margin_20"
                         android:clipToPadding="false"
                         android:gravity="bottom"
                         android:paddingTop="@dimen/padding_input_layout"
@@ -211,7 +211,7 @@
                     android:layout_marginBottom="@dimen/margin_19"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/register_input_layout_fname"
@@ -357,7 +357,8 @@
                         android:layout_marginTop="@dimen/margin_medium"
                         android:drawablePadding="@dimen/padding_drawable"
                         android:drawableStart="@drawable/ic_help"
-                        android:gravity="start"
+                        android:gravity="start|center_vertical"
+
                         android:paddingStart="@dimen/margin_medium"
                         android:text="@string/register_help_info"
                         android:textColor="@color/register_help_color"

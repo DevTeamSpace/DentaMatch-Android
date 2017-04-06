@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.profile.workexperience;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.UsPhoneNumberFormat;
 import com.appster.dentamatch.util.Utils;
@@ -64,14 +66,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         }
 
         setViewData();
-
-        if (position == 0) {
-            mBinder.tvExperienceDelete.setVisibility(View.GONE);
-        } else {
-            mBinder.tvExperienceDelete.setVisibility(View.VISIBLE);
-        }
-
+        mBinder.tvExperienceDelete.setVisibility(View.VISIBLE);
         hideKeyboard();
+
         UsPhoneNumberFormat addLineNumberFormatter = new UsPhoneNumberFormat(
                 new WeakReference<EditText>(mBinder.includeLayoutReference1.etOfficeReferenceMobile));
         mBinder.includeLayoutReference1.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter);
@@ -93,7 +90,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         mBinder.includeLayoutReference1.etOfficeReferenceName.setText(workExpList.get(position).getReference1Name());
         mBinder.includeLayoutReference1.etOfficeReferenceEmail.setText(workExpList.get(position).getReference1Email());
 
-        if (!TextUtils.isEmpty(workExpList.get(position).getReference2Name()) || !TextUtils.isEmpty(workExpList.get(position).getReference2Email()) || !TextUtils.isEmpty(workExpList.get(position).getReference2Mobile())) {
+        if (!TextUtils.isEmpty(workExpList.get(position).getReference2Name()) ||
+                !TextUtils.isEmpty(workExpList.get(position).getReference2Email()) ||
+                !TextUtils.isEmpty(workExpList.get(position).getReference2Mobile())) {
             mBinder.layoutRefrence2.setVisibility(View.VISIBLE);
             mBinder.tvAddMoreReference.setVisibility(View.GONE);
             mBinder.includeLayoutRefrence2.tvRefrenceCount.setText(getString(R.string.reference2));
@@ -122,9 +121,21 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 break;
 
             case R.id.tv_experience_delete:
-                if (position != 0) {
-                    callDeleteApi();
-                }
+                Alert.createYesNoAlert(ViewAndEditWorkExperienceActivity.this,
+                        getString(R.string.txt_ok),
+                        getString(R.string.txt_cancel),
+                        "", getString(R.string.msg_delete_exp_warning), new Alert.OnAlertClickListener() {
+                            @Override
+                            public void onPositive(DialogInterface dialog) {
+                                callDeleteApi();
+                            }
+
+                            @Override
+                            public void onNegative(DialogInterface dialog) {
+                                dialog.dismiss();
+                            }
+                        });
+
                 break;
 
             case R.id.et_job_title:
@@ -146,24 +157,29 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 hideKeyboard();
 
 
-                if(result.containsKey(false)){
-                   showToast(result.get(false));
-                }else{
-                    WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutRefrence2.getVisibility(),
-                            Constants.APIS.ACTION_EDIT,
-                            jobTitleId,
-                            expMonth,
-                            Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
-                            Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
-                            Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
-                            Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
-                            Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
-                            Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
-                            Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
-                            Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
-                            Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
-                    request.setId(workExpList.get(position).getId());
-                    callUpdateExpApi(request);
+                if (result.containsKey(false)) {
+                    showToast(result.get(false));
+                } else {
+                    if(TextUtils.isEmpty(result.get(true))) {
+                        WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutRefrence2.getVisibility(),
+                                Constants.APIS.ACTION_EDIT,
+                                jobTitleId,
+                                expMonth,
+                                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
+                                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
+                                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
+                                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
+                                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
+                                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
+                                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
+                                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
+                        request.setId(workExpList.get(position).getId());
+                        callUpdateExpApi(request);
+
+                    }else{
+                        showToast(result.get(true));
+                    }
                 }
 
                 break;

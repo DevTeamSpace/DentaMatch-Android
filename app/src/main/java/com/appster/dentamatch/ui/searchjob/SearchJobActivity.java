@@ -252,8 +252,13 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                     }
                 }
             }else{
-                processToShowDialog();
-                LocationUtils.addFragment(this);
+                /*
+                In case we have net connection show loader and fetch user current location address.
+                 */
+                if(Utils.isConnected(this)) {
+                    processToShowDialog();
+                    LocationUtils.addFragment(this);
+                }
             }
         }catch (Exception e){
             e.printStackTrace();

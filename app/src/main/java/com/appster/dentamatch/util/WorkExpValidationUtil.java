@@ -14,6 +14,10 @@ import java.util.HashMap;
 public class WorkExpValidationUtil {
     private static HashMap<Boolean, String> returnValue = new HashMap<>();
 
+    /**
+     * We return a true value in case the validation is not a missing element but rather a missing format
+     * like the mobile number format or email validation problem.
+     */
     public static HashMap<Boolean, String> checkValidation(int isReference2,
                                                            String selectedJobtitle,
                                                            int expMonth,
@@ -53,13 +57,7 @@ public class WorkExpValidationUtil {
         } else if (officeCity.length() > Constants.DEFAULT_FIELD_LENGTH) {
             returnValue.put(false, DentaApp.getInstance().getString(R.string.city_length_alert));
 
-        } else if (!TextUtils.isEmpty(reference1Email) && !Utils.isValidEmailAddress(reference1Email)) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.valid_email_alert));
-
-        } else if (!TextUtils.isEmpty(reference1Mobile) && reference1Mobile.length() < 13) {
-            returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_mobile_alert));
-
-        } else if((!TextUtils.isEmpty(reference1Mobile) || !TextUtils.isEmpty(reference1Email)) && TextUtils.isEmpty(referenceName1)) {
+        }   else if((!TextUtils.isEmpty(reference1Mobile) || !TextUtils.isEmpty(reference1Email)) && TextUtils.isEmpty(referenceName1)) {
             returnValue.put(false, DentaApp.getInstance().getString(R.string.msg_reference_name_1_blank));
 
         }else if((!TextUtils.isEmpty(reference2Mobile) || !TextUtils.isEmpty(reference2Email)) && TextUtils.isEmpty(referenceName2)){
@@ -68,8 +66,14 @@ public class WorkExpValidationUtil {
         }else if(!TextUtils.isEmpty(reference2Email) && !Utils.isValidEmailAddress(reference2Email)){
             returnValue.put(false, DentaApp.getInstance().getString(R.string.valid_email_alert));
 
+        }else if (!TextUtils.isEmpty(reference1Mobile) && reference1Mobile.length() < 13) {
+            returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_mobile_alert));
+
         }else if(!TextUtils.isEmpty(reference2Mobile) && reference2Mobile.length() < 13){
             returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_mobile_alert));
+
+        }else if (!TextUtils.isEmpty(reference1Email) && !Utils.isValidEmailAddress(reference1Email)) {
+            returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_email_alert));
 
         }else {
             returnValue.put(true, "");
@@ -90,8 +94,8 @@ public class WorkExpValidationUtil {
         workExpRequest.setReference1Mobile(reference1Mobile);
         workExpRequest.setReference1Name(officeReference1Name);
         workExpRequest.setReference1Email(reference1Email);
-/**
- * 0 mean view is visible
+/*
+  0 mean view is visible
  */
         if (isReference2 == 0) {
             workExpRequest.setReference2Mobile(reference2Mobile);
@@ -100,6 +104,7 @@ public class WorkExpValidationUtil {
         }
         return workExpRequest;
     }
+
 
 
 }

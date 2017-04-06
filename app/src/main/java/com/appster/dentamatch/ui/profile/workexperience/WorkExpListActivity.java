@@ -200,7 +200,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.tv_add_more_experience:
-                prepareRequestForAdd(false);
+                checkAndAddMoreExperience();
                 break;
 
             case R.id.tv_experince_work_exp:
@@ -220,6 +220,46 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    private void checkAndAddMoreExperience() {
+        hideKeyboard();
+        final HashMap<Boolean, String> result = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), mSelectedJobTitle, mExpMonth,
+                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
+                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
+                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
+                Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName));
+
+        /*
+          If the result seems wrong then show toast message else hit api to add data.
+         */
+        if(result.containsKey(false)){
+            showToast(result.get(false));
+
+        }else{
+            WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(),
+                    Constants.APIS.ACTION_ADD,
+                    mJobTitleId,
+                    mExpMonth,
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
+                    Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                    Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
+                    Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
+                    Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceEmail),
+                    Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceName),
+                    Utils.getStringFromEditText(mBinder.includeLayoutRefrence2.etOfficeReferenceMobile));
+
+
+        }
+
+
+    }
+
     private void prepareRequestForAdd(boolean isNext) {
         hideKeyboard();
         final HashMap<Boolean, String> result = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), mSelectedJobTitle, mExpMonth,
@@ -235,8 +275,8 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
 
         if (result.containsKey(false)) {
             Alert.createYesNoAlert(this, getString(R.string.save_label),
-                    getString(R.string.txt_discard), getString(R.string.header_work_exp),
-                    getString(R.string.msg_discard_partial_experience),
+                            getString(R.string.txt_discard), getString(R.string.header_work_exp),
+                            getString(R.string.msg_discard_partial_experience),
                     new Alert.OnAlertClickListener() {
                         @Override
                         public void onPositive(DialogInterface dialog) {
@@ -451,20 +491,21 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                                 !TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity)))) {
 
                     Alert.createYesNoAlert(WorkExpListActivity.this,
-                            getString(R.string.ok),
-                            getString(R.string.cancel),
+                            getString(R.string.save_label),
+                            getString(R.string.txt_discard),
                             "",
                             getString(R.string.alert_discard_exp),
                             new Alert.OnAlertClickListener() {
                                 @Override
                                 public void onPositive(DialogInterface dialog) {
 
-                                    if (isFromProfile) {
-                                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
-                                        finish();
-                                    } else {
-                                        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
-                                    }
+
+//                                    if (isFromProfile) {
+//                                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+//                                        finish();
+//                                    } else {
+//                                        startActivity(new Intent(WorkExpListActivity.this, SchoolingActivity.class));
+//                                    }
                                 }
 
                                 @Override

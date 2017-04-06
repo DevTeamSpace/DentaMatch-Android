@@ -85,6 +85,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:drawablePadding="@dimen/padding_drawable"
+                    android:textAllCaps="true"
                     android:text="@string/experience_delete"
                     android:textColor="@color/color_forgot_pwd"
                     android:textSize="@dimen/text_size_normal"
@@ -96,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/cell_height"
                     android:layout_marginBottom="@dimen/margin_29"
-                    android:layout_marginTop="@dimen/margin_29"
+                    android:layout_marginTop="@dimen/margin_17"
                     android:background="@drawable/bg_cell">
 
                     <com.appster.dentamatch.widget.CustomTextView

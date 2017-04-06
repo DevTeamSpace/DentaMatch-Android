@@ -30,6 +30,7 @@ import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
+import com.appster.dentamatch.ui.profile.workexperience.MyWorkExpListActivity;
 import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
 import com.appster.dentamatch.ui.profile.workexperience.SkillsActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateCertificateActivity;
@@ -204,7 +205,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellExp.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent workIntent = new Intent(getActivity(), WorkExpListActivity.class);
+                Intent workIntent = new Intent(getActivity(), MyWorkExpListActivity.class);
                 workIntent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
                 startActivity(workIntent);
             }

@@ -71,7 +71,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
                 if (checkValidation()) {
                     PreferenceUtil.setOfficeName(Utils.getStringFromEditText(mBinder.etOfficeName));
                     hideKeyboard();
-                    startActivity(new Intent(this, WorkExpListActivity.class));
+                    startActivity(new Intent(this, MyWorkExpListActivity.class));
                 }
                 break;
 

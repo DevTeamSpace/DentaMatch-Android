@@ -175,7 +175,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             /*
              we scroll the autocomplete textview to center in order for it to take focus
              */
-            final int refPosition = position;
+            final int refPosition = position - 1;
             holder1.autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -183,6 +183,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     return false;
                 }
             });
+
 
             /*
              Set spinner with the years of graduation.

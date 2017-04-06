@@ -55,7 +55,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
-        if(mSelectedTitleList != null && mSelectedTitleList.size()>0){
+        if (mSelectedTitleList != null && mSelectedTitleList.size() > 0) {
             mJobTitleAdapter.setSelectedListItems(mSelectedTitleList);
         }
     }
@@ -69,7 +69,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarJobTitle.ivToolBarLeft.setOnClickListener(this);
         mLayoutManager = new LinearLayoutManager(this);
 
-        if(getIntent().hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)){
+        if (getIntent().hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)) {
             mSelectedTitleList = getIntent().getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
         }
 
@@ -95,11 +95,11 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
                     mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
                     ArrayList<JobTitleListModel> jobTitles = response.getJobTitleResponseData().getJobTitleList();
 
-                    for(int i = 0; i < jobTitles.size(); i++ ){
-                        if(jobTitles.get(i).getJobTitle().equalsIgnoreCase(Constants.OTHERS)){
+                    for (int i = 0; i < jobTitles.size(); i++) {
+                        if (jobTitles.get(i).getJobTitle().equalsIgnoreCase(Constants.OTHERS)) {
 
-                            if(i != jobTitles.size() - 1){
-                                Collections.swap(jobTitles, i , jobTitles.size() -1);
+                            if (i != jobTitles.size() - 1) {
+                                Collections.swap(jobTitles, i, jobTitles.size() - 1);
                             }
 
                             break;
@@ -109,7 +109,7 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
                     PreferenceUtil.setSearchJobTitleList(jobTitles);
                     mJobTitleAdapter.addList(jobTitles);
 
-                    if(mSelectedTitleList != null && mSelectedTitleList.size()>0){
+                    if (mSelectedTitleList != null && mSelectedTitleList.size() > 0) {
                         mJobTitleAdapter.setSelectedListItems(mSelectedTitleList);
                         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
                     }
@@ -123,9 +123,9 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void onFail(Call<JobTitleResponse> call, BaseResponse baseResponse) {
-                if(PreferenceUtil.getSearchJobTitleList() != null && PreferenceUtil.getSearchJobTitleList().size() > 0){
+                if (PreferenceUtil.getSearchJobTitleList() != null && PreferenceUtil.getSearchJobTitleList().size() > 0) {
                     mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.GONE);
                 }
                 mJobTitleAdapter.addList(PreferenceUtil.getSearchJobTitleList());
@@ -147,12 +147,12 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.txv_toolbar_general_right:
-                if(mSelectedTitleList.size() == 0) {
+                if (mSelectedTitleList.size() == 0) {
                     showToast(getString(R.string.msg_select_job));
-                }else{
+                } else {
                     Intent intent = getIntent();
-                    intent.putExtra(Constants.EXTRA_CHOSEN_JOB_TITLES,mSelectedTitleList);
-                    setResult(Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE,intent);
+                    intent.putExtra(Constants.EXTRA_CHOSEN_JOB_TITLES, mSelectedTitleList);
+                    setResult(Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE, intent);
                     finish();
                 }
                 break;

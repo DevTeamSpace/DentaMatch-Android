@@ -85,7 +85,7 @@
                 android:text="@string/profile1_text"
                 android:textColor="@color/black_color"
                 android:textSize="@dimen/text_size_16"
-                app:customFont="@string/font_medium" />
+                app:customFont="@string/font_light" />
 
 
             <android.support.design.widget.TextInputLayout
