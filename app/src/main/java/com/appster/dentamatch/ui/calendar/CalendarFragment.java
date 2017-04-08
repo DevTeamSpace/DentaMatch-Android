@@ -193,11 +193,12 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         mCalendarBinding.rvBookedJob.setVisibility(View.GONE);
                     }
 
+
                     for(int i = 0; i < mAllJobLIst.size(); i++){
 
                         if(mAllJobLIst.get(i).getId() == jobId){
                             mAllJobLIst.remove(i);
-                            i = 0;
+                            i = -1;
                         }
 
                     }

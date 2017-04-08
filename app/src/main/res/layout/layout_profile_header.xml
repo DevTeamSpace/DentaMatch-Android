@@ -29,7 +29,6 @@
             >
 
 
-
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile_icon"
                 android:layout_width="@dimen/profile_image_height"

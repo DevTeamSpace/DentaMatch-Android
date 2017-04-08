@@ -104,31 +104,31 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
                 if (data.getIsMonday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_monday));
+                    partTimeDaysArray.add(mContext.getString(R.string.mon));
                 }
 
                 if (data.getIsTuesday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_tuesday));
+                    partTimeDaysArray.add(mContext.getString(R.string.tue));
                 }
 
                 if (data.getIsWednesday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_wednesday));
+                    partTimeDaysArray.add(mContext.getString(R.string.wed));
                 }
 
                 if (data.getIsThursday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_thursday));
+                    partTimeDaysArray.add(mContext.getString(R.string.thu));
                 }
 
                 if (data.getIsFriday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_friday));
+                    partTimeDaysArray.add(mContext.getString(R.string.fri));
                 }
 
                 if (data.getIsSaturday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_saturday));
+                    partTimeDaysArray.add(mContext.getString(R.string.sat));
                 }
 
                 if (data.getIsSunday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_sunday));
+                    partTimeDaysArray.add(mContext.getString(R.string.sun));
                 }
 
                 String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
@@ -203,7 +203,11 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         switch (v.getId()) {
             case R.id.cb_job_selection:
                 final int position = (int) v.getTag();
-                Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.txt_alert_title), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
+                Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok),
+                        mContext.getString(R.string.txt_cancel),
+                        mContext.getString(R.string.txt_alert_title),
+                        mContext.getString(R.string.msg_unsave_warning),
+                        new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {
                         unSaveJob(mJobListData.get(position).getId(), position);
@@ -275,7 +279,8 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 mContext.getString(R.string.txt_ok),
                 mContext.getString(R.string.txt_cancel),
                 mContext.getString(R.string.txt_alert_title),
-                mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {
+                mContext.getString(R.string.alert_cancel_job),
+                new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {
                         CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();

@@ -42,6 +42,7 @@ public class DBHelper {
         }
 
         return realmDBHelper;
+
     }
 
     /**
@@ -68,7 +69,6 @@ public class DBHelper {
             LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
             return null;
         }
-
         return mRealmInstance.where(DBModel.class).findAllSorted("lastMsgTime", Sort.DESCENDING);
     }
 

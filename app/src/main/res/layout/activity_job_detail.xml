@@ -395,6 +395,11 @@
                     android:textColor="@color/cell_text_color"
                     app:customFont="@string/font_medium" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/light_gray" />
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"

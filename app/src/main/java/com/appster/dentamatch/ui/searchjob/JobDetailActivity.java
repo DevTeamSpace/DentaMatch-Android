@@ -177,7 +177,8 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 final int status = mJobDetailModel.getIsSaved() == 1 ? 0 : 1;
 
                 if (status == 0) {
-                    Alert.createYesNoAlert(JobDetailActivity.this, getString(R.string.txt_ok),
+                    Alert.createYesNoAlert(JobDetailActivity.this,
+                            getString(R.string.txt_ok),
                             getString(R.string.txt_cancel),
                             getString(R.string.txt_alert_title),
                             getString(R.string.msg_unsave_warning),
@@ -330,31 +331,31 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
                 if (dataModel.getIsMonday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_monday));
+                    partTimeDaysArray.add(getString(R.string.mon));
                 }
 
                 if (dataModel.getIsTuesday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_tuesday));
+                    partTimeDaysArray.add(getString(R.string.tue));
                 }
 
                 if (dataModel.getIsWednesday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_wednesday));
+                    partTimeDaysArray.add(getString(R.string.wed));
                 }
 
                 if (dataModel.getIsThursday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_thursday));
+                    partTimeDaysArray.add(getString(R.string.thu));
                 }
 
                 if (dataModel.getIsFriday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_friday));
+                    partTimeDaysArray.add(getString(R.string.fri));
                 }
 
                 if (dataModel.getIsSaturday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_saturday));
+                    partTimeDaysArray.add(getString(R.string.sat));
                 }
 
                 if (dataModel.getIsSunday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_sunday));
+                    partTimeDaysArray.add(getString(R.string.sun));
                 }
 
                 String partTimeDays = TextUtils.join(", ", partTimeDaysArray);

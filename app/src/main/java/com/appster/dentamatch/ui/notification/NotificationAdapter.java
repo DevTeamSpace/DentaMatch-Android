@@ -65,8 +65,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             holder.tvDesc.setText(data.getNotificationData());
 
-            /**
-             * Change visibility of cell items based on read or unread notification status.
+            /*
+              Change visibility of cell items based on read or unread notification status.
              */
             if (data.getSeen() == 0) {
                 holder.ivRead.setVisibility(View.VISIBLE);
@@ -82,8 +82,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 holder.ivRead.setVisibility(View.INVISIBLE);
             }
 
-            /**
-             * Set time of the notification.
+            /*
+              Set time of the notification.
              */
             if (data.getCreatedAt() != null) {
                 holder.tvDuration.setVisibility(View.VISIBLE);
@@ -93,10 +93,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             }
 
 
-            /**
-             * if notification is OTHER we hide jobType, address,accept - reject layout and right arrow.
-             * if notification is INVITE type show all views as visible.
-             * else accept - reject layout is hidden and all other views are visible
+            /*
+              if notification is OTHER we hide jobType, address,accept - reject layout and right arrow.
+              if notification is INVITE type show all views as visible.
+              else accept - reject layout is hidden and all other views are visible
              */
             if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER) {
                 holder.layoutInVite.setVisibility(View.GONE);
@@ -142,10 +142,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private void setJobDetailData(JobDetailModel model, MyHolder holder) {
         if (model != null) {
 
-            if(!TextUtils.isEmpty(model.getAddress())) {
+            if (!TextUtils.isEmpty(model.getAddress())) {
                 holder.tvAddress.setVisibility(View.VISIBLE);
                 holder.tvAddress.setText(model.getAddress());
-            }else{
+            } else {
                 holder.tvAddress.setVisibility(View.GONE);
             }
 
@@ -174,11 +174,27 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onClick(View v) {
-        int position = (int) v.getTag();
+        final int position = (int) v.getTag();
         switch (v.getId()) {
 
             case R.id.tv_reject:
-                callInviteStatusApi(position, 0);
+                Alert.createYesNoAlert(mContext,
+                        mContext.getString(R.string.txt_ok),
+                        mContext.getString(R.string.txt_cancel),
+                        mContext.getString(R.string.txt_alert_title),
+                        mContext.getString(R.string.msg_invite_reject_warning),
+                        new Alert.OnAlertClickListener() {
+                            @Override
+                            public void onPositive(DialogInterface dialog) {
+                                callInviteStatusApi(position, 0);
+                            }
+
+                            @Override
+                            public void onNegative(DialogInterface dialog) {
+                                dialog.dismiss();
+                            }
+
+                        });
                 break;
 
             case R.id.tv_accept:
@@ -197,9 +213,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         updateSeenStatus(position, false);
 
                     } else {
-                        /**
-                         * In case of recruiter deleted the job then user doesn't get the
-                         * jobDetailModel.
+                        /*
+                          In case of recruiter deleted the job then user doesn't get the
+                          jobDetailModel.
                          */
                         if (data.getJobDetailModel() != null) {
                             redirectToDetail(data.getJobDetailModel().getId());
@@ -316,18 +332,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.msg_warning_delete_notification), new Alert.OnAlertClickListener() {
+        Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok),
+                mContext.getString(R.string.txt_cancel),
+                mContext.getString(R.string.txt_alert_title),
+                mContext.getString(R.string.msg_warning_delete_notification),
+                new Alert.OnAlertClickListener() {
 
-            @Override
-            public void onPositive(DialogInterface dialog) {
-                callDeleteNotificationApi(position);
-            }
+                    @Override
+                    public void onPositive(DialogInterface dialog) {
+                        callDeleteNotificationApi(position);
+                    }
 
-            @Override
-            public void onNegative(DialogInterface dialog) {
-                dialog.dismiss();
-            }
-        });
+                    @Override
+                    public void onNegative(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
 
         return false;
     }

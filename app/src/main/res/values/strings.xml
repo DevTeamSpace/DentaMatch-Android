@@ -274,6 +274,15 @@
     <string name="thu">TH</string>
     <string name="fri">FR</string>
     <string name="sat">SA</string>
+
+    <string name="calendar_sun">Su</string>
+    <string name="calendar_mon">Mo</string>
+    <string name="calendar_tue">Tu</string>
+    <string name="calendar_wed">We</string>
+    <string name="calendar_thu">Th</string>
+    <string name="calendar_fri">Fr</string>
+    <string name="calendar_sat">Sa</string>
+
     <string name="booked_job">BOOKED JOBS</string>
     <string name="txt_show_less">READ LESS</string>
     <string name="txt_full_sunday">Sunday</string>
@@ -381,5 +390,7 @@
     <string name="mixpanel_event_signup">SignUp</string>
     <string name="mixpanel_event_logout">Logout</string>
     <string name="msg_delete_exp_warning">Are you sure you want to delete this experience ?</string>
+    <string name="msg_invite_reject_warning">Are you sure you want to reject this job invitation?</string>
+    <string name="txt_confirm_rejection">Confirm Rejection</string>
 
 </resources>

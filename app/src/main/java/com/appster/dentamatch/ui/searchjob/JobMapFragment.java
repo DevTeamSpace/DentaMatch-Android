@@ -334,31 +334,31 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
                     ArrayList<String> partTimeDaysArray = new ArrayList<>();
                     if (jobModel.getIsMonday() == 1) {
-                        partTimeDaysArray.add(getString(R.string.txt_full_monday));
+                        partTimeDaysArray.add(getString(R.string.mon));
                     }
 
                     if (jobModel.getIsTuesday() == 1) {
-                        partTimeDaysArray.add(getString(R.string.txt_full_tuesday));
+                        partTimeDaysArray.add(getString(R.string.tue));
                     }
 
                     if (jobModel.getIsWednesday() == 1) {
-                        partTimeDaysArray.add(getString(R.string.txt_full_wednesday));
+                        partTimeDaysArray.add(getString(R.string.wed));
                     }
 
                     if (jobModel.getIsThursday() == 1) {
-                        partTimeDaysArray.add(getString(R.string.txt_full_thursday));
+                        partTimeDaysArray.add(getString(R.string.thu));
                     }
 
                     if (jobModel.getIsFriday() == 1) {
-                        partTimeDaysArray.add(getString(R.string.txt_full_friday));
+                        partTimeDaysArray.add(getString(R.string.fri));
                     }
 
                     if (jobModel.getIsSaturday() == 1) {
-                        partTimeDaysArray.add(getString(R.string.txt_full_saturday));
+                        partTimeDaysArray.add(getString(R.string.sat));
                     }
 
                     if (jobModel.getIsSunday() == 1) {
-                        partTimeDaysArray.add(getString(R.string.txt_full_sunday));
+                        partTimeDaysArray.add(getString(R.string.sun));
                     }
 
                     String partTimeDays = TextUtils.join(", ", partTimeDaysArray);

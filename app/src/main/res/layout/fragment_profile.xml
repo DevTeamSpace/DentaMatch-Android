@@ -72,18 +72,16 @@
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_job_title"
-
                     style="@style/text_view_normal"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_medium"
-
                     android:gravity="center_horizontal"
                     android:text="@string/label_job_title"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_normal"
-                    app:customFont="@string/font_medium" />
+                    app:customFont="@string/font_bold" />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_location"
@@ -93,7 +91,6 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_medium"
-
                     android:gravity="center_horizontal"
                     android:text="@string/settings_change_home_location"
                     android:textColor="@color/white_color"
@@ -104,7 +101,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-
                     android:background="@drawable/ic_click_indicator" />
 
                 <View
@@ -112,6 +108,7 @@
                     android:layout_height="@dimen/line_height"
                     android:background="@color/white_color"
                     android:visibility="gone" />
+
             </LinearLayout>
 
             <com.appster.dentamatch.widget.CustomTextView

@@ -85,8 +85,8 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
                 holder.tvTime.setLayoutParams(timeParams);
 
             } else {
-                /**
-                 * Update date label for chat messages.
+                /*
+                  Update date label for chat messages.
                  */
                 holder.tvDateLabel.setVisibility(View.VISIBLE);
                 holder.tvMessage.setVisibility(View.GONE);
