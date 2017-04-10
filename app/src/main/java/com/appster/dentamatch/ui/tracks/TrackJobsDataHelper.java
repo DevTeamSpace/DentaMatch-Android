@@ -28,6 +28,7 @@ import retrofit2.Call;
 
 public class TrackJobsDataHelper {
     private static TrackJobsDataHelper mInstance;
+
     private int mSearchPageNum;
     private int mAppliedPageNum;
     private int mShortListedPageNum;
@@ -101,7 +102,7 @@ public class TrackJobsDataHelper {
             getAllSavedJobs(true, ct);
 
         }else if(TrackJobType == Constants.SEARCHJOBTYPE.APPLIED.getValue()) {
-            mSearchPageNum = 1;
+            mAppliedPageNum = 1;
             mAppliedJobData.clear();
             getAllAppliedJobs(true, ct);
         }
@@ -159,8 +160,8 @@ public class TrackJobsDataHelper {
                         ((BaseActivity) ct).showToast(response.getMessage());
                     }
 
-                    /**
-                     * Notify activity for data changes.
+                    /*
+                      Notify activity for data changes.
                      */
                     EventBus.getDefault().post(new TrackJobListRetrievedEvent(mSavedJobData, Constants.SEARCHJOBTYPE.SAVED.getValue()));
 
@@ -168,6 +169,10 @@ public class TrackJobsDataHelper {
 
                 @Override
                 public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
+                    /*
+                      Notify activity for data changes.
+                     */
+                    EventBus.getDefault().post(new TrackJobListRetrievedEvent(mSavedJobData, Constants.SEARCHJOBTYPE.SAVED.getValue()));
 
                 }
             });
@@ -205,15 +210,18 @@ public class TrackJobsDataHelper {
                         ((BaseActivity) ct).showToast(response.getMessage());
                     }
 
-                    /**
-                     * Notify activity for data changes.
+                    /*
+                      Notify activity for data changes.
                      */
                     EventBus.getDefault().post(new TrackJobListRetrievedEvent(mAppliedJobData, Constants.SEARCHJOBTYPE.APPLIED.getValue()));
                 }
 
                 @Override
                 public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-
+                    /*
+                    Notify activity for data changes.
+                     */
+                    EventBus.getDefault().post(new TrackJobListRetrievedEvent(mAppliedJobData, Constants.SEARCHJOBTYPE.APPLIED.getValue()));
                 }
             });
         }else{

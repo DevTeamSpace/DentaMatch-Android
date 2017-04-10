@@ -93,8 +93,8 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
     private HiredJobRequest prepareRequest(Calendar calendar) {
         HiredJobRequest request = new HiredJobRequest();
-        /**
-         * to get  the number of days  in month
+        /*
+          to get  the number of days  in month
          */
         calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
         int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);

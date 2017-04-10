@@ -266,7 +266,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             showToast(getString(R.string.alert_select_job_type));
             return false;
         }
-        if (mIsPartTime && (!mIsSunday && !mIsMonday &&!mIsTuesday &&!mIsWednesday && !mIsThursday && !mIsFriday && !mIsSaturday && !mIsSunday)) {
+        if (mIsPartTime && (!mIsSunday && !mIsMonday && !mIsTuesday && !mIsWednesday && !mIsThursday && !mIsFriday && !mIsSaturday && !mIsSunday)) {
             showToast(getString(R.string.alert_invalid_part_time));
 
             return false;

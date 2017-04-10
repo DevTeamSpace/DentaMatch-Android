@@ -15,6 +15,9 @@
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_15"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_toStartOf="@+id/iv_check_box"
             android:textColor="@color/grayish_brown_color"
             android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_medium" />

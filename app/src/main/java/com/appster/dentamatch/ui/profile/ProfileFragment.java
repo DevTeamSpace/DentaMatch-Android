@@ -513,10 +513,18 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             if(months == 0){
                 expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs)));
             }else{
+                String strMonths = "" ;
+
+                if(months == 1){
+                    strMonths = getString(R.string.month);
+                }else{
+                    strMonths = getString(R.string.txt_months);
+                }
+
                 expBinding.tvExpDuration.setText(String.valueOf(years)
                         .concat(getString(R.string.yrs))
                         .concat(" ")
-                        .concat(String.valueOf(months).concat("months")));
+                        .concat(String.valueOf(months).concat(strMonths)));
             }
 
             profileBinding.expInflater.addView(expBinding.getRoot());

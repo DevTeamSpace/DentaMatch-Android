@@ -100,7 +100,6 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginStart="@dimen/margin_33"
         android:background="@color/line_divider"
         android:layout_below="@+id/tv_job_doc_time"
         android:layout_marginTop="@dimen/margin_15"

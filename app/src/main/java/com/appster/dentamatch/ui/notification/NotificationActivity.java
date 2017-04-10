@@ -80,14 +80,14 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
 
                     mIsPaginationNeeded = response.getNotificationResponseData().getTotal() != mNotificationData.size();
 
-                    if(mNotificationData.size() > 0){
-                        showHideEmptyLabel(View.GONE);
-                    }else{
-                        showHideEmptyLabel(View.VISIBLE);
-                    }
-
                 }else{
                     showToast(response.getMessage());
+                }
+
+                if(mNotificationData.size() > 0){
+                    showHideEmptyLabel(View.GONE);
+                }else{
+                    showHideEmptyLabel(View.VISIBLE);
                 }
 
                 if(mBinder.swipeRefreshNotification.isRefreshing()){

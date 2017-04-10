@@ -688,13 +688,13 @@ public class Utils {
         }
     }
 
-    public static Date getDate(String dateStr, String dateFormet) {
+    public static Date getDate(String dateStr, String dateFormat) {
         try {
             SimpleDateFormat inputFormat;
-            if (dateFormet != null) {
-                inputFormat = new SimpleDateFormat(dateFormet, Locale.getDefault());
+            if (dateFormat != null) {
+                inputFormat = new SimpleDateFormat(dateFormat);
             } else {
-                inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                inputFormat = new SimpleDateFormat("yyyy-MM-dd");
             }
 
             return inputFormat.parse(dateStr);
@@ -737,13 +737,17 @@ public class Utils {
     public static String getDuration(Date createdDate, Context context) {
         String time = "";
         try {
+            FullDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            String currentTime = FullDateFormat.format(new Date());
+            Date currentDateTime = new Date();
+            String createdDateString = FullDateFormat.format(createdDate);
             FullDateFormat.setTimeZone(TimeZone.getDefault());
-            String currentTime = FullDateFormat.format(new Date(System.currentTimeMillis()));
-            Date currentDateTime = FullDateFormat.parse(currentTime);
+            Date convertedCreatedDate = FullDateFormat.parse(createdDateString);
 
-            long currentMillis = currentDateTime.getTime();
-            long createMillis = createdDate.getTime();
-            long reqTime = (currentMillis - createMillis);
+//            long currentMillis = currentDateTime.getTime();
+//            long currentMillis = System.currentTimeMillis();
+//            long createMillis = createdDate.getTime();
+            long reqTime = (currentDateTime.getTime() - convertedCreatedDate.getTime());
             long sec = reqTime / 1000;
             time = sec + " " + context.getString(R.string.sec);
 

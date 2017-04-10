@@ -89,7 +89,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 holder.itemView.setOnLongClickListener(this);
 
             } else {
-                holder.cbSelect.setVisibility(View.GONE);
+                holder.cbSelect.setVisibility(View.INVISIBLE);
                 holder.ivChat.setVisibility(View.VISIBLE);
                 holder.cbSelect.setTag(null);
                 holder.cbSelect.setOnClickListener(null);
@@ -167,6 +167,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
             }
 
             holder.tvDocAddress.setText(data.getAddress());
+
             if (data.getDays() == 0) {
                 holder.tvDuration.setText(mContext.getString(R.string.text_todays));
 
@@ -174,6 +175,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
                 holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             }
+
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDocName.setText(data.getOfficeName());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
