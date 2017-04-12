@@ -12,6 +12,7 @@ local.properties
 
 # Gradle generated files
 .gradle/
+.DS_Store
 
 # Signing files
 .signing/
@@ -28,3 +29,6 @@ sonar-project.properties
 *.apk
 *.jks
 keystore.properties
+
+#Sonar Properties
+fabric.properties
