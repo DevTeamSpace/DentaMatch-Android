@@ -74,7 +74,7 @@ public class Utils {
     private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
-    private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
+    private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mma", Locale.getDefault()); // DATE FORMAT : 09:46 am
     private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
     private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
 
@@ -374,9 +374,13 @@ public class Utils {
     }
 
     public static String convertUTCtoLocalFromTimeStamp(String UTCDateTime) {
+
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
         chatTimeFormat.setTimeZone(TimeZone.getDefault());
+        DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
+        symbols.setAmPmStrings(new String[]{"am", "pm"});
+        chatTimeFormat.setDateFormatSymbols(symbols);
         return chatTimeFormat.format(date);
     }
 
@@ -769,7 +773,7 @@ public class Utils {
         long currentMillis = currentDate.getTime();
         long createMillis = createdDate.getTime();
 
-        if (currentMillis > createMillis) {
+        if (currentMillis >= createMillis) {
             long reqTime = (currentMillis - createMillis);
 
             long sec = reqTime / 1000;
@@ -807,7 +811,7 @@ public class Utils {
             }
 
         } else {
-            time = "a sec ago";
+            time = "20 sec ago";
         }
         return time;
 
