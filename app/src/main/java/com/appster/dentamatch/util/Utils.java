@@ -134,7 +134,7 @@ public class Utils {
         Address address = null;
         if (ct != null) {
 
-            if(Utils.isConnected(ct)) {
+            if (Utils.isConnected(ct)) {
                 Geocoder geocoder = new Geocoder(ct);
                 try {
                     List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -515,8 +515,8 @@ public class Utils {
         NetworkInfo netInfo = null;
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-             netInfo = cm.getActiveNetworkInfo();
-        }catch (Exception e){
+            netInfo = cm.getActiveNetworkInfo();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -562,31 +562,31 @@ public class Utils {
     public static void showNotification(Context ct, String title, String message, Intent intent, String notificationId) {
         if (ct != null) {
 
-        int uniqueID = (int) (System.currentTimeMillis() & 0xfffffff);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            int uniqueID = (int) (System.currentTimeMillis() & 0xfffffff);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
+            Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        builder.setContentTitle(title)
-                .setSound(defaultSound)
-                .setContentText(message)
-                .setPriority(Notification.PRIORITY_HIGH)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setSmallIcon(R.drawable.bg_notification_icon)
-                .setColor(ContextCompat.getColor(ct, R.color.colorPrimary))
-                .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(), R.mipmap.ic_launcher))
-                .setAutoCancel(true);
+            builder.setContentTitle(title)
+                    .setSound(defaultSound)
+                    .setContentText(message)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .setSmallIcon(R.drawable.bg_notification_icon)
+                    .setColor(ContextCompat.getColor(ct, R.color.colorPrimary))
+                    .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(), R.mipmap.ic_launcher))
+                    .setAutoCancel(true);
 
 
-        if (intent != null) {
-            PendingIntent Pendingintent = PendingIntent.getActivity(ct, uniqueID, intent, PendingIntent.FLAG_ONE_SHOT);
-            builder.setContentIntent(Pendingintent);
-        }
+            if (intent != null) {
+                PendingIntent Pendingintent = PendingIntent.getActivity(ct, uniqueID, intent, PendingIntent.FLAG_ONE_SHOT);
+                builder.setContentIntent(Pendingintent);
+            }
 
-        NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = builder.build();
-        notification.defaults = Notification.DEFAULT_VIBRATE;
-        manager.notify(Integer.parseInt(notificationId), notification);
+            NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = builder.build();
+            notification.defaults = Notification.DEFAULT_VIBRATE;
+            manager.notify(Integer.parseInt(notificationId), notification);
         }
 
     }
@@ -704,6 +704,23 @@ public class Utils {
         }
     }
 
+    public static Date getDateNotification(String dateStr, String dateFormat) {
+        try {
+            SimpleDateFormat inputFormat;
+            if (dateFormat != null) {
+                inputFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
+            } else {
+                inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            }
+            inputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            return inputFormat.parse(dateStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static String getDayOfWeek(String dateStr) {
         try {
 
@@ -736,18 +753,25 @@ public class Utils {
 
     public static String getDuration(Date createdDate, Context context) {
         String time = "";
-        try {
-            FullDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-//            String currentTime = FullDateFormat.format(new Date());
-            Date currentDateTime = new Date();
-            String createdDateString = FullDateFormat.format(createdDate);
-            FullDateFormat.setTimeZone(TimeZone.getDefault());
-            Date convertedCreatedDate = FullDateFormat.parse(createdDateString);
+//            FullDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            Date currentDateTime = new Date();
+//            String createdDateString = FullDateFormat.format(createdDate);
+//            FullDateFormat.setTimeZone(TimeZone.getDefault());
+//            Date convertedCreatedDate = FullDateFormat.parse(createdDateString);
 
 //            long currentMillis = currentDateTime.getTime();
-//            long currentMillis = System.currentTimeMillis();
-//            long createMillis = createdDate.getTime();
-            long reqTime = (currentDateTime.getTime() - convertedCreatedDate.getTime());
+
+        Date currentDate = new Date();
+//            FullDateFormat.setTimeZone(TimeZone.getDefault());
+//            String convertedCreatedDate = FullDateFormat.format(createdDate);
+//            Date parsedDate = FullDateFormat.parse(convertedCreatedDate);
+
+        long currentMillis = currentDate.getTime();
+        long createMillis = createdDate.getTime();
+
+        if (currentMillis > createMillis) {
+            long reqTime = (currentMillis - createMillis);
+
             long sec = reqTime / 1000;
             time = sec + " " + context.getString(R.string.sec);
 
@@ -782,11 +806,11 @@ public class Utils {
                 }
             }
 
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } else {
+            time = "a sec ago";
         }
         return time;
+
+
     }
-
-
 }

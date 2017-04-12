@@ -5,6 +5,7 @@ import com.appster.dentamatch.ui.messages.Message;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Created by Appster on 14/02/17.
@@ -12,6 +13,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class DBModel extends RealmObject {
 
+    @Required
     @PrimaryKey
     private String recruiterId;
     private String name;
@@ -22,7 +24,6 @@ public class DBModel extends RealmObject {
     private boolean hasDBUpdated;
     private String messageListId;
     private RealmList<Message> userChats;
-
 
     public String getMessageListId() {
         return messageListId;

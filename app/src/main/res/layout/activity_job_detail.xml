@@ -37,6 +37,7 @@
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginEnd="@dimen/margin_normal"
                         android:maxLines="1"
+                        android:paddingTop="@dimen/margin_small"
                         android:ellipsize="end"
                         android:layout_toStartOf="@+id/cb_job_selection"
                         android:layout_marginTop="@dimen/margin_15"

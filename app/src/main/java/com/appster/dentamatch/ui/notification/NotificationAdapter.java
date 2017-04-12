@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
@@ -87,7 +88,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
              */
             if (data.getCreatedAt() != null) {
                 holder.tvDuration.setVisibility(View.VISIBLE);
-                holder.tvDuration.setText(Utils.getDuration(Utils.getDate(data.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS), mContext));
+                holder.tvDuration.setText(Utils.getDuration(Utils.getDateNotification(data.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS), mContext));
             } else {
                 holder.tvDuration.setVisibility(View.GONE);
             }
@@ -283,7 +284,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         }
 
                     } else {
-                        ((BaseActivity) mContext).showToast(response.getMessage());
+                        Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 

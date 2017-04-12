@@ -219,10 +219,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     }
 
     private void validateAndUpdate() {
-        if (TextUtils.isEmpty(mBinding.etFname.getText())) {
+        if (TextUtils.isEmpty(mBinding.etFname.getText().toString().trim())) {
             showToast(getString(R.string.error_no_first_name));
 
-        } else if (TextUtils.isEmpty(mBinding.etLname.getText())) {
+        } else if (TextUtils.isEmpty(mBinding.etLname.getText().toString().trim())) {
             showToast(getString(R.string.error_no_last_name));
 
         } else if (TextUtils.isEmpty(mBinding.etJobTitle.getText())) {
@@ -234,7 +234,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
             showToast(getString(R.string.error_no_location));
 
-        } else if (TextUtils.isEmpty(mBinding.etDesc.getText())) {
+        } else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
             showToast(getString(R.string.error_no_description));
 
         } else {

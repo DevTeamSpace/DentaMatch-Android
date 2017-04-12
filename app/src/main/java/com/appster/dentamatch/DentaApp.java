@@ -28,8 +28,8 @@ public class DentaApp extends MultiDexApplication {
         mAppContext = this;
         mixpanelAPI = MixpanelAPI.getInstance(this, getString(R.string.mixpanel_token));
 
-        /**
-         * Initialize DB Helper class.
+        /*
+          Initialize DB Helper class.
          */
         DBHelper.getInstance().initializeRealmConfig(mAppContext);
         Hawk.init(mAppContext).build();

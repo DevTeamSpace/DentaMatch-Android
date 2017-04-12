@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -143,6 +144,18 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             final SchoolTypeModel schoolTypeModel = mSchoolList.get(position - 1);
             holder1.tvSchoolTypeName.setText(schoolTypeModel.getSchoolTypeName());
 
+            holder1.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                   if (holder1.layChild.getVisibility() == View.VISIBLE){
+                       holder1.layChild.setVisibility(View.GONE);
+                   }else{
+                       holder1.layChild.setVisibility(View.VISIBLE);
+                   }
+
+                }
+            });
             /*
               Settings tags for later reference.
              */
@@ -339,6 +352,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         EditText etSchoolName;
         EditText etYearOfGraduation;
         Spinner spinnerYears;
+        RelativeLayout layChild;
         AutoCompleteTextView autoCompleteTextView;
 
         ViewHolderItem(View view) {
@@ -348,6 +362,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             etYearOfGraduation = mBinder.etGraduation;
             autoCompleteTextView = mBinder.etSchoolName;
             spinnerYears = mBinder.spinnerGraduation;
+            layChild = mBinder.relativeStateLayout;
         }
     }
 

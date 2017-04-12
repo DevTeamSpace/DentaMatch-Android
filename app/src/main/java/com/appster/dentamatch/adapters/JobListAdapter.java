@@ -219,7 +219,9 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             case R.id.lay_item_job_list:
                 int jobID = (int) v.getTag();
                 mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID));
+                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
+                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+
                 break;
 
             default:

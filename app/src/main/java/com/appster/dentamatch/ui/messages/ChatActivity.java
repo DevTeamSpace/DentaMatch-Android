@@ -268,66 +268,69 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private void updateUI(Intent intent) {
         if (intent.hasExtra(Constants.EXTRA_CHAT_MODEL)) {
             recruiterId = intent.getStringExtra(Constants.EXTRA_CHAT_MODEL);
-            dbModel = DBHelper.getInstance().getDBData(recruiterId);
-            userId = PreferenceUtil.getUserChatId();
-            recruiterName = dbModel.getName();
-            mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(recruiterName);
+
+            if (recruiterId != null) {
+                dbModel = DBHelper.getInstance().getDBData(recruiterId);
+                userId = PreferenceUtil.getUserChatId();
+                recruiterName = dbModel.getName();
+                mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(recruiterName);
             /*
               Start new adapter for the new message received.
              */
-            mBinder.messages.setAdapter(null);
-            Utils.clearRecruiterNotification(this, recruiterId);
+                mBinder.messages.setAdapter(null);
+                Utils.clearRecruiterNotification(this, recruiterId);
 
             /*
               Change the UI based on recruiter is blocked or not.
              */
-            if (dbModel.getSeekerHasBlocked() == 1) {
-                mBinder.layUnblock.setVisibility(View.VISIBLE);
-                mBinder.layActivityChatSender.setVisibility(View.GONE);
-            } else {
-                mBinder.layUnblock.setVisibility(View.GONE);
-                mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
-            }
+                if (dbModel.getSeekerHasBlocked() == 1) {
+                    mBinder.layUnblock.setVisibility(View.VISIBLE);
+                    mBinder.layActivityChatSender.setVisibility(View.GONE);
+                } else {
+                    mBinder.layUnblock.setVisibility(View.GONE);
+                    mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
+                }
 
 
             /*
               Connect to socket and request past chats to update the recycler view.
              */
-            SocketManager.getInstance().attachPersonalListener(this, recruiterId);
+                SocketManager.getInstance().attachPersonalListener(this, recruiterId);
 
              /*
               Update all unread chats corresponding to this recruiterID and update server and local Db about it.
              */
-            if (SocketManager.getInstance().isConnected()) {
-                SocketManager.getInstance().updateMsgRead(recruiterId, userId);
-            }
+                if (SocketManager.getInstance().isConnected()) {
+                    SocketManager.getInstance().updateMsgRead(recruiterId, userId);
+                }
 
 
-            if (!dbModel.isDBUpdated()) {
+                if (!dbModel.isDBUpdated()) {
 
-                if (Utils.isConnected(this)) {
-                    if (SocketManager.getInstance().isConnected()) {
+                    if (Utils.isConnected(this)) {
+                        if (SocketManager.getInstance().isConnected()) {
                         /*
                           Show loader in case of fetching data from the server and clear all past chats of the user for corresponding
                           recruiterID.
                          */
-                        ChatActivity.this.showToast(getString(R.string.msg_syncing_chat));
-                        updateDataFromDB();
+                            ChatActivity.this.showToast(getString(R.string.msg_syncing_chat));
+                            updateDataFromDB();
+
+                        } else {
+                            ChatActivity.this.showToast(getString(R.string.error_socket_connection));
+                        }
 
                     } else {
-                        ChatActivity.this.showToast(getString(R.string.error_socket_connection));
+                        ChatActivity.this.showToast(getString(R.string.error_internet_connection));
+
                     }
 
                 } else {
-                    ChatActivity.this.showToast(getString(R.string.error_internet_connection));
-
+                    mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
+                    mBinder.messages.setAdapter(mAdapter);
                 }
 
-            } else {
-                mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
-                mBinder.messages.setAdapter(mAdapter);
             }
-
         }
     }
 

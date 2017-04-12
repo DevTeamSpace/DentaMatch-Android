@@ -72,7 +72,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.pull_in, R.anim.hold_still);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_job_detail);
-        setData();
+        initViews();
 
         if (getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)) {
             jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID, 0);
@@ -80,10 +80,20 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
         mBinding.mapJobDetail.onCreate(savedInstanceState);
         mBinding.mapJobDetail.getMapAsync(this);
+
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
-    private void setData() {
+        if (intent.hasExtra(Constants.EXTRA_JOB_DETAIL_ID)) {
+            jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID, 0);
+        }
+
+    }
+
+    private void initViews() {
         mBinding.btnApplyJob.setOnClickListener(JobDetailActivity.this);
         mBinding.jobDetailToolbar.tvToolbarGeneralLeft.setText(getString(R.string.header_job_detail));
         mBinding.cbJobSelection.setOnClickListener(this);
@@ -125,7 +135,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     protected void onResume() {
         super.onResume();
         mBinding.mapJobDetail.onResume();
-        getJobDetail();
+
+        if(jobID != 0) {
+            getJobDetail();
+        }
     }
 
     @Override
@@ -278,7 +291,6 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             request.setJobId(jobID);
             request.setLat(Double.parseDouble(searchRequest.getLat()));
             request.setLng(Double.parseDouble(searchRequest.getLng()));
-
             processToShowDialog();
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
             webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {

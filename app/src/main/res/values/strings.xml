@@ -268,13 +268,13 @@
     <string name="txt_sunday">Sun</string>
     <string name="not_applicable">N/A</string>
     <string name="txt_read_more">READ MORE</string>
-    <string name="sun">SU</string>
-    <string name="mon">MO</string>
-    <string name="tue">TU</string>
-    <string name="wed">WE</string>
-    <string name="thu">TH</string>
-    <string name="fri">FR</string>
-    <string name="sat">SA</string>
+    <string name="sun">Su</string>
+    <string name="mon">Mo</string>
+    <string name="tue">Tu</string>
+    <string name="wed">We</string>
+    <string name="thu">Th</string>
+    <string name="fri">Fr</string>
+    <string name="sat">Sa</string>
 
     <string name="calendar_sun">Su</string>
     <string name="calendar_mon">Mo</string>

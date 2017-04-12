@@ -184,7 +184,8 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                     int jobID = mJobListData.get((int) view.getTag()).getId();
 
                     mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                            .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID));
+                            .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
                 }
             });
         }
@@ -210,20 +211,20 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                         mContext.getString(R.string.txt_alert_title),
                         mContext.getString(R.string.msg_unsave_warning),
                         new Alert.OnAlertClickListener() {
-                    @Override
-                    public void onPositive(DialogInterface dialog) {
-                        unSaveJob(mJobListData.get(position).getId(), position);
-                    }
+                            @Override
+                            public void onPositive(DialogInterface dialog) {
+                                unSaveJob(mJobListData.get(position).getId(), position);
+                            }
 
-                    @Override
-                    public void onNegative(DialogInterface dialog) {
+                            @Override
+                            public void onNegative(DialogInterface dialog) {
                         /*
                           change the star uncheck by notifying the item.
                          */
-                        notifyItemChanged(position);
-                        dialog.dismiss();
-                    }
-                });
+                                notifyItemChanged(position);
+                                dialog.dismiss();
+                            }
+                        });
 
             default:
                 break;
@@ -257,10 +258,10 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                       Notify the helper class to update the data from the server.
                      */
                         TrackJobsDataHelper.getInstance().updateSavedData();
-                    }else{
+                    } else {
                         notifyItemChanged(position);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     notifyItemChanged(position);
                 }
@@ -311,7 +312,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                     break;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

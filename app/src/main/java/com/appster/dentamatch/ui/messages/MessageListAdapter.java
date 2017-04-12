@@ -40,7 +40,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
             messagesData = data;
             mContext = context;
             userID = PreferenceUtil.getUserChatId();
-
     }
 
     @Override

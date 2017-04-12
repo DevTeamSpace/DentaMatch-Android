@@ -156,9 +156,10 @@
                     android:layout_margin="@dimen/margin_normal"
                     android:background="@drawable/bg_edit_text"
                     android:gravity="top"
-                    android:hint="@string/write_description"
+                    android:maxLength="500"
+                    android:scrollbars="vertical"
+                    android:hint="@string/write_description" />
 
-                    />
             </LinearLayout>
 
 

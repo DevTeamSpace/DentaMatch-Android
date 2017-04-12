@@ -15,6 +15,7 @@
         android:layout_toStartOf="@+id/cb_job_selection"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingTop="@dimen/margin_small"
         android:textColor="@color/cerulean_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
