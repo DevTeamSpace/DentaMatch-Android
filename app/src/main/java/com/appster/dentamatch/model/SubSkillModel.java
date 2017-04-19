@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by ramkumar on 12/01/17.
  */
@@ -16,13 +18,16 @@ public class SubSkillModel implements Parcelable {
     @SerializedName("userSkill")
     private int isSelected;
     private String otherSkill;
+    private ArrayList<String> otherSkillArray;
 
-    private SubSkillModel(Parcel in) {
+
+    protected SubSkillModel(Parcel in) {
         id = in.readInt();
         parentId = in.readInt();
         skillName = in.readString();
-        otherSkill = in.readString();
         isSelected = in.readInt();
+        otherSkill = in.readString();
+        otherSkillArray = in.createStringArrayList();
     }
 
     public static final Creator<SubSkillModel> CREATOR = new Creator<SubSkillModel>() {
@@ -77,6 +82,7 @@ public class SubSkillModel implements Parcelable {
         this.otherSkill = otherText;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -87,7 +93,8 @@ public class SubSkillModel implements Parcelable {
         dest.writeInt(id);
         dest.writeInt(parentId);
         dest.writeString(skillName);
-        dest.writeString(otherSkill);
         dest.writeInt(isSelected);
+        dest.writeString(otherSkill);
+        dest.writeStringList(otherSkillArray);
     }
 }

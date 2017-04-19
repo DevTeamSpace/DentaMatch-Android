@@ -117,16 +117,17 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                 break;
 
             case R.id.tv_add_more_experience:
+                hideKeyboard();
                 addExperience();
                 break;
 
             case R.id.btn_next_work_exp_list:
+                hideKeyboard();
                 validateDataAndProceed();
                 break;
 
             default:
                 break;
-
 
         }
     }

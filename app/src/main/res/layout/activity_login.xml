@@ -355,7 +355,7 @@
                         android:layout_marginLeft="@dimen/margin_normal"
                         android:layout_marginRight="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/margin_medium"
-                        android:drawablePadding="@dimen/padding_drawable"
+                        android:drawablePadding="@dimen/margin_small"
                         android:drawableStart="@drawable/ic_help"
                         android:gravity="start|center_vertical"
 

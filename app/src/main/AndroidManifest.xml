@@ -86,6 +86,11 @@
             android:theme="@style/NoActionBar" />
 
         <activity
+            android:name=".ui.common.ImageViewingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
+        <activity
             android:name=".ui.auth.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"

@@ -132,4 +132,12 @@ public abstract class BaseFragment extends Fragment {
         showProgressBar(null, msg, null, delayTime);
     }
 
+    public void launchImageViewer(View v, String imageUrl){
+        try {
+            getBaseActivity().launchImageViewer(v, imageUrl);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

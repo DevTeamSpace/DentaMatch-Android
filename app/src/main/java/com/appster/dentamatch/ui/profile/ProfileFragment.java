@@ -35,15 +35,12 @@ import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
 import com.appster.dentamatch.ui.profile.workexperience.SkillsActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateCertificateActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
-import com.appster.dentamatch.ui.profile.workexperience.WorkExpListActivity;
 import com.appster.dentamatch.ui.settings.SettingActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.CustomTextView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-import com.wefika.flowlayout.FlowLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -261,7 +258,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    private void setViewData(ProfileResponseData response) {
+    private void setViewData(final ProfileResponseData response) {
         if (response != null) {
 
             if (response.getUser() != null) {
@@ -269,11 +266,19 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 if (!TextUtils.isEmpty(response.getUser().getProfilePic())) {
                     Picasso.with(getActivity())
                             .load(response.getUser().getProfilePic())
-                            .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
-                            .onlyScaleDown()
                             .placeholder(R.drawable.profile_pic_placeholder)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .into(profileBinding.ivProfileIcon);
+
+                    /*
+                    In case the user image is already uploaded then launch the user to image preview screen after clicking on it.
+                    */
+                    profileBinding.ivProfileIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                           launchImageViewer(v, response.getUser().getProfilePic());
+                        }
+                    });
 
                 }
 
@@ -544,7 +549,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             cellCertificateBinding.tvCertificateImageName.setVisibility(View.VISIBLE);
             cellCertificateBinding.tvCertificateValidityDate.setVisibility(View.VISIBLE);
             cellCertificateBinding.tvAddCertificates.setTag(i);
-            CertificatesList certificate = certificateList.get(i);
+            final CertificatesList certificate = certificateList.get(i);
             cellCertificateBinding.tvCertificatesName.setText(certificate.getCertificateName());
             cellCertificateBinding.tvCertificateImageName.setText(certificate.getCertificateName());
 
@@ -566,11 +571,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
                 Picasso.with(getActivity())
                         .load(certificate.getImage())
-                        .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
-                        .onlyScaleDown()
                         .placeholder(R.drawable.ic_upload)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .into(cellCertificateBinding.ivCertificateImage);
+
+                cellCertificateBinding.ivCertificateImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        launchImageViewer(v, certificate.getImage());
+                    }
+                });
 
             } else {
                 cellCertificateBinding.tvAddCertificates.setVisibility(View.VISIBLE);

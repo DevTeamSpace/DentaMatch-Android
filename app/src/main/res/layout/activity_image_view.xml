@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar_general"
+        android:id="@+id/toolbar_image_viewing"/>
+
+    <ImageView
+        android:id="@+id/iv_pic"
+        android:layout_below="@+id/toolbar_image_viewing"
+        android:layout_width="match_parent"
+        android:scaleType="center"
+        android:src="@drawable/ic_image_preview_placeholder"
+        android:transitionName="picImage"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/image_progress"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>
+</layout>

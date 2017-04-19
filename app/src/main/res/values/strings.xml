@@ -26,7 +26,7 @@
     <!--Input digits-->
     <string name="digits_alpha_numeric_only">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="digits_alpha_numeric_email">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_.</string>
-    <string name="digits_other">0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-/</string>
+    <string name="digits_other">0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-/,</string>
     <string name="digits_alpha_numeric_special">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_./:;,&amp;amp;</string>
     <string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
 
@@ -393,5 +393,6 @@
     <string name="msg_delete_exp_warning">Are you sure you want to delete this experience ?</string>
     <string name="msg_invite_reject_warning">Are you sure you want to reject this job invitation?</string>
     <string name="txt_confirm_rejection">Confirm Rejection</string>
+    <string name="hint_license_expiry">License Expiry</string>
 
 </resources>

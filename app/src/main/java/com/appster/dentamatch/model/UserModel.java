@@ -31,6 +31,7 @@ public class UserModel implements Parcelable{
     @SerializedName("zipcode")
     private String postalCode;
     private String preferredJobLocation;
+    private String preferredJobStateCity;
     private int id;
 
     private UserModel(Parcel in) {
@@ -52,6 +53,7 @@ public class UserModel implements Parcelable{
         latitude = in.readString();
         longitude = in.readString();
         postalCode = in.readString();
+        preferredJobStateCity = in.readString();
         preferredJobLocation = in.readString();
         id = in.readInt();
     }
@@ -82,6 +84,7 @@ public class UserModel implements Parcelable{
         dest.writeString(longitude);
         dest.writeString(postalCode);
         dest.writeString(preferredJobLocation);
+        dest.writeString(preferredJobStateCity);
         dest.writeInt(id);
     }
 
@@ -259,5 +262,9 @@ public class UserModel implements Parcelable{
 
     public void setPreferredJobLocation(String preferredJobLocation) {
         this.preferredJobLocation = preferredJobLocation;
+    }
+
+    public String getPreferredJobStateCity() {
+        return preferredJobStateCity;
     }
 }

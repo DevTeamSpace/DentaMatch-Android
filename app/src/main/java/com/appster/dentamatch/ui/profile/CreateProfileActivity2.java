@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
+import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -33,6 +34,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.bottomsheet.BottomSheetPicker;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -46,13 +48,13 @@ import retrofit2.Call;
 /**
  * Created by virender on 02/01/17.
  */
-public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
+public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener, YearSelectionListener {
     private String TAG = "CreateProfileActivity2";
     private ImageView ivProfile, ivUpload, ivToolbarLeft;
     private TextView tvName, tvJobTitle;
     private ProgressBar mProgressBar;
     private TextView tvToolbarLeft;
-    private EditText etLicenceNumber, etState;
+    private EditText etLicenceNumber, etLicenceNumberExpiry, etState;
     private Button btnNext;
     private String mFilePath;
     private byte imageSourceType;
@@ -75,9 +77,11 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         etState = (EditText) findViewById(R.id.create_profile_et_state);
         tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
         mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
+        etLicenceNumberExpiry = (EditText) findViewById(R.id.create_profile_et_licence_expiry);
 
         btnNext.setOnClickListener(this);
         ivToolbarLeft.setOnClickListener(this);
+
         mProgressBar.setProgress(Constants.PROFILE_PERCENTAGE.PROFILE_2);
         tvToolbarLeft.setText(getString(R.string.header_create_profile));
 
@@ -119,6 +123,14 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                     callLicenceApi(prepareLicenceRequest());
                 }
                 break;
+
+            case R.id.create_profile_et_licence_expiry:
+                hideKeyboard();
+                new BottomSheetPicker(this, this, 0, 0);
+                break;
+
+
+            default: break;
         }
     }
 
@@ -191,6 +203,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
                 }
             });
+
         } catch (Exception e) {
             e.printStackTrace();
             hideProgressBar();
@@ -309,8 +322,6 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
             }
 
-
-
             if (mFilePath != null) {
                 Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
                 uploadImageApi(mFilePath,Constants.APIS.IMAGE_TYPE_STATE_BOARD);
@@ -338,5 +349,16 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    @Override
+    public void onExperienceSection(int year, int month) {
+
+        if(month == 1) {
+            etLicenceNumberExpiry.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
+        }else{
+            etLicenceNumberExpiry.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.txt_months));
+        }
+
     }
 }
