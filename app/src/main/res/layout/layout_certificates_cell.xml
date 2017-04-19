@@ -36,10 +36,10 @@
             android:layout_width="@dimen/camera_image_size"
             android:layout_height="@dimen/camera_image_size"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/margin_25"
+            android:layout_marginTop="@dimen/margin_37"
             android:layout_marginStart="@dimen/margin_25"
             android:layout_marginEnd="@dimen/margin_25"
-            android:layout_marginBottom="@dimen/margin_7"
+            android:layout_marginBottom="@dimen/margin_8"
             android:src="@drawable/ic_upload" />
 
         <com.appster.dentamatch.widget.CustomTextView

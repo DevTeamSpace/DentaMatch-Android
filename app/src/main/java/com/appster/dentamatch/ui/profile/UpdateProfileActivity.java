@@ -225,7 +225,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (TextUtils.isEmpty(mBinding.etLname.getText().toString().trim())) {
             showToast(getString(R.string.error_no_last_name));
 
-        } else if (TextUtils.isEmpty(mBinding.etJobTitle.getText())) {
+        } else if (mSelectedJobTitleID == 0) {
             showToast(getString(R.string.error_no_job_type));
 
         } else if (mBinding.etJobTitle.getText().toString().equalsIgnoreCase(getString(R.string.txt_job_title_hint))) {
