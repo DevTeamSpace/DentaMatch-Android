@@ -242,7 +242,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         data.setOtherSchooling(schoolModel.getOtherSchooling());
                         data.setYearOfGraduation(schoolModel.getYearOfGraduation());
                         data.setSchoolId(schoolModel.getSchoolId());
-                        data.setSchoolName(schoolModel.getSchoolName());
+                        data.setSchoolName(schoolModel.getSchoolName().trim());
                         data.setOtherId("" + schoolModel.getSchoolTypeId());
                         data.setParentSchoolName(schoolTypeModel.getSchoolTypeName());
 

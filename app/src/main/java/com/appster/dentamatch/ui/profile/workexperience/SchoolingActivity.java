@@ -109,7 +109,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
                     if (entry.getValue().getSchoolName().equalsIgnoreCase(mSchoolsAdapter.getList().get(i).getSchoolList().get(j).getSchoolName())) {
                         isMatchScoolName = true;
-                        school.setSchoolName(entry.getValue().getSchoolName());
+                        school.setSchoolName(entry.getValue().getSchoolName().trim());
                         school.setSchoolId(mSchoolsAdapter.getList().get(i).getSchoolList().get(j).getSchoolId());
                         school.setOtherSchooling("");
                         break;
@@ -120,7 +120,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
             if (!isMatchScoolName) {
                 school.setSchoolId(Integer.parseInt(entry.getValue().getOtherId()));
-                school.setOtherSchooling(entry.getValue().getSchoolName());
+                school.setOtherSchooling(entry.getValue().getSchoolName().trim());
                 school.setSchoolName("");
             }
 

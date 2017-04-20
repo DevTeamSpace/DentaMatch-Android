@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.appster.dentamatch.R;
@@ -77,6 +78,14 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         mBinding.etJobTitle.setFocusableInTouchMode(false);
         mBinding.etJobTitle.setCursorVisible(false);
         setViewData();
+
+        mBinding.etDesc.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
 
     }
 

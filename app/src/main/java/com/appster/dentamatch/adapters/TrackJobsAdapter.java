@@ -81,7 +81,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 holder.itemView.setOnLongClickListener(null);
 
             } else if (mIsApplied) {
-                holder.cbSelect.setVisibility(View.GONE);
+                holder.cbSelect.setVisibility(View.INVISIBLE);
                 holder.ivChat.setVisibility(View.GONE);
                 holder.cbSelect.setTag(null);
                 holder.cbSelect.setOnClickListener(null);
