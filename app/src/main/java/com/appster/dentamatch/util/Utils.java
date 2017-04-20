@@ -469,11 +469,23 @@ public class Utils {
 
 
     public static String getExpYears(int month) {
+        String yearLabel = "", monthLabel = "";
 
-        if (month != 0) {
-            return month / 12 + " " + DentaApp.getInstance().getString(R.string.year) + " " + month % 12 + " " + DentaApp.getInstance().getString(R.string.month);
+        if(month == 1){
+            yearLabel = DentaApp.getInstance().getString(R.string.txt_single_year);
+        }else{
+            yearLabel = DentaApp.getInstance().getString(R.string.txt_multiple_years);
         }
-        return "";
+
+        if(month % 12 == 1){
+            monthLabel = DentaApp.getInstance().getString(R.string.txt_single_month);
+        }else {
+            monthLabel = DentaApp.getInstance().getString(R.string.txt_multiple_months);
+        }
+
+
+        return month / 12 +" "+ yearLabel + " " + month % 12 + " " + monthLabel ;
+
     }
 
     public static int getCurrentYear() {

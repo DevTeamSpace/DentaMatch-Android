@@ -55,6 +55,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private HashMap<Integer, PostSchoolData> mHashMap = new HashMap<>();
     private boolean mIsFromEditProfile;
     private String mYear = "";
+    private RecyclerView mAttachedRv;
 
     private AdapterView.OnItemClickListener autoCompleteClick = new AdapterView.OnItemClickListener() {
         @Override
@@ -63,6 +64,11 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     };
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mAttachedRv = recyclerView;
+    }
 
     public SchoolsAdapter(List<SchoolTypeModel> schoolTypeList, Context context, EditTextSelected nameSelectedListener, boolean isFromEditProfile) {
         this.mSchoolList = schoolTypeList;
@@ -115,7 +121,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final List<String> listSchools = new ArrayList<String>();
 
         if (holder instanceof ViewHolderHeader) {
@@ -152,6 +158,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                        holder1.layChild.setVisibility(View.GONE);
                    }else{
                        holder1.layChild.setVisibility(View.VISIBLE);
+                       mAttachedRv.smoothScrollToPosition(position);
                    }
 
                 }

@@ -121,11 +121,21 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onExperienceSection(int year, int month) {
-        if(month == 1) {
-            mBinder.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
-        }else{
-            mBinder.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.txt_months));
+        String yearLabel = "", monthLabel = "";
+
+        if (year == 1) {
+            yearLabel = getString(R.string.txt_single_year);
+        } else {
+            yearLabel = getString(R.string.txt_multiple_years);
         }
+
+        if (month == 1) {
+            monthLabel = getString(R.string.txt_single_month);
+        } else {
+            monthLabel = getString(R.string.txt_multiple_months);
+        }
+
+        mBinder.tvExperinceWorkExp.setText(year + " " + yearLabel + " " + month + " " + monthLabel);
         PreferenceUtil.setMonth(month);
         PreferenceUtil.setYear(year);
     }

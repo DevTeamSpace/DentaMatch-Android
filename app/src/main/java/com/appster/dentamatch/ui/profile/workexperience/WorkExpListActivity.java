@@ -111,13 +111,28 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
         }
 
         try {
+            String yearLabel = "", monthLabel = "";
+
+            if(PreferenceUtil.getYear() == 1){
+                yearLabel = getString(R.string.txt_single_year);
+            }else{
+                yearLabel = getString(R.string.txt_multiple_years);
+            }
+
+            if(PreferenceUtil.getMonth() == 1){
+                monthLabel = getString(R.string.txt_single_month);
+            }else {
+                monthLabel = getString(R.string.txt_multiple_months);
+            }
+
             String workExp = String.valueOf(PreferenceUtil.getYear())
                     .concat(" ")
-                    .concat(getString(R.string.year))
+                    .concat(yearLabel)
                     .concat(" ")
                     .concat(String.valueOf(PreferenceUtil.getMonth()))
                     .concat(" ")
-                    .concat(getString(R.string.month));
+                    .concat(monthLabel);
+
             mBinder.includeWorkExpList.tvExperinceWorkExp.setText(workExp);
 
             if (!TextUtils.isEmpty(mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString())) {
@@ -433,13 +448,27 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onExperienceSection(int year, int month) {
+        String yearLabel = "", monthLabel = "";
+
+        if(year == 1){
+            yearLabel = getString(R.string.txt_single_year);
+        }else{
+            yearLabel = getString(R.string.txt_multiple_years);
+        }
+
+        if(month == 1){
+            monthLabel = getString(R.string.txt_single_month);
+        }else {
+            monthLabel = getString(R.string.txt_multiple_months);
+        }
+
         String workExp = String.valueOf(year)
                 .concat(" ")
-                .concat(getString(R.string.year))
+                .concat(yearLabel)
                 .concat(" ")
                 .concat(String.valueOf(month))
                 .concat(" ")
-                .concat(getString(R.string.month));
+                .concat(monthLabel);
         mBinder.includeWorkExpList.tvExperinceWorkExp.setText(workExp);
         mExpMonth = year * 12 + month;
     }

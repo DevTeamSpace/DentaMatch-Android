@@ -161,10 +161,10 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                 TextUtils.isEmpty(mBinder.includeLayoutReference1.etOfficeReferenceName.getText()) &&
                 TextUtils.isEmpty(mBinder.includeLayoutRefrence2.etOfficeReferenceName.getText())) {
 
-            if(isFromProfile){
+            if (isFromProfile) {
                 EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                 MyWorkExpListActivity.this.finish();
-            }else{
+            } else {
                 startActivity(new Intent(MyWorkExpListActivity.this, SchoolingActivity.class));
             }
 
@@ -203,14 +203,14 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                             }
                         });
 
-            }else{
+            } else {
                 /*
                   In case the result contains 'true' value means that the field are filled but the
                   there is a formatting exception like phone number format exception or email not valid exception.
                  */
-                if(!TextUtils.isEmpty(result.get(true))){
+                if (!TextUtils.isEmpty(result.get(true))) {
                     showToast(result.get(true));
-                }else{
+                } else {
                     /*
                      Prepare Request for the add experience API.
                     */
@@ -234,7 +234,6 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
 
         }
     }
-
 
 
     private WorkExpListRequest prepareListRequest() {
@@ -337,17 +336,17 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                         clearAllExpField();
 
                     } else {
-                        if(isFromProfile){
+                        if (isFromProfile) {
                             EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                             MyWorkExpListActivity.this.finish();
-                        }else {
+                        } else {
                             startActivity(new Intent(MyWorkExpListActivity.this, SchoolingActivity.class));
                         }
                     }
 
-                    if(workExpList != null && workExpList.size() > 0){
+                    if (workExpList != null && workExpList.size() > 0) {
                         mBinder.tvExperienceDelete.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         mBinder.tvExperienceDelete.setVisibility(View.GONE);
                     }
 
@@ -458,13 +457,27 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
         }
 
         try {
+            String yearLabel = "", monthLabel = "";
+
+            if(PreferenceUtil.getYear() == 1){
+                yearLabel = getString(R.string.txt_single_year);
+            }else{
+                yearLabel = getString(R.string.txt_multiple_years);
+            }
+
+            if(PreferenceUtil.getMonth() == 1){
+                monthLabel = getString(R.string.txt_single_month);
+            }else {
+                monthLabel = getString(R.string.txt_multiple_months);
+            }
+
             String workExp = String.valueOf(PreferenceUtil.getYear())
                     .concat(" ")
-                    .concat(getString(R.string.year))
+                    .concat(yearLabel)
                     .concat(" ")
                     .concat(String.valueOf(PreferenceUtil.getMonth()))
                     .concat(" ")
-                    .concat(getString(R.string.month));
+                    .concat(monthLabel);
             mBinder.includeWorkExpList.tvExperinceWorkExp.setText(workExp);
 
             if (!TextUtils.isEmpty(mBinder.includeWorkExpList.tvExperinceWorkExp.getText().toString())) {
@@ -505,13 +518,28 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onExperienceSection(int year, int month) {
+        String yearLabel = "", monthLabel = "";
+
+        if(year == 1){
+            yearLabel = getString(R.string.txt_single_year);
+        }else{
+            yearLabel = getString(R.string.txt_multiple_years);
+        }
+
+        if(month == 1){
+            monthLabel = getString(R.string.txt_single_month);
+        }else {
+            monthLabel = getString(R.string.txt_multiple_months);
+        }
+
         String workExp = String.valueOf(year)
                 .concat(" ")
-                .concat(getString(R.string.year))
+                .concat(yearLabel)
                 .concat(" ")
-                .concat(String.valueOf(month))
+                .concat(monthLabel)
                 .concat(" ")
                 .concat(getString(R.string.month));
+
         mBinder.includeWorkExpList.tvExperinceWorkExp.setText(workExp);
         mExpMonth = year * 12 + month;
     }

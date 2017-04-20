@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityViewAndWditWorkExperienceBinding;
+import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
@@ -26,6 +27,8 @@ import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.util.WorkExpValidationUtil;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetJobTitle;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetPicker;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -226,10 +229,25 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
 
     @Override
     public void onExperienceSection(int year, int month) {
-        mBinder.layoutWorkExpViewEdit.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
+        String yearLabel = "", monthLabel = "";
+
+        if(year == 1){
+            yearLabel = getString(R.string.txt_single_year);
+        }else{
+            yearLabel = getString(R.string.txt_multiple_years);
+        }
+
+        if(month == 1){
+            monthLabel = getString(R.string.txt_single_month);
+        }else {
+            monthLabel = getString(R.string.txt_multiple_months);
+        }
+
+        mBinder.layoutWorkExpViewEdit.tvExperinceWorkExp
+                .setText(year + " " + yearLabel + " " + month + " " + monthLabel);
+
         expMonth = year * 12 + month;
     }
-
 
     private void callDeleteApi() {
         processToShowDialog();
@@ -272,6 +290,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                     Intent intent = new Intent();
                     intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
                     setResult(Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT, intent);
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                     finish();
                 }
             }

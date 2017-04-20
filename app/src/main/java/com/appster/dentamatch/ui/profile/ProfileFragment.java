@@ -518,7 +518,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 if(months == 1){
                     strMonths = getString(R.string.month);
                 }else{
-                    strMonths = getString(R.string.txt_months);
+                    strMonths = getString(R.string.txt_multiple_months);
                 }
 
                 expBinding.tvExpDuration.setText(String.valueOf(years)

@@ -104,7 +104,7 @@
         android:background="@color/white_1"
         android:layout_marginTop="@dimen/margin_15"
         android:layout_below="@+id/tv_message_chat"
-        android:layout_marginStart="@dimen/margin_normal"/>
+        />
 </RelativeLayout>
 
 
