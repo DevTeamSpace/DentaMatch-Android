@@ -9,6 +9,9 @@ import com.google.gson.annotations.SerializedName;
 public class ChangeUserLocation {
     @SerializedName("preferedLocation")
     private String preferredLocation;
+    private String preferredCity;
+    private String preferredState;
+    private String preferredCountry;
     private String latitude;
     private String longitude;
     private int zipCode;
@@ -27,5 +30,17 @@ public class ChangeUserLocation {
 
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public void setPreferredCity(String preferredCity) {
+        this.preferredCity = preferredCity;
+    }
+
+    public void setPreferredState(String preferredState) {
+        this.preferredState = preferredState;
+    }
+
+    public void setPreferredCountry(String preferredCountry) {
+        this.preferredCountry = preferredCountry;
     }
 }

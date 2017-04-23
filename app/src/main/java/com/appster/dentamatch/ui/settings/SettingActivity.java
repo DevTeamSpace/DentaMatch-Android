@@ -20,6 +20,7 @@ import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.ResetPasswordActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Alert;
@@ -72,6 +73,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
             case R.id.iv_tool_bar_left:
                 finish();
+//                startActivity(new Intent(SettingActivity.this, HomeActivity.class).putExtra(Constants.EXTRA_FROM_SETTINGS,true)
+//                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
                 break;
 
             case R.id.tv_chnage_location:
@@ -82,6 +85,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra(Constants.EXTRA_LONGITUDE, mUserModel.getLongitude());
                     intent.putExtra(Constants.EXTRA_POSTAL_CODE, mUserModel.getPostalCode());
                     intent.putExtra(Constants.EXTRA_PLACE_NAME, mUserModel.getPreferredJobLocation());
+                    intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mUserModel.getPreferredCountry());
+                    intent.putExtra(Constants.EXTRA_CITY_NAME, mUserModel.getPreferredCity());
+                    intent.putExtra(Constants.EXTRA_STATE_NAME, mUserModel.getPreferredState());
+
                 }
 
                 startActivityForResult(intent, REQUEST_CODE_LOCATION);
@@ -125,23 +132,40 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     String lng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
                     String address = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
                     String zipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
+                    String city = data.getStringExtra(Constants.EXTRA_CITY_NAME);
+                    String state = data.getStringExtra(Constants.EXTRA_STATE_NAME);
+                    String country = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
 
                     if(TextUtils.isEmpty(zipCode)){
                         showToast(getString(R.string.msg_empty_zip_code));
-                    }else {
-                        updateUserLocation(lat, lng, zipCode, address);
+
+                    }else if (TextUtils.isEmpty(city)){
+                        showToast(getString(R.string.msg_empty_city));
+
+                    }else if(TextUtils.isEmpty(state)) {
+                        showToast(getString(R.string.msg_empty_state));
+
+                    }else if(TextUtils.isEmpty(country)) {
+                        showToast(getString(R.string.msg_empty_country));
+
+                    }else{
+                        updateUserLocation(lat, lng, zipCode, address, country, state, city);
+
                     }
                 }
             }
         }
     }
 
-    private void updateUserLocation(final String lat, final String lng,final String zipCode, final String address) {
+    private void updateUserLocation(final String lat, final String lng,final String zipCode, final String address, final String country, final String state, final String city) {
         ChangeUserLocation request = new ChangeUserLocation();
         request.setLatitude(lat);
         request.setLongitude(lng);
         request.setPreferredLocation(address);
         request.setZipCode(Integer.valueOf(zipCode));
+        request.setPreferredCity(city);
+        request.setPreferredState(state);
+        request.setPreferredCountry(country);
 
         processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
@@ -154,6 +178,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     mUserModel.setLatitude(lat);
                     mUserModel.setPreferredJobLocation(address);
                     mUserModel.setPostalCode(zipCode);
+                    mUserModel.setPreferredCity(city);
+                    mUserModel.setPreferredCountry(country);
+                    mUserModel.setPreferredState(state);
                     PreferenceUtil.setUserModel(mUserModel);
                     EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                 }

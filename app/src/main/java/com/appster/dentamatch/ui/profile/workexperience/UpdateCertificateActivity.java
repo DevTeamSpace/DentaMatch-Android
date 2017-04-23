@@ -297,6 +297,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
+                    data.setImage(response.getFileUploadResponseData().getImageUrl());
                     isImageUploaded = true;
                     Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
                     // showSnackBarFromTop(response.getMessage(), false);

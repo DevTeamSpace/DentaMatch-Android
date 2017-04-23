@@ -53,6 +53,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String mPlaceName;
     private String mLatitude;
     private String mLongitude;
+    private String mSelectedCountry;
+    private String mSelectedCity;
+    private String mSelectedState;
     private boolean mIsLoginShow, mIsRegisterShow;
 
     @Override
@@ -204,6 +207,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     intent.putExtra(Constants.EXTRA_LONGITUDE, mLongitude);
                     intent.putExtra(Constants.EXTRA_POSTAL_CODE, mPostalCode);
                     intent.putExtra(Constants.EXTRA_PLACE_NAME, mPlaceName);
+                    intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mSelectedCountry);
+                    intent.putExtra(Constants.EXTRA_CITY_NAME, mSelectedCity);
+                    intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
                 }
 
                 startActivityForResult(intent, REQUEST_CODE_LOCATION);
@@ -225,6 +231,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         mLongitude = bundle.getString(Constants.EXTRA_LONGITUDE);
                         mPlaceName = bundle.getString(Constants.EXTRA_PLACE_NAME);
                         mPostalCode = bundle.getString(Constants.EXTRA_POSTAL_CODE);
+                        mSelectedCity = bundle.getString(Constants.EXTRA_CITY_NAME);
+                        mSelectedCountry = bundle.getString(Constants.EXTRA_COUNTRY_NAME);
+                        mSelectedState = bundle.getString(Constants.EXTRA_STATE_NAME);
                         mBinder.tvPreferredJobLocation.setText(mPlaceName);
                     }
                 }
@@ -301,13 +310,34 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
                 return false;
             }
+
             if (mPostalCode.isEmpty()) {
                 Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
+
             if (!mIsAccepted) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_tnc_alert));
                 return false;
+            }
+
+
+            if(TextUtils.isEmpty(mSelectedCountry)) {
+                showToast(getString(R.string.msg_empty_country));
+                return false;
+
+            }
+
+            if (TextUtils.isEmpty(mSelectedCity)){
+                showToast(getString(R.string.msg_empty_city));
+                return false;
+
+            }
+
+            if (TextUtils.isEmpty(mSelectedState)){
+                showToast(getString(R.string.msg_empty_state));
+                return false;
+
             }
         }
         return true;
@@ -322,6 +352,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginRequest.setPassword(getTextFromEditText(mBinder.registerEtPassword));
         loginRequest.setFirstName(getTextFromEditText(mBinder.registerEtFname));
         loginRequest.setLastName(getTextFromEditText(mBinder.registerEtLname));
+        loginRequest.setCountry(mSelectedCountry);
+        loginRequest.setCity(mSelectedCity);
+        loginRequest.setState(mSelectedState);
 
         loginRequest.setLatitude(mLatitude);
         loginRequest.setLongitude(mLongitude);

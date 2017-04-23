@@ -13,6 +13,9 @@ public class LoginRequest {
     private String deviceToken;
     private String firstName;
     private String lastName;
+    private String city;
+    private String state;
+    private String country;
     @SerializedName("preferedLocation")
     private String preferredLocation;
     private String latitude;
@@ -89,5 +92,17 @@ public class LoginRequest {
 
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

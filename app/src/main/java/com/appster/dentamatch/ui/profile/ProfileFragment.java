@@ -280,7 +280,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.tvName.setText(response.getUser().getFirstName() + " " + response.getUser().getLastName());
                 profileBinding.tvAboutMe.setText(response.getUser().getAboutMe());
                 profileBinding.tvJobTitle.setText(response.getUser().getJobTitle());
-                profileBinding.tvLocation.setText(response.getUser().getPreferredJobLocation());
+                profileBinding.tvLocation.setText(response.getUser().getPreferredCity().concat(", ").concat(response.getUser().getPreferredState()));
                 saveUserProfile(response.getUser());
             }
 

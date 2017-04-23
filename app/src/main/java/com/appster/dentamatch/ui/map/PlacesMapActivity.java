@@ -259,21 +259,26 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
              * The adapter stores each Place suggestion in a AutocompletePrediction from which we
              * read the place ID and title.
              */
-            final AutocompletePrediction item = mAdapter.getItem(position);
-            final String placeId = item.getPlaceId();
-            final CharSequence primaryText = item.getPrimaryText(null);
+            try {
+                final AutocompletePrediction item = mAdapter.getItem(position);
+                final String placeId = item.getPlaceId();
+                final CharSequence primaryText = item.getPrimaryText(null);
 
-            LogUtils.LOGD(TAG, "Autocomplete item selected: " + primaryText);
+                LogUtils.LOGD(TAG, "Autocomplete item selected: " + primaryText);
 
             /*
              * Issue a request to the Places Geo Data API to retrieve a Place object with additional
              * details about the place.
              */
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+                PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                        .getPlaceById(mGoogleApiClient, placeId);
+                placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-            LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
+                LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             hideKeyboard();
         }
     };
@@ -285,29 +290,36 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
         @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                LogUtils.LOGE(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
-                places.release();
-                return;
-            }
+        public void onResult(@NonNull PlaceBuffer places) {
+            try {
+                if (!places.getStatus().isSuccess() && places.getCount() < 0) {
+                    LogUtils.LOGE(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
+                    places.release();
+                    showToast("Unable to fetch this location, please try another location.");
+                    return;
+                }
 
-            /**
-             * Get the Place object from the buffer.
+            /*
+              Get the Place object from the buffer.
              */
-            final Place place = places.get(0);
-            LatLng latLng = place.getLatLng();
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
-            mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(latLng));
+                final Place place = places.get(0);
+                LatLng latLng = place.getLatLng();
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(latLng));
 
-            LogUtils.LOGD(TAG, latLng.toString());
+                LogUtils.LOGD(TAG, latLng.toString());
 
-            Address address = Utils.getReverseGeoCode(PlacesMapActivity.this, latLng);
+                Address address = Utils.getReverseGeoCode(PlacesMapActivity.this, latLng);
 
-            setData(address);
-
-            places.release();
+                setData(address);
+            }catch (Exception e){
+                e.printStackTrace();
+                showToast("Unable to fetch this location, please try another location.");
+                mAutocompleteView.setText("");
+            }finally {
+                places.release();
+            }
         }
     };
 

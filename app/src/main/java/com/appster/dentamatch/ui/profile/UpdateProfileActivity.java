@@ -61,6 +61,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     private String mFilePath;
     private String mSelectedLat;
     private String mSelectedLng;
+    private String mSelectedCity;
+    private String mSelectedState;
+    private String mSelectedCountry;
+
     private int mSelectedJobTitleID;
 
     @Override
@@ -99,6 +103,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mSelectedLat = mProfileData.getUser().getLatitude();
             mSelectedLng = mProfileData.getUser().getLongitude();
             mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
+            mSelectedCity = mProfileData.getUser().getPreferredCity();
+            mSelectedState = mProfileData.getUser().getPreferredState();
+            mSelectedCountry = mProfileData.getUser().getPreferredCountry();
 
             if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
@@ -157,6 +164,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                     intent.putExtra(Constants.EXTRA_LONGITUDE, mProfileData.getUser().getLongitude());
                     intent.putExtra(Constants.EXTRA_POSTAL_CODE, mProfileData.getUser().getPostalCode());
                     intent.putExtra(Constants.EXTRA_PLACE_NAME, mProfileData.getUser().getPreferredJobLocation());
+                    intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mSelectedCountry);
+                    intent.putExtra(Constants.EXTRA_CITY_NAME, mSelectedCity);
+                    intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
                 }
 
                 startActivityForResult(intent, REQUEST_CODE_LOCATION);
@@ -182,6 +192,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                     String finalAddress = mAddress.concat(" - ").concat(data.getStringExtra(Constants.EXTRA_POSTAL_CODE));
                     mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                     mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
+                    mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
+                    mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
+                    mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
 
                     if (!TextUtils.isEmpty(finalAddress)) {
                         mBinding.inputLayoutLocation.setHintEnabled(true);
@@ -246,6 +259,15 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
             showToast(getString(R.string.error_no_description));
 
+        }else if(TextUtils.isEmpty(mSelectedCountry)) {
+            showToast(getString(R.string.msg_empty_country));
+
+        }else if (TextUtils.isEmpty(mSelectedCity)){
+            showToast(getString(R.string.msg_empty_city));
+
+        }else if (TextUtils.isEmpty(mSelectedState)){
+            showToast(getString(R.string.msg_empty_state));
+
         } else {
             updateProfileData();
         }
@@ -257,6 +279,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
         request.setPreferredJobLocation(Utils.getStringFromEditText(mBinding.etLocation));
         request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
+        request.setCity(mSelectedCity);
+        request.setState(mSelectedState);
+        request.setCountry(mSelectedCountry);
         request.setLatitude(mSelectedLat);
         request.setLongitude(mSelectedLng);
         request.setJobTitleID(mSelectedJobTitleID);

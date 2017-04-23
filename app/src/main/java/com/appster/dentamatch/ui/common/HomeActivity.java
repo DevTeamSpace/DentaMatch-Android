@@ -83,7 +83,7 @@ public class HomeActivity extends BaseActivity {
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 
-        } else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
+        } else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL) || getIntent().hasExtra(Constants.EXTRA_FROM_SETTINGS)) {
             bottomBar.setCurrentItem(PROFILE_FRAGMENT_POS);
 
         }else{
@@ -107,6 +107,10 @@ public class HomeActivity extends BaseActivity {
             String RecruiterID = intent.getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+
+        }else if (intent.hasExtra(Constants.EXTRA_FROM_SETTINGS)) {
+            bottomBar.setCurrentItem(PROFILE_FRAGMENT_POS);
+
         }
 
     }

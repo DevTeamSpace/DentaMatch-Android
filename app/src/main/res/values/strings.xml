@@ -370,9 +370,9 @@
     <string name="txt_friday_colon">"Friday: "</string>
     <string name="txt_saturday_colon">"Saturday: "</string>
     <string name="txt_sunday_colon">"Sunday: "</string>
-    <string name="msg_empty_country">Unable to fetch country, please check internet connection and try again</string>
-    <string name="msg_empty_city">Unable to fetch city, please check internet connection and try again</string>
-    <string name="msg_empty_state">Unable to fetch state, please check internet connection and try again</string>
+    <string name="msg_empty_country">Unable to fetch country, please check internet connection and try choosing location again</string>
+    <string name="msg_empty_city">Unable to fetch city, please check internet connection and try choosing location again</string>
+    <string name="msg_empty_state">Unable to fetch state, please check internet connection and try choosing location again</string>
     <string name="msg_select_job">Please select at least one job to proceed</string>
     <string name="txt_saved">SAVED</string>
     <string name="txt_reason_for_the_cancellation">Reason for the cancellation</string>

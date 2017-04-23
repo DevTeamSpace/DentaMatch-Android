@@ -312,6 +312,9 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                         intent.putExtra(Constants.EXTRA_LONGITUDE, mSelectedLng);
                         intent.putExtra(Constants.EXTRA_POSTAL_CODE, mSelectedZipCode);
                         intent.putExtra(Constants.EXTRA_PLACE_NAME, mSelectedAddress);
+                        intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mSelectedCountry);
+                        intent.putExtra(Constants.EXTRA_CITY_NAME, mSelectedCity);
+                        intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
                     }
 
                     startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
