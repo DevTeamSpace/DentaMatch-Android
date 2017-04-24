@@ -103,11 +103,25 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mSelectedLat = mProfileData.getUser().getLatitude();
             mSelectedLng = mProfileData.getUser().getLongitude();
             mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
+
             mSelectedCity = mProfileData.getUser().getPreferredCity();
             mSelectedState = mProfileData.getUser().getPreferredState();
             mSelectedCountry = mProfileData.getUser().getPreferredCountry();
 
-            if (mSelectedJobTitleID == 0) {
+            if(TextUtils.isEmpty(mSelectedCity)){
+                mSelectedCity = "";
+            }
+
+            if(TextUtils.isEmpty(mSelectedState)){
+                mSelectedState = "";
+            }
+
+            if(TextUtils.isEmpty(mSelectedCountry)){
+                mSelectedCountry = "";
+            }
+
+
+                if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
             } else {
                 mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
@@ -201,6 +215,18 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                         mBinding.inputLayoutLocation.setHintAnimationEnabled(true);
                         mBinding.etLocation.setText(finalAddress);
                     }
+
+                    if(TextUtils.isEmpty(mSelectedCity)){
+                        mSelectedCity = "";
+                    }
+
+                    if(TextUtils.isEmpty(mSelectedState)){
+                        mSelectedState = "";
+                    }
+
+                    if(TextUtils.isEmpty(mSelectedCountry)){
+                        mSelectedCountry = "";
+                    }
                 }
             }
 
@@ -259,16 +285,20 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
             showToast(getString(R.string.error_no_description));
 
-        }else if(TextUtils.isEmpty(mSelectedCountry)) {
-            showToast(getString(R.string.msg_empty_country));
+        }
 
-        }else if (TextUtils.isEmpty(mSelectedCity)){
-            showToast(getString(R.string.msg_empty_city));
+//        else if(TextUtils.isEmpty(mSelectedCountry)) {
+//            showToast(getString(R.string.msg_empty_country));
+//
+//        }else if (TextUtils.isEmpty(mSelectedCity)){
+//            showToast(getString(R.string.msg_empty_city));
+//
+//        }else if (TextUtils.isEmpty(mSelectedState)){
+//            showToast(getString(R.string.msg_empty_state));
+//
+//        }
 
-        }else if (TextUtils.isEmpty(mSelectedState)){
-            showToast(getString(R.string.msg_empty_state));
-
-        } else {
+        else {
             updateProfileData();
         }
     }

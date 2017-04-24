@@ -232,7 +232,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
 
-            default: break;
+            default:
+                break;
 
         }
     }
@@ -280,7 +281,28 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.tvName.setText(response.getUser().getFirstName() + " " + response.getUser().getLastName());
                 profileBinding.tvAboutMe.setText(response.getUser().getAboutMe());
                 profileBinding.tvJobTitle.setText(response.getUser().getJobTitle());
-                profileBinding.tvLocation.setText(response.getUser().getPreferredCity().concat(", ").concat(response.getUser().getPreferredState()));
+
+               /*
+               In case the City from the googleMaps comes out to be null then , show user ${State, Country}
+               Or in case the State is also blank , then just show the Country value.
+                */
+                if (TextUtils.isEmpty(response.getUser().getPreferredCity())) {
+
+                    if (TextUtils.isEmpty(response.getUser().getState())) {
+                        profileBinding.tvLocation.setText(response.getUser().getPreferredCountry());
+
+                    } else {
+                        profileBinding.tvLocation.setText(response.getUser().getPreferredState()
+                                .concat(", ")
+                                .concat(response.getUser().getPreferredCountry()));
+
+                    }
+                } else {
+                    profileBinding.tvLocation.setText(response.getUser().getPreferredCity()
+                            .concat(", ")
+                            .concat(response.getUser().getPreferredState()));
+                }
+
                 saveUserProfile(response.getUser());
             }
 
@@ -297,7 +319,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.flowLayout.removeAllViews();
 
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
-                    com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                    com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
                             .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
                     flowBinding.flowChild.setText(response.getAffiliationList().get(i).getAffiliationName());
 
@@ -402,8 +424,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
 
-                com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(getActivity())
-                        .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout , false));
+                com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                        .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout, false));
                 flowBinding.flowChild.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
                 skillBinding.skillFlowLayout.addView(flowBinding.getRoot());
             }
@@ -510,14 +532,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             int months = expList.get(i).getMonthsOfExpereince() % 12;
             int years = expList.get(i).getMonthsOfExpereince() / 12;
 
-            if(months == 0){
+            if (months == 0) {
                 expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs)));
-            }else{
-                String strMonths = "" ;
+            } else {
+                String strMonths = "";
 
-                if(months == 1){
+                if (months == 1) {
                     strMonths = getString(R.string.month);
-                }else{
+                } else {
                     strMonths = getString(R.string.txt_multiple_months);
                 }
 
@@ -611,7 +633,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             schoolBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.schoolInflater.getContext())
                     .inflate(R.layout.item_profile_schooling, profileBinding.schoolInflater, false));
             schoolBinding.tvSchoolName.setText(schoolList.get(i).getSchoolTitle()
-                    .concat( "(")
+                    .concat("(")
                     .concat(String.valueOf(schoolList.get(i).getYearOfGraduation()))
                     .concat(")"));
 

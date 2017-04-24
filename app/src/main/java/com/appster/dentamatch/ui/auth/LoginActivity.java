@@ -323,20 +323,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
             if(TextUtils.isEmpty(mSelectedCountry)) {
-                showToast(getString(R.string.msg_empty_country));
-                return false;
+                mSelectedCountry = "";
+//                showToast(getString(R.string.msg_empty_country));
+//                return false;
 
             }
 
             if (TextUtils.isEmpty(mSelectedCity)){
-                showToast(getString(R.string.msg_empty_city));
-                return false;
+                mSelectedCity = "";
+//                showToast(getString(R.string.msg_empty_city));
+//                return false;
 
             }
 
             if (TextUtils.isEmpty(mSelectedState)){
-                showToast(getString(R.string.msg_empty_state));
-                return false;
+                mSelectedState = "";
+//                showToast(getString(R.string.msg_empty_state));
+//                return false;
 
             }
         }

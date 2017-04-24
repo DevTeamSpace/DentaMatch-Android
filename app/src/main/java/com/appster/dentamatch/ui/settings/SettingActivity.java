@@ -116,7 +116,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startActivity(new Intent(SettingActivity.this, TermsAndConditionActivity.class).putExtra(Constants.INTENT_KEY.FROM_WHERE, false));
                 break;
 
-            default: break;
+            default:
+                break;
         }
 
     }
@@ -125,8 +126,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQUEST_CODE_LOCATION){
-            if(data != null){
+        if (requestCode == REQUEST_CODE_LOCATION) {
+            if (data != null) {
                 if (data.hasExtra(Constants.EXTRA_PLACE_NAME)) {
                     String lat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                     String lng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
@@ -136,28 +137,36 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     String state = data.getStringExtra(Constants.EXTRA_STATE_NAME);
                     String country = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
 
-                    if(TextUtils.isEmpty(zipCode)){
+                    if (TextUtils.isEmpty(city)) {
+//                        showToast(getString(R.string.msg_empty_city));
+                        city = "";
+                    }
+
+                    if (TextUtils.isEmpty(state)) {
+//                        showToast(getString(R.string.msg_empty_state));
+                        state = "";
+                    }
+
+                    if (TextUtils.isEmpty(country)) {
+//                        showToast(getString(R.string.msg_empty_country));
+                        country = "";
+                    }
+
+                    if (TextUtils.isEmpty(zipCode)) {
                         showToast(getString(R.string.msg_empty_zip_code));
 
-                    }else if (TextUtils.isEmpty(city)){
-                        showToast(getString(R.string.msg_empty_city));
-
-                    }else if(TextUtils.isEmpty(state)) {
-                        showToast(getString(R.string.msg_empty_state));
-
-                    }else if(TextUtils.isEmpty(country)) {
-                        showToast(getString(R.string.msg_empty_country));
-
-                    }else{
+                    } else {
                         updateUserLocation(lat, lng, zipCode, address, country, state, city);
 
                     }
+
+
                 }
             }
         }
     }
 
-    private void updateUserLocation(final String lat, final String lng,final String zipCode, final String address, final String country, final String state, final String city) {
+    private void updateUserLocation(final String lat, final String lng, final String zipCode, final String address, final String country, final String state, final String city) {
         ChangeUserLocation request = new ChangeUserLocation();
         request.setLatitude(lat);
         request.setLongitude(lng);
@@ -173,7 +182,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(BaseResponse response) {
                 showToast(response.getMessage());
-                if(response.getStatus() == 1){
+                if (response.getStatus() == 1) {
                     mUserModel.setLongitude(lng);
                     mUserModel.setLatitude(lat);
                     mUserModel.setPreferredJobLocation(address);
