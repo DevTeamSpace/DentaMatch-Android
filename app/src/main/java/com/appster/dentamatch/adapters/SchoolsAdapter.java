@@ -55,7 +55,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private HashMap<Integer, PostSchoolData> mHashMap = new HashMap<>();
     private boolean mIsFromEditProfile;
     private String mYear = "";
-    private RecyclerView mAttachedRv;
 
     private AdapterView.OnItemClickListener autoCompleteClick = new AdapterView.OnItemClickListener() {
         @Override
@@ -63,12 +62,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             hideKeyBoard();
         }
     };
-
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        mAttachedRv = recyclerView;
-    }
 
     public SchoolsAdapter(List<SchoolTypeModel> schoolTypeList, Context context, EditTextSelected nameSelectedListener, boolean isFromEditProfile) {
         this.mSchoolList = schoolTypeList;
@@ -121,8 +114,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final List<String> listSchools = new ArrayList<String>();
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final List<String> listSchools = new ArrayList<>();
 
         if (holder instanceof ViewHolderHeader) {
 
@@ -150,16 +143,18 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             final SchoolTypeModel schoolTypeModel = mSchoolList.get(position - 1);
             holder1.tvSchoolTypeName.setText(schoolTypeModel.getSchoolTypeName());
 
+            /*
+            Expand and collapse views on user touch event.
+             */
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                   if (holder1.layChild.getVisibility() == View.VISIBLE){
-                       holder1.layChild.setVisibility(View.GONE);
-                   }else{
-                       holder1.layChild.setVisibility(View.VISIBLE);
-                       mAttachedRv.smoothScrollToPosition(position);
-                   }
+                    if (holder1.layChild.getVisibility() == View.VISIBLE) {
+                        holder1.layChild.setVisibility(View.GONE);
+                    } else {
+                        holder1.layChild.setVisibility(View.VISIBLE);
+                    }
 
                 }
             });
@@ -257,7 +252,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             }
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, listSchools);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, listSchools);
             holder1.autoCompleteTextView.setAdapter(arrayAdapter);
 
             holder1.spinnerYears.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -280,11 +275,11 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             school.setYearOfGraduation("");
                         }
 
-                    }else{
+                    } else {
                         text.setTextColor(ContextCompat.getColor(mContext, R.color.edt_hint_color));
                         text.setText(mContext.getString(R.string.hint_year_of_graduation));
-                            PostSchoolData school = getSchool((Integer) holder1.spinnerYears.getTag());
-                            school.setYearOfGraduation("");
+                        PostSchoolData school = getSchool((Integer) holder1.spinnerYears.getTag());
+                        school.setYearOfGraduation("");
                     }
 
                 }
@@ -321,6 +316,14 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                 }
             });
+
+
+            if(TextUtils.isEmpty(holder1.autoCompleteTextView.getText())){
+                holder1.layChild.setVisibility(View.GONE);
+
+            }else{
+                holder1.layChild.setVisibility(View.VISIBLE);
+            }
 
         }
 

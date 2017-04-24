@@ -17,7 +17,7 @@ public class TrackJobListRetrievedEvent {
         this.type = type;
     }
 
-    public ArrayList<SearchJobModel> getmData() {
+    public ArrayList<SearchJobModel> getData() {
         return mData;
     }
 

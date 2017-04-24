@@ -102,7 +102,7 @@
                     style="@style/edit_text_view_normal"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
-                    android:background="@drawable/bg_slection_edit_text"
+                    android:background="@drawable/bg_selection_edit_text"
                     android:drawablePadding="@dimen/padding_drawable"
                     android:drawableEnd="@drawable/ic_down_arrow"
                     android:focusable="false"
@@ -128,7 +128,7 @@
                 android:layout_marginStart="@dimen/margin_normal"
                 android:background="@null"
                 android:gravity="center"
-                android:text="@string/lable_not_now"
+                android:text="@string/label_not_now"
                 android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_normal"
                 app:customBackground="@string/font_bold" />

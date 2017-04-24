@@ -41,7 +41,7 @@
                     android:visibility="gone">
                 <include
 
-                    android:id="@+id/include_refrence2"
+                    android:id="@+id/include_reference2"
                     layout="@layout/layout_reference" />
                 </LinearLayout>
 
@@ -52,9 +52,9 @@
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:drawablePadding="@dimen/padding_drawable"
-                    android:drawableStart="@drawable/ic_add_refrence"
+                    android:drawableStart="@drawable/ic_add_reference"
                     android:paddingStart="@dimen/margin_medium"
-                    android:text="@string/add_more_refrence"
+                    android:text="@string/add_more_reference"
                     android:textColor="@color/color_forgot_pwd"
                     android:textSize="@dimen/text_size_14"
                     app:customFont="@string/font_regular" />

@@ -34,7 +34,6 @@ import retrofit2.Call;
  */
 public class AffiliationActivity extends BaseActivity implements OnClickListener {
     private ActivityAffiliationBinding mBinder;
-    private LinearLayoutManager mLayoutManager;
     private AffiliationAdapter affiliationAdapter;
     private boolean isFromEditProfile;
 
@@ -64,7 +63,7 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
         }
 
-        mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 
         mBinder.recyclerAffiliation.setLayoutManager(mLayoutManager);
         affiliationAdapter = new AffiliationAdapter(this, isFromEditProfile);

@@ -1,6 +1,5 @@
 package com.appster.dentamatch.ui.searchjob;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +18,11 @@ import java.util.ArrayList;
  * Created by virender on 27/01/17.
  */
 public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements  View.OnClickListener {
-    private Context mContext;
     private ArrayList<JobTitleListModel> mAffiliationList = new ArrayList<>();
     private ArrayList<JobTitleListModel> mSelectedJobTitles = new ArrayList<>();
     private JobTitleSelected mListener;
 
-    public JobTitleAdapter(Context context, JobTitleSelected listener) {
-        mContext = context;
+    public JobTitleAdapter(JobTitleSelected listener) {
         mListener = listener;
     }
 
@@ -40,12 +37,12 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setSelectedListItems(ArrayList<JobTitleListModel> List){
         if (mAffiliationList != null  && mAffiliationList.size() > 0) {
-            for(JobTitleListModel mylist : mAffiliationList){
+            for(JobTitleListModel myList : mAffiliationList){
 
                 for(JobTitleListModel selectedList : List){
 
-                    if(mylist.getId() == selectedList.getId()){
-                        mylist.setSelected(true);
+                    if(myList.getId() == selectedList.getId()){
+                        myList.setSelected(true);
                         break;
                     }
                 }

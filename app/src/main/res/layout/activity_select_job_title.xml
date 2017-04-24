@@ -26,7 +26,7 @@
             app:customFont="@string/font_regular" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_ajob_title"
+            android:id="@+id/recycler_job_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />

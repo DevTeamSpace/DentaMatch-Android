@@ -220,7 +220,7 @@ public class Utils {
     }
 
     /**
-     * to set spnanble string forgrounf color
+     * to set spannable string forgrounf color
      *
      * @param spanColor
      * @param start

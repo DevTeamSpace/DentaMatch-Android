@@ -52,7 +52,7 @@
         android:layout_marginRight="@dimen/margin_normal"
         android:hint="@string/hint_short_desc"
         android:padding="@dimen/default_padding"
-        android:background="@drawable/edittext_curved_background"
+        android:background="@drawable/et_curved_background"
         />
 
     <com.appster.dentamatch.widget.CustomTextView

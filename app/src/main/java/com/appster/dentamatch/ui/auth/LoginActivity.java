@@ -474,7 +474,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         PreferenceUtil.saveJobFilter(request);
                     }
 
-                    PreferenceUtil.setIsLogined(true);
+                    PreferenceUtil.setIsLogin(true);
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());

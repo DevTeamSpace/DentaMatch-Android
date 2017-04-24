@@ -44,7 +44,6 @@ import retrofit2.Call;
 
 public class CalendarFragment extends BaseFragment implements View.OnClickListener, OnDateSelected {
     private FragmentCalendarBinding mCalendarBinding;
-    private LinearLayoutManager mLayoutManager;
     private HiredJobAdapter mJobAdapter;
     private ArrayList<HiredJobs> mAllJobLIst;
 
@@ -75,7 +74,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         mCalendarBinding.toolbarCalendar.ivToolBarRight.setVisibility(View.VISIBLE);
         mCalendarBinding.toolbarCalendar.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
         mCalendarBinding.toolbarCalendar.txvToolbarGeneralRight.setCompoundDrawables(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_plus), null, null, null);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mCalendarBinding.rvBookedJob.setLayoutManager(mLayoutManager);
         mAllJobLIst = new ArrayList<>();
         mJobAdapter = new HiredJobAdapter(getActivity(), mAllJobLIst);

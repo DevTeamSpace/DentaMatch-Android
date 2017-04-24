@@ -101,14 +101,14 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
         for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
             PostSchoolData school = new PostSchoolData();
-            boolean isMatchScoolName = false;
+            boolean isMatchSchoolName = false;
 
             for (int i = 0; i < mSchoolsAdapter.getList().size(); i++) {
 
                 for (int j = 0; j < mSchoolsAdapter.getList().get(i).getSchoolList().size(); j++) {
 
                     if (entry.getValue().getSchoolName().equalsIgnoreCase(mSchoolsAdapter.getList().get(i).getSchoolList().get(j).getSchoolName())) {
-                        isMatchScoolName = true;
+                        isMatchSchoolName = true;
                         school.setSchoolName(entry.getValue().getSchoolName().trim());
                         school.setSchoolId(mSchoolsAdapter.getList().get(i).getSchoolList().get(j).getSchoolId());
                         school.setOtherSchooling("");
@@ -118,7 +118,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 }
             }
 
-            if (!isMatchScoolName) {
+            if (!isMatchSchoolName) {
                 school.setSchoolId(Integer.parseInt(entry.getValue().getOtherId()));
                 school.setOtherSchooling(entry.getValue().getSchoolName().trim());
                 school.setSchoolName("");

@@ -13,8 +13,6 @@ import java.lang.ref.WeakReference;
 public class UsPhoneNumberFormat implements TextWatcher {
     //This TextWatcher sub-class formats entered numbers as 1 (123) 456-7890
     private boolean mFormatting; // this is a flag which prevents the
-    // stack(onTextChanged)
-    private boolean clearFlag;
     private int mLastStartLocation;
     private String mLastBeforeText;
     private WeakReference<EditText> mWeakEditText;
@@ -27,7 +25,7 @@ public class UsPhoneNumberFormat implements TextWatcher {
     public void beforeTextChanged(CharSequence s, int start, int count,
                                   int after) {
         if (after == 0 && s.toString().equals(" ")) {
-            clearFlag = true;
+            boolean clearFlag = true;
         }
 //        if (after == 0) {
 //            clearFlag = true;

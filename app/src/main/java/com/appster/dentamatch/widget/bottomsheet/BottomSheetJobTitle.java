@@ -18,13 +18,12 @@ import com.appster.dentamatch.widget.CustomTextView;
 public class BottomSheetJobTitle {
 
     private BottomSheetDialog mBottomSheetDialog;
-    private String jobTitle[];
     private JobTitleSelectionListener mJobTitleSelectionListener;
 
-    public BottomSheetJobTitle(final Context context, JobTitleSelectionListener jobTitleSelectionListener, int postion) {
+    public BottomSheetJobTitle(final Context context, JobTitleSelectionListener jobTitleSelectionListener, int position) {
         mJobTitleSelectionListener = jobTitleSelectionListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
-        jobTitle = new String[PreferenceUtil.getJobTitleList() != null ? PreferenceUtil.getJobTitleList().size() : 0];
+        String[] jobTitle = new String[PreferenceUtil.getJobTitleList() != null ? PreferenceUtil.getJobTitleList().size() : 0];
         View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_job_title, null);
         CustomTextView tvCancel = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
         CustomTextView tvDone = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_done);
@@ -34,8 +33,8 @@ public class BottomSheetJobTitle {
         pickerTitle.setMinValue(0);
         if (PreferenceUtil.getJobTitleList() != null && PreferenceUtil.getJobTitleList().size() > 0) {
             pickerTitle.setMaxValue(PreferenceUtil.getJobTitleList().size() - 1);
-            if (postion != -1) {
-                pickerTitle.setValue(postion);
+            if (position != -1) {
+                pickerTitle.setValue(position);
             }
 
             for (int i = 0; i < PreferenceUtil.getJobTitleList().size(); i++) {

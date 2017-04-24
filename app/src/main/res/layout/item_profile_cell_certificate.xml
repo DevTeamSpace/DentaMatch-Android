@@ -105,7 +105,7 @@
                 style="@style/text_view_normal"
                 android:layout_gravity="center"
 
-                android:text="@string/valdity_date_string"
+                android:text="@string/validity_date_string"
                 android:textColor="@color/text_default_color"
                 android:textSize="@dimen/text_size_13"
                 android:visibility="gone"

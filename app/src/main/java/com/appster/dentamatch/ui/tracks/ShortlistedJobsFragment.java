@@ -44,7 +44,6 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
     private static final String DATA_ARRAY = "DATA_ARRAY";
     private int mPage = 1;
     private boolean mIsPaginationNeeded;
-    private int mTotalResultCount;
     private LinearLayoutManager mLayoutManager;
     private TrackJobsAdapter mJobAdapter;
     private ArrayList<SearchJobModel> mJobListData;
@@ -273,7 +272,7 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
             /**
              * In case total item count and the job received size is equal, then pagination is not required.
              */
-            mTotalResultCount = response.getSearchJobResponseData().getTotal();
+            int mTotalResultCount = response.getSearchJobResponseData().getTotal();
             mIsPaginationNeeded = !(mTotalResultCount == mJobListData.size());
         }
     }

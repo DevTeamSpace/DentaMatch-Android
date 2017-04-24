@@ -46,7 +46,6 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     private ActivitySkillsBinding mBinder;
 
     private SkillsAdapter mSkillsAdapter;
-    private Button btnNext;
 
     private int mSkillPosition;
     private boolean isFromProfile;
@@ -61,7 +60,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initViews() {
-        btnNext = mBinder.btnNext;
+        Button btnNext = mBinder.btnNext;
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
 
@@ -163,8 +162,8 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     private SkillsUpdateRequest prepareSkillsUpdateRequest() {
         SkillsUpdateRequest skillsUpdateRequest = new SkillsUpdateRequest();
 
-        ArrayList<Integer> skills = new ArrayList<Integer>();
-        ArrayList<UpdateCertificates> othersList = new ArrayList<UpdateCertificates>();
+        ArrayList<Integer> skills = new ArrayList<>();
+        ArrayList<UpdateCertificates> othersList = new ArrayList<>();
 
         for (ParentSkillModel parentSkillModel : mParentSkillList) {
 

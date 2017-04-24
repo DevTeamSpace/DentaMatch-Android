@@ -13,7 +13,7 @@
             layout="@layout/toolbar_general" />
 
         <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/tv_chnage_location"
+            android:id="@+id/tv_change_location"
             style="@style/text_view_normal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_height"

@@ -280,7 +280,7 @@ public class HomeActivity extends BaseActivity {
             UpdateFcmTokenRequest request = new UpdateFcmTokenRequest();
             request.setUpdateDeviceToken(fcmToken);
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-            webServices.updateFcmToekn(request).enqueue(new BaseCallback<BaseResponse>(this) {
+            webServices.updateFcmToken(request).enqueue(new BaseCallback<BaseResponse>(this) {
                 @Override
                 public void onSuccess(BaseResponse response) {
 

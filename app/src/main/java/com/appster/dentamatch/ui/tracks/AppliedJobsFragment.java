@@ -123,7 +123,7 @@ import retrofit2.Call;
 
                 if(event.getType() == Constants.SEARCHJOBTYPE.APPLIED.getValue()) {
                     mJobListData.clear();
-                    mJobListData.addAll(event.getmData());
+                    mJobListData.addAll(event.getData());
 
                     if(mJobListData.size() == 0){
                         mBinding.tvNoJobs.setVisibility(View.VISIBLE);

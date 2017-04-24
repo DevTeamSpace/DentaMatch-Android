@@ -146,7 +146,7 @@ public class SocketManager {
     }
 
     /**
-     * Reset all DB status to sync status needed, in order to retreive data from the server on
+     * Reset all DB status to sync status needed, in order to retrieve data from the server on
      * Socket Connected.
      */
     private void raiseSyncNeeded() {

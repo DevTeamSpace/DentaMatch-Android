@@ -187,7 +187,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Subscribe()
     public void onSentMsgAcknowledgement(final MessageAcknowledgementEvent event) {
         if (event != null) {
-            DBHelper.getInstance().insertIntoDB(event.getmRecruiterId(), event.getmMessage(), recruiterName, 0, dbModel.getMessageListId());
+            DBHelper.getInstance().insertIntoDB(event.getRecruiterId(), event.getMessage(), recruiterName, 0, dbModel.getMessageListId());
             scrollToBottom();
         }
 
@@ -349,7 +349,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     toID = recruiterId;
                 }
 
-                SocketManager.getInstance().fetchPastChatsAfterMsgID(lastMessage.getmMessageId(), toID, fromID);
+                SocketManager.getInstance().fetchPastChatsAfterMsgID(lastMessage.getMessageId(), toID, fromID);
             } else {
                 SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
             }

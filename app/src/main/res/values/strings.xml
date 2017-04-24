@@ -78,14 +78,14 @@
     <string name="label_choose_gallery">Choose from gallery</string>
     <string name="dental_state_board">ADD DENTAL STATE BOARD</string>
     <string name="label_licence">LICENSE</string>
-    <string name="lable_licence_number">License Number</string>
+    <string name="label_licence_number">License Number</string>
     <string name="label_upload_photo">Upload Photo</string>
-    <string name="lable_state">State</string>
+    <string name="label_state">State</string>
     <string name="label_next">Next</string>
-    <string name="lable_update">UPDATE</string>
+    <string name="label_update">UPDATE</string>
     <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
     <string name="decode_stream_alert">Unable to parse this image.</string>
-    <string name="lable_not_now">Not now</string>
+    <string name="label_not_now">Not now</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="label_job_title">Current Job Title</string>
     <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
@@ -108,8 +108,8 @@
     <!--work experience-->
     <string name="where_you_work">Where do you work?</string>
     <string name="where_did_you_study">Where did you study?</string>
-    <string name="lable_relevant_exp">Relevant work experience strengthens \n your profile</string>
-    <string name="year_of_experice">Years Of Experience</string>
+    <string name="label_relevant_exp">Relevant work experience strengthens \n your profile</string>
+    <string name="year_of_experience">Years Of Experience</string>
     <string name="office_name">Office Name</string>
     <string name="office_address">Office Address</string>
     <string name="city">City</string>
@@ -135,7 +135,7 @@
     <string name="authentication_error">Authentication error, please login again.</string>
     <string name="server_error">There is some issue connecting with server.</string>
     <string name="no_internet">Please check your internet connection.</string>
-    <string name="add_more_refrence">Add More References</string>
+    <string name="add_more_reference">Add More References</string>
     <string name="add_more_exp">Add More Experience</string>
 
     <!--screen header text-->
@@ -164,7 +164,7 @@
 
     <!--certification & About me string-->
     <string name="hi_user">Hi %1$s</string>
-    <string name="valdity_date_string">Validity Date</string>
+    <string name="validity_date_string">Validity Date</string>
     <string name="cetification_title">Update Certifications</string>
     <string name="about_me_title">Executive Summary </string>
     <string name="alert_pervious_date">Please select a valid date.</string>
@@ -356,7 +356,6 @@
     <string name="msg_syncing_chat">Syncing chat. Please Wait…</string>
     <string name="txt_max_notification_count">999</string>
     <string name="msg_warning_delete_notification">Are you sure you want to delete the notification?</string>
-    <string name="txt_gallery_header">Select File</string>
     <string name="txt_job_title_hint">Please select a job</string>
     <string name="txt_congratulations">Congratulations</string>
     <string name="msg_successfully_applied_job">You have successfully applied for the job.</string>
@@ -399,6 +398,5 @@
     <string name="mixpanel_event_logout">Logout</string>
     <string name="msg_delete_exp_warning">Are you sure you want to delete this experience ?</string>
     <string name="msg_invite_reject_warning">Are you sure you want to reject this job invitation?</string>
-    <string name="txt_confirm_rejection">Confirm Rejection</string>
 
 </resources>

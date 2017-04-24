@@ -72,7 +72,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
     private void initViews() {
         mBinder.toolbarUpdateCertificate.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
-        mBinder.ivCertificateUpoloadIcon.setOnClickListener(this);
+        mBinder.ivCertificateUploadIcon.setOnClickListener(this);
         mBinder.tvValidityDatePicker.setOnClickListener(this);
         mBinder.toolbarUpdateCertificate.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnSave.setOnClickListener(this);
@@ -90,7 +90,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             mBinder.tvCertificatesName.setText(data.getCertificateName());
 
             if (!TextUtils.isEmpty(data.getImage())) {
-                Picasso.with(UpdateCertificateActivity.this).load(data.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
+                Picasso.with(UpdateCertificateActivity.this).load(data.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUploadIcon);
                 isImageUploaded = true;
             }
 
@@ -110,7 +110,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.iv_certificate_upoload_icon:
+            case R.id.iv_certificate_upload_icon:
                 callBottomSheet();
                 break;
 
@@ -180,7 +180,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                Snackbar.make(mBinder.ivCertificateUpoloadIcon, getResources().getString(R.string.text_camera_permision),
+                Snackbar.make(mBinder.ivCertificateUploadIcon, getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
                         .setAction(getString(R.string.txt_ok), new View.OnClickListener() {
                             @Override
@@ -204,7 +204,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Snackbar.make(mBinder.ivCertificateUpoloadIcon, this.getResources().getString(R.string.text_camera_permision),
+                Snackbar.make(mBinder.ivCertificateUploadIcon, this.getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
                         .setAction(getString(R.string.txt_accept), new View.OnClickListener() {
                             @Override
@@ -299,7 +299,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 if (response.getStatus() == 1) {
                     data.setImage(response.getFileUploadResponseData().getImageUrl());
                     isImageUploaded = true;
-                    Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
+                    Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUploadIcon);
                     // showSnackBarFromTop(response.getMessage(), false);
                 }else{
                     isImageUploaded = false;

@@ -42,7 +42,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarWorkExp.ivToolBarLeft.setOnClickListener(this);
         mBinder.etJobTitle.setOnClickListener(this);
         mBinder.btnNextWorkExp.setOnClickListener(this);
-        mBinder.tvExperinceWorkExp.setOnClickListener(this);
+        mBinder.tvExperienceWorkExp.setOnClickListener(this);
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
             Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.createProfileIvProfileIcon);
@@ -85,7 +85,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
                 new BottomSheetJobTitle(WorkExperienceActivity.this, this, PreferenceUtil.getJobTitlePosition());
                 break;
 
-            case R.id.tv_experince_work_exp:
+            case R.id.tv_experience_work_exp:
                 hideKeyboard();
                 new BottomSheetPicker(this, this, 0, 0);
                 break;
@@ -101,7 +101,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
             return false;
         }
 
-        if (TextUtils.isEmpty(mBinder.tvExperinceWorkExp.getText().toString().trim())) {
+        if (TextUtils.isEmpty(mBinder.tvExperienceWorkExp.getText().toString().trim())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_year_alert));
             return false;
         }
@@ -135,7 +135,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
             monthLabel = getString(R.string.txt_multiple_months);
         }
 
-        mBinder.tvExperinceWorkExp.setText(year + " " + yearLabel + " " + month + " " + monthLabel);
+        mBinder.tvExperienceWorkExp.setText(year + " " + yearLabel + " " + month + " " + monthLabel);
         PreferenceUtil.setMonth(month);
         PreferenceUtil.setYear(year);
     }

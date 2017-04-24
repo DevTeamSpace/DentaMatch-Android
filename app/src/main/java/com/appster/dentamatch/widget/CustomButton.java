@@ -3,7 +3,6 @@ package com.appster.dentamatch.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -20,29 +19,29 @@ public class CustomButton extends AppCompatButton {
 
     public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setCustomBackground(context, attrs);
+//        setCustomBackground(context, attrs);
         setCustomFont(context, attrs);
     }
 
     public CustomButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setCustomBackground(context, attrs);
+//        setCustomBackground(context, attrs);
         setCustomFont(context, attrs);
     }
 
-    private void setCustomBackground(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomButton);
-        if (a.hasValue(R.styleable.CustomButton_customBackground)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                setBackground(a.getDrawable(R.styleable.CustomButton_customBackground));
-            } else {
-//                setBackgroundDrawable(a.getDrawable(R.styleable.CustomButton_customBackground));
-            }
-        } else
-//            setBackgroundResource(R.drawable.round_corner_gray);
-        a.recycle();
-
-    }
+//    private void setCustomBackground(Context context, AttributeSet attrs) {
+//        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomButton);
+//        if (a.hasValue(R.styleable.CustomButton_customBackground)) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+////                setBackground(a.getDrawable(R.styleable.CustomButton_customBackground));
+//            } else {
+////                setBackgroundDrawable(a.getDrawable(R.styleable.CustomButton_customBackground));
+//            }
+//        } else
+////            setBackgroundResource(R.drawable.round_corner_gray);
+//        a.recycle();
+//
+//    }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
         TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.CustomTextView);

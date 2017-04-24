@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -104,7 +105,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     }
 
     @Override
-    public void onResult(LocationSettingsResult locationSettingsResult) {
+    public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
         LogUtils.LOGI(TAG, "onResult");
         final Status status = locationSettingsResult.getStatus();
         switch (status.getStatusCode()) {
@@ -168,7 +169,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest,
                     this).setResultCallback(new ResultCallback<Status>() {
                 @Override
-                public void onResult(Status status) {
+                public void onResult(@NonNull Status status) {
                     requestingLocationUpdates = true;
                 }
             });
@@ -180,7 +181,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         LogUtils.LOGD(TAG, "onRequestPermissionsResult");
         if (requestCode == REQUEST_LOCATION_PERMISSION && !StringUtils.isNullOrEmpty(grantResults)
@@ -205,7 +206,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
                 this
         ).setResultCallback(new ResultCallback<Status>() {
             @Override
-            public void onResult(Status status) {
+            public void onResult(@NonNull Status status) {
                 requestingLocationUpdates = false;
             }
         });
@@ -272,7 +273,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
         // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
         // onConnectionFailed.
         LogUtils.LOGI(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());

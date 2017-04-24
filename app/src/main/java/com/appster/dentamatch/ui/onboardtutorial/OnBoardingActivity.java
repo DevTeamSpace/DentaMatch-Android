@@ -18,13 +18,12 @@ import com.appster.dentamatch.util.PreferenceUtil;
  */
 public class OnBoardingActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private ActivityOnboardingBinding mBinder;
-    private OnBoardingAdapter onBoardingAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_onboarding);
-        onBoardingAdapter = new OnBoardingAdapter(this);
+        OnBoardingAdapter onBoardingAdapter = new OnBoardingAdapter(this);
         mBinder.pagerOnboarding.setAdapter(onBoardingAdapter);
         mBinder.tvSkipOnboarding.setOnClickListener(this);
         mBinder.pagerOnboarding.addOnPageChangeListener(this);

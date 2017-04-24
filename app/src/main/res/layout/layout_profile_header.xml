@@ -46,7 +46,7 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="25"
-                android:progressDrawable="@drawable/circuler_progress" />
+                android:progressDrawable="@drawable/circular_progress" />
 
         </RelativeLayout>
 
@@ -71,7 +71,7 @@
             android:gravity="center_horizontal"
             android:maxLines="2"
             android:ellipsize="end"
-            android:text="@string/lable_relevant_exp"
+            android:text="@string/label_relevant_exp"
             android:textColor="@color/edt_hint_color"
             android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_regular" />

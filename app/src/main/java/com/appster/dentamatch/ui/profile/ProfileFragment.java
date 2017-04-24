@@ -35,16 +35,12 @@ import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
 import com.appster.dentamatch.ui.profile.workexperience.SkillsActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateCertificateActivity;
 import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
-import com.appster.dentamatch.ui.profile.workexperience.WorkExpListActivity;
 import com.appster.dentamatch.ui.settings.SettingActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
-import com.appster.dentamatch.widget.CustomTextView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-import com.wefika.flowlayout.FlowLayout;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -105,7 +101,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellKeySkill.tvAddCertificates.setText(getString(R.string.add_key_skill));
         profileBinding.cellSchooling.tvAddCertificates.setText(getString(R.string.add_school));
         profileBinding.cellLicence.tvAddCertificates.setText(getString(R.string.add_licence));
-        profileBinding.cellLicence.tvCertificatesName.setText(getString(R.string.lable_licence_number));
+        profileBinding.cellLicence.tvCertificatesName.setText(getString(R.string.label_licence_number));
         profileBinding.cellExp.tvCertificatesName.setText(getString(R.string.title_experience));
         profileBinding.cellSchooling.tvCertificatesName.setText(getString(R.string.title_schooling));
         profileBinding.cellKeySkill.tvCertificatesName.setText(getString(R.string.title_skill));

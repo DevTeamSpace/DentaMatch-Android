@@ -321,7 +321,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     mBinder.layoutCertificatesInflater,
                     false);
 
-            final ImageView ivCertificate = (ImageView) certificatesView.findViewById(R.id.iv_certificate_upoload_icon);
+            final ImageView ivCertificate = (ImageView) certificatesView.findViewById(R.id.iv_certificate_upload_icon);
             TextView tvUploadPhoto = (TextView) certificatesView.findViewById(R.id.tv_upload_photo);
             TextView tvDatePicker = (TextView) certificatesView.findViewById(R.id.tv_validity_date_picker);
             final TextView tvCertificateName = (TextView) certificatesView.findViewById(R.id.tv_certificates_name);

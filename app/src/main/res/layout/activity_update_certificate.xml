@@ -50,7 +50,7 @@
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/iv_certificate_upoload_icon"
+                    android:id="@+id/iv_certificate_upload_icon"
                     android:layout_width="@dimen/camera_image_size"
                     android:layout_height="@dimen/camera_image_size"
                     android:layout_gravity="center_horizontal"
@@ -79,7 +79,7 @@
                 android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/bg_edit_text"
                 android:gravity="center_vertical"
-                android:hint="@string/valdity_date_string"
+                android:hint="@string/validity_date_string"
                 android:paddingBottom="@dimen/margin_medium"
                 android:paddingStart="@dimen/margin_medium"
                 android:textColor="@color/text_default_color"

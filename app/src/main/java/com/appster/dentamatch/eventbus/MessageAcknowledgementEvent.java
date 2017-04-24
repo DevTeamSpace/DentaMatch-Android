@@ -15,11 +15,11 @@ public class MessageAcknowledgementEvent {
         mRecruiterId = recruiterId;
     }
 
-    public String getmRecruiterId() {
+    public String getRecruiterId() {
         return mRecruiterId;
     }
 
-    public Message getmMessage() {
+    public Message getMessage() {
         return mMessage;
     }
 }

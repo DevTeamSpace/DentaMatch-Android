@@ -22,7 +22,7 @@
                 style="@style/edit_text_view_normal"
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
-                android:background="@drawable/bg_slection_edit_text"
+                android:background="@drawable/bg_selection_edit_text"
                 android:drawableEnd="@drawable/ic_down_arrow"
                 android:drawablePadding="@dimen/padding_drawable"
                 android:focusable="false"
@@ -43,14 +43,14 @@
             app:hintTextAppearance="@style/edit_input_layout">
 
             <EditText
-                android:id="@+id/tv_experince_work_exp"
+                android:id="@+id/tv_experience_work_exp"
                 style="@style/edit_text_view_normal"
                 android:layout_marginLeft="@dimen/margin_normal"
                 android:layout_marginRight="@dimen/margin_normal"
-                android:background="@drawable/bg_slection_edit_text"
+                android:background="@drawable/bg_selection_edit_text"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/year_of_experice"
+                android:hint="@string/year_of_experience"
                 android:longClickable="false"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>

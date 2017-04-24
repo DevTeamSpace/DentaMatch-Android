@@ -39,11 +39,11 @@ public class Message extends RealmObject{
         return mUsername;
     }
 
-    public String getmMessageTime() {
+    public String getMessageTime() {
         return mMessageTime;
     }
 
-    public String getmMessageId() {
+    public String getMessageId() {
         return mMessageId;
     }
 

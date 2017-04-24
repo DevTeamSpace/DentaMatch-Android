@@ -26,7 +26,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
@@ -53,8 +52,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private PlaceAutocompleteAdapter mAdapter;
 
     private AutoCompleteTextView mAutocompleteView;
-    private ImageView mImgClear;
-    private RelativeLayout mLayout;
 
     private String mPostalCode;
     private String mPlaceName;
@@ -81,8 +78,8 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 .build();
 
         mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
-        mImgClear = (ImageView) findViewById(R.id.img_clear);
-        mLayout = (RelativeLayout) findViewById(R.id.layout_done);
+        ImageView mImgClear = (ImageView) findViewById(R.id.img_clear);
+        RelativeLayout mLayout = (RelativeLayout) findViewById(R.id.layout_done);
         /*
           Register a listener that receives callbacks when a suggestion has been selected
          */
@@ -138,12 +135,12 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         if (mLatitude != null && mLongitude != null && !TextUtils.isEmpty(mLatitude) && !TextUtils.isEmpty(mLongitude)) {
             Location location = new Location("");
             double lat = Double.parseDouble(mLatitude);
-            double longi = Double.parseDouble(mLongitude);
+            double lng = Double.parseDouble(mLongitude);
 
             location.setLatitude(lat);
-            location.setLongitude(longi);
+            location.setLongitude(lng);
 
-            LatLng latLng = new LatLng(lat, longi);
+            LatLng latLng = new LatLng(lat, lng);
 
             if (mMap != null) {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));

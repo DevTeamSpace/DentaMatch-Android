@@ -48,12 +48,9 @@ import retrofit2.Call;
  */
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener {
     private String TAG = "CreateProfileActivity2";
-    private ImageView ivProfile, ivUpload, ivToolbarLeft;
-    private TextView tvName, tvJobTitle;
-    private ProgressBar mProgressBar;
-    private TextView tvToolbarLeft;
+    private ImageView ivProfile;
+    private ImageView ivUpload;
     private EditText etLicenceNumber, etState;
-    private Button btnNext;
     private String mFilePath;
     private byte imageSourceType;
 
@@ -67,14 +64,14 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
     private void initViews() {
         ivProfile = (ImageView) findViewById(R.id.create_profile_iv_profile_icon);
-        ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
-        btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
-        tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
-        tvName = (TextView) findViewById(R.id.create_profile_tv_name);
+        ImageView ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
+        Button btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
+        TextView tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
+        TextView tvName = (TextView) findViewById(R.id.create_profile_tv_name);
         etLicenceNumber = (EditText) findViewById(R.id.create_profile_et_licence);
         etState = (EditText) findViewById(R.id.create_profile_et_state);
-        tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
-        mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
+        TextView tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
+        ProgressBar mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
 
         btnNext.setOnClickListener(this);
         ivToolbarLeft.setOnClickListener(this);
@@ -123,10 +120,6 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private boolean checkInputValidator() {
-//        if (TextUtils.isEmpty(mFilePath)) {
-//            Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_satate_board_photo_alert));
-//            return false;
-//        }
 
         if (TextUtils.isEmpty(etLicenceNumber.getText().toString().trim())) {
             Utils.showToast(CreateProfileActivity2.this, getString(R.string.blank_licence_number));

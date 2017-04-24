@@ -91,10 +91,10 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
                 holder.tvDateLabel.setVisibility(View.VISIBLE);
                 holder.tvMessage.setVisibility(View.GONE);
                 holder.tvTime.setVisibility(View.GONE);
-                holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getmMessageTime()));
+                holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getMessageTime()));
             }
 
-            holder.tvTime.setText(Utils.convertUTCtoLocalFromTimeStamp(mChatMessages.get(position).getmMessageTime()));
+            holder.tvTime.setText(Utils.convertUTCtoLocalFromTimeStamp(mChatMessages.get(position).getMessageTime()));
 
 
         }

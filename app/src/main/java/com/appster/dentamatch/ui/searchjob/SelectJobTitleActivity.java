@@ -33,7 +33,6 @@ import retrofit2.Call;
 public class SelectJobTitleActivity extends BaseActivity implements View.OnClickListener, JobTitleSelected {
     private final String TAG = "SelectJobTitleActivity";
     private ActivitySelectJobTitleBinding mBinder;
-    private LinearLayoutManager mLayoutManager;
     private JobTitleAdapter mJobTitleAdapter;
     private ArrayList<JobTitleListModel> mSelectedTitleList;
 
@@ -67,16 +66,16 @@ public class SelectJobTitleActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setAllCaps(true);
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setOnClickListener(this);
         mBinder.toolbarJobTitle.ivToolBarLeft.setOnClickListener(this);
-        mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 
         if (getIntent().hasExtra(Constants.EXTRA_CHOSEN_JOB_TITLES)) {
             mSelectedTitleList = getIntent().getParcelableArrayListExtra(Constants.EXTRA_CHOSEN_JOB_TITLES);
         }
 
-        mBinder.recyclerAjobTitle.setLayoutManager(mLayoutManager);
-        mBinder.recyclerAjobTitle.addItemDecoration(new SimpleDividerItemDecoration(this));
-        mJobTitleAdapter = new JobTitleAdapter(this, this);
-        mBinder.recyclerAjobTitle.setAdapter(mJobTitleAdapter);
+        mBinder.recyclerJobTitle.setLayoutManager(mLayoutManager);
+        mBinder.recyclerJobTitle.addItemDecoration(new SimpleDividerItemDecoration(this));
+        mJobTitleAdapter = new JobTitleAdapter(this);
+        mBinder.recyclerJobTitle.setAdapter(mJobTitleAdapter);
     }
 
     @Override

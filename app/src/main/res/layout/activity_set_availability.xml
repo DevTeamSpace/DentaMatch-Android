@@ -43,7 +43,7 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:text="@string/select_multiple_job"
-                    android:textColor="@color/greyish_color"
+                    android:textColor="@color/grayish_color"
                     android:textSize="@dimen/text_size_12"
                     app:customFont="@string/font_regular" />
 

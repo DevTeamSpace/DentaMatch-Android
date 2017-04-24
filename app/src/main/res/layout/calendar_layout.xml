@@ -73,7 +73,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/calendar_sun"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -86,7 +86,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/calendar_mon"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -99,7 +99,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/calendar_tue"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -112,7 +112,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/calendar_wed"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -125,7 +125,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/calendar_thu"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -137,7 +137,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/calendar_fri"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -149,7 +149,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/calendar_sat"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
         </LinearLayout>
 

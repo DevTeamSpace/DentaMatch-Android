@@ -39,7 +39,6 @@ import java.io.File;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BASE_ACTIVITY";
-    private final String AUTHORITY = "com.appster.dentamatch.provider";
     protected static final int MY_PERMISSION_ACCESS_LOCATION = 101;
     protected boolean mAlive;
     private boolean mActive;
@@ -79,6 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void takePhoto() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
+        String AUTHORITY = "com.appster.dentamatch.provider";
         Uri photoUri = FileProvider.getUriForFile(this, AUTHORITY, file);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
         startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);

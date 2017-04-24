@@ -219,7 +219,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                             @Override
                             public void onNegative(DialogInterface dialog) {
                         /*
-                          change the star uncheck by notifying the item.
+                          change the star unCheck by notifying the item.
                          */
                                 notifyItemChanged(position);
                                 dialog.dismiss();

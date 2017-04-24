@@ -22,7 +22,7 @@ public class BottomSheetView {
         mImageSelectedListener = imageSelectedListener;
         View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_select_image, null);
         CustomTextView tvTakePhoto = (CustomTextView) view.findViewById(R.id.bottom_sheet_tv_take_photo);
-        CustomTextView tvChooseGallary = (CustomTextView) view.findViewById(R.id.bottom_sheet_tv_gallray);
+        CustomTextView tvChooseGallery = (CustomTextView) view.findViewById(R.id.bottom_sheet_tv_gallery);
 
         tvTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,7 +33,7 @@ public class BottomSheetView {
                 }
             }
         });
-        tvChooseGallary.setOnClickListener(new View.OnClickListener() {
+        tvChooseGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

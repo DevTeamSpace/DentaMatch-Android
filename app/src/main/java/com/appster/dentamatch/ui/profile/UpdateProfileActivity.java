@@ -57,8 +57,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     private byte imageSourceType;
     private ActivityUpdateProfileBinding mBinding;
     private ProfileResponseData mProfileData;
-    private String mAddress;
-    private String mFilePath;
     private String mSelectedLat;
     private String mSelectedLng;
     private String mSelectedCity;
@@ -199,10 +197,11 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        String mFilePath;
         if (requestCode == REQUEST_CODE_LOCATION) {
             if (resultCode == RESULT_OK) {
                 if (data != null) {
-                    mAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
+                    String mAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
                     String finalAddress = mAddress.concat(" - ").concat(data.getStringExtra(Constants.EXTRA_POSTAL_CODE));
                     mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                     mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);

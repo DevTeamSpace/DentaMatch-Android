@@ -20,7 +20,6 @@ import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.ResetPasswordActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Alert;
@@ -51,7 +50,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private void initViews() {
         settingsBinding.toolbarSetting.tvToolbarGeneralLeft.setText(getString(R.string.header_settings));
         settingsBinding.toolbarSetting.ivToolBarLeft.setOnClickListener(this);
-        settingsBinding.tvChnageLocation.setOnClickListener(this);
+        settingsBinding.tvChangeLocation.setOnClickListener(this);
         settingsBinding.tvResetPassword.setOnClickListener(this);
         settingsBinding.tvLogout.setOnClickListener(this);
         settingsBinding.tvTermNCondition.setOnClickListener(this);
@@ -77,7 +76,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 //                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
                 break;
 
-            case R.id.tv_chnage_location:
+            case R.id.tv_change_location:
                 Intent intent = new Intent(this, PlacesMapActivity.class);
 
                 if (mUserModel.getLatitude() != null && mUserModel.getLongitude() != null) {
