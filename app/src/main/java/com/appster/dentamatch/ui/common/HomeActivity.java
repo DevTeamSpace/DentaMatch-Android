@@ -61,29 +61,29 @@ public class HomeActivity extends BaseActivity {
             EventBus.getDefault().register(this);
         }
 
-        /**
-         * Connect Socket for chatting initialization.
+        /*
+          Connect Socket for chatting initialization.
          */
         SocketManager.getInstance().connect(this);
         setContentView(R.layout.activity_home);
         initViews();
 
-        /**
-         * Launch job search fragment if redirected from search activity.
+        /*
+          Launch job search fragment if redirected from search activity.
          */
         if (getIntent().hasExtra(Constants.EXTRA_SEARCH_JOB)) {
             bottomBar.setCurrentItem(SEARCH_JOBS_FRAGMENT_POS);
 
         } else if (getIntent().hasExtra(Constants.EXTRA_FROM_CHAT)) {
-            /**
-             * Launch job message fragment if redirected from notification click.
+            /*
+              Launch job message fragment if redirected from notification click.
              */
             bottomBar.setCurrentItem(MESSAGE_FRAGMENT_POS);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 
-        } else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL)) {
+        } else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL) || getIntent().hasExtra(Constants.EXTRA_FROM_SETTINGS)) {
             bottomBar.setCurrentItem(PROFILE_FRAGMENT_POS);
 
         }else{
@@ -91,8 +91,8 @@ public class HomeActivity extends BaseActivity {
 
         }
 
-        /**
-         * Retrieve user's current location.
+        /*
+          Retrieve user's current location.
          */
         LocationUtils.addFragment(this);
         updateToken(PreferenceUtil.getFcmToken());
@@ -107,6 +107,10 @@ public class HomeActivity extends BaseActivity {
             String RecruiterID = intent.getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+
+        }else if (intent.hasExtra(Constants.EXTRA_FROM_SETTINGS)) {
+            bottomBar.setCurrentItem(PROFILE_FRAGMENT_POS);
+
         }
 
     }
@@ -276,7 +280,7 @@ public class HomeActivity extends BaseActivity {
             UpdateFcmTokenRequest request = new UpdateFcmTokenRequest();
             request.setUpdateDeviceToken(fcmToken);
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-            webServices.updateFcmToekn(request).enqueue(new BaseCallback<BaseResponse>(this) {
+            webServices.updateFcmToken(request).enqueue(new BaseCallback<BaseResponse>(this) {
                 @Override
                 public void onSuccess(BaseResponse response) {
 

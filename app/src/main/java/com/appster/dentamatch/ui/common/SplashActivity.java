@@ -40,7 +40,7 @@ public class SplashActivity extends Activity implements Runnable {
     public void run() {
         if (PreferenceUtil.getIsOnBoarding()) {
 
-            if (PreferenceUtil.getIsLogined()) {
+            if (PreferenceUtil.getIsLogin()) {
 
                 if (!PreferenceUtil.isJobFilterSet()) {
                     startActivity(new Intent(SplashActivity.this, SearchJobActivity.class)

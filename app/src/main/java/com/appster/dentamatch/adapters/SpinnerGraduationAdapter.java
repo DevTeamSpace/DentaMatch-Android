@@ -17,6 +17,7 @@ import com.appster.dentamatch.R;
 import java.util.ArrayList;
 
 class SpinnerGraduationAdapter extends ArrayAdapter<String> {
+    private static final int SPINNER_FIRST_POS = 0;
     private Context mContext;
     private ArrayList<String> mDataList;
     private LayoutInflater mInflater;
@@ -43,7 +44,7 @@ class SpinnerGraduationAdapter extends ArrayAdapter<String> {
         View row = mInflater.inflate(R.layout.item_spinner_text, parent, false);
         TextView textSpinner = (TextView) row.findViewById(R.id.text_spinner);
 
-        if (position == 0) {
+        if (position == SPINNER_FIRST_POS) {
             textSpinner.setText(mContext.getString(R.string.hint_year_of_graduation));
         } else {
             textSpinner.setText(mDataList.get(position));

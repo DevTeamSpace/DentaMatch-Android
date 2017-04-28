@@ -52,8 +52,6 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private PlaceAutocompleteAdapter mAdapter;
 
     private AutoCompleteTextView mAutocompleteView;
-    private ImageView mImgClear;
-    private RelativeLayout mLayout;
 
     private String mPostalCode;
     private String mPlaceName;
@@ -68,11 +66,11 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places_map);
-        /**
-         * Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
-         * functionality, which automatically sets up the API client to handle Activity lifecycle
-         * events. If your activity does not extend FragmentActivity, make sure to call connect()
-         * and disconnect() explicitly.
+        /*
+          Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
+          functionality, which automatically sets up the API client to handle Activity lifecycle
+          events. If your activity does not extend FragmentActivity, make sure to call connect()
+          and disconnect() explicitly.
          */
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)
@@ -80,17 +78,17 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 .build();
 
         mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
-        mImgClear = (ImageView) findViewById(R.id.img_clear);
-        mLayout = (RelativeLayout) findViewById(R.id.layout_done);
-        /**
-         * Register a listener that receives callbacks when a suggestion has been selected
+        ImageView mImgClear = (ImageView) findViewById(R.id.img_clear);
+        RelativeLayout mLayout = (RelativeLayout) findViewById(R.id.layout_done);
+        /*
+          Register a listener that receives callbacks when a suggestion has been selected
          */
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
         mImgClear.setOnClickListener(this);
         mLayout.setOnClickListener(this);
-        /**
-         * Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
-         * the entire world.
+        /*
+          Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
+          the entire world.
          */
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, null, null);
         mAutocompleteView.setAdapter(mAdapter);
@@ -137,12 +135,12 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
         if (mLatitude != null && mLongitude != null && !TextUtils.isEmpty(mLatitude) && !TextUtils.isEmpty(mLongitude)) {
             Location location = new Location("");
             double lat = Double.parseDouble(mLatitude);
-            double longi = Double.parseDouble(mLongitude);
+            double lng = Double.parseDouble(mLongitude);
 
             location.setLatitude(lat);
-            location.setLongitude(longi);
+            location.setLongitude(lng);
 
-            LatLng latLng = new LatLng(lat, longi);
+            LatLng latLng = new LatLng(lat, lng);
 
             if (mMap != null) {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
@@ -259,21 +257,26 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
              * The adapter stores each Place suggestion in a AutocompletePrediction from which we
              * read the place ID and title.
              */
-            final AutocompletePrediction item = mAdapter.getItem(position);
-            final String placeId = item.getPlaceId();
-            final CharSequence primaryText = item.getPrimaryText(null);
+            try {
+                final AutocompletePrediction item = mAdapter.getItem(position);
+                final String placeId = item.getPlaceId();
+                final CharSequence primaryText = item.getPrimaryText(null);
 
-            LogUtils.LOGD(TAG, "Autocomplete item selected: " + primaryText);
+                LogUtils.LOGD(TAG, "Autocomplete item selected: " + primaryText);
 
             /*
              * Issue a request to the Places Geo Data API to retrieve a Place object with additional
              * details about the place.
              */
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+                PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                        .getPlaceById(mGoogleApiClient, placeId);
+                placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-            LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
+                LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             hideKeyboard();
         }
     };
@@ -285,29 +288,36 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
         @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                LogUtils.LOGE(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
-                places.release();
-                return;
-            }
+        public void onResult(@NonNull PlaceBuffer places) {
+            try {
+                if (!places.getStatus().isSuccess() && places.getCount() < 0) {
+                    LogUtils.LOGE(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
+                    places.release();
+                    showToast("Unable to fetch this location, please try another location.");
+                    return;
+                }
 
-            /**
-             * Get the Place object from the buffer.
+            /*
+              Get the Place object from the buffer.
              */
-            final Place place = places.get(0);
-            LatLng latLng = place.getLatLng();
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
-            mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(latLng));
+                final Place place = places.get(0);
+                LatLng latLng = place.getLatLng();
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constants.MAP_ZOOM_LEVEL));
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(latLng));
 
-            LogUtils.LOGD(TAG, latLng.toString());
+                LogUtils.LOGD(TAG, latLng.toString());
 
-            Address address = Utils.getReverseGeoCode(PlacesMapActivity.this, latLng);
+                Address address = Utils.getReverseGeoCode(PlacesMapActivity.this, latLng);
 
-            setData(address);
-
-            places.release();
+                setData(address);
+            }catch (Exception e){
+                e.printStackTrace();
+                showToast("Unable to fetch this location, please try another location.");
+                mAutocompleteView.setText("");
+            }finally {
+                places.release();
+            }
         }
     };
 

@@ -85,6 +85,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.btn_next:
                 if (checkValidation()) {
+                    hideKeyboard();
                     addSchoolListApi(prepareRequest());
                 }
                 break;
@@ -100,15 +101,15 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
         for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
             PostSchoolData school = new PostSchoolData();
-            boolean isMatchScoolName = false;
+            boolean isMatchSchoolName = false;
 
             for (int i = 0; i < mSchoolsAdapter.getList().size(); i++) {
 
                 for (int j = 0; j < mSchoolsAdapter.getList().get(i).getSchoolList().size(); j++) {
 
                     if (entry.getValue().getSchoolName().equalsIgnoreCase(mSchoolsAdapter.getList().get(i).getSchoolList().get(j).getSchoolName())) {
-                        isMatchScoolName = true;
-                        school.setSchoolName(entry.getValue().getSchoolName());
+                        isMatchSchoolName = true;
+                        school.setSchoolName(entry.getValue().getSchoolName().trim());
                         school.setSchoolId(mSchoolsAdapter.getList().get(i).getSchoolList().get(j).getSchoolId());
                         school.setOtherSchooling("");
                         break;
@@ -117,9 +118,9 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                 }
             }
 
-            if (!isMatchScoolName) {
+            if (!isMatchSchoolName) {
                 school.setSchoolId(Integer.parseInt(entry.getValue().getOtherId()));
-                school.setOtherSchooling(entry.getValue().getSchoolName());
+                school.setOtherSchooling(entry.getValue().getSchoolName().trim());
                 school.setSchoolName("");
             }
 
@@ -145,7 +146,8 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
             for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
                 boolean isRemoveSchool = false;
-                if (TextUtils.isEmpty(entry.getValue().getSchoolName()) && TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
+
+                if (TextUtils.isEmpty(entry.getValue().getSchoolName().trim()) && TextUtils.isEmpty(entry.getValue().getYearOfGraduation())) {
                     hashMap.remove(entry.getKey());
                     mSchoolsAdapter.setSchoolMapData(hashMap);
 
@@ -163,7 +165,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                     checkValidation();
 
                 } else {
-                    if (TextUtils.isEmpty(entry.getValue().getSchoolName())) {
+                    if (TextUtils.isEmpty(entry.getValue().getSchoolName().trim())) {
                         showToast(getString(R.string.msg_school_name_bank));
                         return false;
                     }
@@ -198,13 +200,19 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
             public void onSuccess(SchoolingResponse response) {
                 if (response.getStatus() == 1) {
                     setAdapter(response.getSchoolingResponseData().getSchoolTypeList());
+                    mBinder.btnNext.setVisibility(View.VISIBLE);
+
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.btnNext.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFail(Call<SchoolingResponse> call, BaseResponse baseResponse) {
+                mBinder.btnNext.setVisibility(View.GONE);
+
             }
         });
     }

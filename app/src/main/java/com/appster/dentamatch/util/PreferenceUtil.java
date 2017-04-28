@@ -225,11 +225,11 @@ public final class PreferenceUtil {
     }
 
 
-    public static boolean getIsLogined() {
+    public static boolean getIsLogin() {
         return Hawk.get(KEY_IS_LOGIN, false);
     }
 
-    public static void setIsLogined(boolean value) {
+    public static void setIsLogin(boolean value) {
         Hawk.put(KEY_IS_LOGIN, value);
     }
 

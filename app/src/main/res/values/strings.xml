@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">DentaMatch</string>
     <string name="maps_api_key">AIzaSyAhA4pk57QtTynvuqTgW_YDHzJdL1zKv3M</string>
+    <string name="mixpanel_token">b02345abf885907d987ec5a475135671</string>
 
-    <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the \n printing and typesetting industry.</string>
     <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -31,6 +32,7 @@
 
     <!--  Error string-->
     <string name="blank_email_alert">Email Id can not be left blank.</string>
+    <string name="user_name_label">name</string>
     <string name="blank_profile_photo_alert">Please upload your profile photo.</string>
     <string name="blank_password_alert">Password can not be left blank.</string>
     <string name="blank_fname_alert">First Name text field can not be left blank.</string>
@@ -76,14 +78,14 @@
     <string name="label_choose_gallery">Choose from gallery</string>
     <string name="dental_state_board">ADD DENTAL STATE BOARD</string>
     <string name="label_licence">LICENSE</string>
-    <string name="lable_licence_number">License Number</string>
+    <string name="label_licence_number">License Number</string>
     <string name="label_upload_photo">Upload Photo</string>
-    <string name="lable_state">State</string>
+    <string name="label_state">State</string>
     <string name="label_next">Next</string>
-    <string name="lable_update">UPDATE</string>
-    <string name="text_camera_permision">Camera and storage permission is required to take photos of the userModel.</string>
+    <string name="label_update">UPDATE</string>
+    <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
     <string name="decode_stream_alert">Unable to parse this image.</string>
-    <string name="lable_not_now">Not now</string>
+    <string name="label_not_now">Not now</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="label_job_title">Current Job Title</string>
     <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
@@ -106,8 +108,8 @@
     <!--work experience-->
     <string name="where_you_work">Where do you work?</string>
     <string name="where_did_you_study">Where did you study?</string>
-    <string name="lable_relevant_exp">Relevant work experience strengthens your profile</string>
-    <string name="year_of_experice">Years Of Experience</string>
+    <string name="label_relevant_exp">Relevant work experience strengthens \n your profile</string>
+    <string name="year_of_experience">Years Of Experience</string>
     <string name="office_name">Office Name</string>
     <string name="office_address">Office Address</string>
     <string name="city">City</string>
@@ -119,13 +121,21 @@
     <string name="reference_mobile">Reference Mobile No. (Optional)</string>
     <string name="reference_email">Reference Email (Optional)</string>
     <string name="year">Year</string>
-    <string name="month">Month</string>
+    <string name="month">month</string>
+    <!--<string name="exp_years">Years</string>-->
+    <!--<string name="exp_months">Months</string>-->
+    <!--<string name="txt_months">Months</string>-->
+
+    <string name="txt_single_year">yr</string>
+    <string name="txt_multiple_years">yrs</string>
+    <string name="txt_single_month">month</string>
+    <string name="txt_multiple_months">months</string>
 
     <!--Server error-->
     <string name="authentication_error">Authentication error, please login again.</string>
     <string name="server_error">There is some issue connecting with server.</string>
-    <string name="no_internet">Please check your Internet Connection.</string>
-    <string name="add_more_refrence">Add More References</string>
+    <string name="no_internet">Please check your internet connection.</string>
+    <string name="add_more_reference">Add More References</string>
     <string name="add_more_exp">Add More Experience</string>
 
     <!--screen header text-->
@@ -141,12 +151,12 @@
 
 
     <string name="header_skills_exp">SKILLS &amp; EXPERIENCE</string>
-    <string name="header_schooling_exp">SCHOOLING &amp; EXPERIENCE</string>
+    <string name="header_schooling_exp">SCHOOLING &amp; CERTIFICATION</string>
 
-    <string name="autocomplete_hint">Search places</string>
+    <string name="autocomplete_hint">Search Places</string>
     <string name="get_started">GET STARTED</string>
-    <string name="hint_type_to_search">Type to search</string>
-    <string name="hint_year_of_graduation">Year of graduation</string>
+    <string name="hint_type_to_search">Enter School</string>
+    <string name="hint_year_of_graduation">Year Of Graduation</string>
 
 
     <!--aler/toast error messages-->
@@ -154,7 +164,7 @@
 
     <!--certification & About me string-->
     <string name="hi_user">Hi %1$s</string>
-    <string name="valdity_date_string">Validity date</string>
+    <string name="validity_date_string">Validity Date</string>
     <string name="cetification_title">Update Certifications</string>
     <string name="about_me_title">Executive Summary </string>
     <string name="alert_pervious_date">Please select a valid date.</string>
@@ -198,7 +208,7 @@
     <string name="title_affiliation">Affiliations</string>
     <string name="edit_label">Edit</string>
     <string name="header_edit_profile">EDIT PROFILE</string>
-    <string name="add_affiliation">Add professional affiliations</string>
+    <string name="add_affiliation">Add Professional Affiliations</string>
     <string name="add_key_skill">Add skills category</string>
     <string name="add_school">Add schooling and certification</string>
     <string name="add_licence">Add license details</string>
@@ -265,13 +275,22 @@
     <string name="txt_sunday">Sun</string>
     <string name="not_applicable">N/A</string>
     <string name="txt_read_more">READ MORE</string>
-    <string name="sun">SU</string>
-    <string name="mon">MO</string>
-    <string name="tue">TU</string>
-    <string name="wed">WE</string>
-    <string name="thu">TH</string>
-    <string name="fri">FR</string>
-    <string name="sat">SA</string>
+    <string name="sun">Su</string>
+    <string name="mon">Mo</string>
+    <string name="tue">Tu</string>
+    <string name="wed">We</string>
+    <string name="thu">Th</string>
+    <string name="fri">Fr</string>
+    <string name="sat">Sa</string>
+
+    <string name="calendar_sun">Su</string>
+    <string name="calendar_mon">Mo</string>
+    <string name="calendar_tue">Tu</string>
+    <string name="calendar_wed">We</string>
+    <string name="calendar_thu">Th</string>
+    <string name="calendar_fri">Fr</string>
+    <string name="calendar_sat">Sa</string>
+
     <string name="booked_job">BOOKED JOBS</string>
     <string name="txt_show_less">READ LESS</string>
     <string name="txt_full_sunday">Sunday</string>
@@ -337,7 +356,6 @@
     <string name="msg_syncing_chat">Syncing chat. Please Wait…</string>
     <string name="txt_max_notification_count">999</string>
     <string name="msg_warning_delete_notification">Are you sure you want to delete the notification?</string>
-    <string name="txt_gallery_header">Select File</string>
     <string name="txt_job_title_hint">Please select a job</string>
     <string name="txt_congratulations">Congratulations</string>
     <string name="msg_successfully_applied_job">You have successfully applied for the job.</string>
@@ -351,9 +369,9 @@
     <string name="txt_friday_colon">"Friday: "</string>
     <string name="txt_saturday_colon">"Saturday: "</string>
     <string name="txt_sunday_colon">"Sunday: "</string>
-    <string name="msg_empty_country">Unable to fetch country, please check internet connection and try again</string>
-    <string name="msg_empty_city">Unable to fetch city, please check internet connection and try again</string>
-    <string name="msg_empty_state">Unable to fetch state, please check internet connection and try again</string>
+    <string name="msg_empty_country">Unable to fetch country, please check internet connection and try choosing location again</string>
+    <string name="msg_empty_city">Unable to fetch city, please check internet connection and try choosing location again</string>
+    <string name="msg_empty_state">Unable to fetch state, please check internet connection and try choosing location again</string>
     <string name="msg_select_job">Please select at least one job to proceed</string>
     <string name="txt_saved">SAVED</string>
     <string name="txt_reason_for_the_cancellation">Reason for the cancellation</string>
@@ -370,5 +388,15 @@
     <string name="txt_job_expired">This Job no longer exists</string>
     <string name="txt_discard">Discard</string>
     <string name="msg_discard_partial_experience">You have partially filled experience. Do you want to discard this ?</string>
+    <string name="title_select_file">Select File</string>
+
+
+
+    <!--MixPanel events-->
+    <string name="mixpanel_event_login">Login</string>
+    <string name="mixpanel_event_signup">SignUp</string>
+    <string name="mixpanel_event_logout">Logout</string>
+    <string name="msg_delete_exp_warning">Are you sure you want to delete this experience ?</string>
+    <string name="msg_invite_reject_warning">Are you sure you want to reject this job invitation?</string>
 
 </resources>

@@ -18,7 +18,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_height"
-                android:background="@color/cell_boundry_color" />
+                android:background="@color/cell_boundary_color" />
 
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/tv_licence"
@@ -37,7 +37,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_height"
-                android:background="@color/cell_boundry_color"
+                android:background="@color/cell_boundary_color"
 
                 />
 
@@ -59,7 +59,7 @@
                     android:layout_marginRight="@dimen/margin_normal"
                     android:background="@drawable/edit_text_selector"
                     android:digits="@string/digits_licence"
-                    android:hint="@string/lable_licence_number"
+                    android:hint="@string/label_licence_number"
                     android:maxLength="15"
                     android:textColor="@color/text_default_color" />
             </android.support.design.widget.TextInputLayout>
@@ -81,7 +81,7 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:background="@drawable/edit_text_selector"
-                    android:hint="@string/lable_state" />
+                    android:hint="@string/label_state" />
             </android.support.design.widget.TextInputLayout>
 
 

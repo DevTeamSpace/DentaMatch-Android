@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
@@ -39,6 +40,9 @@ import retrofit2.Call;
  */
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
+    private final int NOTIFICATION_UNREAD = 0;
+    private final int NOTIFICATION_READ = 1;
+
     private ItemNotificationBinding mBinding;
     private ArrayList<NotificationData> mNotificationList;
     private Context mContext;
@@ -65,10 +69,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             holder.tvDesc.setText(data.getNotificationData());
 
-            /**
-             * Change visibility of cell items based on read or unread notification status.
+            /*
+              Change visibility of cell items based on read or unread notification status.
              */
-            if (data.getSeen() == 0) {
+            if (data.getSeen() == NOTIFICATION_UNREAD) {
                 holder.ivRead.setVisibility(View.VISIBLE);
                 holder.tvDesc.setCustomFont(mContext, mContext.getString(R.string.font_medium));
                 holder.tvDesc.setTextColor(ContextCompat.getColor(mContext, R.color.black_color));
@@ -82,21 +86,21 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 holder.ivRead.setVisibility(View.INVISIBLE);
             }
 
-            /**
-             * Set time of the notification.
+            /*
+              Set time of the notification.
              */
             if (data.getCreatedAt() != null) {
                 holder.tvDuration.setVisibility(View.VISIBLE);
-                holder.tvDuration.setText(Utils.getDuration(Utils.getDate(data.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS), mContext));
+                holder.tvDuration.setText(Utils.getDuration(Utils.getDateNotification(data.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS), mContext));
             } else {
                 holder.tvDuration.setVisibility(View.GONE);
             }
 
 
-            /**
-             * if notification is OTHER we hide jobType, address,accept - reject layout and right arrow.
-             * if notification is INVITE type show all views as visible.
-             * else accept - reject layout is hidden and all other views are visible
+            /*
+              if notification is OTHER we hide jobType, address,accept - reject layout and right arrow.
+              if notification is INVITE type show all views as visible.
+              else accept - reject layout is hidden and all other views are visible
              */
             if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER) {
                 holder.layoutInVite.setVisibility(View.GONE);
@@ -120,7 +124,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             }
 
-            if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == 0) {
+            if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == NOTIFICATION_UNREAD) {
                 holder.layoutInVite.setVisibility(View.VISIBLE);
 
             } else {
@@ -142,10 +146,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private void setJobDetailData(JobDetailModel model, MyHolder holder) {
         if (model != null) {
 
-            if(!TextUtils.isEmpty(model.getAddress())) {
+            if (!TextUtils.isEmpty(model.getAddress())) {
                 holder.tvAddress.setVisibility(View.VISIBLE);
                 holder.tvAddress.setText(model.getAddress());
-            }else{
+            } else {
                 holder.tvAddress.setVisibility(View.GONE);
             }
 
@@ -174,11 +178,27 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onClick(View v) {
-        int position = (int) v.getTag();
+        final int position = (int) v.getTag();
         switch (v.getId()) {
 
             case R.id.tv_reject:
-                callInviteStatusApi(position, 0);
+                Alert.createYesNoAlert(mContext,
+                        mContext.getString(R.string.txt_ok),
+                        mContext.getString(R.string.txt_cancel),
+                        mContext.getString(R.string.txt_alert_title),
+                        mContext.getString(R.string.msg_invite_reject_warning),
+                        new Alert.OnAlertClickListener() {
+                            @Override
+                            public void onPositive(DialogInterface dialog) {
+                                callInviteStatusApi(position, 0);
+                            }
+
+                            @Override
+                            public void onNegative(DialogInterface dialog) {
+                                dialog.dismiss();
+                            }
+
+                        });
                 break;
 
             case R.id.tv_accept:
@@ -193,13 +213,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
                         redirectToDetail(data.getJobDetailModel().getId());
 
-                    } else if (data.getSeen() == 0) {
+                    } else if (data.getSeen() == NOTIFICATION_UNREAD) {
                         updateSeenStatus(position, false);
 
                     } else {
-                        /**
-                         * In case of recruiter deleted the job then user doesn't get the
-                         * jobDetailModel.
+                        /*
+                          In case of recruiter deleted the job then user doesn't get the
+                          jobDetailModel.
                          */
                         if (data.getJobDetailModel() != null) {
                             redirectToDetail(data.getJobDetailModel().getId());
@@ -226,7 +246,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             public void onSuccess(BaseResponse response) {
                 if (response.getStatus() == 1) {
                     NotificationData data = mNotificationList.get(position);
-                    data.setSeen(1);
+                    data.setSeen(NOTIFICATION_READ);
                     notifyItemChanged(position);
 
                     if (!isInvite) {
@@ -267,7 +287,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         }
 
                     } else {
-                        ((BaseActivity) mContext).showToast(response.getMessage());
+                        Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -316,18 +336,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.app_name), mContext.getString(R.string.msg_warning_delete_notification), new Alert.OnAlertClickListener() {
+        Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok),
+                mContext.getString(R.string.txt_cancel),
+                mContext.getString(R.string.txt_alert_title),
+                mContext.getString(R.string.msg_warning_delete_notification),
+                new Alert.OnAlertClickListener() {
 
-            @Override
-            public void onPositive(DialogInterface dialog) {
-                callDeleteNotificationApi(position);
-            }
+                    @Override
+                    public void onPositive(DialogInterface dialog) {
+                        callDeleteNotificationApi(position);
+                    }
 
-            @Override
-            public void onNegative(DialogInterface dialog) {
-                dialog.dismiss();
-            }
-        });
+                    @Override
+                    public void onNegative(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
 
         return false;
     }

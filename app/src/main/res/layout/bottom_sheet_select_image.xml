@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,17 +26,18 @@
         android:background="@color/color_bottom_sheet_text"
         />
     <com.appster.dentamatch.widget.CustomTextView
-        android:id="@+id/bottom_sheet_tv_gallray"
+        android:id="@+id/bottom_sheet_tv_gallery"
         style="@style/text_view_normal"
         android:layout_width="match_parent"
         android:text="@string/label_choose_gallery"
         android:textColor="@color/color_bottom_sheet_text"
         android:textSize="@dimen/text_size_large"
         android:drawablePadding="@dimen/padding_drawable"
-        android:drawableStart="@drawable/ic_gallary"
+        android:drawableStart="@drawable/ic_gallery"
         android:layout_marginStart="@dimen/margin_20"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/margin_normal"
         android:layout_marginBottom="@dimen/margin_normal"
         />
 </LinearLayout>
+</layout>

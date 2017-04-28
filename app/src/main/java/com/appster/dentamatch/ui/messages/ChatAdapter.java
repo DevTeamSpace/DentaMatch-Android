@@ -85,16 +85,16 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
                 holder.tvTime.setLayoutParams(timeParams);
 
             } else {
-                /**
-                 * Update date label for chat messages.
+                /*
+                  Update date label for chat messages.
                  */
                 holder.tvDateLabel.setVisibility(View.VISIBLE);
                 holder.tvMessage.setVisibility(View.GONE);
                 holder.tvTime.setVisibility(View.GONE);
-                holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getmMessageTime()));
+                holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getMessageTime()));
             }
 
-            holder.tvTime.setText(Utils.convertUTCtoLocalFromTimeStamp(mChatMessages.get(position).getmMessageTime()));
+            holder.tvTime.setText(Utils.convertUTCtoLocalFromTimeStamp(mChatMessages.get(position).getMessageTime()));
 
 
         }
@@ -102,7 +102,7 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
 
     @Override
     public int getItemCount() {
-        if (mChatMessages != null) {
+        if (mChatMessages != null && mChatMessages.isValid()) {
             return mChatMessages.size();
         } else {
             return 0;

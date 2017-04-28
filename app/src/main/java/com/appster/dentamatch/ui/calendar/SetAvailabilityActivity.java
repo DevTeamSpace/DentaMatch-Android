@@ -83,7 +83,6 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             case R.id.txv_toolbar_general_right:
                 if (checkValidation()) {
                     saveAvailability(prepareSaveRequest());
-                    finish();
                 }
 
                 break;
@@ -267,7 +266,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             showToast(getString(R.string.alert_select_job_type));
             return false;
         }
-        if (mIsPartTime && (!mIsSunday && !mIsMonday &&!mIsTuesday &&!mIsWednesday && !mIsThursday && !mIsFriday && !mIsSaturday && !mIsSunday)) {
+        if (mIsPartTime && (!mIsSunday && !mIsMonday && !mIsTuesday && !mIsWednesday && !mIsThursday && !mIsFriday && !mIsSaturday && !mIsSunday)) {
             showToast(getString(R.string.alert_invalid_part_time));
 
             return false;

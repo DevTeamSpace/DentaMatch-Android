@@ -27,7 +27,6 @@ import java.util.List;
 public class SubSkillsActivity extends BaseActivity implements View.OnClickListener {
     private ActivitySubSkillsBinding mBinder;
 
-    private SubSkillsAdapter mSkillsAdapter;
     private ArrayList<SubSkillModel> subSkills;
 
     @Override
@@ -110,7 +109,7 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
     private void setAdapter(List<SubSkillModel> skillArrayList) {
         if (skillArrayList == null) return;
 
-        mSkillsAdapter = new SubSkillsAdapter(skillArrayList, this);
+        SubSkillsAdapter mSkillsAdapter = new SubSkillsAdapter(skillArrayList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mBinder.recyclerSkills.setLayoutManager(layoutManager);
         mBinder.recyclerSkills.setItemAnimator(new DefaultItemAnimator());

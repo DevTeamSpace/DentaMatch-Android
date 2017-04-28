@@ -15,6 +15,7 @@
         android:layout_toStartOf="@+id/cb_job_selection"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingTop="@dimen/margin_small"
         android:textColor="@color/cerulean_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,7 +101,6 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginStart="@dimen/margin_33"
         android:background="@color/line_divider"
         android:layout_below="@+id/tv_job_doc_time"
         android:layout_marginTop="@dimen/margin_15"

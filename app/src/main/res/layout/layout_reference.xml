@@ -8,7 +8,7 @@
         android:orientation="vertical">
 
         <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/tv_refrence_count"
+            android:id="@+id/tv_reference_count"
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_19"
@@ -86,7 +86,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/tv_refrence_delete"
+            android:id="@+id/tv_reference_delete"
             style="@style/text_view_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_12"

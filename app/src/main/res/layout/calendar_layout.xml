@@ -38,8 +38,8 @@
                 style="@style/text_view_normal"
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/margin_small"
                 android:text="@string/txt_current_date"
+                android:textAllCaps="true"
                 android:textColor="@color/grayish_brown_color"
                 app:customFont="@string/font_regular" />
 
@@ -72,8 +72,8 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/sun"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:text="@string/calendar_sun"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -85,8 +85,8 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/mon"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:text="@string/calendar_mon"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -98,8 +98,8 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/tue"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:text="@string/calendar_tue"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -111,8 +111,8 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/wed"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:text="@string/calendar_wed"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -124,8 +124,8 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/thu"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:text="@string/calendar_thu"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -136,8 +136,8 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/fri"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:text="@string/calendar_fri"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
 
             <com.appster.dentamatch.widget.CustomTextView
@@ -148,8 +148,8 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/sat"
-                android:textColor="@color/graish_brown_opacity_color"
+                android:text="@string/calendar_sat"
+                android:textColor="@color/grayish_brown_opacity_color"
                 android:textStyle="bold" />
         </LinearLayout>
 

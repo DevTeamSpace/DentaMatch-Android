@@ -17,10 +17,10 @@ import com.appster.dentamatch.widget.CustomTextView;
  */
 public class BottomSheetPicker {
     private BottomSheetDialog mBottomSheetDialog;
-    private YearSelectionListener mYearslYearSelectionListener;
+    private YearSelectionListener mYearsYearSelectionListener;
 
     public BottomSheetPicker(final Context context, YearSelectionListener yearSelectionListener, int year, int month) {
-        mYearslYearSelectionListener = yearSelectionListener;
+        mYearsYearSelectionListener = yearSelectionListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
         View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_picker, null);
         CustomTextView tvCancel = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
@@ -57,7 +57,7 @@ public class BottomSheetPicker {
                 if (pickerYear.getValue() == 0 && pickerMonth.getValue() == 0) {
                     Utils.showToast(context, context.getString(R.string.invalid_exp_selection));
                 } else {
-                    mYearslYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
+                    mYearsYearSelectionListener.onExperienceSection(pickerYear.getValue(), pickerMonth.getValue());
                 }
 
             }

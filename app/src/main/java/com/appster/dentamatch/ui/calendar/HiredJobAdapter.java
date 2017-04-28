@@ -168,7 +168,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
         switch (v.getId()) {
 
             case R.id.lay_item_job_list:
-                int jobID = mJobListData.get((int) v.getTag()).getRecruiterJobId();
+                int jobID = mJobListData.get((int) v.getTag()).getId();
                 mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
                         .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
                         .putExtra(Constants.INTENT_KEY.FROM_WHERE, true));

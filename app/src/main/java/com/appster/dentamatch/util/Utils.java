@@ -74,7 +74,7 @@ public class Utils {
     private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
-    private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // DATE FORMAT : 09:46 am
+    private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mma", Locale.getDefault()); // DATE FORMAT : 09:46 am
     private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
     private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
 
@@ -132,16 +132,18 @@ public class Utils {
 
     public static Address getReverseGeoCode(Context ct, LatLng latLng) {
         Address address = null;
-
         if (ct != null) {
-            Geocoder geocoder = new Geocoder(ct);
-            try {
-                List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                if (addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
-                    address = addressList.get(0);
+
+            if (Utils.isConnected(ct)) {
+                Geocoder geocoder = new Geocoder(ct);
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    if (addressList != null && addressList.size() > 0 && addressList.get(0) != null) {
+                        address = addressList.get(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
 
@@ -218,7 +220,7 @@ public class Utils {
     }
 
     /**
-     * to set spnanble string forgrounf color
+     * to set spannable string forgrounf color
      *
      * @param spanColor
      * @param start
@@ -372,9 +374,13 @@ public class Utils {
     }
 
     public static String convertUTCtoLocalFromTimeStamp(String UTCDateTime) {
+
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
         chatTimeFormat.setTimeZone(TimeZone.getDefault());
+        DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
+        symbols.setAmPmStrings(new String[]{"am", "pm"});
+        chatTimeFormat.setDateFormatSymbols(symbols);
         return chatTimeFormat.format(date);
     }
 
@@ -463,11 +469,23 @@ public class Utils {
 
 
     public static String getExpYears(int month) {
+        String yearLabel = "", monthLabel = "";
 
-        if (month != 0) {
-            return month / 12 + " " + DentaApp.getInstance().getString(R.string.year) + " " + month % 12 + " " + DentaApp.getInstance().getString(R.string.month);
+        if(month == 1){
+            yearLabel = DentaApp.getInstance().getString(R.string.txt_single_year);
+        }else{
+            yearLabel = DentaApp.getInstance().getString(R.string.txt_multiple_years);
         }
-        return "";
+
+        if(month % 12 == 1){
+            monthLabel = DentaApp.getInstance().getString(R.string.txt_single_month);
+        }else {
+            monthLabel = DentaApp.getInstance().getString(R.string.txt_multiple_months);
+        }
+
+
+        return month / 12 +" "+ yearLabel + " " + month % 12 + " " + monthLabel ;
+
     }
 
     public static int getCurrentYear() {
@@ -513,8 +531,8 @@ public class Utils {
         NetworkInfo netInfo = null;
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-             netInfo = cm.getActiveNetworkInfo();
-        }catch (Exception e){
+            netInfo = cm.getActiveNetworkInfo();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -560,31 +578,31 @@ public class Utils {
     public static void showNotification(Context ct, String title, String message, Intent intent, String notificationId) {
         if (ct != null) {
 
-        int uniqueID = (int) (System.currentTimeMillis() & 0xfffffff);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            int uniqueID = (int) (System.currentTimeMillis() & 0xfffffff);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
+            Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        builder.setContentTitle(title)
-                .setSound(defaultSound)
-                .setContentText(message)
-                .setPriority(Notification.PRIORITY_HIGH)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setSmallIcon(R.drawable.bg_notification_icon)
-                .setColor(ContextCompat.getColor(ct, R.color.colorPrimary))
-                .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(), R.mipmap.ic_launcher))
-                .setAutoCancel(true);
+            builder.setContentTitle(title)
+                    .setSound(defaultSound)
+                    .setContentText(message)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .setSmallIcon(R.drawable.bg_notification_icon)
+                    .setColor(ContextCompat.getColor(ct, R.color.colorPrimary))
+                    .setLargeIcon(BitmapFactory.decodeResource(ct.getResources(), R.mipmap.ic_launcher))
+                    .setAutoCancel(true);
 
 
-        if (intent != null) {
-            PendingIntent Pendingintent = PendingIntent.getActivity(ct, uniqueID, intent, PendingIntent.FLAG_ONE_SHOT);
-            builder.setContentIntent(Pendingintent);
-        }
+            if (intent != null) {
+                PendingIntent Pendingintent = PendingIntent.getActivity(ct, uniqueID, intent, PendingIntent.FLAG_ONE_SHOT);
+                builder.setContentIntent(Pendingintent);
+            }
 
-        NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = builder.build();
-        notification.defaults = Notification.DEFAULT_VIBRATE;
-        manager.notify(Integer.parseInt(notificationId), notification);
+            NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = builder.build();
+            notification.defaults = Notification.DEFAULT_VIBRATE;
+            manager.notify(Integer.parseInt(notificationId), notification);
         }
 
     }
@@ -686,14 +704,31 @@ public class Utils {
         }
     }
 
-    public static Date getDate(String dateStr, String dateFormet) {
+    public static Date getDate(String dateStr, String dateFormat) {
         try {
             SimpleDateFormat inputFormat;
-            if (dateFormet != null) {
-                inputFormat = new SimpleDateFormat(dateFormet, Locale.getDefault());
+            if (dateFormat != null) {
+                inputFormat = new SimpleDateFormat(dateFormat);
+            } else {
+                inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            }
+
+            return inputFormat.parse(dateStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Date getDateNotification(String dateStr, String dateFormat) {
+        try {
+            SimpleDateFormat inputFormat;
+            if (dateFormat != null) {
+                inputFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
             } else {
                 inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             }
+            inputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
             return inputFormat.parse(dateStr);
         } catch (Exception e) {
@@ -734,14 +769,25 @@ public class Utils {
 
     public static String getDuration(Date createdDate, Context context) {
         String time = "";
-        try {
-            FullDateFormat.setTimeZone(TimeZone.getDefault());
-            String currentTime = FullDateFormat.format(new Date(System.currentTimeMillis()));
-            Date currentDateTime = FullDateFormat.parse(currentTime);
+//            FullDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            Date currentDateTime = new Date();
+//            String createdDateString = FullDateFormat.format(createdDate);
+//            FullDateFormat.setTimeZone(TimeZone.getDefault());
+//            Date convertedCreatedDate = FullDateFormat.parse(createdDateString);
 
-            long currentMillis = currentDateTime.getTime();
-            long createMillis = createdDate.getTime();
+//            long currentMillis = currentDateTime.getTime();
+
+        Date currentDate = new Date();
+//            FullDateFormat.setTimeZone(TimeZone.getDefault());
+//            String convertedCreatedDate = FullDateFormat.format(createdDate);
+//            Date parsedDate = FullDateFormat.parse(convertedCreatedDate);
+
+        long currentMillis = currentDate.getTime();
+        long createMillis = createdDate.getTime();
+
+        if (currentMillis >= createMillis) {
             long reqTime = (currentMillis - createMillis);
+
             long sec = reqTime / 1000;
             time = sec + " " + context.getString(R.string.sec);
 
@@ -776,11 +822,11 @@ public class Utils {
                 }
             }
 
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } else {
+            time = "20 sec ago";
         }
         return time;
+
+
     }
-
-
 }

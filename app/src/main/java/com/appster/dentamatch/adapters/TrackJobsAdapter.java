@@ -44,6 +44,14 @@ import retrofit2.Call;
  */
 
 public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
+    private final int JOB_SAVED = 1;
+    private static final int ADDED_PART_TIME = 1;
+    private static final int LINE_COUNT_ONE = 1;
+    private static final int VIEW_DELAY_TIME = 100;
+    private static final int DURATION_TIME_0 = 0;
+    private static final int DURATION_TIME_1 = 1;
+
+
     private ItemTrackJobListBinding mBinding;
     private Context mContext;
     private ArrayList<SearchJobModel> mJobListData;
@@ -74,14 +82,14 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
             if (mIsSaved) {
                 holder.cbSelect.setVisibility(View.VISIBLE);
-                holder.cbSelect.setChecked(data.getIsSaved() == 1);
+                holder.cbSelect.setChecked(data.getIsSaved() == JOB_SAVED);
                 holder.ivChat.setVisibility(View.GONE);
                 holder.cbSelect.setTag(position);
                 holder.cbSelect.setOnClickListener(this);
                 holder.itemView.setOnLongClickListener(null);
 
             } else if (mIsApplied) {
-                holder.cbSelect.setVisibility(View.GONE);
+                holder.cbSelect.setVisibility(View.INVISIBLE);
                 holder.ivChat.setVisibility(View.GONE);
                 holder.cbSelect.setTag(null);
                 holder.cbSelect.setOnClickListener(null);
@@ -89,7 +97,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 holder.itemView.setOnLongClickListener(this);
 
             } else {
-                holder.cbSelect.setVisibility(View.GONE);
+                holder.cbSelect.setVisibility(View.INVISIBLE);
                 holder.ivChat.setVisibility(View.VISIBLE);
                 holder.cbSelect.setTag(null);
                 holder.cbSelect.setOnClickListener(null);
@@ -103,32 +111,32 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
-                if (data.getIsMonday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_monday));
+                if (data.getIsMonday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.mon));
                 }
 
-                if (data.getIsTuesday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_tuesday));
+                if (data.getIsTuesday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.tue));
                 }
 
-                if (data.getIsWednesday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_wednesday));
+                if (data.getIsWednesday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.wed));
                 }
 
-                if (data.getIsThursday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_thursday));
+                if (data.getIsThursday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.thu));
                 }
 
-                if (data.getIsFriday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_friday));
+                if (data.getIsFriday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.fri));
                 }
 
-                if (data.getIsSaturday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_saturday));
+                if (data.getIsSaturday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.sat));
                 }
 
-                if (data.getIsSunday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_sunday));
+                if (data.getIsSunday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.sun));
                 }
 
                 String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
@@ -138,21 +146,28 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.addRule(RelativeLayout.END_OF, holder.tvJobType.getId());
                 params.addRule(RelativeLayout.START_OF, holder.tvDistance.getId());
-                params.setMargins(Utils.dpToPx(mContext, 12), 0, Utils.dpToPx(mContext, 10), 0);
+                params.setMargins(Utils.dpToPx(mContext,
+                        mContext.getResources().getInteger(R.integer.margin_12)),
+                        mContext.getResources().getInteger(R.integer.margin_0),
+                        Utils.dpToPx(mContext, mContext.getResources().getInteger(R.integer.margin_10)),
+                        mContext.getResources().getInteger(R.integer.margin_0));
 
                 holder.tvDate.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (holder.tvDate.getLineCount() == 1) {
+                        if (holder.tvDate.getLineCount() == LINE_COUNT_ONE) {
                             params.addRule(RelativeLayout.ALIGN_BOTTOM, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
                         } else {
                             params.addRule(RelativeLayout.ALIGN_TOP, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
-                            holder.tvDate.setPadding(0, 4, 0, 0);
+                            holder.tvDate.setPadding(mContext.getResources().getInteger(R.integer.padding_0),
+                                    mContext.getResources().getInteger(R.integer.padding_4),
+                                    mContext.getResources().getInteger(R.integer.padding_0),
+                                    mContext.getResources().getInteger(R.integer.padding_0));
                         }
                     }
-                }, 100);
+                }, VIEW_DELAY_TIME);
 
 
             } else if (data.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
@@ -167,13 +182,15 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
             }
 
             holder.tvDocAddress.setText(data.getAddress());
-            if (data.getDays() == 0) {
+
+            if (data.getDays() == DURATION_TIME_0) {
                 holder.tvDuration.setText(mContext.getString(R.string.text_todays));
 
             } else {
-                String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+                String endMessage = data.getDays() > DURATION_TIME_1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
                 holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             }
+
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDocName.setText(data.getOfficeName());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +199,8 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                     int jobID = mJobListData.get((int) view.getTag()).getId();
 
                     mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                            .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID));
+                            .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
                 }
             });
         }
@@ -203,21 +221,25 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         switch (v.getId()) {
             case R.id.cb_job_selection:
                 final int position = (int) v.getTag();
-                Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.txt_alert_title), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
-                    @Override
-                    public void onPositive(DialogInterface dialog) {
-                        unSaveJob(mJobListData.get(position).getId(), position);
-                    }
+                Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok),
+                        mContext.getString(R.string.txt_cancel),
+                        mContext.getString(R.string.txt_alert_title),
+                        mContext.getString(R.string.msg_unsave_warning),
+                        new Alert.OnAlertClickListener() {
+                            @Override
+                            public void onPositive(DialogInterface dialog) {
+                                unSaveJob(mJobListData.get(position).getId(), position);
+                            }
 
-                    @Override
-                    public void onNegative(DialogInterface dialog) {
-                        /**
-                         * change the star uncheck by notifying the item.
+                            @Override
+                            public void onNegative(DialogInterface dialog) {
+                        /*
+                          change the star unCheck by notifying the item.
                          */
-                        notifyItemChanged(position);
-                        dialog.dismiss();
-                    }
-                });
+                                notifyItemChanged(position);
+                                dialog.dismiss();
+                            }
+                        });
 
             default:
                 break;
@@ -234,29 +256,36 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
             @Override
             public void onSuccess(BaseResponse response) {
-                ((BaseActivity) mContext).showToast(response.getMessage());
+                try {
+                    ((BaseActivity) mContext).showToast(response.getMessage());
 
-                if (response.getStatus() == 1) {
-                    mJobListData.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, mJobListData.size());
+                    if (response.getStatus() == 1) {
+                        mJobListData.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, mJobListData.size());
 
-                    /**
-                     * Update the search job screens for un-save events.
+                    /*
+                      Update the search job screens for un-save events.
                      */
-                    EventBus.getDefault().post(new SaveUnSaveEvent(JobID, 0));
+                        EventBus.getDefault().post(new SaveUnSaveEvent(JobID, 0));
 
-                    /**
-                     * Notify the helper class to update the data from the server.
+                    /*
+                      Notify the helper class to update the data from the server.
                      */
-                    TrackJobsDataHelper.getInstance().updateSavedData();
+                        TrackJobsDataHelper.getInstance().updateSavedData();
+                    } else {
+                        notifyItemChanged(position);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    notifyItemChanged(position);
                 }
 
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
+                notifyItemChanged(position);
             }
         });
     }
@@ -268,7 +297,8 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 mContext.getString(R.string.txt_ok),
                 mContext.getString(R.string.txt_cancel),
                 mContext.getString(R.string.txt_alert_title),
-                mContext.getString(R.string.alert_cancel_job), new Alert.OnAlertClickListener() {
+                mContext.getString(R.string.alert_cancel_job),
+                new Alert.OnAlertClickListener() {
                     @Override
                     public void onPositive(DialogInterface dialog) {
                         CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
@@ -287,14 +317,18 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
     }
 
     public void cancelJob(int JobID) {
-        for (int i = 0; i < mJobListData.size(); i++) {
+        try {
+            for (int i = 0; i < mJobListData.size(); i++) {
 
-            if (mJobListData.get(i).getId() == JobID) {
-                mJobListData.remove(i);
-                notifyItemRemoved(i);
-                notifyItemRangeChanged(i, mJobListData.size());
-                break;
+                if (mJobListData.get(i).getId() == JobID) {
+                    mJobListData.remove(i);
+                    notifyItemRemoved(i);
+                    notifyItemRangeChanged(i, mJobListData.size());
+                    break;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

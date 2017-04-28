@@ -29,7 +29,7 @@ public final class BitmapUtils {
 
     private static final String TEMP_IMG_DIRECTORY = "Your App name";
     private static final String IMG_EXTENSION = ".jpg";
-    static final int DEFAULT_PHOTO_WIDH = 540;
+    static final int DEFAULT_PHOTO_WIDTH = 540;
     static final int DEFAULT_PHOTO_HEIGHT = 960;
 
     private BitmapUtils() {

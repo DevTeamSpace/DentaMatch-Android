@@ -7,12 +7,12 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.appster.dentamatch.R;
@@ -57,10 +57,12 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     private byte imageSourceType;
     private ActivityUpdateProfileBinding mBinding;
     private ProfileResponseData mProfileData;
-    private String mAddress;
-    private String mFilePath;
     private String mSelectedLat;
     private String mSelectedLng;
+    private String mSelectedCity;
+    private String mSelectedState;
+    private String mSelectedCountry;
+
     private int mSelectedJobTitleID;
 
     @Override
@@ -79,6 +81,14 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         mBinding.etJobTitle.setCursorVisible(false);
         setViewData();
 
+        mBinding.etDesc.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -92,7 +102,24 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mSelectedLng = mProfileData.getUser().getLongitude();
             mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
 
-            if (mSelectedJobTitleID == 0) {
+            mSelectedCity = mProfileData.getUser().getPreferredCity();
+            mSelectedState = mProfileData.getUser().getPreferredState();
+            mSelectedCountry = mProfileData.getUser().getPreferredCountry();
+
+            if(TextUtils.isEmpty(mSelectedCity)){
+                mSelectedCity = "";
+            }
+
+            if(TextUtils.isEmpty(mSelectedState)){
+                mSelectedState = "";
+            }
+
+            if(TextUtils.isEmpty(mSelectedCountry)){
+                mSelectedCountry = "";
+            }
+
+
+                if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
             } else {
                 mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
@@ -149,6 +176,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                     intent.putExtra(Constants.EXTRA_LONGITUDE, mProfileData.getUser().getLongitude());
                     intent.putExtra(Constants.EXTRA_POSTAL_CODE, mProfileData.getUser().getPostalCode());
                     intent.putExtra(Constants.EXTRA_PLACE_NAME, mProfileData.getUser().getPreferredJobLocation());
+                    intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mSelectedCountry);
+                    intent.putExtra(Constants.EXTRA_CITY_NAME, mSelectedCity);
+                    intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
                 }
 
                 startActivityForResult(intent, REQUEST_CODE_LOCATION);
@@ -166,18 +196,35 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        String mFilePath;
         if (requestCode == REQUEST_CODE_LOCATION) {
             if (resultCode == RESULT_OK) {
                 if (data != null) {
-                    mAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
+                    String mAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
                     String finalAddress = mAddress.concat(" - ").concat(data.getStringExtra(Constants.EXTRA_POSTAL_CODE));
                     mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
                     mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
+                    mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
+                    mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
+                    mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
 
                     if (!TextUtils.isEmpty(finalAddress)) {
                         mBinding.inputLayoutLocation.setHintEnabled(true);
                         mBinding.inputLayoutLocation.setHintAnimationEnabled(true);
                         mBinding.etLocation.setText(finalAddress);
+                    }
+
+                    if(TextUtils.isEmpty(mSelectedCity)){
+                        mSelectedCity = "";
+                    }
+
+                    if(TextUtils.isEmpty(mSelectedState)){
+                        mSelectedState = "";
+                    }
+
+                    if(TextUtils.isEmpty(mSelectedCountry)){
+                        mSelectedCountry = "";
                     }
                 }
             }
@@ -219,13 +266,13 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     }
 
     private void validateAndUpdate() {
-        if (TextUtils.isEmpty(mBinding.etFname.getText())) {
+        if (TextUtils.isEmpty(mBinding.etFname.getText().toString().trim())) {
             showToast(getString(R.string.error_no_first_name));
 
-        } else if (TextUtils.isEmpty(mBinding.etLname.getText())) {
+        } else if (TextUtils.isEmpty(mBinding.etLname.getText().toString().trim())) {
             showToast(getString(R.string.error_no_last_name));
 
-        } else if (TextUtils.isEmpty(mBinding.etJobTitle.getText())) {
+        } else if (mSelectedJobTitleID == 0) {
             showToast(getString(R.string.error_no_job_type));
 
         } else if (mBinding.etJobTitle.getText().toString().equalsIgnoreCase(getString(R.string.txt_job_title_hint))) {
@@ -234,10 +281,23 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
             showToast(getString(R.string.error_no_location));
 
-        } else if (TextUtils.isEmpty(mBinding.etDesc.getText())) {
+        } else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
             showToast(getString(R.string.error_no_description));
 
-        } else {
+        }
+
+//        else if(TextUtils.isEmpty(mSelectedCountry)) {
+//            showToast(getString(R.string.msg_empty_country));
+//
+//        }else if (TextUtils.isEmpty(mSelectedCity)){
+//            showToast(getString(R.string.msg_empty_city));
+//
+//        }else if (TextUtils.isEmpty(mSelectedState)){
+//            showToast(getString(R.string.msg_empty_state));
+//
+//        }
+
+        else {
             updateProfileData();
         }
     }
@@ -248,6 +308,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
         request.setPreferredJobLocation(Utils.getStringFromEditText(mBinding.etLocation));
         request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
+        request.setCity(mSelectedCity);
+        request.setState(mSelectedState);
+        request.setCountry(mSelectedCountry);
         request.setLatitude(mSelectedLat);
         request.setLongitude(mSelectedLng);
         request.setJobTitleID(mSelectedJobTitleID);
@@ -377,22 +440,22 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private void getImageFromGallery() {
-        Intent gIntent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        gIntent.setType("image/*");
-        startActivityForResult(
-                Intent.createChooser(gIntent, "Select File"),
-                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-    }
-
-    private void takePhoto() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
-    }
+//    private void getImageFromGallery() {
+//        Intent gIntent = new Intent(
+//                Intent.ACTION_PICK,
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        gIntent.setType("image/*");
+//        startActivityForResult(
+//                Intent.createChooser(gIntent, "Select File"),
+//                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+//    }
+//
+//    private void takePhoto() {
+//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
+//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+//        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+//    }
 
     @Override
     public void onJobTitleSelection(String title, int titleId, int position) {

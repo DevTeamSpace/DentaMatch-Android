@@ -31,9 +31,13 @@ public class UserModel implements Parcelable{
     @SerializedName("zipcode")
     private String postalCode;
     private String preferredJobLocation;
+    private String preferredCity;
+    private String preferredState;
+    private String preferredCountry;
     private int id;
 
-    private UserModel(Parcel in) {
+
+    protected UserModel(Parcel in) {
         email = in.readString();
         status = in.readString();
         firstName = in.readString();
@@ -53,36 +57,10 @@ public class UserModel implements Parcelable{
         longitude = in.readString();
         postalCode = in.readString();
         preferredJobLocation = in.readString();
+        preferredCity = in.readString();
+        preferredState = in.readString();
+        preferredCountry = in.readString();
         id = in.readInt();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(status);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(jobTitle);
-        dest.writeInt(jobTitleId);
-        dest.writeString(profileImage);
-        dest.writeString(profilePic);
-        dest.writeString(userName);
-        dest.writeString(accountID);
-        dest.writeString(accountType);
-        dest.writeString(dentalStateBoard);
-        dest.writeString(licenseNumber);
-        dest.writeString(state);
-        dest.writeString(aboutMe);
-        dest.writeString(latitude);
-        dest.writeString(longitude);
-        dest.writeString(postalCode);
-        dest.writeString(preferredJobLocation);
-        dest.writeInt(id);
     }
 
     public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
@@ -259,5 +237,61 @@ public class UserModel implements Parcelable{
 
     public void setPreferredJobLocation(String preferredJobLocation) {
         this.preferredJobLocation = preferredJobLocation;
+    }
+
+    public String getPreferredCity() {
+        return preferredCity;
+    }
+
+    public void setPreferredCity(String preferredCity) {
+        this.preferredCity = preferredCity;
+    }
+
+    public String getPreferredState() {
+        return preferredState;
+    }
+
+    public void setPreferredState(String preferredState) {
+        this.preferredState = preferredState;
+    }
+
+    public String getPreferredCountry() {
+        return preferredCountry;
+    }
+
+    public void setPreferredCountry(String preferredCountry) {
+        this.preferredCountry = preferredCountry;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(status);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(jobTitle);
+        dest.writeInt(jobTitleId);
+        dest.writeString(profileImage);
+        dest.writeString(profilePic);
+        dest.writeString(userName);
+        dest.writeString(accountID);
+        dest.writeString(accountType);
+        dest.writeString(dentalStateBoard);
+        dest.writeString(licenseNumber);
+        dest.writeString(state);
+        dest.writeString(aboutMe);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(postalCode);
+        dest.writeString(preferredJobLocation);
+        dest.writeString(preferredCity);
+        dest.writeString(preferredState);
+        dest.writeString(preferredCountry);
+        dest.writeInt(id);
     }
 }

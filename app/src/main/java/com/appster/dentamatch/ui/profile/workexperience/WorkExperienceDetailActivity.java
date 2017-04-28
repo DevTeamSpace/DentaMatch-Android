@@ -46,19 +46,34 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         mBinder.tvAddMoreReference.setOnClickListener(this);
         mBinder.tvAddMoreExperience.setOnClickListener(this);
         mBinder.btnNextDetailWorkExp.setOnClickListener(this);
-        mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setOnClickListener(this);
+        mBinder.includeLayoutWorkExp.tvExperienceWorkExp.setOnClickListener(this);
         mBinder.toolbarWorkExpDetail.ivToolBarLeft.setOnClickListener(this);
-        mBinder.includeRefrence2.tvRefrenceDelete.setOnClickListener(this);
+        mBinder.includeReference2.tvReferenceDelete.setOnClickListener(this);
 
         try {
+            String yearLabel = "", monthLabel = "";
+
+            if(PreferenceUtil.getYear() == 1){
+                yearLabel = getString(R.string.txt_single_year);
+            }else{
+                yearLabel = getString(R.string.txt_multiple_years);
+            }
+
+            if(PreferenceUtil.getMonth() == 1){
+                monthLabel = getString(R.string.txt_single_month);
+            }else {
+                monthLabel = getString(R.string.txt_multiple_months);
+            }
+
             String workExp = String.valueOf(PreferenceUtil.getYear())
                     .concat(" ")
-                    .concat(getString(R.string.year))
+                    .concat(yearLabel)
                     .concat(" ")
                     .concat(String.valueOf(PreferenceUtil.getMonth()))
                     .concat(" ")
-                    .concat(getString(R.string.month));
-            mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(workExp);
+                    .concat(monthLabel);
+
+            mBinder.includeLayoutWorkExp.tvExperienceWorkExp.setText(workExp);
             expMonth = PreferenceUtil.getYear() * 12 + PreferenceUtil.getMonth();
 
         } catch (Exception ex) {
@@ -83,9 +98,9 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                 if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceName))) {
                     Utils.showToast(getApplicationContext(), getString(R.string.complete_reference));
                 } else {
-                    mBinder.includeRefrence2.tvRefrenceDelete.setVisibility(View.VISIBLE);
+                    mBinder.includeReference2.tvReferenceDelete.setVisibility(View.VISIBLE);
                     mBinder.tvAddMoreReference.setVisibility(View.GONE);
-                    mBinder.includeRefrence2.tvRefrenceCount.setText(getString(R.string.reference2));
+                    mBinder.includeReference2.tvReferenceCount.setText(getString(R.string.reference2));
                     mBinder.layoutReference2.setVisibility(View.VISIBLE);
                 }
 
@@ -95,7 +110,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                 onBackPressed();
                 break;
 
-            case R.id.tv_refrence_delete:
+            case R.id.tv_reference_delete:
                 mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
                 mBinder.layoutReference2.setVisibility(View.GONE);
                 break;
@@ -125,17 +140,17 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                             Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceName),
                             Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceMobile),
                             Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceEmail),
-                            Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
-                            Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName),
-                            Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceMobile)));
+                            Utils.getStringFromEditText(mBinder.includeReference2.etOfficeReferenceEmail),
+                            Utils.getStringFromEditText(mBinder.includeReference2.etOfficeReferenceName),
+                            Utils.getStringFromEditText(mBinder.includeReference2.etOfficeReferenceMobile)));
                 }
 
                 break;
 
-            case R.id.tv_experince_work_exp:
+            case R.id.tv_experience_work_exp:
                 int year = 0, month = 0;
-                if (!TextUtils.isEmpty(mBinder.includeLayoutWorkExp.tvExperinceWorkExp.getText().toString())) {
-                    String split[] = mBinder.includeLayoutWorkExp.tvExperinceWorkExp.getText().toString().split(" ");
+                if (!TextUtils.isEmpty(mBinder.includeLayoutWorkExp.tvExperienceWorkExp.getText().toString())) {
+                    String split[] = mBinder.includeLayoutWorkExp.tvExperienceWorkExp.getText().toString().split(" ");
                     year = Integer.parseInt(split[0]);
                     month = Integer.parseInt(split[2]);
                 }
@@ -156,15 +171,29 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 
     @Override
     public void onExperienceSection(int year, int month) {
+        String yearLabel = "", monthLabel = "";
+
+        if(year == 1){
+            yearLabel = getString(R.string.txt_single_year);
+        }else{
+            yearLabel = getString(R.string.txt_multiple_years);
+        }
+
+        if(month == 1){
+            monthLabel = getString(R.string.txt_single_month);
+        }else {
+            monthLabel = getString(R.string.txt_multiple_months);
+        }
+
             String workExp =  String.valueOf(year)
                     .concat(" ")
-                    .concat(getString(R.string.year))
+                    .concat(yearLabel)
                     .concat(" ")
                     .concat(String.valueOf(month))
                     .concat(" ")
-                    .concat(getString(R.string.month));
+                    .concat(monthLabel);
 
-        mBinder.includeLayoutWorkExp.tvExperinceWorkExp.setText(workExp);
+        mBinder.includeLayoutWorkExp.tvExperienceWorkExp.setText(workExp);
         expMonth = year * 12 + month;
     }
 

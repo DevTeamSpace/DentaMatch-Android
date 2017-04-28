@@ -50,7 +50,7 @@
                     android:layout_below="@+id/fl_profile_pic_id"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_15"
-                    android:text="@string/accept"
+                    android:text="@string/txt_accept"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_header"
                     app:customFont="@string/font_regular" />
@@ -85,7 +85,7 @@
                 android:text="@string/profile1_text"
                 android:textColor="@color/black_color"
                 android:textSize="@dimen/text_size_16"
-                app:customFont="@string/font_medium" />
+                app:customFont="@string/font_light" />
 
 
             <android.support.design.widget.TextInputLayout
@@ -102,7 +102,7 @@
                     style="@style/edit_text_view_normal"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
-                    android:background="@drawable/bg_slection_edit_text"
+                    android:background="@drawable/bg_selection_edit_text"
                     android:drawablePadding="@dimen/padding_drawable"
                     android:drawableEnd="@drawable/ic_down_arrow"
                     android:focusable="false"
@@ -128,7 +128,7 @@
                 android:layout_marginStart="@dimen/margin_normal"
                 android:background="@null"
                 android:gravity="center"
-                android:text="@string/lable_not_now"
+                android:text="@string/label_not_now"
                 android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_normal"
                 app:customBackground="@string/font_bold" />

@@ -42,6 +42,7 @@ public class DBHelper {
         }
 
         return realmDBHelper;
+
     }
 
     /**
@@ -68,7 +69,6 @@ public class DBHelper {
             LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
             return null;
         }
-
         return mRealmInstance.where(DBModel.class).findAllSorted("lastMsgTime", Sort.DESCENDING);
     }
 
@@ -121,7 +121,7 @@ public class DBHelper {
                     if (!checkIfMessageAlreadyExists(recruiterId, userMessage)) {
 
 //                    retrievedModel.setName(recruiterName);
-                        retrievedModel.setLastMsgTime(userMessage.getmMessageTime());
+                        retrievedModel.setLastMsgTime(userMessage.getMessageTime());
                         retrievedModel.setLastMessage(userMessage.getMessage());
                         retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
 
@@ -129,10 +129,10 @@ public class DBHelper {
                          * Checking for date changes which needs to be shown on the ChatActivity as date header above messages. Eg. Today, yesterday etc.
                          */
                         if (retrievedModel.getUserChats().size() > 0) {
-                            if (Utils.isMsgDateDifferent(Long.parseLong(retrievedModel.getUserChats().get(retrievedModel.getUserChats().size() - 1).getmMessageTime()),
-                                    Long.parseLong(userMessage.getmMessageTime()))) {
+                            if (Utils.isMsgDateDifferent(Long.parseLong(retrievedModel.getUserChats().get(retrievedModel.getUserChats().size() - 1).getMessageTime()),
+                                    Long.parseLong(userMessage.getMessageTime()))) {
 
-                                Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
+                                Message dateHeaderMessage = new Message("", "", userMessage.getMessageTime(), "", Message.TYPE_DATE_HEADER);
                                 retrievedModel.getUserChats().add(dateHeaderMessage);
                             }
                         }
@@ -143,7 +143,7 @@ public class DBHelper {
                     DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
                     newModel.setLastMessage(userMessage.getMessage());
                     newModel.setMessageListId(messageListID);
-                    newModel.setLastMsgTime(userMessage.getmMessageTime());
+                    newModel.setLastMsgTime(userMessage.getMessageTime());
                     newModel.setUnReadChatCount(unreadMsgCount);
                     newModel.setSeekerHasBlocked(0); // Set unblocked as default.
                     newModel.setName(recruiterName);
@@ -151,7 +151,7 @@ public class DBHelper {
                     /**
                      * Adding date label on the new entry.
                      */
-                    Message dateHeaderMessage = new Message("", "", userMessage.getmMessageTime(), "", Message.TYPE_DATE_HEADER);
+                    Message dateHeaderMessage = new Message("", "", userMessage.getMessageTime(), "", Message.TYPE_DATE_HEADER);
                     newModel.getUserChats().add(dateHeaderMessage);
                     newModel.getUserChats().add(userMessage);
                 }
@@ -171,7 +171,7 @@ public class DBHelper {
 
         if (retrievedData != null && retrievedData.getUserChats() != null && retrievedData.getUserChats().size() > 0) {
             for (Message message : retrievedData.getUserChats()) {
-                if (message.getmMessageId().equalsIgnoreCase(messageObj.getmMessageId())) {
+                if (message.getMessageId().equalsIgnoreCase(messageObj.getMessageId())) {
                     isAlreadyAdded = true;
                     break;
                 }

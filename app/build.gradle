@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.22.1'
     }
 }
 apply plugin: 'com.android.application'
@@ -31,6 +31,7 @@ serverProperties.load(new FileInputStream(serverConfigPropertiesFile))
 android {
     dexOptions {
         javaMaxHeapSize "4g"
+        incremental true
     }
     dataBinding {
         enabled true;
@@ -100,14 +101,14 @@ android {
         QA {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://qa.dentamatch.co/api/"')
-            buildConfigField("String", "CHAT_URL", '"https://qanode.dentamatch.co:8443/"')
+            buildConfigField("String", "CHAT_URL", '"https://qa.dentamatch.co:3000"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
         Staging {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://staging.dentamatch.co/api/"')
-            buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:3000"')
+            buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:8443"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
@@ -123,13 +124,13 @@ android {
 
 ext {
     //supportLibrary Version
-    supportLibrary = '25.2.0'
+    supportLibrary = '25.3.1'
 
     //Play services Version
-    playServiceVersion = '10.2.0'
+    playServiceVersion = '10.2.1'
 
     //fireBase Version
-    fireBaseLibrary = '10.2.0'
+    fireBaseLibrary = '10.2.1'
 
     //leakCanary Version
     leakCanaryLibrary = '1.5'
@@ -143,18 +144,14 @@ ext {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     compile 'com.google.maps.android:android-maps-utils:0.4'
-    compile "com.google.android.gms:play-services:${playServiceVersion}"
-
     //Firebase libs
     compile "com.google.firebase:firebase-messaging:${fireBaseLibrary}"
-
     //Google Support libs
     compile "com.android.support:design:${supportLibrary}"
     compile "com.android.support:recyclerview-v7:${supportLibrary}"
@@ -162,18 +159,15 @@ dependencies {
     compile "com.android.support:appcompat-v7:${supportLibrary}"
     compile "com.android.support:support-annotations:${supportLibrary}"
     compile 'com.android.support:multidex:1.0.1'
-
     //Google Play service libs
     compile "com.google.android.gms:play-services-location:${playServiceVersion}"
     compile "com.google.android.gms:play-services-auth:${playServiceVersion}"
-
+    compile "com.google.android.gms:play-services-maps:${playServiceVersion}"
+    compile "com.google.android.gms:play-services-places:${playServiceVersion}"
     //Third party libs
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.3'
-    compile 'cat.ereza:customactivityoncrash:1.5.0'
     compile 'com.orhanobut:hawk:2.0.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.12.0'
-
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
@@ -181,15 +175,12 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
-    compile 'com.doodle.android:android-material-chips:1.1.0'
-    compile 'org.apmem.tools:layouts:1.10@aar'
     compile 'com.wefika:flowlayout:0.4.1'
-    compile ('io.socket:socket.io-client:0.8.1') {
+    compile('io.socket:socket.io-client:0.8.1') {
         exclude group: 'org.json', module: 'json'
     }
     compile 'io.realm:android-adapters:1.4.0'
+    compile 'com.mixpanel.android:mixpanel-android:4.9.8'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }

@@ -37,11 +37,12 @@
 
     <EditText
         android:layout_height="150dp"
-        android:maxLines="4"
+        android:maxLength="500"
         android:textSize="@dimen/text_size_normal"
         android:layout_below="@+id/tv_fragment_dialog_note"
         android:focusableInTouchMode="true"
         android:gravity="top"
+        android:scrollbars="vertical"
         android:layout_marginTop="@dimen/margin_12"
         android:id="@+id/et_fragment_dialog_cancel"
         android:textColor="@color/black_color"
@@ -51,7 +52,7 @@
         android:layout_marginRight="@dimen/margin_normal"
         android:hint="@string/hint_short_desc"
         android:padding="@dimen/default_padding"
-        android:background="@drawable/edittext_curved_background"
+        android:background="@drawable/et_curved_background"
         />
 
     <com.appster.dentamatch.widget.CustomTextView

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemJobListBinding;
+import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -28,6 +29,8 @@ import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -38,6 +41,15 @@ import retrofit2.Call;
  */
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder> implements View.OnClickListener {
+    private static final int JOB_SAVED = 1;
+    private static final int STATUS_UNSAVED = 0;
+    private static final int STATUS_SAVED = 1;
+    private static final int ADDED_PART_TIME = 1;
+    private static final int LINE_COUNT_ONE = 1;
+    private static final int VIEW_DELAY_TIME = 100;
+    private static final int DURATION_TIME_0 = 0;
+    private static final int DURATION_TIME_1 = 1;
+
     private ItemJobListBinding mBinding;
     private Context mContext;
     private ArrayList<SearchJobModel> mJobListData;
@@ -64,39 +76,39 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             holder.tvName.setText(data.getJobTitleName());
             holder.cbSelect.setTag(position);
             holder.cbSelect.setOnClickListener(this);
-            holder.cbSelect.setChecked(data.getIsSaved() == 1);
+            holder.cbSelect.setChecked(data.getIsSaved() == JOB_SAVED);
 
             if (data.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                 holder.tvJobType.setText(mContext.getString(R.string.txt_part_time));
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
-                if (data.getIsMonday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_monday));
+                if (data.getIsMonday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.mon));
                 }
 
-                if (data.getIsTuesday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_tuesday));
+                if (data.getIsTuesday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.tue));
                 }
 
-                if (data.getIsWednesday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_wednesday));
+                if (data.getIsWednesday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.wed));
                 }
 
-                if (data.getIsThursday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_thursday));
+                if (data.getIsThursday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.thu));
                 }
 
-                if (data.getIsFriday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_friday));
+                if (data.getIsFriday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.fri));
                 }
 
-                if (data.getIsSaturday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_saturday));
+                if (data.getIsSaturday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.sat));
                 }
 
-                if (data.getIsSunday() == 1) {
-                    partTimeDaysArray.add(mContext.getString(R.string.txt_sunday));
+                if (data.getIsSunday() == ADDED_PART_TIME) {
+                    partTimeDaysArray.add(mContext.getString(R.string.sun));
                 }
 
                 String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
@@ -106,21 +118,28 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                 final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.addRule(RelativeLayout.END_OF, holder.tvJobType.getId());
                 params.addRule(RelativeLayout.START_OF, holder.tvDistance.getId());
-                params.setMargins(Utils.dpToPx(mContext, 12), 0, Utils.dpToPx(mContext, 10), 0);
+                params.setMargins(Utils.dpToPx(mContext,
+                        mContext.getResources().getInteger(R.integer.margin_12)),
+                        mContext.getResources().getInteger(R.integer.margin_0),
+                        Utils.dpToPx(mContext, mContext.getResources().getInteger(R.integer.margin_10)),
+                        mContext.getResources().getInteger(R.integer.margin_12));
 
                 holder.tvDate.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (holder.tvDate.getLineCount() == 1) {
+                        if (holder.tvDate.getLineCount() == LINE_COUNT_ONE) {
                             params.addRule(RelativeLayout.ALIGN_BOTTOM, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
                         } else {
                             params.addRule(RelativeLayout.ALIGN_TOP, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
-                            holder.tvDate.setPadding(0, 0, 0, 0);
+                            holder.tvDate.setPadding(mContext.getResources().getInteger(R.integer.padding_0),
+                                    mContext.getResources().getInteger(R.integer.padding_0),
+                                    mContext.getResources().getInteger(R.integer.padding_0),
+                                    mContext.getResources().getInteger(R.integer.padding_0));
                         }
                     }
-                }, 100);
+                }, VIEW_DELAY_TIME);
 
                 holder.tvDate.setEllipsize(TextUtils.TruncateAt.END);
 
@@ -137,15 +156,14 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             }
 
             holder.tvDocAddress.setText(data.getAddress());
-            if (data.getDays() == 0) {
+            if (data.getDays() == DURATION_TIME_0) {
                 holder.tvDuration.setText(mContext.getString(R.string.text_todays));
 
             } else {
-                String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+                String endMessage = data.getDays() > DURATION_TIME_1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
                 holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             }
-//            String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
-//            holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
+
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDocName.setText(data.getOfficeName());
         }
@@ -177,12 +195,17 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                     mJobListData.get(position).setIsSaved(status);
                     notifyItemChanged(position);
                     SearchJobDataHelper.getInstance().notifyItemsChanged(mJobListData.get(position));
+                }else{
+                    if(TextUtils.isEmpty(response.getMessage())) {
+                        notifyItemChanged(position);
+                        ((BaseActivity) mContext).showToast(response.getMessage());
+                    }
                 }
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
+                notifyItemChanged(position);
             }
         });
     }
@@ -192,9 +215,14 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
         switch (v.getId()) {
             case R.id.cb_job_selection:
                 final int position = (int) v.getTag();
-                final int status = mJobListData.get(position).getIsSaved() == 1 ? 0 : 1;
+                final int status = mJobListData.get(position).getIsSaved() == JOB_SAVED ? STATUS_UNSAVED : STATUS_SAVED;
                 if (status == 0) {
-                    Alert.createYesNoAlert(mContext, mContext.getString(R.string.txt_ok), mContext.getString(R.string.txt_cancel), mContext.getString(R.string.txt_alert_title), mContext.getString(R.string.msg_unsave_warning), new Alert.OnAlertClickListener() {
+                    Alert.createYesNoAlert(mContext,
+                            mContext.getString(R.string.txt_ok),
+                            mContext.getString(R.string.txt_cancel),
+                            mContext.getString(R.string.txt_alert_title),
+                            mContext.getString(R.string.msg_unsave_warning),
+                            new Alert.OnAlertClickListener() {
                         @Override
                         public void onPositive(DialogInterface dialog) {
                             saveUnSaveJob(mJobListData.get(position).getId(), status, position);
@@ -215,7 +243,9 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             case R.id.lay_item_job_list:
                 int jobID = (int) v.getTag();
                 mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID));
+                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
+                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+
                 break;
 
             default:

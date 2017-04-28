@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -73,7 +72,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
     private void initViews() {
         mBinder.toolbarUpdateCertificate.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
-        mBinder.ivCertificateUpoloadIcon.setOnClickListener(this);
+        mBinder.ivCertificateUploadIcon.setOnClickListener(this);
         mBinder.tvValidityDatePicker.setOnClickListener(this);
         mBinder.toolbarUpdateCertificate.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnSave.setOnClickListener(this);
@@ -91,7 +90,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             mBinder.tvCertificatesName.setText(data.getCertificateName());
 
             if (!TextUtils.isEmpty(data.getImage())) {
-                Picasso.with(UpdateCertificateActivity.this).load(data.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
+                Picasso.with(UpdateCertificateActivity.this).load(data.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUploadIcon);
                 isImageUploaded = true;
             }
 
@@ -111,7 +110,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.iv_certificate_upoload_icon:
+            case R.id.iv_certificate_upload_icon:
                 callBottomSheet();
                 break;
 
@@ -181,7 +180,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                Snackbar.make(mBinder.ivCertificateUpoloadIcon, getResources().getString(R.string.text_camera_permision),
+                Snackbar.make(mBinder.ivCertificateUploadIcon, getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
                         .setAction(getString(R.string.txt_ok), new View.OnClickListener() {
                             @Override
@@ -205,7 +204,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Snackbar.make(mBinder.ivCertificateUpoloadIcon, this.getResources().getString(R.string.text_camera_permision),
+                Snackbar.make(mBinder.ivCertificateUploadIcon, this.getResources().getString(R.string.text_camera_permision),
                         Snackbar.LENGTH_INDEFINITE)
                         .setAction(getString(R.string.txt_accept), new View.OnClickListener() {
                             @Override
@@ -220,22 +219,22 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    private void getImageFromGallery() {
-        Intent gIntent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        gIntent.setType("image/*");
-        startActivityForResult(
-                Intent.createChooser(gIntent, getString(R.string.txt_gallery_header)),
-                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-    }
-
-    private void takePhoto() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
-    }
+//    private void getImageFromGallery() {
+//        Intent gIntent = new Intent(
+//                Intent.ACTION_PICK,
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        gIntent.setType("image/*");
+//        startActivityForResult(
+//                Intent.createChooser(gIntent, getString(R.string.txt_gallery_header)),
+//                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+//    }
+//
+//    private void takePhoto() {
+//        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
+//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+//        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -298,8 +297,9 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
                 if (response.getStatus() == 1) {
+                    data.setImage(response.getFileUploadResponseData().getImageUrl());
                     isImageUploaded = true;
-                    Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUpoloadIcon);
+                    Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUploadIcon);
                     // showSnackBarFromTop(response.getMessage(), false);
                 }else{
                     isImageUploaded = false;

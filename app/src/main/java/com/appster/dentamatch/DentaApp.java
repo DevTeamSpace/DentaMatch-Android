@@ -10,6 +10,7 @@ import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.orhanobut.hawk.Hawk;
 
 import io.fabric.sdk.android.Fabric;
@@ -18,15 +19,17 @@ import io.fabric.sdk.android.Fabric;
 public class DentaApp extends MultiDexApplication {
     private static DentaApp mAppContext;
     public static int NOTIFICATION_COUNTER=0;
+    private MixpanelAPI mixpanelAPI;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         mAppContext = this;
+        mixpanelAPI = MixpanelAPI.getInstance(this, getString(R.string.mixpanel_token));
 
-        /**
-         * Initialize DB Helper class.
+        /*
+          Initialize DB Helper class.
          */
         DBHelper.getInstance().initializeRealmConfig(mAppContext);
         Hawk.init(mAppContext).build();
@@ -38,6 +41,10 @@ public class DentaApp extends MultiDexApplication {
 
     public static DentaApp getInstance(){
         return mAppContext;
+    }
+
+    public MixpanelAPI getMixpanelAPI(){
+        return mixpanelAPI;
     }
 
 }

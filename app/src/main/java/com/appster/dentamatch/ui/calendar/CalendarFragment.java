@@ -44,7 +44,6 @@ import retrofit2.Call;
 
 public class CalendarFragment extends BaseFragment implements View.OnClickListener, OnDateSelected {
     private FragmentCalendarBinding mCalendarBinding;
-    private LinearLayoutManager mLayoutManager;
     private HiredJobAdapter mJobAdapter;
     private ArrayList<HiredJobs> mAllJobLIst;
 
@@ -75,7 +74,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         mCalendarBinding.toolbarCalendar.ivToolBarRight.setVisibility(View.VISIBLE);
         mCalendarBinding.toolbarCalendar.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
         mCalendarBinding.toolbarCalendar.txvToolbarGeneralRight.setCompoundDrawables(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_plus), null, null, null);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mCalendarBinding.rvBookedJob.setLayoutManager(mLayoutManager);
         mAllJobLIst = new ArrayList<>();
         mJobAdapter = new HiredJobAdapter(getActivity(), mAllJobLIst);
@@ -93,8 +92,8 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
     private HiredJobRequest prepareRequest(Calendar calendar) {
         HiredJobRequest request = new HiredJobRequest();
-        /**
-         * to get  the number of days  in month
+        /*
+          to get  the number of days  in month
          */
         calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
         int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -193,11 +192,12 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         mCalendarBinding.rvBookedJob.setVisibility(View.GONE);
                     }
 
+
                     for(int i = 0; i < mAllJobLIst.size(); i++){
 
                         if(mAllJobLIst.get(i).getId() == jobId){
                             mAllJobLIst.remove(i);
-                            i = 0;
+                            i = -1;
                         }
 
                     }

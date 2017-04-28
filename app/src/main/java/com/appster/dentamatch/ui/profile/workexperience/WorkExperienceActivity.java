@@ -42,7 +42,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         mBinder.toolbarWorkExp.ivToolBarLeft.setOnClickListener(this);
         mBinder.etJobTitle.setOnClickListener(this);
         mBinder.btnNextWorkExp.setOnClickListener(this);
-        mBinder.tvExperinceWorkExp.setOnClickListener(this);
+        mBinder.tvExperienceWorkExp.setOnClickListener(this);
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
             Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.createProfileIvProfileIcon);
@@ -71,7 +71,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
                 if (checkValidation()) {
                     PreferenceUtil.setOfficeName(Utils.getStringFromEditText(mBinder.etOfficeName));
                     hideKeyboard();
-                    startActivity(new Intent(this, WorkExpListActivity.class));
+                    startActivity(new Intent(this, MyWorkExpListActivity.class));
                 }
                 break;
 
@@ -85,7 +85,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
                 new BottomSheetJobTitle(WorkExperienceActivity.this, this, PreferenceUtil.getJobTitlePosition());
                 break;
 
-            case R.id.tv_experince_work_exp:
+            case R.id.tv_experience_work_exp:
                 hideKeyboard();
                 new BottomSheetPicker(this, this, 0, 0);
                 break;
@@ -100,14 +100,17 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
             Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
             return false;
         }
-        if (TextUtils.isEmpty(mBinder.tvExperinceWorkExp.getText().toString().trim())) {
+
+        if (TextUtils.isEmpty(mBinder.tvExperienceWorkExp.getText().toString().trim())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_year_alert));
             return false;
         }
+
         if (TextUtils.isEmpty(mBinder.etOfficeName.getText().toString().trim())) {
             Utils.showToast(getApplicationContext(), getString(R.string.blank_office_name_alert));
             return false;
         }
+
         if (mBinder.etOfficeName.getText().toString().trim().length() > Constants.DEFAULT_FIELD_LENGTH) {
             Utils.showToast(getApplicationContext(), getString(R.string.office_name_length_alert));
             return false;
@@ -118,7 +121,21 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onExperienceSection(int year, int month) {
-        mBinder.tvExperinceWorkExp.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
+        String yearLabel = "", monthLabel = "";
+
+        if (year == 1) {
+            yearLabel = getString(R.string.txt_single_year);
+        } else {
+            yearLabel = getString(R.string.txt_multiple_years);
+        }
+
+        if (month == 1) {
+            monthLabel = getString(R.string.txt_single_month);
+        } else {
+            monthLabel = getString(R.string.txt_multiple_months);
+        }
+
+        mBinder.tvExperienceWorkExp.setText(year + " " + yearLabel + " " + month + " " + monthLabel);
         PreferenceUtil.setMonth(month);
         PreferenceUtil.setYear(year);
     }

@@ -2,6 +2,8 @@ package com.appster.dentamatch.ui.searchjob;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.location.Address;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +14,7 @@ import android.widget.CompoundButton;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySearchJobBinding;
+import com.appster.dentamatch.eventbus.LocationEvent;
 import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.model.SelectedJobTitleModel;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
@@ -19,7 +22,13 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -51,110 +60,205 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_search_job);
         initViews();
         setUserSelectedData();
     }
 
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    /**
+     * This method will be called when Event is posted.
+     */
+    @Subscribe
+    public void onEvent(LocationEvent locationEvent) {
+        hideProgressBar();
+        Location location = locationEvent.getMessage();
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        Address address = Utils.getReverseGeoCode(this, latLng);
+        setData(address);
+    }
+
+
+    private void setData(Address address) {
+        if (address != null) {
+            mSelectedAddress = convertAddressToString(address);
+            mSelectedZipCode = address.getPostalCode() == null ? "" : address.getPostalCode();
+            mSelectedLat = String.valueOf(address.getLatitude());
+            mSelectedLng = String.valueOf(address.getLongitude());
+            mSelectedCountry = address.getCountryName();
+
+            if (address.getLocality() != null) {
+                mSelectedCity = address.getLocality();
+            } else {
+                mSelectedCity = address.getSubLocality();
+            }
+
+            mSelectedState = address.getAdminArea();
+
+            mBinder.tvFetchedLocation.setVisibility(View.VISIBLE);
+            mBinder.tvFetchedLocation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
+        } else {
+            mSelectedAddress = "";
+            mSelectedZipCode = "";
+            mSelectedLat = "";
+            mSelectedLng = "";
+            mSelectedCountry = "";
+            mSelectedState = "";
+            mSelectedCity = "";
+        }
+
+    }
+
+
+    private String convertAddressToString(Address address) {
+        if (address == null) return "";
+
+        StringBuilder sb = new StringBuilder();
+
+        if (address.getAddressLine(0) != null) {
+            sb.append(address.getAddressLine(0));
+        }
+
+        if (address.getAddressLine(1) != null) {
+            sb.append(", ");
+            sb.append(address.getAddressLine(1));
+        }
+
+        if (address.getSubAdminArea() != null) {
+            sb.append(", ");
+            sb.append(address.getSubAdminArea());
+        }
+
+        if (address.getAdminArea() != null) {
+            sb.append(", ");
+            sb.append(address.getAdminArea());
+        }
+
+        return sb.toString();
+    }
+
     private void setUserSelectedData() {
+        try {
 
-        if( PreferenceUtil.getJobFilter() !=  null) {
-            SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+            if (PreferenceUtil.getJobFilter() != null) {
+                SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
 
-            if(request.getJobTitle() != null) {
-                mSelectedJobID.addAll(request.getJobTitle());
-            }
+                if (request.getJobTitle() != null) {
+                    mSelectedJobID.addAll(request.getJobTitle());
+                }
 
-            isFullTime = (request.getIsFulltime() == 1);
-            isPartTime = (request.getIsParttime() == 1);
+                isFullTime = (request.getIsFulltime() == 1);
+                isPartTime = (request.getIsParttime() == 1);
 
-            mSelectedZipCode = request.getZipCode();
-            mSelectedLat = request.getLat();
-            mSelectedLng = request.getLng();
-            mSelectedCountry = request.getCountry();
-            mSelectedCity = request.getCity();
-            mSelectedState = request.getState();
+                mSelectedZipCode = request.getZipCode();
+                mSelectedLat = request.getLat();
+                mSelectedLng = request.getLng();
+                mSelectedCountry = request.getCountry();
+                mSelectedCity = request.getCity();
+                mSelectedState = request.getState();
 
-            /**
-             * Set views based on the user data obtained above.
-             */
-            if(isFullTime){
-                mBinder.cbFullTimeCheckBox.setChecked(true);
-            }
+                /*
+                  Set views based on the user data obtained above.
+                 */
+                if (isFullTime) {
+                    mBinder.cbFullTimeCheckBox.setChecked(true);
+                }
 
-            if(isPartTime){
-                mBinder.dayLayout.setVisibility(View.VISIBLE);
-                mBinder.cbPartTimeCheckBox.setChecked(true);
+                if (isPartTime) {
+                    mBinder.dayLayout.setVisibility(View.VISIBLE);
+                    mBinder.cbPartTimeCheckBox.setChecked(true);
 
-                for (String days : request.getParttimeDays()){
-                    switch(days){
-                        case "Sunday":
-                           onClick(mBinder.tvSunday);
-                            break;
+                    for (String days : request.getParttimeDays()) {
+                        switch (days) {
+                            case "Sunday":
+                                onClick(mBinder.tvSunday);
+                                break;
 
-                        case "Monday":
-                            onClick(mBinder.tvMonday);
+                            case "Monday":
+                                onClick(mBinder.tvMonday);
 
-                            break;
+                                break;
 
-                        case "Tuesday":
-                            onClick(mBinder.tvTuesday);
+                            case "Tuesday":
+                                onClick(mBinder.tvTuesday);
 
-                            break;
+                                break;
 
-                        case "Wednesday":
-                            onClick(mBinder.tvWednesday);
+                            case "Wednesday":
+                                onClick(mBinder.tvWednesday);
 
-                            break;
+                                break;
 
-                        case "Thursday":
-                            onClick(mBinder.tvThursday);
+                            case "Thursday":
+                                onClick(mBinder.tvThursday);
 
-                            break;
+                                break;
 
-                        case "Friday":
-                            onClick(mBinder.tvFriday);
+                            case "Friday":
+                                onClick(mBinder.tvFriday);
 
-                            break;
+                                break;
 
-                        case "Saturday":
-                            onClick(mBinder.tvSaturday);
+                            case "Saturday":
+                                onClick(mBinder.tvSaturday);
 
-                            break;
+                                break;
 
-                        default: break;
+                            default:
+                                break;
+                        }
+                    }
+                } else {
+                    mBinder.dayLayout.setVisibility(View.GONE);
+                }
+
+                mSelectedAddress = request.getAddress();
+
+                if (!TextUtils.isEmpty(mSelectedAddress)) {
+                    mBinder.tvFetchedLocation.setVisibility(View.VISIBLE);
+                    mBinder.tvFetchedLocation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
+                }
+
+                if (request.getSelectedJobTitles() != null) {
+                    mSelectedJobTitles = request.getSelectedJobTitles();
+                    for (SelectedJobTitleModel model : mSelectedJobTitles) {
+                        JobTitleListModel jobModel = new JobTitleListModel();
+                        jobModel.setSelected(true);
+                        jobModel.setId(model.getId());
+                        jobModel.setJobTitle(model.getJobTitle());
+
+                        mChosenTitles.add(jobModel);
+                    }
+                }
+
+                if (mChosenTitles != null && mChosenTitles.size() > 0) {
+                    mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
+
+                    for (JobTitleListModel items : mChosenTitles) {
+                        addTitleToLayout(items, false);
                     }
                 }
             }else{
-                mBinder.dayLayout.setVisibility(View.GONE);
-            }
-
-            mSelectedAddress = request.getAddress();
-
-            if(!TextUtils.isEmpty(mSelectedAddress )) {
-                mBinder.tvFetchedLocation.setVisibility(View.VISIBLE);
-                mBinder.tvFetchedLocation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
-            }
-
-            if(request.getSelectedJobTitles() != null ) {
-                mSelectedJobTitles = request.getSelectedJobTitles();
-                for(SelectedJobTitleModel model : mSelectedJobTitles) {
-                    JobTitleListModel jobModel = new JobTitleListModel();
-                    jobModel.setSelected(true);
-                    jobModel.setId(model.getId());
-                    jobModel.setJobTitle(model.getJobTitle());
-
-                    mChosenTitles.add(jobModel);
+                /*
+                In case we have net connection show loader and fetch user current location address.
+                 */
+                if(Utils.isConnected(this)) {
+                    processToShowDialog();
+                    LocationUtils.addFragment(this);
                 }
             }
-
-            if(mChosenTitles != null && mChosenTitles.size() > 0) {
-                mBinder.flowLayoutJobTitle.setVisibility(View.VISIBLE);
-
-                for (JobTitleListModel items : mChosenTitles) {
-                    addTitleToLayout(items, false);
-                }
-            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
@@ -197,26 +301,37 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
             case R.id.tv_fetched_location:
             case R.id.tv_current_location:
-                Intent intent = new Intent(SearchJobActivity.this, PlacesMapActivity.class);
+                if(Utils.isConnected(SearchJobActivity.this)) {
+                    Intent intent = new Intent(SearchJobActivity.this, PlacesMapActivity.class);
 
-                if(mSelectedLat!=null&&mSelectedLng!=null) {
-                    intent.putExtra(Constants.EXTRA_LATITUDE, mSelectedLat);
-                    intent.putExtra(Constants.EXTRA_LONGITUDE, mSelectedLng);
-                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mSelectedZipCode);
-                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mSelectedAddress);
+                    if (mSelectedLat != null && mSelectedLng != null) {
+                        intent.putExtra(Constants.EXTRA_LATITUDE, mSelectedLat);
+                        intent.putExtra(Constants.EXTRA_LONGITUDE, mSelectedLng);
+                        intent.putExtra(Constants.EXTRA_POSTAL_CODE, mSelectedZipCode);
+                        intent.putExtra(Constants.EXTRA_PLACE_NAME, mSelectedAddress);
+                        intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mSelectedCountry);
+                        intent.putExtra(Constants.EXTRA_CITY_NAME, mSelectedCity);
+                        intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
+                    }
+
+                    startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
+                }else{
+                    showToast(getString(R.string.no_internet));
                 }
-
-                startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
                 break;
 
             case R.id.tv_job_title:
-                Intent jobTitleSelectionIntent = new Intent(getApplicationContext(), SelectJobTitleActivity.class);
+                if(Utils.isConnected(SearchJobActivity.this)) {
+                    Intent jobTitleSelectionIntent = new Intent(getApplicationContext(), SelectJobTitleActivity.class);
 
-                if (mChosenTitles != null && mChosenTitles.size() > 0) {
-                    jobTitleSelectionIntent.putExtra(Constants.EXTRA_CHOSEN_JOB_TITLES, mChosenTitles);
+                    if (mChosenTitles != null && mChosenTitles.size() > 0) {
+                        jobTitleSelectionIntent.putExtra(Constants.EXTRA_CHOSEN_JOB_TITLES, mChosenTitles);
+                    }
+
+                    startActivityForResult(jobTitleSelectionIntent, Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE);
+                }else {
+                    showToast(getString(R.string.no_internet));
                 }
-
-                startActivityForResult(jobTitleSelectionIntent, Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE);
                 break;
 
             case R.id.tv_sunday:
@@ -344,7 +459,6 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            finish();
         }else {
             finish();
         }
@@ -413,14 +527,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
         request.setSelectedJobTitles(mSelectedJobTitles);
 
-        /**
-         * This value is set in order to redirect user from login or splash screen.
+        /*
+          This value is set in order to redirect user from login or splash screen.
          */
         PreferenceUtil.setJobFilter(true);
         PreferenceUtil.saveJobFilter(request);
-        /**
-         * This value is used by job search result helper to see if the filter value has been changed
-         * and it needs to request data from server again or not.
+        /*
+          This value is used by job search result helper to see if the filter value has been changed
+          and it needs to request data from server again or not.
          */
         PreferenceUtil.setFilterChanged(true);
         startActivity(new Intent(this, HomeActivity.class)

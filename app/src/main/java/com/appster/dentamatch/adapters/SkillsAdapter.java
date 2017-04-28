@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -55,6 +56,20 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         mListener = listener;
         mOthersSelectedListener = othersSelectedListener;
         mIsFromEditProfile = isFromEditProfile;
+        sortDataForOthers();
+
+    }
+
+    private void sortDataForOthers(){
+        try {
+            for (int i = 0; i < mSkillList.size(); i++) {
+                if (mSkillList.get(i).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                    Collections.swap(mSkillList, i, mSkillList.size() - 1);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -150,7 +165,11 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 });
 
-                holder.flowLayout.setVisibility(View.VISIBLE);
+                /*
+                  Initially set its visibility to gone later check the selected skills in setSkillsBrick
+                  method and update visibility in case any skill is selected.
+                 */
+                holder.flowLayout.setVisibility(View.GONE);
                 holder.flowLayout.removeAllViews();
                 setSkillsBricks(holder.flowLayout, mSkillList.get(position - 1).getSubSkills());
             }
@@ -179,16 +198,19 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMarginStart(10);
-        params.setMarginEnd(20);
+        params.setMarginStart(mContext.getResources().getInteger(R.integer.margin_10));
+        params.setMarginEnd(mContext.getResources().getInteger(R.integer.margin_20));
 
         for (int i = 0; i < listSkills.size(); i++) {
             if (listSkills.get(i).getIsSelected() == 1) {
-
+                flowLayout.setVisibility(View.VISIBLE);
                 FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
                         FlowLayout.LayoutParams.WRAP_CONTENT);
 
-                layoutParams.setMargins(10, 0, 10, 20);
+                layoutParams.setMargins(mContext.getResources().getInteger(R.integer.margin_10),
+                        mContext.getResources().getInteger(R.integer.margin_0),
+                        mContext.getResources().getInteger(R.integer.margin_10),
+                        mContext.getResources().getInteger(R.integer.margin_20));
 
                 String text = listSkills.get(i).getSkillName();
 
@@ -207,30 +229,30 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-private class ViewHolderHeader extends RecyclerView.ViewHolder {
-    ViewHolderHeader(View view) {
-        super(view);
+    private class ViewHolderHeader extends RecyclerView.ViewHolder {
+        ViewHolderHeader(View view) {
+            super(view);
+        }
     }
-}
 
-private class ViewHolderItem extends RecyclerView.ViewHolder {
-    LinearLayout layoutSkills;
-    RelativeLayout layoutSkillsInner;
-    FlowLayout flowLayout;
-    TextView tvSkillName;
-    ImageView ivArrow;
-    CustomEditText etOther;
+    private class ViewHolderItem extends RecyclerView.ViewHolder {
+        LinearLayout layoutSkills;
+        RelativeLayout layoutSkillsInner;
+        FlowLayout flowLayout;
+        TextView tvSkillName;
+        ImageView ivArrow;
+        CustomEditText etOther;
 
-    ViewHolderItem(View view) {
-        super(view);
-        layoutSkills = mBinder.layoutSkillsTop;
-        layoutSkillsInner = mBinder.layoutSkillsInner;
-        flowLayout = mBinder.flowLayoutChips;
-        tvSkillName = mBinder.tvSkillName;
-        ivArrow = mBinder.ivRightArrow;
-        etOther = mBinder.etOther;
+        ViewHolderItem(View view) {
+            super(view);
+            layoutSkills = mBinder.layoutSkillsTop;
+            layoutSkillsInner = mBinder.layoutSkillsInner;
+            flowLayout = mBinder.flowLayoutChips;
+            tvSkillName = mBinder.tvSkillName;
+            ivArrow = mBinder.ivRightArrow;
+            etOther = mBinder.etOther;
+        }
     }
-}
 
 
 }

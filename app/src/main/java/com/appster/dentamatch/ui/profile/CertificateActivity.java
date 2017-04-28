@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -72,6 +71,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     private void initViews() {
         mBinder.toolbarCertificates.tvToolbarGeneralLeft.setText(getString(R.string.header_certification));
         mBinder.layoutCertificatesHeader.tvTitle.setText(getString(R.string.cetification_title));
+        mBinder.layoutCertificatesHeader.tvDescription.setText(getString(R.string.lorem_ipsum));
         mBinder.btnNext.setOnClickListener(this);
         mBinder.toolbarCertificates.ivToolBarLeft.setOnClickListener(this);
 
@@ -155,28 +155,28 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
         return true;
     }
 
-    private void getImageFromGallery() {
-        Intent gIntent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        gIntent.setType("image/*");
-        startActivityForResult(
-                Intent.createChooser(gIntent, "Select File"),
-                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-    }
-
-    private void takePhoto() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
-    }
+//    private void getImageFromGallery() {
+//        Intent gIntent = new Intent(
+//                Intent.ACTION_PICK,
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        gIntent.setType("image/*");
+//        startActivityForResult(
+//                Intent.createChooser(gIntent, "Select File"),
+//                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+//    }
+//
+//    private void takePhoto() {
+//        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
+//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+//        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull String[] permissions, @android.support.annotation.NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+        if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             if (imageSourceType == 0) {
@@ -204,11 +204,6 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
             }
 
             if (mFilePath != null) {
-                ivTemp.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(mFilePath,
-                        this,
-                        Constants.IMAGE_DIME_CERTIFICATE,
-                        Constants.IMAGE_DIME_CERTIFICATE));
-
                 uploadCertificateImageApi(mFilePath, certificateId);
 
             }
@@ -299,15 +294,20 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     if (response.getCertificateResponseData().getCertificatesLists() != null) {
                         certificateList.addAll(response.getCertificateResponseData().getCertificatesLists());
                         inflateViews();
+                        mBinder.btnNext.setVisibility(View.VISIBLE);
                     }
 
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.btnNext.setVisibility(View.VISIBLE);
+
                 }
             }
 
             @Override
             public void onFail(Call<CertificateResponse> call, BaseResponse baseResponse) {
+                mBinder.btnNext.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -321,7 +321,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     mBinder.layoutCertificatesInflater,
                     false);
 
-            final ImageView ivCertificate = (ImageView) certificatesView.findViewById(R.id.iv_certificate_upoload_icon);
+            final ImageView ivCertificate = (ImageView) certificatesView.findViewById(R.id.iv_certificate_upload_icon);
             TextView tvUploadPhoto = (TextView) certificatesView.findViewById(R.id.tv_upload_photo);
             TextView tvDatePicker = (TextView) certificatesView.findViewById(R.id.tv_validity_date_picker);
             final TextView tvCertificateName = (TextView) certificatesView.findViewById(R.id.tv_certificates_name);
@@ -391,11 +391,18 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                 if (response.getStatus() == 1) {
                     certificateList.get(position).setImage(filePath);
                     certificateList.get(position).setImageUploaded(true);
+                    ivTemp.setImageBitmap(CameraUtil.getInstance().decodeBitmapFromPath(filePath,
+                            CertificateActivity.this,
+                            Constants.IMAGE_DIME_CERTIFICATE,
+                            Constants.IMAGE_DIME_CERTIFICATE));
+                }else{
+                    ivTemp.setImageResource(R.drawable.ic_upload);
                 }
             }
 
             @Override
             public void onFail(Call<FileUploadResponse> call, BaseResponse baseResponse) {
+                ivTemp.setImageResource(R.drawable.ic_upload);
             }
         });
     }

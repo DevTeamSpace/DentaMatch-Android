@@ -13,20 +13,25 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
             android:orientation="vertical"
+            android:layout_gravity="center"
             android:layout_marginStart="@dimen/margin_normal">
 
             <RelativeLayout
                 android:id="@+id/layout_skills_inner"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_large"
                 android:layout_height="wrap_content">
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_skill_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_17"
+                    android:layout_marginBottom="@dimen/margin_17"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/iv_right_arrow"
+                    android:layout_alignParentStart="true"
                     android:textColor="@color/color_forgot_pwd"
                     android:textSize="@dimen/text_size_normal"
                     app:customFont="@string/font_bold" />
@@ -45,18 +50,15 @@
                 android:id="@+id/flow_layout_chips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                >
-                </com.wefika.flowlayout.FlowLayout>
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/margin_large" />
 
             <com.appster.dentamatch.widget.CustomEditText
                 android:id="@+id/et_other"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_5"
+                android:layout_height="@dimen/skill_other_cell_height"
                 android:background="@drawable/edit_text_selector"
-                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_33"
                 android:inputType="text"
                 android:digits="@string/digits_other"
                 android:focusableInTouchMode="true"

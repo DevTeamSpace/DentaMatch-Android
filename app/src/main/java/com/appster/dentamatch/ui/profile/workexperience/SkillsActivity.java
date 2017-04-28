@@ -46,7 +46,6 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     private ActivitySkillsBinding mBinder;
 
     private SkillsAdapter mSkillsAdapter;
-    private Button btnNext;
 
     private int mSkillPosition;
     private boolean isFromProfile;
@@ -61,7 +60,7 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initViews() {
-        btnNext = mBinder.btnNext;
+        Button btnNext = mBinder.btnNext;
         mBinder.toolbarSkills.ivToolBarLeft.setOnClickListener(this);
         mBinder.toolbarSkills.tvToolbarGeneralLeft.setText(getString(R.string.header_skills_exp).toUpperCase());
 
@@ -143,15 +142,19 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
                 if (response.getStatus() == 1) {
                     mParentSkillList = response.getSkillsResponseData().getSkillsList();
                     setAdapter(mParentSkillList);
+                    mBinder.btnNext.setVisibility(View.VISIBLE);
 
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.btnNext.setVisibility(View.GONE);
 
                 }
             }
 
             @Override
             public void onFail(Call<SkillsResponse> call, BaseResponse baseResponse) {
+                mBinder.btnNext.setVisibility(View.GONE);
+
             }
         });
     }
@@ -159,8 +162,8 @@ public class SkillsActivity extends BaseActivity implements View.OnClickListener
     private SkillsUpdateRequest prepareSkillsUpdateRequest() {
         SkillsUpdateRequest skillsUpdateRequest = new SkillsUpdateRequest();
 
-        ArrayList<Integer> skills = new ArrayList<Integer>();
-        ArrayList<UpdateCertificates> othersList = new ArrayList<UpdateCertificates>();
+        ArrayList<Integer> skills = new ArrayList<>();
+        ArrayList<UpdateCertificates> othersList = new ArrayList<>();
 
         for (ParentSkillModel parentSkillModel : mParentSkillList) {
 

@@ -8,8 +8,6 @@
     <dimen name="fab_margin">16dp</dimen>-->
 
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!--Animation Duration-->
     <integer name="duration">400</integer>
@@ -40,6 +38,7 @@
     <dimen name="margin_6">6dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_7">7dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_medium">8dp</dimen>
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_14">14dp</dimen>
@@ -51,10 +50,14 @@
     <dimen name="margin_36">36dp</dimen>
     <dimen name="margin_23">23dp</dimen>
     <dimen name="margin_43">43dp</dimen>
+    <dimen name="margin_46">46dp</dimen>
     <dimen name="margin_50">50dp</dimen>
     <dimen name="margin_33">33dp</dimen>
+    <dimen name="margin_35">35dp</dimen>
+    <dimen name="margin_37">37dp</dimen>
     <dimen name="margin_29">29dp</dimen>
     <dimen name="margin_25">25dp</dimen>
+    <dimen name="margin_28">28dp</dimen>
     <dimen name="margin_21">21dp</dimen>
     <dimen name="margin_20">20dp</dimen>
     <dimen name="margin_19">19dp</dimen>
@@ -76,7 +79,8 @@
     <dimen name="camera_image_size">142dp</dimen>
     <dimen name="profile_image_width">102dp</dimen>
     <dimen name="profile_image_height">102dp</dimen>
-    <dimen name="profile_progress_dimen">119dp</dimen>
+    <dimen name="profile_progress_dimen">112dp</dimen>
+    <!--<dimen name="profile_progress_dimen">119dp</dimen>-->
     <dimen name="cell_height">55dp</dimen>
     <dimen name="edit_height">62dp</dimen>
     <dimen name="edit_height_about_me">160dp</dimen>
@@ -88,6 +92,7 @@
     <dimen name="calendar_cell_height">40dp</dimen>
     <dimen name="batch_count_dimen">15dp</dimen>
     <dimen name="user_profile_pic_dimen">91dp</dimen>
+    <dimen name="skill_other_cell_height">53dp</dimen>
 
 
 </resources>

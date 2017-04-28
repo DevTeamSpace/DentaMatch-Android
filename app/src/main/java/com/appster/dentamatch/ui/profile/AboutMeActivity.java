@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.appster.dentamatch.R;
@@ -49,6 +50,14 @@ public class AboutMeActivity extends BaseActivity implements View.OnClickListene
         mBinder.layoutIncludeProfileHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.COMPLETE);
         mBinder.toolbarAboutMe.ivToolBarLeft.setOnClickListener(this);
         mBinder.btnNext.setOnClickListener(this);
+
+        mBinder.etDescAboutMe.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
     }
 
     @Override

@@ -59,9 +59,6 @@ public class MessagesListFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(Utils.isConnected(getActivity())){
-            getAllUserChats();
-        }
         if (Utils.isConnected(getActivity())) {
             getAllUserChats();
         } else {
@@ -69,7 +66,11 @@ public class MessagesListFragment extends BaseFragment {
 
             if (data != null && data.size() > 0) {
                 mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
-                mAdapter = new MessageListAdapter(getActivity(), data, true);
+
+                if(getActivity() != null) {
+                    mAdapter = new MessageListAdapter(getActivity(), data, true);
+                }
+
                 mMessagesBinding.rvMessageList.setAdapter(mAdapter);
             } else {
                 mMessagesBinding.tvNoJobs.setVisibility(View.VISIBLE);
@@ -90,6 +91,7 @@ public class MessagesListFragment extends BaseFragment {
                     if (response.getResult() != null &&
                             response.getResult().getList() != null &&
                             response.getResult().getList().size() > 0) {
+
                         mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
 
                         for (ChatListModel model : response.getResult().getList()) {
@@ -103,7 +105,9 @@ public class MessagesListFragment extends BaseFragment {
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();
-                        mAdapter = new MessageListAdapter(getActivity(), data, true);
+                        if(getActivity() != null) {
+                            mAdapter = new MessageListAdapter(getActivity(), data, true);
+                        }
                         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
 
                     } else {
@@ -125,5 +129,6 @@ public class MessagesListFragment extends BaseFragment {
         mMessagesBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setAllCaps(true);
         mMessagesBinding.toolbarFragmentJobs.ivToolBarLeft.setVisibility(View.GONE);
     }
+
 
 }

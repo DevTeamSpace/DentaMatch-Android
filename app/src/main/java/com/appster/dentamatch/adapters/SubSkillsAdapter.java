@@ -27,6 +27,10 @@ import java.util.List;
 
 public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyViewHolder> {
     private static String TAG = "SubSkillAdapter";
+    private int SKILL_SELECTED = 1;
+    private int SKILL_CHECKED = 1;
+    private int SKILL_UNCHECKED = 0;
+
     private List<SubSkillModel> mSkillList;
     private ItemSubSkillBinding mBinder;
     private Context mContext;
@@ -34,6 +38,27 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
     public SubSkillsAdapter(List<SubSkillModel> skillList, Context context) {
         this.mSkillList = skillList;
         this.mContext = context;
+        sortListForOther();
+    }
+
+    private void sortListForOther() {
+        SubSkillModel otherModel = null;
+
+        if(mSkillList != null){
+
+            for (int i = 0; i < mSkillList.size(); i++){
+
+                if(mSkillList.get(i).getSkillName().equalsIgnoreCase(Constants.OTHERS) && i != mSkillList.size() - 1){
+                    otherModel = mSkillList.get(i);
+                    mSkillList.remove(i);
+                    break;
+                }
+            }
+
+            if(otherModel != null) {
+                mSkillList.add(mSkillList.size(), otherModel);
+            }
+        }
     }
 
     public List<SubSkillModel> getList() {
@@ -53,72 +78,74 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
         final SubSkillModel skill = mSkillList.get(position);
         final int refPosition = position;
 
-        holder.tvSkillName.setText(skill.getSkillName());
-        holder.etOther.setVisibility(View.GONE);
+        if(skill != null) {
+            holder.tvSkillName.setText(skill.getSkillName());
+            holder.etOther.setVisibility(View.GONE);
 
-        if (mSkillList.get(position).getIsSelected() == 1) {
-            holder.ivSelected.setBackgroundResource(R.drawable.ic_check_selected);
-        } else {
-            holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
-        }
-
-        if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
-            if (mSkillList.get(position).getIsSelected() == 1) {
-                holder.etOther.setVisibility(View.VISIBLE);
-                holder.etOther.setText(mSkillList.get(position).getOtherText());
-
+            if (mSkillList.get(position).getIsSelected() == SKILL_SELECTED) {
+                holder.ivSelected.setBackgroundResource(R.drawable.ic_check_selected);
             } else {
-                holder.etOther.setVisibility(View.GONE);
-
+                holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
             }
-        }
 
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean checked = mSkillList.get(refPosition).getIsSelected() == 1;
+            if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                if (mSkillList.get(position).getIsSelected() == SKILL_SELECTED) {
+                    holder.etOther.setVisibility(View.VISIBLE);
+                    holder.etOther.setText(mSkillList.get(position).getOtherText());
 
-                if (!checked) {
-                    holder.ivSelected.setBackgroundResource(R.drawable.ic_check_selected);
                 } else {
-                    holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
-                }
+                    holder.etOther.setVisibility(View.GONE);
 
-                if (mSkillList.get(refPosition).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                }
+            }
+
+            holder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean checked = mSkillList.get(refPosition).getIsSelected() == SKILL_SELECTED;
+
                     if (!checked) {
-                        holder.etOther.setVisibility(View.VISIBLE);
-
+                        holder.ivSelected.setBackgroundResource(R.drawable.ic_check_selected);
                     } else {
-                        holder.etOther.setVisibility(View.GONE);
-                        holder.etOther.setText("");
-                        ((BaseActivity) mContext).hideKeyboard();
+                        holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
                     }
-                }else{
-                    ((BaseActivity) mContext).hideKeyboard();
+
+                    if (mSkillList.get(refPosition).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+                        if (!checked) {
+                            holder.etOther.setVisibility(View.VISIBLE);
+
+                        } else {
+                            holder.etOther.setVisibility(View.GONE);
+                            holder.etOther.setText("");
+                            ((BaseActivity) mContext).hideKeyboard();
+                        }
+                    } else {
+                        ((BaseActivity) mContext).hideKeyboard();
+
+                    }
+
+                    mSkillList.get(refPosition).setIsSelected(!checked ? SKILL_CHECKED : SKILL_UNCHECKED);
+                    notifyDataSetChanged();
+                }
+            });
+
+            holder.etOther.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
 
-                mSkillList.get(refPosition).setIsSelected(!checked ? 1 : 0);
-                notifyDataSetChanged();
-            }
-        });
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-        holder.etOther.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mSkillList.get(refPosition).setOtherText(s.toString());
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mSkillList.get(refPosition).setOtherText(s.toString());
+                }
+            });
+        }
     }
 
     @Override

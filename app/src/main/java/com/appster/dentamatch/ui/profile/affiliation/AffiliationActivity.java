@@ -34,7 +34,6 @@ import retrofit2.Call;
  */
 public class AffiliationActivity extends BaseActivity implements OnClickListener {
     private ActivityAffiliationBinding mBinder;
-    private LinearLayoutManager mLayoutManager;
     private AffiliationAdapter affiliationAdapter;
     private boolean isFromEditProfile;
 
@@ -64,7 +63,7 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             mBinder.toolbarAffiliation.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile).toUpperCase());
         }
 
-        mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 
         mBinder.recyclerAffiliation.setLayoutManager(mLayoutManager);
         affiliationAdapter = new AffiliationAdapter(this, isFromEditProfile);
@@ -132,13 +131,16 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
             public void onSuccess(AffiliationResponse response) {
                 if (response.getStatus() == 1) {
                     affiliationAdapter.addList(response.getAffiliationResponseData().getAffiliationList());
+                    mBinder.btnNext.setVisibility(View.VISIBLE);
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
+                    mBinder.btnNext.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFail(Call<AffiliationResponse> call, BaseResponse baseResponse) {
+                mBinder.btnNext.setVisibility(View.GONE);
             }
         });
 

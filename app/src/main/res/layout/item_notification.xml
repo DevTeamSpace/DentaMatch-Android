@@ -127,7 +127,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
-            android:layout_marginStart="@dimen/margin_normal"
             android:background="@color/line_divider" />
     </LinearLayout>
 </layout>

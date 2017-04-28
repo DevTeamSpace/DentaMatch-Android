@@ -22,7 +22,20 @@
             android:id="@+id/progress_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_25">
+            android:layout_marginStart="@dimen/margin_25"
+            android:layout_marginEnd="@dimen/margin_25"
+            android:layout_marginTop="@dimen/margin_25"
+            android:layout_marginBottom="@dimen/margin_20"
+            >
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile_icon"
+                android:layout_width="@dimen/profile_image_height"
+                android:layout_height="@dimen/profile_image_height"
+                android:layout_centerInParent="true"
+                android:src="@drawable/profile_pic_placeholder"
+                android:visibility="visible" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -33,15 +46,8 @@
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="25"
-                android:progressDrawable="@drawable/circuler_progress" />
+                android:progressDrawable="@drawable/circular_progress" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_profile_icon"
-                android:layout_width="@dimen/profile_image_height"
-                android:layout_height="@dimen/profile_image_height"
-                android:layout_centerInParent="true"
-                android:src="@drawable/profile_pic_placeholder"
-                android:visibility="visible" />
         </RelativeLayout>
 
         <com.appster.dentamatch.widget.CustomTextView
@@ -56,12 +62,16 @@
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_description"
-
             style="@style/text_view_normal"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_35"
             android:gravity="center_horizontal"
-            android:text="@string/lable_relevant_exp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="@string/label_relevant_exp"
             android:textColor="@color/edt_hint_color"
             android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_regular" />

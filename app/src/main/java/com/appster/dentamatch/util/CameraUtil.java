@@ -51,8 +51,6 @@ public class CameraUtil {
     }
 
     public void takePhoto(int requestCamera, Context context) {
-
-
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
@@ -103,7 +101,6 @@ public class CameraUtil {
                 mtx.preRotate(rotate);
 
                 image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
-
 
             }
         } catch (Exception e) {

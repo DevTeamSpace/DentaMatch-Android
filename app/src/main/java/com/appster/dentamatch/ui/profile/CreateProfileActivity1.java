@@ -8,7 +8,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -61,7 +60,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_create_profile1);
         initViews();
-        callJobListApi();
     }
 
     private void initViews() {
@@ -92,9 +90,13 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
             case R.id.et_job_title:
                 hideKeyboard();
+
                 if(PreferenceUtil.getJobTitleList()!=null && PreferenceUtil.getJobTitleList().size()>0) {
                     new BottomSheetJobTitle(CreateProfileActivity1.this, this, 0);
+                }else{
+                    callJobListApi();
                 }
+
                 break;
 
             case R.id.create_profile1_btn_next:
@@ -196,6 +198,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             public void onSuccess(JobTitleResponse response) {
                 if (response.getStatus() == 1) {
                     PreferenceUtil.setJobTitleList(response.getJobTitleResponseData().getJobTitleList());
+                    new BottomSheetJobTitle(CreateProfileActivity1.this, CreateProfileActivity1.this, 0);
+
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -265,22 +269,23 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         startActivity(intent);
     }
 
-    private void getImageFromGallery() {
-        Intent gIntent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        gIntent.setType("image/*");
-        startActivityForResult(
-                Intent.createChooser(gIntent, "Select File"),
-                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-    }
+//    private void getImageFromGallery() {
+//        Intent gIntent = new Intent(
+//                Intent.ACTION_PICK,
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        gIntent.setType("image/*");
+//        startActivityForResult(
+//                Intent.createChooser(gIntent, "Select File"),
+//                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
+//    }
 
-    private void takePhoto() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
-    }
+//    private void takePhoto() {
+//        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
+//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+//        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
+//    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -309,7 +314,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (grantResults.length > 0 &&
-                (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             if (imageSourceType == 0) {

@@ -21,13 +21,12 @@
             android:paddingBottom="@dimen/margin_15"
             android:paddingTop="@dimen/margin_15"
             android:text="@string/job_tile_search"
-            android:textAllCaps="true"
             android:textColor="@color/black_color"
             android:textSize="@dimen/text_size_13"
-            app:customFont="@string/font_medium" />
+            app:customFont="@string/font_regular" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_ajob_title"
+            android:id="@+id/recycler_job_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />

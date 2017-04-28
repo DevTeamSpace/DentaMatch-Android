@@ -13,6 +13,7 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.EditText;
 
+import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityLoginBinding;
 import com.appster.dentamatch.network.BaseCallback;
@@ -29,10 +30,11 @@ import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.crashlytics.android.Crashlytics;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -51,6 +53,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String mPlaceName;
     private String mLatitude;
     private String mLongitude;
+    private String mSelectedCountry;
+    private String mSelectedCity;
+    private String mSelectedState;
     private boolean mIsLoginShow, mIsRegisterShow;
 
     @Override
@@ -187,9 +192,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.iv_accept_policy:
                 if (mIsAccepted) {
                     mIsAccepted = false;
-                    mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
+                    mBinder.ivAcceptPolicy.setImageResource(R.drawable.ic_check_empty);
                 } else {
-                    mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_fill);
+                    mBinder.ivAcceptPolicy.setImageResource(R.drawable.ic_check_fill);
                     mIsAccepted = true;
                 }
                 break;
@@ -202,6 +207,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     intent.putExtra(Constants.EXTRA_LONGITUDE, mLongitude);
                     intent.putExtra(Constants.EXTRA_POSTAL_CODE, mPostalCode);
                     intent.putExtra(Constants.EXTRA_PLACE_NAME, mPlaceName);
+                    intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mSelectedCountry);
+                    intent.putExtra(Constants.EXTRA_CITY_NAME, mSelectedCity);
+                    intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
                 }
 
                 startActivityForResult(intent, REQUEST_CODE_LOCATION);
@@ -223,6 +231,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         mLongitude = bundle.getString(Constants.EXTRA_LONGITUDE);
                         mPlaceName = bundle.getString(Constants.EXTRA_PLACE_NAME);
                         mPostalCode = bundle.getString(Constants.EXTRA_POSTAL_CODE);
+                        mSelectedCity = bundle.getString(Constants.EXTRA_CITY_NAME);
+                        mSelectedCountry = bundle.getString(Constants.EXTRA_COUNTRY_NAME);
+                        mSelectedState = bundle.getString(Constants.EXTRA_STATE_NAME);
                         mBinder.tvPreferredJobLocation.setText(mPlaceName);
                     }
                 }
@@ -299,13 +310,37 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_location_alert));
                 return false;
             }
+
             if (mPostalCode.isEmpty()) {
                 Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
+
             if (!mIsAccepted) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_tnc_alert));
                 return false;
+            }
+
+
+            if(TextUtils.isEmpty(mSelectedCountry)) {
+                mSelectedCountry = "";
+//                showToast(getString(R.string.msg_empty_country));
+//                return false;
+
+            }
+
+            if (TextUtils.isEmpty(mSelectedCity)){
+                mSelectedCity = "";
+//                showToast(getString(R.string.msg_empty_city));
+//                return false;
+
+            }
+
+            if (TextUtils.isEmpty(mSelectedState)){
+                mSelectedState = "";
+//                showToast(getString(R.string.msg_empty_state));
+//                return false;
+
             }
         }
         return true;
@@ -320,6 +355,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginRequest.setPassword(getTextFromEditText(mBinder.registerEtPassword));
         loginRequest.setFirstName(getTextFromEditText(mBinder.registerEtFname));
         loginRequest.setLastName(getTextFromEditText(mBinder.registerEtLname));
+        loginRequest.setCountry(mSelectedCountry);
+        loginRequest.setCity(mSelectedCity);
+        loginRequest.setState(mSelectedState);
 
         loginRequest.setLatitude(mLatitude);
         loginRequest.setLongitude(mLongitude);
@@ -337,6 +375,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onSuccess(LoginResponse response) {
 
                 if (response.getStatus() == 1) {
+                    /*
+                      Track event via mixpanel.
+                     */
+                    DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_signup));
+
                     PreferenceUtil.setFistName(getTextFromEditText(mBinder.registerEtFname));
                     PreferenceUtil.setLastName(getTextFromEditText(mBinder.registerEtLname));
                     Utils.showToast(getApplicationContext(), response.getMessage());
@@ -351,7 +394,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onFail(Call<LoginResponse> call, BaseResponse baseResponse) {
-                LogUtils.LOGD(TAG, "onFail");
 
             }
         });
@@ -385,6 +427,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onSuccess(LoginResponse response) {
                 if (response.getStatus() == 1) {
+                    /*
+                      Track event via mixpanel.
+                     */
+                    try {
+                        JSONObject userDetails = new JSONObject();
+                        userDetails.put(getString(R.string.user_name_label), response.getLoginResponseData().getUserDetail().getFirstName()
+                                .concat(" ")
+                                .concat(response.getLoginResponseData().getUserDetail().getLastName()));
+                        userDetails.put(getString(R.string.email_label), loginRequest.getEmail());
+                        DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_login), userDetails);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
                     if (response.getLoginResponseData().getSearchFilters() != null) {
                         SearchFilterModel searchFilters = response.getLoginResponseData().getSearchFilters();
@@ -418,7 +474,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         PreferenceUtil.saveJobFilter(request);
                     }
 
-                    PreferenceUtil.setIsLogined(true);
+                    PreferenceUtil.setIsLogin(true);
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
@@ -479,6 +535,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public String getActivityName() {
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        DentaApp.getInstance().getMixpanelAPI().flush();
+        super.onDestroy();
     }
 
     private void clearRegistrationFields() {

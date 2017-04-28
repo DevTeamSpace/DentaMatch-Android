@@ -139,7 +139,7 @@ public interface AuthWebServices {
     Call<BaseResponse> applyJob(@Body JobApplyRequest request);
 
     @POST(UPDATE_FCM_TOKEN)
-    Call<BaseResponse> updateFcmToekn(@Body UpdateFcmTokenRequest request);
+    Call<BaseResponse> updateFcmToken(@Body UpdateFcmTokenRequest request);
 
     @POST(JOB_DETAILS)
     Call<JobDetailResponse> getJobDetail(@Body JobDetailRequest request);
@@ -172,7 +172,7 @@ public interface AuthWebServices {
     Call<BaseResponse> saveAffiliation(@Body AffiliationPostRequest affiliationPostRequest);
 
     @POST(CHANGE_PASSWORD)
-    Call<BaseResponse> changePassword(@Body ChangePasswordRequest changePassowrdRequest);
+    Call<BaseResponse> changePassword(@Body ChangePasswordRequest changePasswordRequest);
 
     @POST(CERTIFICATION_UPDATE)
     Call<BaseResponse> saveCertificate(@Body CertificateRequest certificateRequest);
@@ -224,7 +224,7 @@ public interface AuthWebServices {
     Call<AvailabilityResponse> getAvailabilityList(@Body GetAvailabilityRequest getAvailabilityRequest);
 
     @POST(SAVE_AVAILABILITY)
-    Call<BaseResponse> saveAvailability(@Body SaveAvailabilityRequest saveAvailabiltyRequest);
+    Call<BaseResponse> saveAvailability(@Body SaveAvailabilityRequest saveAvailabilityRequest);
 
     @PUT(UPDATE_LICENCE)
     Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);

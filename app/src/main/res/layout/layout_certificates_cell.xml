@@ -11,7 +11,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
-            android:layout_marginTop="@dimen/margin_36"
             android:background="@color/line_divider" />
 
         <com.appster.dentamatch.widget.CustomTextView
@@ -33,11 +32,14 @@
             android:background="@color/line_divider" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/iv_certificate_upoload_icon"
+            android:id="@+id/iv_certificate_upload_icon"
             android:layout_width="@dimen/camera_image_size"
             android:layout_height="@dimen/camera_image_size"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/margin_25"
+            android:layout_marginTop="@dimen/margin_37"
+            android:layout_marginStart="@dimen/margin_25"
+            android:layout_marginEnd="@dimen/margin_25"
+            android:layout_marginBottom="@dimen/margin_8"
             android:src="@drawable/ic_upload" />
 
         <com.appster.dentamatch.widget.CustomTextView
@@ -47,7 +49,7 @@
             android:layout_marginBottom="@dimen/margin_normal"
             android:text="@string/label_upload_photo"
             android:textColor="@color/edt_hint_color"
-            android:textSize="@dimen/text_size_xlarge"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_regular" />
 
         <com.appster.dentamatch.widget.CustomTextView
@@ -60,12 +62,13 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:background="@drawable/bg_edit_text"
             android:gravity="center_vertical"
-            android:hint="@string/valdity_date_string"
+            android:hint="@string/validity_date_string"
             android:paddingBottom="@dimen/margin_medium"
             android:paddingStart="@dimen/margin_medium"
             android:textColor="@color/text_default_color"
             android:textColorHint="@color/edt_hint_color"
             android:textSize="@dimen/text_size_13"
+            android:layout_marginBottom="@dimen/margin_35"
             app:customFont="@string/font_medium" />
 
     </LinearLayout>

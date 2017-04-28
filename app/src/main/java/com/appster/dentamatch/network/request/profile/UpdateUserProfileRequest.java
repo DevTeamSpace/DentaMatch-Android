@@ -15,6 +15,9 @@ public class UpdateUserProfileRequest {
     private String latitude;
     private String longitude;
     private String preferredJobLocation;
+    private String preferredCity;
+    private String preferredState;
+    private String preferredCountry;
 
     @SerializedName("jobTitileId")
     private int jobTitleID;
@@ -52,4 +55,15 @@ public class UpdateUserProfileRequest {
         this.aboutMe = aboutMe;
     }
 
+    public void setCity(String city) {
+        this.preferredCity = city;
+    }
+
+    public void setState(String state) {
+        this.preferredState = state;
+    }
+
+    public void setCountry(String country) {
+        this.preferredCountry = country;
+    }
 }

@@ -90,9 +90,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 try {
                     JSONObject object = new JSONObject(dataPayload.get("data"));
                     Log.d("object ", object.toString());
-                    String message = parsePayLoadForAdminMsg(object, "notificationData");
-
-                    if (TextUtils.isEmpty(message)) {
+//                    String message = parsePayLoadForAdminMsg(object, "notificationData");
+                    if(!object.has("notificationData")){
+//                    if (TextUtils.isEmpty(message)) {
                         isChatMessage = true;
 
                     } else {

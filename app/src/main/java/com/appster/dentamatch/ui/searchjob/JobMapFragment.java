@@ -99,6 +99,11 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     @Subscribe
     public void onDataUpdated(JobDataReceivedEvent event) {
         if (event != null) {
+
+            if(mMarkerPositionList != null){
+                mMarkerPositionList.clear();
+            }
+
             mJobData = event.getJobList();
 
             for (SearchJobModel model : mJobData) {
@@ -136,8 +141,8 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         mMapBinding.mapView.onCreate(savedInstanceState);
         mMarkerPositionList = new ArrayList<>();
         mBottomSheetBehavior = BottomSheetBehavior.from(mMapBinding.jobMapInfoWindow);
-        /**
-         * Disable user dragging of bottom sheet.
+        /*
+          Disable user dragging of bottom sheet.
          */
         mBottomSheetBehavior.setHideable(false);
         mMapBinding.infoWindowContent.getRoot().setOnClickListener(this);
@@ -195,14 +200,14 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         mCurrentLocLat = location.getLatitude();
         mCurrentLocLng = location.getLongitude();
 
-        /**
-         * the map is already loaded as we request current location onMapReady method.
-         * So we add markers in this method after fetching current location of user.
+        /*
+          the map is already loaded as we request current location onMapReady method.
+          So we add markers in this method after fetching current location of user.
          */
         mMarkerPositionList.clear();
 
-        /**
-         * Request Data helper class to provide job search data
+        /*
+          Request Data helper class to provide job search data
          */
         SearchJobDataHelper.getInstance().requestData(getActivity());
 
@@ -247,16 +252,16 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        /**
-         * Animate the camera to marker and bring it to center.
+        /*
+          Animate the camera to marker and bring it to center.
          */
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(marker.getPosition());
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), MARKER_PADDING));
 
         if (previousSelectedMarker != null) {
-            /**
-             * In case current and previous markers are same close the info window and deselect marker.
+            /*
+              In case current and previous markers are same close the info window and deselect marker.
              */
             if (previousSelectedMarker.getId().equalsIgnoreCase(marker.getId())) {
                 collapseInfoDialog();
@@ -290,16 +295,16 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
     private void openInfoDialog(Marker marker) {
         final SearchJobModel jobModel = (SearchJobModel) marker.getTag();
-        /**
-         * In case a previous bottom sheet is remaining open then 1st the previous one gets hidden
-         * and then a new one appears.
+        /*
+          In case a previous bottom sheet is remaining open then 1st the previous one gets hidden
+          and then a new one appears.
          */
         if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             collapseInfoDialog();
 
-            /**
-             * Allow the previous info window which is open to close , for that purpose a delay handler
-             * of 300 ms is added .
+            /*
+              Allow the previous info window which is open to close , for that purpose a delay handler
+              of 300 ms is added .
              */
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -315,85 +320,89 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     }
 
     private void updateInfoWindowData(SearchJobModel jobModel) {
-        if (jobModel != null) {
-            mSelectedJobID = jobModel.getId();
-            mMapBinding.infoWindowContent.tvJobName.setText(jobModel.getJobTitleName());
-            mMapBinding.infoWindowContent.cbJobSelection.setChecked(jobModel.getIsSaved() == 1);
-            mMapBinding.infoWindowContent.cbJobSelection.setTag(jobModel);
-            mMapBinding.infoWindowContent.cbJobSelection.setOnClickListener(this);
+        try {
+            if (jobModel != null) {
+                mSelectedJobID = jobModel.getId();
+                mMapBinding.infoWindowContent.tvJobName.setText(jobModel.getJobTitleName());
+                mMapBinding.infoWindowContent.cbJobSelection.setChecked(jobModel.getIsSaved() == 1);
+                mMapBinding.infoWindowContent.cbJobSelection.setTag(jobModel);
+                mMapBinding.infoWindowContent.cbJobSelection.setOnClickListener(this);
 
-            if (jobModel.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
-                mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_part_time));
-                mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
+                if (jobModel.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
+                    mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_part_time));
+                    mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
 
-                ArrayList<String> partTimeDaysArray = new ArrayList<>();
-                if (jobModel.getIsMonday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_full_monday));
-                }
-
-                if (jobModel.getIsTuesday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_full_tuesday));
-                }
-
-                if (jobModel.getIsWednesday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_full_wednesday));
-                }
-
-                if (jobModel.getIsThursday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_full_thursday));
-                }
-
-                if (jobModel.getIsFriday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_full_friday));
-                }
-
-                if (jobModel.getIsSaturday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_full_saturday));
-                }
-
-                if (jobModel.getIsSunday() == 1) {
-                    partTimeDaysArray.add(getString(R.string.txt_full_sunday));
-                }
-
-                String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
-                mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.VISIBLE);
-                mMapBinding.infoWindowContent.tvJobDate.setText(partTimeDays);
-
-                final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.BELOW, mMapBinding.infoWindowContent.tvJobName.getId());
-                params.addRule(RelativeLayout.END_OF, mMapBinding.infoWindowContent.tvJobType.getId());
-                params.addRule(RelativeLayout.START_OF, mMapBinding.infoWindowContent.tvJobDocDistance.getId());
-                params.setMargins(Utils.dpToPx(getActivity(), 12), 0, Utils.dpToPx(getActivity(), 10), 0);
-
-                mMapBinding.infoWindowContent.tvJobDate.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mMapBinding.infoWindowContent.tvJobDate.getLineCount() == 1) {
-                            params.addRule(RelativeLayout.ALIGN_BASELINE, mMapBinding.infoWindowContent.tvJobType.getId());
-                            mMapBinding.infoWindowContent.tvJobDate.setLayoutParams(params);
-                        } else {
-                            mMapBinding.infoWindowContent.tvJobDate.setLayoutParams(params);
-                        }
+                    ArrayList<String> partTimeDaysArray = new ArrayList<>();
+                    if (jobModel.getIsMonday() == 1) {
+                        partTimeDaysArray.add(getString(R.string.mon));
                     }
-                }, 200);
+
+                    if (jobModel.getIsTuesday() == 1) {
+                        partTimeDaysArray.add(getString(R.string.tue));
+                    }
+
+                    if (jobModel.getIsWednesday() == 1) {
+                        partTimeDaysArray.add(getString(R.string.wed));
+                    }
+
+                    if (jobModel.getIsThursday() == 1) {
+                        partTimeDaysArray.add(getString(R.string.thu));
+                    }
+
+                    if (jobModel.getIsFriday() == 1) {
+                        partTimeDaysArray.add(getString(R.string.fri));
+                    }
+
+                    if (jobModel.getIsSaturday() == 1) {
+                        partTimeDaysArray.add(getString(R.string.sat));
+                    }
+
+                    if (jobModel.getIsSunday() == 1) {
+                        partTimeDaysArray.add(getString(R.string.sun));
+                    }
+
+                    String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
+                    mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.VISIBLE);
+                    mMapBinding.infoWindowContent.tvJobDate.setText(partTimeDays);
+
+                    final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.addRule(RelativeLayout.BELOW, mMapBinding.infoWindowContent.tvJobName.getId());
+                    params.addRule(RelativeLayout.END_OF, mMapBinding.infoWindowContent.tvJobType.getId());
+                    params.addRule(RelativeLayout.START_OF, mMapBinding.infoWindowContent.tvJobDocDistance.getId());
+                    params.setMargins(Utils.dpToPx(getActivity(), 12), 0, Utils.dpToPx(getActivity(), 10), 0);
+
+                    mMapBinding.infoWindowContent.tvJobDate.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mMapBinding.infoWindowContent.tvJobDate.getLineCount() == 1) {
+                                params.addRule(RelativeLayout.ALIGN_BASELINE, mMapBinding.infoWindowContent.tvJobType.getId());
+                                mMapBinding.infoWindowContent.tvJobDate.setLayoutParams(params);
+                            } else {
+                                mMapBinding.infoWindowContent.tvJobDate.setLayoutParams(params);
+                            }
+                        }
+                    }, 200);
 
 
-            } else if (jobModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
-                mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
-                mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.GONE);
-                mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_full_time));
+                } else if (jobModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
+                    mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
+                    mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.GONE);
+                    mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_full_time));
 
-            } else if (jobModel.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
-                mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
-                mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.GONE);
-                mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_temporary));
+                } else if (jobModel.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
+                    mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
+                    mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.GONE);
+                    mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_temporary));
+                }
+
+                mMapBinding.infoWindowContent.tvJobDocAddress.setText(jobModel.getAddress());
+                String endMessage = jobModel.getDays() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
+                mMapBinding.infoWindowContent.tvJobDocTime.setText(String.valueOf(jobModel.getDays()).concat(" ").concat(endMessage));
+                mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
+                mMapBinding.infoWindowContent.tvJobDocName.setText(jobModel.getOfficeName());
             }
-
-            mMapBinding.infoWindowContent.tvJobDocAddress.setText(jobModel.getAddress());
-            String endMessage = jobModel.getDays() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
-            mMapBinding.infoWindowContent.tvJobDocTime.setText(String.valueOf(jobModel.getDays()).concat(" ").concat(endMessage));
-            mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
-            mMapBinding.infoWindowContent.tvJobDocName.setText(jobModel.getOfficeName());
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -403,8 +412,8 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
 
     private void addMarker(ArrayList<LatLng> markerList) {
-        /**
-         * Lat lng Bounds of the entire icons on the map.
+        /*
+          Lat lng Bounds of the entire icons on the map.
          */
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
@@ -415,17 +424,17 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
             Marker addedMarker = mGoogleMap.addMarker(options);
 
-            /**
-             * Set the data model as a tag on the marker so it can be used when info window is
-             * displayed.
+            /*
+              Set the data model as a tag on the marker so it can be used when info window is
+              displayed.
              */
             addedMarker.setTag(mJobData.get(i));
             builder.include(options.getPosition());
         }
 
-        /**
-         * Include the current location also into the bounds so that the screen can be adjusted to a zoom
-         * level inclusive of both current location and other location markers.
+        /*
+          Include the current location also into the bounds so that the screen can be adjusted to a zoom
+          level inclusive of both current location and other location markers.
          */
         builder.include(new LatLng(mCurrentLocLat, mCurrentLocLng));
         LatLngBounds bounds = builder.build();
@@ -447,12 +456,19 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                     model.setIsSaved(status);
                     mMapBinding.infoWindowContent.cbJobSelection.setChecked(status == 1);
                     SearchJobDataHelper.getInstance().notifyItemsChanged(model);
+                }else{
+
+                    if(TextUtils.isEmpty(response.getMessage())) {
+                        mMapBinding.infoWindowContent.cbJobSelection.setChecked(!(status == 1));
+                        ((BaseActivity) getActivity()).showToast(response.getMessage());
+
+                    }
                 }
             }
 
             @Override
             public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
+                mMapBinding.infoWindowContent.cbJobSelection.setChecked(!(status == 1));
             }
         });
     }

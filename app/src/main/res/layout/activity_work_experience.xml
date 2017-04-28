@@ -31,6 +31,16 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_25">
 
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/create_profile_iv_profile_icon"
+                        android:layout_width="@dimen/profile_image_height"
+                        android:layout_height="@dimen/profile_image_height"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/profile_pic_placeholder"
+                        android:visibility="visible" />
+
                     <ProgressBar
                         android:id="@+id/progress_bar"
                         style="?android:attr/progressBarStyleHorizontal"
@@ -40,15 +50,7 @@
                         android:indeterminate="false"
                         android:max="100"
                         android:progress="25"
-                        android:progressDrawable="@drawable/circuler_progress" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/create_profile_iv_profile_icon"
-                        android:layout_width="@dimen/profile_image_height"
-                        android:layout_height="@dimen/profile_image_height"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/profile_pic_placeholder"
-                        android:visibility="visible" />
+                        android:progressDrawable="@drawable/circular_progress" />
                 </RelativeLayout>
 
                 <com.appster.dentamatch.widget.CustomTextView
@@ -65,7 +67,9 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:gravity="center_horizontal"
-                    android:text="@string/lable_relevant_exp"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:text="@string/label_relevant_exp"
                     android:textColor="@color/edt_hint_color"
                     android:textSize="@dimen/text_size_normal"
                     app:customFont="@string/font_regular" />
@@ -85,7 +89,7 @@
                         style="@style/edit_text_view_normal"
                         android:layout_marginLeft="@dimen/margin_normal"
                         android:layout_marginRight="@dimen/margin_normal"
-                        android:background="@drawable/bg_slection_edit_text"
+                        android:background="@drawable/bg_selection_edit_text"
                         android:drawablePadding="@dimen/padding_drawable"
                         android:drawableEnd="@drawable/ic_down_arrow"
                         android:focusable="false"
@@ -106,14 +110,14 @@
                     app:hintTextAppearance="@style/edit_input_layout">
 
                     <EditText
-                        android:id="@+id/tv_experince_work_exp"
+                        android:id="@+id/tv_experience_work_exp"
                         style="@style/edit_text_view_normal"
                         android:layout_marginLeft="@dimen/margin_normal"
                         android:layout_marginRight="@dimen/margin_normal"
-                        android:background="@drawable/bg_slection_edit_text"
+                        android:background="@drawable/bg_selection_edit_text"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:hint="@string/year_of_experice"
+                        android:hint="@string/year_of_experience"
                         android:longClickable="false"
                         android:paddingTop="@dimen/padding_drawable" />
                 </android.support.design.widget.TextInputLayout>
