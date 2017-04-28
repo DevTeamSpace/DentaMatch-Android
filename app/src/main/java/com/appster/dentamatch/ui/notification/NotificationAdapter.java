@@ -40,6 +40,9 @@ import retrofit2.Call;
  */
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
+    private final int NOTIFICATION_UNREAD = 0;
+    private final int NOTIFICATION_READ = 1;
+
     private ItemNotificationBinding mBinding;
     private ArrayList<NotificationData> mNotificationList;
     private Context mContext;
@@ -69,7 +72,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             /*
               Change visibility of cell items based on read or unread notification status.
              */
-            if (data.getSeen() == 0) {
+            if (data.getSeen() == NOTIFICATION_UNREAD) {
                 holder.ivRead.setVisibility(View.VISIBLE);
                 holder.tvDesc.setCustomFont(mContext, mContext.getString(R.string.font_medium));
                 holder.tvDesc.setTextColor(ContextCompat.getColor(mContext, R.color.black_color));
@@ -121,7 +124,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             }
 
-            if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == 0) {
+            if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == NOTIFICATION_UNREAD) {
                 holder.layoutInVite.setVisibility(View.VISIBLE);
 
             } else {
@@ -210,7 +213,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
                         redirectToDetail(data.getJobDetailModel().getId());
 
-                    } else if (data.getSeen() == 0) {
+                    } else if (data.getSeen() == NOTIFICATION_UNREAD) {
                         updateSeenStatus(position, false);
 
                     } else {
@@ -243,7 +246,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             public void onSuccess(BaseResponse response) {
                 if (response.getStatus() == 1) {
                     NotificationData data = mNotificationList.get(position);
-                    data.setSeen(1);
+                    data.setSeen(NOTIFICATION_READ);
                     notifyItemChanged(position);
 
                     if (!isInvite) {

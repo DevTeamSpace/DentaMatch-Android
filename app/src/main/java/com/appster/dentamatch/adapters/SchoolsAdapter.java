@@ -45,6 +45,9 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
+    private static final int OTHER_SELECTED = 1;
+    private static final int SCHOOL_ADDED = 1;
+    private static final int SPINNER_FIRST_POS = 0;
 
     private List<SchoolTypeModel> mSchoolList;
     private ItemSchoolBinding mBinder;
@@ -140,7 +143,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         } else {
             final ViewHolderItem holder1 = (ViewHolderItem) holder;
-            final SchoolTypeModel schoolTypeModel = mSchoolList.get(position - 1);
+            final int refPosition = position - 1;
+            final SchoolTypeModel schoolTypeModel = mSchoolList.get(refPosition);
             holder1.tvSchoolTypeName.setText(schoolTypeModel.getSchoolTypeName());
 
             /*
@@ -161,9 +165,9 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             /*
               Settings tags for later reference.
              */
-            holder1.autoCompleteTextView.setTag(position - 1);
-            holder1.etYearOfGraduation.setTag(position - 1);
-            holder1.spinnerYears.setTag(position - 1);
+            holder1.autoCompleteTextView.setTag(refPosition);
+            holder1.etYearOfGraduation.setTag(refPosition);
+            holder1.spinnerYears.setTag(refPosition);
 
             holder1.autoCompleteTextView.addTextChangedListener(new TextWatcher() {
 
@@ -190,7 +194,6 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             /*
              we scroll the autocomplete textview to center in order for it to take focus
              */
-            final int refPosition = position - 1;
             holder1.autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -210,7 +213,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             if (schoolTypeModel.getOtherList() != null &&
                     schoolTypeModel.getOtherList().size() > 0 &&
-                    schoolTypeModel.getOtherList().get(0).getIsSelected() == 1) {
+                    schoolTypeModel.getOtherList().get(0).getIsSelected() == OTHER_SELECTED) {
 
                 PostSchoolData data = new PostSchoolData();
                 data.setOtherSchooling(schoolTypeModel.getOtherList().get(0).getOtherSchooling());
@@ -223,16 +226,16 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 holder1.autoCompleteTextView.setText(schoolTypeModel.getOtherList().get(0).getOtherSchooling());
                 mYear = schoolTypeModel.getOtherList().get(0).getYearOfGraduation();
 
-                mHashMap.put(position - 1, data);
-            } else {
+                mHashMap.put(refPosition, data);
 
+            } else {
                 /*
                  Look for schools which the user might have selected and fill in autocomplete.
                  */
                 for (SchoolModel schoolModel : schoolTypeModel.getSchoolList()) {
                     listSchools.add(schoolModel.getSchoolName());
 
-                    if (schoolModel.getIsSelected() == 1) {
+                    if (schoolModel.getIsSelected() == SCHOOL_ADDED) {
                         PostSchoolData data = new PostSchoolData();
                         data.setOtherSchooling(schoolModel.getOtherSchooling());
                         data.setYearOfGraduation(schoolModel.getYearOfGraduation());
@@ -243,7 +246,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                         holder1.autoCompleteTextView.setText(schoolModel.getSchoolName());
                         mYear = schoolModel.getYearOfGraduation();
-                        mHashMap.put(position - 1, data);
+                        mHashMap.put(refPosition, data);
                         break;
 
                     } else {
@@ -294,7 +297,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
              Selects the chosen year in the spinner.
              */
             if (TextUtils.isEmpty(mYear)) {
-                holder1.spinnerYears.setSelection(0);
+                holder1.spinnerYears.setSelection(SPINNER_FIRST_POS);
 
             } else {
 
@@ -324,9 +327,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }else{
                 holder1.layChild.setVisibility(View.VISIBLE);
             }
-
         }
-
     }
 
     @Override

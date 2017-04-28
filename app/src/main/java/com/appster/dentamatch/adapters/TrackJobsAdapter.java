@@ -44,6 +44,14 @@ import retrofit2.Call;
  */
 
 public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
+    private final int JOB_SAVED = 1;
+    private static final int ADDED_PART_TIME = 1;
+    private static final int LINE_COUNT_ONE = 1;
+    private static final int VIEW_DELAY_TIME = 100;
+    private static final int DURATION_TIME_0 = 0;
+    private static final int DURATION_TIME_1 = 1;
+
+
     private ItemTrackJobListBinding mBinding;
     private Context mContext;
     private ArrayList<SearchJobModel> mJobListData;
@@ -74,7 +82,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
             if (mIsSaved) {
                 holder.cbSelect.setVisibility(View.VISIBLE);
-                holder.cbSelect.setChecked(data.getIsSaved() == 1);
+                holder.cbSelect.setChecked(data.getIsSaved() == JOB_SAVED);
                 holder.ivChat.setVisibility(View.GONE);
                 holder.cbSelect.setTag(position);
                 holder.cbSelect.setOnClickListener(this);
@@ -103,31 +111,31 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
-                if (data.getIsMonday() == 1) {
+                if (data.getIsMonday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(mContext.getString(R.string.mon));
                 }
 
-                if (data.getIsTuesday() == 1) {
+                if (data.getIsTuesday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(mContext.getString(R.string.tue));
                 }
 
-                if (data.getIsWednesday() == 1) {
+                if (data.getIsWednesday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(mContext.getString(R.string.wed));
                 }
 
-                if (data.getIsThursday() == 1) {
+                if (data.getIsThursday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(mContext.getString(R.string.thu));
                 }
 
-                if (data.getIsFriday() == 1) {
+                if (data.getIsFriday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(mContext.getString(R.string.fri));
                 }
 
-                if (data.getIsSaturday() == 1) {
+                if (data.getIsSaturday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(mContext.getString(R.string.sat));
                 }
 
-                if (data.getIsSunday() == 1) {
+                if (data.getIsSunday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(mContext.getString(R.string.sun));
                 }
 
@@ -138,21 +146,28 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.addRule(RelativeLayout.END_OF, holder.tvJobType.getId());
                 params.addRule(RelativeLayout.START_OF, holder.tvDistance.getId());
-                params.setMargins(Utils.dpToPx(mContext, 12), 0, Utils.dpToPx(mContext, 10), 0);
+                params.setMargins(Utils.dpToPx(mContext,
+                        mContext.getResources().getInteger(R.integer.margin_12)),
+                        mContext.getResources().getInteger(R.integer.margin_0),
+                        Utils.dpToPx(mContext, mContext.getResources().getInteger(R.integer.margin_10)),
+                        mContext.getResources().getInteger(R.integer.margin_0));
 
                 holder.tvDate.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (holder.tvDate.getLineCount() == 1) {
+                        if (holder.tvDate.getLineCount() == LINE_COUNT_ONE) {
                             params.addRule(RelativeLayout.ALIGN_BOTTOM, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
                         } else {
                             params.addRule(RelativeLayout.ALIGN_TOP, holder.tvJobType.getId());
                             holder.tvDate.setLayoutParams(params);
-                            holder.tvDate.setPadding(0, 4, 0, 0);
+                            holder.tvDate.setPadding(mContext.getResources().getInteger(R.integer.padding_0),
+                                    mContext.getResources().getInteger(R.integer.padding_4),
+                                    mContext.getResources().getInteger(R.integer.padding_0),
+                                    mContext.getResources().getInteger(R.integer.padding_0));
                         }
                     }
-                }, 100);
+                }, VIEW_DELAY_TIME);
 
 
             } else if (data.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
@@ -168,11 +183,11 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
             holder.tvDocAddress.setText(data.getAddress());
 
-            if (data.getDays() == 0) {
+            if (data.getDays() == DURATION_TIME_0) {
                 holder.tvDuration.setText(mContext.getString(R.string.text_todays));
 
             } else {
-                String endMessage = data.getDays() > 1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
+                String endMessage = data.getDays() > DURATION_TIME_1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
                 holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             }
 

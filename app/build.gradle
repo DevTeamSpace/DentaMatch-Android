@@ -101,7 +101,7 @@ android {
         QA {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://qa.dentamatch.co/api/"')
-            buildConfigField("String", "CHAT_URL", '"https://qanode.dentamatch.co:8443"')
+            buildConfigField("String", "CHAT_URL", '"https://qa.dentamatch.co:3000"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }

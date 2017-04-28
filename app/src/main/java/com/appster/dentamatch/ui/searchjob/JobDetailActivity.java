@@ -56,6 +56,16 @@ import retrofit2.Call;
 
 public class JobDetailActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener {
     private final int MAP_ZOOM_LEVEL = 7;
+    private final int DESC_MAX_LINES = 4;
+    private final int JOB_SAVED = 1;
+    private final int JOB_UNSAVED = 0;
+    private final int ADDED_PART_TIME = 1;
+    private static final int LINE_COUNT_ONE = 1;
+    private static final int DURATION_TIME_0 = 0;
+    private static final int DURATION_TIME_1 = 1;
+    private static final int VIEW_DELAY_TIME = 200;
+
+
     private int jobID;
     private boolean isFromHiredJob;
     private ActivityJobDetailBinding mBinding;
@@ -179,7 +189,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.tvJobDetailDocDescription.setMaxLines(Integer.MAX_VALUE);
                     mBinding.tvJobDetailDocReadMore.setText(R.string.txt_show_less);
                 } else {
-                    mBinding.tvJobDetailDocDescription.setMaxLines(4);
+                    mBinding.tvJobDetailDocDescription.setMaxLines(DESC_MAX_LINES);
                     mBinding.tvJobDetailDocReadMore.setText(getString(R.string.txt_read_more));
 
                 }
@@ -187,9 +197,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 break;
 
             case R.id.cb_job_selection:
-                final int status = mJobDetailModel.getIsSaved() == 1 ? 0 : 1;
+                final int status = mJobDetailModel.getIsSaved() == JOB_SAVED ? JOB_UNSAVED : JOB_SAVED;
 
-                if (status == 0) {
+                if (status == JOB_UNSAVED) {
                     Alert.createYesNoAlert(JobDetailActivity.this,
                             getString(R.string.txt_ok),
                             getString(R.string.txt_cancel),
@@ -224,7 +234,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.tvJobDetailOfficeDescription.setMaxLines(Integer.MAX_VALUE);
                     mBinding.tvJobDetailOfficeReadMore.setText(R.string.txt_show_less);
                 } else {
-                    mBinding.tvJobDetailOfficeDescription.setMaxLines(4);
+                    mBinding.tvJobDetailOfficeDescription.setMaxLines(DESC_MAX_LINES);
                     mBinding.tvJobDetailOfficeReadMore.setText(getString(R.string.txt_read_more));
                 }
                 break;
@@ -342,31 +352,31 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_part_time);
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
-                if (dataModel.getIsMonday() == 1) {
+                if (dataModel.getIsMonday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.mon));
                 }
 
-                if (dataModel.getIsTuesday() == 1) {
+                if (dataModel.getIsTuesday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.tue));
                 }
 
-                if (dataModel.getIsWednesday() == 1) {
+                if (dataModel.getIsWednesday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.wed));
                 }
 
-                if (dataModel.getIsThursday() == 1) {
+                if (dataModel.getIsThursday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.thu));
                 }
 
-                if (dataModel.getIsFriday() == 1) {
+                if (dataModel.getIsFriday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.fri));
                 }
 
-                if (dataModel.getIsSaturday() == 1) {
+                if (dataModel.getIsSaturday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.sat));
                 }
 
-                if (dataModel.getIsSunday() == 1) {
+                if (dataModel.getIsSunday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.sun));
                 }
 
@@ -377,21 +387,28 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
                 params.addRule(RelativeLayout.END_OF, mBinding.tvJobDetailType.getId());
-                params.setMargins(Utils.dpToPx(this, 12), 0, Utils.dpToPx(this, 10), 0);
+                params.setMargins(Utils.dpToPx(this, getResources().getInteger(R.integer.margin_12)),
+                        getResources().getInteger(R.integer.margin_0),
+                        Utils.dpToPx(this, getResources().getInteger(R.integer.margin_10)),
+                        getResources().getInteger(R.integer.margin_0));
 
                 mBinding.tvJobDetailDate.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mBinding.tvJobDetailDate.getLineCount() == 1) {
+                        if (mBinding.tvJobDetailDate.getLineCount() == LINE_COUNT_ONE) {
                             params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
                             mBinding.tvJobDetailDate.setLayoutParams(params);
                         } else {
                             params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailType.getId());
                             mBinding.tvJobDetailDate.setLayoutParams(params);
-                            mBinding.tvJobDetailDate.setPadding(0, 0, 0, 0);
+                            mBinding.tvJobDetailDate.setPadding(
+                                    getResources().getInteger(R.integer.padding_0),
+                                    getResources().getInteger(R.integer.padding_0),
+                                    getResources().getInteger(R.integer.padding_0),
+                                    getResources().getInteger(R.integer.padding_0));
                         }
                     }
-                }, 200);
+                }, VIEW_DELAY_TIME);
 
             } else if (dataModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                 mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_full_time);
@@ -432,10 +449,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 }
 
             }
-            if (dataModel.getJobPostedTimeGap() == 0) {
+            if (dataModel.getJobPostedTimeGap() == DURATION_TIME_0) {
                 mBinding.tvJobDocTime.setText(getString(R.string.text_todays));
             }else {
-                String endMessage = dataModel.getJobPostedTimeGap() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
+                String endMessage = dataModel.getJobPostedTimeGap() > DURATION_TIME_1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
                 mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
             }
 
@@ -449,8 +466,8 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             mBinding.tvJobDetailDocDescription.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (mBinding.tvJobDetailDocDescription.getLineCount() > 4) {
-                        mBinding.tvJobDetailDocDescription.setMaxLines(4);
+                    if (mBinding.tvJobDetailDocDescription.getLineCount() > DESC_MAX_LINES) {
+                        mBinding.tvJobDetailDocDescription.setMaxLines(DESC_MAX_LINES);
                         mBinding.tvJobDetailDocReadMore.setVisibility(View.VISIBLE);
                         mBinding.tvJobDetailDocReadMore.setText(getString(R.string.txt_read_more));
                         mBinding.tvJobDetailDocReadMore.setOnClickListener(JobDetailActivity.this);
@@ -460,15 +477,15 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                         mBinding.tvJobDetailDocReadMore.setOnClickListener(null);
                     }
                 }
-            }, 200);
+            }, VIEW_DELAY_TIME);
 
 
             mBinding.tvJobDetailOfficeDescription.setText(dataModel.getOfficeDesc());
             mBinding.tvJobDetailOfficeDescription.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (mBinding.tvJobDetailOfficeDescription.getLineCount() > 4) {
-                        mBinding.tvJobDetailOfficeDescription.setMaxLines(4);
+                    if (mBinding.tvJobDetailOfficeDescription.getLineCount() > DESC_MAX_LINES) {
+                        mBinding.tvJobDetailOfficeDescription.setMaxLines(DESC_MAX_LINES);
                         mBinding.tvJobDetailOfficeReadMore.setVisibility(View.VISIBLE);
                         mBinding.tvJobDetailOfficeReadMore.setOnClickListener(JobDetailActivity.this);
 
@@ -477,7 +494,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                         mBinding.tvJobDetailOfficeReadMore.setOnClickListener(null);
                     }
                 }
-            }, 200);
+            }, VIEW_DELAY_TIME);
 
 
             if (dataModel.getIsApplied() != 0) {
@@ -540,7 +557,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 mBinding.btnApplyJob.setVisibility(View.VISIBLE);
             }
 
-            if (dataModel.getIsSaved() == 1) {
+            if (dataModel.getIsSaved() == JOB_SAVED) {
                 mBinding.cbJobSelection.setChecked(true);
             } else {
                 mBinding.cbJobSelection.setChecked(false);
@@ -648,13 +665,20 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             officeTypeParams.addRule(RelativeLayout.BELOW, mBinding.tvJobDetailOfficeTypeLabel.getId());
 
             if (dataModel.getNoOfJobs() != 0) {
-                officeTypeParams.setMargins(0, 0, 0, 0);
+                officeTypeParams.setMargins(getResources().getInteger(R.integer.margin_0),
+                        getResources().getInteger(R.integer.margin_0),
+                        getResources().getInteger(R.integer.margin_0),
+                        getResources().getInteger(R.integer.margin_0));
+
                 mBinding.tvJobDetailDocOfficeType.setLayoutParams(officeTypeParams);
                 mBinding.tvJobDetailJobOpenings.setVisibility(View.VISIBLE);
                 mBinding.tvJobDetailTotalJobLabel.setVisibility(View.VISIBLE);
                 mBinding.tvJobDetailJobOpenings.setText(String.valueOf(dataModel.getNoOfJobs()));
             } else {
-                officeTypeParams.setMargins(0, 0, 0, Utils.dpToPx(this, 20));
+                officeTypeParams.setMargins(getResources().getInteger(R.integer.margin_0),
+                        getResources().getInteger(R.integer.margin_0),
+                        getResources().getInteger(R.integer.margin_0),
+                        Utils.dpToPx(this, getResources().getInteger(R.integer.margin_20)));
                 mBinding.tvJobDetailDocOfficeType.setLayoutParams(officeTypeParams);
                 mBinding.tvJobDetailJobOpenings.setVisibility(View.GONE);
                 mBinding.tvJobDetailTotalJobLabel.setVisibility(View.GONE);

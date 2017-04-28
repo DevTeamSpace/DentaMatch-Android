@@ -198,8 +198,8 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMarginStart(10);
-        params.setMarginEnd(20);
+        params.setMarginStart(mContext.getResources().getInteger(R.integer.margin_10));
+        params.setMarginEnd(mContext.getResources().getInteger(R.integer.margin_20));
 
         for (int i = 0; i < listSkills.size(); i++) {
             if (listSkills.get(i).getIsSelected() == 1) {
@@ -207,7 +207,10 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 FlowLayout.LayoutParams layoutParams = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,
                         FlowLayout.LayoutParams.WRAP_CONTENT);
 
-                layoutParams.setMargins(10, 0, 10, 20);
+                layoutParams.setMargins(mContext.getResources().getInteger(R.integer.margin_10),
+                        mContext.getResources().getInteger(R.integer.margin_0),
+                        mContext.getResources().getInteger(R.integer.margin_10),
+                        mContext.getResources().getInteger(R.integer.margin_20));
 
                 String text = listSkills.get(i).getSkillName();
 
