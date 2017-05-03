@@ -262,6 +262,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                     Intent intent = new Intent();
                     intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
                     setResult(Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT, intent);
+                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                     finish();
                 }
             }

@@ -471,20 +471,27 @@ public class Utils {
     public static String getExpYears(int month) {
         String yearLabel = "", monthLabel = "";
 
-        if(month == 1){
+        if (month / 12 == 1) {
             yearLabel = DentaApp.getInstance().getString(R.string.txt_single_year);
-        }else{
+        } else {
             yearLabel = DentaApp.getInstance().getString(R.string.txt_multiple_years);
         }
 
-        if(month % 12 == 1){
+        if (month % 12 == 1) {
             monthLabel = DentaApp.getInstance().getString(R.string.txt_single_month);
-        }else {
+        } else {
             monthLabel = DentaApp.getInstance().getString(R.string.txt_multiple_months);
         }
 
+        if (month / 12 == 0){
+            return month % 12 + " " + monthLabel;
 
-        return month / 12 +" "+ yearLabel + " " + month % 12 + " " + monthLabel ;
+        }else if(month % 12 == 0){
+            return month / 12 + " " + yearLabel;
+
+        }else{
+            return month / 12 + " " + yearLabel + " " + month % 12 + " " + monthLabel;
+        }
 
     }
 

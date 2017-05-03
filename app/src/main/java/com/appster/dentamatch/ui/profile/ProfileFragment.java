@@ -41,6 +41,7 @@ import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -306,6 +307,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
                 inflateExperience(response.getWorkExperience().getSaveList());
             } else {
+                profileBinding.expInflater.setVisibility(View.VISIBLE);
+                profileBinding.expInflater.removeAllViews();
                 visibleView(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
             }
 
@@ -528,22 +531,52 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             int months = expList.get(i).getMonthsOfExpereince() % 12;
             int years = expList.get(i).getMonthsOfExpereince() / 12;
 
-            if (months == 0) {
-                expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs)));
+//            if (months == 0) {
+//                expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs)));
+//            } else {
+//                String strMonths = "";
+//
+//                if (months == 1) {
+//                    strMonths = getString(R.string.month);
+//                } else {
+//                    strMonths = getString(R.string.txt_multiple_months);
+//                }
+//
+//
+//                expBinding.tvExpDuration.setText(String.valueOf(years)
+//                        .concat(getString(R.string.yrs))
+//                        .concat(" ")
+//                        .concat(String.valueOf(months).concat(strMonths)));
+//            }
+
+            String yearLabel = "", monthLabel = "";
+
+            if (years == 1) {
+                yearLabel = getString(R.string.txt_single_year);
             } else {
-                String strMonths = "";
-
-                if (months == 1) {
-                    strMonths = getString(R.string.month);
-                } else {
-                    strMonths = getString(R.string.txt_multiple_months);
-                }
-
-                expBinding.tvExpDuration.setText(String.valueOf(years)
-                        .concat(getString(R.string.yrs))
-                        .concat(" ")
-                        .concat(String.valueOf(months).concat(strMonths)));
+                yearLabel = getString(R.string.txt_multiple_years);
             }
+
+            if (months == 1) {
+                monthLabel = getString(R.string.txt_single_month);
+            } else {
+                monthLabel = getString(R.string.txt_multiple_months);
+            }
+
+            if (months == 0) {
+                expBinding.tvExpDuration.setText(String.valueOf(years)
+                        .concat(yearLabel));
+            } else if (years == 0) {
+                expBinding.tvExpDuration.setText(String.valueOf(months)
+                        .concat(monthLabel));
+            } else {
+                expBinding.tvExpDuration.setText(String.valueOf(years)
+                        .concat(yearLabel)
+                        .concat(" ")
+                        .concat(String.valueOf(months))
+                        .concat(monthLabel));
+            }
+
 
             profileBinding.expInflater.addView(expBinding.getRoot());
         }

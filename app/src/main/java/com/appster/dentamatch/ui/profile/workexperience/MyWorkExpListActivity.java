@@ -334,6 +334,10 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                     if (isAddExperience) {
                         clearAllExpField();
 
+                        if (isFromProfile) {
+                            EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                        }
+
                     } else {
                         if (isFromProfile) {
                             EventBus.getDefault().post(new ProfileUpdatedEvent(true));
@@ -535,9 +539,9 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                 .concat(" ")
                 .concat(yearLabel)
                 .concat(" ")
-                .concat(monthLabel)
+                .concat(String.valueOf(month))
                 .concat(" ")
-                .concat(getString(R.string.month));
+                .concat(monthLabel);
 
         mBinder.includeWorkExpList.tvExperienceWorkExp.setText(workExp);
         mExpMonth = year * 12 + month;
