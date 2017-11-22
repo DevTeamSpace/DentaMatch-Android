@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.common;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -347,5 +348,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         view.requestFocus();
         inputMethodManager.showSoftInput(view, 0);
+    }
+
+    public void launchImageViewer(View v, String imageUrl){
+        try {
+            Intent intent = new Intent(this, ImageViewingActivity.class);
+            intent.putExtra(Constants.EXTRA_PIC, imageUrl);
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, v, "picImage");
+                startActivity(intent, options.toBundle());
+            } else {
+                startActivity(intent);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

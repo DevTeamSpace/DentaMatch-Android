@@ -34,6 +34,7 @@ public class UserModel implements Parcelable{
     private String preferredCity;
     private String preferredState;
     private String preferredCountry;
+    private String preferredJobStateCity;
     private int id;
 
 
@@ -56,11 +57,42 @@ public class UserModel implements Parcelable{
         latitude = in.readString();
         longitude = in.readString();
         postalCode = in.readString();
+        preferredJobStateCity = in.readString();
         preferredJobLocation = in.readString();
         preferredCity = in.readString();
         preferredState = in.readString();
         preferredCountry = in.readString();
         id = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(status);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(jobTitle);
+        dest.writeInt(jobTitleId);
+        dest.writeString(profileImage);
+        dest.writeString(profilePic);
+        dest.writeString(userName);
+        dest.writeString(accountID);
+        dest.writeString(accountType);
+        dest.writeString(dentalStateBoard);
+        dest.writeString(licenseNumber);
+        dest.writeString(state);
+        dest.writeString(aboutMe);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(postalCode);
+        dest.writeString(preferredJobLocation);
+        dest.writeString(preferredJobStateCity);
+        dest.writeInt(id);
     }
 
     public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
@@ -293,5 +325,9 @@ public class UserModel implements Parcelable{
         dest.writeString(preferredState);
         dest.writeString(preferredCountry);
         dest.writeInt(id);
+    }
+
+    public String getPreferredJobStateCity() {
+        return preferredJobStateCity;
     }
 }

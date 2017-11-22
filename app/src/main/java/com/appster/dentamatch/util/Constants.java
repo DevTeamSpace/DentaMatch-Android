@@ -26,6 +26,7 @@ public class Constants {
     public static final String EXTRA_FROM_JOB_DETAIL = "EXTRA_FROM_JOB_DETAIL";
     public static final String EXTRA_FROM_SETTINGS = "EXTRA_FROM_SETTINGS";
     public static final String EXTRA_CANCEL_DATE = "EXTRA_CANCEL_DATE";
+    public static final String EXTRA_PIC = "EXTRA_PIC";
 
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";

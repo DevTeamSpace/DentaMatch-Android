@@ -44,7 +44,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:background="@drawable/edit_text_selector_blue"
-            android:digits="@string/digits_alpha_numeric_only"
+            android:digits="@string/digits_other"
             android:textColor="@color/white_color"
             android:visibility="gone" />
 

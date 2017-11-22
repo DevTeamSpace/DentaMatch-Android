@@ -15,6 +15,7 @@ public class PermissionUtils {
 
         return Status;
     }
+
     public static void requestPermission(Activity mActivity,String[] permission,int requestCode){
         ActivityCompat.requestPermissions(mActivity, permission,requestCode);
 

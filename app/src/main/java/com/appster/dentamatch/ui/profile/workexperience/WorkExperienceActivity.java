@@ -45,7 +45,13 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         mBinder.tvExperienceWorkExp.setOnClickListener(this);
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.createProfileIvProfileIcon);
+            Picasso.with(getApplicationContext())
+                    .load(PreferenceUtil.getProfileImagePath())
+                    .centerCrop()
+                    .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                    .placeholder(R.drawable.profile_pic_placeholder)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .into(mBinder.createProfileIvProfileIcon);
         }
 
         selectedJobtitle = PreferenceUtil.getJobTitle();
