@@ -401,5 +401,8 @@
     <string name="msg_invite_reject_warning">Are you sure you want to reject this job invitation?</string>
     <string name="txt_confirm_rejection">Confirm Rejection</string>
     <string name="hint_license_expiry">License Expiry</string>
+    <string name="start_label">State</string>
+    <string name="brief_introduction_label">Write a brief introduction about yours...</string>
+    <string name="label_create_profile">Create Profile</string>
 
 </resources>

@@ -63,8 +63,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     }
 
     private void initViews() {
-        mBinder.createProfile1BtnNotNow.setOnClickListener(this);
-        mBinder.createProfile1BtnNext.setOnClickListener(this);
+        //mBinder.createProfile1BtnNotNow.setOnClickListener(this);
+       // mBinder.createProfile1BtnNext.setOnClickListener(this);
         mBinder.createProfile1IvProfileIcon.setOnClickListener(this);
 
         if(!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())){
@@ -99,7 +99,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
                 break;
 
-            case R.id.create_profile1_btn_next:
+          /*  case R.id.create_profile1_btn_next:
                 if (mImageUploaded ) {
 
                     if (TextUtils.isEmpty(selectedJobTitle)) {
@@ -113,9 +113,9 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                         uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                     }
                 }
-                break;
+                break;*/
 
-            case R.id.create_profile1_btn_not_now:
+            /*case R.id.create_profile1_btn_not_now:
                 Alert.createYesNoAlert(CreateProfileActivity1.this,
                         getString(R.string.ok),
                         getString(R.string.cancel),
@@ -140,7 +140,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     }
                 });
                 break;
-
+*/
             default:
                 break;
         }

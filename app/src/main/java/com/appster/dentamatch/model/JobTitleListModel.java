@@ -15,6 +15,15 @@ public class JobTitleListModel implements Parcelable{
     @SerializedName("jobtitleName")
     private String jobTitle;
     private boolean isSelected;
+    private int isLicenseRequired;
+
+    public int getIsLicenseRequired() {
+        return isLicenseRequired;
+    }
+
+    public void setIsLicenseRequired(int isLicenseRequired) {
+        this.isLicenseRequired = isLicenseRequired;
+    }
 
     public JobTitleListModel(){
 
@@ -23,6 +32,7 @@ public class JobTitleListModel implements Parcelable{
     protected JobTitleListModel(Parcel in) {
         id = in.readInt();
         jobTitle = in.readString();
+        isLicenseRequired = in.readInt();
         isSelected = in.readByte() != 0;
     }
 
@@ -71,6 +81,7 @@ public class JobTitleListModel implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(jobTitle);
+        dest.writeInt(isLicenseRequired);
         dest.writeByte((byte) (isSelected ? 1 : 0));
     }
 }
