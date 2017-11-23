@@ -1,16 +1,19 @@
 package com.appster.dentamatch.ui.auth;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import com.appster.dentamatch.DentaApp;
@@ -21,6 +24,8 @@ import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
+import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
+import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.auth.SearchFilterModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
@@ -48,7 +53,6 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private ActivityLoginBinding mBinder;
     private boolean mIsAccepted, mIsLogin;
-
     private String mPostalCode;
     private String mPlaceName;
     private String mLatitude;
@@ -57,6 +61,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String mSelectedCity;
     private String mSelectedState;
     private boolean mIsLoginShow, mIsRegisterShow;
+
+    private ArrayAdapter<PreferredJobLocationData> mPreferredJobLocationDataArrayAdapter;
+    private ArrayList<PreferredJobLocationData> mPreferredJobLocationList;
+    private int preferredJobLocationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +208,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.tv_preferred_job_location:
-                Intent intent = new Intent(this, PlacesMapActivity.class);
+                if (mPreferredJobLocationDataArrayAdapter == null) {
+                    processToShowDialog();
+                    AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+                    webServices.getPreferredJobLocationList().enqueue(new BaseCallback<PreferredJobLocationModel>(LoginActivity.this) {
+                        @Override
+                        public void onSuccess(PreferredJobLocationModel response) {
+                            hideKeyboard();
+                            mPreferredJobLocationList = (ArrayList<PreferredJobLocationData>) response.getResult().getPreferredJobLocations();
+                            mPreferredJobLocationDataArrayAdapter = new PreferredJobLocationAdapter(LoginActivity.this, mPreferredJobLocationList);
+                            showLocationList();
+                        }
+
+                        @Override
+                        public void onFail(Call<PreferredJobLocationModel> call, BaseResponse baseResponse) {
+
+                        }
+                    });
+                } else {
+                    showLocationList();
+                }
+             /*   Intent intent = new Intent(this, PlacesMapActivity.class);
 
                 if (mLatitude != null && mLongitude != null) {
                     intent.putExtra(Constants.EXTRA_LATITUDE, mLatitude);
@@ -212,9 +240,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
                 }
 
-                startActivityForResult(intent, REQUEST_CODE_LOCATION);
+                startActivityForResult(intent, REQUEST_CODE_LOCATION);*/
                 break;
         }
+    }
+
+    private void showLocationList() {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(LoginActivity.this);
+        builderSingle.setTitle(getResources().getString(R.string.preferred_location_label));
+        builderSingle.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(mPreferredJobLocationDataArrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mBinder.tvPreferredJobLocation.setText(mPreferredJobLocationDataArrayAdapter.getItem(which).getPreferredLocationName());
+                preferredJobLocationId = mPreferredJobLocationDataArrayAdapter.getItem(which).getId();
+            }
+        });
+        builderSingle.show();
     }
 
     @Override
@@ -311,37 +359,37 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 return false;
             }
 
-            if (mPostalCode.isEmpty()) {
+          /*  if (mPostalCode.isEmpty()) {
                 Utils.showToastLong(getApplicationContext(), getString(R.string.blank_postal_code));
                 return false;
             }
-
+*/
             if (!mIsAccepted) {
                 Utils.showToast(getApplicationContext(), getString(R.string.blank_tnc_alert));
                 return false;
             }
 
 
-            if(TextUtils.isEmpty(mSelectedCountry)) {
+          /*  if (TextUtils.isEmpty(mSelectedCountry)) {
                 mSelectedCountry = "";
 //                showToast(getString(R.string.msg_empty_country));
 //                return false;
 
-            }
+            }*/
 
-            if (TextUtils.isEmpty(mSelectedCity)){
+           /* if (TextUtils.isEmpty(mSelectedCity)) {
                 mSelectedCity = "";
 //                showToast(getString(R.string.msg_empty_city));
 //                return false;
 
-            }
+            }*/
 
-            if (TextUtils.isEmpty(mSelectedState)){
+           /* if (TextUtils.isEmpty(mSelectedState)) {
                 mSelectedState = "";
 //                showToast(getString(R.string.msg_empty_state));
 //                return false;
 
-            }
+            }*/
         }
         return true;
     }
@@ -355,14 +403,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginRequest.setPassword(getTextFromEditText(mBinder.registerEtPassword));
         loginRequest.setFirstName(getTextFromEditText(mBinder.registerEtFname));
         loginRequest.setLastName(getTextFromEditText(mBinder.registerEtLname));
-        loginRequest.setCountry(mSelectedCountry);
+        loginRequest.setPreferredJobLocationId(preferredJobLocationId);
+
+        /*loginRequest.setCountry(mSelectedCountry);
         loginRequest.setCity(mSelectedCity);
         loginRequest.setState(mSelectedState);
 
         loginRequest.setLatitude(mLatitude);
         loginRequest.setLongitude(mLongitude);
         loginRequest.setZipCode(mPostalCode);
-        loginRequest.setPreferredLocation(mPlaceName);
+        loginRequest.setPreferredLocation(mPlaceName);*/
         return loginRequest;
     }
 
@@ -438,7 +488,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         userDetails.put(getString(R.string.email_label), loginRequest.getEmail());
                         DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_login), userDetails);
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 

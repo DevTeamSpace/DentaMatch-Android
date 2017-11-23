@@ -70,7 +70,7 @@ public class UserModel implements Parcelable{
         return 0;
     }
 
-    @Override
+  /*  @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(email);
         dest.writeString(status);
@@ -92,6 +92,34 @@ public class UserModel implements Parcelable{
         dest.writeString(postalCode);
         dest.writeString(preferredJobLocation);
         dest.writeString(preferredJobStateCity);
+        dest.writeInt(id);
+    }*/
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(status);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(jobTitle);
+        dest.writeInt(jobTitleId);
+        dest.writeString(profileImage);
+        dest.writeString(profilePic);
+        dest.writeString(userName);
+        dest.writeString(accountID);
+        dest.writeString(accountType);
+        dest.writeString(dentalStateBoard);
+        dest.writeString(licenseNumber);
+        dest.writeString(state);
+        dest.writeString(aboutMe);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(postalCode);
+        dest.writeString(preferredJobLocation);
+        dest.writeString(preferredCity);
+        dest.writeString(preferredState);
+        dest.writeString(preferredCountry);
         dest.writeInt(id);
     }
 
@@ -295,37 +323,7 @@ public class UserModel implements Parcelable{
         this.preferredCountry = preferredCountry;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(status);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(jobTitle);
-        dest.writeInt(jobTitleId);
-        dest.writeString(profileImage);
-        dest.writeString(profilePic);
-        dest.writeString(userName);
-        dest.writeString(accountID);
-        dest.writeString(accountType);
-        dest.writeString(dentalStateBoard);
-        dest.writeString(licenseNumber);
-        dest.writeString(state);
-        dest.writeString(aboutMe);
-        dest.writeString(latitude);
-        dest.writeString(longitude);
-        dest.writeString(postalCode);
-        dest.writeString(preferredJobLocation);
-        dest.writeString(preferredCity);
-        dest.writeString(preferredState);
-        dest.writeString(preferredCountry);
-        dest.writeInt(id);
-    }
 
     public String getPreferredJobStateCity() {
         return preferredJobStateCity;

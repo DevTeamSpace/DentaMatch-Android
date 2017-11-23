@@ -122,9 +122,9 @@
     <string name="reference_email">Reference Email (Optional)</string>
     <string name="year">Year</string>
     <string name="month">month</string>
-    <!--<string name="exp_years">Years</string>-->
-    <!--<string name="exp_months">Months</string>-->
-    <!--<string name="txt_months">Months</string>-->
+    <string name="exp_years">Years</string>
+    <string name="exp_months">Months</string>
+    <string name="txt_months">Months</string>
 
     <string name="txt_single_year">yr</string>
     <string name="txt_multiple_years">yrs</string>

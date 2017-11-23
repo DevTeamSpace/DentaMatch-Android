@@ -21,6 +21,15 @@ public class LoginRequest {
     private String latitude;
     private String longitude;
     private String zipCode;
+    private int preferredJobLocationId;
+
+    public int getPreferredJobLocationId() {
+        return preferredJobLocationId;
+    }
+
+    public void setPreferredJobLocationId(int preferredJobLocationId) {
+        this.preferredJobLocationId = preferredJobLocationId;
+    }
 
     public String getFirstName() {
         return firstName;

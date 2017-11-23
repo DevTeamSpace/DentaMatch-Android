@@ -25,6 +25,7 @@ import com.appster.dentamatch.network.request.skills.SkillsUpdateRequest;
 import com.appster.dentamatch.network.request.tracks.CancelJobRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
+import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
@@ -107,6 +108,7 @@ public interface AuthWebServices {
     String ACCEPT_REJECT_NOTIFICATION = "users/acceptreject-job";
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
     String UPDATE_FCM_TOKEN = "users/update-devicetoken";
+    String PREFERRED_JOB_LOCATIONS = "jobs/preferred-job-locations";
 
 
     @POST(USER_CHAT_BLOCK_UNBLOCK)
@@ -241,4 +243,7 @@ public interface AuthWebServices {
     @POST(IMAGE_UPLOAD_CERTIFICATE)
     Call<FileUploadResponse> uploadCertificateImage(@Part(CERTIFICATE_ID) RequestBody type,
                                                     @Part(IMAGE_EXTENSION) RequestBody file);
+
+    @GET(PREFERRED_JOB_LOCATIONS)
+    Call<PreferredJobLocationModel> getPreferredJobLocationList();
 }
