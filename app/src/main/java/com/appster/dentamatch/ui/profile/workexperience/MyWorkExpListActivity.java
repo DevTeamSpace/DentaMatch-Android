@@ -513,7 +513,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void onJobTitleSelection(String title, int titleId, int position) {
+    public void onJobTitleSelection(String title, int titleId, int position, int isLicenseRequired) {
         mSelectedJobTitle = title;
         mJobTitleId = titleId;
         jobTitlePosition = position;

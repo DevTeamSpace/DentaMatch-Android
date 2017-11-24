@@ -458,7 +458,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 //    }
 
     @Override
-    public void onJobTitleSelection(String title, int titleId, int position) {
+    public void onJobTitleSelection(String title, int titleId, int position, int isLicenseRequired) {
         mBinding.etJobTitle.setText(title);
         mSelectedJobTitleID = titleId;
     }

@@ -20,7 +20,7 @@ public class BottomSheetJobTitle {
     private BottomSheetDialog mBottomSheetDialog;
     private JobTitleSelectionListener mJobTitleSelectionListener;
 
-    public BottomSheetJobTitle(final Context context, JobTitleSelectionListener jobTitleSelectionListener, int position) {
+    public BottomSheetJobTitle(final Context context, JobTitleSelectionListener jobTitleSelectionListener, final int position) {
         mJobTitleSelectionListener = jobTitleSelectionListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
         String[] jobTitle = new String[PreferenceUtil.getJobTitleList() != null ? PreferenceUtil.getJobTitleList().size() : 0];
@@ -60,7 +60,8 @@ public class BottomSheetJobTitle {
 
                 }
                 if (PreferenceUtil.getJobTitleList() != null) {
-                    mJobTitleSelectionListener.onJobTitleSelection(PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getJobTitle(), PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getId(), pickerTitle.getValue());
+                    mJobTitleSelectionListener.onJobTitleSelection(PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getJobTitle()
+                            , PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getId(), pickerTitle.getValue(), PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getIsLicenseRequired());
                 }
             }
         });

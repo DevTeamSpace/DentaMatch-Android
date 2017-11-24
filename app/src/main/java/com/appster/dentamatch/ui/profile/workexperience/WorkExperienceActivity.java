@@ -147,7 +147,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void onJobTitleSelection(String title, int titleId, int position) {
+    public void onJobTitleSelection(String title, int titleId, int position, int isLicenseRequired) {
         selectedJobtitle = title;
         PreferenceUtil.setJobTitle(title);
         PreferenceUtil.setJobTitleId(titleId);

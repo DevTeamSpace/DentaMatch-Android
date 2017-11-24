@@ -64,10 +64,10 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
     private void initViews() {
         //mBinder.createProfile1BtnNotNow.setOnClickListener(this);
-       // mBinder.createProfile1BtnNext.setOnClickListener(this);
+        // mBinder.createProfile1BtnNext.setOnClickListener(this);
         mBinder.createProfile1IvProfileIcon.setOnClickListener(this);
 
-        if(!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())){
+        if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
             mFilePath = PreferenceUtil.getProfileImagePath();
             Picasso.with(CreateProfileActivity1.this).load(PreferenceUtil.getProfileImagePath())
                     .centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
@@ -91,15 +91,15 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             case R.id.et_job_title:
                 hideKeyboard();
 
-                if(PreferenceUtil.getJobTitleList()!=null && PreferenceUtil.getJobTitleList().size()>0) {
+                if (PreferenceUtil.getJobTitleList() != null && PreferenceUtil.getJobTitleList().size() > 0) {
                     new BottomSheetJobTitle(CreateProfileActivity1.this, this, 0);
-                }else{
+                } else {
                     callJobListApi();
                 }
 
                 break;
 
-          /*  case R.id.create_profile1_btn_next:
+            case R.id.create_profile1_btn_next:
                 if (mImageUploaded ) {
 
                     if (TextUtils.isEmpty(selectedJobTitle)) {
@@ -113,7 +113,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                         uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                     }
                 }
-                break;*/
+                break;
 
             /*case R.id.create_profile1_btn_not_now:
                 Alert.createYesNoAlert(CreateProfileActivity1.this,
@@ -139,8 +139,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                         dialog.dismiss();
                     }
                 });
-                break;
-*/
+                break;*/
             default:
                 break;
         }
@@ -192,14 +191,13 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
     private void callJobListApi() {
         processToShowDialog();
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class,true);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.jobTitle().enqueue(new BaseCallback<JobTitleResponse>(CreateProfileActivity1.this) {
             @Override
             public void onSuccess(JobTitleResponse response) {
                 if (response.getStatus() == 1) {
                     PreferenceUtil.setJobTitleList(response.getJobTitleResponseData().getJobTitleList());
                     new BottomSheetJobTitle(CreateProfileActivity1.this, CreateProfileActivity1.this, 0);
-
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
                 }
@@ -214,7 +212,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     @Override
     public void cameraClicked() {
         imageSourceType = 0;
-        
+
         if (PermissionUtils.checkPermissionGranted(Manifest.permission.CAMERA, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, this) &&
                 PermissionUtils.checkPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this)) {
@@ -315,7 +313,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
         if (grantResults.length > 0 &&
                 (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                        grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
 
             if (imageSourceType == 0) {
                 takePhoto();
@@ -331,12 +329,23 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     }
 
     @Override
-    public void onJobTitleSelection(String title, int titleId, int position) {
+    public void onJobTitleSelection(String title, int titleId, int position, int isLicenseRequired) {
         PreferenceUtil.setJobTitle(title);
         PreferenceUtil.setJobTitleId(titleId);
         PreferenceUtil.setJobTitlePosition(position);
         mBinder.etJobTitle.setText(title);
         selectedJobTitle = title;
+        if (isLicenseRequired == 0) {
+            mBinder.licenseNumberInputLayoutEmail.setVisibility(View.GONE);
+            mBinder.stateInputLayoutEmail.setVisibility(View.GONE);
+            mBinder.licenseEt.setText("");
+            mBinder.stateEt.setText("");
+        } else {
+            mBinder.licenseNumberInputLayoutEmail.setVisibility(View.VISIBLE);
+            mBinder.stateInputLayoutEmail.setVisibility(View.VISIBLE);
+            mBinder.licenseEt.setText("");
+            mBinder.stateEt.setText("");
+        }
     }
 }
 

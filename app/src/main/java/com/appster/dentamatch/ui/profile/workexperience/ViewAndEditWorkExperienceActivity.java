@@ -303,7 +303,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     }
 
     @Override
-    public void onJobTitleSelection(String title, int titleId, int postion) {
+    public void onJobTitleSelection(String title, int titleId, int postion, int isLicenseRequired) {
         selectedJobtitle = title;
         jobTitleId = titleId;
         mBinder.layoutWorkExpViewEdit.etJobTitle.setText(title);

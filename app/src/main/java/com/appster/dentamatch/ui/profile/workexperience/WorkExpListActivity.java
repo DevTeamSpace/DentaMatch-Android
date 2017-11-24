@@ -487,7 +487,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onJobTitleSelection(String title, int titleId, int position) {
+    public void onJobTitleSelection(String title, int titleId, int position, int isLicenseRequired) {
         mSelectedJobTitle = title;
         mJobTitleId = titleId;
         jobTitlePosition = position;
