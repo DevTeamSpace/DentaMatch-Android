@@ -64,7 +64,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
     private void initViews() {
         //mBinder.createProfile1BtnNotNow.setOnClickListener(this);
-        // mBinder.createProfile1BtnNext.setOnClickListener(this);
+        mBinder.createProfile1BtnNext.setOnClickListener(this);
         mBinder.createProfile1IvProfileIcon.setOnClickListener(this);
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
@@ -100,13 +100,18 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.create_profile1_btn_next:
-                if (mImageUploaded ) {
+                if (mImageUploaded) {
 
-                    if (TextUtils.isEmpty(selectedJobTitle)) {
-                        Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
-                    }else {
+                    if (validateInputData())
                         launchNextActivity();
-                    }
+
+                    /*if (TextUtils.isEmpty(selectedJobTitle)) {
+                        Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
+                    } else if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString().trim())) {
+                        Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_summary_alert));
+                    } else {
+                        launchNextActivity();
+                    }*/
 
                 } else {
                     if (checkValidation()) {
@@ -143,6 +148,51 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             default:
                 break;
         }
+    }
+
+    private boolean validateInputData() {
+
+        if (TextUtils.isEmpty(selectedJobTitle)) {
+            Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString().trim())) {
+            Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_summary_alert));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mBinder.createProfileEtLicence.getText().toString().trim())) {
+            Utils.showToast(CreateProfileActivity1.this, getString(R.string.blank_licence_number));
+            return false;
+        }
+
+        if (mBinder.createProfileEtLicence.getText().toString().trim().length() > Constants.LICENCE_MAX_LENGTH) {
+            Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_length));
+            return false;
+        }
+
+        if (mBinder.createProfileEtLicence.getText().toString().trim().contains(" ")) {
+            Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_blnk_space_alert));
+            return false;
+        }
+
+        if (mBinder.createProfileEtLicence.getText().toString().trim().charAt(0) == '-' || mBinder.createProfileEtLicence.getText().toString().trim().charAt(mBinder.createProfileEtLicence.getText().toString().trim().length() - 1) == '-') {
+            Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_hyfen_alert));
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mBinder.createProfileEtState.getText().toString().trim())) {
+            Utils.showToast(CreateProfileActivity1.this, getString(R.string.blank_state_alert));
+            return false;
+        }
+
+        if (mBinder.createProfileEtState.getText().toString().trim().length() >= Constants.DEFAULT_FIELD_LENGTH) {
+            Utils.showToast(CreateProfileActivity1.this, getString(R.string.state_max_length));
+            return false;
+        }
+
+        return true;
     }
 
     private void callBottomSheet() {
@@ -336,15 +386,15 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         mBinder.etJobTitle.setText(title);
         selectedJobTitle = title;
         if (isLicenseRequired == 0) {
-            mBinder.licenseNumberInputLayoutEmail.setVisibility(View.GONE);
-            mBinder.stateInputLayoutEmail.setVisibility(View.GONE);
-            mBinder.licenseEt.setText("");
-            mBinder.stateEt.setText("");
+            mBinder.createProfileInputLayoutLicence.setVisibility(View.GONE);
+            mBinder.createProfileInputLayoutState.setVisibility(View.GONE);
+            mBinder.createProfileEtLicence.setText("");
+            mBinder.createProfileEtState.setText("");
         } else {
-            mBinder.licenseNumberInputLayoutEmail.setVisibility(View.VISIBLE);
-            mBinder.stateInputLayoutEmail.setVisibility(View.VISIBLE);
-            mBinder.licenseEt.setText("");
-            mBinder.stateEt.setText("");
+            mBinder.createProfileInputLayoutLicence.setVisibility(View.VISIBLE);
+            mBinder.createProfileInputLayoutState.setVisibility(View.VISIBLE);
+            mBinder.createProfileEtLicence.setText("");
+            mBinder.createProfileEtState.setText("");
         }
     }
 }

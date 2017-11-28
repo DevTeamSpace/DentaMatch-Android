@@ -404,5 +404,6 @@
     <string name="start_label">State</string>
     <string name="brief_introduction_label">Write a brief introduction about yours...</string>
     <string name="label_create_profile">Create Profile</string>
+    <string name="lets_go">LETS\'S GO</string>
 
 </resources>
