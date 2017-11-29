@@ -21,11 +21,14 @@ import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
+import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
 import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.CameraUtil;
@@ -53,7 +56,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private ActivityCreateProfile1Binding mBinder;
     private String selectedJobTitle = "";
     private byte imageSourceType;
-    private boolean mImageUploaded;
+    private boolean mImageUploaded, isLicenseRequired;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,24 +103,28 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.create_profile1_btn_next:
-                if (mImageUploaded) {
 
+               /* if (mImageUploaded) {
                     if (validateInputData())
                         launchNextActivity();
 
-                    /*if (TextUtils.isEmpty(selectedJobTitle)) {
+                    *//*if (TextUtils.isEmpty(selectedJobTitle)) {
                         Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
                     } else if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString().trim())) {
                         Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_summary_alert));
                     } else {
                         launchNextActivity();
-                    }*/
+                    }*//*
 
                 } else {
                     if (checkValidation()) {
                         uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                     }
-                }
+                }*/
+
+                    if(validateInputData())
+                        callUploadLicenseApi();
+
                 break;
 
             /*case R.id.create_profile1_btn_not_now:
@@ -148,6 +155,45 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             default:
                 break;
         }
+    }
+
+    private void callUploadLicenseApi() {
+        processToShowDialog();
+        try {
+            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+            webServices.updateLicence(getLicenseRequestWrapper()).enqueue(new BaseCallback<LicenceUpdateResponse>(CreateProfileActivity1.this) {
+                @Override
+                public void onSuccess(LicenceUpdateResponse response) {
+
+                    if (response.getStatus() == 1) {
+                        startActivity(new Intent(CreateProfileActivity1.this, WorkExperienceActivity.class));
+
+                    } else {
+                        Utils.showToast(getApplicationContext(), response.getMessage());
+
+                    }
+                }
+
+                @Override
+                public void onFail(Call<LicenceUpdateResponse> call, BaseResponse baseResponse) {
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideProgressBar();
+        }
+    }
+
+    private LicenceRequest getLicenseRequestWrapper() {
+        LicenceRequest licenceRequest = new LicenceRequest();
+        licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
+        licenceRequest.setAboutMe(mBinder.etDescAboutMe.getText().toString());
+
+        licenceRequest.setLicense(mBinder.createProfileEtLicence.getText().toString());
+        licenceRequest.setState(mBinder.createProfileEtState.getText().toString());
+        return licenceRequest;
     }
 
     private boolean validateInputData() {
@@ -229,7 +275,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 if (response.getStatus() == 1) {
                     mImageUploaded = true;
                     PreferenceUtil.setProfileImagePath(response.getFileUploadResponseData().getImageUrl());
-                    launchNextActivity();
+                    // launchNextActivity();
                 }
             }
 
@@ -350,6 +396,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             }
 
             if (mFilePath != null) {
+                uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                 mImageUploaded = false;
                 Picasso.with(CreateProfileActivity1.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.createProfile1IvProfileIcon);
 

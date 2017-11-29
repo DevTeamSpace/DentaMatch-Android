@@ -12,6 +12,15 @@ public class LicenceRequest implements Parcelable {
     private String licenseNumber;
     private String state;
     private int jobTitleId;
+    private String aboutMe;
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
 
     public LicenceRequest() { }
 
@@ -20,6 +29,7 @@ public class LicenceRequest implements Parcelable {
         licenseNumber = in.readString();
         state = in.readString();
         jobTitleId = in.readInt();
+        aboutMe = in.readString();
     }
 
     public static final Creator<LicenceRequest> CREATOR = new Creator<LicenceRequest>() {
@@ -77,6 +87,7 @@ public class LicenceRequest implements Parcelable {
         parcel.writeString(licenseNumber);
         parcel.writeString(state);
         parcel.writeInt(jobTitleId);
+        parcel.writeString(aboutMe);
     }
 }
 
