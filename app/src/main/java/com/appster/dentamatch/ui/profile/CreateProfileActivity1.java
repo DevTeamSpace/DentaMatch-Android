@@ -1,7 +1,6 @@
 package com.appster.dentamatch.ui.profile;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -27,10 +26,6 @@ import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.HomeActivity;
-import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
-import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
-import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PermissionUtils;
@@ -57,7 +52,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private String selectedJobTitle = "";
     private byte imageSourceType;
     private boolean mImageUploaded;
-    private int isLicenseRequired = 0;
+    private int isLicenceRequired = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +162,9 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 public void onSuccess(LicenceUpdateResponse response) {
 
                     if (response.getStatus() == 1) {
-                        startActivity(new Intent(CreateProfileActivity1.this, WorkExperienceActivity.class));
+                        Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, ProfileCompletedPendingActivity.class);
+                        profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, isLicenceRequired);
+                        startActivity(profileCompletedIntent);
 
                     } else {
                         Utils.showToast(getApplicationContext(), response.getMessage());
@@ -192,7 +189,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
         licenceRequest.setAboutMe(mBinder.etDescAboutMe.getText().toString());
 
-        if (isLicenseRequired == 1) {
+        if (isLicenceRequired == 1) {
             licenceRequest.setLicense(mBinder.createProfileEtLicence.getText().toString());
             licenceRequest.setState(mBinder.createProfileEtState.getText().toString());
         }
@@ -211,7 +208,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             return false;
         }
 
-        if (isLicenseRequired == 1) {
+        if (isLicenceRequired == 1) {
             if (TextUtils.isEmpty(mBinder.createProfileEtLicence.getText().toString().trim())) {
                 Utils.showToast(CreateProfileActivity1.this, getString(R.string.blank_licence_number));
                 return false;
@@ -435,7 +432,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         PreferenceUtil.setJobTitle(title);
         PreferenceUtil.setJobTitleId(titleId);
         PreferenceUtil.setJobTitlePosition(position);
-        this.isLicenseRequired = isLicenseRequired;
+        this.isLicenceRequired = isLicenseRequired;
         mBinder.etJobTitle.setText(title);
         selectedJobTitle = title;
         if (isLicenseRequired == 0) {

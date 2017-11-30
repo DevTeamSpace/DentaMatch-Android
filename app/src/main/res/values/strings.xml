@@ -66,6 +66,7 @@
     <string name="login_info_label">Login using your registered email</string>
     <string name="label_accept_term_n_condition">I agree to the Terms and Conditions and Privacy Policy </string>
     <string name="forgot_password_title">Enter your email address below and we’ll send you the instructions on how to change your password.</string>
+    <string name="profile_completion">Your profile has been created successfully. \n Lets set your availability so that dental offices can get to know about your timings.</string>
 
     <!--  Reset password string-->
     <string name="old_password_label">Old Password</string>
@@ -405,5 +406,8 @@
     <string name="brief_introduction_label">Write a brief introduction about yours...</string>
     <string name="label_create_profile">Create Profile</string>
     <string name="lets_go">LETS\'S GO</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="pending_approval">Pending Approval</string>
+    <string name="profile_pending">Your profile has been sent for admin’s  approval. You can apply for jobs once your profile gets approved. \n In the meantime, Lets set your availability so that dental offices can get to know about your timings.</string>
 
 </resources>

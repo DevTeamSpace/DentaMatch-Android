@@ -28,13 +28,6 @@
             android:layout_below="@id/heading_message"
             android:layout_centerHorizontal="true" />
 
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/message_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/message_one"
-            android:layout_centerHorizontal="true" />
-
         <com.appster.dentamatch.widget.CustomButton
             android:id="@+id/lets_go_btn"
             android:layout_width="match_parent"
