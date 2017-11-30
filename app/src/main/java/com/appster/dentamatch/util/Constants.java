@@ -28,6 +28,7 @@ public class Constants {
     public static final String EXTRA_CANCEL_DATE = "EXTRA_CANCEL_DATE";
     public static final String EXTRA_PIC = "EXTRA_PIC";
     public static final String IS_LICENCE_REQUIRED = "IS_LICENCE_REQUIRED";
+    public static final String IS_FROM_PROFILE_COMPLETE = "IS_FROM_PROFILE_COMPLETE";
 
     public static final String OTHERS = "Other";
     public static final String EXTRA_PROFILE_DATA = "EXTRA_PROFILE_DATA";

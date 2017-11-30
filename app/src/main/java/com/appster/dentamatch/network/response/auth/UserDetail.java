@@ -14,11 +14,49 @@ public class UserDetail {
     private String email;
     private String zipCode;
     private String preferredJobLocation;
+    private String preferredLocationName;
+    private int preferredJobLocationId;
+    private String jobtitleName;
+    private Integer jobTitileId;
+
+    public Integer getJobTitileId() {
+        return jobTitileId;
+    }
+
+    public void setJobTitileId(Integer jobTitileId) {
+        this.jobTitileId = jobTitileId;
+    }
+
     private int profileCompleted;
+
+    public String getPreferredLocationName() {
+        return preferredLocationName;
+    }
+
+    public void setPreferredLocationName(String preferredLocationName) {
+        this.preferredLocationName = preferredLocationName;
+    }
+
+    public int getPreferredJobLocationId() {
+        return preferredJobLocationId;
+    }
+
+    public void setPreferredJobLocationId(int preferredJobLocationId) {
+        this.preferredJobLocationId = preferredJobLocationId;
+    }
+
+    public String getJobtitleName() {
+        return jobtitleName;
+    }
+
+    public void setJobtitleName(String jobtitleName) {
+        this.jobtitleName = jobtitleName;
+    }
 
     public String getImageUrl() {
         return imageUrl;
     }
+
     public int getProfileCompleted() {
         return profileCompleted;
     }

@@ -19,6 +19,7 @@ import com.appster.dentamatch.network.response.calendar.AvailabilityResponseData
 import com.appster.dentamatch.network.response.calendar.CalendarAvailability;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,15 +37,23 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     private ActivitySetAvailabilityBinding mBinder;
     private ArrayList<String> mPartTimeDays;
     private AvailabilityResponse mAvailabilityResponse;
-    private boolean mIsPartTime, mIsFullTime, mIsTemporary, mIsSunday, mIsMonday, mIsTuesday, mIsWednesday, mIsThursday, mIsFriday, mIsSaturday;
-
+    private boolean mIsPartTime, mIsFullTime, mIsTemporary, mIsSunday, mIsMonday, mIsTuesday, mIsWednesday, mIsThursday, mIsFriday, mIsSaturday, mIsFromProfileComplete;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_set_availability);
         initViews();
-        getAvailability(prepareGetAvailableRequest());
+        getIntentData();
+        //getAvailability(prepareGetAvailableRequest());
+    }
+
+    private void getIntentData() {
+        if (getIntent().getExtras() != null && getIntent().hasExtra(Constants.IS_LICENCE_REQUIRED)) {
+            mIsFromProfileComplete = getIntent().getBooleanExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.FALSE);
+            if (!mIsFromProfileComplete)
+                getAvailability(prepareGetAvailableRequest());
+        }
     }
 
     private void initViews() {
@@ -367,8 +376,8 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             @Override
             public void onSuccess(AvailabilityResponse response) {
                 if (response.getStatus() == 1) {
-                        mAvailabilityResponse = response;
-                        setViewData(response);
+                    mAvailabilityResponse = response;
+                    setViewData(response);
 
                 } else {
                     Utils.showToast(SetAvailabilityActivity.this, response.getMessage());

@@ -1,12 +1,15 @@
 package com.appster.dentamatch.ui.profile;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityProfileCompletedPendingBinding;
+import com.appster.dentamatch.ui.calendar.SetAvailabilityActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 
@@ -49,4 +52,9 @@ public class ProfileCompletedPendingActivity extends BaseActivity {
 
     }
 
+    public void completeProfile(View view) {
+        Intent intentToSeatAvailability = new Intent(ProfileCompletedPendingActivity.this, SetAvailabilityActivity.class);
+        intentToSeatAvailability.putExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.TRUE);
+        startActivity(intentToSeatAvailability);
+    }
 }
