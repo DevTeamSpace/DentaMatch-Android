@@ -56,7 +56,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private ActivityCreateProfile1Binding mBinder;
     private String selectedJobTitle = "";
     private byte imageSourceType;
-    private boolean mImageUploaded, isLicenseRequired;
+    private boolean mImageUploaded;
+    private int isLicenseRequired = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +123,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                     }
                 }*/
 
-                    if(validateInputData())
-                        callUploadLicenseApi();
+                if (validateInputData())
+                    callUploadLicenseApi();
 
                 break;
 
@@ -191,8 +192,10 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
         licenceRequest.setAboutMe(mBinder.etDescAboutMe.getText().toString());
 
-        licenceRequest.setLicense(mBinder.createProfileEtLicence.getText().toString());
-        licenceRequest.setState(mBinder.createProfileEtState.getText().toString());
+        if (isLicenseRequired == 1) {
+            licenceRequest.setLicense(mBinder.createProfileEtLicence.getText().toString());
+            licenceRequest.setState(mBinder.createProfileEtState.getText().toString());
+        }
         return licenceRequest;
     }
 
@@ -208,34 +211,36 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             return false;
         }
 
-        if (TextUtils.isEmpty(mBinder.createProfileEtLicence.getText().toString().trim())) {
-            Utils.showToast(CreateProfileActivity1.this, getString(R.string.blank_licence_number));
-            return false;
-        }
+        if (isLicenseRequired == 1) {
+            if (TextUtils.isEmpty(mBinder.createProfileEtLicence.getText().toString().trim())) {
+                Utils.showToast(CreateProfileActivity1.this, getString(R.string.blank_licence_number));
+                return false;
+            }
 
-        if (mBinder.createProfileEtLicence.getText().toString().trim().length() > Constants.LICENCE_MAX_LENGTH) {
-            Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_length));
-            return false;
-        }
+            if (mBinder.createProfileEtLicence.getText().toString().trim().length() > Constants.LICENCE_MAX_LENGTH) {
+                Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_length));
+                return false;
+            }
 
-        if (mBinder.createProfileEtLicence.getText().toString().trim().contains(" ")) {
-            Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_blnk_space_alert));
-            return false;
-        }
+            if (mBinder.createProfileEtLicence.getText().toString().trim().contains(" ")) {
+                Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_blnk_space_alert));
+                return false;
+            }
 
-        if (mBinder.createProfileEtLicence.getText().toString().trim().charAt(0) == '-' || mBinder.createProfileEtLicence.getText().toString().trim().charAt(mBinder.createProfileEtLicence.getText().toString().trim().length() - 1) == '-') {
-            Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_hyfen_alert));
-            return false;
-        }
+            if (mBinder.createProfileEtLicence.getText().toString().trim().charAt(0) == '-' || mBinder.createProfileEtLicence.getText().toString().trim().charAt(mBinder.createProfileEtLicence.getText().toString().trim().length() - 1) == '-') {
+                Utils.showToast(CreateProfileActivity1.this, getString(R.string.licence_number_hyfen_alert));
+                return false;
+            }
 
-        if (TextUtils.isEmpty(mBinder.createProfileEtState.getText().toString().trim())) {
-            Utils.showToast(CreateProfileActivity1.this, getString(R.string.blank_state_alert));
-            return false;
-        }
+            if (TextUtils.isEmpty(mBinder.createProfileEtState.getText().toString().trim())) {
+                Utils.showToast(CreateProfileActivity1.this, getString(R.string.blank_state_alert));
+                return false;
+            }
 
-        if (mBinder.createProfileEtState.getText().toString().trim().length() >= Constants.DEFAULT_FIELD_LENGTH) {
-            Utils.showToast(CreateProfileActivity1.this, getString(R.string.state_max_length));
-            return false;
+            if (mBinder.createProfileEtState.getText().toString().trim().length() >= Constants.DEFAULT_FIELD_LENGTH) {
+                Utils.showToast(CreateProfileActivity1.this, getString(R.string.state_max_length));
+                return false;
+            }
         }
 
         return true;
@@ -430,6 +435,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         PreferenceUtil.setJobTitle(title);
         PreferenceUtil.setJobTitleId(titleId);
         PreferenceUtil.setJobTitlePosition(position);
+        this.isLicenseRequired = isLicenseRequired;
         mBinder.etJobTitle.setText(title);
         selectedJobTitle = title;
         if (isLicenseRequired == 0) {
