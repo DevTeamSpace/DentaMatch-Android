@@ -46,6 +46,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary"
             android:text="@string/lets_go"
+            android:textSize="@dimen/text_size_16"
             android:textColor="@color/white_color"
             app:customFont="@string/font_bold"
             android:onClick="completeProfile"/>
