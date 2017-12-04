@@ -51,7 +51,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     private void getIntentData() {
         if (getIntent().getExtras() != null && getIntent().hasExtra(Constants.IS_LICENCE_REQUIRED)) {
             mIsFromProfileComplete = getIntent().getBooleanExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.FALSE);
-            if (!mIsFromProfileComplete)
+            if (mIsFromProfileComplete)
                 getAvailability(prepareGetAvailableRequest());
         }
     }
@@ -486,7 +486,6 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             mBinder.tvMonday.setTextColor(ContextCompat.getColor(SetAvailabilityActivity.this, R.color.white_color));
 
         }
-
 
         if (calendarAvailability.getIsParttimeTuesday() == 0) {
             mIsTuesday = false;

@@ -49,6 +49,7 @@
     <dimen name="margin_80">80dp</dimen>
     <dimen name="margin_36">36dp</dimen>
     <dimen name="margin_23">23dp</dimen>
+    <dimen name="margin_22">22dp</dimen>
     <dimen name="margin_43">43dp</dimen>
     <dimen name="margin_46">46dp</dimen>
     <dimen name="margin_50">50dp</dimen>
@@ -65,6 +66,8 @@
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_9">9dp</dimen>
+    <dimen name="margin_41.2">41.2dp</dimen>
+    <dimen name="margin_95">95dp</dimen>
 
     <dimen name="padding_drawable">10dp</dimen>
     <dimen name="padding_input_layout">3dp</dimen>

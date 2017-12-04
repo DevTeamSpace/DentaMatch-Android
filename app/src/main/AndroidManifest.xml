@@ -70,10 +70,10 @@
             android:screenOrientation="userPortrait"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
 
@@ -243,7 +243,12 @@
         <activity
             android:name=".ui.profile.ProfileCompletedPendingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -12,7 +12,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"/>
+            android:layout_marginTop="@dimen/margin_95"/>
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/heading_message"
@@ -20,14 +20,24 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/imageview"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/black_color"/>
+            android:textColor="@color/black_color"
+            android:textSize="@dimen/text_size_xlarge"
+            app:customFont="@string/font_bold"
+            android:layout_marginTop="@dimen/text_size_xlarge"/>
 
         <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/message_one"
+            android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/heading_message"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            app:customFont="@string/font_regular"
+            android:layout_marginTop="@dimen/margin_22"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/edt_hint_color"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_55"
+            android:layout_marginRight="@dimen/margin_55"/>
 
         <com.appster.dentamatch.widget.CustomButton
             android:id="@+id/lets_go_btn"

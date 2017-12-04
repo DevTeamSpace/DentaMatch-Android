@@ -165,7 +165,6 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                         Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, ProfileCompletedPendingActivity.class);
                         profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, isLicenceRequired);
                         startActivity(profileCompletedIntent);
-
                     } else {
                         Utils.showToast(getApplicationContext(), response.getMessage());
 
