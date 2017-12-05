@@ -101,7 +101,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             }
         });
 
+        mBinding.etPreferredJobLocation.setFocusableInTouchMode(false);
+        mBinding.etPreferredJobLocation.setCursorVisible(false);
         mBinding.etPreferredJobLocation.setText(PreferenceUtil.getPreferredJobLocationName());
+        mBinding.etPreferredJobLocation.setOnClickListener(this);
 
     }
 
@@ -202,7 +205,8 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 callBottomSheet();
                 break;
 
-            case R.id.tv_preferred_job_location:
+            case R.id.et_preferred_job_location:
+                hideKeyboard(mBinding.etPreferredJobLocation);
                 if (mPreferredJobLocationDataArrayAdapter == null) {
                     processToShowDialog();
                     AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
@@ -223,7 +227,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 } else {
                     showLocationList();
                 }
-
+                break;
             default:
                 break;
         }
