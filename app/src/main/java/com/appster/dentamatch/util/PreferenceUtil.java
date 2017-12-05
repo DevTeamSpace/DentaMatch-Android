@@ -45,6 +45,10 @@ public final class PreferenceUtil {
 
     private static final String KEY_USER_MODEL = "USER_MODEL";
 
+    private static final String KEY_PREFERRED_JOB_LOCATION_NAME = "PREFERRED_JOB_LOCATION_NAME";
+    private static final String KEY_PREFERRED_JOB_LOCATION_ID = "PREFERRED_JOB_LOCATION_ID";
+    private static final String KEY_LICENSE_NUMBER = "LICENSE_NUMBER";
+
     public static void setUserCurrentLocation(Location location) {
         Hawk.put(KEY_USER_CURRENT_LOC, location);
     }
@@ -251,5 +255,32 @@ public final class PreferenceUtil {
 
     public static String getUserChatId() {
         return Hawk.get(KEY_CHAT_USER_ID);
+    }
+
+
+    public static void setPreferredJobLocationName(String value) {
+        Hawk.put(KEY_PREFERRED_JOB_LOCATION_NAME, value);
+    }
+
+    public static String getPreferredJobLocationName() {
+        return Hawk.get(KEY_PREFERRED_JOB_LOCATION_NAME);
+    }
+
+
+    public static void setPreferredJobLocationID(int value) {
+        Hawk.put(KEY_PREFERRED_JOB_LOCATION_ID, value);
+    }
+
+    public static int getPreferredJobLocationId() {
+        return Hawk.get(KEY_PREFERRED_JOB_LOCATION_ID,0);
+    }
+
+
+    public static void setLicenseNumber(String value) {
+        Hawk.put(KEY_LICENSE_NUMBER, value);
+    }
+
+    public static String getLicenseNumber() {
+        return Hawk.get(KEY_LICENSE_NUMBER);
     }
 }

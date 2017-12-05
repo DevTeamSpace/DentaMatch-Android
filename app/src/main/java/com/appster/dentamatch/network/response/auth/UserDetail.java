@@ -14,10 +14,19 @@ public class UserDetail {
     private String email;
     private String zipCode;
     private String preferredJobLocation;
+    private String licenseNumber;
     private String preferredLocationName;
     private int preferredJobLocationId;
     private String jobtitleName;
     private Integer jobTitileId;
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
 
     public Integer getJobTitileId() {
         return jobTitileId;

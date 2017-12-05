@@ -291,7 +291,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                In case the City from the googleMaps comes out to be null then , show user ${State, Country}
                Or in case the State is also blank , then just show the Country value.
                 */
-                if (TextUtils.isEmpty(response.getUser().getPreferredCity())) {
+
+             /*   if (TextUtils.isEmpty(response.getUser().getPreferredCity())) {
 
                     if (TextUtils.isEmpty(response.getUser().getState())) {
                         profileBinding.tvLocation.setText(response.getUser().getPreferredCountry());
@@ -300,13 +301,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                         profileBinding.tvLocation.setText(response.getUser().getPreferredState()
                                 .concat(", ")
                                 .concat(response.getUser().getPreferredCountry()));
-
                     }
                 } else {
                     profileBinding.tvLocation.setText(response.getUser().getPreferredCity()
                             .concat(", ")
                             .concat(response.getUser().getPreferredState()));
-                }
+                }*/
 
                 saveUserProfile(response.getUser());
             }

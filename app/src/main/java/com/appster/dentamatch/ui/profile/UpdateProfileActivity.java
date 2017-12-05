@@ -1,6 +1,7 @@
 package com.appster.dentamatch.ui.profile;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -11,9 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityUpdateProfileBinding;
@@ -24,9 +27,13 @@ import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.profile.UpdateUserProfileRequest;
+import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
+import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
+import com.appster.dentamatch.ui.auth.LoginActivity;
+import com.appster.dentamatch.ui.auth.PreferredJobLocationAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.CameraUtil;
@@ -42,6 +49,7 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -65,6 +73,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
     private int mSelectedJobTitleID;
 
+    private ArrayAdapter<PreferredJobLocationData> mPreferredJobLocationDataArrayAdapter;
+    private ArrayList<PreferredJobLocationData> mPreferredJobLocationList;
+    private int preferredJobLocationId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +86,8 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mProfileData = getIntent().getParcelableExtra(Constants.EXTRA_PROFILE_DATA);
         }
 
-        mBinding.etLocation.setFocusableInTouchMode(false);
-        mBinding.etLocation.setCursorVisible(false);
+        /*mBinding.etLocation.setFocusableInTouchMode(false);
+        mBinding.etLocation.setCursorVisible(false);*/
 
         mBinding.etJobTitle.setFocusableInTouchMode(false);
         mBinding.etJobTitle.setCursorVisible(false);
@@ -88,6 +100,8 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 return false;
             }
         });
+
+        mBinding.etPreferredJobLocation.setText(PreferenceUtil.getPreferredJobLocationName());
 
     }
 
@@ -106,20 +120,20 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mSelectedState = mProfileData.getUser().getPreferredState();
             mSelectedCountry = mProfileData.getUser().getPreferredCountry();
 
-            if(TextUtils.isEmpty(mSelectedCity)){
+            if (TextUtils.isEmpty(mSelectedCity)) {
                 mSelectedCity = "";
             }
 
-            if(TextUtils.isEmpty(mSelectedState)){
+            if (TextUtils.isEmpty(mSelectedState)) {
                 mSelectedState = "";
             }
 
-            if(TextUtils.isEmpty(mSelectedCountry)){
+            if (TextUtils.isEmpty(mSelectedCountry)) {
                 mSelectedCountry = "";
             }
 
 
-                if (mSelectedJobTitleID == 0) {
+            if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
             } else {
                 mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
@@ -129,7 +143,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mBinding.etFname.setText(mProfileData.getUser().getFirstName());
             mBinding.etLname.setText(mProfileData.getUser().getLastName());
             mBinding.etDesc.setText(mProfileData.getUser().getAboutMe());
-            mBinding.etLocation.setText(mProfileData.getUser().getPreferredJobLocation());
+            //mBinding.etLocation.setText(mProfileData.getUser().getPreferredJobLocation());
 
             if (!TextUtils.isEmpty(mProfileData.getUser().getProfilePic())) {
                 Picasso.with(this).load(mProfileData.getUser().getProfilePic())
@@ -138,7 +152,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                         .into(mBinding.createProfile1IvProfileIcon);
             }
 
-            mBinding.etLocation.setOnClickListener(this);
+//            mBinding.etLocation.setOnClickListener(this);
             mBinding.createProfile1IvProfileIcon.setOnClickListener(this);
             mBinding.btnSave.setOnClickListener(this);
             mBinding.etJobTitle.setOnClickListener(this);
@@ -168,7 +182,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 validateAndUpdate();
                 break;
 
-            case R.id.et_location:
+         /*   case R.id.et_location:
                 Intent intent = new Intent(UpdateProfileActivity.this, PlacesMapActivity.class);
 
                 if (mProfileData != null && mProfileData.getUser() != null) {
@@ -182,15 +196,57 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 }
 
                 startActivityForResult(intent, REQUEST_CODE_LOCATION);
-                break;
+                break;*/
 
             case R.id.create_profile1_iv_profile_icon:
                 callBottomSheet();
                 break;
 
+            case R.id.tv_preferred_job_location:
+                if (mPreferredJobLocationDataArrayAdapter == null) {
+                    processToShowDialog();
+                    AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+                    webServices.getPreferredJobLocationList().enqueue(new BaseCallback<PreferredJobLocationModel>(UpdateProfileActivity.this) {
+                        @Override
+                        public void onSuccess(PreferredJobLocationModel response) {
+                            hideKeyboard();
+                            mPreferredJobLocationList = (ArrayList<PreferredJobLocationData>) response.getResult().getPreferredJobLocations();
+                            mPreferredJobLocationDataArrayAdapter = new PreferredJobLocationAdapter(UpdateProfileActivity.this, mPreferredJobLocationList);
+                            showLocationList();
+                        }
+
+                        @Override
+                        public void onFail(Call<PreferredJobLocationModel> call, BaseResponse baseResponse) {
+
+                        }
+                    });
+                } else {
+                    showLocationList();
+                }
+
             default:
                 break;
         }
+    }
+
+    private void showLocationList() {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(UpdateProfileActivity.this);
+        builderSingle.setTitle(getResources().getString(R.string.preferred_location_label));
+        builderSingle.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(mPreferredJobLocationDataArrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mBinding.etPreferredJobLocation.setText(mPreferredJobLocationDataArrayAdapter.getItem(which).getPreferredLocationName());
+                preferredJobLocationId = mPreferredJobLocationDataArrayAdapter.getItem(which).getId();
+            }
+        });
+        builderSingle.show();
     }
 
     @Override
@@ -209,21 +265,21 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                     mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
                     mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
 
-                    if (!TextUtils.isEmpty(finalAddress)) {
+                    /*if (!TextUtils.isEmpty(finalAddress)) {
                         mBinding.inputLayoutLocation.setHintEnabled(true);
                         mBinding.inputLayoutLocation.setHintAnimationEnabled(true);
                         mBinding.etLocation.setText(finalAddress);
-                    }
+                    }*/
 
-                    if(TextUtils.isEmpty(mSelectedCity)){
+                    if (TextUtils.isEmpty(mSelectedCity)) {
                         mSelectedCity = "";
                     }
 
-                    if(TextUtils.isEmpty(mSelectedState)){
+                    if (TextUtils.isEmpty(mSelectedState)) {
                         mSelectedState = "";
                     }
 
-                    if(TextUtils.isEmpty(mSelectedCountry)){
+                    if (TextUtils.isEmpty(mSelectedCountry)) {
                         mSelectedCountry = "";
                     }
                 }
@@ -278,10 +334,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         } else if (mBinding.etJobTitle.getText().toString().equalsIgnoreCase(getString(R.string.txt_job_title_hint))) {
             showToast(getString(R.string.error_no_job_type));
 
-        } else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
+        }/* else if (TextUtils.isEmpty(mBinding.etLocation.getText())) {
             showToast(getString(R.string.error_no_location));
 
-        } else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
+        }*/ else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
             showToast(getString(R.string.error_no_description));
 
         }
@@ -306,7 +362,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         UpdateUserProfileRequest request = new UpdateUserProfileRequest();
         request.setFirstName(Utils.getStringFromEditText(mBinding.etFname));
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
-        request.setPreferredJobLocation(Utils.getStringFromEditText(mBinding.etLocation));
+        //request.setPreferredJobLocation(Utils.getStringFromEditText(mBinding.etLocation));
         request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
         request.setCity(mSelectedCity);
         request.setState(mSelectedState);
@@ -461,5 +517,17 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     public void onJobTitleSelection(String title, int titleId, int position, int isLicenseRequired) {
         mBinding.etJobTitle.setText(title);
         mSelectedJobTitleID = titleId;
+        mBinding.etJobTitle.setText(title);
+        if (isLicenseRequired == 0) {
+            mBinding.createProfileInputLayoutLicence.setVisibility(View.GONE);
+            mBinding.createProfileInputLayoutState.setVisibility(View.GONE);
+            mBinding.createProfileEtLicence.setText("");
+            mBinding.createProfileEtState.setText("");
+        } else {
+            mBinding.createProfileInputLayoutLicence.setVisibility(View.VISIBLE);
+            mBinding.createProfileInputLayoutState.setVisibility(View.VISIBLE);
+            mBinding.createProfileEtLicence.setText("");
+            mBinding.createProfileEtState.setText("");
+        }
     }
 }

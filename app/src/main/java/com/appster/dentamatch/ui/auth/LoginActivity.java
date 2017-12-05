@@ -530,7 +530,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
                     PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
                     PreferenceUtil.setUserChatId(response.getLoginResponseData().getUserDetail().getId());
-
+                    PreferenceUtil.setPreferredJobLocationName(response.getLoginResponseData().getUserDetail().getPreferredLocationName());
+                    PreferenceUtil.setPreferredJobLocationID(response.getLoginResponseData().getUserDetail().getPreferredJobLocationId());
+                    PreferenceUtil.setLicenseNumber(response.getLoginResponseData().getUserDetail().getLicenseNumber());
                     logUser(loginRequest.getEmail(),
                             response.getLoginResponseData().getUserDetail().getFirstName()
                                     .concat(" ")
