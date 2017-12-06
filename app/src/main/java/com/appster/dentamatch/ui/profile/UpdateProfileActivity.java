@@ -123,7 +123,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mSelectedState = mProfileData.getUser().getPreferredState();
             mSelectedCountry = mProfileData.getUser().getPreferredCountry();
 
-            if (TextUtils.isEmpty(mSelectedCity)) {
+          /*  if (TextUtils.isEmpty(mSelectedCity)) {
                 mSelectedCity = "";
             }
 
@@ -133,7 +133,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
             if (TextUtils.isEmpty(mSelectedCountry)) {
                 mSelectedCountry = "";
-            }
+            }*/
 
 
             if (mSelectedJobTitleID == 0) {
