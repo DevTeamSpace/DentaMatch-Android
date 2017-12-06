@@ -366,14 +366,16 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         UpdateUserProfileRequest request = new UpdateUserProfileRequest();
         request.setFirstName(Utils.getStringFromEditText(mBinding.etFname));
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
-        //request.setPreferredJobLocation(Utils.getStringFromEditText(mBinding.etLocation));
         request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
+        request.setJobTitleID(mSelectedJobTitleID);
+
+        /*request.setPreferredJobLocation(Utils.getStringFromEditText(mBinding.etLocation));
         request.setCity(mSelectedCity);
         request.setState(mSelectedState);
         request.setCountry(mSelectedCountry);
         request.setLatitude(mSelectedLat);
-        request.setLongitude(mSelectedLng);
-        request.setJobTitleID(mSelectedJobTitleID);
+        request.setLongitude(mSelectedLng);*/
+
         showProgressBar(getString(R.string.please_wait));
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
