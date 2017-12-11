@@ -410,4 +410,18 @@
     <string name="pending_approval">Pending Approval</string>
     <string name="profile_pending">Your profile has been sent for admin’s  approval. You can apply for jobs once your profile gets approved. \n \n In the meantime, Lets set your availability so that dental offices can get to know about your timings.</string>
 
+    <string name="success">Success</string>
+    <string name="your_job_profile_status">Your Profile is currently is being reviewed by Admin. Once it gets approved, you can start applying for jobs.</string>
+
+    <string name="verified_email">Verified email</string>
+    <string name="we_have_sent_a_verification">We have sent a verification link on\n your registered email. Please\n verify it to proceed further</string>
+    <string name="verify_email">Verify email</string>
+    <string name="need_attention">Needs Attention </string>
+    <string name="pending">Pending </string>
+
+    <string name="your_profile_pending">Your profile is pending admin’s approval. You will be able to apply for jobs once its approved.</string>
+    <string name="got_it">GOT IT</string>
+
+    <string name="txt_match">\nMATCH</string>
+
 </resources>

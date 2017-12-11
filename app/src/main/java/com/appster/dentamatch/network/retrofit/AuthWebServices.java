@@ -28,6 +28,7 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
 import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.network.response.auth.UserVerifiedStatus;
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
 import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
@@ -109,6 +110,7 @@ public interface AuthWebServices {
     String USER_CHAT_BLOCK_UNBLOCK = "users/chat-user-block-unblock";
     String UPDATE_FCM_TOKEN = "users/update-devicetoken";
     String PREFERRED_JOB_LOCATIONS = "jobs/preferred-job-locations";
+    String CHECK_USER_VERIFIED = "users/is-verified";
 
 
     @POST(USER_CHAT_BLOCK_UNBLOCK)
@@ -246,4 +248,7 @@ public interface AuthWebServices {
 
     @GET(PREFERRED_JOB_LOCATIONS)
     Call<PreferredJobLocationModel> getPreferredJobLocationList();
+
+    @GET(CHECK_USER_VERIFIED)
+    Call<UserVerifiedStatus> checkUserVerified();
 }

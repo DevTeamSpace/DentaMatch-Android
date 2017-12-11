@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.calendar;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,8 @@ import com.appster.dentamatch.network.response.calendar.AvailabilityResponseData
 import com.appster.dentamatch.network.response.calendar.CalendarAvailability;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.common.SplashActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
@@ -38,6 +41,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
     private ArrayList<String> mPartTimeDays;
     private AvailabilityResponse mAvailabilityResponse;
     private boolean mIsPartTime, mIsFullTime, mIsTemporary, mIsSunday, mIsMonday, mIsTuesday, mIsWednesday, mIsThursday, mIsFriday, mIsSaturday, mIsFromProfileComplete;
+    private boolean isFromRegistration;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,15 +49,22 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_set_availability);
         initViews();
         getIntentData();
-        //getAvailability(prepareGetAvailableRequest());
+
+        //open it
+        getAvailability(prepareGetAvailableRequest());
     }
 
     private void getIntentData() {
-        if (getIntent().getExtras() != null && getIntent().hasExtra(Constants.IS_LICENCE_REQUIRED)) {
+       /* if (getIntent().getExtras() != null && getIntent().hasExtra(Constants.IS_LICENCE_REQUIRED)) {
             mIsFromProfileComplete = getIntent().getBooleanExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.FALSE);
             if (mIsFromProfileComplete)
                 getAvailability(prepareGetAvailableRequest());
+        }*/
+
+        if (getIntent().getExtras() != null){
+            isFromRegistration=getIntent().getBooleanExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.FALSE);
         }
+
     }
 
     private void initViews() {
@@ -548,7 +559,12 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
                 if (response.getStatus() == 1) {
                     EventBus.getDefault().isRegistered(true);
+
+                    if(isFromRegistration){
+                        startActivity(new Intent(SetAvailabilityActivity.this, HomeActivity.class));
+                    }
                     finish();
+
                 }
             }
 

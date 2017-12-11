@@ -31,42 +31,34 @@ public class SearchJobModel implements Parcelable{
     private int days;
     private int isSaved;
     private double distance;
+    private int matchedSkills;
+    private int templateSkillsCount;
+    private double percentaSkillsMatch;
 
-
-
-    protected SearchJobModel(Parcel in) {
-        id = in.readInt();
-        jobType = in.readInt();
-        isMonday = in.readInt();
-        isTuesday = in.readInt();
-        isWednesday = in.readInt();
-        isThursday = in.readInt();
-        isFriday = in.readInt();
-        isSaturday = in.readInt();
-        isSunday = in.readInt();
-        jobTitleName = in.readString();
-        officeName = in.readString();
-        address = in.readString();
-        zipCode = in.readInt();
-        latitude = in.readDouble();
-        longitude = in.readDouble();
-        createdAt = in.readString();
-        days = in.readInt();
-        isSaved = in.readInt();
-        distance = in.readDouble();
+    public int getMatchedSkills() {
+        return matchedSkills;
     }
 
-    public static final Creator<SearchJobModel> CREATOR = new Creator<SearchJobModel>() {
-        @Override
-        public SearchJobModel createFromParcel(Parcel in) {
-            return new SearchJobModel(in);
-        }
+    public void setMatchedSkills(int matchedSkills) {
+        this.matchedSkills = matchedSkills;
+    }
 
-        @Override
-        public SearchJobModel[] newArray(int size) {
-            return new SearchJobModel[size];
-        }
-    };
+    public int getTemplateSkillsCount() {
+        return templateSkillsCount;
+    }
+
+    public void setTemplateSkillsCount(int templateSkillsCount) {
+        this.templateSkillsCount = templateSkillsCount;
+    }
+
+    public double getPercentaSkillsMatch() {
+        return percentaSkillsMatch;
+    }
+
+    public void setPercentaSkillsMatch(double percentaSkillsMatch) {
+        this.percentaSkillsMatch = percentaSkillsMatch;
+    }
+
 
     public int getId() {
         return id;
@@ -155,24 +147,67 @@ public class SearchJobModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(jobType);
-        dest.writeInt(isMonday);
-        dest.writeInt(isTuesday);
-        dest.writeInt(isWednesday);
-        dest.writeInt(isThursday);
-        dest.writeInt(isFriday);
-        dest.writeInt(isSaturday);
-        dest.writeInt(isSunday);
-        dest.writeString(jobTitleName);
-        dest.writeString(officeName);
-        dest.writeString(address);
-        dest.writeInt(zipCode);
-        dest.writeDouble(latitude);
-        dest.writeDouble(longitude);
-        dest.writeString(createdAt);
-        dest.writeInt(days);
-        dest.writeInt(isSaved);
-        dest.writeDouble(distance);
+        dest.writeInt(this.id);
+        dest.writeInt(this.jobType);
+        dest.writeInt(this.isMonday);
+        dest.writeInt(this.isTuesday);
+        dest.writeInt(this.isWednesday);
+        dest.writeInt(this.isThursday);
+        dest.writeInt(this.isFriday);
+        dest.writeInt(this.isSaturday);
+        dest.writeInt(this.isSunday);
+        dest.writeString(this.jobTitleName);
+        dest.writeString(this.officeName);
+        dest.writeString(this.address);
+        dest.writeInt(this.zipCode);
+        dest.writeDouble(this.latitude);
+        dest.writeDouble(this.longitude);
+        dest.writeString(this.createdAt);
+        dest.writeInt(this.days);
+        dest.writeInt(this.isSaved);
+        dest.writeDouble(this.distance);
+        dest.writeInt(this.matchedSkills);
+        dest.writeInt(this.templateSkillsCount);
+        dest.writeDouble(this.percentaSkillsMatch);
     }
+
+    public SearchJobModel() {
+    }
+
+    protected SearchJobModel(Parcel in) {
+        this.id = in.readInt();
+        this.jobType = in.readInt();
+        this.isMonday = in.readInt();
+        this.isTuesday = in.readInt();
+        this.isWednesday = in.readInt();
+        this.isThursday = in.readInt();
+        this.isFriday = in.readInt();
+        this.isSaturday = in.readInt();
+        this.isSunday = in.readInt();
+        this.jobTitleName = in.readString();
+        this.officeName = in.readString();
+        this.address = in.readString();
+        this.zipCode = in.readInt();
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
+        this.createdAt = in.readString();
+        this.days = in.readInt();
+        this.isSaved = in.readInt();
+        this.distance = in.readDouble();
+        this.matchedSkills = in.readInt();
+        this.templateSkillsCount = in.readInt();
+        this.percentaSkillsMatch = in.readDouble();
+    }
+
+    public static final Creator<SearchJobModel> CREATOR = new Creator<SearchJobModel>() {
+        @Override
+        public SearchJobModel createFromParcel(Parcel source) {
+            return new SearchJobModel(source);
+        }
+
+        @Override
+        public SearchJobModel[] newArray(int size) {
+            return new SearchJobModel[size];
+        }
+    };
 }

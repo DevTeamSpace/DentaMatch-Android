@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -214,6 +215,36 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.cellExp.tvAddCertificates.performClick();
             }
         });
+
+
+
+        profileBinding.tvUserStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                profileBinding.tvName.setVisibility(View.GONE);
+                profileBinding.tvJobTitle.setVisibility(View.GONE);
+                profileBinding.tvLocation.setVisibility(View.GONE);
+                profileBinding.relInfo.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+
+        profileBinding.tvInfoGotIt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                profileBinding.tvName.setVisibility(View.VISIBLE);
+                profileBinding.tvJobTitle.setVisibility(View.VISIBLE);
+                profileBinding.tvLocation.setVisibility(View.VISIBLE);
+                profileBinding.relInfo.setVisibility(View.GONE);
+
+
+            }
+        });
+
+        profileBinding.layoutLicenceData.setVisibility(View.GONE);
     }
 
     @Override
@@ -283,9 +314,27 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
                 }
 
+                if(response.getUser().getIsJobSeekerVerified()!=Constants.JOBSEEKAR_VERIFY_STATUS){
+                    profileBinding.tvUserStatus.setText(getString(R.string.pending));
+                    profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.rounded_yellow_drawable));
+                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_pending_yellow, 0, R.drawable.ic_down_arrow_white, 0);
+
+
+                }else if(response.getUser().getProfileCompleted()!=Constants.PROFILE_COMPLETED_STATUS){
+                    profileBinding.tvUserStatus.setText(getString(R.string.need_attention));
+
+                    profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.rounded_red_drawable));
+                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_needs_attention_red, 0, R.drawable.ic_down_arrow_white, 0);
+
+                }else {
+                    profileBinding.tvUserStatus.setVisibility(View.GONE);
+
+                }
+
                 profileBinding.tvName.setText(response.getUser().getFirstName() + " " + response.getUser().getLastName());
                 profileBinding.tvAboutMe.setText(response.getUser().getAboutMe());
-                profileBinding.tvJobTitle.setText(response.getUser().getJobTitle());
+                profileBinding.tvJobTitle.setText(response.getUser().getJobtitleName());
+                profileBinding.tvLocation.setText(response.getUser().getPreferredLocationName());
 
                /*
                In case the City from the googleMaps comes out to be null then , show user ${State, Country}

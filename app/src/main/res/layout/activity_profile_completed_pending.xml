@@ -49,7 +49,9 @@
             android:textSize="@dimen/text_size_16"
             android:textColor="@color/white_color"
             app:customFont="@string/font_bold"
-            android:onClick="completeProfile"/>
+            android:onClick="completeProfile"
+            android:textAllCaps="true"
+            />
 
     </RelativeLayout>
 </layout>

@@ -9,8 +9,15 @@ import com.google.gson.annotations.SerializedName;
 public class UpdateUserProfileRequest {
     private String firstName;
     private String lastName;
+    private String preferredJobLocationId;
+    private String licenseNumber;
+    @SerializedName("jobTitileId")
+    private int jobTitleID;
+    private String aboutMe;
+    private String state;
 
-    @SerializedName("zipcode")
+
+   /* @SerializedName("zipcode")
     private int zipCode;
     private String latitude;
     private String longitude;
@@ -18,10 +25,50 @@ public class UpdateUserProfileRequest {
     private String preferredCity;
     private String preferredState;
     private String preferredCountry;
+*/
 
-    @SerializedName("jobTitileId")
-    private int jobTitleID;
-    private String aboutMe;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getPreferredJobLocationId() {
+        return preferredJobLocationId;
+    }
+
+    public void setPreferredJobLocationId(String preferredJobLocationId) {
+        this.preferredJobLocationId = preferredJobLocationId;
+    }
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
+    public int getJobTitleID() {
+        return jobTitleID;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -31,7 +78,7 @@ public class UpdateUserProfileRequest {
         this.lastName = lastName;
     }
 
-    public void setZipCode(int zipCode) {
+    /*public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -45,7 +92,7 @@ public class UpdateUserProfileRequest {
 
     public void setPreferredJobLocation(String preferredJobLocation) {
         this.preferredJobLocation = preferredJobLocation;
-    }
+    }*/
 
     public void setJobTitleID(int jobTitleID) {
         this.jobTitleID = jobTitleID;
@@ -55,7 +102,7 @@ public class UpdateUserProfileRequest {
         this.aboutMe = aboutMe;
     }
 
-    public void setCity(String city) {
+   /* public void setCity(String city) {
         this.preferredCity = city;
     }
 
@@ -65,5 +112,5 @@ public class UpdateUserProfileRequest {
 
     public void setCountry(String country) {
         this.preferredCountry = country;
-    }
+    }*/
 }

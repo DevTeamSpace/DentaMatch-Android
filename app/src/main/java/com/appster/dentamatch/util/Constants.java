@@ -184,4 +184,10 @@ public class Constants {
         int CERTIFICATE = 90;
         int COMPLETE = 100;
     }
+
+    public static final int USER_VERIFIED_STATUS = 1;
+    public static final int JOBSEEKAR_VERIFY_STATUS = 1;
+    public static final int PROFILE_COMPLETED_STATUS = 1;
+
+
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,6 +77,17 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
                 mJobListBinding.tvNoDataFound.setVisibility(View.GONE);
                 mJobListBinding.tvJobResultCount.setVisibility(View.VISIBLE);
                 mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" results found"));
+                if(event.getIsJobSeekerVerified()== Constants.USER_VERIFIED_STATUS && event.getProfileCompleted()== Constants.USER_VERIFIED_STATUS ){
+                    mJobListBinding.tvProfileStatus.setVisibility(View.GONE);
+                }else if(/*event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS &&*/ event.getProfileCompleted()!= Constants.USER_VERIFIED_STATUS ){
+                    mJobListBinding.tvProfileStatus.setVisibility(View.VISIBLE);
+                    mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.red_color));
+
+                }else if(event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS){
+                    mJobListBinding.tvProfileStatus.setVisibility(View.VISIBLE);
+                    mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_yellow));
+                }
+
                 mJobAdapter.notifyDataSetChanged();
 
             } else {

@@ -12,13 +12,29 @@ public class JobDataReceivedEvent {
     private ArrayList<SearchJobModel> mJobList;
     private boolean mPaginationNeeded;
     private int mTotalItem;
+    private int mIsJobSeekerVerified;
+    private int mProfileCompleted;
+
+    public int getIsJobSeekerVerified() {
+        return mIsJobSeekerVerified;
+    }
+
+    public int getProfileCompleted() {
+        return mProfileCompleted;
+    }
 
 
 
-    public JobDataReceivedEvent(ArrayList<SearchJobModel> list, boolean paginationNeeded, int totalItem){
+
+
+
+    public JobDataReceivedEvent(ArrayList<SearchJobModel> list, boolean paginationNeeded, int totalItem, int isJobSeekerVerified,int profileCompleted){
         mJobList = list;
         mPaginationNeeded = paginationNeeded;
         mTotalItem = totalItem;
+
+        mIsJobSeekerVerified=isJobSeekerVerified;
+        mProfileCompleted=profileCompleted;
 
     }
 

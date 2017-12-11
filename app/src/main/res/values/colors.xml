@@ -64,5 +64,6 @@
     <color name="white3_color">#f3f3f3</color>
     <color name="tab_normal_color">#b3ffffff</color>
     <color name="white_four">#e9e9e9</color>
+    <color name="light_yellow">#e8ab43</color>
 
 </resources>

@@ -18,6 +18,25 @@
             android:textColor="@color/colorAccent"
             android:text="@string/txt_no_jobs_found"/>
 
+
+        <com.appster.dentamatch.widget.CustomTextView
+            style="@style/text_view_normal"
+            android:id="@+id/tv_profile_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_yellow"
+            android:paddingBottom="@dimen/margin_medium"
+            android:paddingStart="@dimen/margin_12"
+            android:paddingTop="@dimen/margin_medium"
+            android:textColor="@color/white_color"
+            app:customFont="@string/font_regular"
+            android:visibility="gone"
+            android:text="@string/your_job_profile_status"
+
+            />
+
+
+
         <com.appster.dentamatch.widget.CustomTextView
             style="@style/text_view_normal"
             android:visibility="gone"
@@ -29,7 +48,10 @@
             android:paddingStart="@dimen/margin_12"
             android:paddingTop="@dimen/margin_medium"
             android:textColor="@color/text_default_color"
-            app:customFont="@string/font_regular" />
+            app:customFont="@string/font_regular"
+
+            android:layout_below="@+id/tv_profile_status"
+            />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_job_list"

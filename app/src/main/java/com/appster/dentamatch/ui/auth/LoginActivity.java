@@ -76,6 +76,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
 
         initViews();
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -432,10 +433,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     PreferenceUtil.setFistName(getTextFromEditText(mBinder.registerEtFname));
                     PreferenceUtil.setLastName(getTextFromEditText(mBinder.registerEtLname));
-                    Utils.showToast(getApplicationContext(), response.getMessage());
+                    //Utils.showToast(getApplicationContext(), response.getMessage());
                     mIsLogin = true;
-                    showSelectedView(true);
-                    clearRegistrationFields();
+                    //showSelectedView(true);
+                   // clearRegistrationFields();
+
+                    PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
+                    PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
+                    PreferenceUtil.setLastName(response.getLoginResponseData().getUserDetail().getLastName());
+                    PreferenceUtil.setProfileImagePath(response.getLoginResponseData().getUserDetail().getImageUrl());
+                    PreferenceUtil.setUserChatId(response.getLoginResponseData().getUserDetail().getId());
+                    PreferenceUtil.setPreferredJobLocationName(response.getLoginResponseData().getUserDetail().getPreferredLocationName());
+                    PreferenceUtil.setPreferredJobLocationID(response.getLoginResponseData().getUserDetail().getPreferredJobLocationId());
+                    PreferenceUtil.setLicenseNumber(response.getLoginResponseData().getUserDetail().getLicenseNumber());
+
+                    PreferenceUtil.setKeyJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
+                    PreferenceUtil.setUserVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
+
+
+                    showSignUpSuccessDialog(response.getMessage());
+
 
                 } else {
                     Utils.showToast(getApplicationContext(), response.getMessage());
@@ -533,6 +550,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     PreferenceUtil.setPreferredJobLocationName(response.getLoginResponseData().getUserDetail().getPreferredLocationName());
                     PreferenceUtil.setPreferredJobLocationID(response.getLoginResponseData().getUserDetail().getPreferredJobLocationId());
                     PreferenceUtil.setLicenseNumber(response.getLoginResponseData().getUserDetail().getLicenseNumber());
+
+                    PreferenceUtil.setKeyJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
+                    PreferenceUtil.setUserVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
+
+
                     logUser(loginRequest.getEmail(),
                             response.getLoginResponseData().getUserDetail().getFirstName()
                                     .concat(" ")
@@ -616,6 +638,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBinder.registerEtPassword.getText().clear();
         mBinder.tvPreferredJobLocation.setText("");
         mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
+    }
+
+    private  void showSignUpSuccessDialog( String msg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.success))
+                .setMessage(msg)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        PreferenceUtil.setIsLogin(true);
+                        PreferenceUtil.setProfileCompleted(false);
+
+                        Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setCancelable(false)
+
+                //.setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
 

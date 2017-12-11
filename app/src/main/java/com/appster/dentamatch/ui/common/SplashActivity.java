@@ -8,7 +8,9 @@ import android.text.TextUtils;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.auth.LoginActivity;
+import com.appster.dentamatch.ui.auth.UserVerifyPendingActivity;
 import com.appster.dentamatch.ui.onboardtutorial.OnBoardingActivity;
+import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -41,6 +43,26 @@ public class SplashActivity extends Activity implements Runnable {
         if (PreferenceUtil.getIsOnBoarding()) {
 
             if (PreferenceUtil.getIsLogin()) {
+/*
+                if (PreferenceUtil.getUserModel().getJobTitleId() == 0) {
+                    PreferenceUtil.setProfileCompleted(false);
+                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }*/
+                if( PreferenceUtil.getUserVerified()!=  Constants.USER_VERIFIED_STATUS){
+                    PreferenceUtil.setProfileCompleted(false);
+
+
+                    Intent intent = new Intent(getApplicationContext(), UserVerifyPendingActivity.class);
+                    intent.putExtra(Constants.IS_LICENCE_REQUIRED, 1);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+
+
 
                 if (!PreferenceUtil.isJobFilterSet()) {
                     startActivity(new Intent(SplashActivity.this, SearchJobActivity.class)

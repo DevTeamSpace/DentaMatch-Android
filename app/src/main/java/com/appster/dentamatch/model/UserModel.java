@@ -36,41 +36,50 @@ public class UserModel implements Parcelable{
     private String preferredCountry;
     private String preferredJobStateCity;
     private int id;
+    private String jobtitleName;
+    private  int isJobSeekerVerified;
+    private int preferredJobLocationId;
+    private String preferredLocationName;
+    private int profileCompleted;
 
-
-    protected UserModel(Parcel in) {
-        email = in.readString();
-        status = in.readString();
-        firstName = in.readString();
-        lastName = in.readString();
-        jobTitle = in.readString();
-        jobTitleId = in.readInt();
-        profileImage = in.readString();
-        profilePic = in.readString();
-        userName = in.readString();
-        accountID = in.readString();
-        accountType = in.readString();
-        dentalStateBoard = in.readString();
-        licenseNumber = in.readString();
-        state = in.readString();
-        aboutMe = in.readString();
-        latitude = in.readString();
-        longitude = in.readString();
-        postalCode = in.readString();
-        preferredJobStateCity = in.readString();
-        preferredJobLocation = in.readString();
-        preferredCity = in.readString();
-        preferredState = in.readString();
-        preferredCountry = in.readString();
-        id = in.readInt();
+    public int getProfileCompleted() {
+        return profileCompleted;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setProfileCompleted(int profileCompleted) {
+        this.profileCompleted = profileCompleted;
     }
 
-  /*  @Override
+
+    public String getPreferredLocationName() {
+        return preferredLocationName;
+    }
+
+    public void setPreferredLocationName(String preferredLocationName) {
+        this.preferredLocationName = preferredLocationName;
+    }
+
+
+
+    public int getPreferredJobLocationId() {
+        return preferredJobLocationId;
+    }
+
+    public void setPreferredJobLocationId(int preferredJobLocationId) {
+        this.preferredJobLocationId = preferredJobLocationId;
+    }
+
+
+    public int getIsJobSeekerVerified() {
+        return isJobSeekerVerified;
+    }
+
+    public void setIsJobSeekerVerified(int isJobSeekerVerified) {
+        this.isJobSeekerVerified = isJobSeekerVerified;
+    }
+
+
+    /*  @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(email);
         dest.writeString(status);
@@ -95,45 +104,6 @@ public class UserModel implements Parcelable{
         dest.writeInt(id);
     }*/
 
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(status);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(jobTitle);
-        dest.writeInt(jobTitleId);
-        dest.writeString(profileImage);
-        dest.writeString(profilePic);
-        dest.writeString(userName);
-        dest.writeString(accountID);
-        dest.writeString(accountType);
-        dest.writeString(dentalStateBoard);
-        dest.writeString(licenseNumber);
-        dest.writeString(state);
-        dest.writeString(aboutMe);
-        dest.writeString(latitude);
-        dest.writeString(longitude);
-        dest.writeString(postalCode);
-        dest.writeString(preferredJobLocation);
-        dest.writeString(preferredCity);
-        dest.writeString(preferredState);
-        dest.writeString(preferredCountry);
-        dest.writeInt(id);
-    }
-
-    public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
-        @Override
-        public UserModel createFromParcel(Parcel in) {
-            return new UserModel(in);
-        }
-
-        @Override
-        public UserModel[] newArray(int size) {
-            return new UserModel[size];
-        }
-    };
 
     public int getJobTitleId() {
         return jobTitleId;
@@ -328,4 +298,99 @@ public class UserModel implements Parcelable{
     public String getPreferredJobStateCity() {
         return preferredJobStateCity;
     }
+
+    public String getJobtitleName() {
+        return jobtitleName;
+    }
+
+    public void setJobtitleName(String jobtitleName) {
+        this.jobtitleName = jobtitleName;
+    }
+
+    public UserModel() {
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.email);
+        dest.writeString(this.status);
+        dest.writeValue(this.userId);
+        dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
+        dest.writeString(this.jobTitle);
+        dest.writeInt(this.jobTitleId);
+        dest.writeString(this.profileImage);
+        dest.writeString(this.profilePic);
+        dest.writeString(this.userName);
+        dest.writeString(this.accountID);
+        dest.writeString(this.accountType);
+        dest.writeString(this.dentalStateBoard);
+        dest.writeString(this.licenseNumber);
+        dest.writeString(this.state);
+        dest.writeString(this.aboutMe);
+        dest.writeString(this.latitude);
+        dest.writeString(this.longitude);
+        dest.writeString(this.postalCode);
+        dest.writeString(this.preferredJobLocation);
+        dest.writeString(this.preferredCity);
+        dest.writeString(this.preferredState);
+        dest.writeString(this.preferredCountry);
+        dest.writeString(this.preferredJobStateCity);
+        dest.writeInt(this.id);
+        dest.writeString(this.jobtitleName);
+        dest.writeInt(this.isJobSeekerVerified);
+        dest.writeInt(this.preferredJobLocationId);
+        dest.writeString(this.preferredLocationName);
+        dest.writeInt(this.profileCompleted);
+    }
+
+    protected UserModel(Parcel in) {
+        this.email = in.readString();
+        this.status = in.readString();
+        this.userId = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        this.jobTitle = in.readString();
+        this.jobTitleId = in.readInt();
+        this.profileImage = in.readString();
+        this.profilePic = in.readString();
+        this.userName = in.readString();
+        this.accountID = in.readString();
+        this.accountType = in.readString();
+        this.dentalStateBoard = in.readString();
+        this.licenseNumber = in.readString();
+        this.state = in.readString();
+        this.aboutMe = in.readString();
+        this.latitude = in.readString();
+        this.longitude = in.readString();
+        this.postalCode = in.readString();
+        this.preferredJobLocation = in.readString();
+        this.preferredCity = in.readString();
+        this.preferredState = in.readString();
+        this.preferredCountry = in.readString();
+        this.preferredJobStateCity = in.readString();
+        this.id = in.readInt();
+        this.jobtitleName = in.readString();
+        this.isJobSeekerVerified = in.readInt();
+        this.preferredJobLocationId = in.readInt();
+        this.preferredLocationName = in.readString();
+        this.profileCompleted = in.readInt();
+    }
+
+    public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
+        @Override
+        public UserModel createFromParcel(Parcel source) {
+            return new UserModel(source);
+        }
+
+        @Override
+        public UserModel[] newArray(int size) {
+            return new UserModel[size];
+        }
+    };
 }

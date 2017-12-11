@@ -244,6 +244,12 @@
             android:name=".ui.profile.ProfileCompletedPendingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
+        <activity
+            android:name=".ui.auth.UserVerifyPendingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
     </application>
 
 </manifest>

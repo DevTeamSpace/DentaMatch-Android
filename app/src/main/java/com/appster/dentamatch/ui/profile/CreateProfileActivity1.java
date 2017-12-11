@@ -25,6 +25,8 @@ import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
+import com.appster.dentamatch.ui.auth.UserVerifyPendingActivity;
+import com.appster.dentamatch.ui.calendar.SetAvailabilityActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
@@ -78,6 +80,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
         mBinder.etJobTitle.setOnClickListener(this);
         mBinder.createProfileTvName.setText(getString(R.string.hi_user, PreferenceUtil.getFirstName()));
+        mBinder.tvPreferredJobLocationVal.setText(PreferenceUtil.getPreferredJobLocationName());
     }
 
     @Override
@@ -162,9 +165,22 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                 public void onSuccess(LicenceUpdateResponse response) {
 
                     if (response.getStatus() == 1) {
-                        Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, ProfileCompletedPendingActivity.class);
-                        profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, isLicenceRequired);
-                        startActivity(profileCompletedIntent);
+
+                        PreferenceUtil.setUserVerified(response.getResult().getUserDetails().getIsVerified());
+
+                        if(response.getResult().getUserDetails().getIsVerified()==Constants.USER_VERIFIED_STATUS) {
+                            Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, ProfileCompletedPendingActivity.class);
+                            profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, isLicenceRequired);
+                            startActivity(profileCompletedIntent);
+
+                            finish();
+                        }else{
+                            Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, UserVerifyPendingActivity.class);
+                            profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, isLicenceRequired);
+                            startActivity(profileCompletedIntent);
+                            finish();
+
+                        }
                     } else {
                         Utils.showToast(getApplicationContext(), response.getMessage());
 

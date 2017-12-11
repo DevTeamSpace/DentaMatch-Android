@@ -32,6 +32,7 @@
     <dimen name="text_size_13">13sp</dimen>
 
     <!--Margins-->
+    <dimen name="margin_1">1dp</dimen>
     <dimen name="margin_2">2dp</dimen>
     <dimen name="margin_small_3">3dp</dimen>
     <dimen name="margin_small">4dp</dimen>
@@ -87,7 +88,7 @@
     <dimen name="cell_height">55dp</dimen>
     <dimen name="edit_height">62dp</dimen>
     <dimen name="edit_height_about_me">160dp</dimen>
-    <dimen name="profile_header_height">280dp</dimen>
+    <dimen name="profile_header_height">290dp</dimen>
 
     <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_74">74dp</dimen>

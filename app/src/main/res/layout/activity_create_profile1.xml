@@ -59,6 +59,30 @@
                         android:textSize="@dimen/text_size_header"
                         app:customFont="@string/font_regular" />
 
+
+                    <com.appster.dentamatch.widget.CustomTextView
+                        android:id="@+id/tv_preferred_job_location"
+                        style="@style/text_view_normal"
+                        android:layout_below="@+id/create_profile_tv_name"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:text="@string/preferred_location_label"
+                        android:textColor="@color/white_color"
+                        android:textSize="@dimen/text_size_12"
+                        app:customFont="@string/font_regular" />
+                    <com.appster.dentamatch.widget.CustomTextView
+                        android:id="@+id/tv_preferred_job_location_val"
+                        style="@style/text_view_normal"
+                        android:layout_below="@+id/tv_preferred_job_location"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/white_color"
+                        android:textSize="@dimen/text_size_14"
+                        app:customFont="@string/font_bold"
+                        android:paddingTop="@dimen/margin_1"
+                        />
+
+
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

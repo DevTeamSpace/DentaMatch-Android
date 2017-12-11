@@ -58,5 +58,6 @@ public class ProfileCompletedPendingActivity extends BaseActivity {
         Intent intentToSeatAvailability = new Intent(ProfileCompletedPendingActivity.this, SetAvailabilityActivity.class);
         intentToSeatAvailability.putExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.TRUE);
         startActivity(intentToSeatAvailability);
+        finish();
     }
 }

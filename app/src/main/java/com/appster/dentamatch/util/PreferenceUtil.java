@@ -49,6 +49,11 @@ public final class PreferenceUtil {
     private static final String KEY_PREFERRED_JOB_LOCATION_ID = "PREFERRED_JOB_LOCATION_ID";
     private static final String KEY_LICENSE_NUMBER = "LICENSE_NUMBER";
 
+    private static final String KEY_JOB_SEEKER_VERIFIED = "isJobSeekerVerified";
+    private static final String KEY_USER_VERIFIED = "isVerified";
+
+
+
     public static void setUserCurrentLocation(Location location) {
         Hawk.put(KEY_USER_CURRENT_LOC, location);
     }
@@ -283,4 +288,24 @@ public final class PreferenceUtil {
     public static String getLicenseNumber() {
         return Hawk.get(KEY_LICENSE_NUMBER);
     }
+
+
+    public static void setKeyJobSeekerVerified(int value) {
+        Hawk.put(KEY_JOB_SEEKER_VERIFIED, value);
+    }
+
+    public static int getKeyJobSeekerVerified() {
+        return Hawk.get(KEY_JOB_SEEKER_VERIFIED);
+    }
+
+
+    public static void setUserVerified(int value) {
+        Hawk.put(KEY_USER_VERIFIED, value);
+    }
+
+    public static int getUserVerified() {
+        return Hawk.get(KEY_USER_VERIFIED,0);
+    }
+
+
 }

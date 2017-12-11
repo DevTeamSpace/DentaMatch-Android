@@ -135,12 +135,24 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 mSelectedCountry = "";
             }*/
 
+            preferredJobLocationId = mProfileData.getUser().getPreferredJobLocationId();
+
+
 
             if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
             } else {
-                mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
+                //mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
+                mBinding.etJobTitle.setText(mProfileData.getUser().getJobtitleName());
             }
+
+            if((mProfileData.getUser().getLicenseNumber()!=null && !TextUtils.isEmpty(mProfileData.getUser().getLicenseNumber()))){
+                mBinding.createProfileInputLayoutLicence.setVisibility(View.VISIBLE);
+                mBinding.createProfileInputLayoutState.setVisibility(View.VISIBLE);
+                mBinding.createProfileEtLicence.setText(mProfileData.getUser().getLicenseNumber());
+                mBinding.createProfileEtState.setText(mProfileData.getUser().getState());
+            }
+
 
             mBinding.toolbarProfile.tvToolbarGeneralLeft.setText(R.string.header_edit_profile);
             mBinding.etFname.setText(mProfileData.getUser().getFirstName());
@@ -368,6 +380,12 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
         request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
         request.setJobTitleID(mSelectedJobTitleID);
+        request.setPreferredJobLocationId(""+preferredJobLocationId);
+
+        if(mBinding.createProfileEtLicence.getVisibility()==View.VISIBLE) {
+            request.setState(mBinding.createProfileEtState.getText().toString());
+            request.setLicenseNumber(mBinding.createProfileEtLicence.getText().toString());
+        }
 
         /*request.setPreferredJobLocation(Utils.getStringFromEditText(mBinding.etLocation));
         request.setCity(mSelectedCity);
@@ -534,6 +552,12 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mBinding.createProfileInputLayoutState.setVisibility(View.VISIBLE);
             mBinding.createProfileEtLicence.setText("");
             mBinding.createProfileEtState.setText("");
-        }
+
+            if((mProfileData.getUser().getLicenseNumber()!=null && !TextUtils.isEmpty(mProfileData.getUser().getLicenseNumber())) && mProfileData.getUser().getJobtitleName().equals(title)){
+                mBinding.createProfileEtLicence.setText(mProfileData.getUser().getLicenseNumber());
+                mBinding.createProfileEtState.setText(mProfileData.getUser().getState());
+            }
+
+            }
     }
 }

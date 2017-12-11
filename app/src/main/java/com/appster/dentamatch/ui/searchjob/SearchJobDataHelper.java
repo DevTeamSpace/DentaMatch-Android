@@ -30,6 +30,10 @@ public class SearchJobDataHelper {
     private boolean mIsPaginationRequired;
     private int mPageNumber;
     private int mTotalResultCount;
+    private int mIsJobSeekerVerified;
+    private int mProfileCompleted;
+
+
 
     public synchronized static SearchJobDataHelper getInstance() {
         if (ourInstance == null) {
@@ -74,6 +78,11 @@ public class SearchJobDataHelper {
                     PreferenceUtil.setFilterChanged(false);
                     hideProgress(ct);
                     if (response.getStatus() == 1) {
+
+                        mIsJobSeekerVerified=response.getSearchJobResponseData().getIsJobSeekerVerified();
+                        mProfileCompleted=response.getSearchJobResponseData().getProfileCompleted();
+
+
                         if (!isPaginationLoading) {
                             jobDataList.clear();
                             processResponse(response);
@@ -83,7 +92,7 @@ public class SearchJobDataHelper {
 
                     } else {
                         Toast.makeText(ct, response.getMessage(), Toast.LENGTH_SHORT).show();
-                        EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
+                        EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount,mIsJobSeekerVerified,mProfileCompleted));
                     }
 
                 }
@@ -91,13 +100,13 @@ public class SearchJobDataHelper {
 
                 @Override
                 public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-                    EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
+                    EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount,mIsJobSeekerVerified,mProfileCompleted));
                     hideProgress(ct);
 
                 }
             });
         }else{
-            EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
+            EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount,mIsJobSeekerVerified,mProfileCompleted));
         }
     }
 
@@ -107,9 +116,12 @@ public class SearchJobDataHelper {
             /*
               In case total item count and the job received size is equal, then pagination is not required.
              */
+            mIsJobSeekerVerified=response.getSearchJobResponseData().getIsJobSeekerVerified();
+            mProfileCompleted=response.getSearchJobResponseData().getProfileCompleted();
+
             mTotalResultCount = response.getSearchJobResponseData().getTotal();
             mIsPaginationRequired = !(mTotalResultCount == jobDataList.size());
-            EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
+            EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount,response.getSearchJobResponseData().getIsJobSeekerVerified(),response.getSearchJobResponseData().getProfileCompleted()));
         }
     }
 
@@ -124,7 +136,7 @@ public class SearchJobDataHelper {
 
         } else {
             if (jobDataList.size() > 0) {
-                EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount));
+                EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount,mIsJobSeekerVerified,mProfileCompleted));
             } else {
                 searchJob(ct, false);
             }
