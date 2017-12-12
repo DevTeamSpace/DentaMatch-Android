@@ -244,8 +244,17 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
 
             case R.id.lay_item_job_list:
                 int jobID = (int) v.getTag();
+                double matchPercentage=0;
+                for(SearchJobModel searchJobModel:mJobListData){
+                    if(searchJobModel.getId()==jobID){
+                        matchPercentage= searchJobModel.getPercentaSkillsMatch();
+                        break;
+                    }
+                }
+
                 mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
                         .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
+                        .putExtra(Constants.EXTRA_MATCHES_PERCENT,matchPercentage)
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 
                 break;

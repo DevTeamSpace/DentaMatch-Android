@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -71,6 +72,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
     private ActivityJobDetailBinding mBinding;
     private GoogleMap mGoogleMap;
     private JobDetailModel mJobDetailModel;
+    private double mMatchPercent;
 
     @Override
     public String getActivityName() {
@@ -86,6 +88,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
         if (getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)) {
             jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID, 0);
+            mMatchPercent= getIntent().getDoubleExtra(Constants.EXTRA_MATCHES_PERCENT,0);
         }
 
         mBinding.mapJobDetail.onCreate(savedInstanceState);
@@ -345,7 +348,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         }
     }
 
-    private void setDetailData(JobDetailModel dataModel) {
+    private void setDetailData(final JobDetailModel dataModel) {
         try {
             mBinding.tvJobDetailName.setText(dataModel.getJobTitleName());
 
@@ -461,7 +464,36 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             mBinding.tvJobDetailDocName.setText(dataModel.getOfficeName());
             mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
-            mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
+            //mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
+            mBinding.tvJobDetailJobDistance.setText("View on map");
+            mBinding.tvJobDetailJobDistance.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_location, 0, 0, 0);
+            mBinding.tvJobDetailJobDistance.setCompoundDrawablePadding(5);
+
+            mBinding.tvJobDetailJobDistance.setTextColor(ContextCompat.getColor(this,R.color.cerulean_color));
+            mBinding.tvMap.setVisibility(View.GONE);
+            mBinding.mapJobDetail.setVisibility(View.GONE);
+            mBinding.lineMap.setVisibility(View.VISIBLE);
+            if(mMatchPercent>0) {
+                mBinding.tvMatchesPercent.setText(String.format(Locale.getDefault(), "%.2f", mMatchPercent).concat("%"));
+
+                mBinding.tvMatchesPercent.setVisibility(View.VISIBLE);
+                mBinding.tvMatch.setVisibility(View.VISIBLE);
+            }
+
+
+            mBinding.tvJobDetailJobDistance.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                   // String uri = String.format(Locale.ENGLISH, "geo:%f,%f", dataModel.getLatitude(), dataModel.getLongitude());
+
+                    String uri ="https://www.google.com/maps?q="+dataModel.getLatitude()+","+dataModel.getLongitude();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    startActivity(intent);
+                }
+            });
+
+
             mBinding.tvJobDetailDocOfficeType.setText(dataModel.getOfficeTypeName());
 
             mBinding.tvJobDetailDocDescription.setText(dataModel.getTemplateDesc());

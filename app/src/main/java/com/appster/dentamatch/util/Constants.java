@@ -188,6 +188,8 @@ public class Constants {
     public static final int USER_VERIFIED_STATUS = 1;
     public static final int JOBSEEKAR_VERIFY_STATUS = 1;
     public static final int PROFILE_COMPLETED_STATUS = 1;
+    public static final String EXTRA_MATCHES_PERCENT = "EXTRA_MATCHES_PERCENT";
+
 
 
 }

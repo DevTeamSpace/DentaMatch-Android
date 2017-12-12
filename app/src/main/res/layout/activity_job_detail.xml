@@ -96,6 +96,47 @@
                         android:layout_marginEnd="@dimen/margin_21"
                         android:button="@drawable/checkbox_star_selector" />
 
+
+                    <com.appster.dentamatch.widget.CustomTextView
+                        android:id="@+id/tv_matches_percent"
+                        style="@style/text_view_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/cb_job_selection"
+
+                        android:layout_marginBottom="@dimen/margin_1"
+                        android:layout_marginEnd="@dimen/margin_normal"
+                        android:paddingTop="@dimen/margin_small"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black_match_text"
+                        app:customFont="@string/font_medium"
+                        android:textSize="@dimen/text_size_16"
+                        android:visibility="gone"
+
+                        />
+
+                    <com.appster.dentamatch.widget.CustomTextView
+                        android:id="@+id/tv_match"
+                        style="@style/text_view_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/cb_job_selection"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/margin_normal"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black_match_text"
+                        app:customFont="@string/font_medium"
+                        android:textSize="@dimen/text_size_11"
+                        android:text="@string/txt_match"
+                        android:visibility="gone"
+
+                        />
+
+
+
+
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_job_status"
                         style="@style/text_view_normal"
@@ -247,7 +288,10 @@
                         android:layout_alignTop="@+id/tv_office_location_label"
                         android:layout_marginEnd="@dimen/margin_20"
                         android:lineSpacingMultiplier="1.2"
-                        app:customFont="@string/font_regular" />
+                        app:customFont="@string/font_regular"
+                        android:textSize="@dimen/text_size_11"
+
+                        />
 
                 </RelativeLayout>
 
@@ -517,9 +561,17 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
+                    android:background="@color/light_gray"
+                    android:paddingBottom="@dimen/margin_5"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_10"
+                    ></View>
 
                 <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_map"
                     style="@style/text_view_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -535,6 +587,7 @@
                     app:customFont="@string/font_medium" />
 
                 <View
+                    android:id="@+id/line_map"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_height"
                     android:background="@color/light_gray" />
