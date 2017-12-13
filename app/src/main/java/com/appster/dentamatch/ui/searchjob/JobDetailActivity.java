@@ -466,7 +466,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
             //mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
             mBinding.tvJobDetailJobDistance.setText("View on map");
-            mBinding.tvJobDetailJobDistance.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_location, 0, 0, 0);
+            mBinding.tvJobDetailJobDistance.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_location_blue, 0, 0, 0);
             mBinding.tvJobDetailJobDistance.setCompoundDrawablePadding(5);
 
             mBinding.tvJobDetailJobDistance.setTextColor(ContextCompat.getColor(this,R.color.cerulean_color));

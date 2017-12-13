@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityProfileCompletedPendingBinding;
+import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -21,6 +22,7 @@ import com.appster.dentamatch.ui.calendar.SetAvailabilityActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.UpdateProfileActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.PreferenceUtil;
 
 import java.util.ArrayList;
 
@@ -49,7 +51,7 @@ public class UserVerifyPendingActivity extends BaseActivity {
         updateUI();
 
         activityProfileCompletedPendingBinding.letsGoBtn.setVisibility(View.VISIBLE);
-        activityProfileCompletedPendingBinding.letsGoBtn.setText(getString(R.string.verified_email));
+        activityProfileCompletedPendingBinding.letsGoBtn.setText(getString(R.string.resend_email));
         checkUserVerified();
     }
 
@@ -83,6 +85,12 @@ public class UserVerifyPendingActivity extends BaseActivity {
             public void onSuccess(UserVerifiedStatus response) {
                 hideProgressBar();
                 if(response.getResult().getIsVerified()==Constants.USER_VERIFIED_STATUS) {
+
+                    UserModel userModel=PreferenceUtil.getUserModel();
+                    userModel.setIsVerified(Constants.USER_VERIFIED_STATUS);
+                    PreferenceUtil.setUserModel(userModel);
+
+                    PreferenceUtil.setUserVerified(Constants.USER_VERIFIED_STATUS);
                     Intent intentToSeatAvailability = new Intent(UserVerifyPendingActivity.this, SetAvailabilityActivity.class);
                     intentToSeatAvailability.putExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.TRUE);
                     startActivity(intentToSeatAvailability);

@@ -52,6 +52,8 @@ public final class PreferenceUtil {
     private static final String KEY_JOB_SEEKER_VERIFIED = "isJobSeekerVerified";
     private static final String KEY_USER_VERIFIED = "isVerified";
 
+    private static final String KEY_SET_AVAILABILITY = "keySetAvailability";
+
 
 
     public static void setUserCurrentLocation(Location location) {
@@ -305,6 +307,15 @@ public final class PreferenceUtil {
 
     public static int getUserVerified() {
         return Hawk.get(KEY_USER_VERIFIED,0);
+    }
+
+
+    public static void setSetAvailability(boolean value) {
+        Hawk.put(KEY_SET_AVAILABILITY, value);
+    }
+
+    public static boolean getAvailability() {
+        return Hawk.get(KEY_SET_AVAILABILITY,false);
     }
 
 

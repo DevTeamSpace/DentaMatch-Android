@@ -23,6 +23,7 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.common.SplashActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,6 +53,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
         //open it
         getAvailability(prepareGetAvailableRequest());
+        PreferenceUtil.setSetAvailability(true);
     }
 
     private void getIntentData() {
