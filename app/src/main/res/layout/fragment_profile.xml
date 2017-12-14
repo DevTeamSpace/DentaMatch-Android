@@ -67,13 +67,10 @@
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginEnd="@dimen/margin_normal"
                     android:gravity="center_vertical"
-                    android:text="@string/need_attention"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_13"
 
                     app:customFont="@string/font_regular"
-                    android:background="@drawable/rounded_red_drawable"
-                    android:drawableStart="@drawable/ic_needs_attention_red"
                     android:drawablePadding="@dimen/margin_10"
                     android:drawableEnd="@drawable/ic_down_arrow_white"
                     android:paddingEnd="@dimen/margin_6"
@@ -300,14 +297,26 @@
 
             </com.wefika.flowlayout.FlowLayout>
 
+
+
+
+
+
+
+
+
+
             <include
                 android:id="@+id/cell_licence"
-                layout="@layout/layout_profile_cell_header" />
+                layout="@layout/layout_profile_cell_header"
+                android:visibility="gone"
+                />
 
             <LinearLayout
                 android:id="@+id/layout_licence_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_margin="@dimen/margin_normal"
                 android:orientation="vertical">
 

@@ -1,10 +1,12 @@
 package com.appster.dentamatch.ui.auth;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.appster.dentamatch.network.response.auth.UserVerifiedStatus;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.SetAvailabilityActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.profile.UpdateProfileActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -52,7 +55,7 @@ public class UserVerifyPendingActivity extends BaseActivity {
 
         activityProfileCompletedPendingBinding.letsGoBtn.setVisibility(View.VISIBLE);
         activityProfileCompletedPendingBinding.letsGoBtn.setText(getString(R.string.resend_email));
-        checkUserVerified();
+        checkUserVerified(false);
     }
 
     private void getIntentData() {
@@ -74,10 +77,10 @@ public class UserVerifyPendingActivity extends BaseActivity {
     }
 
     public void completeProfile(View view) {
-        checkUserVerified();
+        checkUserVerified(true);
     }
 
-    private void checkUserVerified(){
+    private void checkUserVerified(final boolean showDialog){
        showProgressBar();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
         webServices.checkUserVerified().enqueue(new BaseCallback<UserVerifiedStatus>(UserVerifyPendingActivity.this) {
@@ -96,7 +99,12 @@ public class UserVerifyPendingActivity extends BaseActivity {
                     startActivity(intentToSeatAvailability);
                     finish();
                 }else{
-                    Toast.makeText(getApplicationContext(),"Please verify your email to activate account",Toast.LENGTH_LONG).show();
+
+
+                     if(showDialog){
+                         showEmailDialog(response.getMessage());
+                     }
+                    //Toast.makeText(getApplicationContext(),"Please verify your email to activate account",Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -107,5 +115,20 @@ public class UserVerifyPendingActivity extends BaseActivity {
             }
         });
 
+    }
+
+
+    private  void showEmailDialog( String msg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.success))
+                .setMessage(msg)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setCancelable(false)
+
+                //.setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

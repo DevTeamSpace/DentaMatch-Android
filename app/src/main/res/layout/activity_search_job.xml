@@ -298,7 +298,7 @@
                     android:layout_height="@dimen/line_height"
                     android:background="@color/line_divider" />
 
-                <com.appster.dentamatch.widget.CustomTextView
+                <!--<com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_current_location"
                     style="@style/text_view_normal"
                     android:layout_width="match_parent"
@@ -310,7 +310,10 @@
                     android:textAllCaps="true"
                     android:textColor="@color/grayish_brown_color"
                     android:textSize="@dimen/text_size_13"
-                    app:customFont="@string/font_medium" />
+                    app:customFont="@string/font_medium"
+
+
+                    />
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_fetched_location"
@@ -324,7 +327,33 @@
                     android:visibility="gone"
                     android:textColor="@color/grayish_color"
                     android:textSize="@dimen/text_size_13"
+                    app:customFont="@string/font_medium" />-->
+
+
+
+                <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_preferred_job_location"
+                    style="@style/text_view_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:paddingEnd="@dimen/margin_normal"
+                    android:paddingStart="@dimen/margin_normal"
+                    android:text="@string/preferred_location_label"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grayish_brown_color"
+                    android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_medium" />
+
+                <com.wefika.flowlayout.FlowLayout
+                    android:id="@+id/flow_tv_preferred_job_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_6"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
         </ScrollView>

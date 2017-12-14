@@ -19,6 +19,7 @@ import android.widget.EditText;
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityLoginBinding;
+import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -553,6 +554,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     PreferenceUtil.setKeyJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
                     PreferenceUtil.setUserVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
+                    PreferenceUtil.setJobTitleId(response.getLoginResponseData().getUserDetail().getJobTitileId());
+
+
+
+
+                    UserModel userModel= new UserModel();
+                    userModel.setEmail(response.getLoginResponseData().getUserDetail().getEmail());
+                    userModel.setFirstName(response.getLoginResponseData().getUserDetail().getFirstName());
+                    userModel.setLastName(response.getLoginResponseData().getUserDetail().getFirstName());
+                   // userModel.setUserId(Integer.parseInt(response.getLoginResponseData().getUserDetail().getUserId()));
+
+                    userModel.setIsVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
+                    userModel.setIsJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
+                    userModel.setIsJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
+                    userModel.setJobTitleId(response.getLoginResponseData().getUserDetail().getJobTitileId());
+
+                    PreferenceUtil.setUserModel(userModel);
+                    PreferenceUtil.setSetAvailability(true);
+
+
 
 
                     logUser(loginRequest.getEmail(),

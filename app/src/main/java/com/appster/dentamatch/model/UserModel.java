@@ -15,6 +15,9 @@ public class UserModel implements Parcelable{
     private String firstName;
     private String lastName;
     private String jobTitle;
+
+
+
     @SerializedName("jobTitileId")
     private int jobTitleId;
     private String profileImage;
@@ -43,6 +46,9 @@ public class UserModel implements Parcelable{
     private int profileCompleted;
     private int isVerified;
 
+    public void setJobTitleId(int jobTitleId) {
+        this.jobTitleId = jobTitleId;
+    }
     public int getIsVerified() {
         return isVerified;
     }

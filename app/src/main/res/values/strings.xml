@@ -62,11 +62,11 @@
     <string name="forgot_password_label">Forgot Password?</string>
     <string name="fname_label">First Name</string>
     <string name="lname_label">Last Name</string>
-    <string name="register_help_info">Helps recruiters to find you easily</string>
+    <string name="register_help_info">Helps Dental Offices find you easily.</string>
     <string name="login_info_label">Login using your registered email</string>
     <string name="label_accept_term_n_condition">I agree to the Terms and Conditions and Privacy Policy </string>
     <string name="forgot_password_title">Enter your email address below and we’ll send you the instructions on how to change your password.</string>
-    <string name="profile_completion">Your profile has been created successfully. \n \n Lets set your availability so that dental offices can get to know about your timings.</string>
+    <string name="profile_completion">Your profile has been created successfully. \n \n Let\'s set your availability so that dental offices can get to know about your timings.</string>
 
     <!--  Reset password string-->
     <string name="old_password_label">Old Password</string>
@@ -425,5 +425,6 @@
     <string name="txt_match">\nMATCH</string>
     <string name="resend_email">Resend verification email</string>
 
-
+    <string name="text_complete_prof_info">Increase your chances of a recruiter\n hiring you much more by completing\n all your profile details. </string>
+    <string name="text_complete_prof">Complete Profile</string>
 </resources>

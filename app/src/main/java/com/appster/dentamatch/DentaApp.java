@@ -24,7 +24,7 @@ public class DentaApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         mAppContext = this;
         mixpanelAPI = MixpanelAPI.getInstance(this, getString(R.string.mixpanel_token));
 

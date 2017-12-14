@@ -44,36 +44,25 @@ public class SplashActivity extends Activity implements Runnable {
         if (PreferenceUtil.getIsOnBoarding()) {
 
             if (PreferenceUtil.getIsLogin()) {
-/*
-                if (PreferenceUtil.getUserModel().getJobTitleId() == 0) {
-                    PreferenceUtil.setProfileCompleted(false);
-                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity1.class);
-                    startActivity(intent);
-                    finish();
-                    return;
-                }*/
-
 
                  if(PreferenceUtil.getJobTitleId()>0){
                      //Job Id is set
                      if(PreferenceUtil.getUserModel()!=null &&
                              PreferenceUtil.getUserModel().getIsVerified()==Constants.USER_VERIFIED_STATUS){
 
-                       /*  Intent profileCompletedIntent = new Intent(SplashActivity.this, ProfileCompletedPendingActivity.class);
-                         profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, PreferenceUtil.getUserModel().getIsJobSeekerVerified());
-                         startActivity(profileCompletedIntent);
-                         finish();
-                         return;*/
 
                        if(PreferenceUtil.getAvailability()){
-                           if (!PreferenceUtil.isJobFilterSet()) {
+
+                           startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+
+                           /*if (!PreferenceUtil.isJobFilterSet()) {
 
                                startActivity(new Intent(SplashActivity.this, SearchJobActivity.class)
                                        .putExtra(Constants.EXTRA_IS_FIRST_TIME, true));
 
                            } else {
                                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-                           }
+                           }*/
                             finish();
                            return;
                        }else {

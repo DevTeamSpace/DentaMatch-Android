@@ -5,6 +5,7 @@ import android.location.Location;
 import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
+import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public final class PreferenceUtil {
     private static final String KEY_USER_VERIFIED = "isVerified";
 
     private static final String KEY_SET_AVAILABILITY = "keySetAvailability";
+    private static final String KEY_PREFERRED_JOB_LIST = "PREFERRED_JOB_LIST";
 
 
 
@@ -318,5 +320,14 @@ public final class PreferenceUtil {
         return Hawk.get(KEY_SET_AVAILABILITY,false);
     }
 
+
+
+    public static ArrayList<PreferredJobLocationData> getPreferredJobList() {
+        return Hawk.get(KEY_PREFERRED_JOB_LIST);
+    }
+
+    public static void setPreferredJobList(ArrayList<PreferredJobLocationData> value) {
+        Hawk.put(KEY_PREFERRED_JOB_LIST, value);
+    }
 
 }

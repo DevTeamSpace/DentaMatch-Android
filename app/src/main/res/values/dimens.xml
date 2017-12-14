@@ -30,6 +30,9 @@
     <dimen name="text_size_normal">15sp</dimen>
     <dimen name="text_size_small">10sp</dimen>
     <dimen name="text_size_13">13sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
+
+    <dimen name="text_size_23">23sp</dimen>
 
     <!--Margins-->
     <dimen name="margin_1">1dp</dimen>
@@ -98,5 +101,6 @@
     <dimen name="user_profile_pic_dimen">91dp</dimen>
     <dimen name="skill_other_cell_height">53dp</dimen>
 
+    <dimen name="margin_120">120dp</dimen>
 
 </resources>

@@ -281,6 +281,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 } else {
                     Utils.showToast(getActivity(), response.getMessage());
                 }
+
+                profileBinding.layoutLicenceData.setVisibility(View.GONE);
+
             }
 
             @Override
@@ -401,7 +404,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     !TextUtils.isEmpty(response.getLicence().getState())) {
                 profileBinding.cellLicence.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellLicence.tvEditCell.setVisibility(View.VISIBLE);
-                profileBinding.layoutLicenceData.setVisibility(View.VISIBLE);
+                profileBinding.layoutLicenceData.setVisibility(View.GONE);
                 profileBinding.tvLicenceNumber.setText(response.getLicence().getLicenseNumber());
                 profileBinding.tvLicenceState.setText(response.getLicence().getState());
 
@@ -745,6 +748,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void saveUserProfile(UserModel userModel) {
+        userModel.setIsVerified(Constants.USER_VERIFIED_STATUS);
         PreferenceUtil.setUserModel(userModel);
     }
 

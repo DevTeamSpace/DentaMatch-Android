@@ -159,6 +159,8 @@ public class Constants {
         int REQUEST_CODE_PASS_INTENT = 304;
         int REQUEST_CODE_LOCATION = 101;
         int REQUEST_CODE_JOB_DETAIL = 121;
+        int REQUEST_CODE_PREFJOB_LOC = 656;
+
     }
 
     public interface FRAGMENT_NAME {
@@ -189,6 +191,7 @@ public class Constants {
     public static final int JOBSEEKAR_VERIFY_STATUS = 1;
     public static final int PROFILE_COMPLETED_STATUS = 1;
     public static final String EXTRA_MATCHES_PERCENT = "EXTRA_MATCHES_PERCENT";
+    public static final String EXTRA_CHOSEN_PREFERRED_JOB_LOCATION = "EXTRA_CHOSEN_PREFERRED_JOB_TITLES";
 
 
 

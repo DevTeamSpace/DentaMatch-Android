@@ -250,6 +250,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+        <activity
+            android:name=".ui.searchjob.SelectPreferredLocationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+
     </application>
 
 </manifest>

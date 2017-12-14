@@ -1,6 +1,7 @@
 package com.appster.dentamatch.network.request.jobs;
 
 import com.appster.dentamatch.model.SelectedJobTitleModel;
+import com.appster.dentamatch.network.response.PreferredJobLocation.SelectedPreferredJobLocationData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -24,6 +25,16 @@ public class SearchJobRequest {
     private String state;
     private String city;
     private String country;
+    private ArrayList<Integer> preferredJobLocationId;
+
+    public ArrayList<Integer> getPreferredJobLocationId() {
+        return preferredJobLocationId;
+    }
+
+    public void setPreferredJobLocationId(ArrayList<Integer> preferredJobLocationId) {
+        this.preferredJobLocationId = preferredJobLocationId;
+    }
+
 
     public String getAddress() {
         return address;
