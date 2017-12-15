@@ -22,12 +22,16 @@
             android:drawableStart="@drawable/ic_location"
             android:text="@string/settings_change_home_location"
             android:textColor="@color/edt_hint_color"
-            app:customFont="@string/font_regular" />
+            app:customFont="@string/font_regular"
+            android:visibility="gone"
+            />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
-            android:background="@color/line_divider" />
+            android:background="@color/line_divider"
+            android:visibility="gone"
+            />
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_reset_password"

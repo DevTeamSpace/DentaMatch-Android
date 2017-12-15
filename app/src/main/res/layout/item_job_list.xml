@@ -125,12 +125,28 @@
         android:textColor="@color/black_color"
         android:layout_marginEnd="@dimen/margin_25"
         android:paddingTop="@dimen/margin_9"
-        android:paddingBottom="@dimen/margin_small"
         android:layout_width="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_height="wrap_content"
         app:customFont="@string/font_bold"
         />
+
+    <com.appster.dentamatch.widget.CustomTextView
+        style="@style/text_view_normal"
+        android:id="@+id/tv_matches"
+        android:layout_below="@+id/tv_job_doc_distance"
+        android:textColor="@color/black_color"
+        android:layout_marginEnd="32dp"
+        android:paddingBottom="@dimen/margin_small"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content"
+        app:customFont="@string/font_medium"
+        android:textSize="@dimen/text_size_11"
+        android:text="@string/txt_match"
+        android:layout_marginTop="-9dp"
+        />
+
 
 
 </RelativeLayout>

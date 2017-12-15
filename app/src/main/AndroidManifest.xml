@@ -255,6 +255,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
 
+
+        <activity
+            android:name=".ui.searchjob.CompleteProfileDialogActivity"
+            android:theme="@style/Theme.Transparent">
+
+        </activity>
+
     </application>
 
 </manifest>

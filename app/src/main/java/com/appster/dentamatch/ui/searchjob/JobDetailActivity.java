@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -227,7 +228,15 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 break;
 
             case R.id.btn_apply_job:
-                applyJob();
+
+                if(PreferenceUtil.getUserModel().getProfileCompleted()==Constants.PROFILE_COMPLETED_STATUS) {
+
+                    applyJob();
+                }else{
+                    Intent intent = new Intent(getApplicationContext(), CompleteProfileDialogActivity.class);
+                    startActivity(intent);
+
+                }
                 break;
 
 
@@ -473,6 +482,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             mBinding.tvMap.setVisibility(View.GONE);
             mBinding.mapJobDetail.setVisibility(View.GONE);
             mBinding.lineMap.setVisibility(View.VISIBLE);
+            if(dataModel.getPercentaSkillsMatch()!=null && !TextUtils.isEmpty(dataModel.getPercentaSkillsMatch())) {
+                mMatchPercent = Double.parseDouble(dataModel.getPercentaSkillsMatch());
+            }
+
             if(mMatchPercent>0) {
                 mBinding.tvMatchesPercent.setText(String.format(Locale.getDefault(), "%.2f", mMatchPercent).concat("%"));
 
@@ -768,5 +781,12 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 mBinding.cbJobSelection.setChecked(!(status == 1));
             }
         });
+    }
+
+    public String getPriceInTwoDecimalPlacesWithoutNA(double price) {
+        DecimalFormat format = new DecimalFormat("0.00");
+
+        return "".concat(format.format(price));
+
     }
 }

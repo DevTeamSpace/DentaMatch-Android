@@ -111,4 +111,17 @@
 
     <dimen name="button_height">50dp</dimen>
     <color name="button_bg_color">#0470c0</color>
+
+
+    <style name="Theme.Transparent" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.8</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
 </resources>

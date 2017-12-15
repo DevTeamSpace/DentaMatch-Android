@@ -563,6 +563,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     userModel.setEmail(response.getLoginResponseData().getUserDetail().getEmail());
                     userModel.setFirstName(response.getLoginResponseData().getUserDetail().getFirstName());
                     userModel.setLastName(response.getLoginResponseData().getUserDetail().getFirstName());
+                    userModel.setProfileCompleted(response.getLoginResponseData().getUserDetail().getProfileCompleted());
                    // userModel.setUserId(Integer.parseInt(response.getLoginResponseData().getUserDetail().getUserId()));
 
                     userModel.setIsVerified(response.getLoginResponseData().getUserDetail().getIsVerified());

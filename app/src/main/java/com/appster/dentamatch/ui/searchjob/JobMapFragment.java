@@ -398,7 +398,11 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                 mMapBinding.infoWindowContent.tvJobDocAddress.setText(jobModel.getAddress());
                 String endMessage = jobModel.getDays() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
                 mMapBinding.infoWindowContent.tvJobDocTime.setText(String.valueOf(jobModel.getDays()).concat(" ").concat(endMessage));
-                mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
+
+                //mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
+                mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.2f", jobModel.getPercentaSkillsMatch()).concat("%"));
+
+                // mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
                 mMapBinding.infoWindowContent.tvJobDocName.setText(jobModel.getOfficeName());
             }
         }catch (Exception e){

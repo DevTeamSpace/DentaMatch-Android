@@ -57,6 +57,34 @@ public class JobDetailModel {
     private int isSaved;
     private String partTimeDays;
     private ArrayList<String> jobTypeDates;
+    private String percentaSkillsMatch;
+    private String matchedSkills;
+    private String templateSkillsCount;
+
+    public String getPercentaSkillsMatch() {
+        return percentaSkillsMatch;
+    }
+
+    public void setPercentaSkillsMatch(String percentaSkillsMatch) {
+        this.percentaSkillsMatch = percentaSkillsMatch;
+    }
+
+    public String getMatchedSkills() {
+        return matchedSkills;
+    }
+
+    public void setMatchedSkills(String matchedSkills) {
+        this.matchedSkills = matchedSkills;
+    }
+
+    public String getTemplateSkillsCount() {
+        return templateSkillsCount;
+    }
+
+    public void setTemplateSkillsCount(String templateSkillsCount) {
+        this.templateSkillsCount = templateSkillsCount;
+    }
+
 
     public ArrayList<String> getJobTypeDates() {
         return jobTypeDates;
