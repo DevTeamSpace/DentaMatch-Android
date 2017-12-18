@@ -427,4 +427,7 @@
 
     <string name="text_complete_prof_info">Increase your chances of a recruiter\n hiring you much more by completing\n all your profile details. </string>
     <string name="text_complete_prof">Complete Profile</string>
+    <string name="preferred_job_location_search">You can select more than one preferred job location</string>
+    <string name="msg_select_pref_loc">Please select at least one preferred location to proceed</string>
+
 </resources>

@@ -65,7 +65,8 @@ public class SelectPreferredLocationActivity extends BaseActivity implements Vie
 
     private void initViews() {
         mPreferredJobLocationList = new ArrayList<>();
-        mBinder.toolbarJobTitle.tvToolbarGeneralLeft.setText(getString(R.string.job_title));
+        mBinder.toolbarJobTitle.tvToolbarGeneralLeft.setText(getString(R.string.preferred_location_label));
+        mBinder.tvCurrentLocation.setText(getString(R.string.preferred_job_location_search));
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setText(getString(R.string.save_label));
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setAllCaps(true);
         mBinder.toolbarJobTitle.txvToolbarGeneralRight.setOnClickListener(this);
@@ -98,11 +99,11 @@ public class SelectPreferredLocationActivity extends BaseActivity implements Vie
                     mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
 
 
-                    mPreferredJobLocationList = (ArrayList<PreferredJobLocationData>) response.getResult().getPreferredJobLocations();
+                    ArrayList<PreferredJobLocationData>  mPreferredJobLoc = (ArrayList<PreferredJobLocationData>) response.getResult().getPreferredJobLocations();
 
-                    PreferenceUtil.setPreferredJobList(mPreferredJobLocationList);
+                    PreferenceUtil.setPreferredJobList(mPreferredJobLoc);
 
-                    mJobTitleAdapter.addList(mPreferredJobLocationList);
+                    mJobTitleAdapter.addList(mPreferredJobLoc);
 
                     if (mPreferredJobLocationList != null && mPreferredJobLocationList.size() > 0) {
                        mJobTitleAdapter.setSelectedListItems(mPreferredJobLocationList);
@@ -192,7 +193,7 @@ public class SelectPreferredLocationActivity extends BaseActivity implements Vie
 
             case R.id.txv_toolbar_general_right:
                 if (mPreferredJobLocationList.size() == 0) {
-                    showToast(getString(R.string.msg_select_job));
+                    showToast(getString(R.string.msg_select_pref_loc));
                 } else {
                     Intent intent = getIntent();
                     intent.putExtra(Constants.EXTRA_CHOSEN_PREFERRED_JOB_LOCATION, mPreferredJobLocationList);
