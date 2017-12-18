@@ -165,7 +165,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
             }
 
             //holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
-            holder.tvDistance.setText(String.format(Locale.getDefault(), "%.2f", data.getPercentaSkillsMatch()).concat("%").concat(mContext.getString(R.string.txt_match)));
+            holder.tvDistance.setText(String.format(Locale.getDefault(), "%.2f", data.getPercentaSkillsMatch()).concat("%"));
 
             holder.tvDocName.setText(data.getOfficeName());
         }

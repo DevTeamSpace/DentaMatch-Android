@@ -137,8 +137,11 @@ public class TrackJobsDataHelper {
 
         if(request != null) {
             int type = Constants.SEARCHJOBTYPE.SAVED.getValue();
-            double lat = Double.parseDouble(request.getLat());
-            double lng = Double.parseDouble(request.getLng());
+            double lat=0,lng=0;
+            if(request.getLat()!=null) {
+                 lat = Double.parseDouble(request.getLat());
+                 lng = Double.parseDouble(request.getLng());
+            }
 
             if (!isPaginationLoading) {
                 ((BaseActivity) ct).showProgressBar(ct.getString(R.string.please_wait));
@@ -187,8 +190,12 @@ public class TrackJobsDataHelper {
 
         if(request != null) {
             int type = Constants.SEARCHJOBTYPE.APPLIED.getValue();
-            double lat = Double.parseDouble(request.getLat());
-            double lng = Double.parseDouble(request.getLng());
+            double lat=0,lng=0;
+            if(request.getLat()!=null) {
+                lat = Double.parseDouble(request.getLat());
+                lng = Double.parseDouble(request.getLng());
+            }
+
 
             if (!isPaginationLoading) {
                 ((BaseActivity) ct).showProgressBar(ct.getString(R.string.please_wait));

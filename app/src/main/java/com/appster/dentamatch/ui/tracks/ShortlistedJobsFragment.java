@@ -195,8 +195,11 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
         if(request != null) {
             int type = Constants.SEARCHJOBTYPE.SHORTLISTED.getValue();
-            double lat = Double.parseDouble(request.getLat());
-            double lng = Double.parseDouble(request.getLng());
+            double lat=0,lng=0;
+            if(request.getLat()!=null) {
+                lat = Double.parseDouble(request.getLat());
+                lng = Double.parseDouble(request.getLng());
+            }
 
             if (showProgress) {
                 showProgressBar(getString(R.string.please_wait));
