@@ -321,6 +321,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     profileBinding.tvUserStatus.setText(getString(R.string.pending));
                     profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.rounded_yellow_drawable));
                     profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_pending_yellow, 0, R.drawable.ic_down_arrow_white, 0);
+                    profileBinding.layoutPlaceHolder.setBackground(getResources().getDrawable(R.drawable.drawable_circle_yellow));
 
 
                 }else if(response.getUser().getProfileCompleted()!=Constants.PROFILE_COMPLETED_STATUS){
@@ -328,6 +329,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
                     profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.rounded_red_drawable));
                     profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_needs_attention_red, 0, R.drawable.ic_down_arrow_white, 0);
+                    profileBinding.layoutPlaceHolder.setBackground(getResources().getDrawable(R.drawable.drawable_circle_red));
 
                 }else {
                     profileBinding.tvUserStatus.setVisibility(View.GONE);

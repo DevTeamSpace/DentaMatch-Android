@@ -70,7 +70,7 @@ public class UserVerifyPendingActivity extends BaseActivity {
             activityProfileCompletedPendingBinding.message.setText(getResources().getString(R.string.profile_completion));
         }*/// else {
             activityProfileCompletedPendingBinding.imageview.setImageDrawable(getResources().getDrawable(R.drawable.ic_verify_email));
-            activityProfileCompletedPendingBinding.headingMessage.setText(getResources().getString(R.string.verify_email));
+            activityProfileCompletedPendingBinding.headingMessage.setText(getResources().getString(R.string.verify_email_b));
             activityProfileCompletedPendingBinding.message.setText(getResources().getString(R.string.we_have_sent_a_verification));
        // }
 

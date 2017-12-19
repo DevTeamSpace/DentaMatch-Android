@@ -2,9 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -12,24 +10,29 @@
             android:background="@color/white_color"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
+
                 <RelativeLayout
                     android:id="@+id/create_profile1_layout_header"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/profile_header_height"
+                    android:layout_height="@dimen/create_profile_header_height"
                     android:background="@drawable/bg_register">
 
                     <FrameLayout
                         android:id="@+id/fl_profile_pic_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true">
+                        android:layout_marginTop="45dp"
+                        android:layout_centerHorizontal="true"
+                        >
 
                         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/create_profile1_iv_profile_icon"
@@ -76,8 +79,8 @@
                         android:layout_below="@+id/tv_preferred_job_location"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/white_color"
-                        android:textSize="@dimen/text_size_14"
-                        app:customFont="@string/font_bold"
+                        android:textSize="@dimen/text_size_15"
+                        app:customFont="@string/font_medium"
                         android:paddingTop="@dimen/margin_1"
                         />
 
@@ -115,7 +118,7 @@
                         android:layout_marginTop="@dimen/margin_5"
                         android:gravity="center"
                         android:text="@string/profile1_text"
-                        android:textColor="@color/black_color"
+                        android:textColor="#0F183E"
                         android:textSize="@dimen/text_size_16"
                         app:customFont="@string/font_light" />
 
@@ -187,11 +190,11 @@
                             android:layout_marginRight="@dimen/margin_normal"
                             android:background="@drawable/edit_text_selector"
                             android:digits="@string/digits_alpha_numeric_only"
-                            android:hint="@string/label_state" />
+                            android:hint="@string/label_licence_state" />
                     </android.support.design.widget.TextInputLayout>
 
 
-                    <EditText
+                    <com.appster.dentamatch.widget.CustomEditText
                         android:id="@+id/et_desc_about_me"
                         android:layout_height="@dimen/edit_height_about_me"
                         android:layout_width="match_parent"
@@ -201,11 +204,15 @@
                         android:background="@drawable/bg_edit_text"
                         android:inputType="textMultiLine"
                         android:gravity="top"
-                        android:hint="@string/write_description" />
+                        android:hint="@string/write_description"
+
+                        app:customFont="@string/font_light"
+                        />
 
                 </LinearLayout>
 
             </LinearLayout>
+            </ScrollView>
 
             <com.appster.dentamatch.widget.CustomButton
                 android:id="@+id/create_profile1_btn_next"
@@ -216,7 +223,10 @@
                 android:text="@string/label_create_profile"
                 android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_normal"
-                app:customBackground="@string/font_bold" />
+                app:customBackground="@string/font_bold"
+
+
+                />
 
             <!--  <RelativeLayout
                   android:layout_width="match_parent"
@@ -254,5 +264,4 @@
               </RelativeLayout>-->
 
         </RelativeLayout>
-    </ScrollView>
 </layout>

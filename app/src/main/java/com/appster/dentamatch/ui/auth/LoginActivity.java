@@ -262,6 +262,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onClick(DialogInterface dialog, int which) {
                 mBinder.tvPreferredJobLocation.setText(mPreferredJobLocationDataArrayAdapter.getItem(which).getPreferredLocationName());
                 preferredJobLocationId = mPreferredJobLocationDataArrayAdapter.getItem(which).getId();
+
+                mBinder.tvPreferredJobLocation.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black_color));
             }
         });
         builderSingle.show();

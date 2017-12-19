@@ -82,6 +82,8 @@
     <string name="label_licence_number">License Number</string>
     <string name="label_upload_photo">Upload Photo</string>
     <string name="label_state">State</string>
+    <string name="label_licence_state">License State</string>
+
     <string name="label_next">Next</string>
     <string name="label_update">UPDATE</string>
     <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
@@ -169,7 +171,7 @@
     <string name="cetification_title">Update Certifications</string>
     <string name="about_me_title">Executive Summary </string>
     <string name="alert_pervious_date">Please select a valid date.</string>
-    <string name="write_description">Write a brief introduction</string>
+    <string name="write_description">Write a brief introduction about yourself</string>
     <string name="lable_complete_profile">Complete Profile</string>
     <string name="blank_licence_number">Licence number can not be blank.</string>
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
@@ -416,6 +418,8 @@
     <string name="verified_email">Verified email</string>
     <string name="we_have_sent_a_verification">We have sent a verification link on\n your registered email. Please\n verify it to proceed further</string>
     <string name="verify_email">Verify email</string>
+    <string name="verify_email_b">Verify Email</string>
+
     <string name="need_attention">Needs Attention </string>
     <string name="pending">Pending </string>
 

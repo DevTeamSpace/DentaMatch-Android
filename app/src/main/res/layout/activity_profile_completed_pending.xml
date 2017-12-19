@@ -9,10 +9,10 @@
 
         <ImageView
             android:id="@+id/imageview"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_95"/>
+            android:layout_marginTop="@dimen/margin_98"/>
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/heading_message"

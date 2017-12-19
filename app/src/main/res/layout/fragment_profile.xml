@@ -47,18 +47,33 @@
                 </RelativeLayout>
 
 
+                <LinearLayout
+                    android:id="@+id/layout_place_holder"
+                    android:layout_width="93dp"
+                    android:layout_height="92dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+
+                    >
+
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/iv_profile_icon"
                     android:layout_width="@dimen/user_profile_pic_dimen"
                     android:layout_height="@dimen/user_profile_pic_dimen"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_10"
                     android:layout_marginStart="@dimen/margin_25"
                     android:layout_marginEnd="@dimen/margin_25"
                     android:layout_marginBottom="@dimen/margin_5"
                     android:src="@drawable/profile_pic_placeholder"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:paddingStart="1dp"
+                    android:paddingEnd="@dimen/margin_1"
+                    android:paddingTop="@dimen/margin_2"
+                    android:paddingBottom="@dimen/margin_1"
+                    android:layout_marginTop="@dimen/margin_10"
 
+                    />
+                </LinearLayout>
 
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_user_status"
@@ -69,10 +84,10 @@
                     android:gravity="center_vertical"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_13"
+                    android:layout_marginTop="@dimen/margin_8"
 
                     app:customFont="@string/font_regular"
                     android:drawablePadding="@dimen/margin_10"
-                    android:drawableEnd="@drawable/ic_down_arrow_white"
                     android:paddingEnd="@dimen/margin_6"
 
                     />
@@ -171,7 +186,6 @@
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
                     android:gravity="center_horizontal"
-                    android:text="@string/where_you_work"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_xlarge"
                     android:layout_marginTop="@dimen/margin_5"
@@ -187,7 +201,6 @@
                     android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:gravity="center_horizontal"
-                    android:text="@string/label_job_title"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_normal"
                     app:customFont="@string/font_bold"
@@ -203,7 +216,6 @@
                     android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_2"
                     android:gravity="center_horizontal"
-                    android:text="@string/settings_change_home_location"
                     android:textColor="@color/white_color"
                     android:textSize="@dimen/text_size_normal"
                     app:customFont="@string/font_regular"

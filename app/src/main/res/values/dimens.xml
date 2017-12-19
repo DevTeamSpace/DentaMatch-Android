@@ -40,6 +40,7 @@
     <dimen name="margin_small_3">3dp</dimen>
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_7">7dp</dimen>
     <dimen name="margin_8">8dp</dimen>
@@ -58,6 +59,8 @@
     <dimen name="margin_46">46dp</dimen>
     <dimen name="margin_50">50dp</dimen>
     <dimen name="margin_33">33dp</dimen>
+    <dimen name="margin_34">34dp</dimen>
+
     <dimen name="margin_35">35dp</dimen>
     <dimen name="margin_37">37dp</dimen>
     <dimen name="margin_29">29dp</dimen>
@@ -72,6 +75,8 @@
     <dimen name="margin_9">9dp</dimen>
     <dimen name="margin_41.2">41.2dp</dimen>
     <dimen name="margin_95">95dp</dimen>
+    <dimen name="margin_98">98dp</dimen>
+
 
     <dimen name="padding_drawable">10dp</dimen>
     <dimen name="padding_input_layout">3dp</dimen>
@@ -92,6 +97,8 @@
     <dimen name="edit_height">62dp</dimen>
     <dimen name="edit_height_about_me">160dp</dimen>
     <dimen name="profile_header_height">290dp</dimen>
+    <dimen name="create_profile_header_height">285dp</dimen>
+
 
     <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_74">74dp</dimen>

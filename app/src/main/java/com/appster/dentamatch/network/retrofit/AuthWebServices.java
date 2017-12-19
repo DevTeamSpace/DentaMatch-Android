@@ -112,7 +112,6 @@ public interface AuthWebServices {
     String PREFERRED_JOB_LOCATIONS = "jobs/preferred-job-locations";
     String CHECK_USER_VERIFIED = "users/is-verified";
 
-
     @POST(USER_CHAT_BLOCK_UNBLOCK)
     Call<BaseResponse> blockUnBlockUser(@Body BlockUnBlockRequest request);
 

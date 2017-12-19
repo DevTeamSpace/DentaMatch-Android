@@ -59,7 +59,14 @@ public class SearchJobDataHelper {
     private void searchJob(final Context ct, final boolean isPaginationLoading) {
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
 
+        //if (request != null) {
+
         if (request != null) {
+            request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+        }else{
+            request= new SearchJobRequest();
+        }
+
             /*
               Do not show loader in case of pagination call.
              */
@@ -105,9 +112,9 @@ public class SearchJobDataHelper {
 
                 }
             });
-        }else{
+        /*}else{
             EventBus.getDefault().post(new JobDataReceivedEvent(jobDataList, mIsPaginationRequired, mTotalResultCount,mIsJobSeekerVerified,mProfileCompleted));
-        }
+        }*/
     }
 
     private void processResponse(SearchJobResponse response) {

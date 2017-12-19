@@ -400,6 +400,9 @@
             android:gravity="center"
             android:text="@string/login_label"
             android:textColor="@color/white_color"
-            app:customBackground="@string/font_bold" />
+            app:customFont="@string/font_bold"
+            android:textSize="@dimen/text_size_15"
+
+            />
     </RelativeLayout>
 </layout>

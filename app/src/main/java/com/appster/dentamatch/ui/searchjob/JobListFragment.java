@@ -76,7 +76,12 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
             if (mJobListData.size() > 0) {
                 mJobListBinding.tvNoDataFound.setVisibility(View.GONE);
                 mJobListBinding.tvJobResultCount.setVisibility(View.VISIBLE);
-                mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" results found"));
+                if(event.getTotalItem()==1){
+                    mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" result found"));
+
+                }else {
+                    mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" results found"));
+                }
                 if(event.getIsJobSeekerVerified()== Constants.USER_VERIFIED_STATUS && event.getProfileCompleted()== Constants.USER_VERIFIED_STATUS ){
                     mJobListBinding.tvProfileStatus.setVisibility(View.GONE);
                 }else if(/*event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS &&*/ event.getProfileCompleted()!= Constants.USER_VERIFIED_STATUS ){

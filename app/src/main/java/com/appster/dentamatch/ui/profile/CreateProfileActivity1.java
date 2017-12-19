@@ -79,7 +79,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         }
 
         mBinder.etJobTitle.setOnClickListener(this);
-        mBinder.createProfileTvName.setText(getString(R.string.hi_user, PreferenceUtil.getFirstName()));
+        mBinder.createProfileTvName.setText(getString(R.string.hi_user, PreferenceUtil.getFirstName()+" "+PreferenceUtil.getLastName()));
         mBinder.tvPreferredJobLocationVal.setText(PreferenceUtil.getPreferredJobLocationName());
     }
 
