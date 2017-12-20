@@ -311,10 +311,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             JobDetailRequest request = new JobDetailRequest();
             SearchJobRequest searchRequest = (SearchJobRequest) PreferenceUtil.getJobFilter();
             request.setJobId(jobID);
-            if(searchRequest.getLat()!=null && !TextUtils.isEmpty(searchRequest.getLat())) {
+           /* if(searchRequest.getLat()!=null && !TextUtils.isEmpty(searchRequest.getLat())) {
                 request.setLat(Double.parseDouble(searchRequest.getLat()));
                 request.setLng(Double.parseDouble(searchRequest.getLng()));
-            }
+            }*/
             processToShowDialog();
             AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
             webServices.getJobDetail(request).enqueue(new BaseCallback<JobDetailResponse>(this) {
