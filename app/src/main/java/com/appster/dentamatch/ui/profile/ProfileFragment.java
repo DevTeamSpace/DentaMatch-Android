@@ -222,10 +222,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onClick(View view) {
 
-                profileBinding.tvName.setVisibility(View.GONE);
-                profileBinding.tvJobTitle.setVisibility(View.GONE);
-                profileBinding.tvLocation.setVisibility(View.GONE);
-                profileBinding.relInfo.setVisibility(View.VISIBLE);
+               if(profileResponseData.getUser().getIsCompleted()!=Constants.PROFILE_COMPLETED_STATUS) {
+                   profileBinding.tvName.setVisibility(View.GONE);
+                   profileBinding.tvJobTitle.setVisibility(View.GONE);
+                   profileBinding.tvLocation.setVisibility(View.GONE);
+                   profileBinding.relInfo.setVisibility(View.VISIBLE);
+               }
 
 
             }
@@ -324,7 +326,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     profileBinding.layoutPlaceHolder.setBackground(getResources().getDrawable(R.drawable.drawable_circle_yellow));
 
 
-                }else if(response.getUser().getProfileCompleted()!=Constants.PROFILE_COMPLETED_STATUS){
+                }else if(response.getUser().getIsCompleted()!=Constants.PROFILE_COMPLETED_STATUS){
                     profileBinding.tvUserStatus.setText(getString(R.string.need_attention));
 
                     profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.rounded_red_drawable));
@@ -332,7 +334,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     profileBinding.layoutPlaceHolder.setBackground(getResources().getDrawable(R.drawable.drawable_circle_red));
 
                 }else {
-                    profileBinding.tvUserStatus.setVisibility(View.GONE);
+
+                    profileBinding.tvUserStatus.setVisibility(View.VISIBLE);
+                    profileBinding.tvUserStatus.setText(getString(R.string.active));
+
+                    profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.ic_active_bg));
+                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0);
+                    profileBinding.layoutPlaceHolder.setBackground(getResources().getDrawable(R.drawable.drawable_circle_green));
+                    profileBinding.tvUserStatus.setPadding(123,0,0,0);
 
                 }
 

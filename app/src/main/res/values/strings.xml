@@ -422,6 +422,8 @@
 
     <string name="need_attention">Needs Attention </string>
     <string name="pending">Pending </string>
+    <string name="active">Active </string>
+
 
     <string name="your_profile_pending">Your profile is pending admin’s approval. You will be able to apply for jobs once its approved.</string>
     <string name="got_it">GOT IT</string>

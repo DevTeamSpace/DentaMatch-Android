@@ -45,6 +45,16 @@ public class UserModel implements Parcelable{
     private String preferredLocationName;
     private int profileCompleted;
     private int isVerified;
+    private int isCompleted;
+
+    public int getIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(int isCompleted) {
+        this.isCompleted = isCompleted;
+    }
+
 
     public void setJobTitleId(int jobTitleId) {
         this.jobTitleId = jobTitleId;
@@ -365,6 +375,7 @@ public class UserModel implements Parcelable{
         dest.writeString(this.preferredLocationName);
         dest.writeInt(this.profileCompleted);
         dest.writeInt(this.isVerified);
+        dest.writeInt(this.isCompleted);
     }
 
     protected UserModel(Parcel in) {
@@ -399,6 +410,7 @@ public class UserModel implements Parcelable{
         this.preferredLocationName = in.readString();
         this.profileCompleted = in.readInt();
         this.isVerified = in.readInt();
+        this.isCompleted = in.readInt();
     }
 
     public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {

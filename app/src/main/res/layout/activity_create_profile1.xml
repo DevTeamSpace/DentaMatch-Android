@@ -60,7 +60,12 @@
                         android:text="@string/txt_accept"
                         android:textColor="@color/white_color"
                         android:textSize="@dimen/text_size_header"
-                        app:customFont="@string/font_regular" />
+                        app:customFont="@string/font_regular"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:paddingStart="@dimen/margin_10"
+                        android:paddingEnd="@dimen/margin_10"
+                        />
 
 
                     <com.appster.dentamatch.widget.CustomTextView
@@ -223,8 +228,7 @@
                 android:text="@string/label_create_profile"
                 android:textColor="@color/white_color"
                 android:textSize="@dimen/text_size_normal"
-                app:customBackground="@string/font_bold"
-
+                app:customFont="@string/font_bold"
 
                 />
 

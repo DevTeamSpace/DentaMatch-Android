@@ -191,6 +191,8 @@
                     android:layout_marginTop="@dimen/margin_5"
 
                     app:customFont="@string/font_bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     />
 
                 <com.appster.dentamatch.widget.CustomTextView

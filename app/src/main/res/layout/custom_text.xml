@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_pref_job_loc"
+    android:textColor="@color/black_color"
+    android:padding="5sp"
+    android:layout_width="fill_parent"
+    android:singleLine="true"
+    android:gravity="center|left"
+    android:layout_height="wrap_content"/>
+</layout>
