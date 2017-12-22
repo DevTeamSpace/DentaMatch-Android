@@ -41,6 +41,7 @@
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_6">6dp</dimen>
     <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_3">3dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_7">7dp</dimen>
     <dimen name="margin_8">8dp</dimen>

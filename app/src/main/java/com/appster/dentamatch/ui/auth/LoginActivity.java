@@ -574,7 +574,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     userModel.setIsJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
                     userModel.setIsJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
                     userModel.setJobTitleId(response.getLoginResponseData().getUserDetail().getJobTitileId());
-
+                    userModel.setIsVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
                     PreferenceUtil.setUserModel(userModel);
                     PreferenceUtil.setSetAvailability(true);
 

@@ -229,7 +229,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             case R.id.btn_apply_job:
 
-                if(PreferenceUtil.getUserModel().getProfileCompleted()==Constants.PROFILE_COMPLETED_STATUS) {
+                if(PreferenceUtil.getUserModel().getIsCompleted()==Constants.PROFILE_COMPLETED_STATUS || PreferenceUtil.getUserModel().getProfileCompleted()==Constants.PROFILE_COMPLETED_STATUS) {
 
                     applyJob();
                 }else{

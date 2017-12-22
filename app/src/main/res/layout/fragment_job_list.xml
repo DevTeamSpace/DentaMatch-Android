@@ -38,9 +38,9 @@
             app:customFont="@string/font_regular"
             android:visibility="gone"
             android:text="@string/your_job_profile_status"
-            android:textSize="@dimen/text_size_13"
-            android:lineSpacingExtra="@dimen/margin_4"
-
+            android:paddingEnd="@dimen/margin_normal"
+            android:lineSpacingExtra="@dimen/margin_3"
+            android:textSize="@dimen/text_size_12"
             />
 
 

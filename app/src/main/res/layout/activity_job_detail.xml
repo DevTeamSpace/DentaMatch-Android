@@ -338,7 +338,10 @@
                         android:paddingBottom="@dimen/margin_small"
                         android:paddingTop="@dimen/margin_small"
                         android:text="@string/lorem_ipsum_medium"
-                        app:customFont="@string/font_regular" />
+                        app:customFont="@string/font_regular"
+
+                        android:layout_marginBottom="@dimen/margin_2"
+                        />
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_job_detail_doc_read_more"

@@ -135,10 +135,10 @@ public class TrackJobsDataHelper {
 
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
 
-        if(request != null) {
+        //if(request != null) {
             int type = Constants.SEARCHJOBTYPE.SAVED.getValue();
             double lat=0,lng=0;
-            if(request.getLat()!=null) {
+            if(request!=null && request.getLat()!=null) {
                  lat = Double.parseDouble(request.getLat());
                  lng = Double.parseDouble(request.getLng());
             }
@@ -179,19 +179,19 @@ public class TrackJobsDataHelper {
 
                 }
             });
-        }else{
+       /* }else{
             EventBus.getDefault().post(new TrackJobListRetrievedEvent(mSavedJobData, Constants.SEARCHJOBTYPE.SAVED.getValue()));
-        }
+        }*/
 
     }
 
     private void getAllAppliedJobs(final boolean isPaginationLoading, final Context ct){
         SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
 
-        if(request != null) {
+        //if(request != null) {
             int type = Constants.SEARCHJOBTYPE.APPLIED.getValue();
             double lat=0,lng=0;
-            if(request.getLat()!=null) {
+            if(request!=null && request.getLat()!=null) {
                 lat = Double.parseDouble(request.getLat());
                 lng = Double.parseDouble(request.getLng());
             }
@@ -231,9 +231,9 @@ public class TrackJobsDataHelper {
                     EventBus.getDefault().post(new TrackJobListRetrievedEvent(mAppliedJobData, Constants.SEARCHJOBTYPE.APPLIED.getValue()));
                 }
             });
-        }else{
+        /*}else{
             EventBus.getDefault().post(new TrackJobListRetrievedEvent(mAppliedJobData, Constants.SEARCHJOBTYPE.APPLIED.getValue()));
-        }
+        }*/
     }
 
     public void clearInstance(){

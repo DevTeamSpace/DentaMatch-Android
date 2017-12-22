@@ -17,9 +17,11 @@ import com.appster.dentamatch.adapters.JobListAdapter;
 import com.appster.dentamatch.databinding.FragmentJobListBinding;
 import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
+import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -91,6 +93,12 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
                 }else if(event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS){
                     mJobListBinding.tvProfileStatus.setVisibility(View.VISIBLE);
                     mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_yellow));
+                }
+
+                UserModel userModel =PreferenceUtil.getUserModel();
+                if(userModel!=null) {
+                    userModel.setProfileCompleted(event.getProfileCompleted());
+                    PreferenceUtil.setUserModel(userModel);
                 }
 
                 mJobAdapter.notifyDataSetChanged();

@@ -289,6 +289,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     } else {
                         Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG).show();
                     }
+
+                   //////// updateSeenStatus(position, true);
+
                 }
 
 

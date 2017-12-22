@@ -222,7 +222,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onClick(View view) {
 
-               if(profileResponseData.getUser().getIsCompleted()!=Constants.PROFILE_COMPLETED_STATUS) {
+               if(profileResponseData.getUser().getIsCompleted()!=Constants.PROFILE_COMPLETED_STATUS ||
+                       profileResponseData.getUser().getIsJobSeekerVerified()!=Constants.JOBSEEKAR_VERIFY_STATUS) {
                    profileBinding.tvName.setVisibility(View.GONE);
                    profileBinding.tvJobTitle.setVisibility(View.GONE);
                    profileBinding.tvLocation.setVisibility(View.GONE);
