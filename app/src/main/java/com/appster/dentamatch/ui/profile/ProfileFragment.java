@@ -222,13 +222,25 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onClick(View view) {
 
-               if(profileResponseData.getUser().getIsCompleted()!=Constants.PROFILE_COMPLETED_STATUS ||
-                       profileResponseData.getUser().getIsJobSeekerVerified()!=Constants.JOBSEEKAR_VERIFY_STATUS) {
+
+                if(profileResponseData.getUser().getIsJobSeekerVerified()!=Constants.JOBSEEKAR_VERIFY_STATUS){
                    profileBinding.tvName.setVisibility(View.GONE);
                    profileBinding.tvJobTitle.setVisibility(View.GONE);
                    profileBinding.tvLocation.setVisibility(View.GONE);
                    profileBinding.relInfo.setVisibility(View.VISIBLE);
+                   profileBinding.tvInfo.setText(getString(R.string.your_profile_pending));
+
                }
+               else if(profileResponseData.getUser().getIsCompleted()!=Constants.PROFILE_COMPLETED_STATUS
+                        ) {
+                    profileBinding.tvName.setVisibility(View.GONE);
+                    profileBinding.tvJobTitle.setVisibility(View.GONE);
+                    profileBinding.tvLocation.setVisibility(View.GONE);
+                    profileBinding.relInfo.setVisibility(View.VISIBLE);
+                    profileBinding.tvInfo.setText(getString(R.string.your_profile_incomplete));
+
+
+                }
 
 
             }
@@ -300,6 +312,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         if (response != null) {
 
             if (response.getUser() != null) {
+                //PreferenceUtil.setUserModel(response.getUser());
 
                 if (!TextUtils.isEmpty(response.getUser().getProfilePic())) {
                     Picasso.with(getActivity())

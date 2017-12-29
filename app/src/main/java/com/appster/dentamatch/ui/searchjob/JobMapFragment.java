@@ -15,6 +15,8 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,7 @@ import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -440,9 +443,18 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
           Include the current location also into the bounds so that the screen can be adjusted to a zoom
           level inclusive of both current location and other location markers.
          */
-        builder.include(new LatLng(mCurrentLocLat, mCurrentLocLng));
+      /*  builder.include(new LatLng(mCurrentLocLat, mCurrentLocLng));*/
         LatLngBounds bounds = builder.build();
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_PADDING));
+
+        //new code
+        if(markerList!=null && markerList.size()>0) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(markerList.get(0).latitude, markerList.get(0).longitude), 10));
+        }
     }
 
     private void saveUnSaveJob(int JobID, final int status, final SearchJobModel model) {
@@ -511,5 +523,18 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                         .putExtra(Constants.EXTRA_JOB_DETAIL_ID, mSelectedJobID));
                 break;
         }
+    }
+
+    private int calculateZoomLevel(int screenWidth) {
+        double equatorLength = 40075004; // in meters
+        double widthInPixels = screenWidth;
+        double metersPerPixel = equatorLength / 256;
+        int zoomLevel = 1;
+        while ((metersPerPixel * widthInPixels) > 400000) {
+            metersPerPixel /= 2;
+            ++zoomLevel;
+        }
+        LogUtils.LOGD("ADNAN", "zoom level = "+zoomLevel);
+        return zoomLevel;
     }
 }

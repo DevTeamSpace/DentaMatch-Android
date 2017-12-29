@@ -103,7 +103,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
         mBinding.etPreferredJobLocation.setFocusableInTouchMode(false);
         mBinding.etPreferredJobLocation.setCursorVisible(false);
-        mBinding.etPreferredJobLocation.setText(PreferenceUtil.getPreferredJobLocationName());
+       mBinding.etPreferredJobLocation.setText(mProfileData.getUser().getPreferredLocationName());
         mBinding.etPreferredJobLocation.setOnClickListener(this);
 
     }
@@ -381,6 +381,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
         request.setJobTitleID(mSelectedJobTitleID);
         request.setPreferredJobLocationId(""+preferredJobLocationId);
+
 
         if(mBinding.createProfileEtLicence.getVisibility()==View.VISIBLE) {
             request.setState(mBinding.createProfileEtState.getText().toString());

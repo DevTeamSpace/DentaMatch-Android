@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -23,8 +24,10 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.SetAvailabilityActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
+import com.appster.dentamatch.ui.profile.ProfileCompletedPendingActivity;
 import com.appster.dentamatch.ui.profile.UpdateProfileActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -55,12 +58,30 @@ public class UserVerifyPendingActivity extends BaseActivity {
 
         activityProfileCompletedPendingBinding.letsGoBtn.setVisibility(View.VISIBLE);
         activityProfileCompletedPendingBinding.letsGoBtn.setText(getString(R.string.resend_email));
-        checkUserVerified(false);
+
+
     }
 
     private void getIntentData() {
         if (getIntent().getExtras() != null && getIntent().hasExtra(Constants.IS_LICENCE_REQUIRED))
             isLicenceRequired = getIntent().getIntExtra(Constants.IS_LICENCE_REQUIRED, 0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final Handler handler = new Handler();
+        showProgressBar();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 100ms
+
+                checkUserVerified(false);
+            }
+        }, 700);
+
     }
 
     private void updateUI() {
@@ -82,7 +103,10 @@ public class UserVerifyPendingActivity extends BaseActivity {
 
     private void checkUserVerified(final boolean showDialog){
        showProgressBar();
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        String accessToken = PreferenceUtil.getKeyUserToken();
+        LogUtils.LOGD(TAG,"accessToken>>"+accessToken);
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class,true);
         webServices.checkUserVerified().enqueue(new BaseCallback<UserVerifiedStatus>(UserVerifyPendingActivity.this) {
             @Override
             public void onSuccess(UserVerifiedStatus response) {
@@ -90,14 +114,29 @@ public class UserVerifyPendingActivity extends BaseActivity {
                 if(response.getResult().getIsVerified()==Constants.USER_VERIFIED_STATUS) {
 
                     UserModel userModel=PreferenceUtil.getUserModel();
-                    userModel.setIsVerified(Constants.USER_VERIFIED_STATUS);
-                    PreferenceUtil.setUserModel(userModel);
+                    if(userModel!=null) {
+                        userModel.setIsVerified(Constants.USER_VERIFIED_STATUS);
+                        PreferenceUtil.setUserModel(userModel);
+                    }
 
                     PreferenceUtil.setUserVerified(Constants.USER_VERIFIED_STATUS);
-                    Intent intentToSeatAvailability = new Intent(UserVerifyPendingActivity.this, SetAvailabilityActivity.class);
+                    Intent profileCompletedIntent = new Intent(UserVerifyPendingActivity.this, ProfileCompletedPendingActivity.class);
+                    if(userModel.getIsJobSeekerVerified()==Constants.JOBSEEKAR_VERIFY_STATUS){
+                        //congrates screen
+                        profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, 0);
+
+                    }else{
+                        //Pending liecence screen
+                        profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, 1);
+
+                    }
+                    startActivity(profileCompletedIntent);
+                    finish();
+
+                  /*  Intent intentToSeatAvailability = new Intent(UserVerifyPendingActivity.this, SetAvailabilityActivity.class);
                     intentToSeatAvailability.putExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.TRUE);
                     startActivity(intentToSeatAvailability);
-                    finish();
+                    finish();*/
                 }else{
 
 

@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 
 public class SearchFilterModel {
-    private int isFulltime;
-    private int isParttime;
+    private String isFulltime;
+    private String isParttime;
     private ArrayList<Integer> jobTitle;
     private String lat;
     private String lng;
@@ -22,6 +22,7 @@ public class SearchFilterModel {
     private String address;
     private ArrayList<String> parttimeDays;
     private String zipCode;
+
 
     @SerializedName("jobTitles")
     private ArrayList<SelectedJobTitleModel> selectedJobTitles;
@@ -34,11 +35,11 @@ public class SearchFilterModel {
         return address;
     }
 
-    public int getIsFulltime() {
+    public String getIsFulltime() {
         return isFulltime;
     }
 
-    public int getIsParttime() {
+    public String getIsParttime() {
         return isParttime;
     }
 

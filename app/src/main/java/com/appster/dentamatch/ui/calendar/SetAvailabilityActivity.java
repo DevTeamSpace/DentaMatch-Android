@@ -103,9 +103,9 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.txv_toolbar_general_right:
-                if (checkValidation()) {
+                //if (checkValidation()) {
                     saveAvailability(prepareSaveRequest());
-                }
+                //}
 
                 break;
 

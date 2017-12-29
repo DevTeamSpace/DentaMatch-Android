@@ -47,6 +47,16 @@ public class UserModel implements Parcelable{
     private int isVerified;
     private int isCompleted;
 
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    private String accessToken;
+
     public int getIsCompleted() {
         return isCompleted;
     }
@@ -376,6 +386,7 @@ public class UserModel implements Parcelable{
         dest.writeInt(this.profileCompleted);
         dest.writeInt(this.isVerified);
         dest.writeInt(this.isCompleted);
+        dest.writeString(this.accessToken);
     }
 
     protected UserModel(Parcel in) {
@@ -411,6 +422,7 @@ public class UserModel implements Parcelable{
         this.profileCompleted = in.readInt();
         this.isVerified = in.readInt();
         this.isCompleted = in.readInt();
+        this.accessToken = in.readString();
     }
 
     public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {

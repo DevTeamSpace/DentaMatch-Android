@@ -168,6 +168,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
                         PreferenceUtil.setUserVerified(response.getResult().getUserDetails().getIsVerified());
                         PreferenceUtil.setUserModel(response.getResult().getUserDetails());
+                        PreferenceUtil.setUserToken(response.getResult().getUserDetails().getAccessToken());
 
                         if(response.getResult().getUserDetails().getIsVerified()==Constants.USER_VERIFIED_STATUS) {
                             Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, ProfileCompletedPendingActivity.class);

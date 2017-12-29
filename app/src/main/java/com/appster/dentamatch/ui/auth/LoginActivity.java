@@ -515,8 +515,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (response.getLoginResponseData().getSearchFilters() != null) {
                         SearchFilterModel searchFilters = response.getLoginResponseData().getSearchFilters();
                         SearchJobRequest request = new SearchJobRequest();
-                        request.setIsParttime(searchFilters.getIsParttime());
-                        request.setIsFulltime(searchFilters.getIsFulltime());
+                        if(searchFilters.getIsParttime()!=null && !TextUtils.isEmpty(searchFilters.getIsParttime())) {
+                            request.setIsParttime(Integer.parseInt(searchFilters.getIsParttime()));
+                        }
+                        if(searchFilters.getIsFulltime()!=null && !TextUtils.isEmpty(searchFilters.getIsFulltime())) {
+                            request.setIsFulltime(Integer.parseInt(searchFilters.getIsFulltime()));
+                        }
 
                         request.setLat(searchFilters.getLat());
                         request.setLng(searchFilters.getLng());
@@ -574,7 +578,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     userModel.setIsJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
                     userModel.setIsJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
                     userModel.setJobTitleId(response.getLoginResponseData().getUserDetail().getJobTitileId());
-                    userModel.setIsVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
+                    userModel.setIsVerified(response.getLoginResponseData().getUserDetail().getJobTitileId());
                     PreferenceUtil.setUserModel(userModel);
                     PreferenceUtil.setSetAvailability(true);
 

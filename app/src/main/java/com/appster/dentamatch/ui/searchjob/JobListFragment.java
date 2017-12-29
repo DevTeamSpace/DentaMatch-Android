@@ -86,13 +86,16 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
                 }
                 if(event.getIsJobSeekerVerified()== Constants.USER_VERIFIED_STATUS && event.getProfileCompleted()== Constants.USER_VERIFIED_STATUS ){
                     mJobListBinding.tvProfileStatus.setVisibility(View.GONE);
-                }else if(/*event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS &&*/ event.getProfileCompleted()!= Constants.USER_VERIFIED_STATUS ){
-                    mJobListBinding.tvProfileStatus.setVisibility(View.VISIBLE);
-                    mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.red_color));
-
                 }else if(event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS){
                     mJobListBinding.tvProfileStatus.setVisibility(View.VISIBLE);
                     mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_yellow));
+                    mJobListBinding.tvProfileStatus.setText(getString(R.string.your_job_profile_status));
+
+                }else if(/*event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS &&*/ event.getProfileCompleted()!= Constants.USER_VERIFIED_STATUS ){
+                    mJobListBinding.tvProfileStatus.setVisibility(View.VISIBLE);
+                    mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.red_color));
+                    mJobListBinding.tvProfileStatus.setText(getString(R.string.your_profile_incomplete));
+
                 }
 
                 UserModel userModel =PreferenceUtil.getUserModel();
@@ -178,6 +181,8 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
         mJobAdapter = new JobListAdapter(getActivity(), mJobListData);
         mJobListBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
         mJobListBinding.swipeRefreshJobList.setOnRefreshListener(this);
+
+
     }
 
     /**

@@ -266,7 +266,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (view != null) {
                 view.clearFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

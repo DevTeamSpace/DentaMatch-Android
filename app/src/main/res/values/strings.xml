@@ -436,4 +436,7 @@
     <string name="preferred_job_location_search">You can select more than one preferred job location</string>
     <string name="msg_select_pref_loc">Please select at least one preferred location to proceed</string>
 
+    <string name="your_profile_incomplete"> Your Profile is incomplete, please select the availability to be able to apply for jobs</string>
+
+
 </resources>

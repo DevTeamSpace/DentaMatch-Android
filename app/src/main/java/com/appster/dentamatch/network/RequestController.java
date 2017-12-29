@@ -3,6 +3,7 @@ package com.appster.dentamatch.network;
 import android.text.TextUtils;
 
 import com.appster.dentamatch.BuildConfig;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 import java.io.IOException;
@@ -74,6 +75,8 @@ public final class RequestController {
 
                 String accessToken = PreferenceUtil.getKeyUserToken();
                 if (!TextUtils.isEmpty(accessToken)) {
+                    LogUtils.LOGD("accessToken>>","token::"+accessToken);
+
                     Request.Builder requestBuilder = original.newBuilder()
                             .header(HEADER_ACCESS_TOKEN, accessToken)
                             .header(HEADER_CONTENT_TYPE, APPLICATION_JSON)
