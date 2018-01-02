@@ -55,6 +55,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private byte imageSourceType;
     private boolean mImageUploaded;
     private int isLicenceRequired = 0;
+    private int jobTitleId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +170,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                         PreferenceUtil.setUserVerified(response.getResult().getUserDetails().getIsVerified());
                         PreferenceUtil.setUserModel(response.getResult().getUserDetails());
                         PreferenceUtil.setUserToken(response.getResult().getUserDetails().getAccessToken());
-
+                        PreferenceUtil.setJobTitleId(jobTitleId);
                         if(response.getResult().getUserDetails().getIsVerified()==Constants.USER_VERIFIED_STATUS) {
                             Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, ProfileCompletedPendingActivity.class);
                             profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, isLicenceRequired);
@@ -191,6 +192,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
                 @Override
                 public void onFail(Call<LicenceUpdateResponse> call, BaseResponse baseResponse) {
+                    PreferenceUtil.setJobTitleId(0);
 
                 }
             });
@@ -203,7 +205,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
     private LicenceRequest getLicenseRequestWrapper() {
         LicenceRequest licenceRequest = new LicenceRequest();
-        licenceRequest.setJobTitleId(PreferenceUtil.getJobTitleId());
+        licenceRequest.setJobTitleId(jobTitleId);
         licenceRequest.setAboutMe(mBinder.etDescAboutMe.getText().toString());
 
         if (isLicenceRequired == 1) {
@@ -447,7 +449,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     @Override
     public void onJobTitleSelection(String title, int titleId, int position, int isLicenseRequired) {
         PreferenceUtil.setJobTitle(title);
-        PreferenceUtil.setJobTitleId(titleId);
+       // PreferenceUtil.setJobTitleId(titleId);
+        jobTitleId=titleId;
         PreferenceUtil.setJobTitlePosition(position);
         this.isLicenceRequired = isLicenseRequired;
         mBinder.etJobTitle.setText(title);
@@ -463,6 +466,12 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             mBinder.createProfileEtLicence.setText("");
             mBinder.createProfileEtState.setText("");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        PreferenceUtil.setJobTitleId(0);
     }
 }
 

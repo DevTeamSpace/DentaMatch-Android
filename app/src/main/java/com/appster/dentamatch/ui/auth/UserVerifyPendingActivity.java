@@ -114,13 +114,20 @@ public class UserVerifyPendingActivity extends BaseActivity {
                 if(response.getResult().getIsVerified()==Constants.USER_VERIFIED_STATUS) {
 
                     UserModel userModel=PreferenceUtil.getUserModel();
+
+                    if(userModel==null){
+                        return;
+                    }
+
                     if(userModel!=null) {
                         userModel.setIsVerified(Constants.USER_VERIFIED_STATUS);
                         PreferenceUtil.setUserModel(userModel);
                     }
 
                     PreferenceUtil.setUserVerified(Constants.USER_VERIFIED_STATUS);
+
                     Intent profileCompletedIntent = new Intent(UserVerifyPendingActivity.this, ProfileCompletedPendingActivity.class);
+
                     if(userModel.getIsJobSeekerVerified()==Constants.JOBSEEKAR_VERIFY_STATUS){
                         //congrates screen
                         profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, 0);
