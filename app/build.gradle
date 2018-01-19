@@ -188,6 +188,16 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
+
+    /*compile('com.android.support:appcompat-v7:22.2.0') {
+        exclude module: 'support-v4'
+    }*/
+
+    //compile 'com.instabug.library:instabug:4.7.0'
+    compile ('com.instabug.library:instabug:4.8.1'){
+        exclude module: 'support-v4'
+    }
+
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'

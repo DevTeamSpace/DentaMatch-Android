@@ -103,7 +103,7 @@
 
     <!--bottom navigation bar-->
     <string name="nav_job">Jobs</string>
-    <string name="nav_tracks">Tracks</string>
+    <string name="nav_tracks">Saved</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_message">Messages</string>
     <string name="nav_profile">Profile</string>
@@ -342,7 +342,7 @@
     <!--job status-->
     <string name="txt_applied">Applied</string>
     <string name="txt_invited">Invited</string>
-    <string name="txt_shortlisted">Shortlisted</string>
+    <string name="txt_shortlisted">Interviewing</string>
     <string name="txt_hired">Hired</string>
     <string name="txt_rejected">Rejected</string>
     <string name="txt_cancelled">Cancelled</string>
@@ -381,7 +381,7 @@
     <string name="txt_reason_for_the_cancellation">Reason for the cancellation</string>
     <string name="txt_no_applied_jobs">You don’t have any applied jobs</string>
     <string name="txt_no_saved_jobs">You don’t have any saved jobs</string>
-    <string name="txt_no_shortlisted_jobs">You don’t have any shortlisted jobs</string>
+    <string name="txt_no_shortlisted_jobs">You don’t have any interviewing jobs</string>
     <string name="txt_no_jobs_found">No jobs found</string>
     <string name="txt_delete">DELETE</string>
     <string name="txt_note">Note</string>
@@ -438,5 +438,6 @@
 
     <string name="your_profile_incomplete"> Your Profile is incomplete, please select the availability to be able to apply for jobs</string>
 
+    <string name="header_filter_job">FILTER JOBS</string>
 
 </resources>

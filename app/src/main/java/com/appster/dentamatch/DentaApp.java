@@ -10,6 +10,8 @@ import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
+import com.instabug.library.Instabug;
+import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.orhanobut.hawk.Hawk;
 
@@ -28,6 +30,9 @@ public class DentaApp extends MultiDexApplication {
         mAppContext = this;
         mixpanelAPI = MixpanelAPI.getInstance(this, getString(R.string.mixpanel_token));
 
+       new Instabug.Builder(this, "6dea212496faf4e49dacc262e6e4f593")
+                .setInvocationEvent(InstabugInvocationEvent.SHAKE)
+                .build();
         /*
           Initialize DB Helper class.
          */

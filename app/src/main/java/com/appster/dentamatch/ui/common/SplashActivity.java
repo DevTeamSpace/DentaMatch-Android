@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.auth.UserVerifyPendingActivity;
 import com.appster.dentamatch.ui.onboardtutorial.OnBoardingActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.profile.ProfileCompletedPendingActivity;
-import com.appster.dentamatch.ui.searchjob.SearchJobActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -30,6 +28,7 @@ public class SplashActivity extends Activity implements Runnable {
         setContentView(R.layout.activity_splash);
         manageFirebaseDeviceToken();
         handler.postDelayed(SplashActivity.this, SPLASH_TIME);
+
 
     }
 

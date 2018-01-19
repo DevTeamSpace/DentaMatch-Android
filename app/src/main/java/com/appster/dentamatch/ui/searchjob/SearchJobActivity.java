@@ -338,7 +338,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         mChosenPrefJobLocations= new ArrayList<>();
         mSelectedPrefJobLocations= new ArrayList<>();
 
-        mBinder.toolbarSearchJob.tvToolbarGeneralLeft.setText(getString(R.string.header_search_job));
+        mBinder.toolbarSearchJob.tvToolbarGeneralLeft.setText(getString(R.string.header_filter_job));
         mBinder.toolbarSearchJob.ivToolBarLeft.setOnClickListener(this);
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.cbPartTimeCheckBox.setOnCheckedChangeListener(this);
