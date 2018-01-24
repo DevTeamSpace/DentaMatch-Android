@@ -40,7 +40,7 @@
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
             android:background="@drawable/bg_edit_text"
-            android:digits="@string/digits_alpha_numeric_only"
+            android:digits="@string/digits_others"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:maxLines="6"

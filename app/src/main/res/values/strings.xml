@@ -30,6 +30,8 @@
     <string name="digits_alpha_numeric_special">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@-_./:;,&amp;amp;</string>
     <string name="digits_licence">QWERTYUIOPASDFGHJKLZXCVBNM-qwertyuiopasdfghjklzxcvbnm0123456789</string>
 
+    <string name="digits_others">0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,</string>
+
     <!--  Error string-->
     <string name="blank_email_alert">Email Id can not be left blank.</string>
     <string name="user_name_label">name</string>

@@ -404,20 +404,41 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 profileBinding.flowLayout.removeAllViews();
 
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
-                    com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
-                            .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
-                    flowBinding.flowChild.setText(response.getAffiliationList().get(i).getAffiliationName());
 
-//                    CustomTextView textView = new CustomTextView(getActivity());
-//                    FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
-//                    lp.setMargins(10, 10, 10, 10);
-//                    textView.setLayoutParams(lp);
-//                    textView.setSingleLine(true);
-//
-//                    textView.setBackgroundResource(R.drawable.bg_edit_text);
-//                    textView.setPadding(15, 10, 15, 10);
-//                    textView.setText(response.getAffiliationList().get(i).getAffiliationName());
-                    profileBinding.flowLayout.addView(flowBinding.getRoot());
+
+                    if(response.getAffiliationList().get(i).getAffiliationId()==Constants.OTHER_AFFILIATION_ID){
+                     String otherAffiliation=response.getAffiliationList().get(i).getOtherAffiliation();
+
+                        if(otherAffiliation!=null && !TextUtils.isEmpty(otherAffiliation)){
+
+                            if(otherAffiliation.contains(",")){
+                                String [] otherArr=otherAffiliation.split(",");
+                                for(int j=0;j<otherArr.length;j++){
+                                    com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                                            .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
+                                    flowBinding.flowChild.setText(otherArr[j].trim());
+
+                                    profileBinding.flowLayout.addView(flowBinding.getRoot());
+
+                                }
+                            }else {
+
+                                com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                                        .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
+                                flowBinding.flowChild.setText(otherAffiliation);
+
+                                profileBinding.flowLayout.addView(flowBinding.getRoot());
+                            }
+                        }
+                    }else {
+                        com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                                .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
+                        flowBinding.flowChild.setText(response.getAffiliationList().get(i).getAffiliationName());
+                        profileBinding.flowLayout.addView(flowBinding.getRoot());
+
+                    }
+
+
                 }
 
             } else {

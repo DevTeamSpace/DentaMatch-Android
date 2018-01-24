@@ -193,6 +193,7 @@ public class Constants {
     public static final String EXTRA_MATCHES_PERCENT = "EXTRA_MATCHES_PERCENT";
     public static final String EXTRA_CHOSEN_PREFERRED_JOB_LOCATION = "EXTRA_CHOSEN_PREFERRED_JOB_TITLES";
 
+    public static final int OTHER_AFFILIATION_ID = 9;
 
 
 }
