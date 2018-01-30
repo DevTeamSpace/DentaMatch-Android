@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.tracks;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
@@ -138,7 +139,7 @@ public class TrackJobsDataHelper {
         //if(request != null) {
             int type = Constants.SEARCHJOBTYPE.SAVED.getValue();
             double lat=0,lng=0;
-            if(request!=null && request.getLat()!=null) {
+            if(request!=null && request.getLat()!=null && !TextUtils.isEmpty(request.getLat())) {
                  lat = Double.parseDouble(request.getLat());
                  lng = Double.parseDouble(request.getLng());
             }
@@ -191,7 +192,7 @@ public class TrackJobsDataHelper {
         //if(request != null) {
             int type = Constants.SEARCHJOBTYPE.APPLIED.getValue();
             double lat=0,lng=0;
-            if(request!=null && request.getLat()!=null) {
+            if(request!=null && request.getLat()!=null &&  !TextUtils.isEmpty(request.getLat())) {
                 lat = Double.parseDouble(request.getLat());
                 lng = Double.parseDouble(request.getLng());
             }

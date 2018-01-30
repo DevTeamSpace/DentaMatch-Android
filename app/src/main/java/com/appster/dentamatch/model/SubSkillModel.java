@@ -20,7 +20,9 @@ public class SubSkillModel implements Parcelable {
     private String otherSkill;
     private ArrayList<String> otherSkillArray;
 
+    public SubSkillModel(){
 
+    }
     protected SubSkillModel(Parcel in) {
         id = in.readInt();
         parentId = in.readInt();

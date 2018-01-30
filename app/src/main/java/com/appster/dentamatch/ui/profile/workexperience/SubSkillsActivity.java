@@ -29,12 +29,18 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
 
     private ArrayList<SubSkillModel> subSkills;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_sub_skills);
         initViews();
         overridePendingTransition(R.anim.pull_in, R.anim.hold_still);
+
+       // SubSkillModel sSkil= new SubSkillModel();
+       // sSkil.setSkillName("Other");
+       // subSkills.add(sSkil);
+
         setAdapter(subSkills);
     }
 

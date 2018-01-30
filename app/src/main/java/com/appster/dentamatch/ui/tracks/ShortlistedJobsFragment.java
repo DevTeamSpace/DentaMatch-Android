@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -196,7 +197,7 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         if(request != null) {
             int type = Constants.SEARCHJOBTYPE.SHORTLISTED.getValue();
             double lat=0,lng=0;
-            if(request.getLat()!=null) {
+            if(request!=null && request.getLat()!=null &&  !TextUtils.isEmpty(request.getLat())) {
                 lat = Double.parseDouble(request.getLat());
                 lng = Double.parseDouble(request.getLng());
             }
