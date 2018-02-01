@@ -22,6 +22,7 @@ import com.appster.dentamatch.interfaces.OnSkillClick;
 import com.appster.dentamatch.model.ParentSkillModel;
 import com.appster.dentamatch.model.SubSkillModel;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.widget.CustomEditText;
 import com.squareup.picasso.Picasso;
@@ -38,7 +39,7 @@ import java.util.List;
 
 public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final String TAG = "SkillsAdapter";
+    private static final String TAG = LogUtils.makeLogTag(SkillsAdapter.class);
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
@@ -69,7 +70,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

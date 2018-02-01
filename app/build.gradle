@@ -29,6 +29,10 @@ def serverProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 serverProperties.load(new FileInputStream(serverConfigPropertiesFile))
 android {
+
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-v4:27.0.2'
+    }
     dexOptions {
         javaMaxHeapSize "4g"
         incremental true
@@ -37,14 +41,14 @@ android {
         enabled true;
     }
 
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
 
 
     defaultConfig {
         applicationId "com.appster.dentamatch"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -73,7 +77,7 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
+    /*applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
@@ -81,7 +85,7 @@ android {
                 output.outputFile = new File(outputFile.parent, fileName)
             }
         }
-    }
+    }*/
 
     //Signing config for release build
     signingConfigs {
@@ -123,7 +127,11 @@ android {
         Production {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://production.dentamach/api/"')
+            buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:8443"')
+
             minSdkVersion 19
+            signingConfig signingConfigs.config
+
         }
     }
 
@@ -132,13 +140,13 @@ android {
 
 ext {
     //supportLibrary Version
-    supportLibrary = '25.3.1'
+    supportLibrary = '27.0.2'
 
     //Play services Version
-    playServiceVersion = '10.2.1'
+    playServiceVersion = '11.8.0'
 
     //fireBase Version
-    fireBaseLibrary = '10.2.1'
+    fireBaseLibrary = '11.8.0'
 
     //leakCanary Version
     leakCanaryLibrary = '1.5'
@@ -192,6 +200,10 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryLibrary"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
 
     /*compile('com.android.support:appcompat-v7:22.2.0') {
         exclude module: 'support-v4'
@@ -205,3 +217,20 @@ dependencies {
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'
+
+
+apply plugin: "org.sonarqube"
+sonarqube {
+    properties {
+        property "sonar.projectName", "DentaMatch_android"
+        property "sonar.projectKey", "myproject:DentaMatch_android"
+        property "sonar.host.url", "http://54.152.88.149:9000/sonar"
+        property "sonar.sources", "src/main"
+        property "sonar.login", "admin"
+        property "sonar.password", "admin"
+        property 'sonar.sourceEncoding', 'UTF-8'
+        property 'sonar.profile', 'AllAndroid'
+        property 'sonar.import_unknown_files', true
+        property 'sonar.android.lint.report', 'build/reports/lint-results.xml'
+    }
+}

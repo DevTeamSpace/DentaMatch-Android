@@ -17,6 +17,7 @@ import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,7 +28,7 @@ import retrofit2.Call;
  * Created by virender on 20/01/17.
  */
 public class UpdateLicenseActivity extends BaseActivity implements View.OnClickListener {
-    private String TAG = "UpdateLicenseActivity";
+    private String TAG = LogUtils.makeLogTag(UpdateLicenseActivity.class);
     private ActivityUpdateLicenseBinding mBinder;
     private LicenceRequest data;
 
@@ -137,7 +138,8 @@ public class UpdateLicenseActivity extends BaseActivity implements View.OnClickL
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
+
 
         }finally {
             hideProgressBar();

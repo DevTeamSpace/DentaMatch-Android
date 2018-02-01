@@ -1,7 +1,6 @@
 package com.appster.dentamatch.interfaces;
 
 
-import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
 
 import java.util.ArrayList;

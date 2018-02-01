@@ -255,8 +255,8 @@ public final class BitmapUtils {
         paint.setAntiAlias(true);
         canvas.drawBitmap(bottomImage, 0, 0, paint);
         canvas.drawBitmap(topImage,
-                (bottomImage.getWidth() - topImage.getWidth()) / 2,
-                (bottomImage.getHeight() - topImage.getHeight()) / 2, paint);
+                (bottomImage.getWidth() - topImage.getWidth()) / 2.0f,
+                (bottomImage.getHeight() - topImage.getHeight()) / 2.0f, paint);
         return output;
     }
 }

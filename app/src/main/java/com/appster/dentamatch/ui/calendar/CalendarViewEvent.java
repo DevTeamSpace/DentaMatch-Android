@@ -14,6 +14,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.OnDateSelected;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ import java.util.Locale;
 
 public class CalendarViewEvent extends LinearLayout {
     private static int MAX_CALENDAR_COLUMN = 35;
-    private static final String TAG = CalendarViewEvent.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(CalendarViewEvent.class);
 
     private ImageView mIvPreviousButton, mIvNextButton;
     private TextView mCurrentDate;
@@ -67,15 +68,16 @@ public class CalendarViewEvent extends LinearLayout {
         try {
             if (mHiredListData != null && mHiredListData.size() > 0) {
                 mHiredListData.clear();
+
+                mHiredListData.addAll(hiredListData);
             }
 
-            mHiredListData.addAll(hiredListData);
 
             if (mAdapter != null) {
                 mAdapter.setJobList(mHiredListData);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
     }

@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -38,6 +37,7 @@ import java.util.ArrayList;
  * Created by virender on 26/01/17.
  */
 public class SearchJobActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    private static final String TAG= LogUtils.makeLogTag(SearchJobActivity.class);
     private ActivitySearchJobBinding mBinder;
     private String mSelectedLat, mSelectedLng;
     private ArrayList<Integer> mSelectedJobID;
@@ -323,7 +323,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
 
         }catch (Exception e){
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
     }
@@ -748,7 +748,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             }
 
         }catch (Exception e){
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

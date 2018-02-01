@@ -32,10 +32,10 @@ import com.appster.dentamatch.network.response.auth.SearchFilterModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
-import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.crashlytics.android.Crashlytics;
@@ -52,6 +52,7 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
  * Created by virender on 13/12/16.
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
+    private static final String TAG= LogUtils.makeLogTag(LoginActivity.class);
     private ActivityLoginBinding mBinder;
     private boolean mIsAccepted, mIsLogin;
     private String mPostalCode;
@@ -509,7 +510,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_login), userDetails);
 
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        LogUtils.LOGE(TAG,e.getMessage());
                     }
 
                     if (response.getLoginResponseData().getSearchFilters() != null) {

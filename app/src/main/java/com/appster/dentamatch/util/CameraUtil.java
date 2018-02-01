@@ -29,6 +29,7 @@ import java.io.IOException;
  * Created by virender on 10/06/16.
  */
 public class CameraUtil {
+    private static final String TAG=LogUtils.makeLogTag(CameraUtil.class);
     private static CameraUtil instance = null;
 
     public static CameraUtil getInstance() {
@@ -104,6 +105,8 @@ public class CameraUtil {
 
             }
         } catch (Exception e) {
+            LogUtils.LOGE(TAG,e.getMessage());
+
             return null;
         }
         return image;
@@ -182,8 +185,8 @@ public class CameraUtil {
             final int widthRatio = Math.round((float) width / (float) reqWidth);
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
-        final float totalPixels = width * height;
-        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+        final float totalPixels =(float) width * height;
+        final float totalReqPixelsCap =(float) reqWidth * reqHeight * 2.0f;
 
         while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
             inSampleSize++;
@@ -212,8 +215,8 @@ public class CameraUtil {
 
                 float maxHeight = 700.0f;
                 float maxWidth = 600.0f;
-                float imgRatio = actualWidth / actualHeight;
-                float maxRatio = maxWidth / maxHeight;
+                float imgRatio =(float) actualWidth / actualHeight;
+                float maxRatio =(float) maxWidth / maxHeight;
 
 
                 if (actualHeight > maxHeight || actualWidth > maxWidth) {
@@ -242,13 +245,13 @@ public class CameraUtil {
                 try {
                     bmp = BitmapFactory.decodeFile(imageUri, options);
                 } catch (OutOfMemoryError exception) {
-                    exception.printStackTrace();
+                    LogUtils.LOGE(TAG,exception.getMessage());
 
                 }
                 try {
                     scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
                 } catch (OutOfMemoryError exception) {
-                    exception.printStackTrace();
+                    LogUtils.LOGE(TAG,exception.getMessage());
                 }
 
                 float ratioX = actualWidth / (float) options.outWidth;
@@ -258,51 +261,53 @@ public class CameraUtil {
 
                 Matrix scaleMatrix = new Matrix();
                 scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+                String filename="";
+                if(scaledBitmap!=null) {
+                    Canvas canvas = new Canvas(scaledBitmap);
+                    canvas.setMatrix(scaleMatrix);
+                    canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2.0f, middleY - bmp.getHeight() / 2.0f, new Paint(Paint.FILTER_BITMAP_FLAG));
+                    ExifInterface exif;
+                    try {
+                        exif = new ExifInterface(imageUri);
 
-                Canvas canvas = new Canvas(scaledBitmap);
-                canvas.setMatrix(scaleMatrix);
-                canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
-                ExifInterface exif;
-                try {
-                    exif = new ExifInterface(imageUri);
+                        int orientation = exif.getAttributeInt(
+                                ExifInterface.TAG_ORIENTATION, 0);
+                        Matrix matrix = new Matrix();
 
-                    int orientation = exif.getAttributeInt(
-                            ExifInterface.TAG_ORIENTATION, 0);
-                    Matrix matrix = new Matrix();
+                        if (orientation == 6) {
+                            matrix.postRotate(90);
 
-                    if (orientation == 6) {
-                        matrix.postRotate(90);
+                        } else if (orientation == 3) {
+                            matrix.postRotate(180);
 
-                    } else if (orientation == 3) {
-                        matrix.postRotate(180);
+                        } else if (orientation == 8) {
+                            matrix.postRotate(270);
 
-                    } else if (orientation == 8) {
-                        matrix.postRotate(270);
+                        }
 
+                        scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
+                                scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
+                                true);
+                    } catch (IOException e) {
+                        LogUtils.LOGE(TAG,e.getMessage());
                     }
 
-                    scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
-                            scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
-                            true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    FileOutputStream out = null;
+                     filename = getFilename();
+                    try {
+                        out = new FileOutputStream(filename);
 
-                FileOutputStream out = null;
-                String filename = getFilename();
-                try {
-                    out = new FileOutputStream(filename);
+                        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
 
-                    scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        LogUtils.LOGE(TAG,e.getMessage());
+                    }
                 }
 
                 return filename;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
             return null;
         }
     }

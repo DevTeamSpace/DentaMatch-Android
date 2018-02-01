@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.appster.dentamatch.util.LogUtils;
+
 /**
  * Created by gautambisht on 11/11/16.
  */
 
 public abstract class BaseFragment extends Fragment {
 
+    private static final String TAG=LogUtils.makeLogTag(BaseActivity.class);
     protected Handler handler = new Handler();
     protected boolean active;
     protected boolean alive;
@@ -112,7 +115,7 @@ public abstract class BaseFragment extends Fragment {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 
@@ -136,7 +139,7 @@ public abstract class BaseFragment extends Fragment {
         try {
             getBaseActivity().launchImageViewer(v, imageUrl);
         }catch (Exception e){
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

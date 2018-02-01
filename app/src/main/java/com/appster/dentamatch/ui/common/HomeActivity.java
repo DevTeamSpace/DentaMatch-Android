@@ -40,6 +40,7 @@ import retrofit2.Call;
  * Created by virender on 17/01/17.
  */
 public class HomeActivity extends BaseActivity {
+    private static final String TAG=LogUtils.makeLogTag(HomeActivity.class);
     private final int SEARCH_JOBS_FRAGMENT_POS = 0;
     private final int TRACKS_FRAGMENT_POS = 1;
     private final int CALENDAR_FRAGMENT_POS = 2;
@@ -298,7 +299,7 @@ public class HomeActivity extends BaseActivity {
             });
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

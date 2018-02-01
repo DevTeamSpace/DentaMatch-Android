@@ -25,6 +25,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.UsPhoneNumberFormat;
 import com.appster.dentamatch.util.Utils;
@@ -44,6 +45,7 @@ import retrofit2.Call;
  * Created by virender on 05/01/17.
  */
 public class WorkExpListActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener, JobTitleSelectionListener {
+   private static final String TAG=LogUtils.makeLogTag(WorkExpListActivity.class);
     private ActivityWorkExpListBinding mBinder;
     private boolean isFromProfile;
     private String mSelectedJobTitle = "";
@@ -140,7 +142,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 
@@ -398,6 +400,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                     } else {
 
                         if(!isFromProfile) {
+                            if(workExpList!=null)
                             inflateExpList(workExpList);
                         }else{
                             EventBus.getDefault().post(new ProfileUpdatedEvent(true));

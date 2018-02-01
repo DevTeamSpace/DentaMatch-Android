@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.List;
 import static android.view.View.GONE;
 
 public class CalendarEventGridAdapter extends ArrayAdapter {
-    private static final String TAG = CalendarEventGridAdapter.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(CalendarEventGridAdapter.class);
     private LayoutInflater mInflater;
     private List<CalenderAvailableCellModel> monthlyDates;
     private Calendar mCurrentDate;
@@ -108,10 +109,16 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
 
                         if (jobDate.compareTo(Utils.parseDate(mDate)) <= 0) {
 
-                            if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_monday)) && mJobList.get(k).getIsMonday() == 1) {
+                            if ((day.equalsIgnoreCase(mContext.getString(R.string.txt_full_monday)) && mJobList.get(k).getIsMonday() == 1)
+                                    || (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_tuesday)) && mJobList.get(k).getIsTuesday() == 1)
+                                    ||(day.equalsIgnoreCase(mContext.getString(R.string.txt_full_wednesday)) && mJobList.get(k).getIsWednesday() == 1)
+                                    || (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_thursday)) && mJobList.get(k).getIsThursday() == 1)
+                                    || (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_friday)) && mJobList.get(k).getIsFriday() == 1)
+                                    ||  (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_saturday)) && mJobList.get(k).getIsSaturday() == 1)
+                                    ||(day.equalsIgnoreCase(mContext.getString(R.string.txt_full_sunday)) && mJobList.get(k).getIsSunday() == 1)) {
                                 dot2.setVisibility(View.VISIBLE);
 
-                            } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_tuesday)) && mJobList.get(k).getIsTuesday() == 1) {
+                            } /*else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_tuesday)) && mJobList.get(k).getIsTuesday() == 1) {
                                 dot2.setVisibility(View.VISIBLE);
 
                             } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_wednesday)) && mJobList.get(k).getIsWednesday() == 1) {
@@ -129,7 +136,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                             } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_sunday)) && mJobList.get(k).getIsSunday() == 1) {
                                 dot2.setVisibility(View.VISIBLE);
 
-                            }
+                            }*/
                         }
 
                         if ((mJobList.get(k).getTempDates() != null && mJobList.get(k).getTempDates().equalsIgnoreCase(date))) {
@@ -137,7 +144,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                         }
                     }
                 }catch (Exception e){
-                    e.printStackTrace();
+                    LogUtils.LOGE(TAG,e.getMessage());
                 }
             } else {
                 dot2.setVisibility(GONE);

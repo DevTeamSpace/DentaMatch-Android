@@ -31,6 +31,7 @@ import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -49,7 +50,7 @@ import retrofit2.Call;
  * Created by virender on 02/01/17.
  */
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener, YearSelectionListener {
-    private String TAG = "CreateProfileActivity2";
+    private static final String TAG = LogUtils.makeLogTag(CreateProfileActivity2.class);
     private ImageView ivProfile, ivUpload, ivToolbarLeft;
     private TextView tvName, tvJobTitle;
     private ProgressBar mProgressBar;
@@ -201,8 +202,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             });
 
         } catch (Exception e) {
-            e.printStackTrace();
             hideProgressBar();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

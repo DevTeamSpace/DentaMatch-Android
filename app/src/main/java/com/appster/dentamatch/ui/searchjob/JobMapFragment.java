@@ -16,7 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +63,7 @@ import retrofit2.Call;
  */
 
 public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, View.OnClickListener {
+   private static final String TAG=LogUtils.makeLogTag(JobMapFragment.class);
     private final int MARKER_PADDING = 100;
     private int mSelectedJobID;
     private BottomSheetBehavior mBottomSheetBehavior;
@@ -110,11 +110,13 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
             mJobData = event.getJobList();
 
             for (SearchJobModel model : mJobData) {
+               if(mMarkerPositionList!=null)
                 mMarkerPositionList.add(new LatLng(model.getLatitude(), model.getLongitude()));
             }
 
         }
 
+        if(mMarkerPositionList!=null)
         addMarker(mMarkerPositionList);
     }
 
@@ -409,7 +411,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                 mMapBinding.infoWindowContent.tvJobDocName.setText(jobModel.getOfficeName());
             }
         }catch (Exception e){
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

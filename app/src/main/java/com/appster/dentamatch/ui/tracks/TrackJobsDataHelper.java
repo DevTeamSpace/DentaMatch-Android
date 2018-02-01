@@ -46,9 +46,9 @@ public class TrackJobsDataHelper {
     public static TrackJobsDataHelper getInstance() {
         if (mInstance == null) {
             synchronized (TrackJobsDataHelper.class) {
-                if (mInstance == null) {
+               // if (mInstance == null) {
                     mInstance = new TrackJobsDataHelper();
-                }
+                //}
             }
         }
 

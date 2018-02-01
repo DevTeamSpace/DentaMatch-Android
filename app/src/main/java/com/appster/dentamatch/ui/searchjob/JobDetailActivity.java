@@ -35,6 +35,7 @@ import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,6 +58,7 @@ import retrofit2.Call;
  */
 
 public class JobDetailActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener {
+    private static final String TAG= LogUtils.makeLogTag(JobDetailActivity.class);
     private final int MAP_ZOOM_LEVEL = 7;
     private final int DESC_MAX_LINES = 4;
     private final int JOB_SAVED = 1;
@@ -353,7 +355,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 }
             });
         }catch (Exception e){
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 
@@ -734,7 +736,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             addMarker(dataModel.getLatitude(), dataModel.getLongitude(), true);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

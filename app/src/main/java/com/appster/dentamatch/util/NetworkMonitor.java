@@ -15,7 +15,7 @@ import com.appster.dentamatch.DentaApp;
     Utility for checking Network
  */
 public class NetworkMonitor extends BroadcastReceiver {
-
+    private static final String TAG=LogUtils.makeLogTag(NetworkMonitor.class);
     public static final int NETWORK_TYPE_FAST_3G = 2;
     public static final int NETWORK_TYPE_FAST_WIFI = 1;
     public static final int NETWORK_TYPE_NO_NETWORK = 4;
@@ -56,8 +56,8 @@ public class NetworkMonitor extends BroadcastReceiver {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             mConnectionAvailable = false;
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 
@@ -71,6 +71,8 @@ public class NetworkMonitor extends BroadcastReceiver {
             try {
                 networkinfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
             } catch (Exception exception) {
+                LogUtils.LOGE(TAG,exception.getMessage());
+
                 return null;
             }
             return networkinfo;

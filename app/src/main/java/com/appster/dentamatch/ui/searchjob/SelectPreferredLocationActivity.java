@@ -10,7 +10,6 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivitySelectJobTitleBinding;
 import com.appster.dentamatch.interfaces.PreferredJobListSelected;
-import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -24,8 +23,6 @@ import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import retrofit2.Call;
 

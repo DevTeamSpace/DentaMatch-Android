@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.ui.common.HomeActivity;
@@ -24,13 +23,14 @@ import org.json.JSONObject;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String TAG = "MyFirebaseMsgService";
+    private static final String TAG = LogUtils.makeLogTag(MyFirebaseMessagingService.class);
     private String KEY_JOB_DETAIL = "jobDetails";
     private String KEY_NOTIFICATION_DETAIL = "notification_details";
     private String KEY_MESSAGE_LIST_ID ="messageListId";
     private String KEY_DATA = "data";
     private String KEY_NOTIFICATION_DATA = "notification_data";
     private boolean isChatMessage = false;
+    private static int NOTIFICATION_COUNTER=0;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -48,7 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
          * Not getting messages here? See why this may be: https://goo.gl/39bRNJ
          */
         LogUtils.LOGD(TAG, "From: " + remoteMessage.getFrom());
-        DentaApp.NOTIFICATION_COUNTER = DentaApp.NOTIFICATION_COUNTER++;
+        NOTIFICATION_COUNTER = ++NOTIFICATION_COUNTER;
 
         if (remoteMessage.getData().size() > 0) {
             LogUtils.LOGD(TAG, "Message data payload:" + remoteMessage.getData());
@@ -71,7 +71,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     type = notificationObject.optInt((Constants.APIS.NOTIFICATION_TYPE));
                     messageBody = notificationObject.getString(KEY_NOTIFICATION_DATA);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LogUtils.LOGE(TAG,e.getMessage());
                 }
             }
 
@@ -82,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     JSONObject notificationObject = new JSONObject(jobData);
                     jobId = notificationObject.optInt(Constants.APIS.ID);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LogUtils.LOGE(TAG,e.getMessage());
                 }
             }
 
@@ -102,7 +102,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         jobId = Integer.parseInt(parsePayLoadForAdminMsg(object, "sender_id"));
                     }
                 }catch (Exception e){
-                    e.printStackTrace();
+                    LogUtils.LOGE(TAG,e.getMessage());
                 }
             }
 
@@ -149,7 +149,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Utils.showNotification(this, model.getRecruiterName(), model.getMessage(), intent, finalModel.getFromID());
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LogUtils.LOGE(TAG,e.getMessage());
             }
         }
 
@@ -162,7 +162,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Utils.showNotification(this, getString(R.string.app_name),
                 messageBody,
                 intent,
-                String.valueOf(DentaApp.NOTIFICATION_COUNTER));
+                String.valueOf(NOTIFICATION_COUNTER));
     }
 
     private Intent redirectNotification(int notificationType, int jobId) {
@@ -195,7 +195,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         value = object.getString(key);
 
         }catch (Exception e){
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
         return value;

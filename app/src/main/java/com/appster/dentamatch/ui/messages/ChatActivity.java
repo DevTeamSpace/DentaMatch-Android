@@ -20,6 +20,7 @@ import com.appster.dentamatch.eventbus.SocketConnectionEvent;
 import com.appster.dentamatch.eventbus.UnblockEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
@@ -35,6 +36,7 @@ import org.json.JSONObject;
  */
 
 public class ChatActivity extends BaseActivity implements View.OnClickListener {
+    private static final String TAG= LogUtils.makeLogTag(ChatActivity.class);
     private ActivityChatBinding mBinder;
     private ChatAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -217,7 +219,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         } finally {
             DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
         }

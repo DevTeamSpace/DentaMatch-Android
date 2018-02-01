@@ -70,7 +70,7 @@ public interface AuthWebServices {
 
     String SIGN_IN = "users/sign-in";
     String SIGN_UP = "users/sign-up";
-    String FORGOT_PASSWORD = "users/forgot-password";
+    String FORGOT_PASS = "users/forgot-password";
     String UPDATE_LICENCE = "users/update-license";
     String JOB_TITLE_LIST = "list-jobtitle";
     String JOB_HIRED_LIST = "jobs/hired-jobs";
@@ -90,7 +90,7 @@ public interface AuthWebServices {
     String UNREAD_NOTIFICATION_COUNT = "users/unread-notification";
     String GET_PROFILE = "users/user-profile";
     String AFFILIATION_SAVE = "users/affiliation-save";
-    String CHANGE_PASSWORD = "users/change-password";
+    String CHANGE_PASS = "users/change-password";
     String LOGOUT = "users/sign-out";
     String UPDATE_PROFILE = "users/user-profile-update";
     String SEARCH_JOBS = "users/search-jobs";
@@ -159,7 +159,7 @@ public interface AuthWebServices {
     @POST(SIGN_UP)
     Call<LoginResponse> signUp(@Body LoginRequest loginRequest);
 
-    @PUT(FORGOT_PASSWORD)
+    @PUT(FORGOT_PASS)
     Call<LoginResponse> forgotPassword(@Body LoginRequest loginRequest);
 
     @DELETE(WORK_EXP_DELETE)
@@ -174,7 +174,7 @@ public interface AuthWebServices {
     @POST(AFFILIATION_SAVE)
     Call<BaseResponse> saveAffiliation(@Body AffiliationPostRequest affiliationPostRequest);
 
-    @POST(CHANGE_PASSWORD)
+    @POST(CHANGE_PASS)
     Call<BaseResponse> changePassword(@Body ChangePasswordRequest changePasswordRequest);
 
     @POST(CERTIFICATION_UPDATE)

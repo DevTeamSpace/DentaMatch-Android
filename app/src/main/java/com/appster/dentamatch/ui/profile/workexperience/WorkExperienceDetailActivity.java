@@ -19,6 +19,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.util.WorkExpValidationUtil;
@@ -30,6 +31,7 @@ import retrofit2.Call;
  * Created by virender on 05/01/17.
  */
 public class WorkExperienceDetailActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
+    private static final String TAG= LogUtils.makeLogTag(WorkExperienceDetailActivity.class);
     private ActivityWorkExperienceDetailBinding mBinder;
     private String selectedJobTitle = "";
     private int expMonth = 0, jobTitleId;
@@ -77,7 +79,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
             expMonth = PreferenceUtil.getYear() * 12 + PreferenceUtil.getMonth();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LogUtils.LOGE(TAG,ex.getMessage());
         }
 
         mBinder.includeLayoutWorkExp.etOfficeName.setText(PreferenceUtil.getOfficeName());
@@ -128,7 +130,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 //                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceEmail),
 //                        Utils.getStringFromEditText(mBinder.includeRefrence2.etOfficeReferenceName));
 
-                if (isMoveForward) {
+               // if (isMoveForward) {
                     hideKeyboard();
                     callAddExpApi(WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(),
                             Constants.APIS.ACTION_ADD,
@@ -143,7 +145,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                             Utils.getStringFromEditText(mBinder.includeReference2.etOfficeReferenceEmail),
                             Utils.getStringFromEditText(mBinder.includeReference2.etOfficeReferenceName),
                             Utils.getStringFromEditText(mBinder.includeReference2.etOfficeReferenceMobile)));
-                }
+               // }
 
                 break;
 

@@ -22,8 +22,8 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.NotificationCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Spannable;
@@ -68,15 +68,14 @@ import java.util.UUID;
  * Utils for app
  */
 public class Utils {
-    private static final String TAG = "Utils";
+    private static final String TAG = LogUtils.makeLogTag(Utils.class);
 
-    private static final SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-    private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-    private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-    private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
-    private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mma", Locale.getDefault()); // DATE FORMAT : 09:46 am
-    private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
-    private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
+    //private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+   // private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    //private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
+    //private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mma", Locale.getDefault()); // DATE FORMAT : 09:46 am
+    //private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
+    //private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
 
 
     public synchronized static String getDeviceID() {
@@ -91,12 +90,14 @@ public class Utils {
     }
 
     public static String parseDateForTemp(String date) {
+      final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
+
         SimpleDateFormat serverDateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {
             Date serverDate = serverDateOnlyFormat.parse(date);
             return DateFormatMMDDYY.format(serverDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
         return null;
@@ -119,6 +120,8 @@ public class Utils {
     }
 
     public static boolean isMsgDateDifferent(long lastMsgTime, long receivedMsgTime) {
+         final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
         DateOnlyFormat.setTimeZone(TimeZone.getDefault());
 
         Date lastMsgDate = new Date(lastMsgTime);
@@ -142,7 +145,7 @@ public class Utils {
                         address = addressList.get(0);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LogUtils.LOGE(TAG,e.getMessage());
                 }
             }
         }
@@ -164,7 +167,7 @@ public class Utils {
                 LogUtils.LOGE(TAG, "Retrofit response.errorBody found null!");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
         return apiResponse;
@@ -358,12 +361,17 @@ public class Utils {
     }
 
     public static String convertUTCtoLocal(String UTCDateTime) {
+     final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
+
         Date myDate = null;
         try {
 //            timeOnlyDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            SimpleDateFormat timeOnlyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
             myDate = timeOnlyDateFormat.parse(UTCDateTime);
         } catch (ParseException e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
         hourOnlyDateFormat.setTimeZone(TimeZone.getDefault());
@@ -374,6 +382,7 @@ public class Utils {
     }
 
     public static String convertUTCtoLocalFromTimeStamp(String UTCDateTime) {
+        final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mma", Locale.getDefault()); // DATE FORMAT : 09:46 am
 
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
@@ -385,6 +394,8 @@ public class Utils {
     }
 
     public static String convertUTCToTimeLabel(String UTCDateTime) {
+      final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
         Long time = Long.parseLong(UTCDateTime);
         Date receivedDate = new Date(time);
         Date currentDate = new Date(System.currentTimeMillis());
@@ -410,6 +421,10 @@ public class Utils {
     }
 
     public static String compareDateFromCurrentLocalTime(String date) {
+         SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
+        final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
         FullDateFormat.setTimeZone(TimeZone.getDefault());
         DateOnlyFormat.setTimeZone(TimeZone.getDefault());
 
@@ -433,7 +448,7 @@ public class Utils {
                 return receivedDate;
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
         return "";
@@ -441,6 +456,8 @@ public class Utils {
 
 
     public static String compareDateForDateLabel(String UTCDateTime) {
+       final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
+
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
         chatDateLabelFormat.setTimeZone(TimeZone.getDefault());
@@ -540,7 +557,7 @@ public class Utils {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             netInfo = cm.getActiveNetworkInfo();
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
@@ -632,7 +649,7 @@ public class Utils {
             model.setMessage(messageData.getString(SocketManager.PARAM_USER_MSG));
             model.setMessageId(messageData.getString(SocketManager.PARAM_MESSAGE_ID));
         } catch (JSONException e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
         return model;
     }
@@ -647,7 +664,7 @@ public class Utils {
             model.setMessage(messageData.getString(SocketManager.PARAM_USER_MSG));
             model.setMessageId(messageData.getString(SocketManager.PARAM_MESSAGE_ID));
         } catch (JSONException e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
         return model;
     }
@@ -664,7 +681,7 @@ public class Utils {
             model.setMessageListId(messageData.getString("messageListId"));
             model.setRecruiterName(messageData.getString("name"));
         } catch (JSONException e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
         return model;
@@ -685,7 +702,7 @@ public class Utils {
             SimpleDateFormat reqFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
             return reqFormat.format(date);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
             return "";
         }
     }
@@ -706,7 +723,7 @@ public class Utils {
             SimpleDateFormat reqFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             return reqFormat.format(date);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
             return "";
         }
     }
@@ -722,7 +739,7 @@ public class Utils {
 
             return inputFormat.parse(dateStr);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
             return null;
         }
     }
@@ -739,7 +756,7 @@ public class Utils {
 
             return inputFormat.parse(dateStr);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
             return null;
         }
     }
@@ -753,7 +770,7 @@ public class Utils {
             SimpleDateFormat reqFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
             return reqFormat.format(date);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
             return "";
         }
     }
@@ -768,7 +785,7 @@ public class Utils {
             String strDate = sm.format(date);
             return sm.parse(strDate);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
             return null;
 
         }

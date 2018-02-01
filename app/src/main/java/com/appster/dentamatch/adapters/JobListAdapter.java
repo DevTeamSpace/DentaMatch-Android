@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemJobListBinding;
-import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -28,8 +27,6 @@ import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Locale;

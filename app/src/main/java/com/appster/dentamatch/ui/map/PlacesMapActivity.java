@@ -45,7 +45,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener {
 
-    private static String TAG = "DentaPlaces";
+    private static final String TAG = LogUtils.makeLogTag(PlacesMapActivity.class);
     private GoogleApiClient mGoogleApiClient;
 
     private GoogleMap mMap;
@@ -274,7 +274,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
                 LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
             }catch (Exception e){
-                e.printStackTrace();
+                LogUtils.LOGE(TAG,e.getMessage());
             }
 
             hideKeyboard();
@@ -312,7 +312,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
 
                 setData(address);
             }catch (Exception e){
-                e.printStackTrace();
+                LogUtils.LOGE(TAG,e.getMessage());
                 showToast("Unable to fetch this location, please try another location.");
                 mAutocompleteView.setText("");
             }finally {

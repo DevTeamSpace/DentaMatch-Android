@@ -11,7 +11,8 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.PreferredJobListSelected;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
-import com.appster.dentamatch.network.response.PreferredJobLocation.SelectedPreferredJobLocationData;
+import com.appster.dentamatch.util.LogUtils;
+import com.appster.dentamatch.util.PreferenceUtil;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
  * Created by virender on 27/01/17.
  */
 public class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements  View.OnClickListener {
+    private static final String TAG= LogUtils.makeLogTag(PreferenceUtil.class);
     private ArrayList<PreferredJobLocationData> mAffiliationList = new ArrayList<>();
     private ArrayList<PreferredJobLocationData> mSelectedJobTitles = new ArrayList<>();
     private PreferredJobListSelected mListener;
@@ -86,12 +88,14 @@ public class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.V
         try {
             final ViewHolder itemHolder = (ViewHolder) holder;
             final PreferredJobLocationData currentItem = getItem(position);
-            itemHolder.tvType.setText(currentItem.getPreferredLocationName());
-            itemHolder.cbCheckBox.setTag(position);
-            itemHolder.cbCheckBox.setOnClickListener(this);
-            itemHolder.cbCheckBox.setChecked(currentItem.isSelected());
+            if(currentItem!=null) {
+                itemHolder.tvType.setText(currentItem.getPreferredLocationName());
+                itemHolder.cbCheckBox.setTag(position);
+                itemHolder.cbCheckBox.setOnClickListener(this);
+                itemHolder.cbCheckBox.setChecked(currentItem.isSelected());
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
     }
@@ -101,33 +105,34 @@ public class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.V
         int position = (int) v.getTag();
         try {
             final PreferredJobLocationData currentItem = getItem(position);
-            if (currentItem.isSelected()) {
+            if(currentItem!=null) {
+                if (currentItem.isSelected()) {
 
-                for (PreferredJobLocationData i : mSelectedJobTitles) {
-                    if (i.getId() == currentItem.getId()) {
-                        mSelectedJobTitles.remove(i);
-                        break;
+                    for (PreferredJobLocationData i : mSelectedJobTitles) {
+                        if (i.getId() == currentItem.getId()) {
+                            mSelectedJobTitles.remove(i);
+                            break;
+                        }
                     }
+                    currentItem.setSelected(false);
+
+                } else {
+                    mSelectedJobTitles.add(currentItem);
+                    currentItem.setSelected(true);
                 }
-                currentItem.setSelected(false);
-
-            } else {
-                mSelectedJobTitles.add(currentItem);
-                currentItem.setSelected(true);
             }
-
             mListener.onPrefJobSelected(mSelectedJobTitles);
             notifyItemChanged(position);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvType;
-        public CheckBox cbCheckBox;
+        protected TextView tvType;
+        protected CheckBox cbCheckBox;
         private EditText etOther;
         private View viewUnderLine;
 

@@ -11,7 +11,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.common.BaseActivity;
 
 public class Alert {
-
+    private static final String TAG=LogUtils.makeLogTag(Alert.class);
     private static Snackbar s_SnackBar;
 
     private static AlertDialog.Builder createAlert(Context context,
@@ -95,7 +95,7 @@ public class Alert {
             if (context.isActive())
                 return dialog.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
         return null;
     }

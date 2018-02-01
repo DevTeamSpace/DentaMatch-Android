@@ -29,6 +29,7 @@ import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
@@ -39,13 +40,13 @@ import java.io.File;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private static final String TAG = "BASE_ACTIVITY";
+    private static final String TAG = LogUtils.makeLogTag(BaseActivity.class);
     protected static final int MY_PERMISSION_ACCESS_LOCATION = 101;
     protected boolean mAlive;
     private boolean mActive;
     private ProgressDialog mProgressDialog;
     private Toast mToast;
-    public static PermissionCallback permissionResult;
+    protected static PermissionCallback permissionResult;
 
     public static BaseFragment getFragment(Constants.FRAGMENTS fragmentId) {
         BaseFragment fragment = null;
@@ -222,7 +223,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressDialog.setContentView(View.inflate(this, R.layout.progress_bar, null));
 
         } catch (Exception e) {
-            e.printStackTrace();
+           LogUtils.LOGE(TAG,e.getMessage());
         }
 
     }
@@ -236,7 +237,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressDialog = null;
 
         } catch (Exception x) {
-            x.printStackTrace();
+            LogUtils.LOGE(TAG,x.getMessage());
         }
     }
 
@@ -257,7 +258,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             hideKeyboard(getCurrentFocus());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 
@@ -271,7 +272,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 
@@ -309,7 +310,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
 
         } catch (Exception x) {
-            x.printStackTrace();
+            LogUtils.LOGE(TAG,x.getMessage());
         }
     }
 
@@ -364,7 +365,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 }

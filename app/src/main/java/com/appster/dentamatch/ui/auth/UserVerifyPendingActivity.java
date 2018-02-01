@@ -6,10 +6,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityProfileCompletedPendingBinding;
@@ -17,20 +15,13 @@ import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
-import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
 import com.appster.dentamatch.network.response.auth.UserVerifiedStatus;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.calendar.SetAvailabilityActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.profile.CreateProfileActivity1;
 import com.appster.dentamatch.ui.profile.ProfileCompletedPendingActivity;
-import com.appster.dentamatch.ui.profile.UpdateProfileActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 
@@ -39,7 +30,7 @@ import retrofit2.Call;
  */
 
 public class UserVerifyPendingActivity extends BaseActivity {
-    private String TAG = "ProfileCompletedPendingActivity";
+    private String TAG = LogUtils.makeLogTag(UserVerifyPendingActivity.class);
     private int isLicenceRequired;
     private ActivityProfileCompletedPendingBinding activityProfileCompletedPendingBinding;
 

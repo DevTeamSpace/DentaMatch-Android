@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.JobTitleSelected;
 import com.appster.dentamatch.model.JobTitleListModel;
+import com.appster.dentamatch.util.LogUtils;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
  * Created by virender on 27/01/17.
  */
 public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements  View.OnClickListener {
+    private static final String TAG= LogUtils.makeLogTag(JobTitleAdapter.class);
     private ArrayList<JobTitleListModel> mAffiliationList = new ArrayList<>();
     private ArrayList<JobTitleListModel> mSelectedJobTitles = new ArrayList<>();
     private JobTitleSelected mListener;
@@ -81,12 +83,14 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         try {
             final ViewHolder itemHolder = (ViewHolder) holder;
             final JobTitleListModel currentItem = getItem(position);
-            itemHolder.tvType.setText(currentItem.getJobTitle());
-            itemHolder.cbCheckBox.setTag(position);
-            itemHolder.cbCheckBox.setOnClickListener(this);
-            itemHolder.cbCheckBox.setChecked(currentItem.isSelected());
+            if(currentItem!=null) {
+                itemHolder.tvType.setText(currentItem.getJobTitle());
+                itemHolder.cbCheckBox.setTag(position);
+                itemHolder.cbCheckBox.setOnClickListener(this);
+                itemHolder.cbCheckBox.setChecked(currentItem.isSelected());
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
     }
@@ -96,33 +100,35 @@ public class JobTitleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int position = (int) v.getTag();
         try {
             final JobTitleListModel currentItem = getItem(position);
-            if (currentItem.isSelected()) {
+            if(currentItem!=null) {
+                if (currentItem.isSelected()) {
 
-                for (JobTitleListModel i : mSelectedJobTitles) {
-                    if (i.getId() == currentItem.getId()) {
-                        mSelectedJobTitles.remove(i);
-                        break;
+                    for (JobTitleListModel i : mSelectedJobTitles) {
+                        if (i.getId() == currentItem.getId()) {
+                            mSelectedJobTitles.remove(i);
+                            break;
+                        }
                     }
-                }
-                currentItem.setSelected(false);
+                    currentItem.setSelected(false);
 
-            } else {
-                mSelectedJobTitles.add(currentItem);
-                currentItem.setSelected(true);
+                } else {
+                    mSelectedJobTitles.add(currentItem);
+                    currentItem.setSelected(true);
+                }
             }
 
             mListener.onJobTitleSelected(mSelectedJobTitles);
             notifyItemChanged(position);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvType;
-        public CheckBox cbCheckBox;
+        private TextView tvType;
+        private CheckBox cbCheckBox;
         private EditText etOther;
         private View viewUnderLine;
 

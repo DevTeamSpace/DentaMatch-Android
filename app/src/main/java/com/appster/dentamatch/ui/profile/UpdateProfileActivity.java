@@ -32,10 +32,8 @@ import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJob
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.auth.PreferredJobLocationAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PermissionUtils;

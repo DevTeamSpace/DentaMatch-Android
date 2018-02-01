@@ -18,7 +18,7 @@ import io.realm.Sort;
  */
 
 public class DBHelper {
-    private final String TAG = "RealmDBHelper";
+    private static final String TAG = LogUtils.makeLogTag(DBHelper.class);
     public static final String UNREAD_MSG_COUNT = "UNREAD_MSG_COUNT";
     public static final String LAST_MSG = "LAST_MSG";
     public static final String USER_CHATS = "USER_CHATS";
@@ -35,9 +35,9 @@ public class DBHelper {
     public static DBHelper getInstance() {
         if (realmDBHelper == null) {
             synchronized (DBHelper.class) {
-                if (realmDBHelper == null) {
+               // if (realmDBHelper == null) {
                     realmDBHelper = new DBHelper();
-                }
+                //}
             }
         }
 
@@ -260,7 +260,7 @@ public class DBHelper {
             mRealmInstance.deleteAll();
             mRealmInstance.commitTransaction();
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

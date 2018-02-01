@@ -18,6 +18,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.eventbus.LocationEvent;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
  */
 
 class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+   private static final String TAG= LogUtils.makeLogTag(AffiliationAdapter.class);
     private final int TYPE_ITEM_PROFILE = 1;
     private final int TYPE_ITEM_DEFAULT = 2;
 
@@ -46,9 +48,10 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     void addList(ArrayList<LocationEvent.Affiliation> list) {
         if (mAffiliationList != null) {
             mAffiliationList.clear();
+            mAffiliationList.addAll(list);
+
         }
 
-        mAffiliationList.addAll(list);
         notifyDataSetChanged();
     }
 
@@ -109,10 +112,12 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             try {
                 final ViewHolder itemHolder = (ViewHolder) holder;
                 final LocationEvent.Affiliation currentItem = getItem(position);
-                itemHolder.tvType.setText(currentItem.getAffiliationName());
-                itemHolder.ivCheckBox.setTag(position);
+                if(currentItem!=null) {
+                    itemHolder.tvType.setText(currentItem.getAffiliationName());
+                    itemHolder.ivCheckBox.setTag(position);
+                }
 
-                if (currentItem.getJobSeekerAffiliationStatus() == 0) {
+                if (currentItem!=null&&currentItem.getJobSeekerAffiliationStatus() == 0) {
                     itemHolder.ivCheckBox.setImageResource(R.drawable.ic_check_empty);
                 } else {
                     itemHolder.ivCheckBox.setImageResource(R.drawable.ic_check_fill);
@@ -137,7 +142,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                     }
                 });
-                if (currentItem.getAffiliationName().equalsIgnoreCase(Constants.OTHERS)) {
+                if (currentItem!=null && currentItem.getAffiliationName().equalsIgnoreCase(Constants.OTHERS)) {
                     itemHolder.viewUnderLine.setVisibility(View.GONE);
 
                     if (!TextUtils.isEmpty(currentItem.getOtherAffiliation())) {
@@ -185,7 +190,8 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 });
             } catch (Exception e) {
-                e.printStackTrace();
+
+                LogUtils.LOGE(TAG,e.getMessage());
             }
         }
     }

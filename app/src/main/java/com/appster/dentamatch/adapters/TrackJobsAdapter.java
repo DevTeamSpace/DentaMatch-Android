@@ -30,6 +30,7 @@ import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
 import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,6 +45,7 @@ import retrofit2.Call;
  */
 
 public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
+   private static final String TAG= LogUtils.makeLogTag(TrackJobsAdapter.class);
     private final int JOB_SAVED = 1;
     private static final int ADDED_PART_TIME = 1;
     private static final int LINE_COUNT_ONE = 1;
@@ -280,7 +282,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                         notifyItemChanged(position);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LogUtils.LOGE(TAG,e.getMessage());
                     notifyItemChanged(position);
                 }
 
@@ -331,7 +333,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

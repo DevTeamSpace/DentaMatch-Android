@@ -1,10 +1,7 @@
 package com.appster.dentamatch.network.response.PreferredJobLocation;
 
-import com.appster.dentamatch.model.ChatListModel;
 import com.appster.dentamatch.network.BaseResponse;
-import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

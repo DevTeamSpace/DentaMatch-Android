@@ -56,7 +56,7 @@ import java.util.concurrent.TimeUnit;
 public class PlaceAutocompleteAdapter
         extends ArrayAdapter<AutocompletePrediction> implements Filterable {
 
-    private static final String TAG = "PlaceAutocompleteAdapter";
+    private static final String TAG = LogUtils.makeLogTag(PlaceAutocompleteAdapter.class);
     private static final CharacterStyle STYLE_BOLD = new StyleSpan(Typeface.BOLD);
     /**
      * Current results returned by this adapter.
@@ -132,7 +132,7 @@ public class PlaceAutocompleteAdapter
             textView2.setText(item.getSecondaryText(STYLE_BOLD));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
 
         return row;
@@ -152,7 +152,7 @@ public class PlaceAutocompleteAdapter
                  * We need a separate list to store the results, since
                  * this is run asynchronously.
                  */
-                ArrayList<AutocompletePrediction> filterData = new ArrayList<>();
+                ArrayList<AutocompletePrediction> filterData = new ArrayList<AutocompletePrediction>();
 
                 /**
                  * Skip the autocomplete query if no constraints are given.

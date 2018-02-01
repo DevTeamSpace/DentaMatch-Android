@@ -27,6 +27,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,6 +44,7 @@ import retrofit2.Call;
  */
 
 public class CalendarFragment extends BaseFragment implements View.OnClickListener, OnDateSelected {
+    private static final String TAG= LogUtils.makeLogTag(CalendarFragment.class);
     private FragmentCalendarBinding mCalendarBinding;
     private HiredJobAdapter mJobAdapter;
     private ArrayList<HiredJobs> mAllJobLIst;
@@ -244,7 +246,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         if(jobHireDate.compareTo(currentDate) <= 0) {
                             String day = Utils.getDayOfWeek(date);
 
-                            if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
+                           /* if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
                                 selectedDateJobList.add(mAllJobLIst.get(i));
 
                             } else if (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1) {
@@ -263,6 +265,18 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                                 selectedDateJobList.add(mAllJobLIst.get(i));
 
                             } else if (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1) {
+                                selectedDateJobList.add(mAllJobLIst.get(i));
+
+                            }*/
+
+
+                            if ((day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1)
+                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1)
+                                    ||(day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1)
+                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1)
+                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1)
+                                    ||  (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1)
+                                    ||(day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1)) {
                                 selectedDateJobList.add(mAllJobLIst.get(i));
 
                             }
@@ -296,7 +310,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
             }
 
         }catch(Exception e){
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

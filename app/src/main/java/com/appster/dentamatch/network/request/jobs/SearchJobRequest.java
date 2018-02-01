@@ -1,7 +1,6 @@
 package com.appster.dentamatch.network.request.jobs;
 
 import com.appster.dentamatch.model.SelectedJobTitleModel;
-import com.appster.dentamatch.network.response.PreferredJobLocation.SelectedPreferredJobLocationData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

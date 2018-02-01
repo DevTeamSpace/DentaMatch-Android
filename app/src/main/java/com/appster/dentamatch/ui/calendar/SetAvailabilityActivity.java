@@ -21,7 +21,6 @@ import com.appster.dentamatch.network.response.calendar.CalendarAvailability;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
-import com.appster.dentamatch.ui.common.SplashActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -283,7 +282,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private boolean checkValidation() {
+   /* private boolean checkValidation() {
         if (!mIsPartTime && !mIsFullTime && !mIsTemporary) {
             showToast(getString(R.string.alert_select_job_type));
             return false;
@@ -299,7 +298,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
         }
         return true;
-    }
+    }*/
 
     private GetAvailabilityRequest prepareGetAvailableRequest() {
         GetAvailabilityRequest request = new GetAvailabilityRequest();

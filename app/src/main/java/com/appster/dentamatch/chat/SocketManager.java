@@ -39,7 +39,7 @@ import io.socket.emitter.Emitter;
  */
 
 public class SocketManager {
-    private static final String TAG = "DentaChat";
+    private static final String TAG = LogUtils.makeLogTag(SocketManager.class);
     private final String SOCKET_ERROR = "socket is null";
     private final String SOCKET_CONNECT = "Socket connected";
     private final String SOCKET_DISCONNECT = "Socket disconnected";
@@ -96,9 +96,9 @@ public class SocketManager {
         if (socketManager == null) {
             synchronized (SocketManager.class) {
 
-                if (socketManager == null) {
+                //if (socketManager == null) {
                     socketManager = new SocketManager();
-                }
+                //}
             }
         }
 
@@ -443,7 +443,7 @@ public class SocketManager {
 
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                LogUtils.LOGE(TAG,e.getMessage());
             }
         }
     };

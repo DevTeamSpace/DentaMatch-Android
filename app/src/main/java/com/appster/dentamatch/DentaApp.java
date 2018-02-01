@@ -4,11 +4,13 @@ package com.appster.dentamatch;
  * Created by gautambisht on 10/11/16.
  */
 
+import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.util.NetworkMonitor;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -20,7 +22,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class DentaApp extends MultiDexApplication {
     private static DentaApp mAppContext;
-    public static int NOTIFICATION_COUNTER=0;
+    //public static int NOTIFICATION_COUNTER=0;
     private MixpanelAPI mixpanelAPI;
 
     @Override
@@ -42,6 +44,31 @@ public class DentaApp extends MultiDexApplication {
 
         // Push ReadNotificationRequest initialize
         FirebaseApp.initializeApp(mAppContext);
+
+
+        if (BuildConfig.DEBUG) {
+           // LeakCanary.install(this);
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .detectActivityLeaks()
+                    .penaltyLog()
+                    //.penaltyDeath()
+                    .build());
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(
+                                    Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(
+                                    Stetho.defaultInspectorModulesProvider(this))
+                            .build());
+        }
     }
 
     public static DentaApp getInstance(){

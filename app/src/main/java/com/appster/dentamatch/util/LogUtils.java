@@ -113,6 +113,6 @@ public class LogUtils {
     }
 
     public static void printStackTrace(Throwable e) {
-        e.printStackTrace();
+        Log.e(LOG_PREFIX, e.getMessage());
     }
 }

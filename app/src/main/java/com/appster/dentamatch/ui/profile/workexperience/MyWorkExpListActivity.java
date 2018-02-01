@@ -24,6 +24,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.UsPhoneNumberFormat;
 import com.appster.dentamatch.util.Utils;
@@ -44,6 +45,7 @@ import retrofit2.Call;
  */
 
 public class MyWorkExpListActivity extends BaseActivity implements View.OnClickListener, JobTitleSelectionListener, YearSelectionListener {
+    private static final String TAG=LogUtils.makeLogTag(MyWorkExpListActivity.class);
     private ActivityWorkExpListBinding mBinder;
     private boolean isFromProfile;
     private String mSelectedJobTitle = "";
@@ -157,7 +159,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                 TextUtils.isEmpty(mBinder.includeLayoutReference2.etOfficeReferenceEmail.getText()) &&
                 TextUtils.isEmpty(mBinder.includeLayoutReference1.etOfficeReferenceMobile.getText()) &&
                 TextUtils.isEmpty(mBinder.includeLayoutReference2.etOfficeReferenceMobile.getText()) &&
-                TextUtils.isEmpty(mBinder.includeLayoutReference2.etOfficeReferenceMobile.getText()) &&
+
                 TextUtils.isEmpty(mBinder.includeLayoutReference1.etOfficeReferenceName.getText()) &&
                 TextUtils.isEmpty(mBinder.includeLayoutReference2.etOfficeReferenceName.getText())) {
 
@@ -490,7 +492,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.LOGE(TAG,e.getMessage());
         }
     }
 

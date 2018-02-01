@@ -292,7 +292,9 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     }
 
                     if (response.getCertificateResponseData().getCertificatesLists() != null) {
-                        certificateList.addAll(response.getCertificateResponseData().getCertificatesLists());
+                        if(certificateList!=null && certificateList.size()>0) {
+                            certificateList.addAll(response.getCertificateResponseData().getCertificatesLists());
+                        }
                         inflateViews();
                         mBinder.btnNext.setVisibility(View.VISIBLE);
                     }

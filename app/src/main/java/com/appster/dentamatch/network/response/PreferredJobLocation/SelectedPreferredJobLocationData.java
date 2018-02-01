@@ -1,8 +1,5 @@
 package com.appster.dentamatch.network.response.PreferredJobLocation;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * Created by zishan on 22/11/17.
  */

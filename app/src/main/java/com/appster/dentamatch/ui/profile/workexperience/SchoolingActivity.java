@@ -153,10 +153,10 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
                     if (hashMap.size() == 0) {
                         showToast(getString(R.string.msg_choose_college));
-                        return false;
+                        //return false;
                     } else {
                         isRemoveSchool = true;
-                        return false;
+                       // return false;
                     }
 
                 }
