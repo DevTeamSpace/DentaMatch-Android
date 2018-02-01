@@ -204,7 +204,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         processToShowDialog();
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.logout().enqueue(new BaseCallback<BaseResponse>(SettingActivity.this) {
+        webServices.logoutApi().enqueue(new BaseCallback<BaseResponse>(SettingActivity.this) {
             @Override
             public void onSuccess(BaseResponse response) {
                 Utils.showToast(getApplicationContext(), response.getMessage());

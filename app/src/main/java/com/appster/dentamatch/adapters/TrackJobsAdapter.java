@@ -245,6 +245,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                                 dialog.dismiss();
                             }
                         });
+                break;
 
             default:
                 break;

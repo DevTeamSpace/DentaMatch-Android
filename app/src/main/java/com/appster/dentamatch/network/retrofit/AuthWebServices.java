@@ -166,7 +166,7 @@ public interface AuthWebServices {
     Call<BaseResponse> workExpDelete(@Query(ID) int id);
 
     @DELETE(LOGOUT)
-    Call<BaseResponse> logout();
+    Call<BaseResponse> logoutApi();
 
     @POST(ADD_WORK_EXP)
     Call<WorkExpResponse> addWorkExp(@Body WorkExpRequest workExpRequest);

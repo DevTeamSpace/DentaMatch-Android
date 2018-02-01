@@ -286,9 +286,6 @@ public class UserModel implements Parcelable{
         return jobTitle;
     }
 
-    public int getJobTitleID() {
-        return jobTitleId;
-    }
 
     public String getPreferredJobLocation() {
         return preferredJobLocation;

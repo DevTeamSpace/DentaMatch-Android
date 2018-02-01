@@ -22,9 +22,9 @@ public class ViewPagerTransformer implements ViewPager.PageTransformer {
 
     @SuppressLint("NewApi")
     public void transformPage(View page, float position) {
-        final float alpha;
-        final float scale;
-        final float translationX;
+         float alpha=0;
+         float scale=0;
+         float translationX=0;
 
         switch (mTransformType) {
             case FLOW:
@@ -93,7 +93,7 @@ public class ViewPagerTransformer implements ViewPager.PageTransformer {
                     // position is between -1.0F & 0.0F OR 0.0F & 1.0F
                     page.setAlpha(1.0F - Math.abs(position));
                 }
-
+               break;
 
             default:
                 return;
