@@ -8,4 +8,6 @@
 
     <integer name="padding_0">0</integer>
     <integer name="padding_4">4</integer>
+    <integer name="password_max_length">30</integer>
+
 </resources>

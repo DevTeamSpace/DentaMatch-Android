@@ -27,7 +27,7 @@
                 android:drawablePadding="@dimen/padding_drawable"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/label_job_title"
+                android:hint="@string/label_job_title_only"
                 android:longClickable="false"
                 android:paddingTop="@dimen/padding_drawable" />
         </android.support.design.widget.TextInputLayout>

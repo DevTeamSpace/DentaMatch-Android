@@ -30,6 +30,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetDatePicker;
@@ -50,7 +51,7 @@ import retrofit2.Call;
  * Created by virender on 20/01/17.
  */
 public class UpdateCertificateActivity extends BaseActivity implements View.OnClickListener, ImageSelectedListener, DateSelectedListener {
-    private static final String TAG = "UpdateCertificate";
+    private static final String TAG = LogUtils.makeLogTag(UpdateCertificateActivity.class);
     private ActivityUpdateCertificateBinding mBinder;
     private String mFilePath;
     private byte imageSourceType;
@@ -60,7 +61,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
     @Override
     public String getActivityName() {
-        return null;
+        return UpdateCertificateActivity.class.getSimpleName();
     }
 
     @Override

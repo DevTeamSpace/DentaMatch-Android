@@ -28,6 +28,7 @@ import com.appster.dentamatch.model.SchoolTypeModel;
 import com.appster.dentamatch.network.request.schools.PostSchoolData;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.squareup.picasso.Picasso;
 
@@ -41,7 +42,7 @@ import java.util.List;
  */
 
 public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final String TAG = "SchoolsAdapter";
+    private static final String TAG = LogUtils.makeLogTag(SchoolsAdapter.class);
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;

@@ -25,6 +25,7 @@ import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,7 +41,7 @@ import retrofit2.Call;
  * Created by ram on 15/01/17.
  */
 public class SchoolingActivity extends BaseActivity implements View.OnClickListener, EditTextSelected {
-    private static final String TAG = "Schooling";
+    private static final String TAG = LogUtils.makeLogTag(SchoolingActivity.class);
     private ActivitySchoolingBinding mBinder;
     private SchoolsAdapter mSchoolsAdapter;
     private boolean isFromProfile;

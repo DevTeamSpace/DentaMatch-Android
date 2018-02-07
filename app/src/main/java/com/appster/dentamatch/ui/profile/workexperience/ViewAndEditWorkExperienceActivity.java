@@ -190,8 +190,18 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 int year = 0, month = 0;
                 if (!TextUtils.isEmpty(mBinder.layoutWorkExpViewEdit.tvExperienceWorkExp.getText().toString())) {
                     String split[] = mBinder.layoutWorkExpViewEdit.tvExperienceWorkExp.getText().toString().split(" ");
-                    year = Integer.parseInt(split[0]);
-                    month = Integer.parseInt(split[2]);
+                    if(split!=null && split.length==4) {
+                        year = Integer.parseInt(split[0]);
+                        month = Integer.parseInt(split[2]);
+                    }else {
+                        if(split!=null && split.length==2 && (split[1].equals(getString(R.string.txt_single_month))|| split[1].equals(getString(R.string.txt_multiple_months)))) {
+                            month = Integer.parseInt(split[0]);
+                        }else {
+                            year = Integer.parseInt(split[0]);
+
+                        }
+                    }
+
                 }
 
                 new BottomSheetPicker(this, this, year, month);

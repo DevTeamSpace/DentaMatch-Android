@@ -41,7 +41,7 @@
     <string name="blank_lname_alert">Last Name text field can not be left blank.</string>
     <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
     <string name="blank_postal_code">Unable to find postal code in the address, please retry or choose near by location on map.</string>
-    <string name="blank_tnc_alert">Please accept terms and conditions/Privacy Policy.</string>
+    <string name="blank_tnc_alert">Please accept Terms and Conditions/Privacy Policy.</string>
     <string name="valid_email_alert">Please provide a valid Email Id.</string>
     <string name="valid_mobile_alert">Please provide a valid phone number of 10 digits.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
@@ -94,6 +94,7 @@
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="label_job_title">Current Job Title</string>
     <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
+    <string name="label_job_title_only">Job Title</string>
 
     <!--alert button-->
     <string name="ok">OK</string>
@@ -122,7 +123,7 @@
     <string name="reference2">Reference 2</string>
     <string name="reference_delete">Delete Reference</string>
     <string name="experience_delete">Delete Experience</string>
-    <string name="reference_name">Reference Name</string>
+    <string name="reference_name">Reference Name (Optional)</string>
     <string name="reference_mobile">Reference Mobile No. (Optional)</string>
     <string name="reference_email">Reference Email (Optional)</string>
     <string name="year">Year</string>
@@ -190,7 +191,7 @@
     <string name="office_address_length_alert">Office address length can not exceed 30 characters</string>
     <string name="city_length_alert">City name length can not exceed 30 characters</string>
     <string name="blank_year_alert">Please select experience.</string>
-    <string name="complete_reference">Please add the Reference 1 first.</string>
+    <string name="complete_reference">Please add Reference 1 first.</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="blank_certificate_photo_alert">Please upload atleast one certificate</string>
@@ -220,14 +221,14 @@
     <string name="add_certificate">Add certificate</string>
     <string name="title_experience">EXPERIENCE</string>
     <string name="title_schooling">SCHOOLING AND CERTIFICATION</string>
-    <string name="title_skill">KEY SKILL</string>
+    <string name="title_skill">KEY SKILLS</string>
     <string name="office_location">OFFICE LOCATION</string>
     <string name="contact_info">CONTACT INFORMATION</string>
     <string name="yrs">yrs</string>
     <string name="blank_alert_old_password">Old password can never be blank.</string>
     <string name="blank_alert_new_password">New password can never be blank.</string>
     <string name="blank_alert_confirm_password">Confirm password can never be blank.</string>
-    <string name="alert_reset_password_mismatch">New password and confirm password should be same.</string>
+    <string name="alert_reset_password_mismatch">New password and Confirm password should be same.</string>
     <string name="job_type">Job Type</string>
     <string name="header_list_view">List View</string>
     <string name="header_map_view">Map View</string>
@@ -418,7 +419,7 @@
     <string name="your_job_profile_status">Your Profile is currently is being reviewed by Admin. Once it gets approved, you can start applying for jobs.</string>
 
     <string name="verified_email">Verified email</string>
-    <string name="we_have_sent_a_verification">We have sent a verification link on\n your registered email. Please\n verify it to proceed further</string>
+    <string name="we_have_sent_a_verification">We have sent a verification link on\n your registered email. Please\n verify it to proceed further.</string>
     <string name="verify_email">Verify email</string>
     <string name="verify_email_b">Verify Email</string>
 
@@ -441,5 +442,9 @@
     <string name="your_profile_incomplete"> Your Profile is incomplete, please select the availability to be able to apply for jobs</string>
 
     <string name="header_filter_job">FILTER JOBS</string>
+
+    <string name="pls_enter_license_no">Please enter License number</string>
+    <string name="pls_enter_license_state">Please enter License state</string>
+
 
 </resources>

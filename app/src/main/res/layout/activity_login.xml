@@ -174,7 +174,10 @@
                                 android:drawableStart="@drawable/ic_password"
                                 android:hint="@string/password_label"
                                 android:inputType="textPassword"
-                                android:paddingEnd="@dimen/margin_50" />
+                                android:paddingEnd="@dimen/margin_50"
+                                android:maxLength="25"
+
+                                />
 
                         </android.support.design.widget.TextInputLayout>
 
@@ -191,7 +194,8 @@
                             android:textColor="@color/color_forgot_pwd"
                             android:textSize="@dimen/text_size_12"
                             android:visibility="visible"
-                            app:customFont="@string/font_regular" />
+                            app:customFont="@string/font_regular"
+                            />
                     </RelativeLayout>
 
                     <com.appster.dentamatch.widget.CustomTextView
@@ -302,7 +306,9 @@
                             android:gravity="bottom"
                             android:paddingTop="@dimen/padding_input_layout"
                             app:hintTextAppearance="@style/edit_input_layout"
-                            app:passwordToggleEnabled="false">
+                            app:passwordToggleEnabled="false"
+
+                            >
 
                             <EditText
                                 android:id="@+id/register_et_password"
@@ -315,7 +321,11 @@
                                 android:drawableStart="@drawable/ic_password"
                                 android:hint="@string/password_label"
                                 android:inputType="textPassword"
-                                android:paddingEnd="@dimen/margin_50" />
+                                android:paddingEnd="@dimen/margin_50"
+
+                                android:maxLength="25"
+
+                                />
                         </android.support.design.widget.TextInputLayout>
 
                         <com.appster.dentamatch.widget.CustomTextView

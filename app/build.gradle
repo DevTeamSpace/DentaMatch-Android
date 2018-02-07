@@ -47,7 +47,7 @@ android {
 
     defaultConfig {
         applicationId "com.appster.dentamatch"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -111,8 +111,6 @@ android {
             buildConfigField("String", "BASE_URL", '"https://qa.dentamatch.co/api/"')
             //buildConfigField("String", "CHAT_URL", '"http://qa.dentamatch.co:3000"')
             buildConfigField("String", "CHAT_URL", '"https://qanode.dentamatch.co:8443"')
-
-
 
             minSdkVersion 19
             signingConfig signingConfigs.config

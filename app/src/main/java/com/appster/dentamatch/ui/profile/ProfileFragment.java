@@ -525,7 +525,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         for (int i = 0; i < skillArrayList.size(); i++) {
             skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.keySkillInflater.getContext())
                     .inflate(R.layout.item_profile_skill, profileBinding.keySkillInflater, false));
-            skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName().toUpperCase());
+            skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName());
 
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
 
@@ -570,7 +570,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
-            expBinding.tvAddress.setText(expList.get(i).getOfficeAddress());
+            expBinding.tvAddress.setText(expList.get(i).getOfficeAddress()+"\n"+expList.get(i).getCity());
+
 
             if (TextUtils.isEmpty(expList.get(i).getReference1Email()) &&
                     TextUtils.isEmpty(expList.get(i).getReference1Mobile()) &&

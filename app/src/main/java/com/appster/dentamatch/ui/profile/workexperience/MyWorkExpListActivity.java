@@ -201,7 +201,9 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                             @Override
                             public void onNegative(DialogInterface dialog) {
                                 dialog.dismiss();
-                                startActivity(new Intent(MyWorkExpListActivity.this, SchoolingActivity.class));
+                                //startActivity(new Intent(MyWorkExpListActivity.this, SchoolingActivity.class));
+                                finish();
+
                             }
                         });
 
@@ -448,15 +450,15 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
     }
 
     private void setDataFromPreference() {
-        mSelectedJobTitle = PreferenceUtil.getJobTitle();
+        //mSelectedJobTitle = PreferenceUtil.getJobTitle();
 
         if (PreferenceUtil.getJobTitle() != null) {
             mJobTitleId = PreferenceUtil.getJobTitleId();
         }
 
-        if (!TextUtils.isEmpty(mSelectedJobTitle)) {
+        /*if (!TextUtils.isEmpty(mSelectedJobTitle)) {
             mBinder.includeWorkExpList.etJobTitle.setText(mSelectedJobTitle);
-        }
+        }*/
 
         if (!TextUtils.isEmpty(PreferenceUtil.getOfficeName())) {
             mBinder.includeWorkExpList.etOfficeName.setText(PreferenceUtil.getOfficeName());

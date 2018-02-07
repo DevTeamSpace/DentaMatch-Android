@@ -62,7 +62,9 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:textColor="@color/text_default_color"
             android:textSize="@dimen/text_size_13"
-            app:customFont="@string/font_regular" />
+            app:customFont="@string/font_regular"
+            android:lineSpacingExtra="@dimen/margin_4"
+            />
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_contact_info"

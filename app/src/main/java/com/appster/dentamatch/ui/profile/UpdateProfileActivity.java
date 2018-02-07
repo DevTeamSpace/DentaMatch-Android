@@ -354,7 +354,13 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         }*/ else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
             showToast(getString(R.string.error_no_description));
 
+        }else if(mBinding.createProfileEtLicence.isShown() && mBinding.createProfileEtLicence.getText().toString().trim().length()==0){
+            showToast(getString(R.string.pls_enter_license_no));
+
+        }else if(mBinding.createProfileEtLicence.isShown() && mBinding.createProfileEtState.getText().toString().trim().length()==0){
+            showToast(getString(R.string.pls_enter_license_state));
         }
+
 
 //        else if(TextUtils.isEmpty(mSelectedCountry)) {
 //            showToast(getString(R.string.msg_empty_country));

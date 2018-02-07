@@ -176,11 +176,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId);
 
         } else if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE ||
-                notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC) {
+                notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC ) {
             intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        } else {
+        } else if(notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER){
+            intent=  new Intent(this, HomeActivity.class)
+                    .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+
+        else {
             intent = new Intent(this, NotificationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
