@@ -172,8 +172,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL ||
                 notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_HIRED ||
                 notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
-            intent = new Intent(this, JobDetailActivity.class);
-            intent.putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId);
+           /* intent = new Intent(this, JobDetailActivity.class);
+            intent.putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId);*/
+            intent = new Intent(this, NotificationActivity.class);
+
 
         } else if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE ||
                 notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC ) {

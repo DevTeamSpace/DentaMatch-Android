@@ -193,14 +193,14 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
     private void getAllShortListedJobs(final boolean isPaginationLoading, boolean showProgress){
 
 //        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
-        SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
-        if(request != null) {
+       // SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+        //if(request != null) {
             int type = Constants.SEARCHJOBTYPE.SHORTLISTED.getValue();
             double lat=0,lng=0;
-            if(request!=null && request.getLat()!=null &&  !TextUtils.isEmpty(request.getLat())) {
+            /*if(request!=null && request.getLat()!=null &&  !TextUtils.isEmpty(request.getLat())) {
                 lat = Double.parseDouble(request.getLat());
                 lng = Double.parseDouble(request.getLng());
-            }
+            }*/
 
             if (showProgress) {
                 showProgressBar(getString(R.string.please_wait));
@@ -252,7 +252,7 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
                     }
                 }
             });
-        }else{
+        /*}else{
             if (mBinding.swipeRefreshJobList.isRefreshing()) {
                 mBinding.swipeRefreshJobList.setRefreshing(false);
             }
@@ -267,7 +267,7 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
                 mBinding.tvNoJobs.setVisibility(View.VISIBLE);
             }
 
-        }
+        }*/
     }
 
     private void processResponse(SearchJobResponse response) {

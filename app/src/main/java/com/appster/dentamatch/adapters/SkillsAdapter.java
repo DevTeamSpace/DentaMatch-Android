@@ -216,26 +216,28 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 String text = listSkills.get(i).getSkillName();
 
-                if (text.equalsIgnoreCase(Constants.OTHERS)) {
+                if (text.equalsIgnoreCase(Constants.OTHERS) && listSkills.get(i).getOtherText()!=null ) {
                     text = listSkills.get(i).getOtherText().trim();
 
-                    List<String> otherList = Arrays.asList(text.split(","));
+                    if(text!=null && !TextUtils.isEmpty(text) && text.contains(",")) {
+                        List<String> otherList = Arrays.asList(text.split(","));
 
                    /*
                     Add chips to the list in case of comma separated other text
                     */
-                    for (String others : otherList) {
+                        for (String others : otherList) {
                         /*
                         Don't include blank fields
                          */
-                        if(!TextUtils.isEmpty(others.trim())) {
-                            TextView textView = new TextView(mContext);
-                            textView.setSingleLine();
-                            textView.setEllipsize(TextUtils.TruncateAt.END);
-                            textView.setBackgroundResource(R.drawable.bg_bricks_shaded);
-                            textView.setText(others.trim());
+                            if (!TextUtils.isEmpty(others.trim())) {
+                                TextView textView = new TextView(mContext);
+                                textView.setSingleLine();
+                                textView.setEllipsize(TextUtils.TruncateAt.END);
+                                textView.setBackgroundResource(R.drawable.bg_bricks_shaded);
+                                textView.setText(others.trim());
 
-                            flowLayout.addView(textView, layoutParams);
+                                flowLayout.addView(textView, layoutParams);
+                            }
                         }
                     }
 
