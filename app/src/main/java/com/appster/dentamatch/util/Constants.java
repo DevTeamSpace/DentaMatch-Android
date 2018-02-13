@@ -144,6 +144,8 @@ public class Constants {
         int NOTIFICATION_OTHER = 8;
         int NOTIFICATION_INVITE = 9;
         int NOTIFICATION_REJECTED_JOB = 14;
+        int NOTIFICATION_LICENCE_ACCEPT_REJ = 15;
+
     }
 
     public interface REQUEST_CODE {
@@ -192,6 +194,7 @@ public class Constants {
     public static final int PROFILE_COMPLETED_STATUS = 1;
     public static final String EXTRA_MATCHES_PERCENT = "EXTRA_MATCHES_PERCENT";
     public static final String EXTRA_CHOSEN_PREFERRED_JOB_LOCATION = "EXTRA_CHOSEN_PREFERRED_JOB_TITLES";
+    public static final String EXTRA_FROM_JOB_NOTIF = "EXTRA_FROM_JOB_NOTIF";
 
     public static final int OTHER_AFFILIATION_ID = 9;
 

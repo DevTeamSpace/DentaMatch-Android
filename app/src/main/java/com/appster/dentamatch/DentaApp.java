@@ -48,7 +48,7 @@ public class DentaApp extends MultiDexApplication {
 
 
         if (BuildConfig.DEBUG) {
-           //LeakCanary.install(this);
+           LeakCanary.install(this);
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads()
                     .detectDiskWrites()

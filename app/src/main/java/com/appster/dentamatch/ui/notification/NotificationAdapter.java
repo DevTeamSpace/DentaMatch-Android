@@ -102,7 +102,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
               if notification is INVITE type show all views as visible.
               else accept - reject layout is hidden and all other views are visible
              */
-            if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER) {
+            if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER || data.getnotificationType()==Constants.NOTIFICATIONTYPES.NOTIFICATION_LICENCE_ACCEPT_REJ) {
                 holder.layoutInVite.setVisibility(View.GONE);
                 holder.tvJobType.setVisibility(View.GONE);
                 holder.tvAddress.setVisibility(View.GONE);

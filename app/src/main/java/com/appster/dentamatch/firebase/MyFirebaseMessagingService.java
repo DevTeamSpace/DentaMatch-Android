@@ -182,7 +182,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        } else if(notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER){
+        } else if(notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_LICENCE_ACCEPT_REJ){
             intent=  new Intent(this, HomeActivity.class)
                     .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

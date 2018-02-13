@@ -20,6 +20,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
 import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.MessagesListFragment;
+import com.appster.dentamatch.ui.notification.NotificationActivity;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;
@@ -87,7 +88,12 @@ public class HomeActivity extends BaseActivity {
         } else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL) || getIntent().hasExtra(Constants.EXTRA_FROM_SETTINGS)) {
             bottomBar.setCurrentItem(PROFILE_FRAGMENT_POS);
 
-        }else{
+        }/*else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_NOTIF)) {
+
+          startActivity(new Intent(this, NotificationActivity.class));
+        }*/
+
+        else{
             bottomBar.setCurrentItem(SEARCH_JOBS_FRAGMENT_POS);
 
         }
