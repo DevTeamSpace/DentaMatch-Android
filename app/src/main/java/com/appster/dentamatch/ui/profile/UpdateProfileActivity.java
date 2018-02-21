@@ -30,10 +30,12 @@ import com.appster.dentamatch.network.request.profile.UpdateUserProfileRequest;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
+import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.PreferredJobLocationAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PermissionUtils;
@@ -83,7 +85,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         if (getIntent().hasExtra(Constants.EXTRA_PROFILE_DATA)) {
             mProfileData = getIntent().getParcelableExtra(Constants.EXTRA_PROFILE_DATA);
         }
-
         /*mBinding.etLocation.setFocusableInTouchMode(false);
         mBinding.etLocation.setCursorVisible(false);*/
 
@@ -101,8 +102,11 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
         mBinding.etPreferredJobLocation.setFocusableInTouchMode(false);
         mBinding.etPreferredJobLocation.setCursorVisible(false);
-       mBinding.etPreferredJobLocation.setText(mProfileData.getUser().getPreferredLocationName());
+        if(mProfileData!=null && mProfileData.getUser()!=null && mProfileData.getUser().getPreferredLocationName()!=null) {
+            mBinding.etPreferredJobLocation.setText(mProfileData.getUser().getPreferredLocationName());
+        }
         mBinding.etPreferredJobLocation.setOnClickListener(this);
+
 
     }
 
@@ -110,6 +114,54 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     public String getActivityName() {
         return null;
     }
+
+
+
+    private void getProfileData() {
+        showProgressBar(getString(R.string.please_wait));
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.getProfile().enqueue(new BaseCallback<ProfileResponse>(UpdateProfileActivity.this) {
+            @Override
+            public void onSuccess(ProfileResponse response) {
+               hideProgressBar();
+                if (response.getStatus() == 1) {
+
+                        PreferenceUtil.setJobTitleList(response.getProfileResponseData().getJobTitleLists());
+                        String mJobTitle="";
+                        boolean isFound=false;
+                        for(int i=0;i<response.getProfileResponseData().getJobTitleLists().size();i++){
+                            if(mSelectedJobTitleID==response.getProfileResponseData().getJobTitleLists().get(i).getId()){
+
+                                mJobTitle=response.getProfileResponseData().getJobTitleLists().get(i).getJobTitle();
+                                isFound=true;
+                                break;
+                            }
+                        }
+
+                        if(!isFound){
+                            mSelectedJobTitleID=0;
+                        }
+                    mBinding.etJobTitle.setText(mJobTitle);
+
+
+
+
+                } else {
+                    Utils.showToast(UpdateProfileActivity.this, response.getMessage());
+                }
+
+
+            }
+
+            @Override
+            public void onFail(Call<ProfileResponse> call, BaseResponse baseResponse) {
+                hideProgressBar();
+            }
+        });
+
+    }
+
+
 
     private void setViewData() {
         if (mProfileData != null) {
@@ -171,6 +223,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mBinding.etJobTitle.setOnClickListener(this);
             mBinding.toolbarProfile.ivToolBarLeft.setOnClickListener(this);
         }
+
+        getProfileData();
+
     }
 
     @Override

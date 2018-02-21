@@ -143,12 +143,15 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 });
                 if (currentItem!=null && currentItem.getAffiliationName().equalsIgnoreCase(Constants.OTHERS)) {
-                    itemHolder.viewUnderLine.setVisibility(View.GONE);
+                    //itemHolder.viewUnderLine.setVisibility(View.GONE);
 
                     if (!TextUtils.isEmpty(currentItem.getOtherAffiliation())) {
                         itemHolder.etOther.setVisibility(View.VISIBLE);
                         itemHolder.etOther.setText(currentItem.getOtherAffiliation());
                         etOtherTemp = itemHolder.etOther;
+                        itemHolder.viewUnderLine.setVisibility(View.GONE);
+                        ((BaseActivity) mContext).hideKeyboard();
+
 
                     }
 
@@ -173,18 +176,21 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         if (currentItem.getAffiliationName().equalsIgnoreCase(Constants.OTHERS)) {
                             itemHolder.etOther.setVisibility(View.VISIBLE);
                             etOtherTemp = itemHolder.etOther;
+                            itemHolder.viewUnderLine.setVisibility(View.GONE);
 
                             if (currentItem.getJobSeekerAffiliationStatus() == 0) {
                                 itemHolder.etOther.setVisibility(View.GONE);
                                 etOtherTemp = itemHolder.etOther;
                                 itemHolder.etOther.setText("");
                                 etOtherTemp.setText("");
+                                itemHolder.viewUnderLine.setVisibility(View.VISIBLE);
 
                             }
 
                         } else {
                             itemHolder.etOther.setText("");
                             itemHolder.etOther.setVisibility(View.GONE);
+                            itemHolder.viewUnderLine.setVisibility(View.VISIBLE);
                         }
 
                     }

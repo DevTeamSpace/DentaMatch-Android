@@ -19,6 +19,8 @@ import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.UsPhoneNumberFormat;
@@ -60,7 +62,8 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         mBinder.includeLayoutReference2.tvReferenceDelete.setOnClickListener(this);
         mBinder.layoutWorkExpViewEdit.tvExperienceWorkExp.setOnClickListener(this);
         mBinder.layoutWorkExpViewEdit.etJobTitle.setOnClickListener(this);
-        mBinder.toolbarWorkExpView.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
+        mBinder.toolbarWorkExpView.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
+        mBinder.relSave.setOnClickListener(this);
 
         if (getIntent() != null) {
             position = getIntent().getIntExtra(Constants.INTENT_KEY.POSITION, 0);
@@ -119,7 +122,11 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         switch (view.getId()) {
             case R.id.iv_tool_bar_left:
                 hideKeyboard();
-                onBackPressed();
+                //onBackPressed();
+
+                startActivity(new Intent(ViewAndEditWorkExperienceActivity.this, HomeActivity.class)
+                        .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
 
             case R.id.tv_experience_delete:
@@ -146,45 +153,10 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 break;
 
             case R.id.btn_update:
-                final HashMap<Boolean, String> result = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobtitle, expMonth,
-                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
-                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
-                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceMobile),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceName));
-                hideKeyboard();
-
-
-                if (result.containsKey(false)) {
-                    showToast(result.get(false));
-                } else {
-                    if(TextUtils.isEmpty(result.get(true))) {
-                        WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(),
-                                Constants.APIS.ACTION_EDIT,
-                                jobTitleId,
-                                expMonth,
-                                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
-                                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
-                                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
-                                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
-                                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
-                                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
-                                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
-                                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceName),
-                                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceMobile));
-                        request.setId(workExpList.get(position).getId());
-                        callUpdateExpApi(request);
-
-                    }else{
-                        showToast(result.get(true));
-                    }
-                }
+                updateExp(false);
 
                 break;
+
 
             case R.id.tv_experience_work_exp:
                 int year = 0, month = 0;
@@ -230,8 +202,52 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 }
                 break;
 
+            case R.id.rel_save:
+                updateExp(true);
+                break;
+
             default:
                 break;
+        }
+    }
+
+    private void updateExp(boolean isBack){
+        final HashMap<Boolean, String> result = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobtitle, expMonth,
+                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
+                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
+                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceMobile),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceName));
+        hideKeyboard();
+
+
+        if (result.containsKey(false)) {
+            showToast(result.get(false));
+        } else {
+            if(TextUtils.isEmpty(result.get(true))) {
+                WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(),
+                        Constants.APIS.ACTION_EDIT,
+                        jobTitleId,
+                        expMonth,
+                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
+                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
+                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
+                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
+                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
+                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
+                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceName),
+                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceMobile));
+                request.setId(workExpList.get(position).getId());
+                callUpdateExpApi(request,isBack);
+
+            }else{
+                showToast(result.get(true));
+            }
         }
     }
 
@@ -284,7 +300,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         });
     }
 
-    private void callUpdateExpApi(final WorkExpRequest workExpRequest) {
+    private void callUpdateExpApi(final WorkExpRequest workExpRequest,final boolean isBack) {
         processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
@@ -297,11 +313,18 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                     workExpList.remove(position);
                     response.getWorkExpResponseData().getSaveList().get(0).setJobTitleName(selectedJobtitle);
                     workExpList.add(position, response.getWorkExpResponseData().getSaveList().get(0));
-                    Intent intent = new Intent();
-                    intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
-                    setResult(Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT, intent);
-                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
-                    finish();
+
+                    if(isBack) {
+                        Intent intent = new Intent();
+                        intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
+                        setResult(Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT, intent);
+                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                        finish();
+                    }else {
+                        startActivity(new Intent(ViewAndEditWorkExperienceActivity.this, HomeActivity.class)
+                                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    }
                 }
             }
 
@@ -319,5 +342,12 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         mBinder.layoutWorkExpViewEdit.etJobTitle.setText(title);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        hideKeyboard();
+        startActivity(new Intent(ViewAndEditWorkExperienceActivity.this, HomeActivity.class)
+                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
 }
