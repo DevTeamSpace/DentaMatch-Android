@@ -166,10 +166,10 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
 
                 }
 
-                if (isRemoveSchool) {
+                /*if (isRemoveSchool) {
                     checkValidation();
 
-                } else {
+                } else {*/
                     if (TextUtils.isEmpty(entry.getValue().getSchoolName().trim())) {
                         showToast(getString(R.string.msg_school_name_bank));
                         return false;
@@ -179,7 +179,7 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                         showToast(getString(R.string.msg_select_year_of_graduation) + entry.getValue().getParentSchoolName());
                         return false;
                     }
-                }
+                //}
             }
         }
 

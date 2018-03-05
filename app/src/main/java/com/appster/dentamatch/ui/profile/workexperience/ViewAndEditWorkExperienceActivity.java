@@ -169,6 +169,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                         if(split!=null && split.length==2 && (split[1].equals(getString(R.string.txt_single_month))|| split[1].equals(getString(R.string.txt_multiple_months)))) {
                             month = Integer.parseInt(split[0]);
                         }else {
+                            if(split!=null)
                             year = Integer.parseInt(split[0]);
 
                         }
