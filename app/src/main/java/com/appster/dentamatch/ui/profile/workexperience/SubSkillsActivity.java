@@ -66,15 +66,16 @@ public class SubSkillsActivity extends BaseActivity implements View.OnClickListe
             }
         }
 
-        boolean checked = subSkills.get(position).getIsSelected() == 1;
-        String skillName = subSkills.get(position).getSkillName();
-        boolean otherTextEmpty = TextUtils.isEmpty(subSkills.get(position).getOtherText()) || TextUtils.isEmpty(subSkills.get(position).getOtherText().trim());
+        if(subSkills!=null && subSkills.size()>0) {
+            boolean checked = subSkills.get(position).getIsSelected() == 1;
+            String skillName = subSkills.get(position).getSkillName();
+            boolean otherTextEmpty = TextUtils.isEmpty(subSkills.get(position).getOtherText()) || TextUtils.isEmpty(subSkills.get(position).getOtherText().trim());
 
-        if (checked && skillName.equalsIgnoreCase(Constants.OTHERS) && otherTextEmpty) {
-            Utils.showToastLong(this, getString(R.string.blank_other_alert));
-            return false;
+            if (checked && skillName.equalsIgnoreCase(Constants.OTHERS) && otherTextEmpty) {
+                Utils.showToastLong(this, getString(R.string.blank_other_alert));
+                return false;
+            }
         }
-
         return true;
     }
 
