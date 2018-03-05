@@ -70,6 +70,12 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
                 timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
                 holder.tvTime.setLayoutParams(timeParams);
 
+                if(position==0){
+                    holder.tvDateLabel.setVisibility(View.VISIBLE);
+                    holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getMessageTime()));
+
+                }
+
             } else if (mChatMessages.get(position).getType() == Message.TYPE_MESSAGE_SEND) {
                 holder.tvDateLabel.setVisibility(View.GONE);
                 holder.tvMessage.setVisibility(View.VISIBLE);
@@ -83,6 +89,12 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
                 timeParams.addRule(RelativeLayout.ALIGN_END, holder.tvMessage.getId());
                 timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
                 holder.tvTime.setLayoutParams(timeParams);
+
+                if(position==0){
+                    holder.tvDateLabel.setVisibility(View.VISIBLE);
+                    holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getMessageTime()));
+
+                }
 
             } else {
                 /*

@@ -40,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:background="@drawable/edit_text_selector"
+                    android:completionThreshold="1"
                     android:digits="@string/digits_alpha_numeric_only"
                     android:ellipsize="end"
                     android:hint="@string/hint_type_to_search"

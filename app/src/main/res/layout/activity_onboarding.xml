@@ -22,7 +22,7 @@
                 style="@style/text_view_normal"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="@string/get_started"
+                android:text="@string/skip_button"
                 android:textColor="@color/get_started_color"
                 android:textSize="@dimen/text_size_normal"
                 android:visibility="visible" />
@@ -46,21 +46,21 @@
                     android:layout_width="@dimen/dot_dimen"
                     android:layout_height="@dimen/dot_dimen"
                     android:layout_marginStart="@dimen/dot_dimen"
-                    android:background="@drawable/shape_dot_selected" />
+                    android:background="@drawable/shape_dot_normal" />
 
                 <ImageView
                     android:id="@+id/iv_dot3"
                     android:layout_width="@dimen/dot_dimen"
                     android:layout_height="@dimen/dot_dimen"
                     android:layout_marginStart="@dimen/dot_dimen"
-                    android:background="@drawable/shape_dot_selected" />
+                    android:background="@drawable/shape_dot_normal" />
 
                 <ImageView
                     android:id="@+id/iv_dot4"
                     android:layout_width="@dimen/dot_dimen"
                     android:layout_height="@dimen/dot_dimen"
                     android:layout_marginStart="@dimen/dot_dimen"
-                    android:background="@drawable/shape_dot_selected" />
+                    android:background="@drawable/shape_dot_normal" />
 
             </LinearLayout>
         </RelativeLayout>
