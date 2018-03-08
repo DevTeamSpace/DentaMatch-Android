@@ -161,7 +161,7 @@ public final class BitmapUtils {
      * @param height Thumbnail height
      * @return Thumbnail image saved path.
      */
-    public static String generateThumbnail(String path, int width, int height) {
+   /* public static String generateThumbnail(String path, int width, int height) {
         try {
             Matrix matrix = new Matrix();
             ExifInterface exif = new ExifInterface(path);
@@ -196,7 +196,7 @@ public final class BitmapUtils {
         }
         return null;
     }
-
+*/
     /**
      * Save the bitmap to file system.
      *
