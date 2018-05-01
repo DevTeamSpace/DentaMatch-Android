@@ -219,16 +219,23 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 if (text.equalsIgnoreCase(Constants.OTHERS) && listSkills.get(i).getOtherText()!=null ) {
                     text = listSkills.get(i).getOtherText().trim();
 
-                    if(text!=null && !TextUtils.isEmpty(text) && text.contains(",")) {
+                    TextView textView = new TextView(mContext);
+                    textView.setSingleLine();
+                    textView.setEllipsize(TextUtils.TruncateAt.END);
+                    textView.setBackgroundResource(R.drawable.bg_bricks_shaded);
+                    textView.setText(text);
+                    flowLayout.addView(textView, layoutParams);
+
+                 /*   if(text!=null && !TextUtils.isEmpty(text) && text.contains(",")) {
                         List<String> otherList = Arrays.asList(text.split(","));
 
-                   /*
+                   *//*
                     Add chips to the list in case of comma separated other text
-                    */
+                    *//*
                         for (String others : otherList) {
-                        /*
+                        *//*
                         Don't include blank fields
-                         */
+                         *//*
                             if (!TextUtils.isEmpty(others.trim())) {
                                 TextView textView = new TextView(mContext);
                                 textView.setSingleLine();
@@ -240,7 +247,21 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             }
                         }
                     }
+                    //new added on 30-04-18
+                    else {
 
+                        if (text!=null && !TextUtils.isEmpty(text.trim())) {
+                            TextView textView = new TextView(mContext);
+                            textView.setSingleLine();
+                            textView.setEllipsize(TextUtils.TruncateAt.END);
+                            textView.setBackgroundResource(R.drawable.bg_bricks_shaded);
+                            textView.setText(text.trim());
+
+                            flowLayout.addView(textView, layoutParams);
+                        }
+
+                    }
+*/
                 } else {
 
                     TextView textView = new TextView(mContext);

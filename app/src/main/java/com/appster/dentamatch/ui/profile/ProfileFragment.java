@@ -37,7 +37,9 @@ import com.appster.dentamatch.ui.profile.workexperience.UpdateCertificateActivit
 import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
 import com.appster.dentamatch.ui.settings.SettingActivity;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.StringUtils;
 import com.appster.dentamatch.util.Utils;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -522,17 +524,32 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.keySkillInflater.removeAllViews();
         ItemProfileSkillBinding skillBinding;
 
+
+
+
         for (int i = 0; i < skillArrayList.size(); i++) {
             skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.keySkillInflater.getContext())
                     .inflate(R.layout.item_profile_skill, profileBinding.keySkillInflater, false));
             skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName());
 
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
+                String skName=(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
+                LogUtils.LOGD("OtherSkill>>",skName);
 
-                com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
-                        .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout, false));
-                flowBinding.flowChild.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
-                skillBinding.skillFlowLayout.addView(flowBinding.getRoot());
+                if(skName.equalsIgnoreCase(Constants.OTHERS)) {
+
+                    if(!StringUtils.isNullOrEmpty(skillArrayList.get(i).getChildSkillList().get(j).getOtherSkills())) {
+                        com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                                .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout, false));
+                        flowBinding.flowChild.setText(skillArrayList.get(i).getChildSkillList().get(j).getOtherSkills());
+                        skillBinding.skillFlowLayout.addView(flowBinding.getRoot());
+                    }
+                }else {
+                    com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
+                            .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout, false));
+                    flowBinding.flowChild.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
+                    skillBinding.skillFlowLayout.addView(flowBinding.getRoot());
+                }
             }
             profileBinding.keySkillInflater.addView(skillBinding.getRoot());
         }

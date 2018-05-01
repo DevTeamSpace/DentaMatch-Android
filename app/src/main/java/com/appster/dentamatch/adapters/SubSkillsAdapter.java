@@ -46,7 +46,7 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
 
         if(mSkillList != null){
 
-            for (int i = 0; i < mSkillList.size(); i++){
+           for (int i = 0; i < mSkillList.size(); i++){
 
                 if(mSkillList.get(i).getSkillName().equalsIgnoreCase(Constants.OTHERS) && i != mSkillList.size() - 1){
                     otherModel = mSkillList.get(i);
@@ -88,10 +88,13 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
                 holder.ivSelected.setBackgroundResource(R.drawable.ic_check_unselected);
             }
 
-            if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
+        if (mSkillList.get(position).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
                 if (mSkillList.get(position).getIsSelected() == SKILL_SELECTED) {
-                    holder.etOther.setVisibility(View.VISIBLE);
+                   holder.etOther.setVisibility(View.VISIBLE);
                     holder.etOther.setText(mSkillList.get(position).getOtherText());
+
+
+
 
                 } else {
                     holder.etOther.setVisibility(View.GONE);
@@ -111,7 +114,7 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
                     }
 
                     if (mSkillList.get(refPosition).getSkillName().equalsIgnoreCase(Constants.OTHERS)) {
-                        if (!checked) {
+                      if (!checked) {
                             holder.etOther.setVisibility(View.VISIBLE);
 
                         } else {

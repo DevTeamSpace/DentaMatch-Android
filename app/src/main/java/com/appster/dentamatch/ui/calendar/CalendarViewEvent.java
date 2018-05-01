@@ -70,8 +70,15 @@ public class CalendarViewEvent extends LinearLayout {
                 mHiredListData.clear();
 
                 mHiredListData.addAll(hiredListData);
-            }
+            }//Need to remove else part
+            else {
 
+                if (hiredListData != null && hiredListData.size() > 0) {
+                    mHiredListData.clear();
+                    mHiredListData.addAll(hiredListData);
+
+                }
+            }
 
             if (mAdapter != null) {
                 mAdapter.setJobList(mHiredListData);

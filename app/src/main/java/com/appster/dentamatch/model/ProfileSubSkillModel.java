@@ -10,10 +10,10 @@ public class ProfileSubSkillModel {
     private int childId;
     @SerializedName("skillName")
     private String skillsChildName;
-    private String otherSkills;
+    private String otherSkill;
 
     public String getOtherSkills() {
-        return otherSkills;
+        return otherSkill;
     }
 
     public int getChildId() {

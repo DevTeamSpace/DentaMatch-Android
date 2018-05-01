@@ -41,8 +41,8 @@
 
         <ImageView
             android:id="@+id/dot3"
-            android:layout_width="@dimen/margin_5"
-            android:layout_height="@dimen/margin_5"
+            android:layout_width="@dimen/margin_8"
+            android:layout_height="@dimen/margin_8"
             android:layout_marginStart="@dimen/margin_5"
 
             android:background="@drawable/shape_temporary_dot"
