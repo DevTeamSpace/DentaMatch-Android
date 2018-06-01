@@ -93,14 +93,18 @@
     <string name="label_not_now">Not now</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="label_job_title">Current Job Title</string>
+<!--
     <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
+-->
+    <string name="alert_profile">Completing your job profile will help you stand out to potential Employers</string>
+
     <string name="label_job_title_only">Job Title</string>
 
     <!--alert button-->
     <string name="ok">OK</string>
     <string name="block">BLOCK</string>
     <string name="cancel">Cancel</string>
-    <string name="msg_block_alert">This blocked recruiter will no longer be able to send you message.</string>
+    <string name="msg_block_alert">This Recruiter is BLOCKED and will no longer be able to see your profile or send you messages.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -115,14 +119,14 @@
     <string name="where_you_work">Where do you work?</string>
     <string name="where_did_you_study">Where did you study?</string>
     <string name="label_relevant_exp">Relevant work experience strengthens \n your profile</string>
-    <string name="year_of_experience">Years Of Experience</string>
+    <string name="year_of_experience">Time at This Job</string>
     <string name="office_name">Office Name</string>
     <string name="office_address">Office Address</string>
     <string name="city">City</string>
     <string name="reference">Reference 1</string>
     <string name="reference2">Reference 2</string>
     <string name="reference_delete">Delete Reference</string>
-    <string name="experience_delete">Delete Experience</string>
+    <string name="experience_delete">Delete This Job</string>
     <string name="reference_name">Reference Name (Optional)</string>
     <string name="reference_mobile">Reference Mobile No. (Optional)</string>
     <string name="reference_email">Reference Email (Optional)</string>
@@ -142,22 +146,22 @@
     <string name="server_error">There is some issue connecting with server.</string>
     <string name="no_internet">Please check your internet connection.</string>
     <string name="add_more_reference">Add More References</string>
-    <string name="add_more_exp">Add More Experience</string>
+    <string name="add_more_exp">ADD ANOTHER JOB</string>
 
     <!--screen header text-->
-    <string name="header_work_exp">WORK EXPERIENCE</string>
+    <string name="header_work_exp">EMPLOYMENT HISTORY</string>
     <string name="header_create_profile">CREATE PROFILE</string>
     <string name="header_privacy">PRIVACY POLICY</string>
     <string name="header_term">TERMS &amp; CONDITIONS</string>
     <string name="header_forgot_password">FORGOT PASSWORD</string>
     <string name="header_certification">CERTIFICATIONS</string>
-    <string name="header_affiliation">AFFILIATIONS</string>
+    <string name="header_affiliation">PROFESSIONAL AFFILIATIONS</string>
     <string name="header_about_me">ABOUT ME</string>
     <string name="header_job_detail">JOB DETAILS</string>
 
 
-    <string name="header_skills_exp">SKILLS &amp; EXPERIENCE</string>
-    <string name="header_schooling_exp">SCHOOLING &amp; CERTIFICATION</string>
+    <string name="header_skills_exp">KEY SKILLS &amp; EXPERIENCE</string>
+    <string name="header_schooling_exp">Education/Training</string>
 
     <string name="autocomplete_hint">Search Places</string>
     <string name="get_started">GET STARTED</string>
@@ -174,7 +178,7 @@
     <string name="cetification_title">Update Certifications</string>
     <string name="about_me_title">Executive Summary </string>
     <string name="alert_pervious_date">Please select a valid date.</string>
-    <string name="write_description">Write a brief introduction about yourself</string>
+    <string name="write_description">Introduction yourself and tell us what you\'re looking for. What can you bring to the office?</string>
     <string name="lable_complete_profile">Complete Profile</string>
     <string name="blank_licence_number">Licence number can not be blank.</string>
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
@@ -211,7 +215,7 @@
     <string name="alert_discard_exp">You have to discard this experience if you want to move further.</string>
 
     <!--profile-->
-    <string name="title_affiliation">Affiliations</string>
+    <string name="title_affiliation">Professional Affiliations</string>
     <string name="edit_label">Edit</string>
     <string name="header_edit_profile">EDIT PROFILE</string>
     <string name="add_affiliation">Add Professional Affiliations</string>
@@ -366,7 +370,7 @@
     <string name="txt_job_title_hint">Please select a job</string>
     <string name="txt_congratulations">Congratulations</string>
     <string name="msg_successfully_applied_job">You have successfully applied for the job.</string>
-    <string name="txt_complete_profile">Complete your profile</string>
+    <string name="txt_complete_profile">Complete filling out</string>
     <string name="txt_all_days">"All Days: "</string>
     <string name="hyphen">" - "</string>
     <string name="txt_monday_colon">"Monday: "</string>

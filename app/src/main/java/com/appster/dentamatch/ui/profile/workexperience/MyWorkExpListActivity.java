@@ -419,6 +419,8 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
         if (isFromProfile) {
             mBinder.tvTitleScreen.setVisibility(View.VISIBLE);
             mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_edit_profile));
+            mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
+
         } else {
             mBinder.toolbarWorkExpList.tvToolbarGeneralLeft.setText(getString(R.string.header_work_exp));
         }
