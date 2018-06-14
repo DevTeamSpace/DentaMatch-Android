@@ -144,7 +144,8 @@
         app:customFont="@string/font_medium"
         android:textSize="@dimen/text_size_11"
         android:text="@string/txt_match"
-        android:layout_marginTop="-9dp"
+        android:layout_marginTop="9dp"
+        android:visibility="invisible"
         />
 
 

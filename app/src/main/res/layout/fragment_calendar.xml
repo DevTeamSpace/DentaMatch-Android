@@ -31,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/cell_color"
-            android:gravity="bottom"
             android:paddingBottom="@dimen/margin_6"
             android:paddingStart="@dimen/margin_normal"
             android:paddingTop="@dimen/margin_20"

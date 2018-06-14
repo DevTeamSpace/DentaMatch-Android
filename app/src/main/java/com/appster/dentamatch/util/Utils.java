@@ -54,6 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -90,13 +91,22 @@ public class Utils {
     }
 
     public static String parseDateForTemp(String date) {
-      final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
+      /*final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
 
         SimpleDateFormat serverDateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {
             Date serverDate = serverDateOnlyFormat.parse(date);
             return DateFormatMMDDYY.format(serverDate);
         } catch (ParseException e) {
+            LogUtils.LOGE(TAG,e.getMessage());
+        }*/
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date d1 = df.parse(date);
+
+
+          return   new SimpleDateFormat("EEE, MMM dd").format(d1);
+        }catch (ParseException e) {
             LogUtils.LOGE(TAG,e.getMessage());
         }
 

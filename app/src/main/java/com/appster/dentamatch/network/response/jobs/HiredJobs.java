@@ -32,6 +32,15 @@ public class HiredJobs {
     private String tempDates;
     @SerializedName("tempJobDates")
     private ArrayList<TemporaryJobDates> temporaryJobDates;
+    private String currentDate;
+
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
 
     public int getRecruiterJobId() {
         return recruiterJobId;

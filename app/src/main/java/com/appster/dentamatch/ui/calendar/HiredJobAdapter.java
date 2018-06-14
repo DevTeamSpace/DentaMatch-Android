@@ -25,6 +25,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by virender on 10/02/17.
@@ -148,6 +149,8 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
             }
 
             holder.tvDocName.setText(data.getOfficeName());
+
+
         }
 
 
@@ -200,27 +203,35 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        Alert.createYesNoAlert(mContext,
-                mContext.getString(R.string.ok),
-                mContext.getString(R.string.cancel),
-                mContext.getString(R.string.txt_alert_title),
-                mContext.getString(R.string.alert_cancel_job),
-                new Alert.OnAlertClickListener() {
+        String jobDate=mJobListData.get(position).getJobDate();
+        String getCurrentDate=mJobListData.get(position).getCurrentDate();
+        if (jobDate.compareTo(getCurrentDate) > 0) {
+            Alert.createYesNoAlert(mContext,
+                    mContext.getString(R.string.ok),
+                    mContext.getString(R.string.cancel),
+                    mContext.getString(R.string.txt_alert_title),
+                    mContext.getString(R.string.alert_cancel_job),
+                    new Alert.OnAlertClickListener() {
 
-            @Override
-            public void onPositive(DialogInterface dialog) {
-                CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getId());
-                dialogFragment.setArguments(bundle);
-                dialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), null);
-            }
+                        @Override
+                        public void onPositive(DialogInterface dialog) {
+                            CancelReasonDialogFragment dialogFragment = CancelReasonDialogFragment.newInstance();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(Constants.EXTRA_JOB_ID, mJobListData.get(position).getId());
+                            dialogFragment.setArguments(bundle);
+                            dialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), null);
+                        }
 
-            @Override
-            public void onNegative(DialogInterface dialog) {
-                dialog.dismiss();
-            }
-        });
+                        @Override
+                        public void onNegative(DialogInterface dialog) {
+                            dialog.dismiss();
+                        }
+                    });
+
+        }
+
+
+
 
         return false;
     }

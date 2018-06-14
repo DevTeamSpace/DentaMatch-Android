@@ -104,7 +104,7 @@
     <string name="ok">OK</string>
     <string name="block">BLOCK</string>
     <string name="cancel">Cancel</string>
-    <string name="msg_block_alert">This Recruiter is BLOCKED and will no longer be able to see your profile or send you messages.</string>
+    <string name="msg_block_alert">This Recruiter is BLOCKED and will no longer be able to see your profile or send you messages</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -301,7 +301,7 @@
     <string name="calendar_fri">Fr</string>
     <string name="calendar_sat">Sa</string>
 
-    <string name="booked_job">BOOKED JOBS</string>
+    <string name="booked_job">BOOKED JOBS (Long press to cancel job)</string>
     <string name="txt_show_less">READ LESS</string>
     <string name="txt_full_sunday">Sunday</string>
     <string name="txt_full_monday">Monday</string>
@@ -331,7 +331,7 @@
     <string name="alert_invalid_temp_job">Please select at least one  day for temporary job.</string>
     <string name="header_calendar">Calendar</string>
     <string name="text_todays">Today</string>
-    <string name="alert_cancel_job">Are you sure you want to cancel the job?</string>
+    <string name="alert_cancel_job">Are you sure you want to cancel the job?\n(Multiple cancellations can result in suspension of your account)</string>
     <string name="alert_reason_cancel_job">Please enter a reason for cancelling the job.</string>
     <string name="alert_select_job_type">Please select at least one available option.</string>
     <string name="sec">SEC AGO </string>

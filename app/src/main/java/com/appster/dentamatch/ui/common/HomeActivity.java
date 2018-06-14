@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.eventbus.LocationEvent;
+import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -140,6 +141,10 @@ public class HomeActivity extends BaseActivity {
      * initViews is used to initialize this view at app launch
      */
     private void initViews() {
+      UserModel userModel= PreferenceUtil.getUserModel();
+      if(userModel!=null){
+          LogUtils.LOGD(TAG,"Email::"+userModel.getEmail());
+      }
         bottomBar = (AHBottomNavigation) findViewById(R.id.ntb_horizontal);
         bottomBar.setTitleTextSize(Utils.convertSpToPixels(10.0f, this), Utils.convertSpToPixels(10.0f, this));
         bottomBar.addItem(new AHBottomNavigationItem(getString(R.string.nav_job), R.drawable.img_nav_jobs));
