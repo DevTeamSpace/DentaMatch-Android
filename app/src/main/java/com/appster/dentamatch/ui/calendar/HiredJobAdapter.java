@@ -203,7 +203,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        String jobDate=mJobListData.get(position).getJobDate();
+        String jobDate=mJobListData.get(position).getTempDates();
         String getCurrentDate=mJobListData.get(position).getCurrentDate();
         if (jobDate.compareTo(getCurrentDate) > 0) {
             Alert.createYesNoAlert(mContext,

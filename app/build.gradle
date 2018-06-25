@@ -222,7 +222,9 @@ sonarqube {
     properties {
         property "sonar.projectName", "DentaMatch_android"
         property "sonar.projectKey", "myproject:DentaMatch_android"
-        property "sonar.host.url", "http://54.152.88.149:9000/sonar"
+        property "sonar.host.url", "https://sonarqube.appster.in/sonar"
+        //property "sonar.host.url", "http://54.152.88.149:9000/sonar"
+
         property "sonar.sources", "src/main"
         property "sonar.login", "admin"
         property "sonar.password", "admin"

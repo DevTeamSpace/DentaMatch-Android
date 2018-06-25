@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
@@ -34,6 +35,8 @@ import com.appster.dentamatch.widget.CustomTextView;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+
+import static com.instabug.library.Instabug.getApplicationContext;
 
 /**
  * Created by bawenderyandra on 08/03/17.
@@ -191,6 +194,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             @Override
                             public void onPositive(DialogInterface dialog) {
                                 callInviteStatusApi(position, 0);
+
                             }
 
                             @Override
@@ -256,7 +260,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     }
 
                 } else {
-                    ((BaseActivity) mContext).showToast(response.getMessage());
+
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            response.getMessage(),
+                            Toast.LENGTH_LONG);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.taost_drawable);
+                    toastView.setPadding(60,60,60,60);
+                    toast.show();
+                    //((BaseActivity) mContext).showToast(response.getMessage());
                 }
             }
 
@@ -287,7 +299,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         }
 
                     } else {
-                        Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                response.getMessage(),
+                                Toast.LENGTH_LONG);
+                        View toastView = toast.getView();
+                        toastView.setBackgroundResource(R.drawable.taost_drawable);
+                        toastView.setPadding(60,60,60,60);
+                        toast.show();
                     }
 
                    //////// updateSeenStatus(position, true);
@@ -324,7 +343,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         }
 
                     } else {
-                        ((BaseActivity) mContext).showToast(response.getMessage());
+                        //((BaseActivity) mContext).showToast(response.getMessage());
+
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                response.getMessage(),
+                                Toast.LENGTH_LONG);
+                        View toastView = toast.getView();
+                        toastView.setBackgroundResource(R.drawable.taost_drawable);
+                        toastView.setPadding(60,60,60,60);
+                        toast.show();
                     }
                 }
 

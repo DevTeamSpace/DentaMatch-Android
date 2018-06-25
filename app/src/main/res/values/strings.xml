@@ -178,7 +178,7 @@
     <string name="cetification_title">Update Certifications</string>
     <string name="about_me_title">Executive Summary </string>
     <string name="alert_pervious_date">Please select a valid date.</string>
-    <string name="write_description">Introduction yourself and tell us what you\'re looking for. What can you bring to the office?</string>
+    <string name="write_description">Introduce yourself and tell us what you\'re looking for. What can you bring to the office?</string>
     <string name="lable_complete_profile">Complete Profile</string>
     <string name="blank_licence_number">Licence number can not be blank.</string>
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>

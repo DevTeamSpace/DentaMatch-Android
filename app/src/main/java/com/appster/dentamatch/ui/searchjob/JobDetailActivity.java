@@ -450,9 +450,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
                     String tempDatesToSet = "";
 
-                   /* if (tempDates.size() > 2) {
-                        tempDatesToSet = tempDates.get(0).concat(",\n ").concat(tempDates.get(1)).concat("...");
-                    } else {*/
+                   if (tempDates.size() > 3) {
+                        tempDatesToSet = tempDates.get(0).concat(",\n ").concat(tempDates.get(1)).concat(",\n ").concat(tempDates.get(2)).concat("...");
+                    } else {
                         for(int i = 0; i < tempDates.size(); i++) {
                             if(i != tempDates.size() - 1){
                                 tempDatesToSet =  tempDatesToSet.concat(tempDates.get(i)).concat(",\n ");
@@ -460,7 +460,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                                 tempDatesToSet = tempDatesToSet.concat(tempDates.get(i));
                             }
                         }
-                    //}
+                   }
 
                     mBinding.tvJobDetailDate.setText(tempDatesToSet+"\n Dates Needed");
                 }

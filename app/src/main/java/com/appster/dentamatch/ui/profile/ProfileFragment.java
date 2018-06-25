@@ -105,7 +105,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellSchooling.tvAddCertificates.setText(getString(R.string.add_school));
         profileBinding.cellLicence.tvAddCertificates.setText(getString(R.string.add_licence));
         profileBinding.cellLicence.tvCertificatesName.setText(getString(R.string.label_licence_number));
-        profileBinding.cellExp.tvCertificatesName.setText(getString(R.string.title_experience));
+        profileBinding.cellExp.tvCertificatesName.setText(getString(R.string.header_work_exp));
         profileBinding.cellSchooling.tvCertificatesName.setText(getString(R.string.title_schooling));
         profileBinding.cellKeySkill.tvCertificatesName.setText(getString(R.string.title_skill));
         profileBinding.cellAffiliation.tvCertificatesName.setText(getString(R.string.title_affiliation));
