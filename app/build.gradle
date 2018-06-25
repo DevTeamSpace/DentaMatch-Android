@@ -226,8 +226,8 @@ sonarqube {
         //property "sonar.host.url", "http://54.152.88.149:9000/sonar"
 
         property "sonar.sources", "src/main"
-        property "sonar.login", "admin"
-        property "sonar.password", "admin"
+        property "sonar.login", "32178e74d955c119fc38c5e044b13a5f137096bb"
+       // property "sonar.password", "admin"
         property 'sonar.sourceEncoding', 'UTF-8'
         property 'sonar.profile', 'AllAndroid'
         property 'sonar.import_unknown_files', true
