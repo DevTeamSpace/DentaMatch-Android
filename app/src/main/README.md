@@ -1,4 +1,4 @@
-SeatXchange Android App
+Denta Match Android App
 ======================
 
 ## Getting Started

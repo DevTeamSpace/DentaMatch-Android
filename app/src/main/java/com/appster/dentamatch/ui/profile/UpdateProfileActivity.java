@@ -35,7 +35,6 @@ import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.PreferredJobLocationAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.profile.workexperience.UpdateLicenseActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PermissionUtils;
@@ -102,7 +101,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
         mBinding.etPreferredJobLocation.setFocusableInTouchMode(false);
         mBinding.etPreferredJobLocation.setCursorVisible(false);
-        if(mProfileData!=null && mProfileData.getUser()!=null && mProfileData.getUser().getPreferredLocationName()!=null) {
+        if (mProfileData != null && mProfileData.getUser() != null && mProfileData.getUser().getPreferredLocationName() != null) {
             mBinding.etPreferredJobLocation.setText(mProfileData.getUser().getPreferredLocationName());
         }
         mBinding.etPreferredJobLocation.setOnClickListener(this);
@@ -116,34 +115,31 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
     }
 
 
-
     private void getProfileData() {
         showProgressBar(getString(R.string.please_wait));
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.getProfile().enqueue(new BaseCallback<ProfileResponse>(UpdateProfileActivity.this) {
             @Override
             public void onSuccess(ProfileResponse response) {
-               hideProgressBar();
+                hideProgressBar();
                 if (response.getStatus() == 1) {
 
-                        PreferenceUtil.setJobTitleList(response.getProfileResponseData().getJobTitleLists());
-                        String mJobTitle="";
-                        boolean isFound=false;
-                        for(int i=0;i<response.getProfileResponseData().getJobTitleLists().size();i++){
-                            if(mSelectedJobTitleID==response.getProfileResponseData().getJobTitleLists().get(i).getId()){
+                    PreferenceUtil.setJobTitleList(response.getProfileResponseData().getJobTitleLists());
+                    String mJobTitle = "";
+                    boolean isFound = false;
+                    for (int i = 0; i < response.getProfileResponseData().getJobTitleLists().size(); i++) {
+                        if (mSelectedJobTitleID == response.getProfileResponseData().getJobTitleLists().get(i).getId()) {
 
-                                mJobTitle=response.getProfileResponseData().getJobTitleLists().get(i).getJobTitle();
-                                isFound=true;
-                                break;
-                            }
+                            mJobTitle = response.getProfileResponseData().getJobTitleLists().get(i).getJobTitle();
+                            isFound = true;
+                            break;
                         }
+                    }
 
-                        if(!isFound){
-                            mSelectedJobTitleID=0;
-                        }
+                    if (!isFound) {
+                        mSelectedJobTitleID = 0;
+                    }
                     mBinding.etJobTitle.setText(mJobTitle);
-
-
 
 
                 } else {
@@ -160,7 +156,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         });
 
     }
-
 
 
     private void setViewData() {
@@ -188,7 +183,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             preferredJobLocationId = mProfileData.getUser().getPreferredJobLocationId();
 
 
-
             if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
             } else {
@@ -196,7 +190,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 mBinding.etJobTitle.setText(mProfileData.getUser().getJobtitleName());
             }
 
-            if((mProfileData.getUser().getLicenseNumber()!=null && !TextUtils.isEmpty(mProfileData.getUser().getLicenseNumber()))){
+            if ((mProfileData.getUser().getLicenseNumber() != null && !TextUtils.isEmpty(mProfileData.getUser().getLicenseNumber()))) {
                 mBinding.createProfileInputLayoutLicence.setVisibility(View.VISIBLE);
                 mBinding.createProfileInputLayoutState.setVisibility(View.VISIBLE);
                 mBinding.createProfileEtLicence.setText(mProfileData.getUser().getLicenseNumber());
@@ -311,8 +305,11 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         builderSingle.setAdapter(mPreferredJobLocationDataArrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mBinding.etPreferredJobLocation.setText(mPreferredJobLocationDataArrayAdapter.getItem(which).getPreferredLocationName());
-                preferredJobLocationId = mPreferredJobLocationDataArrayAdapter.getItem(which).getId();
+                PreferredJobLocationData jobLocationData = mPreferredJobLocationDataArrayAdapter.getItem(which);
+                if (jobLocationData != null) {
+                    mBinding.etPreferredJobLocation.setText(jobLocationData.getPreferredLocationName());
+                    preferredJobLocationId = jobLocationData.getId();
+                }
             }
         });
         builderSingle.show();
@@ -409,10 +406,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         }*/ else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
             showToast(getString(R.string.error_no_description));
 
-        }else if(mBinding.createProfileEtLicence.isShown() && mBinding.createProfileEtLicence.getText().toString().trim().length()==0){
+        } else if (mBinding.createProfileEtLicence.isShown() && mBinding.createProfileEtLicence.getText().toString().trim().length() == 0) {
             showToast(getString(R.string.pls_enter_license_no));
 
-        }else if(mBinding.createProfileEtLicence.isShown() && mBinding.createProfileEtState.getText().toString().trim().length()==0){
+        } else if (mBinding.createProfileEtLicence.isShown() && mBinding.createProfileEtState.getText().toString().trim().length() == 0) {
             showToast(getString(R.string.pls_enter_license_state));
         }
 
@@ -439,10 +436,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
         request.setLastName(Utils.getStringFromEditText(mBinding.etLname));
         request.setAboutMe(Utils.getStringFromEditText(mBinding.etDesc));
         request.setJobTitleID(mSelectedJobTitleID);
-        request.setPreferredJobLocationId(""+preferredJobLocationId);
+        request.setPreferredJobLocationId("" + preferredJobLocationId);
 
 
-        if(mBinding.createProfileEtLicence.getVisibility()==View.VISIBLE) {
+        if (mBinding.createProfileEtLicence.getVisibility() == View.VISIBLE) {
             request.setState(mBinding.createProfileEtState.getText().toString());
             request.setLicenseNumber(mBinding.createProfileEtLicence.getText().toString());
         }
@@ -613,11 +610,11 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mBinding.createProfileEtLicence.setText("");
             mBinding.createProfileEtState.setText("");
 
-            if((mProfileData.getUser().getLicenseNumber()!=null && !TextUtils.isEmpty(mProfileData.getUser().getLicenseNumber())) && mProfileData.getUser().getJobtitleName().equals(title)){
+            if ((mProfileData.getUser().getLicenseNumber() != null && !TextUtils.isEmpty(mProfileData.getUser().getLicenseNumber())) && mProfileData.getUser().getJobtitleName().equals(title)) {
                 mBinding.createProfileEtLicence.setText(mProfileData.getUser().getLicenseNumber());
                 mBinding.createProfileEtState.setText(mProfileData.getUser().getState());
             }
 
-            }
+        }
     }
 }

@@ -97,7 +97,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         hideProgressBar();
@@ -139,7 +138,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 fragment.onActivityResult(requestCode, resultCode, data);
                 break;
 
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -163,7 +163,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
 
-            if (permissionResult != null){
+            if (permissionResult != null) {
                 permissionResult.permissionsGranted();
             }
         }
@@ -217,13 +217,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void processToShowDialog() {
         try {
-            mProgressDialog =  ProgressDialog.show(this,null,null);
-            mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            mProgressDialog = ProgressDialog.show(this, null, null);
+            if (mProgressDialog.getWindow() != null)
+                mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             mProgressDialog.setCancelable(false);
             mProgressDialog.setContentView(View.inflate(this, R.layout.progress_bar, null));
 
         } catch (Exception e) {
-           LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
     }
@@ -237,7 +238,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressDialog = null;
 
         } catch (Exception x) {
-            LogUtils.LOGE(TAG,x.getMessage());
+            LogUtils.LOGE(TAG, x.getMessage());
         }
     }
 
@@ -258,7 +259,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             hideKeyboard(getCurrentFocus());
 
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -272,13 +273,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
     public void pushFragment(BaseFragment fragment, Bundle args, ANIMATION_TYPE animationType) {
         try {
-            if (fragment == null){
+            if (fragment == null) {
                 return;
             }
 
@@ -310,13 +311,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
 
         } catch (Exception x) {
-            LogUtils.LOGE(TAG,x.getMessage());
+            LogUtils.LOGE(TAG, x.getMessage());
         }
     }
 
     public void localLogOut() {
 
-        String fcmToken= PreferenceUtil.getFcmToken();
+        String fcmToken = PreferenceUtil.getFcmToken();
         PreferenceUtil.reset();
         PreferenceUtil.setFcmToken(fcmToken);
         PreferenceUtil.setIsOnBoarding(true);
@@ -334,13 +335,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     public enum ANIMATION_TYPE {
         SLIDE, FADE, DEFAULT, NONE
     }
+
     /**
      * Hides the soft keyboard
      */
     public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
+        if (getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            if (inputMethodManager != null)
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 
@@ -350,10 +353,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void showSoftKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         view.requestFocus();
-        inputMethodManager.showSoftInput(view, 0);
+        if (inputMethodManager != null)
+            inputMethodManager.showSoftInput(view, 0);
     }
 
-    public void launchImageViewer(View v, String imageUrl){
+    public void launchImageViewer(View v, String imageUrl) {
         try {
             Intent intent = new Intent(this, ImageViewingActivity.class);
             intent.putExtra(Constants.EXTRA_PIC, imageUrl);
@@ -364,8 +368,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             } else {
                 startActivity(intent);
             }
-        }catch (Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 }
