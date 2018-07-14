@@ -33,8 +33,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.EditText;
@@ -44,11 +42,8 @@ import android.widget.Toast;
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
-import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
-import com.google.gson.TypeAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,16 +64,14 @@ import java.util.UUID;
  * Utils for app
  */
 public class Utils {
+
     private static final String TAG = LogUtils.makeLogTag(Utils.class);
 
-    //private static final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-   // private static final SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-    //private static final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
-    //private static final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mma", Locale.getDefault()); // DATE FORMAT : 09:46 am
-    //private static final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
-    //private static final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
-
-
+    /**
+     * To get the device unique ID
+     *
+     * @return deviceId
+     */
     public synchronized static String getDeviceID() {
         String uniqueID = PreferenceUtil.getDeviceId();
 
@@ -90,29 +83,31 @@ public class Utils {
         return uniqueID;
     }
 
+    /**
+     * To get the formatted date
+     *
+     * @param date String date
+     * @return formatted date
+     */
     public static String parseDateForTemp(String date) {
-      /*final SimpleDateFormat DateFormatMMDDYY = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
-
-        SimpleDateFormat serverDateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {
-            Date serverDate = serverDateOnlyFormat.parse(date);
-            return DateFormatMMDDYY.format(serverDate);
-        } catch (ParseException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
-        }*/
-        try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date d1 = df.parse(date);
 
 
-          return   new SimpleDateFormat("EEE, MMM dd").format(d1);
-        }catch (ParseException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            return new SimpleDateFormat("EEE, MMM dd", Locale.getDefault()).format(d1);
+        } catch (ParseException e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
         return null;
     }
 
+    /**
+     * To get the User FCM token for push notification
+     *
+     * @return FCM token
+     */
     public static String getDeviceToken() {
         if (PreferenceUtil.getFcmToken() != null) {
             return PreferenceUtil.getFcmToken();
@@ -120,6 +115,13 @@ public class Utils {
         return "";
     }
 
+    /**
+     * To get drawable based on API version
+     *
+     * @param context    context
+     * @param drawableId drawable id
+     * @return Drawable
+     */
     public static Drawable getDrawable(@NonNull Context context, @DrawableRes int drawableId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return context.getDrawable(drawableId);
@@ -129,8 +131,15 @@ public class Utils {
         return context.getResources().getDrawable(drawableId);
     }
 
+    /**
+     * To check if the message date are same or different
+     *
+     * @param lastMsgTime     last message time
+     * @param receivedMsgTime received message time
+     * @return boolean
+     */
     public static boolean isMsgDateDifferent(long lastMsgTime, long receivedMsgTime) {
-         final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
         DateOnlyFormat.setTimeZone(TimeZone.getDefault());
 
@@ -143,6 +152,13 @@ public class Utils {
         return !lastMsgDateLabel.equalsIgnoreCase(receivedMsgDateLabel);
     }
 
+    /**
+     * TO get the address for the provided coordinate
+     *
+     * @param ct     context
+     * @param latLng coordinate
+     * @return address
+     */
     public static Address getReverseGeoCode(Context ct, LatLng latLng) {
         Address address = null;
         if (ct != null) {
@@ -155,7 +171,7 @@ public class Utils {
                         address = addressList.get(0);
                     }
                 } catch (IOException e) {
-                    LogUtils.LOGE(TAG,e.getMessage());
+                    LogUtils.LOGE(TAG, e.getMessage());
                 }
             }
         }
@@ -164,35 +180,13 @@ public class Utils {
         return address;
     }
 
-
-    public static BaseResponse parseDataOnError(retrofit2.Response<BaseResponse> response) {
-        Gson gson = new Gson();
-        BaseResponse apiResponse = null;
-        TypeAdapter<BaseResponse> adapter = gson.getAdapter(BaseResponse.class);
-
-        try {
-            if (response.errorBody() != null) {
-                apiResponse = adapter.fromJson(response.errorBody().string());
-            } else {
-                LogUtils.LOGE(TAG, "Retrofit response.errorBody found null!");
-            }
-        } catch (IOException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
-        }
-
-        return apiResponse;
-    }
-
-    public static boolean isSimulator() {
-        boolean isSimulator = "google_sdk".equals(Build.PRODUCT)
-                || "vbox86p".equals(Build.PRODUCT)
-                || "sdk".equals(Build.PRODUCT);
-        LogUtils.LOGD(TAG, "Build.PRODUCT= " + Build.PRODUCT + "  isSimulator= "
-                + isSimulator);
-
-        return isSimulator;
-    }
-
+    /**
+     * To convert dp to pixel
+     *
+     * @param ct context
+     * @param dp value in dp
+     * @return pixel value
+     */
     public static int dpToPx(Context ct, int dp) {
         if (ct != null) {
             DisplayMetrics displayMetrics = ct.getResources().getDisplayMetrics();
@@ -202,30 +196,24 @@ public class Utils {
         return 0;
     }
 
-    public static void setSpanUnderline(SpannableString spannableString, int start, int end) {
-        spannableString.setSpan(new UnderlineSpan(), start, end, 0);
-    }
-
-    public static void setSpanColor(SpannableString spanColor, int start, int end, int colorCode) {
-        spanColor.setSpan(new ForegroundColorSpan(colorCode), start, end, 0);
-    }
-
-    public static void setSpanClickEvent(SpannableString spannableString, int start, int end, ClickableSpan clickableSpan) {
-        spannableString.setSpan(clickableSpan, start, end, 0);
-    }
-
-    public static void setSpanCommonProperty(TextView txv, SpannableString spanString) {
-        txv.setMovementMethod(LinkMovementMethod.getInstance());
-        txv.setText(spanString, TextView.BufferType.SPANNABLE);
-        txv.setSelected(true);
-    }
-
+    /**
+     * To show the toast message
+     *
+     * @param context context
+     * @param message message
+     */
     public static void showToast(Context context, String message) {
         if (context != null) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * To show long toast message
+     *
+     * @param context context
+     * @param message message
+     */
     public static void showToastLong(Context context, String message) {
         if (context != null) {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
@@ -235,10 +223,10 @@ public class Utils {
     /**
      * to set spannable string forgrounf color
      *
-     * @param spanColor
-     * @param start
-     * @param end
-     * @param colorCode
+     * @param spanColor span color
+     * @param start     start index
+     * @param end       end index
+     * @param colorCode color code
      */
     public static void setSpannColor(SpannableString spanColor, int start, int end, int colorCode) {
         spanColor.setSpan(new ForegroundColorSpan(colorCode), start, end, 0);
@@ -249,28 +237,15 @@ public class Utils {
     /**
      * to set spannable string background color
      *
-     * @param spanColor
-     * @param start
-     * @param end
-     * @param colorCode
-     * @param bgColor
+     * @param spanColor span color
+     * @param start     start index
+     * @param end       end index
+     * @param colorCode color code
+     * @param bgColor   background color
      */
     public static void setSpannColorNBg(SpannableString spanColor, int start, int end, int colorCode, int bgColor) {
         spanColor.setSpan(new ForegroundColorSpan(colorCode), start, end, 0);
         spanColor.setSpan(new BackgroundColorSpan(bgColor), start, end, 0);
-
-    }
-
-    /**
-     * set typeface of spannable string
-     *
-     * @param spanTypeface
-     * @param start
-     * @param end
-     * @param type
-     */
-    public static void setSpannTypeface(SpannableString spanTypeface, int start, int end, int type) {
-        spanTypeface.setSpan(new StyleSpan(type), start, end, 0);
 
     }
 
@@ -371,7 +346,7 @@ public class Utils {
     }
 
     public static String convertUTCtoLocal(String UTCDateTime) {
-     final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
+        final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
 
         Date myDate = null;
         try {
@@ -381,7 +356,7 @@ public class Utils {
 
             myDate = timeOnlyDateFormat.parse(UTCDateTime);
         } catch (ParseException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
         hourOnlyDateFormat.setTimeZone(TimeZone.getDefault());
@@ -404,7 +379,7 @@ public class Utils {
     }
 
     public static String convertUTCToTimeLabel(String UTCDateTime) {
-      final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
         Long time = Long.parseLong(UTCDateTime);
         Date receivedDate = new Date(time);
@@ -431,7 +406,7 @@ public class Utils {
     }
 
     public static String compareDateFromCurrentLocalTime(String date) {
-         SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat FullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
         final SimpleDateFormat DateOnlyFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
@@ -458,7 +433,7 @@ public class Utils {
                 return receivedDate;
             }
         } catch (ParseException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
         return "";
@@ -466,7 +441,7 @@ public class Utils {
 
 
     public static String compareDateForDateLabel(String UTCDateTime) {
-       final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
+        final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
 
         Long time = Long.parseLong(UTCDateTime);
         Date date = new Date(time);
@@ -510,13 +485,13 @@ public class Utils {
             monthLabel = DentaApp.getInstance().getString(R.string.txt_multiple_months);
         }
 
-        if (month / 12 == 0){
+        if (month / 12 == 0) {
             return month % 12 + " " + monthLabel;
 
-        }else if(month % 12 == 0){
+        } else if (month % 12 == 0) {
             return month / 12 + " " + yearLabel;
 
-        }else{
+        } else {
             return month / 12 + " " + yearLabel + " " + month % 12 + " " + monthLabel;
         }
 
@@ -567,7 +542,7 @@ public class Utils {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             netInfo = cm.getActiveNetworkInfo();
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
@@ -659,7 +634,7 @@ public class Utils {
             model.setMessage(messageData.getString(SocketManager.PARAM_USER_MSG));
             model.setMessageId(messageData.getString(SocketManager.PARAM_MESSAGE_ID));
         } catch (JSONException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
         return model;
     }
@@ -674,7 +649,7 @@ public class Utils {
             model.setMessage(messageData.getString(SocketManager.PARAM_USER_MSG));
             model.setMessageId(messageData.getString(SocketManager.PARAM_MESSAGE_ID));
         } catch (JSONException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
         return model;
     }
@@ -691,7 +666,7 @@ public class Utils {
             model.setMessageListId(messageData.getString("messageListId"));
             model.setRecruiterName(messageData.getString("name"));
         } catch (JSONException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
         return model;
@@ -712,7 +687,7 @@ public class Utils {
             SimpleDateFormat reqFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
             return reqFormat.format(date);
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
             return "";
         }
     }
@@ -733,27 +708,41 @@ public class Utils {
             SimpleDateFormat reqFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             return reqFormat.format(date);
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
             return "";
         }
     }
 
+    /**
+     * Get formatted date of notification
+     *
+     * @param dateStr    date as string
+     * @param dateFormat date format
+     * @return Date
+     */
     public static Date getDate(String dateStr, String dateFormat) {
         try {
             SimpleDateFormat inputFormat;
             if (dateFormat != null) {
-                inputFormat = new SimpleDateFormat(dateFormat);
+                inputFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
             } else {
-                inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             }
 
             return inputFormat.parse(dateStr);
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
             return null;
         }
     }
 
+    /**
+     * Get formatted date of notification
+     *
+     * @param dateStr    date as string
+     * @param dateFormat date format
+     * @return Date
+     */
     public static Date getDateNotification(String dateStr, String dateFormat) {
         try {
             SimpleDateFormat inputFormat;
@@ -766,11 +755,17 @@ public class Utils {
 
             return inputFormat.parse(dateStr);
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
             return null;
         }
     }
 
+    /**
+     * To get the day of the week
+     *
+     * @param dateStr date string
+     * @return date
+     */
     public static String getDayOfWeek(String dateStr) {
         try {
 
@@ -780,41 +775,39 @@ public class Utils {
             SimpleDateFormat reqFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
             return reqFormat.format(date);
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
             return "";
         }
     }
 
+    /**
+     * Get formatted date
+     *
+     * @param date Date
+     * @return Date
+     */
     public static Date parseDate(Date date) {
         try {
-
-
             SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            // myDate is the java.util.Date in yyyy-mm-dd format
-            // Converting it into String using formatter
             String strDate = sm.format(date);
             return sm.parse(strDate);
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
             return null;
 
         }
     }
 
+    /**
+     * To get the duration time using created date
+     *
+     * @param createdDate created date
+     * @param context     context
+     * @return duration string
+     */
     public static String getDuration(Date createdDate, Context context) {
         String time = "";
-//            FullDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-//            Date currentDateTime = new Date();
-//            String createdDateString = FullDateFormat.format(createdDate);
-//            FullDateFormat.setTimeZone(TimeZone.getDefault());
-//            Date convertedCreatedDate = FullDateFormat.parse(createdDateString);
-
-//            long currentMillis = currentDateTime.getTime();
-
         Date currentDate = new Date();
-//            FullDateFormat.setTimeZone(TimeZone.getDefault());
-//            String convertedCreatedDate = FullDateFormat.format(createdDate);
-//            Date parsedDate = FullDateFormat.parse(convertedCreatedDate);
 
         long currentMillis = currentDate.getTime();
         long createMillis = createdDate.getTime();

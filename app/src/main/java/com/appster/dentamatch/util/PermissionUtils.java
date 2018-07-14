@@ -6,9 +6,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 /**
- * Created by Virender on 26/04/16.
+ * To handle runtime permission
  */
 public class PermissionUtils {
+
+    /**
+     * To check if the requested permission has been granted or not
+     *
+     * @param permission runtime permission
+     * @param mActivity  requested in activity
+     * @return permission granted status
+     */
     public static boolean checkPermissionGranted(String permission, Activity mActivity) {
         boolean Status = false;
         Status = ContextCompat.checkSelfPermission(mActivity, permission) == PackageManager.PERMISSION_GRANTED;
@@ -16,9 +24,15 @@ public class PermissionUtils {
         return Status;
     }
 
-    public static void requestPermission(Activity mActivity,String[] permission,int requestCode){
-        ActivityCompat.requestPermissions(mActivity, permission,requestCode);
-
+    /**
+     * Tp request runtime permission
+     *
+     * @param mActivity   requested in activity
+     * @param permission  permissions
+     * @param requestCode request code
+     */
+    public static void requestPermission(Activity mActivity, String[] permission, int requestCode) {
+        ActivityCompat.requestPermissions(mActivity, permission, requestCode);
     }
 }
 

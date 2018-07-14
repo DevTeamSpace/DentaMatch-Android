@@ -16,7 +16,6 @@ import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.orhanobut.hawk.Hawk;
-import com.squareup.leakcanary.LeakCanary;
 
 import io.fabric.sdk.android.Fabric;
 

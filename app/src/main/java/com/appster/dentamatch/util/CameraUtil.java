@@ -1,9 +1,7 @@
 package com.appster.dentamatch.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,6 +14,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 
 import com.appster.dentamatch.R;
@@ -29,7 +28,7 @@ import java.io.IOException;
  * Created by virender on 10/06/16.
  */
 public class CameraUtil {
-    private static final String TAG=LogUtils.makeLogTag(CameraUtil.class);
+    private static final String TAG = LogUtils.makeLogTag(CameraUtil.class);
     private static CameraUtil instance = null;
 
     public static CameraUtil getInstance() {
@@ -39,7 +38,13 @@ public class CameraUtil {
         return instance;
     }
 
-
+    /**
+     * To get image path from gallery
+     *
+     * @param uri     file URI
+     * @param context context
+     * @return file path from gallery
+     */
     public String getGalleryPAth(Uri uri, Context context) {
         String[] projection = {MediaStore.MediaColumns.DATA};
         CursorLoader cursorLoader = new CursorLoader(context, uri, projection, null, null,
@@ -51,111 +56,15 @@ public class CameraUtil {
         return cursor.getString(column_index);
     }
 
-    public void takePhoto(int requestCamera, Context context) {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        ((Activity) context).startActivityForResult(cameraIntent, requestCamera);
-    }
-
-    public void getImageFromGallery(int requestGallery, Context context) {
-        Intent gIntent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        gIntent.setType("image/*");
-        ((Activity) context).startActivityForResult(
-                Intent.createChooser(gIntent, "Select File"),
-                requestGallery);
-    }
-
-    public Bitmap adjustImageOrientation(Bitmap image, String picturePath) {
-        ExifInterface exif;
-        try {
-            exif = new ExifInterface(picturePath);
-            int exifOrientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
-
-            int rotate = 0;
-            switch (exifOrientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
-
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
-
-                default:
-                    break;
-            }
-
-            if (rotate != 0) {
-                int w = image.getWidth();
-                int h = image.getHeight();
-
-                Matrix mtx = new Matrix();
-                mtx.preRotate(rotate);
-
-                image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
-
-            }
-        } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
-
-            return null;
-        }
-        return image;
-    }
-
-
-    public Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight) { // BEST QUALITY MATCH
-
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        int inSampleSize = 1;
-
-        if (height > reqHeight) {
-            inSampleSize = Math.round((float) height / (float) reqHeight);
-        }
-
-        int expectedWidth = width / inSampleSize;
-
-        if (expectedWidth > reqWidth) {
-            inSampleSize = Math.round((float) width / (float) reqWidth);
-        }
-
-        options.inSampleSize = inSampleSize;
-
-
-        options.inJustDecodeBounds = false;
-
-        return BitmapFactory.decodeFile(path, options);
-    }
-
-
-    public Bitmap decodeBitmapFromPath(String filePath, Context c) {
-        Bitmap scaledBitmap = null;
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-
-        options.inSampleSize = calculateInSampleSize(options, convertDipToPixels(c, 150), convertDipToPixels(c, 200));
-        options.inJustDecodeBounds = false;
-
-        scaledBitmap = BitmapFactory.decodeFile(filePath, options);
-        return scaledBitmap;
-    }
-
+    /**
+     * Helper function to calculate image size in proportion
+     *
+     * @param filePath requested file path
+     * @param c        context
+     * @param width    image with
+     * @param height   image height
+     * @return Bitmap
+     */
     public Bitmap decodeBitmapFromPath(String filePath, Context c, int width, int height) {
         Bitmap scaledBitmap = null;
 
@@ -175,6 +84,14 @@ public class CameraUtil {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dips, r.getDisplayMetrics());
     }
 
+    /**
+     * To calculate In sample size or proportional size with requested with and height.
+     *
+     * @param options   Bitmap factory option
+     * @param reqWidth  requested width
+     * @param reqHeight requested height
+     * @return calculated size
+     */
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -185,8 +102,8 @@ public class CameraUtil {
             final int widthRatio = Math.round((float) width / (float) reqWidth);
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
-        final float totalPixels =(float) width * height;
-        final float totalReqPixelsCap =(float) reqWidth * reqHeight * 2.0f;
+        final float totalPixels = (float) width * height;
+        final float totalReqPixelsCap = (float) reqWidth * reqHeight * 2.0f;
 
         while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
             inSampleSize++;
@@ -195,6 +112,13 @@ public class CameraUtil {
         return inSampleSize;
     }
 
+    /**
+     * To compress image from the provided image URI.
+     *
+     * @param imageUri image URI
+     * @param context  context
+     * @return compressed path of image
+     */
     public String compressImage(String imageUri, Context context) {
 
         try {
@@ -215,8 +139,8 @@ public class CameraUtil {
 
                 float maxHeight = 700.0f;
                 float maxWidth = 600.0f;
-                float imgRatio =(float) actualWidth / actualHeight;
-                float maxRatio =(float) maxWidth / maxHeight;
+                float imgRatio = (float) actualWidth / actualHeight;
+                float maxRatio = (float) maxWidth / maxHeight;
 
 
                 if (actualHeight > maxHeight || actualWidth > maxWidth) {
@@ -245,13 +169,13 @@ public class CameraUtil {
                 try {
                     bmp = BitmapFactory.decodeFile(imageUri, options);
                 } catch (OutOfMemoryError exception) {
-                    LogUtils.LOGE(TAG,exception.getMessage());
+                    LogUtils.LOGE(TAG, exception.getMessage());
 
                 }
                 try {
                     scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
                 } catch (OutOfMemoryError exception) {
-                    LogUtils.LOGE(TAG,exception.getMessage());
+                    LogUtils.LOGE(TAG, exception.getMessage());
                 }
 
                 float ratioX = actualWidth / (float) options.outWidth;
@@ -261,8 +185,8 @@ public class CameraUtil {
 
                 Matrix scaleMatrix = new Matrix();
                 scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-                String filename="";
-                if(scaledBitmap!=null) {
+                String filename = "";
+                if (scaledBitmap != null) {
                     Canvas canvas = new Canvas(scaledBitmap);
                     canvas.setMatrix(scaleMatrix);
                     canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2.0f, middleY - bmp.getHeight() / 2.0f, new Paint(Paint.FILTER_BITMAP_FLAG));
@@ -289,33 +213,38 @@ public class CameraUtil {
                                 scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
                                 true);
                     } catch (IOException e) {
-                        LogUtils.LOGE(TAG,e.getMessage());
+                        LogUtils.LOGE(TAG, e.getMessage());
                     }
 
                     FileOutputStream out = null;
-                     filename = getFilename();
+                    filename = getFilename();
                     try {
                         out = new FileOutputStream(filename);
 
                         scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
 
                     } catch (FileNotFoundException e) {
-                        LogUtils.LOGE(TAG,e.getMessage());
+                        LogUtils.LOGE(TAG, e.getMessage());
                     }
                 }
 
                 return filename;
             }
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
             return null;
         }
     }
 
+    /**
+     * To get application specific file directory if exist it will return otherwise return by creating.
+     *
+     * @return file name
+     */
     private String getFilename() {
         File file = new File(Environment.getExternalStorageDirectory().getPath());
         if (!file.exists()) {
-            file.mkdirs();
+            Log.i(TAG, file.mkdirs() + "");
         }
 
         return (file.getAbsolutePath() + "/denta" + System.currentTimeMillis() + ".jpg");

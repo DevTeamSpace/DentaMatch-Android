@@ -52,14 +52,16 @@ public class StringUtils {
 
     public static String toCamelCase(String s) {
         String[] parts = s.split(" ");
-        String camelCaseString = "";
+        StringBuilder stringBuffer = new StringBuilder();
         for (String part : parts) {
-            camelCaseString = camelCaseString + " " + toProperCase(part);
+            stringBuffer.append(stringBuffer.toString());
+            stringBuffer.append(" ");
+            stringBuffer.append(toProperCase(part));
         }
-        return camelCaseString.trim();
+        return stringBuffer.toString().trim();
     }
 
-    static String toProperCase(String s) {
+    private static String toProperCase(String s) {
         if (!StringUtils.isNullOrEmpty(s)) {
             return s.substring(0, 1).toUpperCase() +
                     s.substring(1).toLowerCase();
@@ -74,7 +76,7 @@ public class StringUtils {
         return s;
     }
 
-    public static boolean isNullOrEmpty(int[] array) {
+    static boolean isNullOrEmpty(int[] array) {
         return array == null || array.length == 0;
     }
 

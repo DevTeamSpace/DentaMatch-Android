@@ -21,7 +21,6 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
 import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.MessagesListFragment;
-import com.appster.dentamatch.ui.notification.NotificationActivity;
 import com.appster.dentamatch.ui.profile.ProfileFragment;
 import com.appster.dentamatch.ui.searchjob.JobsFragment;
 import com.appster.dentamatch.ui.tracks.TrackFragment;

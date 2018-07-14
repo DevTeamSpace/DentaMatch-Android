@@ -11,7 +11,7 @@ import com.orhanobut.hawk.Hawk;
 import java.util.ArrayList;
 
 /**
- * Created by gautambisht on 11/11/16.
+ * To store and fetch data in local application private level shared preference data
  */
 
 public final class PreferenceUtil {
@@ -57,96 +57,140 @@ public final class PreferenceUtil {
     private static final String KEY_PREFERRED_JOB_LIST = "PREFERRED_JOB_LIST";
 
 
-
+    /**
+     * To save the current location
+     *
+     * @param location gps location
+     */
     public static void setUserCurrentLocation(Location location) {
         Hawk.put(KEY_USER_CURRENT_LOC, location);
     }
 
-    public static void setProfileCompleted(boolean completed){
+    /**
+     * To save profile completed flag so that if the app killed in SignUp transit it can be handle later.
+     *
+     * @param completed boolean
+     */
+    public static void setProfileCompleted(boolean completed) {
         Hawk.put(KEY_PROFILE_COMPLETE, completed);
     }
 
-    public static boolean isProfileCompleted(){
-        return Hawk.get(KEY_PROFILE_COMPLETE, false);
-    }
-
-    public static Object getUserCurrentLocation() {
-        return Hawk.get(KEY_USER_CURRENT_LOC);
-    }
-
-    public static void saveAppState(Object state) {
-        Hawk.put(KEY_APP_STATE, state);
-    }
-
+    /**
+     * To save the filter state applied by user so that later he would be getting same filter applied
+     *
+     * @param request filter model
+     */
     public static void saveJobFilter(SearchJobRequest request) {
         Hawk.put(KEY_JOB_FILTER_REQUEST, request);
     }
 
+    /**
+     * Save flag to check the change in filter
+     *
+     * @param filterChanged boolean
+     */
     public static void setFilterChanged(boolean filterChanged) {
         Hawk.put(KEY_IS_JOB_FILTER_CHANGED, filterChanged);
     }
 
+    /**
+     * To check if the filter been changed nor not
+     *
+     * @return boolean
+     */
     public static boolean isFilterChanged() {
         return Hawk.get(KEY_IS_JOB_FILTER_CHANGED, false);
     }
 
+    /**
+     * To get applied filter object
+     *
+     * @return Object
+     */
     public static Object getJobFilter() {
         return Hawk.get(KEY_JOB_FILTER_REQUEST);
     }
 
-    public static Object getAppState() {
-        return Hawk.get(KEY_APP_STATE);
-    }
-
-
-    public static boolean isFirstTimeLaunch() {
-        return Hawk.get(KEY_FIRST_TIME, false);
-    }
-
-    public static void setFirstTimeLaunch(boolean value) {
-        Hawk.put(KEY_FIRST_TIME, value);
-    }
-
+    /**
+     * To check and launch On Boarding tutorial
+     *
+     * @return boolean
+     */
     public static boolean getIsOnBoarding() {
         return Hawk.get(KEY_ON_BOARDING, false);
     }
 
+    /**
+     * To set On Boarding flag status for the next time launch
+     *
+     * @param value boolean
+     */
     public static void setIsOnBoarding(boolean value) {
         Hawk.put(KEY_ON_BOARDING, value);
     }
 
+    /**
+     * To set profile image path so that next time if avvailable we can fetch the same for fast loading
+     *
+     * @param value path
+     */
     public static void setProfileImagePath(String value) {
         Hawk.put(KEY_PROFILE_IMAGE_PATH, value);
     }
 
+    /**
+     * @param value
+     */
     public static void setJobFilter(boolean value) {
         Hawk.put(KEY_JOB_FILTER_SET, value);
     }
 
-    public static boolean isJobFilterSet() {
-        return Hawk.get(KEY_JOB_FILTER_SET, false);
-    }
-
+    /**
+     * @return
+     */
     public static String getProfileImagePath() {
         return Hawk.get(KEY_PROFILE_IMAGE_PATH);
     }
 
+    /**
+     * @param value
+     */
     public static void setJobTitleList(ArrayList<JobTitleListModel> value) {
         Hawk.put(KEY_JOB_TITLE_LIST, value);
     }
 
+    /**
+     * To get FCM token
+     *
+     * @return FCM token
+     */
     public static String getFcmToken() {
         return Hawk.get(KEY_FCM_TOKEN);
     }
 
+    /**
+     * To save FCM token
+     *
+     * @param token FCM token
+     */
     public static void setFcmToken(String token) {
         Hawk.put(KEY_FCM_TOKEN, token);
     }
 
+    /**
+     * Save searched job title list
+     *
+     * @param value list of job title model
+     */
     public static void setSearchJobTitleList(ArrayList<JobTitleListModel> value) {
         Hawk.put(KEY_SEARCH_JOB_TITLE_LIST, value);
     }
 
+    /**
+     * Get list of save job title list
+     *
+     * @return list of job title
+     */
     public static ArrayList<JobTitleListModel> getJobTitleList() {
         return Hawk.get(KEY_JOB_TITLE_LIST);
     }
@@ -281,7 +325,7 @@ public final class PreferenceUtil {
     }
 
     public static int getPreferredJobLocationId() {
-        return Hawk.get(KEY_PREFERRED_JOB_LOCATION_ID,0);
+        return Hawk.get(KEY_PREFERRED_JOB_LOCATION_ID, 0);
     }
 
 
@@ -308,7 +352,7 @@ public final class PreferenceUtil {
     }
 
     public static int getUserVerified() {
-        return Hawk.get(KEY_USER_VERIFIED,0);
+        return Hawk.get(KEY_USER_VERIFIED, 0);
     }
 
 
@@ -317,9 +361,8 @@ public final class PreferenceUtil {
     }
 
     public static boolean getAvailability() {
-        return Hawk.get(KEY_SET_AVAILABILITY,false);
+        return Hawk.get(KEY_SET_AVAILABILITY, false);
     }
-
 
 
     public static ArrayList<PreferredJobLocationData> getPreferredJobList() {

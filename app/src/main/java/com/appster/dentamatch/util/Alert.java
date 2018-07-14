@@ -11,9 +11,18 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.ui.common.BaseActivity;
 
 public class Alert {
-    private static final String TAG=LogUtils.makeLogTag(Alert.class);
+
+    private static final String TAG = LogUtils.makeLogTag(Alert.class);
     private static Snackbar s_SnackBar;
 
+    /**
+     * Create and return a dialog having requested title and message
+     *
+     * @param context the context
+     * @param title   title
+     * @param message message
+     * @return a dialog
+     */
     private static AlertDialog.Builder createAlert(Context context,
                                                    String title, String message) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(
@@ -29,6 +38,17 @@ public class Alert {
         return dialog;
     }
 
+    /**
+     * Create and return a dialog having requested title, message, positive and negative button along with the listener callbacks
+     *
+     * @param context     context
+     * @param btnPositive positive button
+     * @param btnNegative negative button
+     * @param title       dialog title
+     * @param message     dialog message
+     * @param listener    callback listener to get called for respective function
+     * @return a dialog
+     */
     public static AlertDialog.Builder createYesNoAlert(Context context, String btnPositive, String btnNegative,
                                                        String title, String message, final OnAlertClickListener listener) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(
@@ -58,13 +78,25 @@ public class Alert {
         return dialog;
     }
 
-
-    private static AlertDialog alert(BaseActivity context, String title,
-                                     String message, String defaultButton,
-                                     final Runnable defaultHandler, String alternativeButton,
-                                     final Runnable alternativeHandler, boolean showLogo, boolean isCancelable) {
+    /**
+     * Launch the alert dialog having the provided title, message, buttons and handler
+     *
+     * @param context            a context
+     * @param title              header title
+     * @param message            content message
+     * @param defaultButton      button default
+     * @param defaultHandler     default handler
+     * @param alternativeButton  alternate button
+     * @param alternativeHandler alternate handler
+     * @param showLogo           logo to be shown
+     * @param isCancelable       flag to set cancellable dialog
+     */
+    private static void alert(BaseActivity context, String title,
+                              String message, String defaultButton,
+                              final Runnable defaultHandler, String alternativeButton,
+                              final Runnable alternativeHandler, boolean showLogo, boolean isCancelable) {
         if (!context.isActive())
-            return null;
+            return;
         AlertDialog.Builder dialog = createAlert(context, title, message);
         dialog.setCancelable(isCancelable);
         dialog.setNegativeButton(defaultButton,
@@ -91,33 +123,53 @@ public class Alert {
 
         if (showLogo)
             dialog.setIcon(R.mipmap.ic_launcher);
-        try {
-            if (context.isActive())
-                return dialog.show();
-        } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
-        }
-        return null;
     }
 
+    /**
+     * Call and launch alert dialog by passing not required parameter as optional
+     *
+     * @param context        a context
+     * @param title          header title
+     * @param message        content message
+     * @param defaultHandler default handler
+     */
     public static void alert(BaseActivity context, String title,
                              String message, final Runnable defaultHandler) {
         alert(context, title, message, context.getString(android.R.string.ok),
                 defaultHandler);
     }
 
+    /**
+     * Call and launch alert dialog by passing not required parameter as optional
+     *
+     * @param context        a context
+     * @param title          header title
+     * @param message        content message
+     * @param defaultButton  default button
+     * @param defaultHandler default handler
+     */
     private static void alert(BaseActivity context, String title,
-                             String message, String defaultButton, final Runnable defaultHandler) {
+                              String message, String defaultButton, final Runnable defaultHandler) {
         alert(context, title, message, defaultButton,
                 defaultHandler, null, null, false, true);
     }
 
+    /**
+     * Call and launch alert dialog by passing not required parameter as optional
+     *
+     * @param context a context
+     * @param title   header title
+     * @param message content message
+     */
     public static void alert(BaseActivity context, String title,
                              String message) {
         alert(context, title, message, context.getString(R.string.txt_ok),
                 null, null, null, false, true);
     }
 
+    /**
+     * To dismiss bottom alert window message
+     */
     public static void dismissSnackBar() {
         if (s_SnackBar != null) {
             s_SnackBar.dismiss();
@@ -125,17 +177,38 @@ public class Alert {
         }
     }
 
+    /**
+     * To show a alert or message window at bottom
+     *
+     * @param view    a view
+     * @param message content message
+     * @return
+     */
     private static Snackbar getSnackBar(View view, String message) {
         dismissSnackBar();
         return s_SnackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
     }
 
+    /**
+     * To show a alert or message window at bottom
+     *
+     * @param view    a view
+     * @param message content message
+     */
     static public void showSnackBar(View view, String message) {
         if (StringUtils.isNullOrEmpty(message)) return;
         s_SnackBar = getSnackBar(view, message);
         s_SnackBar.show();
     }
 
+    /**
+     * To show a alert or message window at bottom
+     *
+     * @param view       view
+     * @param message    content message
+     * @param buttonText button text
+     * @param listener   listener for callback
+     */
     static public void showSnackBar(View view, String message, String buttonText, View.OnClickListener listener) {
         if (StringUtils.isNullOrEmpty(message)) return;
         s_SnackBar = getSnackBar(view, message);
@@ -144,8 +217,10 @@ public class Alert {
         s_SnackBar.show();
     }
 
+
     public interface OnAlertClickListener {
         void onPositive(DialogInterface dialog);
+
         void onNegative(DialogInterface dialog);
     }
 }

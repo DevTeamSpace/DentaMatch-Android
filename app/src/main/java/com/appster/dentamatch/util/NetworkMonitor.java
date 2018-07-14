@@ -15,7 +15,7 @@ import com.appster.dentamatch.DentaApp;
     Utility for checking Network
  */
 public class NetworkMonitor extends BroadcastReceiver {
-    private static final String TAG=LogUtils.makeLogTag(NetworkMonitor.class);
+    private static final String TAG = LogUtils.makeLogTag(NetworkMonitor.class);
     public static final int NETWORK_TYPE_FAST_3G = 2;
     public static final int NETWORK_TYPE_FAST_WIFI = 1;
     public static final int NETWORK_TYPE_NO_NETWORK = 4;
@@ -30,6 +30,11 @@ public class NetworkMonitor extends BroadcastReceiver {
         checkNetworkConnectivity(DentaApp.getInstance());
     }
 
+    /**
+     * To check network connectivity availability
+     *
+     * @param context context
+     */
     private static void checkNetworkConnectivity(Context context) {
         try {
             mConnectionAvailable = false;
@@ -50,37 +55,22 @@ public class NetworkMonitor extends BroadcastReceiver {
                 } else {
                     NetworkInfo activeNetwork = connectivity.getActiveNetworkInfo();
 
-                    if(activeNetwork != null){
+                    if (activeNetwork != null) {
                         mConnectionAvailable = true;
                     }
                 }
             }
         } catch (Exception e) {
             mConnectionAvailable = false;
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
-    public static String getNetworkOperatorName() {
-        return ((TelephonyManager) DentaApp.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getNetworkOperatorName();
-    }
-
-    public static NetworkInfo getNetworkType(Context context) {
-        if (context != null) {
-            NetworkInfo networkinfo;
-            try {
-                networkinfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-            } catch (Exception exception) {
-                LogUtils.LOGE(TAG,exception.getMessage());
-
-                return null;
-            }
-            return networkinfo;
-        } else {
-            return null;
-        }
-    }
-
+    /**
+     * To check network type availability or strength
+     *
+     * @return Network current state
+     */
     public static NetState getNetwork() {
         int i = getNetworkType();
         switch (i) {
@@ -95,10 +85,11 @@ public class NetworkMonitor extends BroadcastReceiver {
         }
     }
 
-    public static boolean isNetworkAvailable() {
-        return mConnectionAvailable;
-    }
-
+    /**
+     * To check network type availability
+     *
+     * @return wifi or mobile data service
+     */
     private static int getNetworkType() {
         if (DentaApp.getInstance() != null) {
             ConnectivityManager connectivitymanager = (ConnectivityManager) DentaApp.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
