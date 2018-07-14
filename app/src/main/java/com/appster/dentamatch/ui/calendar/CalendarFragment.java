@@ -135,7 +135,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         webServices.getHiredJob(request).enqueue(new BaseCallback<HiredJobResponse>(getBaseActivity()) {
             @Override
             public void onSuccess(HiredJobResponse response) {
-                /**
+                /*
                  * Once data has been loaded from the filter changes we can dismiss this filter.
                  */
                 if (response.getStatus() == 1) {

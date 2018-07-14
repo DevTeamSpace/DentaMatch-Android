@@ -150,7 +150,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     public void onNewMessageReceived(final ChatPersonalMessageReceivedEvent event) {
         if (event != null) {
             final ChatMessageModel messageModel = event.getModel();
-            int messageType = 0;
+            int messageType;
             String recruiterID;
 
             if (messageModel.getToID().equalsIgnoreCase(userId)) {

@@ -40,7 +40,6 @@
         android:layout_height="wrap_content">
 
         <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/bottom_picker_tv_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

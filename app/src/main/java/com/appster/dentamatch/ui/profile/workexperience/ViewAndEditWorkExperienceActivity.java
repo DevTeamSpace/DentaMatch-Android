@@ -254,7 +254,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
 
     @Override
     public void onExperienceSection(int year, int month) {
-        String yearLabel = "", monthLabel = "";
+        String yearLabel, monthLabel;
 
         if(year == 1){
             yearLabel = getString(R.string.txt_single_year);

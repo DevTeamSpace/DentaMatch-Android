@@ -24,7 +24,6 @@
         android:layout_marginTop="@dimen/margin_2">
 
         <ImageView
-            android:id="@+id/dot1"
             android:layout_width="@dimen/margin_5"
             android:layout_height="@dimen/margin_5"
             android:layout_marginEnd="@dimen/margin_5"
@@ -38,7 +37,7 @@
             android:layout_height="@dimen/margin_5"
             android:background="@drawable/shape_part_time_dot"
             android:visibility="gone" />
-ofile
+
         <ImageView
             android:id="@+id/dot3"
             android:layout_width="@dimen/margin_8"

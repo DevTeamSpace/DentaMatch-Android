@@ -25,7 +25,6 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by virender on 10/02/17.

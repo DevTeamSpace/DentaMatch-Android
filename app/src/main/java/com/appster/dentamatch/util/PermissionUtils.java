@@ -18,7 +18,7 @@ public class PermissionUtils {
      * @return permission granted status
      */
     public static boolean checkPermissionGranted(String permission, Activity mActivity) {
-        boolean Status = false;
+        boolean Status;
         Status = ContextCompat.checkSelfPermission(mActivity, permission) == PackageManager.PERMISSION_GRANTED;
 
         return Status;

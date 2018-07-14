@@ -51,7 +51,7 @@ public class CalendarGridAdapter extends ArrayAdapter {
             view = mInflater.inflate(R.layout.single_cell_layout, parent, false);
         }
 
-        /**
+        /*
          * Add day to calendar
          */
         TextView cellNumber = (TextView) view.findViewById(R.id.calendar_date_id);

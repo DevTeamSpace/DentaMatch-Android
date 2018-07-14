@@ -20,7 +20,6 @@
         />
 
     <View
-        android:id="@+id/view_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_height"
         android:layout_below="@+id/tv_job_category"

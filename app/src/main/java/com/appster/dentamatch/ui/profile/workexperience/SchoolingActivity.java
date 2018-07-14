@@ -146,7 +146,6 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
         } else {
 
             for (Map.Entry<Integer, PostSchoolData> entry : hashMap.entrySet()) {
-                boolean isRemoveSchool = false;
 
                 if (TextUtils.isEmpty(entry.getValue().getSchoolName().trim()) && (TextUtils.isEmpty(entry.getValue().getYearOfGraduation())||entry.getValue().getYearOfGraduation().equals("0"))) {
                     hashMap.remove(entry.getKey());
@@ -156,8 +155,6 @@ public class SchoolingActivity extends BaseActivity implements View.OnClickListe
                         showToast(getString(R.string.msg_choose_college));
                         //return false;
                     } else {
-                       // isRemoveSchool = true;
-                        isRemoveSchool = true;
 
                         // return false;
                         checkValidation();

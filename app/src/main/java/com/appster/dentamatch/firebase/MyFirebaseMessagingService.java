@@ -66,7 +66,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 try {
                     JSONObject notificationObject = new JSONObject(notificationData);
-                    id = notificationObject.optInt(Constants.APIS.NOTIFICATION_ID);
                     type = notificationObject.optInt((Constants.APIS.NOTIFICATION_TYPE));
                     messageBody = notificationObject.getString(KEY_NOTIFICATION_DATA);
                 } catch (Exception e) {
@@ -165,7 +164,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private Intent redirectNotification(int notificationType, int jobId) {
-        Intent intent = null;
+        Intent intent;
 
         if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_ACCEPT_JOB ||
                 notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_CANCEL ||

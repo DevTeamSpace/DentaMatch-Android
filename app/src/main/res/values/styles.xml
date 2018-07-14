@@ -15,10 +15,6 @@
         <item name="android:windowActionBar">false</item>
     </style>
 
-    <style name="NoActionBar.LIGHT" parent="NoActionBar">
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-    </style>
-
     <style name="CustomAlertDialogTitle">
         <item name="android:textColor">@color/colorPrimary</item>
     </style>

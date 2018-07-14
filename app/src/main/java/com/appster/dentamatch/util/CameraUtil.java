@@ -66,11 +66,10 @@ public class CameraUtil {
      * @return Bitmap
      */
     public Bitmap decodeBitmapFromPath(String filePath, Context c, int width, int height) {
-        Bitmap scaledBitmap = null;
+        Bitmap scaledBitmap;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        scaledBitmap = BitmapFactory.decodeFile(filePath, options);
 
         options.inSampleSize = calculateInSampleSize(options, convertDipToPixels(c, width), convertDipToPixels(c, width));
         options.inJustDecodeBounds = false;
@@ -216,7 +215,7 @@ public class CameraUtil {
                         LogUtils.LOGE(TAG, e.getMessage());
                     }
 
-                    FileOutputStream out = null;
+                    FileOutputStream out;
                     filename = getFilename();
                     try {
                         out = new FileOutputStream(filename);

@@ -467,7 +467,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
         }
 
         try {
-            String yearLabel = "", monthLabel = "";
+            String yearLabel, monthLabel;
 
             if(PreferenceUtil.getYear() == 1){
                 yearLabel = getString(R.string.txt_single_year);
@@ -528,7 +528,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onExperienceSection(int year, int month) {
-        String yearLabel = "", monthLabel = "";
+        String yearLabel, monthLabel;
 
         if(year == 1){
             yearLabel = getString(R.string.txt_single_year);

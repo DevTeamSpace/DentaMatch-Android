@@ -36,7 +36,7 @@ import com.appster.dentamatch.util.Utils;
 import java.io.File;
 
 /**
- * Created by gautambisht on 11/11/16.
+ * Created for common handling and design-.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -288,23 +288,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             getSupportFragmentManager().executePendingTransactions();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            switch (animationType) {
-//                case DEFAULT:
-//                case SLIDE:
-//                    ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-//                    break;
-//
-//                case FADE:
-//                    ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
-//                    break;
-//
-//                case NONE:
-//                    break;
-//            }
 
-            if (fragment.isAdded()) {
-
-            } else {
+            if (!fragment.isAdded()) {
                 ft.replace(R.id.fragment_container, fragment);
                 ft.commitAllowingStateLoss();
             }
@@ -333,24 +318,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public enum ANIMATION_TYPE {
         SLIDE, FADE, DEFAULT, NONE
-    }
-    /**
-     * Hides the soft keyboard
-     */
-    public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-    }
-
-    /**
-     * Shows the soft keyboard
-     */
-    public void showSoftKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        view.requestFocus();
-        inputMethodManager.showSoftInput(view, 0);
     }
 
     public void launchImageViewer(View v, String imageUrl){

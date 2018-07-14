@@ -71,7 +71,7 @@ public final class RequestController {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
-                Response response = null;
+                Response response;
 
                 String accessToken = PreferenceUtil.getKeyUserToken();
                 if (!TextUtils.isEmpty(accessToken)) {

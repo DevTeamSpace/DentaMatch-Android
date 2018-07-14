@@ -124,7 +124,6 @@
                 <!--android:background="@color/cell_boundary_color" />-->
 
             <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/create_profile_tv_licence"
                 style="@style/text_view_normal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/cell_height"
@@ -143,7 +142,6 @@
                 android:background="@color/cell_boundary_color" />
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/create_profile_input_layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edit_height"
                 android:layout_marginTop="@dimen/margin_43"
@@ -165,7 +163,6 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/create_profile_input_layout_licence_expiry"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edit_height"
                 android:layout_marginTop="@dimen/margin_43"

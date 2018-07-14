@@ -114,7 +114,7 @@ public class DBHelper {
             if (!TextUtils.isEmpty(recruiterId)) {
                 DBModel retrievedModel = getDBData(recruiterId);
 
-                /**
+                /*
                  * Check if the entry exists in the DB , if not then insert a new entry into the DB.
                  */
                 if (retrievedModel != null) {

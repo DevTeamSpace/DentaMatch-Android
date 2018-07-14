@@ -53,7 +53,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
         mBinder.includeReference2.tvReferenceDelete.setOnClickListener(this);
 
         try {
-            String yearLabel = "", monthLabel = "";
+            String yearLabel, monthLabel;
 
             if(PreferenceUtil.getYear() == 1){
                 yearLabel = getString(R.string.txt_single_year);
@@ -173,7 +173,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
 
     @Override
     public void onExperienceSection(int year, int month) {
-        String yearLabel = "", monthLabel = "";
+        String yearLabel, monthLabel;
 
         if(year == 1){
             yearLabel = getString(R.string.txt_single_year);

@@ -673,7 +673,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 //                        .concat(String.valueOf(months).concat(strMonths)));
 //            }
 
-            String yearLabel = "", monthLabel = "";
+            String yearLabel, monthLabel;
 
             if (years == 1) {
                 yearLabel = getString(R.string.txt_single_year);

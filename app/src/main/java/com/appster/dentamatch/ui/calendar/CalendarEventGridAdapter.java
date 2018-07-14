@@ -33,7 +33,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
     private ArrayList<HiredJobs> mJobList;
 
 
-    public CalendarEventGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate) {
+    CalendarEventGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate) {
         super(context, R.layout.single_cell_layout);
         this.monthlyDates = monthlyDates;
         this.mCurrentDate = currentDate;
@@ -42,7 +42,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
     }
 
 
-    public void setJobList(ArrayList<HiredJobs> list) {
+    void setJobList(ArrayList<HiredJobs> list) {
         if (mJobList != null) {
             mJobList = null;
         }
@@ -74,12 +74,12 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
             view = mInflater.inflate(R.layout.single_cell_layout, parent, false);
         }
 
-        /**
+        /*
          * Add day to calendar
          */
-        TextView cellNumber = (TextView) view.findViewById(R.id.calendar_date_id);
-        ImageView dot2 = (ImageView) view.findViewById(R.id.dot2);
-        ImageView dot3 = (ImageView) view.findViewById(R.id.dot3);
+        TextView cellNumber = view.findViewById(R.id.calendar_date_id);
+        ImageView dot2 =  view.findViewById(R.id.dot2);
+        ImageView dot3 = view.findViewById(R.id.dot3);
         view.setVisibility(View.VISIBLE);
 
         if (displayMonth == currentMonth && displayYear == currentYear) {
@@ -107,7 +107,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                     for (int k = 0; k < mJobList.size(); k++) {
                             Date jobDate = Utils.getDate(mJobList.get(k).getJobDate(), Constants.DateFormat.YYYYMMDD);
 
-                        if (jobDate.compareTo(Utils.parseDate(mDate)) <= 0) {
+                        if (jobDate != null && jobDate.compareTo(Utils.parseDate(mDate)) <= 0) {
 
                             if ((day.equalsIgnoreCase(mContext.getString(R.string.txt_full_monday)) && mJobList.get(k).getIsMonday() == 1)
                                     || (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_tuesday)) && mJobList.get(k).getIsTuesday() == 1)
@@ -118,25 +118,7 @@ public class CalendarEventGridAdapter extends ArrayAdapter {
                                     ||(day.equalsIgnoreCase(mContext.getString(R.string.txt_full_sunday)) && mJobList.get(k).getIsSunday() == 1)) {
                                 dot2.setVisibility(View.VISIBLE);
 
-                            } /*else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_tuesday)) && mJobList.get(k).getIsTuesday() == 1) {
-                                dot2.setVisibility(View.VISIBLE);
-
-                            } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_wednesday)) && mJobList.get(k).getIsWednesday() == 1) {
-                                dot2.setVisibility(View.VISIBLE);
-
-                            } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_thursday)) && mJobList.get(k).getIsThursday() == 1) {
-                                dot2.setVisibility(View.VISIBLE);
-
-                            } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_friday)) && mJobList.get(k).getIsFriday() == 1) {
-                                dot2.setVisibility(View.VISIBLE);
-
-                            } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_saturday)) && mJobList.get(k).getIsSaturday() == 1) {
-                                dot2.setVisibility(View.VISIBLE);
-
-                            } else if (day.equalsIgnoreCase(mContext.getString(R.string.txt_full_sunday)) && mJobList.get(k).getIsSunday() == 1) {
-                                dot2.setVisibility(View.VISIBLE);
-
-                            }*/
+                            }
                         }
 
                         if ((mJobList.get(k).getTempDates() != null && mJobList.get(k).getTempDates().equalsIgnoreCase(date))) {

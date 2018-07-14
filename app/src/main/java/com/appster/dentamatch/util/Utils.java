@@ -471,7 +471,7 @@ public class Utils {
 
 
     public static String getExpYears(int month) {
-        String yearLabel = "", monthLabel = "";
+        String yearLabel, monthLabel;
 
         if (month / 12 == 1) {
             yearLabel = DentaApp.getInstance().getString(R.string.txt_single_year);
@@ -806,7 +806,7 @@ public class Utils {
      * @return duration string
      */
     public static String getDuration(Date createdDate, Context context) {
-        String time = "";
+        String time;
         Date currentDate = new Date();
 
         long currentMillis = currentDate.getTime();
