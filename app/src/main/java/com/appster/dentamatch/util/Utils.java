@@ -24,11 +24,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
@@ -252,10 +250,10 @@ public class Utils {
     /**
      * set click event on spannable string
      *
-     * @param spanClick
-     * @param start
-     * @param end
-     * @param clickableSpan
+     * @param spanClick     span click
+     * @param start         start index
+     * @param end           end index
+     * @param clickableSpan clickable span area
      */
     public static void setSpannClickEvent(SpannableString spanClick, int start, int end, ClickableSpan clickableSpan) {
         spanClick.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -264,8 +262,8 @@ public class Utils {
     /**
      * set some comman proprty fo span
      *
-     * @param txv
-     * @param spanString
+     * @param txv        text view
+     * @param spanString string to be span
      */
     public static void setSpannCommanProperty(TextView txv, SpannableString spanString) {
         txv.setMovementMethod(LinkMovementMethod.getInstance());
@@ -276,7 +274,7 @@ public class Utils {
     /**
      * to capitalize a word in edit text
      *
-     * @param inputText
+     * @param inputText edit text
      */
     public static void capitalizeWord(EditText inputText) {
         inputText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -285,8 +283,8 @@ public class Utils {
     /**
      * to show and hide password
      *
-     * @param edtPassword
-     * @param isShow
+     * @param edtPassword edit text
+     * @param isShow      boolean flag
      */
     public static void showPassword(Context context, EditText edtPassword, boolean isShow, TextView tvShowPwd) {
         if (edtPassword.getText().toString().trim().length() > 0) {
@@ -304,11 +302,21 @@ public class Utils {
         }
     }
 
+    /**
+     * To get string content from requested edit text
+     *
+     * @param editText edit text
+     * @return string
+     */
     public static String getStringFromEditText(EditText editText) {
         return editText.getText().toString().trim();
     }
 
-
+    /**
+     * To set font value for the provided text view
+     *
+     * @param view text view
+     */
     public static void setFontFaceRobotoLight(TextView view) {
         Typeface tf = Typeface.createFromAsset(view.getContext()
                 .getAssets(), "Roboto-Light.ttf");
@@ -345,6 +353,12 @@ public class Utils {
 
     }
 
+    /**
+     * Util function to convert UTC date time to its local locale date time
+     *
+     * @param UTCDateTime date time in UTC format
+     * @return date time in local format
+     */
     public static String convertUTCtoLocal(String UTCDateTime) {
         final SimpleDateFormat hourOnlyDateFormat = new SimpleDateFormat("ha", Locale.getDefault()); // DATE FORMAT : 9 am
 
@@ -366,6 +380,12 @@ public class Utils {
         return hourOnlyDateFormat.format(myDate);
     }
 
+    /**
+     * Util function to convert UTC time stamp to local time
+     *
+     * @param UTCDateTime time stamp in UTC
+     * @return formatted time
+     */
     public static String convertUTCtoLocalFromTimeStamp(String UTCDateTime) {
         final SimpleDateFormat chatTimeFormat = new SimpleDateFormat("hh:mma", Locale.getDefault()); // DATE FORMAT : 09:46 am
 
@@ -439,7 +459,12 @@ public class Utils {
         return "";
     }
 
-
+    /**
+     * To get formatted date string
+     *
+     * @param UTCDateTime date time in UTC
+     * @return string in required format
+     */
     public static String compareDateForDateLabel(String UTCDateTime) {
         final SimpleDateFormat chatDateLabelFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault()); // DATE FORMAT : 09:46 ams
 
@@ -469,7 +494,12 @@ public class Utils {
 
     }
 
-
+    /**
+     * To get expiry year based on provided month
+     *
+     * @param month month as int
+     * @return year as a string
+     */
     public static String getExpYears(int month) {
         String yearLabel, monthLabel;
 
@@ -497,45 +527,12 @@ public class Utils {
 
     }
 
-    public static int getCurrentYear() {
-        return Calendar.getInstance().get(Calendar.YEAR);
-    }
-
-    private void setPhoneNumberFormat(final EditText editText, final int count) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (count <= editText.getText().toString().length()
-                        && (editText.getText().toString().length() == 4
-                        || editText.getText().toString().length() == 10
-                        || editText.getText().toString().length() == 15)) {
-                    editText.setText("(" + editText.getText().toString() + " )");
-                    int pos = editText.getText().length();
-                    editText.setSelection(pos);
-                } else if (count >= editText.getText().toString().length()
-                        && (editText.getText().toString().length() == 4
-                        || editText.getText().toString().length() == 10
-                        || editText.getText().toString().length() == 15)) {
-                    editText.setText(editText.getText().toString().substring(0, editText.getText().toString().length() - 1));
-                    int pos = editText.getText().length();
-                    editText.setSelection(pos);
-                }
-//                count = editText.getText().toString().length();
-            }
-
-        });
-    }
-
+    /**
+     * Util function to check if the device is connected with the network or not
+     *
+     * @param context context
+     * @return boolean flag
+     */
     public static boolean isConnected(Context context) {
         NetworkInfo netInfo = null;
         try {
@@ -550,6 +547,11 @@ public class Utils {
 
     }
 
+    /**
+     * To clear all the notifications
+     *
+     * @param ct context
+     */
     public static void clearAllNotifications(Context ct) {
         if (ct != null) {
             NotificationManager notificationManager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -619,6 +621,12 @@ public class Utils {
 
     }
 
+    /**
+     * To cler all the recruiter notifications
+     *
+     * @param ct          context
+     * @param RecruiterID recruiter Id
+     */
     public static void clearRecruiterNotification(Context ct, String RecruiterID) {
         if (ct != null) {
             NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -627,6 +635,12 @@ public class Utils {
         }
     }
 
+    /**
+     * To parse date for message
+     *
+     * @param messageData message data as json object
+     * @return ChatMessageModel
+     */
     public static ChatMessageModel parseData(JSONObject messageData) {
         ChatMessageModel model = new ChatMessageModel();
 
@@ -643,6 +657,12 @@ public class Utils {
         return model;
     }
 
+    /**
+     * To parse date for History message
+     *
+     * @param messageData message data as json object
+     * @return ChatMessageModel
+     */
     public static ChatMessageModel parseDataForHistory(JSONObject messageData) {
         ChatMessageModel model = new ChatMessageModel();
 
@@ -658,6 +678,12 @@ public class Utils {
         return model;
     }
 
+    /**
+     * To get the formatted date for New Recruiters
+     *
+     * @param messageData date as json object
+     * @return ChatMessageModel
+     */
     public static ChatMessageModel parseDataForNewRecruiterMessage(JSONObject messageData) {
         ChatMessageModel model = new ChatMessageModel();
 
@@ -676,6 +702,12 @@ public class Utils {
         return model;
     }
 
+    /**
+     * To validate user entered email address
+     *
+     * @param email entered email address
+     * @return boolean flag
+     */
     public static boolean isValidEmailAddress(String email) {
         String ePattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
@@ -683,6 +715,12 @@ public class Utils {
         return m.matches();
     }
 
+    /**
+     * To get date in YYYY-MMMM-DD format
+     *
+     * @param dateStr input date
+     * @return date in YYYY-MMMM-DD format
+     */
     public static String dateFormatYYYYMMMMDD(String dateStr) {
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -696,14 +734,23 @@ public class Utils {
         }
     }
 
+    /**
+     * To get date in YY-MM-DD format
+     *
+     * @param mydate input date
+     * @return date in YY-MM-DD format
+     */
     public static String dateFormetyyyyMMdd(Date mydate) {
         SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        // myDate is the java.util.Date in yyyy-mm-dd format
-        // Converting it into String using formatter
-        //Converting the String back to java.util.Date
         return sm.format(mydate);
     }
 
+    /**
+     * To get the required server date format
+     *
+     * @param dateStr date as string
+     * @return formatted string
+     */
     public static String getRequriedServerDateFormet(String dateStr) {
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());

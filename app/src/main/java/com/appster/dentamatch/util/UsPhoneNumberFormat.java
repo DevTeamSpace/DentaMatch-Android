@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 
 /**
  * Created by virender on 15/01/17.
- * To inject activity reference.
+ * Formatter class for US mobile number.
  */
 
 public class UsPhoneNumberFormat implements TextWatcher {
@@ -28,9 +28,6 @@ public class UsPhoneNumberFormat implements TextWatcher {
         if (after == 0 && s.toString().equals(" ")) {
             boolean clearFlag = true;
         }
-//        if (after == 0) {
-//            clearFlag = true;
-//        }
         mLastStartLocation = start;
         mLastBeforeText = s.toString();
     }
@@ -38,7 +35,6 @@ public class UsPhoneNumberFormat implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence s, int start, int before,
                               int count) {
-        // TODO: Do nothing
     }
 
     @Override
