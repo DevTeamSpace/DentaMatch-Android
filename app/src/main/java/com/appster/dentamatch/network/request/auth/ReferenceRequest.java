@@ -2,8 +2,9 @@ package com.appster.dentamatch.network.request.auth;
 
 /**
  * Created by virender on 11/01/17.
+ * To inject activity reference.
  */
-public class ReferenceRequest {
+class ReferenceRequest {
     private String refrenceName;
     private String phoneNumber;
     private String email;

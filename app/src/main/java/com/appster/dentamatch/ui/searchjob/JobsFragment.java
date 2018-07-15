@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.searchjob;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 23/01/17.
+ * Job detail fragment user interface.
  */
 
 public class JobsFragment extends BaseFragment implements View.OnClickListener {
@@ -42,7 +44,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mJobsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_jobs, container, false);
         initViews();
         /*
@@ -62,7 +64,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
 
             case R.id.iv_tool_bar_right:
 
-                if (mIsList) {
+                if (mIsList && getActivity() != null) {
                     mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setImageResource(R.drawable.img_map);
                     mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_map_view));
 
@@ -74,7 +76,8 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
 
                 } else {
                     mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setImageResource(R.drawable.img_list);
-                    mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_list_view));
+                    if (getActivity() != null)
+                        mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_list_view));
                     getChildFragmentManager()
                             .beginTransaction()
                             .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right)
@@ -106,7 +109,8 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
         mJobListFragment = JobListFragment.newInstance();
         mJobMapFragment = JobMapFragment.newInstance();
         mJobsBinding.toolbarFragmentJobs.ivToolBarLeft.setImageResource(R.drawable.img_notifications);
-        mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_list_view));
+        if (getActivity() != null)
+            mJobsBinding.toolbarFragmentJobs.tvToolbarGeneralLeft.setText(getActivity().getString(R.string.header_list_view));
         mJobsBinding.toolbarFragmentJobs.txvToolbarGeneralRight
                 .setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, ContextCompat.getDrawable(getActivity(), R.drawable.img_filter), null);
         mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setVisibility(View.VISIBLE);
@@ -128,7 +132,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                 /*
                   Once data has been loaded from the filter changes we can dismiss this filter.
                  */
-                if(response.getStatus() == 1) {
+                if (response.getStatus() == 1) {
                     if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
                         mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.GONE);
 
@@ -136,7 +140,7 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                         mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.VISIBLE);
                         mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText(String.valueOf(response.getUnReadNotificationResponse().getNotificationCount()));
                     }
-                }else{
+                } else {
                     showToast(response.getMessage());
                 }
             }

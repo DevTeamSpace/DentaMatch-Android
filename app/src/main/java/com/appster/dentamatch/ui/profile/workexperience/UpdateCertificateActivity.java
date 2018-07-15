@@ -49,6 +49,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 20/01/17.
+ * To inject activity reference.
  */
 public class UpdateCertificateActivity extends BaseActivity implements View.OnClickListener, ImageSelectedListener, DateSelectedListener {
     private static final String TAG = LogUtils.makeLogTag(UpdateCertificateActivity.class);

@@ -2,6 +2,7 @@ package com.appster.dentamatch.model;
 
 /**
  * Created by virender on 21/01/17.
+ * To inject activity reference.
  */
 public class ProfileSchoolModel {
     private int id;

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Appster on 27/01/17.
+ * To inject activity reference.
  */
 
 public class SearchJobResponseData implements Parcelable {
@@ -61,7 +62,7 @@ public class SearchJobResponseData implements Parcelable {
     public SearchJobResponseData() {
     }
 
-    protected SearchJobResponseData(Parcel in) {
+    private SearchJobResponseData(Parcel in) {
         this.jobList = in.createTypedArrayList(SearchJobModel.CREATOR);
         this.total = in.readInt();
         this.isJobSeekerVerified = in.readInt();

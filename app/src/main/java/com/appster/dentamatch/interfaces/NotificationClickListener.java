@@ -2,6 +2,7 @@ package com.appster.dentamatch.interfaces;
 
 /**
  * Created by bawenderyandra on 08/03/17.
+ * To inject activity reference.
  */
 
 public interface NotificationClickListener {

@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.request.workexp;
 
 /**
  * Created by virender on 13/01/17.
+ * To inject activity reference.
  */
 public class WorkExpListRequest {
     private int limit;

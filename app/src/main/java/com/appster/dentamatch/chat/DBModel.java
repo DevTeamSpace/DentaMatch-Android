@@ -9,6 +9,7 @@ import io.realm.annotations.Required;
 
 /**
  * Created by Appster on 14/02/17.
+ * Object model class for DB.
  */
 
 public class DBModel extends RealmObject {

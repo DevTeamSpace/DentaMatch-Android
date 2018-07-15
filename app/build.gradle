@@ -38,7 +38,7 @@ android {
         incremental true
     }
     dataBinding {
-        enabled true;
+        enabled true
     }
 
     compileSdkVersion 27
@@ -133,7 +133,7 @@ android {
         }
     }
 
-    return void;
+    return void
 }
 
 ext {
@@ -196,7 +196,7 @@ dependencies {
     compile 'io.realm:android-adapters:1.4.0'
     compile 'com.mixpanel.android:mixpanel-android:4.9.8'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
-        transitive = true;
+        transitive = true
     }
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryLibrary"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"

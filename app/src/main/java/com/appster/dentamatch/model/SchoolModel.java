@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by ramkumar on 16/01/17.
+ * To inject activity reference.
  */
 
 public class SchoolModel {

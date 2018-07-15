@@ -39,6 +39,7 @@ import retrofit2.Call;
 
 /**
  * Created by ram on 15/01/17.
+ * To inject activity reference.
  */
 public class SchoolingActivity extends BaseActivity implements View.OnClickListener, EditTextSelected {
     private static final String TAG = LogUtils.makeLogTag(SchoolingActivity.class);

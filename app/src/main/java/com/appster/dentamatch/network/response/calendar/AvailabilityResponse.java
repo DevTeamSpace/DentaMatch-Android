@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by virender on 08/02/17.
+ * To inject activity reference.
  */
 public class AvailabilityResponse extends BaseResponse {
     @SerializedName("result")

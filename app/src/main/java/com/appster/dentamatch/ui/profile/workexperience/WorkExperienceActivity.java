@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 /**
  * Created by virender on 04/01/17.
+ * To inject activity reference.
  */
 public class WorkExperienceActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener, JobTitleSelectionListener {
     private ActivityWorkExperienceBinding mBinder;

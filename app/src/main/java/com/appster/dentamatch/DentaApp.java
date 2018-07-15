@@ -1,7 +1,6 @@
-package com.appster.dentamatch;
-
-/**
+package com.appster.dentamatch; /**
  * Created by gautambisht on 10/11/16.
+ * To inject activity reference.
  */
 
 import android.os.StrictMode;

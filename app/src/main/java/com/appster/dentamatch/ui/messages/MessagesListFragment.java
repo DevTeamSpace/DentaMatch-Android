@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.messages;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,7 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 23/01/17.
+ * To inject activity reference.
  */
 
 public class MessagesListFragment extends BaseFragment {
@@ -47,7 +49,7 @@ public class MessagesListFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mMessagesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_messages, container, false);
         initViews();
         mMessagesBinding.rvMessageList.setLayoutManager(mLayoutManager);

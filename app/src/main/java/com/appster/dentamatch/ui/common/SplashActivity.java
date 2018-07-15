@@ -21,7 +21,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
  */
 public class SplashActivity extends Activity implements Runnable {
     private static final int SPLASH_TIME = 2000;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

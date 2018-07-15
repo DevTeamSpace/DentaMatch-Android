@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by ramkumar on 17/01/17.
+ * To inject activity reference.
  */
 
 public class AddSchoolRequest {

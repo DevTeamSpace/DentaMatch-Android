@@ -46,6 +46,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 03/01/17.
+ * To inject activity reference.
  */
 public class CreateProfileActivity1 extends BaseActivity implements View.OnClickListener, ImageSelectedListener, JobTitleSelectionListener {
     private static final String TAG = LogUtils.makeLogTag(CreateProfileActivity1.class);

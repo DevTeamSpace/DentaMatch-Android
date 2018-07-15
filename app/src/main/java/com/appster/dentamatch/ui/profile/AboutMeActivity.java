@@ -26,6 +26,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 10/01/17.
+ * To inject activity reference.
  */
 public class AboutMeActivity extends BaseActivity implements View.OnClickListener {
     private com.appster.dentamatch.databinding.ActivityAboutMeBinding mBinder;

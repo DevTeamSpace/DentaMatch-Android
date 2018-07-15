@@ -40,6 +40,7 @@ import retrofit2.Call;
 
 /**
  * Created by ram on 12/01/17.
+ * To inject activity reference.
  */
 public class SkillsActivity extends BaseActivity implements View.OnClickListener, OnSkillClick, EditTextSelected {
     private static final String TAG = "Skills";

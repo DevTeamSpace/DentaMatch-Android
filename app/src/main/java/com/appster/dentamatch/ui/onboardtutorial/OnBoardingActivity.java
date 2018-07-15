@@ -15,6 +15,7 @@ import com.appster.dentamatch.util.PreferenceUtil;
 
 /**
  * Created by virender on 06/01/17.
+ * To inject activity reference.
  */
 public class OnBoardingActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private ActivityOnboardingBinding mBinder;

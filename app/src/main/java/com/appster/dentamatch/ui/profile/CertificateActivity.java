@@ -48,6 +48,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 10/01/17.
+ * To inject activity reference.
  */
 public class CertificateActivity extends BaseActivity implements View.OnClickListener, ImageSelectedListener, DateSelectedListener {
     private static final String TAG = "CertificateActivity";
@@ -58,7 +59,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
     private byte imageSourceType;
     private String certificateId = "";
     private int position;
-    private ArrayList<CertificatesList> certificateList = new ArrayList<>();
+    private final ArrayList<CertificatesList> certificateList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -287,12 +288,9 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onSuccess(CertificateResponse response) {
                 if (response.getStatus() == 1) {
-                    if (certificateList != null) {
-                        certificateList.clear();
-                    }
-
+                    certificateList.clear();
                     if (response.getCertificateResponseData().getCertificatesLists() != null) {
-                        if(certificateList!=null && certificateList.size()>0) {
+                        if (certificateList.size() > 0) {
                             certificateList.addAll(response.getCertificateResponseData().getCertificatesLists());
                         }
                         inflateViews();
@@ -323,10 +321,10 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                     mBinder.layoutCertificatesInflater,
                     false);
 
-            final ImageView ivCertificate = (ImageView) certificatesView.findViewById(R.id.iv_certificate_upload_icon);
-            TextView tvUploadPhoto = (TextView) certificatesView.findViewById(R.id.tv_upload_photo);
-            TextView tvDatePicker = (TextView) certificatesView.findViewById(R.id.tv_validity_date_picker);
-            final TextView tvCertificateName = (TextView) certificatesView.findViewById(R.id.tv_certificates_name);
+            final ImageView ivCertificate = certificatesView.findViewById(R.id.iv_certificate_upload_icon);
+            TextView tvUploadPhoto = certificatesView.findViewById(R.id.tv_upload_photo);
+            TextView tvDatePicker = certificatesView.findViewById(R.id.tv_validity_date_picker);
+            final TextView tvCertificateName = certificatesView.findViewById(R.id.tv_certificates_name);
             tvCertificateName.setText(certificateList.get(i).getCertificateName());
 
             if (!TextUtils.isEmpty(certificateList.get(i).getValidityDate())) {
@@ -397,7 +395,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
                             CertificateActivity.this,
                             Constants.IMAGE_DIME_CERTIFICATE,
                             Constants.IMAGE_DIME_CERTIFICATE));
-                }else{
+                } else {
                     ivTemp.setImageResource(R.drawable.ic_upload);
                 }
             }

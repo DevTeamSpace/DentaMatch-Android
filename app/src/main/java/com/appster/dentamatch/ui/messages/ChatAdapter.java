@@ -21,12 +21,13 @@ import io.realm.RealmRecyclerViewAdapter;
 
 /**
  * Created by Appster on 08/02/17.
+ * To inject activity reference.
  */
 
 public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.MyHolder> {
     private ItemChatMessageBinding mBinding;
-    private OrderedRealmCollection<Message> mChatMessages;
-    private Context mContext;
+    private final OrderedRealmCollection<Message> mChatMessages;
+    private final Context mContext;
 
     public ChatAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Message> data, boolean autoUpdate) {
         super(context, data, autoUpdate);
@@ -43,7 +44,7 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        if (mChatMessages.get(position) != null) {
+        if (mChatMessages != null && mChatMessages.get(position) != null) {
             holder.tvMessage.setText(mChatMessages.get(position).getMessage());
 
 
@@ -70,7 +71,7 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
                 timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
                 holder.tvTime.setLayoutParams(timeParams);
 
-                if(position==0){
+                if (position == 0) {
                     holder.tvDateLabel.setVisibility(View.VISIBLE);
                     holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getMessageTime()));
 
@@ -90,7 +91,7 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
                 timeParams.addRule(RelativeLayout.BELOW, holder.tvMessage.getId());
                 holder.tvTime.setLayoutParams(timeParams);
 
-                if(position==0){
+                if (position == 0) {
                     holder.tvDateLabel.setVisibility(View.VISIBLE);
                     holder.tvDateLabel.setText(Utils.compareDateForDateLabel(mChatMessages.get(position).getMessageTime()));
 
@@ -123,7 +124,9 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-        TextView tvMessage, tvTime, tvDateLabel;
+        final TextView tvMessage;
+        final TextView tvTime;
+        final TextView tvDateLabel;
 
         MyHolder(View itemView) {
             super(itemView);

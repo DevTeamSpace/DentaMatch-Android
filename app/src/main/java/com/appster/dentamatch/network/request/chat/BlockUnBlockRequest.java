@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.request.chat;
 
 /**
  * Created by Appster on 09/02/17.
+ * To inject activity reference.
  */
 
 public class BlockUnBlockRequest  {

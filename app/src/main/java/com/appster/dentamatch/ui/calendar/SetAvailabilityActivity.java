@@ -35,6 +35,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 01/02/17.
+ * To inject activity reference.
  */
 public class SetAvailabilityActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private ActivitySetAvailabilityBinding mBinder;
@@ -403,7 +404,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    public void setViewData(AvailabilityResponse res) {
+    private void setViewData(AvailabilityResponse res) {
         AvailabilityResponseData data = res.getAvailabilityResponseData();
 
         if (data.getCalendarAvailability() != null) {

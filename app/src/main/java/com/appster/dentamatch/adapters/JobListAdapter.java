@@ -35,6 +35,7 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 24/01/17.
+ * Adapter for job listing.
  */
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder> implements View.OnClickListener {
@@ -48,8 +49,8 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
     private static final int DURATION_TIME_1 = 1;
 
     private ItemJobListBinding mBinding;
-    private Context mContext;
-    private ArrayList<SearchJobModel> mJobListData;
+    private final Context mContext;
+    private final ArrayList<SearchJobModel> mJobListData;
 
 
     public JobListAdapter(Context context, ArrayList<SearchJobModel> jobListData) {
@@ -274,8 +275,14 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
 
 
     class MyHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvJobType, tvDate, tvDocName, tvDocAddress, tvDuration, tvDistance;
-        CheckBox cbSelect;
+        final TextView tvName;
+        final TextView tvJobType;
+        final TextView tvDate;
+        final TextView tvDocName;
+        final TextView tvDocAddress;
+        final TextView tvDuration;
+        final TextView tvDistance;
+        final CheckBox cbSelect;
 
         MyHolder(View itemView) {
             super(itemView);

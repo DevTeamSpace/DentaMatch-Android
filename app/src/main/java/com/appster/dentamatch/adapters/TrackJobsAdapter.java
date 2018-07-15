@@ -42,10 +42,11 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 03/02/17.
+ * Adapter to track jobs.
  */
 
 public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
-   private static final String TAG= LogUtils.makeLogTag(TrackJobsAdapter.class);
+    private static final String TAG = LogUtils.makeLogTag(TrackJobsAdapter.class);
     private final int JOB_SAVED = 1;
     private static final int ADDED_PART_TIME = 1;
     private static final int LINE_COUNT_ONE = 1;
@@ -55,9 +56,11 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
 
     private ItemTrackJobListBinding mBinding;
-    private Context mContext;
-    private ArrayList<SearchJobModel> mJobListData;
-    private boolean mIsSaved, mIsApplied, mIsShortListed;
+    private final Context mContext;
+    private final ArrayList<SearchJobModel> mJobListData;
+    private final boolean mIsSaved;
+    private final boolean mIsApplied;
+    private final boolean mIsShortListed;
 
     public TrackJobsAdapter(Context context, ArrayList<SearchJobModel> jobListData, boolean isSaved, boolean isApplied, boolean isShortListed) {
         mContext = context;
@@ -193,7 +196,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
             }
 
-           // holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
+            // holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.2f", data.getPercentaSkillsMatch()).concat("%"));
 
 
@@ -253,7 +256,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
 
     }
 
-    public void unSaveJob(final int JobID, final int position) {
+    private void unSaveJob(final int JobID, final int position) {
         SaveUnSaveRequest request = new SaveUnSaveRequest();
         request.setJobId(JobID);
         request.setStatus(0);
@@ -283,7 +286,7 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                         notifyItemChanged(position);
                     }
                 } catch (Exception e) {
-                    LogUtils.LOGE(TAG,e.getMessage());
+                    LogUtils.LOGE(TAG, e.getMessage());
                     notifyItemChanged(position);
                 }
 
@@ -334,14 +337,20 @@ public class TrackJobsAdapter extends RecyclerView.Adapter<TrackJobsAdapter.MyHo
                 }
             }
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvJobType, tvDate, tvDocName, tvDocAddress, tvDuration, tvDistance;
-        ImageView ivChat;
-        CheckBox cbSelect;
+        final TextView tvName;
+        final TextView tvJobType;
+        final TextView tvDate;
+        final TextView tvDocName;
+        final TextView tvDocAddress;
+        final TextView tvDuration;
+        final TextView tvDistance;
+        final ImageView ivChat;
+        final CheckBox cbSelect;
 
         MyHolder(View itemView) {
             super(itemView);

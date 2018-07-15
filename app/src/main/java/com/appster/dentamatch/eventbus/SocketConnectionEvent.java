@@ -2,10 +2,11 @@ package com.appster.dentamatch.eventbus;
 
 /**
  * Created by Appster on 08/02/17.
+ * To inject activity reference.
  */
 
 public class SocketConnectionEvent {
-    private boolean connectionStatus;
+    private final boolean connectionStatus;
 
     public SocketConnectionEvent(boolean status){
         this.connectionStatus = status;

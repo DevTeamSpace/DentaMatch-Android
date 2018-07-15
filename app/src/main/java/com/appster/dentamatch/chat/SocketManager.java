@@ -36,6 +36,7 @@ import io.socket.emitter.Emitter;
 
 /**
  * Created by ramkumar on 06/02/17.
+ * Socket connection manager class to carry out communication through socket connection.
  */
 
 public class SocketManager {
@@ -76,7 +77,7 @@ public class SocketManager {
     private final String EVENT_CHAT_HISTORY = "getMessages";
     private final String EVENT_SESSION_EXPIRED = "logoutPreviousSession";
 
-    private static String CHAT_SERVER_URL = BuildConfig.CHAT_URL;
+    private static final String CHAT_SERVER_URL = BuildConfig.CHAT_URL;
 
 
     private static Socket mSocket;
@@ -97,7 +98,7 @@ public class SocketManager {
             synchronized (SocketManager.class) {
 
                 //if (socketManager == null) {
-                    socketManager = new SocketManager();
+                socketManager = new SocketManager();
                 //}
             }
         }
@@ -158,7 +159,7 @@ public class SocketManager {
         });
     }
 
-    private Emitter.Listener onConnect = new Emitter.Listener() {
+    private final Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECT);
@@ -218,7 +219,7 @@ public class SocketManager {
     }
 
 
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+    private final Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_DISCONNECT);
@@ -232,7 +233,7 @@ public class SocketManager {
         }
     };
 
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
+    private final Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
@@ -242,7 +243,7 @@ public class SocketManager {
         }
     };
 
-    private Ack messageSentAcknowledgement = new Ack() {
+    private final Ack messageSentAcknowledgement = new Ack() {
         @Override
         public void call(final Object... args) {
             attachedActivity.runOnUiThread(new Runnable() {
@@ -273,7 +274,7 @@ public class SocketManager {
         }
     };
 
-    private Ack pastChatReceivedAcknowledgement = new Ack() {
+    private final Ack pastChatReceivedAcknowledgement = new Ack() {
         @Override
         public void call(Object... args) {
             LogUtils.LOGD(TAG, SOCKET_PAST_CHAT_ACKNOWLEDGEMENT + args[0]);
@@ -297,7 +298,7 @@ public class SocketManager {
     /**
      * this listener is called  when a new message is transmitted from he server.
      */
-    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+    private final Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             LogUtils.LOGD(TAG, EVENT_NEW_MESSAGE + ":" + args[0]);
@@ -367,7 +368,7 @@ public class SocketManager {
                             if (!DBHelper.getInstance().checkIfMessageAlreadyExists(model.getFromID(), message)) {
                                 DBModel dbModel = DBHelper.getInstance().getDBData(model.getFromID());
 
-                                if(dbModel != null) {
+                                if (dbModel != null) {
                                     if (dbModel.isDBUpdated()) {
                                         DBHelper.getInstance().insertIntoDB(model.getFromID(),
                                                 message,
@@ -388,7 +389,7 @@ public class SocketManager {
                                                 model.getMessageTime(),
                                                 false);
                                     }
-                                }else{
+                                } else {
                                     /*
                                       In case the message is from a new recruiter, directly insert it into the DB as it does not
                                       require any syncing.
@@ -414,7 +415,7 @@ public class SocketManager {
         }
     };
 
-    private Emitter.Listener onUserSessionExpired = new Emitter.Listener() {
+    private final Emitter.Listener onUserSessionExpired = new Emitter.Listener() {
 
         @Override
         public void call(Object... args) {
@@ -443,7 +444,7 @@ public class SocketManager {
 
                 }
             } catch (JSONException e) {
-                LogUtils.LOGE(TAG,e.getMessage());
+                LogUtils.LOGE(TAG, e.getMessage());
             }
         }
     };

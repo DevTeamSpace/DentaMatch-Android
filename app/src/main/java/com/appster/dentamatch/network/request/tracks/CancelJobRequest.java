@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.request.tracks;
 
 /**
  * Created by Appster on 03/02/17.
+ * To inject activity reference.
  */
 
 public class CancelJobRequest {

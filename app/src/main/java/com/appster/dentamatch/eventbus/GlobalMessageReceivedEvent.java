@@ -4,10 +4,11 @@ import com.appster.dentamatch.ui.messages.ChatMessageModel;
 
 /**
  * Created by Appster on 13/02/17.
+ * To stream global messages.
  */
 
-public class GlobalMessageReceivedEvent {
-    private ChatMessageModel model;
+class GlobalMessageReceivedEvent {
+    private final ChatMessageModel model;
 
     public GlobalMessageReceivedEvent(ChatMessageModel model) {
         this.model = model;

@@ -28,6 +28,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 27/01/17.
+ * To inject activity reference.
  */
 public class SelectPreferredLocationActivity extends BaseActivity implements View.OnClickListener, PreferredJobListSelected {
     private final String TAG = "SelectJobTitleActivity";

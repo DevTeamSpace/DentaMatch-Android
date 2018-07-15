@@ -30,8 +30,8 @@ public class CalendarViewEvent extends LinearLayout {
     private ImageView mIvPreviousButton, mIvNextButton;
     private TextView mCurrentDate;
     private GridView mCalendarGridView;
-    private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-    private Calendar mCal = Calendar.getInstance(Locale.ENGLISH);
+    private final SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+    private final Calendar mCal = Calendar.getInstance(Locale.ENGLISH);
     private Context mContext;
     private CalendarEventGridAdapter mAdapter;
     private int mOldClickedPos = -1;
@@ -104,11 +104,11 @@ public class CalendarViewEvent extends LinearLayout {
     private void initializeUILayout() {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View calendarView = inflater.inflate(R.layout.calendar_layout, this);
-        mIvPreviousButton = (ImageView) calendarView.findViewById(R.id.previous_month);
-        mIvNextButton = (ImageView) calendarView.findViewById(R.id.next_month);
-        mIvFullTime = (ImageView) calendarView.findViewById(R.id.iv_full_time);
-        mCurrentDate = (TextView) calendarView.findViewById(R.id.display_current_date);
-        mCalendarGridView = (GridView) calendarView.findViewById(R.id.calendar_grid);
+        mIvPreviousButton = calendarView.findViewById(R.id.previous_month);
+        mIvNextButton = calendarView.findViewById(R.id.next_month);
+        mIvFullTime = calendarView.findViewById(R.id.iv_full_time);
+        mCurrentDate = calendarView.findViewById(R.id.display_current_date);
+        mCalendarGridView = calendarView.findViewById(R.id.calendar_grid);
     }
 
     private void setPreviousButtonClickEvent() {

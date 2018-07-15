@@ -1,8 +1,10 @@
 package com.appster.dentamatch.ui.tracks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,121 +37,122 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 02/02/17.
+ * To inject activity reference.
  */
 
-    public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-        private com.appster.dentamatch.databinding.FragmentAppliedJobsBinding mBinding;
-        private LinearLayoutManager mLayoutManager;
-        private TrackJobsAdapter mJobAdapter;
-        private ArrayList<SearchJobModel> mJobListData;
+public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+    private com.appster.dentamatch.databinding.FragmentAppliedJobsBinding mBinding;
+    private LinearLayoutManager mLayoutManager;
+    private TrackJobsAdapter mJobAdapter;
+    private ArrayList<SearchJobModel> mJobListData;
 
-        public static com.appster.dentamatch.ui.tracks.AppliedJobsFragment newInstance() {
-            return new com.appster.dentamatch.ui.tracks.AppliedJobsFragment();
+    public static com.appster.dentamatch.ui.tracks.AppliedJobsFragment newInstance() {
+        return new com.appster.dentamatch.ui.tracks.AppliedJobsFragment();
+    }
+
+    @Override
+    public String getFragmentName() {
+        return null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
+    }
 
-        @Override
-        public String getFragmentName() {
-            return null;
+    @Override
+    public void onDetach() {
+        EventBus.getDefault().unregister(this);
+        super.onDetach();
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_applied_jobs, container, false);
+        initViews();
+        mBinding.rvFragmentAppliedJobs.setLayoutManager(mLayoutManager);
+        mBinding.rvFragmentAppliedJobs.setAdapter(mJobAdapter);
+        mBinding.rvFragmentAppliedJobs.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                checkIfItsLastItem();
+            }
+        });
+        return mBinding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isActive() && isVisible()) {
+            TrackJobsDataHelper.getInstance().requestData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
         }
+    }
 
-        @Override
-        public void onAttach(Context context) {
-            super.onAttach(context);
-            if(!EventBus.getDefault().isRegistered(this)){
-                EventBus.getDefault().register(this);
+    private void initViews() {
+        mJobListData = new ArrayList<>();
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mJobAdapter = new TrackJobsAdapter(getActivity(), mJobListData, false, true, false);
+        mBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
+        mBinding.swipeRefreshJobList.setOnRefreshListener(this);
+    }
+
+    /**
+     * if the recycler view has reached its last item , update data via pagination if required.
+     */
+    private void checkIfItsLastItem() {
+        int visibleItemCount = mLayoutManager.getChildCount();
+        int totalItemCount = mLayoutManager.getItemCount();
+        int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
+
+        if (TrackJobsDataHelper.getInstance().isPaginationNeeded(Constants.SEARCHJOBTYPE.APPLIED.getValue())) {
+            if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                mBinding.layJobListPagination.setVisibility(View.VISIBLE);
+                TrackJobsDataHelper.getInstance().requestPaginatedData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
+
             }
         }
+    }
 
-        @Override
-        public void onDetach() {
-            EventBus.getDefault().unregister(this);
-            super.onDetach();
+    @Subscribe
+    public void onDataUpdated(TrackJobListRetrievedEvent event) {
+        if (event != null) {
 
-        }
+            if (event.getType() == Constants.SEARCHJOBTYPE.APPLIED.getValue()) {
+                mJobListData.clear();
+                mJobListData.addAll(event.getData());
 
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_applied_jobs, container, false);
-            initViews();
-            mBinding.rvFragmentAppliedJobs.setLayoutManager(mLayoutManager);
-            mBinding.rvFragmentAppliedJobs.setAdapter(mJobAdapter);
-            mBinding.rvFragmentAppliedJobs.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    checkIfItsLastItem();
+                if (mJobListData.size() == 0) {
+                    mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.tvNoJobs.setVisibility(View.GONE);
                 }
-            });
-            return mBinding.getRoot();
-        }
 
-        @Override
-        public void onResume() {
-            super.onResume();
-            if(isActive() && isVisible()) {
-                TrackJobsDataHelper.getInstance().requestData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
+                mJobAdapter.notifyDataSetChanged();
             }
-        }
-
-        private void initViews() {
-            mJobListData = new ArrayList<>();
-            mLayoutManager = new LinearLayoutManager(getActivity());
-            mJobAdapter = new TrackJobsAdapter(getActivity(), mJobListData, false, true, false);
-            mBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
-            mBinding.swipeRefreshJobList.setOnRefreshListener(this);
-        }
-
-        /**
-         * if the recycler view has reached its last item , update data via pagination if required.
-         */
-        private void checkIfItsLastItem() {
-            int visibleItemCount = mLayoutManager.getChildCount();
-            int totalItemCount = mLayoutManager.getItemCount();
-            int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
-
-            if (TrackJobsDataHelper.getInstance().isPaginationNeeded(Constants.SEARCHJOBTYPE.APPLIED.getValue())) {
-                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                    mBinding.layJobListPagination.setVisibility(View.VISIBLE);
-                    TrackJobsDataHelper.getInstance().requestPaginatedData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
-
-                }
-            }
-        }
-
-        @Subscribe
-        public void onDataUpdated(TrackJobListRetrievedEvent event){
-            if(event != null){
-
-                if(event.getType() == Constants.SEARCHJOBTYPE.APPLIED.getValue()) {
-                    mJobListData.clear();
-                    mJobListData.addAll(event.getData());
-
-                    if(mJobListData.size() == 0){
-                        mBinding.tvNoJobs.setVisibility(View.VISIBLE);
-                    }else{
-                        mBinding.tvNoJobs.setVisibility(View.GONE);
-                    }
-
-                    mJobAdapter.notifyDataSetChanged();
-                }
 
                 /*
                   Hide pagination loader if it is visible.
                  */
-                if(mBinding.layJobListPagination.getVisibility() == View.VISIBLE){
-                    mBinding.layJobListPagination.setVisibility(View.GONE);
-                }
+            if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
+                mBinding.layJobListPagination.setVisibility(View.GONE);
+            }
                 /*
                   Stop refreshing if the swipe loader is refreshing.
                  */
-                if(mBinding.swipeRefreshJobList.isRefreshing()){
-                    mBinding.swipeRefreshJobList.setRefreshing(false);
-                }
+            if (mBinding.swipeRefreshJobList.isRefreshing()) {
+                mBinding.swipeRefreshJobList.setRefreshing(false);
             }
         }
+    }
 
-    private void cancelJob(final int ID, String msg ) {
+    private void cancelJob(final int ID, String msg) {
         CancelJobRequest request = new CancelJobRequest();
         request.setCancelReason(msg);
         request.setJobId(ID);
@@ -165,13 +168,15 @@ import retrofit2.Call;
                 if (response.getStatus() == 1) {
                     mJobAdapter.cancelJob(ID);
 
-                    if(mJobListData.size() > 0){
+                    if (mJobListData.size() > 0) {
                         mBinding.tvNoJobs.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         mBinding.tvNoJobs.setVisibility(View.VISIBLE);
                     }
-                }else{
-                    ((BaseActivity) getActivity()).showToast(response.getMessage());
+                } else {
+                    Activity activity = getActivity();
+                    if (activity != null)
+                        ((BaseActivity) activity).showToast(response.getMessage());
                 }
             }
 
@@ -184,11 +189,11 @@ import retrofit2.Call;
 
 
     @Subscribe
-    public void jobCancelled(JobCancelEvent event){
-        if(event != null){
-            for(SearchJobModel model : mJobListData){
+    public void jobCancelled(JobCancelEvent event) {
+        if (event != null) {
+            for (SearchJobModel model : mJobListData) {
 
-                if(model.getId() == event.getJobID()){
+                if (model.getId() == event.getJobID()) {
                     cancelJob(event.getJobID(), event.getMsg());
                     break;
                 }
@@ -198,8 +203,8 @@ import retrofit2.Call;
     }
 
     @Override
-        public void onRefresh() {
-            TrackJobsDataHelper.getInstance().refreshData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
-        }
+    public void onRefresh() {
+        TrackJobsDataHelper.getInstance().refreshData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
     }
+}
 

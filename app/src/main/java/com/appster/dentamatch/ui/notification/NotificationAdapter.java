@@ -39,6 +39,7 @@ import static com.instabug.library.Instabug.getApplicationContext;
 
 /**
  * Created by bawenderyandra on 08/03/17.
+ * To inject activity reference.
  */
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
@@ -46,8 +47,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private final int NOTIFICATION_READ = 1;
 
     private ItemNotificationBinding mBinding;
-    private ArrayList<NotificationData> mNotificationList;
-    private Context mContext;
+    private final ArrayList<NotificationData> mNotificationList;
+    private final Context mContext;
 
     public NotificationAdapter(Context ct, ArrayList<NotificationData> notificationData) {
         mNotificationList = notificationData;
@@ -386,9 +387,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-        private CustomTextView tvDesc, tvAddress, tvDuration, tvJobType, tvAccept, tvReject;
-        private ImageView ivRead, ivRightArrow;
-        private LinearLayout layoutInVite;
+        private final CustomTextView tvDesc;
+        private final CustomTextView tvAddress;
+        private final CustomTextView tvDuration;
+        private final CustomTextView tvJobType;
+        private final CustomTextView tvAccept;
+        private final CustomTextView tvReject;
+        private final ImageView ivRead;
+        private final ImageView ivRightArrow;
+        private final LinearLayout layoutInVite;
 
         MyHolder(View itemView) {
             super(itemView);

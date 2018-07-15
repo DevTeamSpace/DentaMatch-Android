@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Appster on 27/01/17.
+ * To inject activity reference.
  */
 
 public class SearchJobModel implements Parcelable{
@@ -174,7 +175,7 @@ public class SearchJobModel implements Parcelable{
     public SearchJobModel() {
     }
 
-    protected SearchJobModel(Parcel in) {
+    private SearchJobModel(Parcel in) {
         this.id = in.readInt();
         this.jobType = in.readInt();
         this.isMonday = in.readInt();

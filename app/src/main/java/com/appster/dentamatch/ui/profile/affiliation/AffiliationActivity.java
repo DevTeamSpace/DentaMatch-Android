@@ -31,6 +31,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 13/01/17.
+ * To inject activity reference.
  */
 public class AffiliationActivity extends BaseActivity implements OnClickListener {
     private ActivityAffiliationBinding mBinder;

@@ -14,20 +14,21 @@ import com.appster.dentamatch.widget.CustomTextView;
 
 /**
  * Created by virender on 15/01/17.
+ * To inject activity reference.
  */
 public class BottomSheetJobTitle {
 
     private BottomSheetDialog mBottomSheetDialog;
-    private JobTitleSelectionListener mJobTitleSelectionListener;
+    private final JobTitleSelectionListener mJobTitleSelectionListener;
 
     public BottomSheetJobTitle(final Context context, JobTitleSelectionListener jobTitleSelectionListener, final int position) {
         mJobTitleSelectionListener = jobTitleSelectionListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
         String[] jobTitle = new String[PreferenceUtil.getJobTitleList() != null ? PreferenceUtil.getJobTitleList().size() : 0];
         View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_job_title, null);
-        CustomTextView tvCancel = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
-        CustomTextView tvDone = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_done);
-        final NumberPicker pickerTitle = (NumberPicker) view.findViewById(R.id.bottom_sheet_picker_job_title);
+        CustomTextView tvCancel = view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
+        CustomTextView tvDone = view.findViewById(R.id.bottom_sheet_picker_tv_done);
+        final NumberPicker pickerTitle = view.findViewById(R.id.bottom_sheet_picker_job_title);
         pickerTitle.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
         pickerTitle.setMinValue(0);

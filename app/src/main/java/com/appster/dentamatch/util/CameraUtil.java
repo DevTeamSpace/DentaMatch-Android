@@ -26,6 +26,7 @@ import java.io.IOException;
 
 /**
  * Created by virender on 10/06/16.
+ * To inject activity reference.
  */
 public class CameraUtil {
     private static final String TAG = LogUtils.makeLogTag(CameraUtil.class);
@@ -139,7 +140,7 @@ public class CameraUtil {
                 float maxHeight = 700.0f;
                 float maxWidth = 600.0f;
                 float imgRatio = (float) actualWidth / actualHeight;
-                float maxRatio = (float) maxWidth / maxHeight;
+                float maxRatio = maxWidth / maxHeight;
 
 
                 if (actualHeight > maxHeight || actualWidth > maxWidth) {

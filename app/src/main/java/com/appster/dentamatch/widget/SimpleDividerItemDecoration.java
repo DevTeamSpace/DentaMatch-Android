@@ -12,10 +12,11 @@ import com.appster.dentamatch.R;
 
 /**
  * Created by anjali on 17/06/16.
+ * To inject activity reference.
  */
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
 
-    private Drawable mDivider;
+    private final Drawable mDivider;
 
     public SimpleDividerItemDecoration(Context context) {
         mDivider = ContextCompat.getDrawable(context, R.drawable.line_divider);

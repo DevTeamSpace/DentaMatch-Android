@@ -23,6 +23,7 @@ import java.util.List;
 
 /**
  * Created by ram on 12/01/17.
+ * To inject activity reference.
  */
 public class SubSkillsActivity extends BaseActivity implements View.OnClickListener {
     private ActivitySubSkillsBinding mBinder;

@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Appster on 23/05/16.
+ * To inject activity reference.
  */
 public class UserModel implements Parcelable{
     private  String email;

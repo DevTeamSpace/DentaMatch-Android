@@ -2,13 +2,14 @@ package com.appster.dentamatch.eventbus;
 
 /**
  * Created by Appster on 03/02/17.
+ * To stream job cancelled events.
  */
 
 public class JobCancelEvent {
-    private int jobID;
-    private String msg;
+    private final int jobID;
+    private final String msg;
 
-    public JobCancelEvent(int jobID, String msg){
+    public JobCancelEvent(int jobID, String msg) {
         this.jobID = jobID;
         this.msg = msg;
     }

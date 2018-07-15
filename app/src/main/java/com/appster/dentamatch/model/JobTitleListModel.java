@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by virender on 09/01/17.
+ * To inject activity reference.
  */
 public class JobTitleListModel implements Parcelable{
 
@@ -29,7 +30,7 @@ public class JobTitleListModel implements Parcelable{
 
     }
 
-    protected JobTitleListModel(Parcel in) {
+    private JobTitleListModel(Parcel in) {
         id = in.readInt();
         jobTitle = in.readString();
         isLicenseRequired = in.readInt();

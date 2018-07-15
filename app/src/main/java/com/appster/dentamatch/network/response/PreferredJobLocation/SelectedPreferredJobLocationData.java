@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.response.PreferredJobLocation;
 
 /**
  * Created by zishan on 22/11/17.
+ * To inject activity reference.
  */
 
 public class SelectedPreferredJobLocationData  {

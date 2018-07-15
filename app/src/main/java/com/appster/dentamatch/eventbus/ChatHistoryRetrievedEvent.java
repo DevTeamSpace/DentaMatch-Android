@@ -4,10 +4,12 @@ import org.json.JSONArray;
 
 /**
  * Created by Appster on 27/02/17.
+ * To stream chat history retrieval process.
  */
 
 public class ChatHistoryRetrievedEvent {
-    private JSONArray model;
+    private final JSONArray model;
+
     public ChatHistoryRetrievedEvent(JSONArray model) {
         this.model = model;
     }

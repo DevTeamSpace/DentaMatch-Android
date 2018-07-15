@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by virender on 16/01/17.
+ * To inject activity reference.
  */
 public class AffiliationPostRequest {
     @SerializedName("affiliationDataArray")

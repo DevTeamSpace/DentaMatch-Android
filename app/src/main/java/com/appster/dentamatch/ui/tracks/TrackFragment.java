@@ -2,6 +2,7 @@ package com.appster.dentamatch.ui.tracks;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.appster.dentamatch.ui.common.BaseFragment;
 
 /**
  * Created by Appster on 23/01/17.
+ * To inject activity reference.
  */
 
 public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
@@ -31,7 +33,7 @@ public class TrackFragment extends BaseFragment implements TabLayout.OnTabSelect
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding=  DataBindingUtil.inflate(inflater, R.layout.fragment_tracks, container, false);
         initViews();
 

@@ -15,13 +15,14 @@ import io.realm.Sort;
 
 /**
  * Created by Appster on 14/02/17.
+ * Helper class to carry out transactions.
  */
 
 public class DBHelper {
     private static final String TAG = LogUtils.makeLogTag(DBHelper.class);
     public static final String UNREAD_MSG_COUNT = "UNREAD_MSG_COUNT";
-    public static final String LAST_MSG = "LAST_MSG";
-    public static final String USER_CHATS = "USER_CHATS";
+    private static final String LAST_MSG = "LAST_MSG";
+    private static final String USER_CHATS = "USER_CHATS";
     public static final String IS_RECRUITED_BLOCKED = "IS_RECRUITED_BLOCKED";
     public static final String IS_SYNCED = "IS_SYNCED";
     public static final String CHAT_DETAILS = "CHAT_DETAILS";
@@ -35,8 +36,8 @@ public class DBHelper {
     public static DBHelper getInstance() {
         if (realmDBHelper == null) {
             synchronized (DBHelper.class) {
-               // if (realmDBHelper == null) {
-                    realmDBHelper = new DBHelper();
+                // if (realmDBHelper == null) {
+                realmDBHelper = new DBHelper();
                 //}
             }
         }
@@ -72,7 +73,7 @@ public class DBHelper {
         return mRealmInstance.where(DBModel.class).findAllSorted("lastMsgTime", Sort.DESCENDING);
     }
 
-    public void updateRecruiterDetails(String recruiterId,String recruiterName,int unreadMsgCount, String msgListID, String msg, String timeStamp, boolean isFromList){
+    public void updateRecruiterDetails(String recruiterId, String recruiterName, int unreadMsgCount, String msgListID, String msg, String timeStamp, boolean isFromList) {
 
         if (mRealmInstance == null) {
             LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
@@ -80,18 +81,18 @@ public class DBHelper {
             mRealmInstance.beginTransaction();
             DBModel retrievedModel = getDBData(recruiterId);
 
-            if (retrievedModel != null){
+            if (retrievedModel != null) {
                 retrievedModel.setLastMessage(msg);
                 retrievedModel.setHasDBUpdated(false);
                 retrievedModel.setLastMsgTime(timeStamp);
                 retrievedModel.setMessageListId(msgListID);
-                if(isFromList){
+                if (isFromList) {
                     retrievedModel.setUnReadChatCount(unreadMsgCount);
-                }else {
+                } else {
                     retrievedModel.setUnReadChatCount(retrievedModel.getUnReadChatCount() + unreadMsgCount);
                 }
 
-            }else{
+            } else {
                 DBModel newModel = mRealmInstance.createObject(DBModel.class, recruiterId);
                 newModel.setName(recruiterName);
                 newModel.setLastMessage(msg);
@@ -189,7 +190,7 @@ public class DBHelper {
      * @param value :the value of the parameter to be sorted with.
      */
     public void upDateDB(String recruiterId, String key, String value, Message message) {
-        if(!TextUtils.isEmpty(recruiterId)) {
+        if (!TextUtils.isEmpty(recruiterId)) {
             DBModel retrievedModel = mRealmInstance.where(DBModel.class).equalTo(DB_PRIMARY_KEY, recruiterId).findFirst();
 
             if (retrievedModel != null) {
@@ -239,6 +240,7 @@ public class DBHelper {
 
     /**
      * Get the DBModel for the specified recruiterId.
+     *
      * @param recruiterId : the recruiter ID.
      */
     public DBModel getDBData(String recruiterId) {
@@ -260,7 +262,7 @@ public class DBHelper {
             mRealmInstance.deleteAll();
             mRealmInstance.commitTransaction();
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 

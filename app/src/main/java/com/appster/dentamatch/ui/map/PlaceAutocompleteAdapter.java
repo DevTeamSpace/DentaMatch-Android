@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
  * The API client must be maintained in the encapsulating Activity, including all lifecycle and
  * connection states. The API client must be connected with the {@link Places#GEO_DATA_API} API.
  */
-public class PlaceAutocompleteAdapter
+class PlaceAutocompleteAdapter
         extends ArrayAdapter<AutocompletePrediction> implements Filterable {
 
     private static final String TAG = LogUtils.makeLogTag(PlaceAutocompleteAdapter.class);
@@ -66,7 +66,7 @@ public class PlaceAutocompleteAdapter
     /**
      * Handles autocomplete requests.
      */
-    private GoogleApiClient mGoogleApiClient;
+    private final GoogleApiClient mGoogleApiClient;
 
     /**
      * The bounds used for Places Geo Data autocomplete API requests.
@@ -76,7 +76,7 @@ public class PlaceAutocompleteAdapter
     /**
      * The autocomplete filter used to restrict queries to a specific set of place types.
      */
-    private AutocompleteFilter mPlaceFilter;
+    private final AutocompleteFilter mPlaceFilter;
 
     /**
      * Initializes with a resource for text rows and autocomplete query bounds.
@@ -153,7 +153,7 @@ public class PlaceAutocompleteAdapter
                  * We need a separate list to store the results, since
                  * this is run asynchronously.
                  */
-                ArrayList<AutocompletePrediction> filterData = new ArrayList<AutocompletePrediction>();
+                ArrayList<AutocompletePrediction> filterData = new ArrayList<>();
 
                 /*
                  * Skip the autocomplete query if no constraints are given.

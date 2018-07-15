@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 /**
  * Created by virender on 12/01/17.
+ * To inject activity reference.
  */
 public class LicenceRequest implements Parcelable {
 

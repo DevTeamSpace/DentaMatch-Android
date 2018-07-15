@@ -22,11 +22,12 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 28/01/17.
+ * To inject activity reference.
  */
 
 public class SearchJobDataHelper {
     private static SearchJobDataHelper ourInstance;
-    private ArrayList<SearchJobModel> jobDataList;
+    private final ArrayList<SearchJobModel> jobDataList;
     private boolean mIsPaginationRequired;
     private int mPageNumber;
     private int mTotalResultCount;

@@ -2,8 +2,9 @@ package com.appster.dentamatch.network.response.jobs;
 
 /**
  * Created by virender on 10/02/17.
+ * To inject activity reference.
  */
-public class TemporaryJobDates {
+class TemporaryJobDates {
 
     private String jobDate;
     private int recruiterJobId;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,10 +42,11 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 23/01/17.
+ * To inject activity reference.
  */
 
 public class CalendarFragment extends BaseFragment implements View.OnClickListener, OnDateSelected {
-    private static final String TAG= LogUtils.makeLogTag(CalendarFragment.class);
+    private static final String TAG = LogUtils.makeLogTag(CalendarFragment.class);
     private FragmentCalendarBinding mCalendarBinding;
     private HiredJobAdapter mJobAdapter;
     private ArrayList<HiredJobs> mAllJobLIst;
@@ -60,7 +62,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mCalendarBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false);
         initViews();
         return mCalendarBinding.getRoot();
@@ -75,7 +77,8 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
         mCalendarBinding.toolbarCalendar.ivToolBarRight.setOnClickListener(this);
         mCalendarBinding.toolbarCalendar.ivToolBarRight.setVisibility(View.VISIBLE);
         mCalendarBinding.toolbarCalendar.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
-        mCalendarBinding.toolbarCalendar.txvToolbarGeneralRight.setCompoundDrawables(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_plus), null, null, null);
+        if (getActivity() != null)
+            mCalendarBinding.toolbarCalendar.txvToolbarGeneralRight.setCompoundDrawables(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_plus), null, null, null);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mCalendarBinding.rvBookedJob.setLayoutManager(mLayoutManager);
         mAllJobLIst = new ArrayList<>();
@@ -124,7 +127,8 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                 startActivity(new Intent(getActivity(), SetAvailabilityActivity.class));
                 break;
 
-            default: break;
+            default:
+                break;
         }
 
     }
@@ -195,9 +199,9 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                     }
 
 
-                    for(int i = 0; i < mAllJobLIst.size(); i++){
+                    for (int i = 0; i < mAllJobLIst.size(); i++) {
 
-                        if(mAllJobLIst.get(i).getId() == jobId){
+                        if (mAllJobLIst.get(i).getId() == jobId) {
                             mAllJobLIst.remove(i);
                             i = -1;
                         }
@@ -205,7 +209,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                     }
 
                     mCalendarBinding.customCalendar.setHiredListData(mAllJobLIst);
-                }else{
+                } else {
                     showToast(response.getMessage());
                 }
             }
@@ -243,40 +247,16 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                         Date jobHireDate = Utils.getDate(mAllJobLIst.get(i).getJobDate(), Constants.DateFormat.YYYYMMDD);
                         Date currentDate = Utils.getDate(date, Constants.DateFormat.YYYYMMDD);
 
-                        if(jobHireDate.compareTo(currentDate) <= 0) {
+                        if (jobHireDate != null && jobHireDate.compareTo(currentDate) <= 0) {
                             String day = Utils.getDayOfWeek(date);
-
-                           /* if (day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-
-                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-
-                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-
-                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-
-                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-
-                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-
-                            } else if (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-
-                            }*/
-
 
                             if ((day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1)
                                     || (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1)
-                                    ||(day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1)
+                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1)
                                     || (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1)
                                     || (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1)
-                                    ||  (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1)
-                                    ||(day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1)) {
+                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1)
+                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1)) {
                                 selectedDateJobList.add(mAllJobLIst.get(i));
 
                             }
@@ -284,7 +264,7 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
 
                     } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
 
-                        if(mAllJobLIst.get(i).getTempDates().equalsIgnoreCase(date)){
+                        if (mAllJobLIst.get(i).getTempDates().equalsIgnoreCase(date)) {
                             selectedDateJobList.add(mAllJobLIst.get(i));
                         }
 
@@ -309,8 +289,8 @@ public class CalendarFragment extends BaseFragment implements View.OnClickListen
                 }
             }
 
-        }catch(Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 

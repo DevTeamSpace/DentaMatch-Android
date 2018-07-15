@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.request.jobs;
 
 /**
  * Created by virender on 09/02/17.
+ * To inject activity reference.
  */
 public class HiredJobRequest {
 

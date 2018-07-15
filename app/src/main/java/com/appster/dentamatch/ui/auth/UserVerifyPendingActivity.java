@@ -27,10 +27,11 @@ import retrofit2.Call;
 
 /**
  * Created by abhaykant on 08/12/17.
+ * To inject activity reference.
  */
 
 public class UserVerifyPendingActivity extends BaseActivity {
-    private String TAG = LogUtils.makeLogTag(UserVerifyPendingActivity.class);
+    private final String TAG = LogUtils.makeLogTag(UserVerifyPendingActivity.class);
     private int isLicenceRequired;
     private ActivityProfileCompletedPendingBinding activityProfileCompletedPendingBinding;
 
@@ -81,10 +82,10 @@ public class UserVerifyPendingActivity extends BaseActivity {
             activityProfileCompletedPendingBinding.headingMessage.setText(getResources().getString(R.string.congratulations));
             activityProfileCompletedPendingBinding.message.setText(getResources().getString(R.string.profile_completion));
         }*/// else {
-            activityProfileCompletedPendingBinding.imageview.setImageDrawable(getResources().getDrawable(R.drawable.ic_verify_email));
-            activityProfileCompletedPendingBinding.headingMessage.setText(getResources().getString(R.string.verify_email_b));
-            activityProfileCompletedPendingBinding.message.setText(getResources().getString(R.string.we_have_sent_a_verification));
-       // }
+        activityProfileCompletedPendingBinding.imageview.setImageDrawable(getResources().getDrawable(R.drawable.ic_verify_email));
+        activityProfileCompletedPendingBinding.headingMessage.setText(getResources().getString(R.string.verify_email_b));
+        activityProfileCompletedPendingBinding.message.setText(getResources().getString(R.string.we_have_sent_a_verification));
+        // }
 
     }
 
@@ -92,38 +93,38 @@ public class UserVerifyPendingActivity extends BaseActivity {
         checkUserVerified(true);
     }
 
-    private void checkUserVerified(final boolean showDialog){
-       showProgressBar();
+    private void checkUserVerified(final boolean showDialog) {
+        showProgressBar();
         String accessToken = PreferenceUtil.getKeyUserToken();
-        LogUtils.LOGD(TAG,"accessToken>>"+accessToken);
+        LogUtils.LOGD(TAG, "accessToken>>" + accessToken);
 
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class,true);
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
         webServices.checkUserVerified().enqueue(new BaseCallback<UserVerifiedStatus>(UserVerifyPendingActivity.this) {
             @Override
             public void onSuccess(UserVerifiedStatus response) {
                 hideProgressBar();
-                if(response.getResult().getIsVerified()==Constants.USER_VERIFIED_STATUS) {
+                if (response.getResult().getIsVerified() == Constants.USER_VERIFIED_STATUS) {
 
-                    UserModel userModel=PreferenceUtil.getUserModel();
+                    UserModel userModel = PreferenceUtil.getUserModel();
 
-                    if(userModel==null){
+                    if (userModel == null) {
                         return;
                     }
 
-                    if(userModel!=null) {
-                        userModel.setIsVerified(Constants.USER_VERIFIED_STATUS);
-                        PreferenceUtil.setUserModel(userModel);
-                    }
+
+                    userModel.setIsVerified(Constants.USER_VERIFIED_STATUS);
+                    PreferenceUtil.setUserModel(userModel);
+
 
                     PreferenceUtil.setUserVerified(Constants.USER_VERIFIED_STATUS);
 
                     Intent profileCompletedIntent = new Intent(UserVerifyPendingActivity.this, ProfileCompletedPendingActivity.class);
 
-                    if(userModel.getIsJobSeekerVerified()==Constants.JOBSEEKAR_VERIFY_STATUS){
+                    if (userModel.getIsJobSeekerVerified() == Constants.JOBSEEKAR_VERIFY_STATUS) {
                         //congrates screen
                         profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, 0);
 
-                    }else{
+                    } else {
                         //Pending liecence screen
                         profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, 1);
 
@@ -135,12 +136,12 @@ public class UserVerifyPendingActivity extends BaseActivity {
                     intentToSeatAvailability.putExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.TRUE);
                     startActivity(intentToSeatAvailability);
                     finish();*/
-                }else{
+                } else {
 
 
-                     if(showDialog){
-                         showEmailDialog(response.getMessage());
-                     }
+                    if (showDialog) {
+                        showEmailDialog(response.getMessage());
+                    }
                     //Toast.makeText(getApplicationContext(),"Please verify your email to activate account",Toast.LENGTH_LONG).show();
                 }
             }
@@ -155,7 +156,7 @@ public class UserVerifyPendingActivity extends BaseActivity {
     }
 
 
-    private  void showEmailDialog( String msg){
+    private void showEmailDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.success))
                 .setMessage(msg)

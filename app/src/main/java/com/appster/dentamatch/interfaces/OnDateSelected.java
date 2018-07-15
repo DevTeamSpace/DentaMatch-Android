@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 /**
  * Created by bawenderyandra on 29/03/17.
+ * To inject activity reference.
  */
 
 public interface OnDateSelected {

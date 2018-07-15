@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by virender on 12/01/17.
+ * To inject activity reference.
  */
 public class FileUploadResponse extends BaseResponse {
 

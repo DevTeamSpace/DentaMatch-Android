@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by ram on 18/01/17.
+ * To inject activity reference.
  */
 public class SkillsUpdateRequest {
 

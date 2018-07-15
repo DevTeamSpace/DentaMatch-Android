@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.tracks;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 02/02/17.
+ * To inject activity reference.
  */
 
 public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -55,14 +57,14 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         return null;
     }
 
-    public ShortlistedJobsFragment(){
+    public ShortlistedJobsFragment() {
         setArguments(new Bundle());
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -75,11 +77,11 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
     }
 
     @Subscribe
-    public void jobCancelled(JobCancelEvent event){
-        if(event != null){
-            for(SearchJobModel model : mJobListData){
+    public void jobCancelled(JobCancelEvent event) {
+        if (event != null) {
+            for (SearchJobModel model : mJobListData) {
 
-                if(model.getId() == event.getJobID()){
+                if (model.getId() == event.getJobID()) {
                     cancelJob(event.getJobID(), event.getMsg());
                     break;
                 }
@@ -88,7 +90,7 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
 
     }
 
-    private void cancelJob(final int ID, String msg ) {
+    private void cancelJob(final int ID, String msg) {
         CancelJobRequest request = new CancelJobRequest();
         request.setCancelReason(msg);
         request.setJobId(ID);
@@ -103,12 +105,12 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
                 if (response.getStatus() == 1) {
                     mJobAdapter.cancelJob(ID);
 
-                    if(mJobListData.size() > 0){
+                    if (mJobListData.size() > 0) {
                         mBinding.tvNoJobs.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         mBinding.tvNoJobs.setVisibility(View.VISIBLE);
                     }
-                }else{
+                } else {
                     Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -122,7 +124,7 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_shortlisted_jobs, container, false);
         initViews();
         mBinding.rvFragmentShortlistedJobs.setLayoutManager(mLayoutManager);
@@ -158,19 +160,21 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
 
     @Override
     public void onPause() {
-        getArguments().putParcelableArrayList(DATA_ARRAY, mJobListData);
+        Bundle bundle = getArguments();
+        if (bundle != null)
+            bundle.putParcelableArrayList(DATA_ARRAY, mJobListData);
         super.onPause();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getArguments().getParcelableArrayList(DATA_ARRAY) != null) {
+        if (getArguments() != null && getArguments().getParcelableArrayList(DATA_ARRAY) != null) {
             ArrayList<SearchJobModel> jobData = getArguments().getParcelableArrayList(DATA_ARRAY);
 
-            if(jobData != null && jobData.size() > 0) {
+            if (jobData != null && jobData.size() > 0) {
                 mJobListData.addAll(jobData);
-            }else{
+            } else {
                 getAllShortListedJobs(false, true);
             }
 
@@ -187,68 +191,68 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         mBinding.swipeRefreshJobList.setOnRefreshListener(this);
     }
 
-    private void getAllShortListedJobs(final boolean isPaginationLoading, boolean showProgress){
+    private void getAllShortListedJobs(final boolean isPaginationLoading, boolean showProgress) {
 
 //        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
-       // SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
+        // SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
         //if(request != null) {
-            int type = Constants.SEARCHJOBTYPE.SHORTLISTED.getValue();
-            double lat=0,lng=0;
+        int type = Constants.SEARCHJOBTYPE.SHORTLISTED.getValue();
+        double lat = 0, lng = 0;
             /*if(request!=null && request.getLat()!=null &&  !TextUtils.isEmpty(request.getLat())) {
                 lat = Double.parseDouble(request.getLat());
                 lng = Double.parseDouble(request.getLng());
             }*/
 
-            if (showProgress) {
-                showProgressBar(getString(R.string.please_wait));
+        if (showProgress) {
+            showProgressBar(getString(R.string.please_wait));
+        }
+
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
+        webServices.fetchTrackJobs(type, mPage, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) getActivity()) {
+            @Override
+            public void onSuccess(SearchJobResponse response) {
+
+                if (response.getStatus() == 1) {
+
+                    if (!isPaginationLoading) {
+                        mJobListData.clear();
+                        processResponse(response);
+                    } else {
+                        processResponse(response);
+                    }
+
+                    mJobAdapter.notifyDataSetChanged();
+                } else {
+                    showToast(response.getMessage());
+                }
+
+                if (mBinding.swipeRefreshJobList.isRefreshing()) {
+                    mBinding.swipeRefreshJobList.setRefreshing(false);
+                }
+
+                if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
+                    mBinding.layJobListPagination.setVisibility(View.GONE);
+                }
+
+                if (mJobListData.size() > 0) {
+                    mBinding.tvNoJobs.setVisibility(View.GONE);
+                } else {
+                    mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+                }
+
             }
 
-            AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-            webServices.fetchTrackJobs(type, mPage, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) getActivity()) {
-                @Override
-                public void onSuccess(SearchJobResponse response) {
-
-                    if (response.getStatus() == 1) {
-
-                        if (!isPaginationLoading) {
-                            mJobListData.clear();
-                            processResponse(response);
-                        } else {
-                            processResponse(response);
-                        }
-
-                        mJobAdapter.notifyDataSetChanged();
-                    } else {
-                        showToast(response.getMessage());
-                    }
-
-                    if (mBinding.swipeRefreshJobList.isRefreshing()) {
-                        mBinding.swipeRefreshJobList.setRefreshing(false);
-                    }
-
-                    if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
-                        mBinding.layJobListPagination.setVisibility(View.GONE);
-                    }
-
-                    if (mJobListData.size() > 0) {
-                        mBinding.tvNoJobs.setVisibility(View.GONE);
-                    } else {
-                        mBinding.tvNoJobs.setVisibility(View.VISIBLE);
-                    }
-
+            @Override
+            public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
+                if (mBinding.swipeRefreshJobList.isRefreshing()) {
+                    mBinding.swipeRefreshJobList.setRefreshing(false);
                 }
 
-                @Override
-                public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-                    if (mBinding.swipeRefreshJobList.isRefreshing()) {
-                        mBinding.swipeRefreshJobList.setRefreshing(false);
-                    }
-
-                    if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
-                        mBinding.layJobListPagination.setVisibility(View.GONE);
-                    }
+                if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
+                    mBinding.layJobListPagination.setVisibility(View.GONE);
                 }
-            });
+            }
+        });
         /*}else{
             if (mBinding.swipeRefreshJobList.isRefreshing()) {
                 mBinding.swipeRefreshJobList.setRefreshing(false);

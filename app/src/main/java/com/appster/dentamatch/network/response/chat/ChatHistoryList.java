@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Appster on 08/02/17.
+ * To inject activity reference.
  */
 
 public class ChatHistoryList {

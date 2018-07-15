@@ -10,9 +10,10 @@ import java.util.HashMap;
 
 /**
  * Created by virender on 13/01/17.
+ * To inject activity reference.
  */
 public class WorkExpValidationUtil {
-    private static HashMap<Boolean, String> returnValue = new HashMap<>();
+    private static final HashMap<Boolean, String> returnValue = new HashMap<>();
 
     /**
      * We return a true value in case the validation is not a missing element but rather a missing format

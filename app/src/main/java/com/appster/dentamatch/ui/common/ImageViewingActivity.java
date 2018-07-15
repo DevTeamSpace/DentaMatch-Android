@@ -16,6 +16,7 @@ import com.squareup.picasso.Target;
 
 /**
  * Created by bawenderyandra on 18/04/17.
+ * To inject activity reference.
  */
 
 public class ImageViewingActivity extends BaseActivity implements View.OnClickListener {

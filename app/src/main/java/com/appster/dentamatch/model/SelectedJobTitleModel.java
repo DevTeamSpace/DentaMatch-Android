@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by bawenderyandra on 24/03/17.
+ * To inject activity reference.
  */
 
 public class SelectedJobTitleModel {

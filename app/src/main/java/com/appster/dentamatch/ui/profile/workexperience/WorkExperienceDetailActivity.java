@@ -29,6 +29,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 05/01/17.
+ * To inject activity reference.
  */
 public class WorkExperienceDetailActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener {
     private static final String TAG= LogUtils.makeLogTag(WorkExperienceDetailActivity.class);

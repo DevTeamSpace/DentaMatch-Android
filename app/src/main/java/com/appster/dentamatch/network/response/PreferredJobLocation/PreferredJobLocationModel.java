@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by zishan on 22/11/17.
+ * To inject activity reference.
  */
 
 public class PreferredJobLocationModel extends BaseResponse {

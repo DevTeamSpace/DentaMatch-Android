@@ -15,21 +15,22 @@ import com.appster.dentamatch.widget.CustomTextView;
 
 /**
  * Created by virender on 10/01/17.
+ * To inject activity reference.
  */
 public class BottomSheetDatePicker implements DatePicker.OnDateChangedListener {
     private BottomSheetDialog mBottomSheetDialog;
-    private DateSelectedListener mDateSelectedListener;
+    private final DateSelectedListener mDateSelectedListener;
     private int currentYear, currentMonth, currentDay;
-    private Context mContext;
+    private final Context mContext;
 
     public BottomSheetDatePicker(final Context context, final DateSelectedListener dateSelectedListener, final int position) {
         mDateSelectedListener = dateSelectedListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
         mContext = context;
         View view = ((Activity) context).getLayoutInflater().inflate(R.layout.layout_bottom_sheet_date_picker, null);
-        CustomTextView tvCancel = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
-        CustomTextView tvDone = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_done);
-        final DatePicker datePicker = (DatePicker) view.findViewById(R.id.bottom_sheet_date_picker);
+        CustomTextView tvCancel = view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
+        CustomTextView tvDone = view.findViewById(R.id.bottom_sheet_picker_tv_done);
+        final DatePicker datePicker = view.findViewById(R.id.bottom_sheet_date_picker);
         datePicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         setPickerInfo(datePicker);
         tvCancel.setOnClickListener(new View.OnClickListener() {

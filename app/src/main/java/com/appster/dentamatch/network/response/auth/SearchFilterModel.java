@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Appster on 07/02/17.
+ * To inject activity reference.
  */
 
 public class SearchFilterModel {

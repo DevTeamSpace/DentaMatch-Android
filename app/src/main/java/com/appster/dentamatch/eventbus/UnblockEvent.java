@@ -2,10 +2,11 @@ package com.appster.dentamatch.eventbus;
 
 /**
  * Created by bawenderyandra on 10/03/17.
+ * To inject activity reference.
  */
 
 public class UnblockEvent {
-    private boolean status;
+    private final boolean status;
 
     public UnblockEvent(boolean status){
         this.status = status;

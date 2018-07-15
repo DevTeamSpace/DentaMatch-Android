@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.request.profile;
 
 /**
  * Created by virender on 16/01/17.
+ * To inject activity reference.
  */
 public class AboutMeRequest {
     private String aboutMe;

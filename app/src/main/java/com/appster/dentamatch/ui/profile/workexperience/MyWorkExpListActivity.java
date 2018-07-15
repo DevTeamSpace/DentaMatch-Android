@@ -42,6 +42,7 @@ import retrofit2.Call;
 
 /**
  * Created by bawenderyandra on 06/04/17.
+ * To inject activity reference.
  */
 
 public class MyWorkExpListActivity extends BaseActivity implements View.OnClickListener, JobTitleSelectionListener, YearSelectionListener {
@@ -255,8 +256,8 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
 
         for (int i = 0; i < expList.size(); i++) {
             final View referenceView = getLayoutInflater().inflate(R.layout.layout_work_exp_header_item, mBinder.layoutExpListInflater, false);
-            TextView tvJobTitle = (TextView) referenceView.findViewById(R.id.tv_title);
-            TextView tvExp = (TextView) referenceView.findViewById(R.id.tv_exp);
+            TextView tvJobTitle = referenceView.findViewById(R.id.tv_title);
+            TextView tvExp = referenceView.findViewById(R.id.tv_exp);
             tvJobTitle.setText(expList.get(i).getJobTitleName());
 
             tvExp.setText(Utils.getExpYears(expList.get(i).getMonthsOfExpereince()));

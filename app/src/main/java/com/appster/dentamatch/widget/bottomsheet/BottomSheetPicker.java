@@ -14,19 +14,20 @@ import com.appster.dentamatch.widget.CustomTextView;
 
 /**
  * Created by virender on 04/01/17.
+ * To inject activity reference.
  */
 public class BottomSheetPicker {
     private BottomSheetDialog mBottomSheetDialog;
-    private YearSelectionListener mYearsYearSelectionListener;
+    private final YearSelectionListener mYearsYearSelectionListener;
 
     public BottomSheetPicker(final Context context, YearSelectionListener yearSelectionListener, int year, int month) {
         mYearsYearSelectionListener = yearSelectionListener;
         mBottomSheetDialog = new BottomSheetDialog(context);
         View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_picker, null);
-        CustomTextView tvCancel = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
-        CustomTextView tvDone = (CustomTextView) view.findViewById(R.id.bottom_sheet_picker_tv_done);
-        final NumberPicker pickerYear = (NumberPicker) view.findViewById(R.id.bottom_sheet_picker_year);
-        final NumberPicker pickerMonth = (NumberPicker) view.findViewById(R.id.bottom_sheet_picker_month);
+        CustomTextView tvCancel = view.findViewById(R.id.bottom_sheet_picker_tv_cancel);
+        CustomTextView tvDone = view.findViewById(R.id.bottom_sheet_picker_tv_done);
+        final NumberPicker pickerYear = view.findViewById(R.id.bottom_sheet_picker_year);
+        final NumberPicker pickerMonth = view.findViewById(R.id.bottom_sheet_picker_month);
         pickerMonth.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         pickerYear.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 

@@ -57,7 +57,7 @@ public class CustomButton extends AppCompatButton {
         setAllCaps(true);
     }
 
-    public void setCustomFont(Context ctx, String asset) {
+    private void setCustomFont(Context ctx, String asset) {
         try {
             Typeface tf = Typeface.createFromAsset(ctx.getAssets(), asset);
             setTypeface(tf);

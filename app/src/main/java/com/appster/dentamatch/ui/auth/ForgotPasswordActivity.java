@@ -20,6 +20,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 30/12/16.
+ * To inject activity reference.
  */
 public class ForgotPasswordActivity extends BaseActivity implements View.OnClickListener {
     private ActivityForgotPasswordBinding mBinder;

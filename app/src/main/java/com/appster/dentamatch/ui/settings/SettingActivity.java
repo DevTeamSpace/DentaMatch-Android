@@ -35,6 +35,7 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
 
 /**
  * Created by virender on 17/01/17.
+ * To inject activity reference.
  */
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private ActivitySettingsBinding settingsBinding;

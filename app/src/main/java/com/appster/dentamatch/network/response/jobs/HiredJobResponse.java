@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by virender on 10/02/17.
+ * To inject activity reference.
  */
 public class HiredJobResponse extends BaseResponse {
     @SerializedName("result")

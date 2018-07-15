@@ -1,5 +1,6 @@
 package com.appster.dentamatch.ui.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,14 +14,15 @@ import com.appster.dentamatch.util.LogUtils;
 
 /**
  * Created by gautambisht on 11/11/16.
+ * To inject activity reference.
  */
 
 public abstract class BaseFragment extends Fragment {
 
-    private static final String TAG=LogUtils.makeLogTag(BaseActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(BaseActivity.class);
     protected Handler handler = new Handler();
-    protected boolean active;
-    protected boolean alive;
+    private boolean active;
+    private boolean alive;
     private Toast toast;
 
     public abstract String getFragmentName();
@@ -30,6 +32,7 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         alive = true;
     }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -43,20 +46,22 @@ public abstract class BaseFragment extends Fragment {
         active = true;
     }
 
-    protected void hideKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        View view = getActivity().getCurrentFocus();
-
-        if (view != null) {
-            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    private void hideKeyboard() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            View view = getActivity().getCurrentFocus();
+            if (view != null && inputManager != null) {
+                inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
         }
     }
 
     protected void hideKeyboard(View view) {
-        if (getActivity() != null) {
-            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            if (view != null) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (view != null && inputManager != null) {
                 inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
@@ -93,11 +98,11 @@ public abstract class BaseFragment extends Fragment {
         return (BaseActivity) getActivity();
     }
 
-    public boolean isAlive() {
+    protected boolean isAlive() {
         return alive;
     }
 
-    public boolean isActive() {
+    protected boolean isActive() {
         return active;
     }
 
@@ -108,14 +113,14 @@ public abstract class BaseFragment extends Fragment {
         active = false;
     }
 
-    protected void showProgressBar(String title, String message, View view, int delayTime) {
+    private void showProgressBar(String title, String message, View view, int delayTime) {
         try {
             if (isAlive() && getBaseActivity() != null) {
                 getBaseActivity().showProgressBar(title, message, view, delayTime);
             }
 
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -123,7 +128,7 @@ public abstract class BaseFragment extends Fragment {
         showProgressBar(null, null, null, 0);
     }
 
-    public void showProgressBar(String msg) {
+    protected void showProgressBar(String msg) {
         showProgressBar(null, msg, null, 0);
     }
 
@@ -135,11 +140,11 @@ public abstract class BaseFragment extends Fragment {
         showProgressBar(null, msg, null, delayTime);
     }
 
-    public void launchImageViewer(View v, String imageUrl){
+    protected void launchImageViewer(View v, String imageUrl) {
         try {
             getBaseActivity().launchImageViewer(v, imageUrl);
-        }catch (Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 

@@ -63,7 +63,7 @@ public class Constants {
         PART_TIME(2),
         TEMPORARY(3);
 
-        private int value;
+        private final int value;
 
         JOBTYPE(int value) {
             this.value = value;
@@ -79,7 +79,7 @@ public class Constants {
         APPLIED(2),
         SHORTLISTED(3);
 
-        private int value;
+        private final int value;
 
         SEARCHJOBTYPE(int value) {
             this.value = value;
@@ -98,7 +98,7 @@ public class Constants {
         REJECTED(5),
         CANCELLED(6);
 
-        private int value;
+        private final int value;
 
         JOBSTATUS(int value) {
             this.value = value;

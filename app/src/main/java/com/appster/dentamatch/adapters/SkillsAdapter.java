@@ -34,6 +34,7 @@ import java.util.List;
 
 /**
  * Created by ram on 12/01/17.
+ * Adapter of Skills.
  */
 
 public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -45,11 +46,11 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private ItemSkillBinding mBinder;
     private LayoutProfileHeaderBinding mBinderHeader;
 
-    private List<ParentSkillModel> mSkillList;
-    private Context mContext;
-    private boolean mIsFromEditProfile;
-    private OnSkillClick mListener;
-    private EditTextSelected mOthersSelectedListener;
+    private final List<ParentSkillModel> mSkillList;
+    private final Context mContext;
+    private final boolean mIsFromEditProfile;
+    private final OnSkillClick mListener;
+    private final EditTextSelected mOthersSelectedListener;
 
     public SkillsAdapter(List<ParentSkillModel> skillList, Context context, OnSkillClick listener, EditTextSelected othersSelectedListener, boolean isFromEditProfile) {
         this.mSkillList = skillList;
@@ -282,12 +283,12 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private class ViewHolderItem extends RecyclerView.ViewHolder {
-        LinearLayout layoutSkills;
-        RelativeLayout layoutSkillsInner;
-        FlowLayout flowLayout;
-        TextView tvSkillName;
-        ImageView ivArrow;
-        CustomEditText etOther;
+        final LinearLayout layoutSkills;
+        final RelativeLayout layoutSkillsInner;
+        final FlowLayout flowLayout;
+        final TextView tvSkillName;
+        final ImageView ivArrow;
+        final CustomEditText etOther;
 
         ViewHolderItem(View view) {
             super(view);

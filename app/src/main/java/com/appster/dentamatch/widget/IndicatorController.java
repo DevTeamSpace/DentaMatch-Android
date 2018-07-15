@@ -7,7 +7,7 @@ import android.view.View;
 /**
  * A controller that is used to provide custom indicator implementations and to control their behaviour.
  */
-public interface IndicatorController {
+interface IndicatorController {
     /**
      * Create a new instance of the view to be inserted in the AppIntro layout.
      * This method is only called once for each creation of the activity.

@@ -2,9 +2,10 @@ package com.appster.dentamatch.network.response.notification;
 
 /**
  * Created by virender on 28/02/17.
+ * To inject activity reference.
  */
 public class UnReadNotificationResponseData {
-    int notificationCount;
+    private int notificationCount;
 
     public int getNotificationCount() {
         return notificationCount;

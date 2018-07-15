@@ -55,6 +55,7 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 25/01/17.
+ * User Interface to view job detail-.
  */
 
 public class JobDetailActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener {

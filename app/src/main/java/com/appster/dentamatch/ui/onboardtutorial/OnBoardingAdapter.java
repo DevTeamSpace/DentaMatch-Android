@@ -1,6 +1,7 @@
 package com.appster.dentamatch.ui.onboardtutorial;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,16 @@ import com.appster.dentamatch.R;
 
 /**
  * Created by virender on 06/01/17.
+ * To inject activity reference.
  */
 
 class OnBoardingAdapter extends PagerAdapter {
-    private Context mContext;
-    private int images[] = {R.drawable.onboard_1, R.drawable.onboard_2, R.drawable.onboard_3, R.drawable.onboard_4};
-    private String mTitle[], mDesc[];
+    private final Context mContext;
+    private final int[] images = {R.drawable.onboard_1, R.drawable.onboard_2, R.drawable.onboard_3, R.drawable.onboard_4};
+    private final String[] mTitle;
+    private final String[] mDesc;
 
-    private LayoutInflater mLayoutInflater;
+    private final LayoutInflater mLayoutInflater;
 
     OnBoardingAdapter(Context context) {
         mContext = context;
@@ -35,17 +38,18 @@ class OnBoardingAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View itemView = mLayoutInflater.inflate(R.layout.item_onboarding, container, false);
 
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_bg_onboarding);
-        TextView tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
-        TextView tvDesc = (TextView) itemView.findViewById(R.id.tv_desc);
+        ImageView imageView = itemView.findViewById(R.id.iv_bg_onboarding);
+        TextView tvTitle = itemView.findViewById(R.id.tv_title);
+        TextView tvDesc = itemView.findViewById(R.id.tv_desc);
         imageView.setBackgroundResource(images[position]);
         tvTitle.setText(mTitle[position]);
         tvDesc.setText(mDesc[0]);
@@ -56,7 +60,7 @@ class OnBoardingAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((RelativeLayout) object);
     }
 }

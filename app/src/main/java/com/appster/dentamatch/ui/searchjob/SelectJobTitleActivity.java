@@ -29,6 +29,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 27/01/17.
+ * To inject activity reference.
  */
 public class SelectJobTitleActivity extends BaseActivity implements View.OnClickListener, JobTitleSelected {
     private final String TAG = "SelectJobTitleActivity";

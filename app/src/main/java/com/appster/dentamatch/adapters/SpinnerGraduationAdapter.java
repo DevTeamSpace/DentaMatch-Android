@@ -1,7 +1,6 @@
-package com.appster.dentamatch.adapters;
-
-/**
+package com.appster.dentamatch.adapters; /**
  * Created by ram on 16/01/17.
+ * Graduation listing adapter.
  */
 
 import android.content.Context;
@@ -18,9 +17,9 @@ import java.util.ArrayList;
 
 class SpinnerGraduationAdapter extends ArrayAdapter<String> {
     private static final int SPINNER_FIRST_POS = 0;
-    private Context mContext;
-    private ArrayList<String> mDataList;
-    private LayoutInflater mInflater;
+    private final Context mContext;
+    private final ArrayList<String> mDataList;
+    private final LayoutInflater mInflater;
 
     SpinnerGraduationAdapter(Context mContext, int textViewResourceId, ArrayList<String> dataList) {
         super(mContext, textViewResourceId, dataList);
@@ -42,7 +41,7 @@ class SpinnerGraduationAdapter extends ArrayAdapter<String> {
 
     private View getCustomView(int position, ViewGroup parent) {
         View row = mInflater.inflate(R.layout.item_spinner_text, parent, false);
-        TextView textSpinner = (TextView) row.findViewById(R.id.text_spinner);
+        TextView textSpinner = row.findViewById(R.id.text_spinner);
 
         if (position == SPINNER_FIRST_POS) {
             textSpinner.setText(mContext.getString(R.string.hint_year_of_graduation));

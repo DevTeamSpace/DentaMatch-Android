@@ -540,7 +540,8 @@ public class Utils {
         NetworkInfo netInfo = null;
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            netInfo = cm.getActiveNetworkInfo();
+            if (cm != null)
+                netInfo = cm.getActiveNetworkInfo();
         } catch (Exception e) {
             LogUtils.LOGE(TAG, e.getMessage());
         }
@@ -552,7 +553,8 @@ public class Utils {
     public static void clearAllNotifications(Context ct) {
         if (ct != null) {
             NotificationManager notificationManager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancelAll();
+            if (notificationManager != null)
+                notificationManager.cancelAll();
         }
 
     }
@@ -562,7 +564,7 @@ public class Utils {
     public static boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH && am != null) {
             List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
             for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
                 if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
@@ -573,7 +575,7 @@ public class Utils {
                     }
                 }
             }
-        } else {
+        } else if (am != null) {
             List<ActivityManager.AppTask> taskInfo = am.getAppTasks();
             ComponentName componentInfo = taskInfo.get(0).getTaskInfo().topActivity;
             if (componentInfo.getPackageName().equals(context.getPackageName())) {
@@ -611,7 +613,8 @@ public class Utils {
             NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification notification = builder.build();
             notification.defaults = Notification.DEFAULT_VIBRATE;
-            manager.notify(Integer.parseInt(notificationId), notification);
+            if (manager != null)
+                manager.notify(Integer.parseInt(notificationId), notification);
         }
 
     }
@@ -619,7 +622,8 @@ public class Utils {
     public static void clearRecruiterNotification(Context ct, String RecruiterID) {
         if (ct != null) {
             NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
-            manager.cancel(Integer.parseInt(RecruiterID));
+            if (manager != null)
+                manager.cancel(Integer.parseInt(RecruiterID));
         }
     }
 

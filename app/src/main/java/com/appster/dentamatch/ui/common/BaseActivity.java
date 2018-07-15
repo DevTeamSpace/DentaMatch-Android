@@ -41,23 +41,12 @@ import java.io.File;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = LogUtils.makeLogTag(BaseActivity.class);
-    protected static final int MY_PERMISSION_ACCESS_LOCATION = 101;
-    protected boolean mAlive;
+    private static final int MY_PERMISSION_ACCESS_LOCATION = 101;
+    private boolean mAlive;
     private boolean mActive;
     private ProgressDialog mProgressDialog;
     private Toast mToast;
-    protected static PermissionCallback permissionResult;
-
-    public static BaseFragment getFragment(Constants.FRAGMENTS fragmentId) {
-        BaseFragment fragment = null;
-
-        switch (fragmentId) {
-            case TEST_FRAGMENT:
-                break;
-        }
-
-        return fragment;
-    }
+    private static PermissionCallback permissionResult;
 
     abstract public String getActivityName();
 
@@ -73,11 +62,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mActive;
     }
 
-    public boolean isAlive() {
+    private boolean isAlive() {
         return mAlive;
     }
 
-    public void takePhoto() {
+    protected void takePhoto() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
         String AUTHORITY = "com.appster.dentamatch.provider";
@@ -86,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
     }
 
-    public void getImageFromGallery() {
+    protected void getImageFromGallery() {
         Intent gIntent = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -95,7 +84,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Intent.createChooser(gIntent, getString(R.string.title_select_file)),
                 Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
     }
-
 
 
     @Override
@@ -139,7 +127,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 fragment.onActivityResult(requestCode, resultCode, data);
                 break;
 
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -163,7 +152,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
 
-            if (permissionResult != null){
+            if (permissionResult != null) {
                 permissionResult.permissionsGranted();
             }
         }
@@ -180,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         void permissionsDenied();
     }
 
-    public void showProgressBar() {
+    protected void showProgressBar() {
         showProgressBar(null, null, null, 0);
     }
 
@@ -217,13 +206,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void processToShowDialog() {
         try {
-            mProgressDialog =  ProgressDialog.show(this,null,null);
-            mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setContentView(View.inflate(this, R.layout.progress_bar, null));
+            mProgressDialog = ProgressDialog.show(this, null, null);
+            if (mProgressDialog.getWindow() != null) {
+                mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.setContentView(View.inflate(this, R.layout.progress_bar, null));
+            }
 
         } catch (Exception e) {
-           LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
     }
@@ -237,7 +228,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressDialog = null;
 
         } catch (Exception x) {
-            LogUtils.LOGE(TAG,x.getMessage());
+            LogUtils.LOGE(TAG, x.getMessage());
         }
     }
 
@@ -258,7 +249,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             hideKeyboard(getCurrentFocus());
 
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -272,13 +263,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
-    public void pushFragment(BaseFragment fragment, Bundle args, ANIMATION_TYPE animationType) {
+    void pushFragment(BaseFragment fragment, Bundle args, ANIMATION_TYPE animationType) {
         try {
-            if (fragment == null){
+            if (fragment == null) {
                 return;
             }
 
@@ -295,13 +286,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
 
         } catch (Exception x) {
-            LogUtils.LOGE(TAG,x.getMessage());
+            LogUtils.LOGE(TAG, x.getMessage());
         }
     }
 
     public void localLogOut() {
 
-        String fcmToken= PreferenceUtil.getFcmToken();
+        String fcmToken = PreferenceUtil.getFcmToken();
         PreferenceUtil.reset();
         PreferenceUtil.setFcmToken(fcmToken);
         PreferenceUtil.setIsOnBoarding(true);
@@ -320,7 +311,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         SLIDE, FADE, DEFAULT, NONE
     }
 
-    public void launchImageViewer(View v, String imageUrl){
+    public void launchImageViewer(View v, String imageUrl) {
         try {
             Intent intent = new Intent(this, ImageViewingActivity.class);
             intent.putExtra(Constants.EXTRA_PIC, imageUrl);
@@ -331,8 +322,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             } else {
                 startActivity(intent);
             }
-        }catch (Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 }

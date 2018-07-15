@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.request.calendar;
 
 /**
  * Created by virender on 07/02/17.
+ * To inject activity reference.
  */
 public class GetAvailabilityRequest {
     private String calendarStartDate;

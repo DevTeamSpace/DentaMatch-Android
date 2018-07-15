@@ -17,6 +17,7 @@ import com.appster.dentamatch.util.Utils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,8 +27,8 @@ public class CalendarViewSetAvailability extends LinearLayout {
     private TextView mCurrentDate;
     private GridView mCalendarGridView;
     private int mCount = 6;
-    private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-    private Calendar mCal = Calendar.getInstance(Locale.ENGLISH);
+    private final SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+    private final Calendar mCal = Calendar.getInstance(Locale.ENGLISH);
     private Context mContext;
     private CalendarGridAdapter mAdapter;
     private ArrayList<String> mTempDateList = new ArrayList<>();
@@ -59,10 +60,10 @@ public class CalendarViewSetAvailability extends LinearLayout {
     private void initializeUILayout() {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.calendar_layout, this);
-        mIvPreviousButton = (ImageView) view.findViewById(R.id.previous_month);
-        mNextButton = (ImageView) view.findViewById(R.id.next_month);
-        mCurrentDate = (TextView) view.findViewById(R.id.display_current_date);
-        mCalendarGridView = (GridView) view.findViewById(R.id.calendar_grid);
+        mIvPreviousButton = view.findViewById(R.id.previous_month);
+        mNextButton = view.findViewById(R.id.next_month);
+        mCurrentDate = view.findViewById(R.id.display_current_date);
+        mCalendarGridView = view.findViewById(R.id.calendar_grid);
     }
 
     private void setPreviousButtonClickEvent() {
@@ -112,7 +113,8 @@ public class CalendarViewSetAvailability extends LinearLayout {
 
                 if ((Integer) view.getTag() != -1) {
 
-                    if (Utils.parseDate(mAdapter.getList().get(position).getDate()).compareTo(Utils.parseDate(Calendar.getInstance().getTime())) >= 0) {
+                    Date date = Utils.parseDate(mAdapter.getList().get(position).getDate());
+                    if (date != null && date.compareTo(Utils.parseDate(Calendar.getInstance().getTime())) >= 0) {
 
                         if (mAdapter.getList().get(position).isSelected()) {
                             view.setBackgroundResource(R.color.white_color);

@@ -1,6 +1,7 @@
 package com.appster.dentamatch.widget;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -21,7 +22,7 @@ public class ViewPagerTransformer implements ViewPager.PageTransformer {
     }
 
     @SuppressLint("NewApi")
-    public void transformPage(View page, float position) {
+    public void transformPage(@NonNull View page, float position) {
          float alpha=0;
          float scale=0;
          float translationX=0;

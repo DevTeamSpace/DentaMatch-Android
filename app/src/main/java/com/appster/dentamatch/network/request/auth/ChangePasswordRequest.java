@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.request.auth;
 
 /**
  * Created by virender on 20/01/17.
+ * To inject activity reference.
  */
 public class ChangePasswordRequest {
     private String oldPassword;

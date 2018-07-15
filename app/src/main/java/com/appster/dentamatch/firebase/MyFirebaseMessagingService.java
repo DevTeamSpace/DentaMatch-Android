@@ -23,13 +23,13 @@ import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = LogUtils.makeLogTag(MyFirebaseMessagingService.class);
-    private String KEY_JOB_DETAIL = "jobDetails";
-    private String KEY_NOTIFICATION_DETAIL = "notification_details";
-    private String KEY_MESSAGE_LIST_ID ="messageListId";
-    private String KEY_DATA = "data";
-    private String KEY_NOTIFICATION_DATA = "notification_data";
+    private final String KEY_JOB_DETAIL = "jobDetails";
+    private final String KEY_NOTIFICATION_DETAIL = "notification_details";
+    private final String KEY_MESSAGE_LIST_ID = "messageListId";
+    private final String KEY_DATA = "data";
+    private final String KEY_NOTIFICATION_DATA = "notification_data";
     private boolean isChatMessage = false;
-    private static int NOTIFICATION_COUNTER=0;
+    private static int NOTIFICATION_COUNTER = 0;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -69,7 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     type = notificationObject.optInt((Constants.APIS.NOTIFICATION_TYPE));
                     messageBody = notificationObject.getString(KEY_NOTIFICATION_DATA);
                 } catch (Exception e) {
-                    LogUtils.LOGE(TAG,e.getMessage());
+                    LogUtils.LOGE(TAG, e.getMessage());
                 }
             }
 
@@ -80,7 +80,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     JSONObject notificationObject = new JSONObject(jobData);
                     jobId = notificationObject.optInt(Constants.APIS.ID);
                 } catch (Exception e) {
-                    LogUtils.LOGE(TAG,e.getMessage());
+                    LogUtils.LOGE(TAG, e.getMessage());
                 }
             }
 
@@ -89,7 +89,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     JSONObject object = new JSONObject(dataPayload.get("data"));
                     Log.d("object ", object.toString());
 //                    String message = parsePayLoadForAdminMsg(object, "notificationData");
-                    if(!object.has("notificationData")){
+                    if (!object.has("notificationData")) {
 //                    if (TextUtils.isEmpty(message)) {
                         isChatMessage = true;
 
@@ -99,8 +99,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         type = Integer.parseInt(parsePayLoadForAdminMsg(object, "notificationType"));
                         jobId = Integer.parseInt(parsePayLoadForAdminMsg(object, "sender_id"));
                     }
-                }catch (Exception e){
-                    LogUtils.LOGE(TAG,e.getMessage());
+                } catch (Exception e) {
+                    LogUtils.LOGE(TAG, e.getMessage());
                 }
             }
 
@@ -114,8 +114,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         } else {
             try {
-                if (remoteMessage.getData() != null) {
+                if (remoteMessage.getData() != null && dataPayload != null) {
                     ChatMessageModel model;
+
                     String data = dataPayload.get(KEY_DATA);
                     JSONObject object = new JSONObject(data);
 
@@ -147,7 +148,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Utils.showNotification(this, model.getRecruiterName(), model.getMessage(), intent, finalModel.getFromID());
                 }
             } catch (Exception e) {
-                LogUtils.LOGE(TAG,e.getMessage());
+                LogUtils.LOGE(TAG, e.getMessage());
             }
         }
 
@@ -176,17 +177,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         } else if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_COMPLETE_PROFILE ||
-                notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC ) {
+                notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_VERIFY_DOC) {
             intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        } else if(notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_LICENCE_ACCEPT_REJ){
-            intent=  new Intent(this, HomeActivity.class)
+        } else if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_LICENCE_ACCEPT_REJ) {
+            intent = new Intent(this, HomeActivity.class)
                     .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-
-        else {
+        } else {
             intent = new Intent(this, NotificationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
@@ -194,14 +193,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         return intent;
     }
 
-    private String parsePayLoadForAdminMsg(JSONObject object , String key){
+    private String parsePayLoadForAdminMsg(JSONObject object, String key) {
         String value = null;
 
-        try{
-        value = object.getString(key);
+        try {
+            value = object.getString(key);
 
-        }catch (Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
         return value;

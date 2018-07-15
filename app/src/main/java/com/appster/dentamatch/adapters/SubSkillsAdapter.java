@@ -23,17 +23,18 @@ import java.util.List;
 
 /**
  * Created by ram on 12/01/17.
+ * Adapter to show list of Sub Skills.
  */
 
 public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyViewHolder> {
     private static String TAG = "SubSkillAdapter";
-    private int SKILL_SELECTED = 1;
-    private int SKILL_CHECKED = 1;
-    private int SKILL_UNCHECKED = 0;
+    private final int SKILL_SELECTED = 1;
+    private final int SKILL_CHECKED = 1;
+    private final int SKILL_UNCHECKED = 0;
 
-    private List<SubSkillModel> mSkillList;
+    private final List<SubSkillModel> mSkillList;
     private ItemSubSkillBinding mBinder;
-    private Context mContext;
+    private final Context mContext;
 
     public SubSkillsAdapter(List<SubSkillModel> skillList, Context context) {
         this.mSkillList = skillList;
@@ -157,10 +158,10 @@ public class SubSkillsAdapter extends RecyclerView.Adapter<SubSkillsAdapter.MyVi
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout layout;
-        TextView tvSkillName;
-        ImageView ivSelected;
-        EditText etOther;
+        final RelativeLayout layout;
+        final TextView tvSkillName;
+        final ImageView ivSelected;
+        final EditText etOther;
 
         MyViewHolder(View view) {
             super(view);

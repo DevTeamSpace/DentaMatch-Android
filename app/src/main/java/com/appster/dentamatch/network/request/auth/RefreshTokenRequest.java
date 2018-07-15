@@ -4,7 +4,7 @@ package com.appster.dentamatch.network.request.auth;
 /**
  *
  */
-public class RefreshTokenRequest {
+class RefreshTokenRequest {
 
     private int mUserId;
     private String mRefreshToken;

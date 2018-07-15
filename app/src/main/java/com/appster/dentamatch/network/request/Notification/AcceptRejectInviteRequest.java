@@ -2,6 +2,7 @@ package com.appster.dentamatch.network.request.Notification;
 
 /**
  * Created by virender on 27/02/17.
+ * To inject activity reference.
  */
 public class AcceptRejectInviteRequest {
     private int notificationId;

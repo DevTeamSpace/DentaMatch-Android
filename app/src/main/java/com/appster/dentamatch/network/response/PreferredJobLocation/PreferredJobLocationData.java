@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 /**
  * Created by zishan on 22/11/17.
+ * To inject activity reference.
  */
 
 public class PreferredJobLocationData implements Parcelable {
@@ -63,7 +64,7 @@ public class PreferredJobLocationData implements Parcelable {
     public PreferredJobLocationData() {
     }
 
-    protected PreferredJobLocationData(Parcel in) {
+    private PreferredJobLocationData(Parcel in) {
         this.id = in.readInt();
         this.preferredLocationName = in.readString();
         this.isActive = in.readInt();

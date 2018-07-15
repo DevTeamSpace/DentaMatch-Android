@@ -23,23 +23,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public final class RequestController {
     private static String TAG = "RequestController";
-    private static String HEADER_ACCESS_TOKEN = "accessToken";
-    private static String HEADER_CONTENT_TYPE = "Content-Type";
-    private static String HEADER_ACCEPT = "accept";
-    private static String APPLICATION_JSON = "application/json";
+    private static final String HEADER_ACCESS_TOKEN = "accessToken";
+    private static final String HEADER_CONTENT_TYPE = "Content-Type";
+    private static final String HEADER_ACCEPT = "accept";
+    private static final String APPLICATION_JSON = "application/json";
 
     private static Retrofit retrofit;
-    private static HttpLoggingInterceptor logger = new HttpLoggingInterceptor()
+    private static final HttpLoggingInterceptor logger = new HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private static Interceptor headerInterceptor;
 
-    private static OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
+    private static final OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
             .addInterceptor(logger)
             .readTimeout(1, TimeUnit.MINUTES)
             .connectTimeout(1, TimeUnit.MINUTES);
 
-    private static Retrofit.Builder builder = new Retrofit.Builder()
+    private static final Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create());
 

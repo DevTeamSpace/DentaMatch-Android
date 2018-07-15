@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by virender on 14/02/17.
+ * To inject activity reference.
  */
 public class NotificationResponseData {
     private int total;

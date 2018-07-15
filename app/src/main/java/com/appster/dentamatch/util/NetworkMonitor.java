@@ -16,10 +16,10 @@ import com.appster.dentamatch.DentaApp;
  */
 public class NetworkMonitor extends BroadcastReceiver {
     private static final String TAG = LogUtils.makeLogTag(NetworkMonitor.class);
-    public static final int NETWORK_TYPE_FAST_3G = 2;
-    public static final int NETWORK_TYPE_FAST_WIFI = 1;
+    private static final int NETWORK_TYPE_FAST_3G = 2;
+    private static final int NETWORK_TYPE_FAST_WIFI = 1;
     public static final int NETWORK_TYPE_NO_NETWORK = 4;
-    public static final int NETWORK_TYPE_SLOW = 3;
+    private static final int NETWORK_TYPE_SLOW = 3;
 
     private static boolean mConnectionAvailable = false;
 
@@ -100,8 +100,10 @@ public class NetworkMonitor extends BroadcastReceiver {
                     return 1;
                 }
             }
-
-            int i = ((TelephonyManager) DentaApp.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getNetworkType();
+            TelephonyManager telephonyManager = (TelephonyManager) DentaApp.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
+            int i = 0;
+            if (telephonyManager != null)
+                i = telephonyManager.getNetworkType();
 
             if (i > 0 && i < 3) {
                 return 3;

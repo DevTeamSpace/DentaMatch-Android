@@ -48,6 +48,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 02/01/17.
+ * To inject activity reference.
  */
 public class CreateProfileActivity2 extends BaseActivity implements View.OnClickListener, ImageSelectedListener, YearSelectionListener {
     private static final String TAG = LogUtils.makeLogTag(CreateProfileActivity2.class);
@@ -69,16 +70,16 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     }
 
     private void initViews() {
-        ivProfile = (ImageView) findViewById(R.id.create_profile_iv_profile_icon);
-        ivToolbarLeft = (ImageView) findViewById(R.id.iv_tool_bar_left);
-        btnNext = (Button) findViewById(R.id.create_profile2_btn_next);
-        tvToolbarLeft = (TextView) findViewById(R.id.tv_toolbar_general_left);
-        tvName = (TextView) findViewById(R.id.create_profile_tv_name);
-        etLicenceNumber = (EditText) findViewById(R.id.create_profile_et_licence);
-        etState = (EditText) findViewById(R.id.create_profile_et_state);
-        tvJobTitle = (TextView) findViewById(R.id.create_profile_tv_job_title);
-        mProgressBar = (ProgressBar) findViewById(R.id.create_profile_progress_bar);
-        etLicenceNumberExpiry = (EditText) findViewById(R.id.create_profile_et_licence_expiry);
+        ivProfile = findViewById(R.id.create_profile_iv_profile_icon);
+        ivToolbarLeft = findViewById(R.id.iv_tool_bar_left);
+        btnNext = findViewById(R.id.create_profile2_btn_next);
+        tvToolbarLeft = findViewById(R.id.tv_toolbar_general_left);
+        tvName = findViewById(R.id.create_profile_tv_name);
+        etLicenceNumber = findViewById(R.id.create_profile_et_licence);
+        etState = findViewById(R.id.create_profile_et_state);
+        tvJobTitle = findViewById(R.id.create_profile_tv_job_title);
+        mProgressBar = findViewById(R.id.create_profile_progress_bar);
+        etLicenceNumberExpiry = findViewById(R.id.create_profile_et_licence_expiry);
 
         btnNext.setOnClickListener(this);
         ivToolbarLeft.setOnClickListener(this);
@@ -131,7 +132,8 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
                 break;
 
 
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -203,7 +205,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
         } catch (Exception e) {
             hideProgressBar();
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -218,11 +220,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         response.enqueue(new BaseCallback<FileUploadResponse>(CreateProfileActivity2.this) {
             @Override
             public void onSuccess(FileUploadResponse response) {
-                    Utils.showToast(getApplicationContext(), response.getMessage());
-
-                if (response.getStatus() == 1) {
-//                    Utils.showToast(getApplicationContext(), "url is---" + response.getFileUploadResponseData().getImageUrl());
-                }
+                Utils.showToast(getApplicationContext(), response.getMessage());
             }
 
             @Override
@@ -321,7 +319,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
 
             if (mFilePath != null) {
                 Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
-                uploadImageApi(mFilePath,Constants.APIS.IMAGE_TYPE_STATE_BOARD);
+                uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
             }
         }
     }
@@ -351,9 +349,9 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
     @Override
     public void onExperienceSection(int year, int month) {
 
-        if(month == 1) {
+        if (month == 1) {
             etLicenceNumberExpiry.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.month));
-        }else{
+        } else {
             etLicenceNumberExpiry.setText(year + " " + getString(R.string.year) + " " + month + " " + getString(R.string.txt_months));
         }
 

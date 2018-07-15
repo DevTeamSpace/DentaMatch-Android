@@ -77,9 +77,9 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
-        mAutocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete_places);
-        ImageView mImgClear = (ImageView) findViewById(R.id.img_clear);
-        RelativeLayout mLayout = (RelativeLayout) findViewById(R.id.layout_done);
+        mAutocompleteView = findViewById(R.id.autocomplete_places);
+        ImageView mImgClear = findViewById(R.id.img_clear);
+        RelativeLayout mLayout = findViewById(R.id.layout_done);
         /*
           Register a listener that receives callbacks when a suggestion has been selected
          */
@@ -248,7 +248,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
      * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
      * String...)
      */
-    private AdapterView.OnItemClickListener mAutocompleteClickListener
+    private final AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -259,22 +259,24 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
              */
             try {
                 final AutocompletePrediction item = mAdapter.getItem(position);
-                final String placeId = item.getPlaceId();
-                final CharSequence primaryText = item.getPrimaryText(null);
+                if (item != null) {
+                    final String placeId = item.getPlaceId();
+                    final CharSequence primaryText = item.getPrimaryText(null);
 
-                LogUtils.LOGD(TAG, "Autocomplete item selected: " + primaryText);
+                    LogUtils.LOGD(TAG, "Autocomplete item selected: " + primaryText);
 
             /*
              * Issue a request to the Places Geo Data API to retrieve a Place object with additional
              * details about the place.
              */
-                PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                        .getPlaceById(mGoogleApiClient, placeId);
-                placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+                    PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                            .getPlaceById(mGoogleApiClient, placeId);
+                    placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-                LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
-            }catch (Exception e){
-                LogUtils.LOGE(TAG,e.getMessage());
+                    LogUtils.LOGD(TAG, "Called getPlaceById to get Place details for " + placeId);
+                }
+            } catch (Exception e) {
+                LogUtils.LOGE(TAG, e.getMessage());
             }
 
             hideKeyboard();
@@ -285,7 +287,7 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
      * Callback for results from a Places Geo Data API query that shows the first place result in
      * the details view on screen.
      */
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+    private final ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {
@@ -311,11 +313,11 @@ public class PlacesMapActivity extends BaseActivity implements GoogleApiClient.O
                 Address address = Utils.getReverseGeoCode(PlacesMapActivity.this, latLng);
 
                 setData(address);
-            }catch (Exception e){
-                LogUtils.LOGE(TAG,e.getMessage());
+            } catch (Exception e) {
+                LogUtils.LOGE(TAG, e.getMessage());
                 showToast("Unable to fetch this location, please try another location.");
                 mAutocompleteView.setText("");
-            }finally {
+            } finally {
                 places.release();
             }
         }

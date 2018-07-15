@@ -59,11 +59,11 @@ import java.util.Locale;
 import retrofit2.Call;
 
 /**
- * Created by Appster on 24/01/17.
+ * To view job along-with the location on map
  */
 
 public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, View.OnClickListener {
-   private static final String TAG=LogUtils.makeLogTag(JobMapFragment.class);
+    private static final String TAG = LogUtils.makeLogTag(JobMapFragment.class);
     private final int MARKER_PADDING = 100;
     private int mSelectedJobID;
     private BottomSheetBehavior mBottomSheetBehavior;
@@ -103,21 +103,21 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     public void onDataUpdated(JobDataReceivedEvent event) {
         if (event != null) {
 
-            if(mMarkerPositionList != null){
+            if (mMarkerPositionList != null) {
                 mMarkerPositionList.clear();
             }
 
             mJobData = event.getJobList();
 
             for (SearchJobModel model : mJobData) {
-               if(mMarkerPositionList!=null)
-                mMarkerPositionList.add(new LatLng(model.getLatitude(), model.getLongitude()));
+                if (mMarkerPositionList != null)
+                    mMarkerPositionList.add(new LatLng(model.getLatitude(), model.getLongitude()));
             }
 
         }
 
-        if(mMarkerPositionList!=null)
-        addMarker(mMarkerPositionList);
+        if (mMarkerPositionList != null)
+            addMarker(mMarkerPositionList);
     }
 
     @Subscribe
@@ -141,8 +141,9 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mMapBinding = DataBindingUtil.inflate(LayoutInflater.from(container.getContext()), R.layout.fragment_jobs_map, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        mMapBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_jobs_map, container, false);
         mMapBinding.mapView.onCreate(savedInstanceState);
         mMarkerPositionList = new ArrayList<>();
         mBottomSheetBehavior = BottomSheetBehavior.from(mMapBinding.jobMapInfoWindow);
@@ -166,7 +167,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnMapClickListener(this);
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        if (getActivity() != null && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             PermissionUtils.requestPermission(getActivity(),
@@ -189,7 +190,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                     (grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                if (getActivity() != null && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mGoogleMap.setMyLocationEnabled(true);
                     LocationUtils.addFragment((AppCompatActivity) getActivity());
@@ -410,8 +411,8 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                 // mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
                 mMapBinding.infoWindowContent.tvJobDocName.setText(jobModel.getOfficeName());
             }
-        }catch (Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -450,11 +451,13 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_PADDING));
 
         //new code
-        if(markerList!=null && markerList.size()>0) {
+        if (markerList.size() > 0) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int height = displayMetrics.heightPixels;
-            int width = displayMetrics.widthPixels;
+            if (getActivity() != null && getActivity().getWindowManager() != null) {
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int height = displayMetrics.heightPixels;
+                int width = displayMetrics.widthPixels;
+            }
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(markerList.get(0).latitude, markerList.get(0).longitude), 10));
         }
     }
@@ -464,7 +467,8 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         request.setJobId(JobID);
         request.setStatus(status);
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        ((BaseActivity) getActivity()).processToShowDialog();
+        if (getActivity() != null)
+            ((BaseActivity) getActivity()).processToShowDialog();
         webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
             @Override
             public void onSuccess(BaseResponse response) {
@@ -474,9 +478,9 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                     model.setIsSaved(status);
                     mMapBinding.infoWindowContent.cbJobSelection.setChecked(status == 1);
                     SearchJobDataHelper.getInstance().notifyItemsChanged(model);
-                }else{
+                } else {
 
-                    if(TextUtils.isEmpty(response.getMessage())) {
+                    if (TextUtils.isEmpty(response.getMessage())) {
                         mMapBinding.infoWindowContent.cbJobSelection.setChecked(!(status == 1));
                         ((BaseActivity) getActivity()).showToast(response.getMessage());
 
@@ -498,45 +502,45 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                 final SearchJobModel model = (SearchJobModel) v.getTag();
                 final int status = (model.getIsSaved() == 1) ? 0 : 1;
 
-                if(status == 0) {
+                if (status == 0) {
                     Alert.createYesNoAlert(getActivity(), getString(R.string.txt_ok),
                             getString(R.string.txt_cancel),
                             getString(R.string.txt_alert_title),
                             getString(R.string.msg_unsave_warning),
                             new Alert.OnAlertClickListener() {
-                        @Override
-                        public void onPositive(DialogInterface dialog) {
-                            saveUnSaveJob(model.getId(), status, model);
-                        }
+                                @Override
+                                public void onPositive(DialogInterface dialog) {
+                                    saveUnSaveJob(model.getId(), status, model);
+                                }
 
-                        @Override
-                        public void onNegative(DialogInterface dialog) {
-                            ((CheckBox)v).setChecked(true);
-                            dialog.dismiss();
-                        }
-                    });
-                }else{
+                                @Override
+                                public void onNegative(DialogInterface dialog) {
+                                    ((CheckBox) v).setChecked(true);
+                                    dialog.dismiss();
+                                }
+                            });
+                } else {
                     saveUnSaveJob(model.getId(), status, model);
                 }
                 break;
 
             default:
-                getActivity().startActivity(new Intent(getActivity(), JobDetailActivity.class)
-                        .putExtra(Constants.EXTRA_JOB_DETAIL_ID, mSelectedJobID));
+                if (getActivity() != null)
+                    getActivity().startActivity(new Intent(getActivity(), JobDetailActivity.class)
+                            .putExtra(Constants.EXTRA_JOB_DETAIL_ID, mSelectedJobID));
                 break;
         }
     }
 
     private int calculateZoomLevel(int screenWidth) {
         double equatorLength = 40075004; // in meters
-        double widthInPixels = screenWidth;
         double metersPerPixel = equatorLength / 256;
         int zoomLevel = 1;
-        while ((metersPerPixel * widthInPixels) > 400000) {
+        while ((metersPerPixel * screenWidth) > 400000) {
             metersPerPixel /= 2;
             ++zoomLevel;
         }
-        LogUtils.LOGD("ADNAN", "zoom level = "+zoomLevel);
+        LogUtils.LOGD("ADNAN", "zoom level = " + zoomLevel);
         return zoomLevel;
     }
 }

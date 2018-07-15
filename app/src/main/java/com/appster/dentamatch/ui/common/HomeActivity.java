@@ -39,6 +39,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 17/01/17.
+ * To inject activity reference.
  */
 public class HomeActivity extends BaseActivity {
     private static final String TAG=LogUtils.makeLogTag(HomeActivity.class);
@@ -144,7 +145,7 @@ public class HomeActivity extends BaseActivity {
       if(userModel!=null){
           LogUtils.LOGD(TAG,"Email::"+userModel.getEmail());
       }
-        bottomBar = (AHBottomNavigation) findViewById(R.id.ntb_horizontal);
+        bottomBar = findViewById(R.id.ntb_horizontal);
         bottomBar.setTitleTextSize(Utils.convertSpToPixels(10.0f, this), Utils.convertSpToPixels(10.0f, this));
         bottomBar.addItem(new AHBottomNavigationItem(getString(R.string.nav_job), R.drawable.img_nav_jobs));
         bottomBar.addItem(new AHBottomNavigationItem(getString(R.string.nav_tracks), R.drawable.img_nav_track));
@@ -236,7 +237,7 @@ public class HomeActivity extends BaseActivity {
         switch (bottomBarPosition) {
 
             case 0:
-                TextView tvTitle0 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle0 = bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp0 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp0.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp0.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -244,7 +245,7 @@ public class HomeActivity extends BaseActivity {
                 break;
 
             case 1:
-                TextView tvTitle1 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle1 = bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp1 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp1.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp1.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -252,7 +253,7 @@ public class HomeActivity extends BaseActivity {
                 break;
 
             case 2:
-                TextView tvTitle2 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle2 = bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp2 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp2.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp2.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -260,7 +261,7 @@ public class HomeActivity extends BaseActivity {
                 break;
 
             case 3:
-                TextView tvTitle3 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle3 = bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp3 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp3.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp3.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -268,7 +269,7 @@ public class HomeActivity extends BaseActivity {
                 break;
 
             case 4:
-                TextView tvTitle4 = (TextView) bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
+                TextView tvTitle4 = bottomBar.getViewAtPosition(bottomBarPosition).findViewById(R.id.bottom_navigation_item_title);
                 FrameLayout.LayoutParams llp4 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
                 llp4.setMargins(0, 0, 0, 8); // llp.setMargins(left, top, right, bottom);
                 llp4.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;

@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.searchjob;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Appster on 24/01/17.
+ * User Interface to view job listing screen.
  */
 
 public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -78,28 +80,30 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
             if (mJobListData.size() > 0) {
                 mJobListBinding.tvNoDataFound.setVisibility(View.GONE);
                 mJobListBinding.tvJobResultCount.setVisibility(View.VISIBLE);
-                if(event.getTotalItem()==1){
+                if (event.getTotalItem() == 1) {
                     mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" result found"));
 
-                }else {
+                } else {
                     mJobListBinding.tvJobResultCount.setText(String.valueOf(event.getTotalItem()).concat(" results found"));
                 }
-                if(event.getIsJobSeekerVerified()== Constants.USER_VERIFIED_STATUS && event.getProfileCompleted()== Constants.USER_VERIFIED_STATUS ){
+                if (event.getIsJobSeekerVerified() == Constants.USER_VERIFIED_STATUS && event.getProfileCompleted() == Constants.USER_VERIFIED_STATUS) {
                     mJobListBinding.tvProfileStatus.setVisibility(View.GONE);
-                }else if(event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS){
+                } else if (event.getIsJobSeekerVerified() != Constants.USER_VERIFIED_STATUS) {
                     mJobListBinding.tvProfileStatus.setVisibility(View.VISIBLE);
-                    mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_yellow));
+                    if (getActivity() != null)
+                        mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.light_yellow));
                     mJobListBinding.tvProfileStatus.setText(getString(R.string.your_job_profile_status));
 
-                }else if(/*event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS &&*/ event.getProfileCompleted()!= Constants.USER_VERIFIED_STATUS ){
+                } else if (/*event.getIsJobSeekerVerified()!= Constants.USER_VERIFIED_STATUS &&*/ event.getProfileCompleted() != Constants.USER_VERIFIED_STATUS) {
                     mJobListBinding.tvProfileStatus.setVisibility(View.VISIBLE);
-                    mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.red_color));
+                    if (getActivity() != null)
+                        mJobListBinding.tvProfileStatus.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red_color));
                     mJobListBinding.tvProfileStatus.setText(getString(R.string.your_profile_incomplete));
 
                 }
 
-                UserModel userModel =PreferenceUtil.getUserModel();
-                if(userModel!=null) {
+                UserModel userModel = PreferenceUtil.getUserModel();
+                if (userModel != null) {
                     userModel.setProfileCompleted(event.getProfileCompleted());
                     PreferenceUtil.setUserModel(userModel);
                 }
@@ -150,7 +154,7 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mJobListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_job_list, container, false);
         initViews();
         mJobListBinding.rvJobs.setLayoutManager(mLayoutManager);
@@ -206,7 +210,6 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
     public void onRefresh() {
         SearchJobDataHelper.getInstance().requestRefreshData(getActivity());
     }
-
 
 
 }

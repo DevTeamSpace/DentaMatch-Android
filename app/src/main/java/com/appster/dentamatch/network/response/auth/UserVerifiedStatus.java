@@ -4,6 +4,7 @@ import com.appster.dentamatch.network.BaseResponse;
 
 /**
  * Created by abhaykant on 11/12/17.
+ * To inject activity reference.
  */
 
 public class UserVerifiedStatus extends BaseResponse{

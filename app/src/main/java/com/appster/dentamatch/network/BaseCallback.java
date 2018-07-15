@@ -22,7 +22,7 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
 
     public static final String TAG = BaseCallback.class.getSimpleName();
     private static final int INVALID_SESSION = 204;
-    private WeakReference<BaseActivity> ref;
+    private final WeakReference<BaseActivity> ref;
     private Context mContext;
 
     public BaseCallback(BaseActivity activity) {
@@ -31,6 +31,7 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
 
     /**
      * Invoked when Successful response sent from server.
+     *
      * @param response Response from server
      */
     public abstract void onSuccess(T response);
@@ -54,18 +55,16 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
                 return;
             }
 
-                if (responseBase.getStatusCode() == INVALID_SESSION) {
-                    act.showToast(act.getString(R.string.authentication_error));
-                    act.localLogOut();
-                    return;
-                }
+            if (responseBase.getStatusCode() == INVALID_SESSION) {
+                act.showToast(act.getString(R.string.authentication_error));
+                act.localLogOut();
+                return;
+            }
 
-                onSuccess(response.body());
+            onSuccess(response.body());
 
         } else {
-            if (response.raw().code() == HttpURLConnection.HTTP_BAD_REQUEST) {
-
-            } else {
+            if (response.raw().code() != HttpURLConnection.HTTP_BAD_REQUEST) {
                 act.showSnackBar(act.getResources().getString(R.string.server_error));
             }
         }

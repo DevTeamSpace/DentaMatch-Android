@@ -7,6 +7,7 @@ import android.widget.GridView;
 
 /**
  * Created by anjali on 04/07/16.
+ * To inject activity reference.
  */
 public class ExpandableGridView extends GridView {
     private boolean expanded = true;

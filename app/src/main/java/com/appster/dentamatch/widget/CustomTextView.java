@@ -17,7 +17,7 @@ public class CustomTextView extends AppCompatTextView {
      * Caches typefaces based on their file path and name, so that they don't have to be created
      * every time when they are referenced.
      */
-    protected static Map<String, Typeface> mTypefaces;
+    private static Map<String, Typeface> mTypefaces;
 
     public CustomTextView(Context context) {
         super(context);

@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 /**
  * Created by Appster on 09/02/17.
+ * To inject activity reference.
  */
 
 public class ChatActivity extends BaseActivity implements View.OnClickListener {

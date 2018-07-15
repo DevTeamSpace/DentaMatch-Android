@@ -13,6 +13,7 @@ import com.appster.dentamatch.util.Constants;
 
 /**
  * Created by virender on 03/01/17.
+ * To inject activity reference.
  */
 public class TermsAndConditionActivity extends BaseActivity implements View.OnClickListener {
     private ActivityTermsAndConditionBinding mBinder;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by virender on 10/02/17.
+ * To inject activity reference.
  */
 public class HiredJobResponseData {
     @SerializedName("list")

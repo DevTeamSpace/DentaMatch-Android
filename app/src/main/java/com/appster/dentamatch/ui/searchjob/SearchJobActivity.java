@@ -35,9 +35,10 @@ import java.util.ArrayList;
 
 /**
  * Created by virender on 26/01/17.
+ * User Interface to carry out job searching.
  */
 public class SearchJobActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-    private static final String TAG= LogUtils.makeLogTag(SearchJobActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(SearchJobActivity.class);
     private ActivitySearchJobBinding mBinder;
     private String mSelectedLat, mSelectedLng;
     private ArrayList<Integer> mSelectedJobID;
@@ -56,8 +57,6 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<SelectedPreferredJobLocationData> mSelectedPrefJobLocations;
 
 
-
-
     private boolean isPartTime, isFullTime, isSunday, isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday;
 
 
@@ -70,7 +69,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
@@ -115,7 +114,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             mSelectedState = address.getAdminArea();
 
             //mBinder.tvFetchedLocation.setVisibility(View.VISIBLE);
-           // mBinder.tvFetchedLocation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
+            // mBinder.tvFetchedLocation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
         } else {
             mSelectedAddress = "";
             mSelectedZipCode = "";
@@ -169,7 +168,6 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 if (request.getPreferredJobLocationId() != null) {
                     mSelectedPrefJobLocIds.addAll(request.getPreferredJobLocationId());
                 }
-
 
 
                 isFullTime = (request.getIsFulltime() == 1);
@@ -265,12 +263,12 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 }
 
 
-                LogUtils.LOGD("PreferredJobListCount>>", ""+PreferenceUtil.getPreferredJobList().size());
+                LogUtils.LOGD("PreferredJobListCount>>", "" + PreferenceUtil.getPreferredJobList().size());
 
                 if (request.getPreferredJobLocationId() != null) {
                     mSelectedPrefJobLocIds = request.getPreferredJobLocationId();
 
-                    if(mSelectedPrefJobLocations.size()==0) {
+                    if (mSelectedPrefJobLocations.size() == 0) {
                         for (PreferredJobLocationData sData : PreferenceUtil.getPreferredJobList()) {
                             if (mSelectedPrefJobLocIds != null && mSelectedPrefJobLocIds.size() > 0 && mSelectedPrefJobLocIds.contains(sData.getId())) {
                                 SelectedPreferredJobLocationData selectedPreferredJobLocationData = new SelectedPreferredJobLocationData();
@@ -295,35 +293,31 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
                 }
 
-               if(mSelectedPrefJobLocIds!=null && mSelectedPrefJobLocIds.size()>0){
+                if (mSelectedPrefJobLocIds != null && mSelectedPrefJobLocIds.size() > 0) {
 
-                   mBinder.flowTvPreferredJobLocation.setVisibility(View.VISIBLE);
+                    mBinder.flowTvPreferredJobLocation.setVisibility(View.VISIBLE);
 
-                   for (PreferredJobLocationData items : PreferenceUtil.getPreferredJobList()) {
+                    for (PreferredJobLocationData items : PreferenceUtil.getPreferredJobList()) {
 
-                       if(mSelectedPrefJobLocIds.contains(items.getId()))
-                       addSelectedPreferredJobLocation(items, false);
-                   }
-               }
+                        if (mSelectedPrefJobLocIds.contains(items.getId()))
+                            addSelectedPreferredJobLocation(items, false);
+                    }
+                }
 
 
-
-            }else{
+            } else {
                 /*
                 In case we have net connection show loader and fetch user current location address.
                  */
-                if(Utils.isConnected(this)) {
+                if (Utils.isConnected(this)) {
                     processToShowDialog();
                     LocationUtils.addFragment(this);
                 }
             }
 
 
-
-
-
-        }catch (Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
     }
@@ -335,15 +329,15 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         mChosenTitles = new ArrayList<>();
         mSelectedJobTitles = new ArrayList<>();
         mSelectedPrefJobLocIds = new ArrayList<>();
-        mChosenPrefJobLocations= new ArrayList<>();
-        mSelectedPrefJobLocations= new ArrayList<>();
+        mChosenPrefJobLocations = new ArrayList<>();
+        mSelectedPrefJobLocations = new ArrayList<>();
 
         mBinder.toolbarSearchJob.tvToolbarGeneralLeft.setText(getString(R.string.header_filter_job));
         mBinder.toolbarSearchJob.ivToolBarLeft.setOnClickListener(this);
         mBinder.cbFullTimeCheckBox.setOnCheckedChangeListener(this);
         mBinder.cbPartTimeCheckBox.setOnCheckedChangeListener(this);
-       // mBinder.tvCurrentLocation.setOnClickListener(this);
-       // mBinder.tvFetchedLocation.setOnClickListener(this);
+        // mBinder.tvCurrentLocation.setOnClickListener(this);
+        // mBinder.tvFetchedLocation.setOnClickListener(this);
         mBinder.tvJobTitle.setOnClickListener(this);
         mBinder.tvSaturday.setOnClickListener(this);
         mBinder.tvSunday.setOnClickListener(this);
@@ -356,8 +350,8 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
         mBinder.tvPreferredJobLocation.setOnClickListener(this);
 
 
-        if(getIntent().hasExtra(Constants.EXTRA_IS_FIRST_TIME)){
-            isFirstTime = getIntent().getBooleanExtra(Constants.EXTRA_IS_FIRST_TIME,false);
+        if (getIntent().hasExtra(Constants.EXTRA_IS_FIRST_TIME)) {
+            isFirstTime = getIntent().getBooleanExtra(Constants.EXTRA_IS_FIRST_TIME, false);
         }
 
 
@@ -392,7 +386,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 break;
 */
             case R.id.tv_job_title:
-                if(Utils.isConnected(SearchJobActivity.this)) {
+                if (Utils.isConnected(SearchJobActivity.this)) {
                     Intent jobTitleSelectionIntent = new Intent(getApplicationContext(), SelectJobTitleActivity.class);
 
                     if (mChosenTitles != null && mChosenTitles.size() > 0) {
@@ -400,7 +394,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                     }
 
                     startActivityForResult(jobTitleSelectionIntent, Constants.REQUEST_CODE.REQUEST_CODE_JOB_TITLE);
-                }else {
+                } else {
                     showToast(getString(R.string.no_internet));
                 }
                 break;
@@ -520,7 +514,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
 
             case R.id.tv_preferred_job_location:
-                if(Utils.isConnected(SearchJobActivity.this)) {
+                if (Utils.isConnected(SearchJobActivity.this)) {
                     Intent preferedJobListIntent = new Intent(getApplicationContext(), SelectPreferredLocationActivity.class);
 
                     if (mChosenPrefJobLocations != null && mChosenPrefJobLocations.size() > 0) {
@@ -528,11 +522,10 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                     }
 
                     startActivityForResult(preferedJobListIntent, Constants.REQUEST_CODE.REQUEST_CODE_PREFJOB_LOC);
-                }else {
+                } else {
                     showToast(getString(R.string.no_internet));
                 }
                 break;
-
 
 
             default:
@@ -543,11 +536,11 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        if(isFirstTime){
+        if (isFirstTime) {
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-        }else {
+        } else {
             finish();
         }
     }
@@ -667,7 +660,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             showToast(getString(R.string.msg_empty_state));
             return false;
 
-        }*/else {
+        }*/ else {
             return true;
         }
     }
@@ -704,22 +697,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
                 }
 
-            } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS) {
-
-               /* if (data != null && data.hasExtra(Constants.EXTRA_PLACE_NAME)) {
-                    mBinder.tvFetchedLocation.setVisibility(View.VISIBLE);
-                    mSelectedAddress = data.getStringExtra(Constants.EXTRA_PLACE_NAME);
-                    mSelectedLat = data.getStringExtra(Constants.EXTRA_LATITUDE);
-                    mSelectedLng = data.getStringExtra(Constants.EXTRA_LONGITUDE);
-                    mSelectedZipCode = data.getStringExtra(Constants.EXTRA_POSTAL_CODE);
-                    mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
-                    mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
-                    mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
-                    mBinder.tvFetchedLocation.setText(mSelectedAddress.concat(" ").concat(mSelectedZipCode));
-
-                }*/
-            }
-            else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_PREFJOB_LOC) {
+            } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_PREFJOB_LOC) {
 
 
                 if (data != null && data.hasExtra(Constants.EXTRA_CHOSEN_PREFERRED_JOB_LOCATION)) {
@@ -747,19 +725,19 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                 }
             }
 
-        }catch (Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
     private void addTitleToLayout(JobTitleListModel jobTitleListItem, boolean shouldAdd) {
         String text = jobTitleListItem.getJobTitle();
 
-        if(shouldAdd) {
+        if (shouldAdd) {
             mSelectedJobID.add(jobTitleListItem.getId());
         }
 
-        com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(mBinder.flowLayoutJobTitle.getContext())
+        com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(mBinder.flowLayoutJobTitle.getContext())
                 .inflate(R.layout.item_flow_child, mBinder.flowLayoutJobTitle, false));
 
         flowBinding.flowChild.setText(text);
@@ -768,16 +746,14 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     }
 
 
-
-
     private void addSelectedPreferredJobLocation(PreferredJobLocationData preferredJobLocationData, boolean shouldAdd) {
         String text = preferredJobLocationData.getPreferredLocationName();
 
-        if(shouldAdd) {
+        if (shouldAdd) {
             mSelectedPrefJobLocIds.add(preferredJobLocationData.getId());
         }
 
-        com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding =  DataBindingUtil.bind(LayoutInflater.from(mBinder.flowTvPreferredJobLocation.getContext())
+        com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(mBinder.flowTvPreferredJobLocation.getContext())
                 .inflate(R.layout.item_flow_child, mBinder.flowTvPreferredJobLocation, false));
 
         flowBinding.flowChild.setText(text);

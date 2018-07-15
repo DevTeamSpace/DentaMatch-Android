@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 17/01/17.
+ * To inject activity reference.
  */
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
     private static int instanceCount = 1;
@@ -69,7 +71,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         profileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         initViews();
@@ -218,21 +220,19 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         });
 
 
-
         profileBinding.tvUserStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                if(profileResponseData.getUser().getIsJobSeekerVerified()!=Constants.JOBSEEKAR_VERIFY_STATUS){
-                   profileBinding.tvName.setVisibility(View.GONE);
-                   profileBinding.tvJobTitle.setVisibility(View.GONE);
-                   profileBinding.tvLocation.setVisibility(View.GONE);
-                   profileBinding.relInfo.setVisibility(View.VISIBLE);
-                   profileBinding.tvInfo.setText(getString(R.string.your_profile_pending));
+                if (profileResponseData.getUser().getIsJobSeekerVerified() != Constants.JOBSEEKAR_VERIFY_STATUS) {
+                    profileBinding.tvName.setVisibility(View.GONE);
+                    profileBinding.tvJobTitle.setVisibility(View.GONE);
+                    profileBinding.tvLocation.setVisibility(View.GONE);
+                    profileBinding.relInfo.setVisibility(View.VISIBLE);
+                    profileBinding.tvInfo.setText(getString(R.string.your_profile_pending));
 
-               }
-               else if(profileResponseData.getUser().getIsCompleted()!=Constants.PROFILE_COMPLETED_STATUS
+                } else if (profileResponseData.getUser().getIsCompleted() != Constants.PROFILE_COMPLETED_STATUS
                         ) {
                     profileBinding.tvName.setVisibility(View.GONE);
                     profileBinding.tvJobTitle.setVisibility(View.GONE);
@@ -328,36 +328,36 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                     profileBinding.ivProfileIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                           launchImageViewer(v, response.getUser().getProfilePic());
+                            launchImageViewer(v, response.getUser().getProfilePic());
                         }
                     });
 
                 }
 
-                if(response.getUser().getIsJobSeekerVerified()!=Constants.JOBSEEKAR_VERIFY_STATUS){
+                if (response.getUser().getIsJobSeekerVerified() != Constants.JOBSEEKAR_VERIFY_STATUS) {
                     profileBinding.tvUserStatus.setText(getString(R.string.pending));
                     profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.rounded_yellow_drawable));
-                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_pending_yellow, 0, R.drawable.ic_down_arrow_white, 0);
+                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_pending_yellow, 0, R.drawable.ic_down_arrow_white, 0);
                     profileBinding.layoutPlaceHolder.setBackground(getResources().getDrawable(R.drawable.drawable_circle_yellow));
-                    profileBinding.tvUserStatus.setPadding(0,0,Utils.dpToPx(getActivity(),6),0);
+                    profileBinding.tvUserStatus.setPadding(0, 0, Utils.dpToPx(getActivity(), 6), 0);
 
-                }else if(response.getUser().getIsCompleted()!=Constants.PROFILE_COMPLETED_STATUS){
+                } else if (response.getUser().getIsCompleted() != Constants.PROFILE_COMPLETED_STATUS) {
                     profileBinding.tvUserStatus.setText(getString(R.string.need_attention));
 
                     profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.rounded_red_drawable));
-                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_needs_attention_red, 0, R.drawable.ic_down_arrow_white, 0);
+                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_needs_attention_red, 0, R.drawable.ic_down_arrow_white, 0);
                     profileBinding.layoutPlaceHolder.setBackground(getResources().getDrawable(R.drawable.drawable_circle_red));
-                    profileBinding.tvUserStatus.setPadding(0,0,Utils.dpToPx(getActivity(),6),0);
+                    profileBinding.tvUserStatus.setPadding(0, 0, Utils.dpToPx(getActivity(), 6), 0);
 
-                }else {
+                } else {
 
                     profileBinding.tvUserStatus.setVisibility(View.VISIBLE);
                     profileBinding.tvUserStatus.setText(getString(R.string.active));
 
                     profileBinding.tvUserStatus.setBackground(getResources().getDrawable(R.drawable.ic_active_bg));
-                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0);
+                    profileBinding.tvUserStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     profileBinding.layoutPlaceHolder.setBackground(getResources().getDrawable(R.drawable.drawable_circle_green));
-                    profileBinding.tvUserStatus.setPadding(123,0,0,0);
+                    profileBinding.tvUserStatus.setPadding(123, 0, 0, 0);
 
                 }
 
@@ -407,22 +407,22 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 for (int i = 0; i < response.getAffiliationList().size(); i++) {
 
 
-                    if(response.getAffiliationList().get(i).getAffiliationId()==Constants.OTHER_AFFILIATION_ID){
-                     String otherAffiliation=response.getAffiliationList().get(i).getOtherAffiliation();
+                    if (response.getAffiliationList().get(i).getAffiliationId() == Constants.OTHER_AFFILIATION_ID) {
+                        String otherAffiliation = response.getAffiliationList().get(i).getOtherAffiliation();
 
-                        if(otherAffiliation!=null && !TextUtils.isEmpty(otherAffiliation)){
+                        if (otherAffiliation != null && !TextUtils.isEmpty(otherAffiliation)) {
 
-                            if(otherAffiliation.contains(",")){
-                                String [] otherArr=otherAffiliation.split(",");
-                                for(int j=0;j<otherArr.length;j++){
+                            if (otherAffiliation.contains(",")) {
+                                String[] otherArr = otherAffiliation.split(",");
+                                for (String text : otherArr) {
                                     com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
                                             .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
-                                    flowBinding.flowChild.setText(otherArr[j].trim());
+                                    flowBinding.flowChild.setText(text.trim());
 
                                     profileBinding.flowLayout.addView(flowBinding.getRoot());
 
                                 }
-                            }else {
+                            } else {
 
                                 com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
                                         .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
@@ -431,7 +431,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                                 profileBinding.flowLayout.addView(flowBinding.getRoot());
                             }
                         }
-                    }else {
+                    } else {
                         com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
                                 .inflate(R.layout.item_flow_child, profileBinding.flowLayout, false));
                         flowBinding.flowChild.setText(response.getAffiliationList().get(i).getAffiliationName());
@@ -525,26 +525,24 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         ItemProfileSkillBinding skillBinding;
 
 
-
-
         for (int i = 0; i < skillArrayList.size(); i++) {
             skillBinding = DataBindingUtil.bind(LayoutInflater.from(profileBinding.keySkillInflater.getContext())
                     .inflate(R.layout.item_profile_skill, profileBinding.keySkillInflater, false));
             skillBinding.tvSkillName.setText(skillArrayList.get(i).getSkillsName());
 
             for (int j = 0; j < skillArrayList.get(i).getChildSkillList().size(); j++) {
-                String skName=(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
-                LogUtils.LOGD("OtherSkill>>",skName);
+                String skName = (skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
+                LogUtils.LOGD("OtherSkill>>", skName);
 
-                if(skName.equalsIgnoreCase(Constants.OTHERS)) {
+                if (skName.equalsIgnoreCase(Constants.OTHERS)) {
 
-                    if(!StringUtils.isNullOrEmpty(skillArrayList.get(i).getChildSkillList().get(j).getOtherSkills())) {
+                    if (!StringUtils.isNullOrEmpty(skillArrayList.get(i).getChildSkillList().get(j).getOtherSkills())) {
                         com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
                                 .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout, false));
                         flowBinding.flowChild.setText(skillArrayList.get(i).getChildSkillList().get(j).getOtherSkills());
                         skillBinding.skillFlowLayout.addView(flowBinding.getRoot());
                     }
-                }else {
+                } else {
                     com.appster.dentamatch.databinding.ItemFlowChildBinding flowBinding = DataBindingUtil.bind(LayoutInflater.from(getActivity())
                             .inflate(R.layout.item_flow_child, skillBinding.skillFlowLayout, false));
                     flowBinding.flowChild.setText(skillArrayList.get(i).getChildSkillList().get(j).getSkillsChildName());
@@ -587,7 +585,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
             expBinding.tvJobTitle.setText(expList.get(i).getJobTitleName());
             expBinding.tvName.setText(expList.get(i).getOfficeName());
-            expBinding.tvAddress.setText(expList.get(i).getOfficeAddress()+"\n"+expList.get(i).getCity());
+            expBinding.tvAddress.setText(expList.get(i).getOfficeAddress() + "\n" + expList.get(i).getCity());
 
 
             if (TextUtils.isEmpty(expList.get(i).getReference1Email()) &&

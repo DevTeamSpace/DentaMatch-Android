@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by virender on 14/02/17.
+ * To inject activity reference.
  */
 public class NotificationResponse extends BaseResponse {
     @SerializedName("result")

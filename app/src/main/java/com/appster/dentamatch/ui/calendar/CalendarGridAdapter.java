@@ -16,13 +16,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarGridAdapter extends ArrayAdapter {
-    private LayoutInflater mInflater;
-    private List<CalenderAvailableCellModel> mMonthlyDates;
-    private Calendar mCurrentDate;
-    private Context mContext;
+class CalendarGridAdapter extends ArrayAdapter<CalenderAvailableCellModel> {
+    private final LayoutInflater mInflater;
+    private final List<CalenderAvailableCellModel> mMonthlyDates;
+    private final Calendar mCurrentDate;
+    private final Context mContext;
 
-    public CalendarGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate) {
+    CalendarGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate) {
         super(context, R.layout.single_cell_layout);
         this.mMonthlyDates = monthlyDates;
         this.mCurrentDate = currentDate;
@@ -54,7 +54,7 @@ public class CalendarGridAdapter extends ArrayAdapter {
         /*
          * Add day to calendar
          */
-        TextView cellNumber = (TextView) view.findViewById(R.id.calendar_date_id);
+        TextView cellNumber = view.findViewById(R.id.calendar_date_id);
 
         if (displayMonth == currentMonth && displayYear == currentYear) {
             cellNumber.setText(String.valueOf(dayValue));
@@ -84,12 +84,13 @@ public class CalendarGridAdapter extends ArrayAdapter {
 
     @Nullable
     @Override
-    public Object getItem(int position) {
+    public CalenderAvailableCellModel getItem(int position) {
         return mMonthlyDates.get(position);
     }
 
     @Override
-    public int getPosition(Object item) {
+    public int getPosition(@Nullable CalenderAvailableCellModel item) {
         return mMonthlyDates.indexOf(item);
     }
+
 }

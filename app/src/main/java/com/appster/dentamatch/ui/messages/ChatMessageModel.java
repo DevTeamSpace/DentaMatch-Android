@@ -4,6 +4,7 @@ import io.realm.RealmObject;
 
 /**
  * Created by Appster on 13/02/17.
+ * To inject activity reference.
  */
 
 public class ChatMessageModel extends RealmObject {

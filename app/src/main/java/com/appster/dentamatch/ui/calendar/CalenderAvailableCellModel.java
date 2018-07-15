@@ -5,8 +5,9 @@ import java.util.Date;
 
 /**
  * Created by virender on 01/02/17.
+ * To inject activity reference.
  */
-public class CalenderAvailableCellModel {
+class CalenderAvailableCellModel {
 
     private Date mDate;
     private boolean mIsSelected;

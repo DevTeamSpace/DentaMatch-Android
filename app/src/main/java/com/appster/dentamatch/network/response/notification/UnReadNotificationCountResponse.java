@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by virender on 28/02/17.
+ * To inject activity reference.
  */
 public class UnReadNotificationCountResponse extends BaseResponse {
     @SerializedName("result")

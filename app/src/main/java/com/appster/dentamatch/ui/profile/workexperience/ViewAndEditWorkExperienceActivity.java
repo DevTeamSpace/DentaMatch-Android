@@ -38,6 +38,7 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 04/01/17.
+ * To inject activity reference.
  */
 public class ViewAndEditWorkExperienceActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener, JobTitleSelectionListener {
     private ActivityViewAndWditWorkExperienceBinding mBinder;
@@ -161,16 +162,14 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 int year = 0, month = 0;
                 if (!TextUtils.isEmpty(mBinder.layoutWorkExpViewEdit.tvExperienceWorkExp.getText().toString())) {
                     String split[] = mBinder.layoutWorkExpViewEdit.tvExperienceWorkExp.getText().toString().split(" ");
-                    if(split!=null && split.length==4) {
+                    if (split.length == 4) {
                         year = Integer.parseInt(split[0]);
                         month = Integer.parseInt(split[2]);
-                    }else {
-                        if(split!=null && split.length==2 && (split[1].equals(getString(R.string.txt_single_month))|| split[1].equals(getString(R.string.txt_multiple_months)))) {
+                    } else {
+                        if (split.length == 2 && (split[1].equals(getString(R.string.txt_single_month)) || split[1].equals(getString(R.string.txt_multiple_months)))) {
                             month = Integer.parseInt(split[0]);
-                        }else {
-                            if(split!=null)
+                        } else {
                             year = Integer.parseInt(split[0]);
-
                         }
                     }
 
@@ -211,7 +210,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         }
     }
 
-    private void updateExp(boolean isBack){
+    private void updateExp(boolean isBack) {
         final HashMap<Boolean, String> result = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobtitle, expMonth,
                 Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
                 Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
@@ -228,7 +227,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         if (result.containsKey(false)) {
             showToast(result.get(false));
         } else {
-            if(TextUtils.isEmpty(result.get(true))) {
+            if (TextUtils.isEmpty(result.get(true))) {
                 WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(),
                         Constants.APIS.ACTION_EDIT,
                         jobTitleId,
@@ -243,9 +242,9 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                         Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceName),
                         Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceMobile));
                 request.setId(workExpList.get(position).getId());
-                callUpdateExpApi(request,isBack);
+                callUpdateExpApi(request, isBack);
 
-            }else{
+            } else {
                 showToast(result.get(true));
             }
         }
@@ -256,15 +255,15 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     public void onExperienceSection(int year, int month) {
         String yearLabel, monthLabel;
 
-        if(year == 1){
+        if (year == 1) {
             yearLabel = getString(R.string.txt_single_year);
-        }else{
+        } else {
             yearLabel = getString(R.string.txt_multiple_years);
         }
 
-        if(month == 1){
+        if (month == 1) {
             monthLabel = getString(R.string.txt_single_month);
-        }else {
+        } else {
             monthLabel = getString(R.string.txt_multiple_months);
         }
 
@@ -300,7 +299,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         });
     }
 
-    private void callUpdateExpApi(final WorkExpRequest workExpRequest,final boolean isBack) {
+    private void callUpdateExpApi(final WorkExpRequest workExpRequest, final boolean isBack) {
         processToShowDialog();
 
         AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
@@ -314,13 +313,13 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                     response.getWorkExpResponseData().getSaveList().get(0).setJobTitleName(selectedJobtitle);
                     workExpList.add(position, response.getWorkExpResponseData().getSaveList().get(0));
 
-                    if(isBack) {
+                    if (isBack) {
                         Intent intent = new Intent();
                         intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
                         setResult(Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT, intent);
                         EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                         finish();
-                    }else {
+                    } else {
                         startActivity(new Intent(ViewAndEditWorkExperienceActivity.this, HomeActivity.class)
                                 .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));

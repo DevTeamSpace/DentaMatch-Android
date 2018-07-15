@@ -15,11 +15,12 @@ import java.util.List;
 
 /**
  * Created by zishan on 23/11/17.
+ * To inject activity reference.
  */
 
 public class PreferredJobLocationAdapter extends ArrayAdapter<PreferredJobLocationData> {
 
-    private List<PreferredJobLocationData> preferredJobLocationDataList;
+    private final List<PreferredJobLocationData> preferredJobLocationDataList;
     private final Activity context;
 
     static class ViewHolder {
@@ -41,7 +42,7 @@ public class PreferredJobLocationAdapter extends ArrayAdapter<PreferredJobLocati
             LayoutInflater inflator = context.getLayoutInflater();
             view = inflator.inflate(R.layout.preferred_job_location_list_item, null);
             final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.categoryName = (TextView) view.findViewById(R.id.tv_job_category);
+            viewHolder.categoryName = view.findViewById(R.id.tv_job_category);
             view.setTag(viewHolder);
         } else {
             view = convertView;

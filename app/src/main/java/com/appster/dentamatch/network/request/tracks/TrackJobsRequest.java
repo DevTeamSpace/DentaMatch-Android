@@ -2,9 +2,10 @@ package com.appster.dentamatch.network.request.tracks;
 
 /**
  * Created by Appster on 02/02/17.
+ * To inject activity reference.
  */
 
-public class TrackJobsRequest {
+class TrackJobsRequest {
     private double lat;
     private double lng;
     private int page;

@@ -18,11 +18,12 @@ import java.util.ArrayList;
 
 /**
  * Created by virender on 19/01/17.
+ * To inject activity reference.
  */
 public class ProfileResponseData implements Parcelable {
 
     @SerializedName("user")
-    private UserModel userModel;
+    private final UserModel userModel;
     @SerializedName("workExperience")
     private WorkExpResponseData workExperience;
 

@@ -25,6 +25,7 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 22/02/17.
+ * To inject activity reference.
  */
 
 public class TrackJobsDataHelper {
@@ -40,8 +41,8 @@ public class TrackJobsDataHelper {
 
     private boolean mSavedPaginationNeeded;
     private boolean mAppliedPaginationNeeded;
-    private ArrayList<SearchJobModel> mSavedJobData;
-    private ArrayList<SearchJobModel> mAppliedJobData;
+    private final ArrayList<SearchJobModel> mSavedJobData;
+    private final ArrayList<SearchJobModel> mAppliedJobData;
 
     public static TrackJobsDataHelper getInstance() {
         if (mInstance == null) {

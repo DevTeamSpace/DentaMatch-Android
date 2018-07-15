@@ -24,6 +24,7 @@ import retrofit2.Call;
 
 /**
  * Created by bawenderyandra on 08/03/17.
+ * To inject activity reference.
  */
 
 public class NotificationActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {

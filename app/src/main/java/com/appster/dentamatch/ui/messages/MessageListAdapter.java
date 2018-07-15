@@ -27,19 +27,20 @@ import io.realm.RealmRecyclerViewAdapter;
 
 /**
  * Created by Appster on 15/02/17.
+ * To inject activity reference.
  */
 
 public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, MessageListAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
-    private OrderedRealmCollection<DBModel> messagesData;
+    private final OrderedRealmCollection<DBModel> messagesData;
     private ItemMessageListBinding mBinding;
-    private Context mContext;
-    private String userID;
+    private final Context mContext;
+    private final String userID;
 
     public MessageListAdapter(Context context, @Nullable OrderedRealmCollection<DBModel> data, boolean autoUpdate) {
-            super(context, data, autoUpdate);
-            messagesData = data;
-            mContext = context;
-            userID = PreferenceUtil.getUserChatId();
+        super(context, data, autoUpdate);
+        messagesData = data;
+        mContext = context;
+        userID = PreferenceUtil.getUserChatId();
     }
 
     @Override
@@ -61,8 +62,6 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
             } else {
                 holder.tvDate.setText("");
             }
-
-            dataModel.getUnReadChatCount();
 
             if (dataModel.getUnReadChatCount() == 0) {
                 holder.tvUnreadChatCount.setVisibility(View.GONE);
@@ -125,16 +124,20 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
     }
 
     private void blockUnBlockUser(final String status, final String recruiterID, String userID) {
-        if(SocketManager.getInstance().isConnected()){
+        if (SocketManager.getInstance().isConnected()) {
             SocketManager.getInstance().blockUnblockUser(status, recruiterID, userID);
-        }else{
-            ((BaseActivity)mContext).showToast(mContext.getString(R.string.error_socket_connection));
+        } else {
+            ((BaseActivity) mContext).showToast(mContext.getString(R.string.error_socket_connection));
         }
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-        TextView tvRecruiterName, tvLastMessage, tvDate, tvUnreadChatCount;
-        View RemovableView, ConstantView;
+        final TextView tvRecruiterName;
+        final TextView tvLastMessage;
+        final TextView tvDate;
+        final TextView tvUnreadChatCount;
+        final View RemovableView;
+        final View ConstantView;
 
         MyHolder(View itemView) {
             super(itemView);

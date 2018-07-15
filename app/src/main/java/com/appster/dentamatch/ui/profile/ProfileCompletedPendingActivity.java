@@ -14,6 +14,7 @@ import com.appster.dentamatch.util.Constants;
 
 /**
  * Created by zishan on 28/11/17.
+ * To inject activity reference.
  */
 
 public class ProfileCompletedPendingActivity extends BaseActivity {

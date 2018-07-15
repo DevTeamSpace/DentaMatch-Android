@@ -18,37 +18,35 @@ import java.util.ArrayList;
 
 /**
  * Created by virender on 27/01/17.
+ * Preferred Job list data holder.
  */
-public class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements  View.OnClickListener {
-    private static final String TAG= LogUtils.makeLogTag(PreferenceUtil.class);
-    private ArrayList<PreferredJobLocationData> mAffiliationList = new ArrayList<>();
+class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+    private static final String TAG = LogUtils.makeLogTag(PreferenceUtil.class);
+    private final ArrayList<PreferredJobLocationData> mAffiliationList = new ArrayList<>();
     private ArrayList<PreferredJobLocationData> mSelectedJobTitles = new ArrayList<>();
-    private PreferredJobListSelected mListener;
+    private final PreferredJobListSelected mListener;
 
-    public PreferredJobListAdapter(PreferredJobListSelected listener) {
+    PreferredJobListAdapter(PreferredJobListSelected listener) {
         mListener = listener;
     }
 
-    public void addList(ArrayList<PreferredJobLocationData> list) {
-        if (mAffiliationList != null) {
-            mAffiliationList.clear();
-            mAffiliationList.addAll(list);
-        }
-
+    void addList(ArrayList<PreferredJobLocationData> list) {
+        mAffiliationList.clear();
+        mAffiliationList.addAll(list);
         notifyDataSetChanged();
     }
 
-    public void setSelectedListItems(ArrayList<PreferredJobLocationData> list){
-        if (mAffiliationList != null  && mAffiliationList.size() > 0) {
-            for(PreferredJobLocationData myList : mAffiliationList) {
+    void setSelectedListItems(ArrayList<PreferredJobLocationData> list) {
+        if (mAffiliationList.size() > 0) {
+            for (PreferredJobLocationData myList : mAffiliationList) {
 
-               // try {
-                    for (PreferredJobLocationData selectedList : list) {
-                        if (myList.getId() == selectedList.getId()) {
-                            myList.setSelected(true);
-                            break;
-                        }
+                // try {
+                for (PreferredJobLocationData selectedList : list) {
+                    if (myList.getId() == selectedList.getId()) {
+                        myList.setSelected(true);
+                        break;
                     }
+                }
                 /*} catch (Exception e) {
 
                 }*/
@@ -66,12 +64,12 @@ public class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemCount() {
-        return mAffiliationList != null ? mAffiliationList.size() : 0;
+        return mAffiliationList.size();
     }
 
 
     private PreferredJobLocationData getItem(int position) {
-        return mAffiliationList != null && mAffiliationList.size() > 0 ? mAffiliationList.get(position) : null;
+        return mAffiliationList.size() > 0 ? mAffiliationList.get(position) : null;
     }
 
 
@@ -88,14 +86,14 @@ public class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.V
         try {
             final ViewHolder itemHolder = (ViewHolder) holder;
             final PreferredJobLocationData currentItem = getItem(position);
-            if(currentItem!=null) {
+            if (currentItem != null) {
                 itemHolder.tvType.setText(currentItem.getPreferredLocationName());
                 itemHolder.cbCheckBox.setTag(position);
                 itemHolder.cbCheckBox.setOnClickListener(this);
                 itemHolder.cbCheckBox.setChecked(currentItem.isSelected());
             }
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
     }
@@ -105,7 +103,7 @@ public class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.V
         int position = (int) v.getTag();
         try {
             final PreferredJobLocationData currentItem = getItem(position);
-            if(currentItem!=null) {
+            if (currentItem != null) {
                 if (currentItem.isSelected()) {
 
                     for (PreferredJobLocationData i : mSelectedJobTitles) {
@@ -124,23 +122,23 @@ public class PreferredJobListAdapter extends RecyclerView.Adapter<RecyclerView.V
             mListener.onPrefJobSelected(mSelectedJobTitles);
             notifyItemChanged(position);
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView tvType;
-        protected CheckBox cbCheckBox;
-        private EditText etOther;
-        private View viewUnderLine;
+        final TextView tvType;
+        final CheckBox cbCheckBox;
+        private final EditText etOther;
+        private final View viewUnderLine;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            tvType = (TextView) itemLayoutView.findViewById(R.id.tv_affiliation_type);
-            cbCheckBox = (CheckBox) itemLayoutView.findViewById(R.id.cb_check_box);
-            etOther = (EditText) itemLayoutView.findViewById(R.id.et_other);
+            tvType = itemLayoutView.findViewById(R.id.tv_affiliation_type);
+            cbCheckBox = itemLayoutView.findViewById(R.id.cb_check_box);
+            etOther = itemLayoutView.findViewById(R.id.et_other);
             viewUnderLine = itemLayoutView.findViewById(R.id.view_line);
 
         }

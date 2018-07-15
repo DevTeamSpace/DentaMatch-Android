@@ -39,6 +39,7 @@ import java.util.List;
 
 /**
  * Created by ram on 12/01/17.
+ * Adapter for list of schools.
  */
 
 public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -50,17 +51,17 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int SCHOOL_ADDED = 1;
     private static final int SPINNER_FIRST_POS = 0;
 
-    private List<SchoolTypeModel> mSchoolList;
+    private final List<SchoolTypeModel> mSchoolList;
     private ItemSchoolBinding mBinder;
     private LayoutProfileHeaderBinding mBinderHeader;
-    private Context mContext;
+    private final Context mContext;
     private final ArrayList<String> mYearsList;
-    private EditTextSelected mNameSelectedListener;
+    private final EditTextSelected mNameSelectedListener;
     private HashMap<Integer, PostSchoolData> mHashMap = new HashMap<>();
-    private boolean mIsFromEditProfile;
+    private final boolean mIsFromEditProfile;
     private String mYear = "";
 
-    private AdapterView.OnItemClickListener autoCompleteClick = new AdapterView.OnItemClickListener() {
+    private final AdapterView.OnItemClickListener autoCompleteClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             hideKeyBoard();
@@ -262,7 +263,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             holder1.spinnerYears.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    TextView text = (TextView) view.findViewById(R.id.text_spinner);
+                    TextView text = view.findViewById(R.id.text_spinner);
                     if (position != 0) {
 
                         if (!TextUtils.isEmpty(holder1.autoCompleteTextView.getText().toString())) {
@@ -322,10 +323,10 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             });
 
 
-            if(TextUtils.isEmpty(holder1.autoCompleteTextView.getText())){
+            if (TextUtils.isEmpty(holder1.autoCompleteTextView.getText())) {
                 holder1.layChild.setVisibility(View.GONE);
 
-            }else{
+            } else {
                 holder1.layChild.setVisibility(View.VISIBLE);
             }
         }
@@ -360,12 +361,12 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private class ViewHolderItem extends RecyclerView.ViewHolder {
-        TextView tvSchoolTypeName;
-        EditText etSchoolName;
-        EditText etYearOfGraduation;
-        Spinner spinnerYears;
-        RelativeLayout layChild;
-        AutoCompleteTextView autoCompleteTextView;
+        final TextView tvSchoolTypeName;
+        final EditText etSchoolName;
+        final EditText etYearOfGraduation;
+        final Spinner spinnerYears;
+        final RelativeLayout layChild;
+        final AutoCompleteTextView autoCompleteTextView;
 
         ViewHolderItem(View view) {
             super(view);

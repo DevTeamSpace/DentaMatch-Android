@@ -35,16 +35,16 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<LocationSettingsResult> {
 
     public static final String TAG = LocationUtils.class.getSimpleName();
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
     public static final int REQUEST_CHECK_SETTINGS = 0x1;
     private static final int REQUEST_LOCATION_PERMISSION = 1000;
     private static final float MINIMUM_DISPLACEMENT = 100;
-    protected GoogleApiClient googleApiClient;
-    protected LocationRequest locationRequest;
-    protected LocationSettingsRequest locationSettingsRequest;
-    protected Location currentLocation;
-    protected Boolean requestingLocationUpdates;
+    private GoogleApiClient googleApiClient;
+    private LocationRequest locationRequest;
+    private LocationSettingsRequest locationSettingsRequest;
+    private Location currentLocation;
+    private Boolean requestingLocationUpdates;
 
     public static void addFragment(AppCompatActivity activity) {
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
@@ -66,16 +66,17 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         startUpdates();
     }
 
-    protected synchronized void buildGoogleApiClient() {
+    private synchronized void buildGoogleApiClient() {
         LogUtils.LOGI(TAG, "Building GoogleApiClient");
-        googleApiClient = new GoogleApiClient.Builder(getContext())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        if (getContext() != null)
+            googleApiClient = new GoogleApiClient.Builder(getContext())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
     }
 
-    protected void createLocationRequest() {
+    private void createLocationRequest() {
         locationRequest = new LocationRequest();
         // Sets the desired interval for active location updates. This interval is
         // inexact. You may not receive updates at all if no location sources are available, or
@@ -89,13 +90,13 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         locationRequest.setSmallestDisplacement(MINIMUM_DISPLACEMENT);
     }
 
-    protected void buildLocationSettingsRequest() {
+    private void buildLocationSettingsRequest() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(locationRequest);
         locationSettingsRequest = builder.build();
     }
 
-    protected void checkLocationSettings() {
+    private void checkLocationSettings() {
         PendingResult<LocationSettingsResult> result =
                 LocationServices.SettingsApi.checkLocationSettings(
                         googleApiClient,
@@ -111,7 +112,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
                 LogUtils.LOGI(TAG, "All location settings are satisfied.");
-                if(googleApiClient != null && googleApiClient.isConnected()) {
+                if (googleApiClient != null && googleApiClient.isConnected()) {
                     startLocationUpdates();
                 }
                 break;
@@ -142,7 +143,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
                 switch (resultCode) {
                     case Activity.RESULT_OK:
                         LogUtils.LOGI(TAG, "UserModel agreed to make required location settings changes.");
-                        if(googleApiClient != null && googleApiClient.isConnected()) {
+                        if (googleApiClient != null && googleApiClient.isConnected()) {
                             startLocationUpdates();
                         }
                         break;
@@ -162,9 +163,9 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     /**
      * Requests location updates from the FusedLocationApi.
      */
-    protected void startLocationUpdates() {
+    private void startLocationUpdates() {
         LogUtils.LOGD(TAG, "startLocationUpdates");
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (getActivity() != null && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest,
                     this).setResultCallback(new ResultCallback<Status>() {
@@ -185,10 +186,10 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         LogUtils.LOGD(TAG, "onRequestPermissionsResult");
         if (requestCode == REQUEST_LOCATION_PERMISSION && !StringUtils.isNullOrEmpty(grantResults)
-                &&grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             LogUtils.LOGV(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
 
-            if(googleApiClient != null && googleApiClient.isConnected()) {
+            if (googleApiClient != null && googleApiClient.isConnected()) {
                 startLocationUpdates();
             }
         }
@@ -197,7 +198,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
     /**
      * Removes location updates from the FusedLocationApi.
      */
-    protected void stopLocationUpdates() {
+    private void stopLocationUpdates() {
         // It is a good practice to remove location requests when the activity is in a paused or
         // stopped state. Doing so helps battery performance and is especially
         // recommended in applications that request frequent location updates.
@@ -262,7 +263,7 @@ public class LocationUtils extends Fragment implements GoogleApiClient.Connectio
         LogUtils.LOGD(TAG, "Lat : " + location.getLatitude() + ", " + "Long : " + location.getLongitude());
         EventBus.getDefault().post(new LocationEvent(location));
 
-        if(googleApiClient != null && googleApiClient.isConnected()) {
+        if (googleApiClient != null && googleApiClient.isConnected()) {
             stopLocationUpdates();
         }
     }

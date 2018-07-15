@@ -50,9 +50,10 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
 
 /**
  * Created by virender on 13/12/16.
+ * To inject activity reference.
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG= LogUtils.makeLogTag(LoginActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(LoginActivity.class);
     private ActivityLoginBinding mBinder;
     private boolean mIsAccepted, mIsLogin;
     private String mPostalCode;
@@ -261,10 +262,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         builderSingle.setAdapter(mPreferredJobLocationDataArrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mBinder.tvPreferredJobLocation.setText(mPreferredJobLocationDataArrayAdapter.getItem(which).getPreferredLocationName());
-                preferredJobLocationId = mPreferredJobLocationDataArrayAdapter.getItem(which).getId();
-
-                mBinder.tvPreferredJobLocation.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.black_color));
+                PreferredJobLocationData locationData = mPreferredJobLocationDataArrayAdapter.getItem(which);
+                if (locationData != null) {
+                    mBinder.tvPreferredJobLocation.setText(locationData.getPreferredLocationName());
+                    preferredJobLocationId = locationData.getId();
+                }
+                mBinder.tvPreferredJobLocation.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black_color));
             }
         });
         builderSingle.show();
@@ -440,7 +443,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     //Utils.showToast(getApplicationContext(), response.getMessage());
                     mIsLogin = true;
                     //showSelectedView(true);
-                   // clearRegistrationFields();
+                    // clearRegistrationFields();
 
                     PreferenceUtil.setUserToken(response.getLoginResponseData().getUserDetail().getUserToken());
                     PreferenceUtil.setFistName(response.getLoginResponseData().getUserDetail().getFirstName());
@@ -510,16 +513,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_login), userDetails);
 
                     } catch (Exception e) {
-                        LogUtils.LOGE(TAG,e.getMessage());
+                        LogUtils.LOGE(TAG, e.getMessage());
                     }
 
                     if (response.getLoginResponseData().getSearchFilters() != null) {
                         SearchFilterModel searchFilters = response.getLoginResponseData().getSearchFilters();
                         SearchJobRequest request = new SearchJobRequest();
-                        if(searchFilters.getIsParttime()!=null && !TextUtils.isEmpty(searchFilters.getIsParttime())) {
+                        if (searchFilters.getIsParttime() != null && !TextUtils.isEmpty(searchFilters.getIsParttime())) {
                             request.setIsParttime(Integer.parseInt(searchFilters.getIsParttime()));
                         }
-                        if(searchFilters.getIsFulltime()!=null && !TextUtils.isEmpty(searchFilters.getIsFulltime())) {
+                        if (searchFilters.getIsFulltime() != null && !TextUtils.isEmpty(searchFilters.getIsFulltime())) {
                             request.setIsFulltime(Integer.parseInt(searchFilters.getIsFulltime()));
                         }
 
@@ -561,32 +564,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     PreferenceUtil.setKeyJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
                     PreferenceUtil.setUserVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
-                    if(response.getLoginResponseData().getUserDetail()!=null && response.getLoginResponseData().getUserDetail().getJobTitileId()!=null) {
+                    if (response.getLoginResponseData().getUserDetail() != null && response.getLoginResponseData().getUserDetail().getJobTitileId() != null) {
                         PreferenceUtil.setJobTitleId(response.getLoginResponseData().getUserDetail().getJobTitileId());
                     }
 
 
-
-
-                    UserModel userModel= new UserModel();
+                    UserModel userModel = new UserModel();
                     userModel.setEmail(response.getLoginResponseData().getUserDetail().getEmail());
                     userModel.setFirstName(response.getLoginResponseData().getUserDetail().getFirstName());
                     userModel.setLastName(response.getLoginResponseData().getUserDetail().getFirstName());
                     userModel.setProfileCompleted(response.getLoginResponseData().getUserDetail().getProfileCompleted());
-                   // userModel.setUserId(Integer.parseInt(response.getLoginResponseData().getUserDetail().getUserId()));
+                    // userModel.setUserId(Integer.parseInt(response.getLoginResponseData().getUserDetail().getUserId()));
 
                     userModel.setIsVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
                     userModel.setIsJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
                     userModel.setIsJobSeekerVerified(response.getLoginResponseData().getUserDetail().getIsJobSeekerVerified());
 
-                   if(response.getLoginResponseData().getUserDetail().getJobTitileId()!=null) {
-                       userModel.setJobTitleId(response.getLoginResponseData().getUserDetail().getJobTitileId());
-                   }
+                    if (response.getLoginResponseData().getUserDetail().getJobTitileId() != null) {
+                        userModel.setJobTitleId(response.getLoginResponseData().getUserDetail().getJobTitileId());
+                    }
                     userModel.setIsVerified(response.getLoginResponseData().getUserDetail().getIsVerified());
                     PreferenceUtil.setUserModel(userModel);
                     PreferenceUtil.setSetAvailability(true);
-
-
 
 
                     logUser(loginRequest.getEmail(),
@@ -674,7 +673,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBinder.ivAcceptPolicy.setBackgroundResource(R.drawable.ic_check_empty);
     }
 
-    private  void showSignUpSuccessDialog( String msg){
+    private void showSignUpSuccessDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.success))
                 .setMessage(msg)

@@ -7,23 +7,24 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Appster on 08/02/17.
+ * To inject activity reference.
  */
 
 public class ChatListModel implements Parcelable{
-    private int messageListId;
-    private int seekerId;
-    private int messageId;
-    private String timestamp;
-    private String message;
-    private int recruiterId;
+    private final int messageListId;
+    private final int seekerId;
+    private final int messageId;
+    private final String timestamp;
+    private final String message;
+    private final int recruiterId;
     private int recruiterBlock;
-    private String name;
-    private String unreadCount;
+    private final String name;
+    private final String unreadCount;
     @SerializedName("seekerBlock")
     private int seekerHasBlocked;
 
 
-    protected ChatListModel(Parcel in) {
+    private ChatListModel(Parcel in) {
         messageListId = in.readInt();
         seekerId = in.readInt();
         messageId = in.readInt();

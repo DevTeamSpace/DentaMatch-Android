@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by ram on 06/01/17.
+ * To inject activity reference.
  */
 
 public class UserDetail implements Parcelable {
@@ -194,7 +195,7 @@ public class UserDetail implements Parcelable {
         dest.writeString(this.userToken);
     }
 
-    protected UserDetail(Parcel in) {
+    private UserDetail(Parcel in) {
         this.id = in.readString();
         this.firstName = in.readString();
         this.lastName = in.readString();

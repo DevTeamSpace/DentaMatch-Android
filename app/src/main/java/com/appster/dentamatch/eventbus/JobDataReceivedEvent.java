@@ -6,14 +6,15 @@ import java.util.ArrayList;
 
 /**
  * Created by Appster on 28/01/17.
+ * To stream job data received events.
  */
 
 public class JobDataReceivedEvent {
-    private ArrayList<SearchJobModel> mJobList;
-    private boolean mPaginationNeeded;
-    private int mTotalItem;
-    private int mIsJobSeekerVerified;
-    private int mProfileCompleted;
+    private final ArrayList<SearchJobModel> mJobList;
+    private final boolean mPaginationNeeded;
+    private final int mTotalItem;
+    private final int mIsJobSeekerVerified;
+    private final int mProfileCompleted;
 
     public int getIsJobSeekerVerified() {
         return mIsJobSeekerVerified;
@@ -24,17 +25,13 @@ public class JobDataReceivedEvent {
     }
 
 
-
-
-
-
-    public JobDataReceivedEvent(ArrayList<SearchJobModel> list, boolean paginationNeeded, int totalItem, int isJobSeekerVerified,int profileCompleted){
+    public JobDataReceivedEvent(ArrayList<SearchJobModel> list, boolean paginationNeeded, int totalItem, int isJobSeekerVerified, int profileCompleted) {
         mJobList = list;
         mPaginationNeeded = paginationNeeded;
         mTotalItem = totalItem;
 
-        mIsJobSeekerVerified=isJobSeekerVerified;
-        mProfileCompleted=profileCompleted;
+        mIsJobSeekerVerified = isJobSeekerVerified;
+        mProfileCompleted = profileCompleted;
 
     }
 

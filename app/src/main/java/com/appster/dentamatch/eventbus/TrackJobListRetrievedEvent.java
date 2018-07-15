@@ -6,11 +6,12 @@ import java.util.ArrayList;
 
 /**
  * Created by Appster on 22/02/17.
+ * To inject activity reference.
  */
 
 public class TrackJobListRetrievedEvent {
-    private ArrayList<SearchJobModel> mData;
-    private int type;
+    private final ArrayList<SearchJobModel> mData;
+    private final int type;
 
     public TrackJobListRetrievedEvent(ArrayList<SearchJobModel> mData, int type){
         this.mData = mData;

@@ -4,6 +4,7 @@ import android.location.Location;
 
 /**
  * Created by ram on 06/01/17.
+ * To stream location related data event.
  */
 
 public class LocationEvent {

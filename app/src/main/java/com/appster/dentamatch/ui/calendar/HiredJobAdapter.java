@@ -28,11 +28,12 @@ import java.util.ArrayList;
 
 /**
  * Created by virender on 10/02/17.
+ * To inject activity reference.
  */
 public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
     private ItemJobListBinding mBinding;
-    private Context mContext;
-    private ArrayList<HiredJobs> mJobListData;
+    private final Context mContext;
+    private final ArrayList<HiredJobs> mJobListData;
 
     public HiredJobAdapter(Context context, ArrayList<HiredJobs> jobListData) {
         mContext = context;
@@ -183,8 +184,14 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-        private TextView tvName, tvJobType, tvDate, tvDocName, tvDocAddress, tvDuration, tvDistance;
-        private CheckBox cbSelect;
+        private final TextView tvName;
+        private final TextView tvJobType;
+        private final TextView tvDate;
+        private final TextView tvDocName;
+        private final TextView tvDocAddress;
+        private final TextView tvDuration;
+        private final TextView tvDistance;
+        private final CheckBox cbSelect;
 
         MyHolder(View itemView) {
             super(itemView);

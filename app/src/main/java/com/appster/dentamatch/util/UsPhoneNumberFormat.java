@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference;
 
 /**
  * Created by virender on 15/01/17.
+ * To inject activity reference.
  */
 
 public class UsPhoneNumberFormat implements TextWatcher {
@@ -15,7 +16,7 @@ public class UsPhoneNumberFormat implements TextWatcher {
     private boolean mFormatting; // this is a flag which prevents the
     private int mLastStartLocation;
     private String mLastBeforeText;
-    private WeakReference<EditText> mWeakEditText;
+    private final WeakReference<EditText> mWeakEditText;
 
     public UsPhoneNumberFormat(WeakReference<EditText> weakEditText) {
         this.mWeakEditText = weakEditText;

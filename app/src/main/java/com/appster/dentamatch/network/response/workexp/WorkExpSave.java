@@ -4,8 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by virender on 13/01/17.
+ * To inject activity reference.
  */
-public class WorkExpSave {
+class WorkExpSave {
     @SerializedName("user_id")
     private int userId;
     @SerializedName("job_title_id")

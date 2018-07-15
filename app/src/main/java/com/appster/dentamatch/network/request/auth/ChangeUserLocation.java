@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Appster on 02/02/17.
+ * To inject activity reference.
  */
 
 public class ChangeUserLocation {

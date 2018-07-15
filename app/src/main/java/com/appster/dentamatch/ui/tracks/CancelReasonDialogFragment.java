@@ -1,7 +1,9 @@
 package com.appster.dentamatch.ui.tracks;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,20 +22,21 @@ import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Appster on 03/02/17.
+ * To inject activity reference.
  */
 
 public class CancelReasonDialogFragment extends android.support.v4.app.DialogFragment implements View.OnClickListener {
     private FragmentDialogCancelBinding mBinding;
     private int mJobID;
 
-    public static CancelReasonDialogFragment newInstance(){
+    public static CancelReasonDialogFragment newInstance() {
         return new CancelReasonDialogFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null){
+        if (getArguments() != null) {
             mJobID = getArguments().getInt(Constants.EXTRA_JOB_ID);
         }
 
@@ -41,26 +44,27 @@ public class CancelReasonDialogFragment extends android.support.v4.app.DialogFra
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_dialog_cancel, container, false);
         mBinding.tvFragmentDialogSubmit.setOnClickListener(this);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        if (getDialog().getWindow() != null)
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         return mBinding.getRoot();
     }
 
     @Override
     public void onClick(View v) {
-        if(TextUtils.isEmpty(mBinding.etFragmentDialogCancel.getText())){
-            Toast.makeText(getActivity(),getActivity().getString(R.string.alert_reason_cancel_job), Toast.LENGTH_SHORT).show();
-        }else{
+        if (TextUtils.isEmpty(mBinding.etFragmentDialogCancel.getText())) {
+            Activity activity = getActivity();
+            if (activity != null)
+                Toast.makeText(activity, activity.getString(R.string.alert_reason_cancel_job), Toast.LENGTH_SHORT).show();
+        } else {
             EventBus.getDefault().post(new JobCancelEvent(mJobID, mBinding.etFragmentDialogCancel.getText().toString()));
             getDialog().dismiss();
         }
     }
-
-
 
 
 }

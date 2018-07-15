@@ -12,17 +12,18 @@ import com.appster.dentamatch.widget.CustomTextView;
 
 /**
  * Created by virender on 02/01/17.
+ * To inject activity reference.
  */
 public class BottomSheetView {
     private BottomSheetDialog mBottomSheetDialog;
-    private ImageSelectedListener mImageSelectedListener;
+    private final ImageSelectedListener mImageSelectedListener;
 
     public BottomSheetView(Context context, ImageSelectedListener imageSelectedListener) {
         mBottomSheetDialog = new BottomSheetDialog(context);
         mImageSelectedListener = imageSelectedListener;
         View view = ((Activity) context).getLayoutInflater().inflate(R.layout.bottom_sheet_select_image, null);
-        CustomTextView tvTakePhoto = (CustomTextView) view.findViewById(R.id.bottom_sheet_tv_take_photo);
-        CustomTextView tvChooseGallery = (CustomTextView) view.findViewById(R.id.bottom_sheet_tv_gallery);
+        CustomTextView tvTakePhoto = view.findViewById(R.id.bottom_sheet_tv_take_photo);
+        CustomTextView tvChooseGallery = view.findViewById(R.id.bottom_sheet_tv_gallery);
 
         tvTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override

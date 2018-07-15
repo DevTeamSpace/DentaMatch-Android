@@ -4,6 +4,7 @@ import com.appster.dentamatch.model.JobDetailModel;
 
 /**
  * Created by virender on 14/02/17.
+ * To inject activity reference.
  */
 public class NotificationData {
 

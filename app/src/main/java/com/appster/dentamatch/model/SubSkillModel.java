@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Created by ramkumar on 12/01/17.
+ * To inject activity reference.
  */
 
 public class SubSkillModel implements Parcelable {
@@ -23,7 +24,7 @@ public class SubSkillModel implements Parcelable {
     public SubSkillModel(){
 
     }
-    protected SubSkillModel(Parcel in) {
+    private SubSkillModel(Parcel in) {
         id = in.readInt();
         parentId = in.readInt();
         skillName = in.readString();

@@ -1,95 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<RelativeLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white_color"
 
-    >
-
-    <View
-        android:id="@+id/view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/bg_gradient_grey"
+        android:layout_height="match_parent"
+        android:background="@color/white_color"
+        android:orientation="vertical"
 
-        ></View>
+        >
 
-    <ImageView
-        android:id="@+id/image_complete"
-        android:layout_width="107dp"
-        android:layout_height="107dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_complete_profile"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/view"
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_gradient_grey"
 
-        />
+            />
 
-    <com.appster.dentamatch.widget.CustomTextView
-        android:id="@+id/tv_complete_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_35"
-        android:text="@string/text_complete_prof"
-        android:textSize="@dimen/text_size_23"
-        android:textColor="@color/dark_indigo"
+        <ImageView
+            android:id="@+id/image_complete"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
+            android:layout_below="@+id/view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/ic_complete_profile"
 
-        app:customFont="@string/font_bold"
-        android:layout_below="@+id/image_complete"
-        android:gravity="center"
+            />
 
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_complete_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_complete"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_35"
+            android:gravity="center"
+            android:text="@string/text_complete_prof"
 
-        />
-
-    <com.appster.dentamatch.widget.CustomTextView
-        android:id="@+id/tv_complete_profile_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_21"
-        android:text="@string/text_complete_prof_info"
-        android:textSize="@dimen/text_size_15"
-        android:textColor="@color/edt_hint_color"
-        app:customFont="@string/font_regular"
-        android:layout_below="@+id/tv_complete_profile"
-        android:lineSpacingExtra="4dp"
-        android:gravity="center"
-        />
-
-    <com.appster.dentamatch.widget.CustomButton
-        android:id="@+id/btn_complete_profile"
-        style="@style/button_style"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:background="@color/button_bg_color"
-        android:gravity="center"
-        android:text="@string/text_complete_prof"
-        android:textColor="@color/white_color"
-        app:customFont="@string/font_bold"
-        android:layout_below="@+id/tv_complete_profile_info"
-        android:layout_marginTop="@dimen/margin_28"
-        android:textSize="@dimen/text_size_15"
-        android:layout_marginStart="38dp"
-        android:layout_marginEnd="38dp"
-        />
-
-    <ImageView
-        android:id="@+id/iv_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_close"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+            android:textColor="@color/dark_indigo"
+            android:textSize="@dimen/text_size_23"
+            app:customFont="@string/font_bold"
 
 
+            />
 
-        />
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_complete_profile_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_complete_profile"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_21"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/text_complete_prof_info"
+            android:textColor="@color/edt_hint_color"
+            android:textSize="@dimen/text_size_15"
+            app:customFont="@string/font_regular" />
+
+        <com.appster.dentamatch.widget.CustomButton
+            android:id="@+id/btn_complete_profile"
+            style="@style/button_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_below="@+id/tv_complete_profile_info"
+            android:layout_marginEnd="38dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="@dimen/margin_28"
+            android:background="@color/button_bg_color"
+            android:gravity="center"
+            android:text="@string/text_complete_prof"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/text_size_15"
+            app:customFont="@string/font_bold" />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/ic_close"
 
 
-</RelativeLayout>
+            />
+
+
+    </RelativeLayout>
 </layout>

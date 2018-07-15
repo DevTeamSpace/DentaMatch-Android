@@ -3,6 +3,7 @@ package com.appster.dentamatch.ui.tracks;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Appster on 02/02/17.
+ * To inject activity reference.
  */
 
 public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -60,7 +62,7 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_saved_jobs, container, false);
         initViews();
         mBinding.rvFragmentSavedJobs.setLayoutManager(mLayoutManager);

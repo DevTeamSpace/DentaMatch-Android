@@ -26,9 +26,10 @@ import retrofit2.Call;
 
 /**
  * Created by virender on 20/01/17.
+ * To inject activity reference.
  */
 public class UpdateLicenseActivity extends BaseActivity implements View.OnClickListener {
-    private String TAG = LogUtils.makeLogTag(UpdateLicenseActivity.class);
+    private final String TAG = LogUtils.makeLogTag(UpdateLicenseActivity.class);
     private ActivityUpdateLicenseBinding mBinder;
     private LicenceRequest data;
 
