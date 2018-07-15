@@ -1,3 +1,11 @@
+/*
+ *
+ *  * Copyright © 2018 DentaMatch. All rights reserved.
+ *  * Developed by Appster.
+ *  *
+ *
+ */
+
 package com.appster.dentamatch.ui.tracks;
 
 import android.app.Activity;
@@ -22,7 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Appster on 03/02/17.
- * To inject activity reference.
+ * Dialog prompt to get the cancel reason.
  */
 
 public class CancelReasonDialogFragment extends android.support.v4.app.DialogFragment implements View.OnClickListener {

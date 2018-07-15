@@ -1,3 +1,11 @@
+/*
+ *
+ *  * Copyright © 2018 DentaMatch. All rights reserved.
+ *  * Developed by Appster.
+ *  *
+ *
+ */
+
 package com.appster.dentamatch.ui.searchjob;
 
 import android.support.v7.widget.RecyclerView;

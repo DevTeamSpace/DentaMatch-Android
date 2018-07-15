@@ -1,3 +1,11 @@
+/*
+ *
+ *  * Copyright © 2018 DentaMatch. All rights reserved.
+ *  * Developed by Appster.
+ *  *
+ *
+ */
+
 package com.appster.dentamatch.ui.settings;
 
 import android.content.DialogInterface;
@@ -35,7 +43,7 @@ import static com.appster.dentamatch.util.Constants.REQUEST_CODE.REQUEST_CODE_LO
 
 /**
  * Created by virender on 17/01/17.
- * To inject activity reference.
+ * Activity to show the user and application required setting options.
  */
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private ActivitySettingsBinding settingsBinding;

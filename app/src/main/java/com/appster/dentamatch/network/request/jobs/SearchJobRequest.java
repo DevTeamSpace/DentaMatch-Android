@@ -1,3 +1,11 @@
+/*
+ *
+ *  * Copyright © 2018 DentaMatch. All rights reserved.
+ *  * Developed by Appster.
+ *  *
+ *
+ */
+
 package com.appster.dentamatch.network.request.jobs;
 
 import com.appster.dentamatch.model.SelectedJobTitleModel;

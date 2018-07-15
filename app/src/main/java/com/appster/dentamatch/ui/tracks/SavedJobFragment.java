@@ -1,3 +1,11 @@
+/*
+ *
+ *  * Copyright © 2018 DentaMatch. All rights reserved.
+ *  * Developed by Appster.
+ *  *
+ *
+ */
+
 package com.appster.dentamatch.ui.tracks;
 
 import android.content.Context;
@@ -27,7 +35,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Appster on 02/02/17.
- * To inject activity reference.
+ * Fragment to render user interface for saved jobs.
  */
 
 public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -48,7 +56,7 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -80,7 +88,7 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onResume() {
         super.onResume();
-        if(isActive() && isVisible()) {
+        if (isActive() && isVisible()) {
             TrackJobsDataHelper.getInstance().requestData(getActivity(), Constants.SEARCHJOBTYPE.SAVED.getValue());
         }
     }
@@ -116,32 +124,33 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
 
     /**
      * Handling in case the job is unsaved and might clear the list of jobs.
+     *
      * @param event : the event that has happened.
      */
     @Subscribe
-    public void unSaved(SaveUnSaveEvent event){
-        if(mJobListData.size() > 0){
+    public void unSaved(SaveUnSaveEvent event) {
+        if (mJobListData.size() > 0) {
             mBinding.tvNoJobs.setVisibility(View.GONE);
-        }else{
+        } else {
             mBinding.tvNoJobs.setVisibility(View.VISIBLE);
         }
     }
 
     @Subscribe
-    public void onDataUpdated(TrackJobListRetrievedEvent event){
-        if(event != null){
+    public void onDataUpdated(TrackJobListRetrievedEvent event) {
+        if (event != null) {
 
-            if(event.getType() == Constants.SEARCHJOBTYPE.SAVED.getValue()) {
+            if (event.getType() == Constants.SEARCHJOBTYPE.SAVED.getValue()) {
                 mJobListData.clear();
 
-                for(SearchJobModel model : event.getData()){
+                for (SearchJobModel model : event.getData()) {
                     model.setIsSaved(1);
                     mJobListData.add(model);
                 }
 
-                if(mJobListData.size() == 0){
+                if (mJobListData.size() == 0) {
                     mBinding.tvNoJobs.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     mBinding.tvNoJobs.setVisibility(View.GONE);
                 }
 
@@ -151,13 +160,13 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
             /**
              * Hide pagination loader if it is visible.
              */
-            if(mBinding.layJobListPagination.getVisibility() == View.VISIBLE){
+            if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
                 mBinding.layJobListPagination.setVisibility(View.GONE);
             }
             /**
              * Stop refreshing if the swipe loader is refreshing.
              */
-            if(mBinding.swipeRefreshJobList.isRefreshing()){
+            if (mBinding.swipeRefreshJobList.isRefreshing()) {
                 mBinding.swipeRefreshJobList.setRefreshing(false);
             }
 

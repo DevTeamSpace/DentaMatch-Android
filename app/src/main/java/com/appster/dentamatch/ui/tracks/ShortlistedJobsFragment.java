@@ -1,3 +1,11 @@
+/*
+ *
+ *  * Copyright © 2018 DentaMatch. All rights reserved.
+ *  * Developed by Appster.
+ *  *
+ *
+ */
+
 package com.appster.dentamatch.ui.tracks;
 
 import android.content.Context;
@@ -36,7 +44,7 @@ import retrofit2.Call;
 
 /**
  * Created by Appster on 02/02/17.
- * To inject activity reference.
+ * Fragment to render user interface for shortlisted jobs.
  */
 
 public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {

@@ -1,3 +1,11 @@
+/*
+ *
+ *  * Copyright © 2018 DentaMatch. All rights reserved.
+ *  * Developed by Appster.
+ *  *
+ *
+ */
+
 package com.appster.dentamatch.ui.termsnprivacy;
 
 import android.databinding.DataBindingUtil;
@@ -13,7 +21,7 @@ import com.appster.dentamatch.util.Constants;
 
 /**
  * Created by virender on 03/01/17.
- * To inject activity reference.
+ * To display application terms and condition.
  */
 public class TermsAndConditionActivity extends BaseActivity implements View.OnClickListener {
     private ActivityTermsAndConditionBinding mBinder;
@@ -78,7 +86,7 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
             view.loadUrl(url);
             return true;
         }
-            //TODO: Uncomment this code when we change this to target Version N.
+        //TODO: Uncomment this code when we change this to target Version N.
 //        @TargetApi(Build.VERSION_CODES.N)
 //        @Override
 //        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {

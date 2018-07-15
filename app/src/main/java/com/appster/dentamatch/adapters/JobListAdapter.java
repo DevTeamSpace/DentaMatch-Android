@@ -1,3 +1,11 @@
+/*
+ *
+ *  * Copyright © 2018 DentaMatch. All rights reserved.
+ *  * Developed by Appster.
+ *  *
+ *
+ */
+
 package com.appster.dentamatch.adapters;
 
 import android.content.Context;
@@ -195,8 +203,8 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                     mJobListData.get(position).setIsSaved(status);
                     notifyItemChanged(position);
                     SearchJobDataHelper.getInstance().notifyItemsChanged(mJobListData.get(position));
-                }else{
-                    if(TextUtils.isEmpty(response.getMessage())) {
+                } else {
+                    if (TextUtils.isEmpty(response.getMessage())) {
                         notifyItemChanged(position);
                         ((BaseActivity) mContext).showToast(response.getMessage());
                     }
@@ -223,17 +231,17 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                             mContext.getString(R.string.txt_alert_title),
                             mContext.getString(R.string.msg_unsave_warning),
                             new Alert.OnAlertClickListener() {
-                        @Override
-                        public void onPositive(DialogInterface dialog) {
-                            saveUnSaveJob(mJobListData.get(position).getId(), status, position);
-                        }
+                                @Override
+                                public void onPositive(DialogInterface dialog) {
+                                    saveUnSaveJob(mJobListData.get(position).getId(), status, position);
+                                }
 
-                        @Override
-                        public void onNegative(DialogInterface dialog) {
-                            dialog.dismiss();
-                            notifyItemChanged(position);
-                        }
-                    });
+                                @Override
+                                public void onNegative(DialogInterface dialog) {
+                                    dialog.dismiss();
+                                    notifyItemChanged(position);
+                                }
+                            });
                 } else {
                     saveUnSaveJob(mJobListData.get(position).getId(), status, position);
                 }
@@ -242,17 +250,17 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
 
             case R.id.lay_item_job_list:
                 int jobID = (int) v.getTag();
-                double matchPercentage=0;
-                for(SearchJobModel searchJobModel:mJobListData){
-                    if(searchJobModel.getId()==jobID){
-                        matchPercentage= searchJobModel.getPercentaSkillsMatch();
+                double matchPercentage = 0;
+                for (SearchJobModel searchJobModel : mJobListData) {
+                    if (searchJobModel.getId() == jobID) {
+                        matchPercentage = searchJobModel.getPercentaSkillsMatch();
                         break;
                     }
                 }
 
                 mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
                         .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
-                        .putExtra(Constants.EXTRA_MATCHES_PERCENT,matchPercentage)
+                        .putExtra(Constants.EXTRA_MATCHES_PERCENT, matchPercentage)
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 
                 break;
