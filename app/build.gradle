@@ -41,6 +41,11 @@ android {
         enabled true
     }
 
+    packagingOptions {
+        doNotStrip '*/mips/*.so'
+        doNotStrip '*/mips64/*.so'
+    }
+
     compileSdkVersion 27
     buildToolsVersion '27.0.2'
 
@@ -71,9 +76,9 @@ android {
         debug {
             minifyEnabled false
 
-           /* shrinkResources true
-            zipAlignEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
+            /* shrinkResources true
+             zipAlignEnabled true
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
         }
     }
 
@@ -147,7 +152,7 @@ ext {
     fireBaseLibrary = '11.8.0'
 
     //leakCanary Version
-    leakCanaryLibrary = '1.5'
+    leakCanaryLibrary = '1.5.4'
 
     //Retrofit Version
     retrofitVersion = '2.1.0'
@@ -198,9 +203,8 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true
     }
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryLibrary"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryLibrary"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
 
     /*compile('com.android.support:appcompat-v7:22.2.0') {
@@ -208,7 +212,7 @@ dependencies {
     }*/
 
     //compile 'com.instabug.library:instabug:4.7.0'
-    compile ('com.instabug.library:instabug:4.8.1'){
+    compile('com.instabug.library:instabug:4.8.1') {
         exclude module: 'support-v4'
     }
 
@@ -227,7 +231,7 @@ sonarqube {
 
         property "sonar.sources", "src/main"
         property "sonar.login", "32178e74d955c119fc38c5e044b13a5f137096bb"
-       // property "sonar.password", "admin"
+        // property "sonar.password", "admin"
         property 'sonar.sourceEncoding', 'UTF-8'
         property 'sonar.profile', 'AllAndroid'
         property 'sonar.import_unknown_files', true
