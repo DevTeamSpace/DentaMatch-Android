@@ -67,7 +67,7 @@ android {
             lintOptions {
                 disable 'MissingTranslation'
             }
-            debuggable true
+            debuggable false
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
