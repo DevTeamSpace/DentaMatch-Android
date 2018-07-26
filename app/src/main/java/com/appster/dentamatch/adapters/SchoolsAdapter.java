@@ -257,10 +257,7 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         holder1.autoCompleteTextView.setText(schoolModel.getSchoolName());
                         mYear = schoolModel.getYearOfGraduation();
                         mHashMap.put(refPosition, data);
-                        break;
 
-                    } else {
-                        mYear = "";
                     }
                 }
             }
