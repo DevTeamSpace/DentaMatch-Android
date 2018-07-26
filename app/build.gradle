@@ -106,14 +106,14 @@ android {
     productFlavors {
         Dev {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://dev.dentamatch.co/api/"')
+            buildConfigField("String", "BASE_URL", '"https://dev.dentamatch.co/api/v1/"')
             buildConfigField("String", "CHAT_URL", '"http://dev.dentamatch.co:3000"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
         QA {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://qa.dentamatch.co/api/"')
+            buildConfigField("String", "BASE_URL", '"https://qa.dentamatch.co/api/v1/"')
             //buildConfigField("String", "CHAT_URL", '"http://qa.dentamatch.co:3000"')
             buildConfigField("String", "CHAT_URL", '"https://qanode.dentamatch.co:8443"')
 
@@ -122,14 +122,14 @@ android {
         }
         Staging {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://staging.dentamatch.co/api/"')
+            buildConfigField("String", "BASE_URL", '"https://staging.dentamatch.co/api/v1/"')
             buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:8443"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
         Production {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://production.dentamach/api/"')
+            buildConfigField("String", "BASE_URL", '"https://production.dentamach/api/v1/"')
             buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:8443"')
 
             minSdkVersion 19
