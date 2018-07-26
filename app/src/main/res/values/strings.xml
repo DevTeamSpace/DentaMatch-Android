@@ -90,9 +90,9 @@
     <string name="decode_stream_alert">Unable to parse this image.</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="label_job_title">Current Job Title</string>
-<!--
-    <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
--->
+    <!--
+        <string name="alert_profile">Completed job profile will help you in applying for jobs.</string>
+    -->
 
     <string name="label_job_title_only">Job Title</string>
 
@@ -155,7 +155,7 @@
 
 
     <string name="header_skills_exp">KEY SKILLS &amp; EXPERIENCE</string>
-    <string name="header_schooling_exp">Education/Training</string>
+    <string name="header_schooling_exp">EDUCATION / TRAINING</string>
 
     <string name="autocomplete_hint">Search Places</string>
     <string name="get_started">GET STARTED</string>
@@ -214,10 +214,10 @@
     <string name="header_edit_profile">EDIT PROFILE</string>
     <string name="add_affiliation">Add Professional Affiliations</string>
     <string name="add_key_skill">Add skills category</string>
-    <string name="add_school">Add schooling and certification</string>
+    <string name="add_school">Add education and training</string>
     <string name="add_licence">Add license details</string>
     <string name="add_certificate">Add certificate</string>
-    <string name="title_schooling">SCHOOLING AND CERTIFICATION</string>
+    <string name="title_schooling">EDUCATION / TRAINING</string>
     <string name="title_skill">KEY SKILLS</string>
     <string name="office_location">OFFICE LOCATION</string>
     <string name="contact_info">CONTACT INFORMATION</string>
@@ -379,7 +379,6 @@
     <string name="txt_discard">Discard</string>
     <string name="msg_discard_partial_experience">You have partially filled experience. Do you want to discard this ?</string>
     <string name="title_select_file">Select File</string>
-
 
 
     <!--MixPanel events-->
