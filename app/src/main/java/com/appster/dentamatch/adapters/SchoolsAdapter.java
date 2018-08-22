@@ -237,7 +237,8 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 mYear = schoolTypeModel.getOtherList().get(0).getYearOfGraduation();
 
                 mHashMap.put(refPosition, data);
-
+                for (SchoolModel schoolModel : schoolTypeModel.getSchoolList())
+                    listSchools.add(schoolModel.getSchoolName());
             } else {
                 /*
                  Look for schools which the user might have selected and fill in autocomplete.
