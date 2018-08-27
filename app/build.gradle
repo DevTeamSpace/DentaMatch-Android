@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
     }
 
     dependencies {
@@ -206,7 +207,8 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryLibrary"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
-
+    implementation 'com.google.android:flexbox:1.0.0'
+    implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     /*compile('com.android.support:appcompat-v7:22.2.0') {
         exclude module: 'support-v4'
     }*/

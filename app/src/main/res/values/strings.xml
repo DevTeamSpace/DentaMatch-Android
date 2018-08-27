@@ -216,7 +216,7 @@
     <string name="add_key_skill">Add skills category</string>
     <string name="add_school">Add education and training</string>
     <string name="add_licence">Add license details</string>
-    <string name="add_certificate">Add certificate</string>
+    <string name="add_certificate">Add Certificate/Document</string>
     <string name="title_schooling">EDUCATION / TRAINING</string>
     <string name="title_skill">KEY SKILLS</string>
     <string name="office_location">OFFICE LOCATION</string>
@@ -423,5 +423,5 @@
     <string name="pls_enter_license_no">Please enter License number</string>
     <string name="pls_enter_license_state">Please enter License state</string>
 
-
+    <string name="resume">Resume</string>
 </resources>

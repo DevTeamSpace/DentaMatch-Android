@@ -110,6 +110,26 @@ public class Utils {
     }
 
     /**
+     * To get the formatted date
+     *
+     * @param date String date
+     * @return formatted date
+     */
+    public static String parseDateForTempWitCom(String date) {
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date d1 = df.parse(date);
+
+
+            return new SimpleDateFormat("EEE MMM dd", Locale.getDefault()).format(d1);
+        } catch (ParseException e) {
+            LogUtils.LOGE(TAG, e.getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * To get the User FCM token for push notification
      *
      * @return FCM token

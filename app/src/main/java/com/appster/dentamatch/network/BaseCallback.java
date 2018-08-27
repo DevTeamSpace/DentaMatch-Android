@@ -55,7 +55,8 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
     public void onResponse(Call<T> call, Response<T> response) {
         //Generic error response code are handled at base level
         BaseActivity act = ref.get();
-        act.hideProgressBar();
+        if (act != null)
+            act.hideProgressBar();
         if (response.isSuccessful()) {
 
             BaseResponse responseBase = response.body();
@@ -64,8 +65,10 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
             }
 
             if (responseBase.getStatusCode() == INVALID_SESSION) {
-                act.showToast(act.getString(R.string.authentication_error));
-                act.localLogOut();
+                if (act != null) {
+                    act.showToast(act.getString(R.string.authentication_error));
+                    act.localLogOut();
+                }
                 return;
             }
 
@@ -73,7 +76,8 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
 
         } else {
             if (response.raw().code() != HttpURLConnection.HTTP_BAD_REQUEST) {
-                act.showSnackBar(act.getResources().getString(R.string.server_error));
+                if (act != null)
+                    act.showSnackBar(act.getResources().getString(R.string.server_error));
             }
         }
     }
@@ -81,12 +85,15 @@ public abstract class BaseCallback<T extends BaseResponse> implements Callback<T
     public void onFailure(Call<T> call, Throwable t) {
         LogUtils.printStackTrace(t);
         BaseActivity act = ref.get();
-        act.hideProgressBar();
+        if (act != null)
+            act.hideProgressBar();
 
         if (t instanceof ConnectException || t instanceof UnknownHostException) {
-            act.showSnackBar(act.getResources().getString(R.string.no_internet));
+            if (act != null)
+                act.showSnackBar(act.getResources().getString(R.string.no_internet));
         } else {
-            act.showSnackBar(act.getResources().getString(R.string.error_something_wrong));
+            if (act != null)
+                act.showSnackBar(act.getResources().getString(R.string.error_something_wrong));
         }
 
         onFail(call, null);

@@ -40,6 +40,7 @@ import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PermissionUtils;
+import com.appster.dentamatch.util.StringUtils;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetDatePicker;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
@@ -90,7 +91,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
         if (getIntent() != null) {
             isFromDentalStateBoard = getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false);
-            data =  getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
+            data = getIntent().getParcelableExtra(Constants.INTENT_KEY.DATA);
             setViewData();
         }
     }
@@ -104,13 +105,13 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 isImageUploaded = true;
             }
 
-            if (isFromDentalStateBoard) {
+            if (isFromDentalStateBoard || (data != null && !StringUtils.isNullOrEmpty(data.getCertificateName()) && data.getCertificateName().equalsIgnoreCase(getString(R.string.resume)))) {
                 mBinder.tvValidityDatePicker.setVisibility(View.GONE);
             } else {
                 mBinder.tvValidityDatePicker.setVisibility(View.VISIBLE);
             }
 
-            if(!TextUtils.isEmpty(data.getValidityDate())) {
+            if (!TextUtils.isEmpty(data.getValidityDate())) {
                 mBinder.tvValidityDatePicker.setText(Utils.dateFormatYYYYMMMMDD(data.getValidityDate()));
             }
         }
@@ -138,14 +139,14 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
 
                     uploadDentaImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
                 } else {
-                    if (!TextUtils.isEmpty(data.getImage())|| isImageUploaded) {
+                    if (!TextUtils.isEmpty(data.getImage()) || isImageUploaded) {
 
-                        if (TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
+                        if ((data != null && !data.getCertificateName().equalsIgnoreCase(getString(R.string.resume))) && TextUtils.isEmpty(mBinder.tvValidityDatePicker.getText().toString().trim())) {
                             Utils.showToast(getApplicationContext(), getString(R.string.blank_certificate_validity_date, data.getCertificateName()));
                             return;
                         }
 
-                            postCertificateData(preparePostValidation());
+                        postCertificateData(preparePostValidation());
                     } else {
                         Utils.showToast(getApplicationContext(), getString(R.string.alert_upload_photo_first));
                     }
@@ -311,7 +312,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                     isImageUploaded = true;
                     Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUploadIcon);
                     // showSnackBarFromTop(response.getMessage(), false);
-                }else{
+                } else {
                     isImageUploaded = false;
                 }
             }
@@ -336,7 +337,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             public void onSuccess(FileUploadResponse response) {
                 Utils.showToast(getApplicationContext(), response.getMessage());
 
-                if ( response.getStatus() == 1) {
+                if (response.getStatus() == 1) {
                     EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                     finish();
                 }

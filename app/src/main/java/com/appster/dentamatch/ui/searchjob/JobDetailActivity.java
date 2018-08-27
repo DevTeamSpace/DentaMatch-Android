@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityJobDetailBinding;
+import com.appster.dentamatch.databinding.ItemDateTvBinding;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.model.JobDetailModel;
 import com.appster.dentamatch.network.BaseCallback;
@@ -67,7 +68,7 @@ import retrofit2.Call;
  */
 
 public class JobDetailActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener {
-    private static final String TAG= LogUtils.makeLogTag(JobDetailActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(JobDetailActivity.class);
     private final int MAP_ZOOM_LEVEL = 7;
     private final int DESC_MAX_LINES = 4;
     private final int JOB_SAVED = 1;
@@ -100,7 +101,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
         if (getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)) {
             jobID = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID, 0);
-            mMatchPercent= getIntent().getDoubleExtra(Constants.EXTRA_MATCHES_PERCENT,0);
+            mMatchPercent = getIntent().getDoubleExtra(Constants.EXTRA_MATCHES_PERCENT, 0);
         }
 
         mBinding.mapJobDetail.onCreate(savedInstanceState);
@@ -161,7 +162,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         super.onResume();
         mBinding.mapJobDetail.onResume();
 
-        if(jobID != 0) {
+        if (jobID != 0) {
             getJobDetail();
         }
     }
@@ -222,17 +223,17 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                             getString(R.string.msg_unsave_warning),
                             new Alert.OnAlertClickListener() {
 
-                        @Override
-                        public void onPositive(DialogInterface dialog) {
-                            saveUnSaveJob(jobID, status);
-                        }
+                                @Override
+                                public void onPositive(DialogInterface dialog) {
+                                    saveUnSaveJob(jobID, status);
+                                }
 
-                        @Override
-                        public void onNegative(DialogInterface dialog) {
-                            ((CheckBox) v).setChecked(true);
-                            dialog.dismiss();
-                        }
-                    });
+                                @Override
+                                public void onNegative(DialogInterface dialog) {
+                                    ((CheckBox) v).setChecked(true);
+                                    dialog.dismiss();
+                                }
+                            });
                 } else {
                     saveUnSaveJob(jobID, status);
                 }
@@ -240,10 +241,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
             case R.id.btn_apply_job:
 
-                if(PreferenceUtil.getUserModel().getIsCompleted()==Constants.PROFILE_COMPLETED_STATUS || PreferenceUtil.getUserModel().getProfileCompleted()==Constants.PROFILE_COMPLETED_STATUS) {
+                if (PreferenceUtil.getUserModel().getIsCompleted() == Constants.PROFILE_COMPLETED_STATUS || PreferenceUtil.getUserModel().getProfileCompleted() == Constants.PROFILE_COMPLETED_STATUS) {
 
                     applyJob();
-                }else{
+                } else {
                     Intent intent = new Intent(getApplicationContext(), CompleteProfileDialogActivity.class);
                     startActivity(intent);
 
@@ -293,18 +294,18 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                                 getString(R.string.txt_complete_profile),
                                 response.getMessage(),
                                 new Alert.OnAlertClickListener() {
-                            @Override
-                            public void onPositive(DialogInterface dialog) {
-                                startActivity(new Intent(JobDetailActivity.this, HomeActivity.class)
-                                        .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
-                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-                            }
+                                    @Override
+                                    public void onPositive(DialogInterface dialog) {
+                                        startActivity(new Intent(JobDetailActivity.this, HomeActivity.class)
+                                                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
+                                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                    }
 
-                            @Override
-                            public void onNegative(DialogInterface dialog) {
-                                dialog.dismiss();
-                            }
-                        });
+                                    @Override
+                                    public void onNegative(DialogInterface dialog) {
+                                        dialog.dismiss();
+                                    }
+                                });
                     } else {
                         showToast(response.getMessage());
                     }
@@ -363,8 +364,8 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 public void onFail(Call<JobDetailResponse> call, BaseResponse baseResponse) {
                 }
             });
-        }catch (Exception e){
-            LogUtils.LOGE(TAG,e.getMessage());
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -446,38 +447,45 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 mBinding.tvJobDetailType.setText(getString(R.string.txt_temporary));
                 ArrayList<String> tempDates = new ArrayList<>();
 
-                if(dataModel.getJobTypeDates() != null && dataModel.getJobTypeDates().size() > 0) {
+                if (dataModel.getJobTypeDates() != null && dataModel.getJobTypeDates().size() > 0) {
                     for (int i = 0; i < dataModel.getJobTypeDates().size(); i++) {
 
                         if (Utils.parseDateForTemp(dataModel.getJobTypeDates().get(i)) != null) {
-                            tempDates.add(Utils.parseDateForTemp(dataModel.getJobTypeDates().get(i)));
+                            tempDates.add(Utils.parseDateForTempWitCom(dataModel.getJobTypeDates().get(i)));
 
                         }
 
                     }
-
-                    mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
+                    ItemDateTvBinding dateTvBinding;
+                    mBinding.tempDateContainer.removeAllViews();
+                    for (String date : tempDates) {
+                        dateTvBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_date_tv, null, false);
+                        dateTvBinding.tvTempDate.setText(date);
+                        mBinding.tempDateContainer.addView(dateTvBinding.tvTempDate);
+                    }
+                    mBinding.tempDateContainer.setVisibility(View.VISIBLE);
+                    /*mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
                     String tempDatesToSet = "";
 
-                   if (tempDates.size() > 3) {
+                    if (tempDates.size() > 3) {
                         tempDatesToSet = tempDates.get(0).concat(",\n ").concat(tempDates.get(1)).concat(",\n ").concat(tempDates.get(2)).concat("...");
                     } else {
-                        for(int i = 0; i < tempDates.size(); i++) {
-                            if(i != tempDates.size() - 1){
-                                tempDatesToSet =  tempDatesToSet.concat(tempDates.get(i)).concat(",\n ");
-                            }else{
+                        for (int i = 0; i < tempDates.size(); i++) {
+                            if (i != tempDates.size() - 1) {
+                                tempDatesToSet = tempDatesToSet.concat(tempDates.get(i)).concat(",\n ");
+                            } else {
                                 tempDatesToSet = tempDatesToSet.concat(tempDates.get(i));
                             }
                         }
-                   }
+                    }
 
-                    mBinding.tvJobDetailDate.setText(tempDatesToSet+"\n Dates Needed");
+                    mBinding.tvJobDetailDate.setText(tempDatesToSet + "\n Dates Needed");*/
                 }
 
             }
             if (dataModel.getJobPostedTimeGap() == DURATION_TIME_0) {
                 mBinding.tvJobDocTime.setText(getString(R.string.text_todays));
-            }else {
+            } else {
                 String endMessage = dataModel.getJobPostedTimeGap() > DURATION_TIME_1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
                 mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
             }
@@ -487,18 +495,18 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());
             //mBinding.tvJobDetailJobDistance.setText(String.format(Locale.getDefault(), "%.1f", dataModel.getDistance()).concat(getString(R.string.txt_miles)));
             mBinding.tvJobDetailJobDistance.setText("View on map");
-            mBinding.tvJobDetailJobDistance.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_location_blue, 0, 0, 0);
+            mBinding.tvJobDetailJobDistance.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_location_blue, 0, 0, 0);
             mBinding.tvJobDetailJobDistance.setCompoundDrawablePadding(5);
 
-            mBinding.tvJobDetailJobDistance.setTextColor(ContextCompat.getColor(this,R.color.cerulean_color));
+            mBinding.tvJobDetailJobDistance.setTextColor(ContextCompat.getColor(this, R.color.cerulean_color));
             mBinding.tvMap.setVisibility(View.GONE);
             mBinding.mapJobDetail.setVisibility(View.GONE);
             mBinding.lineMap.setVisibility(View.VISIBLE);
-            if(dataModel.getPercentaSkillsMatch()!=null && !TextUtils.isEmpty(dataModel.getPercentaSkillsMatch())) {
+            if (dataModel.getPercentaSkillsMatch() != null && !TextUtils.isEmpty(dataModel.getPercentaSkillsMatch())) {
                 mMatchPercent = Double.parseDouble(dataModel.getPercentaSkillsMatch());
             }
 
-            if(mMatchPercent>0) {
+            if (mMatchPercent > 0) {
                 mBinding.tvMatchesPercent.setText(String.format(Locale.getDefault(), "%.2f", mMatchPercent).concat("%"));
 
                 mBinding.tvMatchesPercent.setVisibility(View.VISIBLE);
@@ -510,9 +518,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 @Override
                 public void onClick(View view) {
 
-                   // String uri = String.format(Locale.ENGLISH, "geo:%f,%f", dataModel.getLatitude(), dataModel.getLongitude());
+                    // String uri = String.format(Locale.ENGLISH, "geo:%f,%f", dataModel.getLatitude(), dataModel.getLongitude());
 
-                    String uri ="https://www.google.com/maps?q="+dataModel.getLatitude()+","+dataModel.getLongitude();
+                    String uri = "https://www.google.com/maps?q=" + dataModel.getLatitude() + "," + dataModel.getLongitude();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                     startActivity(intent);
                 }
@@ -631,17 +639,17 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                         .append(getString(R.string.hyphen))
                         .append(Utils.convertUTCtoLocal(dataModel.getWorkEverydayEnd()));
 
-                SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 mBinding.tvJobDetailFull.setText(SpanBuilder);
             } else {
                 if (dataModel.getMondayStart() != null && dataModel.getMondayEnd() != null) {
                     mBinding.tvJobDetailMon.setVisibility(View.VISIBLE);
                     SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_monday_colon))
-                            .append( Utils.convertUTCtoLocal(dataModel.getMondayStart()))
+                            .append(Utils.convertUTCtoLocal(dataModel.getMondayStart()))
                             .append(getString(R.string.hyphen))
-                            .append( Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
+                            .append(Utils.convertUTCtoLocal(dataModel.getMondayEnd()));
 
-                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailMon.setText(SpanBuilder);
 
                 }
@@ -653,7 +661,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                             .append(getString(R.string.hyphen))
                             .append(Utils.convertUTCtoLocal(dataModel.getTuesdayEnd()));
 
-                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailTue.setText(SpanBuilder);
 
                 }
@@ -663,9 +671,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_wednesday_colon))
                             .append(Utils.convertUTCtoLocal(dataModel.getWednesdayStart()))
                             .append(getString(R.string.hyphen))
-                            .append( Utils.convertUTCtoLocal(dataModel.getWednesdayEnd()));
+                            .append(Utils.convertUTCtoLocal(dataModel.getWednesdayEnd()));
 
-                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailWed.setText(SpanBuilder);
 
                 }
@@ -677,7 +685,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                             .append(getString(R.string.hyphen))
                             .append(Utils.convertUTCtoLocal(dataModel.getThursdayEnd()));
 
-                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailThu.setText(SpanBuilder);
 
                 }
@@ -687,9 +695,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_friday_colon))
                             .append(Utils.convertUTCtoLocal(dataModel.getFridayStart()))
                             .append(getString(R.string.hyphen))
-                            .append( Utils.convertUTCtoLocal(dataModel.getFridayEnd()));
+                            .append(Utils.convertUTCtoLocal(dataModel.getFridayEnd()));
 
-                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailFri.setText(SpanBuilder);
 
                 }
@@ -699,9 +707,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_saturday_colon))
                             .append(Utils.convertUTCtoLocal(dataModel.getSaturdayStart()))
                             .append(getString(R.string.hyphen))
-                            .append( Utils.convertUTCtoLocal(dataModel.getSaturdayEnd()));
+                            .append(Utils.convertUTCtoLocal(dataModel.getSaturdayEnd()));
 
-                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailSat.setText(SpanBuilder);
 
                 }
@@ -711,9 +719,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     SpannableStringBuilder SpanBuilder = new SpannableStringBuilder(getString(R.string.txt_sunday_colon))
                             .append(Utils.convertUTCtoLocal(dataModel.getSundayStart()))
                             .append(getString(R.string.hyphen))
-                            .append( Utils.convertUTCtoLocal(dataModel.getSundayEnd()));
+                            .append(Utils.convertUTCtoLocal(dataModel.getSundayEnd()));
 
-                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD),0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    SpanBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mBinding.tvJobDetailSun.setText(SpanBuilder);
 
                 }
@@ -746,7 +754,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
             addMarker(dataModel.getLatitude(), dataModel.getLongitude(), true);
 
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -779,8 +787,8 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     mBinding.cbJobSelection.setChecked(status == 1);
                     EventBus.getDefault().post(new SaveUnSaveEvent(JobID, status));
                     TrackJobsDataHelper.getInstance().updateSavedData();
-                }else{
-                    if(TextUtils.isEmpty(response.getMessage())) {
+                } else {
+                    if (TextUtils.isEmpty(response.getMessage())) {
                         showToast(response.getMessage());
                     }
 

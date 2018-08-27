@@ -370,29 +370,6 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
 
-
-
-           /* case R.id.tv_fetched_location:
-            case R.id.tv_current_location:
-                if(Utils.isConnected(SearchJobActivity.this)) {
-                    Intent intent = new Intent(SearchJobActivity.this, PlacesMapActivity.class);
-
-                    if (mSelectedLat != null && mSelectedLng != null) {
-                        intent.putExtra(Constants.EXTRA_LATITUDE, mSelectedLat);
-                        intent.putExtra(Constants.EXTRA_LONGITUDE, mSelectedLng);
-                        intent.putExtra(Constants.EXTRA_POSTAL_CODE, mSelectedZipCode);
-                        intent.putExtra(Constants.EXTRA_PLACE_NAME, mSelectedAddress);
-                        intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mSelectedCountry);
-                        intent.putExtra(Constants.EXTRA_CITY_NAME, mSelectedCity);
-                        intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
-                    }
-
-                    startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
-                }else{
-                    showToast(getString(R.string.no_internet));
-                }
-                break;
-*/
             case R.id.tv_job_title:
                 if (Utils.isConnected(SearchJobActivity.this)) {
                     Intent jobTitleSelectionIntent = new Intent(getApplicationContext(), SelectJobTitleActivity.class);
@@ -648,27 +625,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
             showToast(getString(R.string.msg_empty_part_days));
             return false;
 
-        } /*else if (TextUtils.isEmpty(mBinder.tvFetchedLocation.getText())) {
-            showToast(getString(R.string.msg_empty_location));
-            return false;
-
-        }*//* else if (TextUtils.isEmpty(mSelectedZipCode)) {
-            showToast(getString(R.string.msg_empty_zip_code));
-            return false;
-
-        }else if(TextUtils.isEmpty(mSelectedCountry)) {
-            showToast(getString(R.string.msg_empty_country));
-            return false;
-
-        }else if (TextUtils.isEmpty(mSelectedCity)){
-            showToast(getString(R.string.msg_empty_city));
-            return false;
-
-        }else if (TextUtils.isEmpty(mSelectedState)){
-            showToast(getString(R.string.msg_empty_state));
-            return false;
-
-        }*/ else {
+        }  else {
             return true;
         }
     }

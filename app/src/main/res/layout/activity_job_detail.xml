@@ -74,6 +74,21 @@
 
                         />
 
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/tempDateContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_job_detail_name"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_toEndOf="@+id/tv_job_detail_type"
+                        android:layout_toStartOf="@+id/tv_matches_percent"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:flexWrap="wrap"
+                        app:showDivider="beginning|middle|end"
+                        app:dividerDrawable="@drawable/divider"/>
+
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_job_doc_time"
                         style="@style/text_view_small"

@@ -19,6 +19,7 @@ import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.appster.dentamatch.ui.notification.NotificationActivity;
+import com.appster.dentamatch.util.BadgeIntentService;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
@@ -159,7 +160,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 LogUtils.LOGE(TAG, e.getMessage());
             }
         }
-
+        startService(new Intent(getApplicationContext(), BadgeIntentService.class));
     }
 
     private void sendNotification(String messageBody, int notificationType, int jobId) {

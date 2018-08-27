@@ -28,6 +28,7 @@ import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.notification.NotificationActivity;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
 import retrofit2.Call;
 
 /**
@@ -143,10 +144,11 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
                 if (response.getStatus() == 1) {
                     if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
                         mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.GONE);
-
+                        ShortcutBadger.removeCount(getContext());
                     } else {
                         mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.VISIBLE);
                         mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText(String.valueOf(response.getUnReadNotificationResponse().getNotificationCount()));
+                        ShortcutBadger.applyCount(getActivity(), response.getUnReadNotificationResponse().getNotificationCount());
                     }
                 } else {
                     showToast(response.getMessage());
