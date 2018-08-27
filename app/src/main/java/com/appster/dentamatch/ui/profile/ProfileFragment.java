@@ -729,7 +729,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             cellCertificateBinding.tvCertificatesName.setText(certificate.getCertificateName());
             cellCertificateBinding.tvCertificateImageName.setText(certificate.getCertificateName());
 
-            if (TextUtils.isEmpty(certificate.getValidityDate())) {
+            if (StringUtils.isDateNullOrEmpty(certificate.getValidityDate())) {
                 cellCertificateBinding.tvCertificateValidityDate.setVisibility(View.GONE);
                 cellCertificateBinding.tvCertificateValidityText.setVisibility(View.GONE);
                 cellCertificateBinding.tvCertificateImageName.setVisibility(View.GONE);
@@ -737,7 +737,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             } else {
                 cellCertificateBinding.tvCertificateValidityText.setVisibility(View.VISIBLE);
                 cellCertificateBinding.tvCertificateValidityDate.setText(Utils.dateFormatYYYYMMMMDD(certificate.getValidityDate()));
-
             }
 
             if (!TextUtils.isEmpty(certificate.getImage())) {

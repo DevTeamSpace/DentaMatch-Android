@@ -38,6 +38,10 @@ public class StringUtils {
         return arrays == null || arrays.length == 0;
     }
 
+    public static boolean isDateNullOrEmpty(String s) {
+        return s == null || s.trim().length() == 0 || s.equalsIgnoreCase("null") || s.startsWith("0000");
+    }
+
     public static boolean isValidEmail(String s) {
         return !isNullOrEmpty(s) && Pattern.compile("^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$").matcher(s).find();
     }
