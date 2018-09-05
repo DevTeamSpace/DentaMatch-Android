@@ -477,11 +477,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                                 mNoOfItems = 0;
                                 for (int index = 0; index < Constants.NO_OF_DATE_LINES; index++)
                                     mNoOfItems += mBinding.tempDateContainer.getFlexLines().get(index).getItemCount();
-                                mBinding.tvSeeMore.setVisibility(View.VISIBLE);
                                 showLess(tempDates);
-                                mBinding.tvSeeMore.setText(getString(R.string.show_more));
-                            } else {
-                                mBinding.tvSeeMore.setVisibility(View.INVISIBLE);
                             }
                         }
                     });
