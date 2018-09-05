@@ -206,5 +206,6 @@ public class Constants {
 
     public static final int OTHER_AFFILIATION_ID = 9;
 
+    public static final int NO_OF_DATE_LINES = 2;
 
 }

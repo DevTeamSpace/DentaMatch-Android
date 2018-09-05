@@ -10,6 +10,7 @@ package com.appster.dentamatch.ui.common;
 
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,6 +43,8 @@ import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
 import java.io.File;
+
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 /**
  * Created for common handling and design-.
@@ -299,7 +302,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void localLogOut() {
-
+        clearBadge();
         String fcmToken = PreferenceUtil.getFcmToken();
         PreferenceUtil.reset();
         PreferenceUtil.setFcmToken(fcmToken);
@@ -312,6 +315,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         intent.putExtra(Constants.EXTRA_IS_LOGIN, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+
+    }
+
+    private void clearBadge() {
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put("badgecount", 0);
+            getContentResolver().update(Uri.parse("content://com.sec.badge/apps"), cv, "package=?", new String[]{getPackageName()});
+            ShortcutBadger.applyCount(this, 0);
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
+            ShortcutBadger.applyCount(this, 0);
+        }
 
     }
 

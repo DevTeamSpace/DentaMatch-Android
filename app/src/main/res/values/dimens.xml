@@ -106,4 +106,6 @@
     <dimen name="user_profile_pic_dimen">91dp</dimen>
     <dimen name="skill_other_cell_height">53dp</dimen>
 
+    <dimen name="date_tag_width">28dp</dimen>
+
 </resources>

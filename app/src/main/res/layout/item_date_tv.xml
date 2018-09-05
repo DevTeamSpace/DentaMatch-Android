@@ -4,11 +4,11 @@
 
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/tvTempDate"
-        style="@style/text_view_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/date_rounded_corners"
-        android:maxLines="1"
         android:textColor="@color/white_color"
-        app:customFont="@string/font_regular" />
+        app:customFont="@string/font_regular"
+        android:textSize="@dimen/text_size_small"
+        android:gravity="center"/>
 </layout>

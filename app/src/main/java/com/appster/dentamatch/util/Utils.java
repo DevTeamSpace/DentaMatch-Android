@@ -12,6 +12,7 @@ package com.appster.dentamatch.util;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -121,7 +122,7 @@ public class Utils {
             Date d1 = df.parse(date);
 
 
-            return new SimpleDateFormat("EEE MMM dd", Locale.getDefault()).format(d1);
+            return new SimpleDateFormat("EEE MMM d", Locale.getDefault()).format(d1);
         } catch (ParseException e) {
             LogUtils.LOGE(TAG, e.getMessage());
         }
@@ -620,7 +621,7 @@ public class Utils {
         if (ct != null) {
 
             int uniqueID = (int) (System.currentTimeMillis() & 0xfffffff);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(ct);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(ct, notificationId);
             Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
             builder.setContentTitle(title)
@@ -643,8 +644,14 @@ public class Utils {
             NotificationManager manager = (NotificationManager) ct.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification notification = builder.build();
             notification.defaults = Notification.DEFAULT_VIBRATE;
-            if (manager != null)
+
+            if (manager != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel mChannel = new NotificationChannel(notificationId, title, NotificationManager.IMPORTANCE_HIGH);
+                    manager.createNotificationChannel(mChannel);
+                }
                 manager.notify(Integer.parseInt(notificationId), notification);
+            }
         }
 
     }

@@ -424,4 +424,7 @@
     <string name="pls_enter_license_state">Please enter License state</string>
 
     <string name="resume">Resume</string>
+    <string name="show_more">See More</string>
+    <string name="show_less">See Less</string>
+
 </resources>

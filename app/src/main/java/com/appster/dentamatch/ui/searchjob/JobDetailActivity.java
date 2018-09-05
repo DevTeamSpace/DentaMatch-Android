@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
@@ -47,6 +48,8 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.CustomTextView;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -81,11 +84,11 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
 
 
     private int jobID;
-    private boolean isFromHiredJob;
     private ActivityJobDetailBinding mBinding;
     private GoogleMap mGoogleMap;
     private JobDetailModel mJobDetailModel;
     private double mMatchPercent;
+    private int mNoOfItems;
 
     @Override
     public String getActivityName() {
@@ -445,7 +448,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_temporary);
                 mBinding.tvJobDetailDate.setVisibility(View.GONE);
                 mBinding.tvJobDetailType.setText(getString(R.string.txt_temporary));
-                ArrayList<String> tempDates = new ArrayList<>();
+                final ArrayList<String> tempDates = new ArrayList<>();
 
                 if (dataModel.getJobTypeDates() != null && dataModel.getJobTypeDates().size() > 0) {
                     for (int i = 0; i < dataModel.getJobTypeDates().size(); i++) {
@@ -456,14 +459,32 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                         }
 
                     }
-                    ItemDateTvBinding dateTvBinding;
+
                     mBinding.tempDateContainer.removeAllViews();
                     for (String date : tempDates) {
-                        dateTvBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_date_tv, null, false);
+                        final ItemDateTvBinding dateTvBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_date_tv, null, false);
                         dateTvBinding.tvTempDate.setText(date);
+                        FlexboxLayout.LayoutParams lp = new FlexboxLayout.LayoutParams(Utils.dpToPx(this, (int) getResources().getDimension(R.dimen.date_tag_width)), FlexboxLayout.LayoutParams.WRAP_CONTENT);
+                        dateTvBinding.tvTempDate.setLayoutParams(lp);
                         mBinding.tempDateContainer.addView(dateTvBinding.tvTempDate);
                     }
                     mBinding.tempDateContainer.setVisibility(View.VISIBLE);
+                    mBinding.tempDateContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            mBinding.tempDateContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            if (mBinding.tempDateContainer.getFlexLines().size() > Constants.NO_OF_DATE_LINES) {
+                                mNoOfItems = 0;
+                                for (int index = 0; index < Constants.NO_OF_DATE_LINES; index++)
+                                    mNoOfItems += mBinding.tempDateContainer.getFlexLines().get(index).getItemCount();
+                                mBinding.tvSeeMore.setVisibility(View.VISIBLE);
+                                showLess(tempDates);
+                                mBinding.tvSeeMore.setText(getString(R.string.show_more));
+                            } else {
+                                mBinding.tvSeeMore.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    });
                     /*mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
                     String tempDatesToSet = "";
 
@@ -758,6 +779,51 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
         }
     }
 
+    private void showMore(final ArrayList<String> tempDates) {
+        for (int index = mNoOfItems - 1; index < tempDates.size(); index++) {
+            final ItemDateTvBinding dateTvBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_date_tv, null, false);
+            dateTvBinding.tvTempDate.setText(tempDates.get(index));
+            FlexboxLayout.LayoutParams lp = new FlexboxLayout.LayoutParams(Utils.dpToPx(this, (int) getResources().getDimension(R.dimen.date_tag_width)), FlexboxLayout.LayoutParams.WRAP_CONTENT);
+            dateTvBinding.tvTempDate.setLayoutParams(lp);
+            mBinding.tempDateContainer.addView(dateTvBinding.tvTempDate, mBinding.tempDateContainer.getChildCount() - 1);
+        }
+        CustomTextView customTextView = (CustomTextView) mBinding.tempDateContainer.getFlexItemAt(mBinding.tempDateContainer.getChildCount() - 1);
+        customTextView.setText(getString(R.string.show_less));
+        customTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLess(tempDates);
+            }
+        });
+    }
+
+    private void showLess(final ArrayList<String> tempDates) {
+        mBinding.tempDateContainer.removeViews(mNoOfItems - 1, tempDates.size() - (mNoOfItems - 1));
+        CustomTextView customTextView = (CustomTextView) mBinding.tempDateContainer.getFlexItemAt(mBinding.tempDateContainer.getChildCount() - 1);
+        if (customTextView.getText().toString().equalsIgnoreCase(getString(R.string.show_less))) {
+            customTextView.setText(getString(R.string.show_more));
+            customTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showMore(tempDates);
+                }
+            });
+            return;
+        }
+        final ItemDateTvBinding dateTvBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_date_tv, null, false);
+        dateTvBinding.tvTempDate.setBackground(ContextCompat.getDrawable(this, R.drawable.more_less_rounded_corners));
+        dateTvBinding.tvTempDate.setText(getString(R.string.show_more));
+        dateTvBinding.tvTempDate.setTextColor(ContextCompat.getColor(this, R.color.txt_clr));
+        FlexboxLayout.LayoutParams lp = new FlexboxLayout.LayoutParams(Utils.dpToPx(this, (int) getResources().getDimension(R.dimen.date_tag_width)), FlexboxLayout.LayoutParams.WRAP_CONTENT);
+        dateTvBinding.tvTempDate.setLayoutParams(lp);
+        mBinding.tempDateContainer.addView(dateTvBinding.tvTempDate);
+        dateTvBinding.tvTempDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMore(tempDates);
+            }
+        });
+    }
 
     private void addMarker(double lat, double lng, boolean isSelected) {
         MarkerOptions options = new MarkerOptions();
