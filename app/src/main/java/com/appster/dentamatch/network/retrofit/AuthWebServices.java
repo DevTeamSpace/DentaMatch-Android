@@ -21,6 +21,7 @@ import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest;
 import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.chat.BlockUnBlockRequest;
+import com.appster.dentamatch.network.request.chat.Recruiter;
 import com.appster.dentamatch.network.request.jobs.HiredJobRequest;
 import com.appster.dentamatch.network.request.jobs.JobApplyRequest;
 import com.appster.dentamatch.network.request.jobs.JobDetailRequest;
@@ -68,13 +69,13 @@ import retrofit2.http.Query;
  * Interface to declare web service stubs.
  */
 public interface AuthWebServices {
-     String PAGE = "page";
-     String TYPE = "type";
-     String LAT = "lat";
-     String LNG = "lng";
-     String ID = "id";
-     String IMAGE_EXTENSION = "image\"; filename=\"denta_img.jpg\"";
-     String CERTIFICATE_ID = "certificateId";
+    String PAGE = "page";
+    String TYPE = "type";
+    String LAT = "lat";
+    String LNG = "lng";
+    String ID = "id";
+    String IMAGE_EXTENSION = "image\"; filename=\"denta_img.jpg\"";
+    String CERTIFICATE_ID = "certificateId";
 
     String SIGN_IN = "users/sign-in";
     String SIGN_UP = "users/sign-up";
@@ -111,6 +112,7 @@ public interface AuthWebServices {
     String SAVE_AVAILABILITY = "users/update-availability";
     String UPDATE_USER_LOCATION = "users/user-location-update";
     String USER_CHAT_HISTORY = "users/chat-user-list";
+    String DELETE_CHAT_HISTORY = "chat/delete";
     String GET_NOTIFICATION = "users/notification-list";
     String RAED_NOTIFICATION = "users/notification-read";
     String DELETE_NOTIFICATION = "users/delete-notification";
@@ -126,6 +128,9 @@ public interface AuthWebServices {
 
     @GET(USER_CHAT_HISTORY)
     Call<ChatHistoryResponse> getChatHistory();
+
+    @POST(DELETE_CHAT_HISTORY)
+    Call<BaseResponse> deleteUserChat(@Body Recruiter recruiter);
 
     @GET(GET_NOTIFICATION)
     Call<NotificationResponse> getNotification(@Query(PAGE) int page);

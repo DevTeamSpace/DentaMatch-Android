@@ -49,6 +49,7 @@ import android.widget.Toast;
 import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
+import com.appster.dentamatch.network.response.notification.NotificationData;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -123,6 +124,33 @@ public class Utils {
 
 
             return new SimpleDateFormat("EEE MMM d", Locale.getDefault()).format(d1);
+        } catch (ParseException e) {
+            LogUtils.LOGE(TAG, e.getMessage());
+        }
+
+        return null;
+    }
+
+    /**
+     * To get the formatted date
+     *
+     * @param date String date
+     * @return formatted date
+     */
+    public static String parseDateForNtfLst(NotificationData data, List<String> date) {
+        try {
+            if (date == null || date.isEmpty() || data.getNotificationType() != 9)
+                return data.getNotificationData();
+            StringBuilder sb = new StringBuilder();
+            sb.append(data.getNotificationData());
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            for (String sngDate : date) {
+                Date d1 = df.parse(sngDate);
+                sb.append(new SimpleDateFormat("d MMM", Locale.getDefault()).format(d1));
+                sb.append(", ");
+            }
+            sb.deleteCharAt(sb.length() - 2);
+            return sb.toString();
         } catch (ParseException e) {
             LogUtils.LOGE(TAG, e.getMessage());
         }

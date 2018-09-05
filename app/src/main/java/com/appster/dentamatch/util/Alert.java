@@ -87,6 +87,53 @@ public class Alert {
     }
 
     /**
+     * Create and return a dialog having requested title, message, positive and negative button along with the listener callbacks
+     *
+     * @param context     context
+     * @param btnPositive positive button
+     * @param btnNegative negative button
+     * @param title       dialog title
+     * @param message     dialog message
+     * @param listener    callback listener to get called for respective function
+     * @return a dialog
+     */
+    public static AlertDialog.Builder createYesNoAlert(Context context, String btnPositive, String btnNeutral, String btnNegative,
+                                                       String title, String message, final OnAlertClickEventListener listener) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(
+                new ContextThemeWrapper(context,
+                        R.style.CustomAlertDialogTheme));
+        if (title != null)
+            dialog.setTitle(title);
+        else
+            dialog.setTitle("");
+        dialog.setMessage(message);
+        dialog.setPositiveButton(btnPositive, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (listener != null)
+                    listener.onPositive(dialogInterface);
+            }
+        });
+        dialog.setNeutralButton(btnNeutral, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (listener != null)
+                    listener.onNeutral(dialogInterface);
+            }
+        });
+        dialog.setNegativeButton(btnNegative, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (listener != null)
+                    listener.onNegative(dialogInterface);
+            }
+        });
+        dialog.setCancelable(false);
+        dialog.show();
+        return dialog;
+    }
+
+    /**
      * Launch the alert dialog having the provided title, message, buttons and handler
      *
      * @param context            a context
@@ -230,5 +277,13 @@ public class Alert {
         void onPositive(DialogInterface dialog);
 
         void onNegative(DialogInterface dialog);
+    }
+
+    public interface OnAlertClickEventListener {
+        void onPositive(DialogInterface dialog);
+
+        void onNegative(DialogInterface dialog);
+
+        void onNeutral(DialogInterface dialog);
     }
 }

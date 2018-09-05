@@ -78,7 +78,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.tvReject.setTag(position);
             holder.tvAccept.setTag(position);
 
-            holder.tvDesc.setText(data.getNotificationData());
+            holder.tvDesc.setText(Utils.parseDateForNtfLst(data, data.getCurrentAvailability()));
 
             /*
               Change visibility of cell items based on read or unread notification status.
@@ -113,13 +113,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
               if notification is INVITE type show all views as visible.
               else accept - reject layout is hidden and all other views are visible
              */
-            if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER || data.getnotificationType()==Constants.NOTIFICATIONTYPES.NOTIFICATION_LICENCE_ACCEPT_REJ) {
+            if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER || data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_LICENCE_ACCEPT_REJ) {
                 holder.layoutInVite.setVisibility(View.GONE);
                 holder.tvJobType.setVisibility(View.GONE);
                 holder.tvAddress.setVisibility(View.GONE);
                 holder.ivRightArrow.setVisibility(View.GONE);
 
-            } else if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
+            } else if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
                 holder.layoutInVite.setVisibility(View.VISIBLE);
                 holder.tvJobType.setVisibility(View.VISIBLE);
                 holder.tvAddress.setVisibility(View.VISIBLE);
@@ -135,7 +135,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             }
 
-            if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == NOTIFICATION_UNREAD) {
+            if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == NOTIFICATION_UNREAD) {
                 holder.layoutInVite.setVisibility(View.VISIBLE);
 
             } else {
@@ -222,7 +222,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 if (mNotificationList.get(position) != null) {
                     NotificationData data = mNotificationList.get(position);
 
-                    if (data.getnotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
+                    if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
                         redirectToDetail(data.getJobDetailModel().getId());
 
                     } else if (data.getSeen() == NOTIFICATION_UNREAD) {
@@ -274,7 +274,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             Toast.LENGTH_LONG);
                     View toastView = toast.getView();
                     toastView.setBackgroundResource(R.drawable.taost_drawable);
-                    toastView.setPadding(60,60,60,60);
+                    toastView.setPadding(60, 60, 60, 60);
                     toast.show();
                     //((BaseActivity) mContext).showToast(response.getMessage());
                 }
@@ -307,17 +307,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         }
 
                     } else {
-                       // Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG).show();
                         Toast toast = Toast.makeText(getApplicationContext(),
                                 response.getMessage(),
                                 Toast.LENGTH_LONG);
                         View toastView = toast.getView();
                         toastView.setBackgroundResource(R.drawable.taost_drawable);
-                        toastView.setPadding(60,60,60,60);
+                        toastView.setPadding(60, 60, 60, 60);
                         toast.show();
                     }
 
-                   //////// updateSeenStatus(position, true);
+                    //////// updateSeenStatus(position, true);
 
                 }
 
@@ -358,7 +358,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 Toast.LENGTH_LONG);
                         View toastView = toast.getView();
                         toastView.setBackgroundResource(R.drawable.taost_drawable);
-                        toastView.setPadding(60,60,60,60);
+                        toastView.setPadding(60, 60, 60, 60);
                         toast.show();
                     }
                 }

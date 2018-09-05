@@ -98,6 +98,7 @@
 
     <!--alert button-->
     <string name="ok">OK</string>
+    <string name="delete">DELETE</string>
     <string name="block">BLOCK</string>
     <string name="cancel">Cancel</string>
     <string name="msg_block_alert">This Recruiter is BLOCKED and will no longer be able to see your profile or send you messages</string>

@@ -26,6 +26,7 @@ import com.appster.dentamatch.model.ChatListModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
+import com.appster.dentamatch.network.request.chat.Recruiter;
 import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
@@ -40,7 +41,7 @@ import retrofit2.Call;
  * To inject activity reference.
  */
 
-public class MessagesListFragment extends BaseFragment {
+public class MessagesListFragment extends BaseFragment implements MessageListAdapter.IDeleteMessage {
     private FragmentMessagesBinding mMessagesBinding;
     private RecyclerView.LayoutManager mLayoutManager;
     private MessageListAdapter mAdapter;
@@ -77,8 +78,9 @@ public class MessagesListFragment extends BaseFragment {
             if (data != null && data.size() > 0) {
                 mMessagesBinding.tvNoJobs.setVisibility(View.GONE);
 
-                if(getActivity() != null) {
+                if (getActivity() != null) {
                     mAdapter = new MessageListAdapter(getActivity(), data, true);
+                    mAdapter.setListener(this);
                 }
 
                 mMessagesBinding.rvMessageList.setAdapter(mAdapter);
@@ -115,8 +117,9 @@ public class MessagesListFragment extends BaseFragment {
                         }
 
                         data = DBHelper.getInstance().getAllUserChats();
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             mAdapter = new MessageListAdapter(getActivity(), data, true);
+                            mAdapter.setListener(MessagesListFragment.this);
                         }
                         mMessagesBinding.rvMessageList.setAdapter(mAdapter);
 
@@ -140,5 +143,25 @@ public class MessagesListFragment extends BaseFragment {
         mMessagesBinding.toolbarFragmentJobs.ivToolBarLeft.setVisibility(View.GONE);
     }
 
+
+    @Override
+    public void onDelete(final String id, final int position) {
+        showProgressBar(getString(R.string.please_wait));
+        AuthWebServices client = RequestController.createService(AuthWebServices.class, true);
+        client.deleteUserChat(new Recruiter(id)).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
+            @Override
+            public void onSuccess(BaseResponse response) {
+                if (response != null && response.getStatus() == 1) {
+                    mAdapter.notifyItemRemoved(position);
+                    DBHelper.getInstance().clearRecruiterChats(id);
+                }
+            }
+
+            @Override
+            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
+
+            }
+        });
+    }
 
 }

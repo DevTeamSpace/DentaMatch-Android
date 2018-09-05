@@ -43,6 +43,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
     private ItemMessageListBinding mBinding;
     private final Context mContext;
     private final String userID;
+    private IDeleteMessage mListener;
 
     public MessageListAdapter(Context context, @Nullable OrderedRealmCollection<DBModel> data, boolean autoUpdate) {
         super(context, data, autoUpdate);
@@ -97,6 +98,10 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
         return 0;
     }
 
+    public void setListener(IDeleteMessage listener){
+        mListener = listener;
+    }
+
     @Override
     public void onClick(View v) {
         int position = (int) v.getTag();
@@ -112,10 +117,11 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
         if (messagesData.get(position).getSeekerHasBlocked() == 0) {
             Alert.createYesNoAlert(mContext,
                     mContext.getString(R.string.block),
+                    mContext.getString(R.string.delete),
                     mContext.getString(R.string.cancel),
                     null,
                     mContext.getString(R.string.msg_block_alert),
-                    new Alert.OnAlertClickListener() {
+                    new Alert.OnAlertClickEventListener() {
 
                         @Override
                         public void onPositive(DialogInterface dialog) {
@@ -125,6 +131,11 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
                         @Override
                         public void onNegative(DialogInterface dialog) {
                             dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onNeutral(DialogInterface dialog) {
+                            mListener.onDelete(messagesData.get(position).getRecruiterId(),position);
                         }
                     });
         }
@@ -156,5 +167,9 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
             RemovableView = mBinding.swipeableView;
             ConstantView = mBinding.constantView;
         }
+    }
+
+    public interface IDeleteMessage {
+        void onDelete(String id, int position);
     }
 }

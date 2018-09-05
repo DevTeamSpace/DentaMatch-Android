@@ -10,6 +10,8 @@ package com.appster.dentamatch.network.response.notification;
 
 import com.appster.dentamatch.model.JobDetailModel;
 
+import java.util.ArrayList;
+
 /**
  * Created by virender on 14/02/17.
  * To inject activity reference.
@@ -27,6 +29,8 @@ public class NotificationData {
     private String createdAt;
     private String notificationData;
     private JobDetailModel jobDetails;
+    private ArrayList<String> currentAvailability;
+
     public void setSeen(int seen) {
         this.seen = seen;
     }
@@ -38,7 +42,8 @@ public class NotificationData {
     public int getReceiverId() {
         return receiverId;
     }
-    public int getnotificationType() {
+
+    public int getNotificationType() {
         return notificationType;
     }
 
@@ -64,5 +69,9 @@ public class NotificationData {
 
     public JobDetailModel getJobDetailModel() {
         return jobDetails;
+    }
+
+    public ArrayList<String> getCurrentAvailability() {
+        return currentAvailability;
     }
 }
