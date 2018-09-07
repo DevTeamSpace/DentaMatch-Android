@@ -101,7 +101,7 @@
     <string name="delete">DELETE</string>
     <string name="block">BLOCK</string>
     <string name="cancel">Cancel</string>
-    <string name="msg_block_alert">This Recruiter is BLOCKED and will no longer be able to see your profile or send you messages</string>
+    <string name="msg_block_alert">You can now choose to either block this recruiter or delete your chat history.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -339,7 +339,7 @@
     <string name="txt_cancelled">Cancelled</string>
     <string name="msg_socket_connection_success">Connection established</string>
     <string name="msg_recruiter_unblocked">Recruiter Unblocked</string>
-    <string name="msg_recruiter_blocked">Recruiter Blocked</string>
+    <string name="msg_recruiter_blocked">This Recruiter is Blocked and will no longer be able to see your profile or send you messages</string>
     <string name="msg_recruiter_blocked_you">Recruiter has blocked you from messaging</string>
     <string name="txt_alert_title">Confirm your action</string>
     <string name="error_school_name">Please enter school name first</string>
@@ -428,4 +428,5 @@
     <string name="show_more">See More</string>
     <string name="show_less">See Less</string>
 
+    <string name="del_chat_his">This chat history with this Recruiter is deleted you will no longer be able to see the previous chat</string>
 </resources>

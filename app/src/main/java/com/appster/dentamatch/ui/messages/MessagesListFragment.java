@@ -153,6 +153,7 @@ public class MessagesListFragment extends BaseFragment implements MessageListAda
             public void onSuccess(BaseResponse response) {
                 if (response != null && response.getStatus() == 1) {
                     mAdapter.notifyItemRemoved(position);
+                    showToastLengthLong(getString(R.string.del_chat_his));
                     DBHelper.getInstance().clearRecruiterChats(id);
                 }
             }

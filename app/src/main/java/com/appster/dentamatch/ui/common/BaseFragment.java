@@ -88,6 +88,19 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    protected void showToastLengthLong(String message) {
+
+        if (getActivity() != null && message != null) {
+
+            if (toast != null) {
+                toast.cancel();
+            }
+
+            toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
     @Override
     public void onDestroy() {
         alive = false;

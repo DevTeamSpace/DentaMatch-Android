@@ -143,13 +143,14 @@ public class Utils {
                 return data.getNotificationData();
             StringBuilder sb = new StringBuilder();
             sb.append(data.getNotificationData());
+            sb.append(" for ");
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             for (String sngDate : date) {
                 Date d1 = df.parse(sngDate);
                 sb.append(new SimpleDateFormat("d MMM", Locale.getDefault()).format(d1));
                 sb.append(", ");
             }
-            sb.deleteCharAt(sb.length() - 2);
+            sb.replace(sb.length() - 2, sb.length() - 1, ".");
             return sb.toString();
         } catch (ParseException e) {
             LogUtils.LOGE(TAG, e.getMessage());

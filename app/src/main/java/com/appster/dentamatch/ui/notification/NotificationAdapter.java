@@ -122,10 +122,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             } else if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
                 holder.layoutInVite.setVisibility(View.VISIBLE);
                 holder.tvJobType.setVisibility(View.VISIBLE);
-                holder.tvAddress.setVisibility(View.VISIBLE);
                 holder.ivRightArrow.setVisibility(View.VISIBLE);
                 setJobDetailData(data.getJobDetailModel(), holder);
-
+                holder.tvAddress.setVisibility(View.GONE);
             } else {
                 holder.layoutInVite.setVisibility(View.GONE);
                 holder.tvJobType.setVisibility(View.VISIBLE);
@@ -158,7 +157,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         if (model != null) {
 
             if (!TextUtils.isEmpty(model.getAddress())) {
-                holder.tvAddress.setVisibility(View.VISIBLE);
+                holder.tvAddress.setVisibility(View.GONE);
                 holder.tvAddress.setText(model.getAddress());
             } else {
                 holder.tvAddress.setVisibility(View.GONE);
