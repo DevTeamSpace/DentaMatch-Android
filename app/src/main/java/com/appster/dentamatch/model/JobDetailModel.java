@@ -60,7 +60,7 @@ public class JobDetailModel {
     private int jobPostedTimeGap;
     private String officeTypeName;
     private double distance;
-//    public List<Object> jobTypeDates = null;
+    //    public List<Object> jobTypeDates = null;
     private String jobTypeString;
     private int isApplied;
     private int isSaved;
@@ -69,6 +69,7 @@ public class JobDetailModel {
     private String percentaSkillsMatch;
     private String matchedSkills;
     private String templateSkillsCount;
+    private int payRate;
 
     public String getPercentaSkillsMatch() {
         return percentaSkillsMatch;
@@ -269,5 +270,9 @@ public class JobDetailModel {
 
     public int getNoOfJobs() {
         return noOfJobs;
+    }
+
+    public int getPayRate() {
+        return payRate;
     }
 }

@@ -71,4 +71,7 @@
 
     <color name="txt_clr">#0E132F</color>
 
+    <color name="clr_cnl">#dd6161</color>
+    <color name="white">#FFFFFF</color>
+
 </resources>

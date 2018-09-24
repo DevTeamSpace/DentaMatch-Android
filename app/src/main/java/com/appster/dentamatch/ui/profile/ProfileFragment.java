@@ -38,6 +38,7 @@ import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.ui.notification.NotificationActivity;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.ui.profile.workexperience.MyWorkExpListActivity;
 import com.appster.dentamatch.ui.profile.workexperience.SchoolingActivity;
@@ -121,6 +122,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         profileBinding.cellAffiliation.tvCertificatesName.setText(getString(R.string.title_affiliation));
         profileBinding.ivSetting.setOnClickListener(this);
         profileBinding.tvEdit.setOnClickListener(this);
+        profileBinding.ivToolBarLeft.setOnClickListener(this);
         profileBinding.cellLicence.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -283,7 +285,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
-
+            case R.id.iv_tool_bar_left:
+                startActivity(new Intent(getActivity(), NotificationActivity.class));
+                break;
             default:
                 break;
 

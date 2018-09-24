@@ -42,6 +42,7 @@ public class HiredJobs {
     @SerializedName("tempJobDates")
     private ArrayList<TemporaryJobDates> temporaryJobDates;
     private String currentDate;
+    private int payRate;
 
     public String getCurrentDate() {
         return currentDate;
@@ -141,5 +142,9 @@ public class HiredJobs {
 
     public ArrayList<TemporaryJobDates> getTemporaryJobDates() {
         return temporaryJobDates;
+    }
+
+    public int getPayRate() {
+        return payRate;
     }
 }

@@ -97,4 +97,8 @@ public class StringUtils {
         final T[] jsonToObject = new Gson().fromJson(json, clazz);
         return Arrays.asList(jsonToObject);
     }
+
+    public static String getPayRate(int rate) {
+        return "$" + rate;
+    }
 }

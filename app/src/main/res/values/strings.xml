@@ -253,6 +253,8 @@
     <string name="label_about">ABOUT</string>
     <string name="label_office_location">OFFICE LOCATION</string>
     <string name="office_type_label">OFFICE TYPE</string>
+    <string name="hwo_label">HOURLY WAGES OFFERED</string>
+    <string name="hwa_label">HOURLY WAGES ACCEPTED</string>
     <string name="total_job_openings_label">TOTAL JOB OPENINGS</string>
     <string name="job_description_label">JOB DESCRIPTION</string>
     <string name="office_description_label">OFFICE DESCRIPTION</string>
@@ -427,6 +429,8 @@
     <string name="resume">Resume</string>
     <string name="show_more">See More</string>
     <string name="show_less">See Less</string>
+
+    <string name="ntf_cnt">100+</string>
 
     <string name="del_chat_his">This chat history with this Recruiter is deleted you will no longer be able to see the previous chat</string>
 </resources>

@@ -25,6 +25,7 @@ import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
+import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
 import com.appster.dentamatch.ui.messages.ChatActivity;
@@ -39,10 +40,12 @@ import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
 import retrofit2.Call;
 
 /**
@@ -50,7 +53,7 @@ import retrofit2.Call;
  * To inject activity reference.
  */
 public class HomeActivity extends BaseActivity {
-    private static final String TAG=LogUtils.makeLogTag(HomeActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(HomeActivity.class);
     private final int SEARCH_JOBS_FRAGMENT_POS = 0;
     private final int TRACKS_FRAGMENT_POS = 1;
     private final int CALENDAR_FRAGMENT_POS = 2;
@@ -92,7 +95,7 @@ public class HomeActivity extends BaseActivity {
             bottomBar.setCurrentItem(MESSAGE_FRAGMENT_POS);
             String RecruiterID = getIntent().getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
-            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 
         } else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_DETAIL) || getIntent().hasExtra(Constants.EXTRA_FROM_SETTINGS)) {
             bottomBar.setCurrentItem(PROFILE_FRAGMENT_POS);
@@ -100,9 +103,7 @@ public class HomeActivity extends BaseActivity {
         }/*else if (getIntent().hasExtra(Constants.EXTRA_FROM_JOB_NOTIF)) {
 
           startActivity(new Intent(this, NotificationActivity.class));
-        }*/
-
-        else{
+        }*/ else {
             bottomBar.setCurrentItem(SEARCH_JOBS_FRAGMENT_POS);
 
         }
@@ -122,9 +123,9 @@ public class HomeActivity extends BaseActivity {
             bottomBar.setCurrentItem(MESSAGE_FRAGMENT_POS);
             String RecruiterID = intent.getStringExtra(Constants.EXTRA_FROM_CHAT);
             startActivity(new Intent(this, ChatActivity.class).putExtra(Constants.EXTRA_CHAT_MODEL, RecruiterID)
-            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 
-        }else if (intent.hasExtra(Constants.EXTRA_FROM_SETTINGS)) {
+        } else if (intent.hasExtra(Constants.EXTRA_FROM_SETTINGS)) {
             bottomBar.setCurrentItem(PROFILE_FRAGMENT_POS);
 
         }
@@ -149,10 +150,10 @@ public class HomeActivity extends BaseActivity {
      * initViews is used to initialize this view at app launch
      */
     private void initViews() {
-      UserModel userModel= PreferenceUtil.getUserModel();
-      if(userModel!=null){
-          LogUtils.LOGD(TAG,"Email::"+userModel.getEmail());
-      }
+        UserModel userModel = PreferenceUtil.getUserModel();
+        if (userModel != null) {
+            LogUtils.LOGD(TAG, "Email::" + userModel.getEmail());
+        }
         bottomBar = findViewById(R.id.ntb_horizontal);
         bottomBar.setTitleTextSize(Utils.convertSpToPixels(10.0f, this), Utils.convertSpToPixels(10.0f, this));
         bottomBar.addItem(new AHBottomNavigationItem(getString(R.string.nav_job), R.drawable.img_nav_jobs));
@@ -241,6 +242,16 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    public void onCount(int count) {
+        AHNotification notification = new AHNotification.Builder()
+                .setText(count == 0 ? "" : count > 100 ? getString(R.string.ntf_cnt) : String.valueOf(count))
+                .setBackgroundColor(ContextCompat.getColor(this, R.color.clr_cnl))
+                .setTextColor(ContextCompat.getColor(this, R.color.white))
+                .build();
+        bottomBar.setNotification(notification, 4);
+        ShortcutBadger.applyCount(getApplicationContext(), count);
+    }
+
     private void setTitleMargins(int bottomBarPosition) {
         switch (bottomBarPosition) {
 
@@ -318,8 +329,41 @@ public class HomeActivity extends BaseActivity {
             });
 
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
+    private void getBatchCount() {
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.getUnreadNotificationCount().enqueue(new BaseCallback<UnReadNotificationCountResponse>(this) {
+            @Override
+            public void onSuccess(UnReadNotificationCountResponse response) {
+                /*
+                  Once data has been loaded from the filter changes we can dismiss this filter.
+                 */
+                if (response.getStatus() == 1) {
+                    if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
+                        onCount(0);
+                        ShortcutBadger.removeCount(HomeActivity.this);
+                    } else {
+                        onCount(response.getUnReadNotificationResponse().getNotificationCount());
+                        ShortcutBadger.applyCount(HomeActivity.this, response.getUnReadNotificationResponse().getNotificationCount());
+                    }
+                } else {
+                    showToast(response.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Call<UnReadNotificationCountResponse> call, BaseResponse baseResponse) {
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getBatchCount();
+    }
 }

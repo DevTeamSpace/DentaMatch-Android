@@ -17,7 +17,9 @@ import android.widget.NumberPicker;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
+import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.StringUtils;
 import com.appster.dentamatch.widget.CustomTextView;
 
 /**
@@ -47,7 +49,8 @@ public class BottomSheetJobTitle {
             }
 
             for (int i = 0; i < PreferenceUtil.getJobTitleList().size(); i++) {
-                jobTitle[i] = PreferenceUtil.getJobTitleList().get(i).getJobTitle();
+                JobTitleListModel jlm = PreferenceUtil.getJobTitleList().get(i);
+                jobTitle[i] = StringUtils.isNullOrEmpty(jlm.getShortName()) ? jlm.getJobTitle() : jlm.getShortName();
             }
             pickerTitle.setDisplayedValues(jobTitle);
         }
@@ -69,8 +72,9 @@ public class BottomSheetJobTitle {
 
                 }
                 if (PreferenceUtil.getJobTitleList() != null) {
-                    mJobTitleSelectionListener.onJobTitleSelection(PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getJobTitle()
-                            , PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getId(), pickerTitle.getValue(), PreferenceUtil.getJobTitleList().get(pickerTitle.getValue()).getIsLicenseRequired());
+                    JobTitleListModel jlm = PreferenceUtil.getJobTitleList().get(pickerTitle.getValue());
+                    mJobTitleSelectionListener.onJobTitleSelection(StringUtils.isNullOrEmpty(jlm.getShortName()) ? jlm.getJobTitle() : jlm.getShortName()
+                            , jlm.getId(), pickerTitle.getValue(), jlm.getIsLicenseRequired());
                 }
             }
         });

@@ -20,16 +20,8 @@ import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentJobsBinding;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseFragment;
 import com.appster.dentamatch.ui.notification.NotificationActivity;
-
-import me.leolin.shortcutbadger.ShortcutBadger;
-import retrofit2.Call;
 
 /**
  * Created by Appster on 23/01/17.
@@ -111,7 +103,6 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        getBatchCount();
     }
 
     private void initViews() {
@@ -129,37 +120,6 @@ public class JobsFragment extends BaseFragment implements View.OnClickListener {
         mJobsBinding.toolbarFragmentJobs.ivToolBarRight.setOnClickListener(this);
         mJobsBinding.toolbarFragmentJobs.txvToolbarGeneralRight.setOnClickListener(this);
         mJobsBinding.toolbarFragmentJobs.ivToolBarLeft.setOnClickListener(this);
-
-    }
-
-    private void getBatchCount() {
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getUnreadNotificationCount().enqueue(new BaseCallback<UnReadNotificationCountResponse>(getBaseActivity()) {
-            @Override
-            public void onSuccess(UnReadNotificationCountResponse response) {
-                /*
-                  Once data has been loaded from the filter changes we can dismiss this filter.
-                 */
-                if (response.getStatus() == 1) {
-                    if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
-                        mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.GONE);
-                        ShortcutBadger.removeCount(getContext());
-                    } else {
-                        mJobsBinding.toolbarFragmentJobs.tvBtchCount.setVisibility(View.VISIBLE);
-                        mJobsBinding.toolbarFragmentJobs.tvBtchCount.setText(String.valueOf(response.getUnReadNotificationResponse().getNotificationCount()));
-                        ShortcutBadger.applyCount(getActivity(), response.getUnReadNotificationResponse().getNotificationCount());
-                    }
-                } else {
-                    showToast(response.getMessage());
-                }
-            }
-
-
-            @Override
-            public void onFail(Call<UnReadNotificationCountResponse> call, BaseResponse baseResponse) {
-            }
-        });
 
     }
 

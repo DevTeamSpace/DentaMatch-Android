@@ -14,6 +14,7 @@
 
     <!--Default padding-->
     <dimen name="default_padding">10dp</dimen>
+    <dimen name="default_min_padding">-10dp</dimen>
     <dimen name="pagination_view_height">50dp</dimen>
 
     <!--Text sizes-->
@@ -102,7 +103,7 @@
     <dimen name="margin_74">74dp</dimen>
     <dimen name="circular_text_dimen">35dp</dimen>
     <dimen name="calendar_cell_height">40dp</dimen>
-    <dimen name="batch_count_dimen">15dp</dimen>
+    <dimen name="batch_count_dimen">8dp</dimen>
     <dimen name="user_profile_pic_dimen">91dp</dimen>
     <dimen name="skill_other_cell_height">53dp</dimen>
 

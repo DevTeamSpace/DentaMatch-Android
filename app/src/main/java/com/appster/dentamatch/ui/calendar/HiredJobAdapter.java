@@ -30,6 +30,7 @@ import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.StringUtils;
 import com.appster.dentamatch.util.Utils;
 
 import java.util.ArrayList;
@@ -76,7 +77,8 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
             holder.tvName.setText(data.getJobtitleName());
             holder.cbSelect.setVisibility(View.GONE);
             holder.tvDistance.setVisibility(View.GONE);
-
+            holder.tvHwaKey.setVisibility(View.GONE);
+            holder.tvHwaVal.setVisibility(View.GONE);
             if (data.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                 holder.tvJobType.setText(mContext.getString(R.string.txt_part_time));
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
@@ -144,6 +146,9 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
                 holder.tvDate.setVisibility(View.GONE);
                 holder.tvJobType.setText(mContext.getString(R.string.txt_temporary));
+                holder.tvHwaKey.setVisibility(View.VISIBLE);
+                holder.tvHwaVal.setVisibility(View.VISIBLE);
+                holder.tvHwaVal.setText(StringUtils.getPayRate(data.getPayRate()));
             }
 
             holder.tvDocAddress.setText(data.getAddress());
@@ -200,6 +205,8 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
         private final TextView tvDuration;
         private final TextView tvDistance;
         private final CheckBox cbSelect;
+        private final TextView tvHwaKey;
+        private final TextView tvHwaVal;
 
         MyHolder(View itemView) {
             super(itemView);
@@ -211,14 +218,16 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
             tvDuration = mBinding.tvJobDocTime;
             tvDistance = mBinding.tvJobDocDistance;
             cbSelect = mBinding.cbJobSelection;
+            tvHwaKey = mBinding.tvHwaName;
+            this.tvHwaVal = mBinding.tvHwaVal;
         }
     }
 
     @Override
     public boolean onLongClick(View v) {
         final int position = (int) v.getTag();
-        String jobDate=mJobListData.get(position).getTempDates();
-        String getCurrentDate=mJobListData.get(position).getCurrentDate();
+        String jobDate = mJobListData.get(position).getTempDates();
+        String getCurrentDate = mJobListData.get(position).getCurrentDate();
         if (jobDate.compareTo(getCurrentDate) > 0) {
             Alert.createYesNoAlert(mContext,
                     mContext.getString(R.string.ok),
@@ -243,8 +252,6 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
                     });
 
         }
-
-
 
 
         return false;

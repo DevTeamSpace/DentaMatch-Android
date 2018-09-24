@@ -17,12 +17,13 @@ import com.google.gson.annotations.SerializedName;
  * Created by virender on 09/01/17.
  * To inject activity reference.
  */
-public class JobTitleListModel implements Parcelable{
+public class JobTitleListModel implements Parcelable {
 
 
     private int id;
     @SerializedName("jobtitleName")
     private String jobTitle;
+    private String shortName;
     private boolean isSelected;
     private int isLicenseRequired;
 
@@ -34,13 +35,14 @@ public class JobTitleListModel implements Parcelable{
         this.isLicenseRequired = isLicenseRequired;
     }
 
-    public JobTitleListModel(){
+    public JobTitleListModel() {
 
     }
 
     private JobTitleListModel(Parcel in) {
         id = in.readInt();
         jobTitle = in.readString();
+        shortName = in.readString();
         isLicenseRequired = in.readInt();
         isSelected = in.readByte() != 0;
     }
@@ -73,6 +75,10 @@ public class JobTitleListModel implements Parcelable{
         return jobTitle;
     }
 
+    public String getShortName() {
+        return shortName;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -90,6 +96,7 @@ public class JobTitleListModel implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(jobTitle);
+        dest.writeString(shortName);
         dest.writeInt(isLicenseRequired);
         dest.writeByte((byte) (isSelected ? 1 : 0));
     }
