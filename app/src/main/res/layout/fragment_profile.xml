@@ -28,41 +28,45 @@
                     android:layout_marginRight="@dimen/margin_normal"
                     android:visibility="visible">
 
-                    <ImageView
-                        android:id="@+id/iv_setting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_settings" />
-
                     <FrameLayout
                         android:id="@+id/layout_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/margin_5"
-                        android:layout_toEndOf="@id/iv_setting">
+                        android:layout_centerVertical="true">
 
                         <ImageView
                             android:id="@+id/iv_tool_bar_left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/default_padding"
-                            android:src="@drawable/img_notifications" />
+                            android:paddingBottom="@dimen/margin_10"
+                            android:paddingEnd="@dimen/margin_10"
+                            android:paddingStart="@dimen/margin_10"
+                            android:paddingTop="@dimen/margin_10"
+                            android:src="@drawable/img_notifications"
+                            android:visibility="visible" />
 
                         <com.appster.dentamatch.widget.CustomTextView
                             android:id="@+id/tv_batch_count"
                             style="@style/text_view_normal"
                             android:layout_width="@dimen/batch_count_dimen"
                             android:layout_height="@dimen/batch_count_dimen"
-                            android:layout_gravity="end|bottom"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/margin_5"
                             android:background="@drawable/shape_batch_count"
                             android:gravity="center"
-                            android:layout_marginStart="@dimen/default_min_padding"
-                            android:layout_marginBottom="@dimen/default_padding"
                             android:textColor="@color/white_color"
-                            android:textSize="@dimen/text_size_8"/>
+                            android:textSize="@dimen/text_size_8"
+                            app:customFont="@string/font_light" />
                     </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/layout_count"
+                        android:src="@drawable/ic_settings"
+                        android:layout_marginStart="@dimen/margin_10"/>
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_edit"

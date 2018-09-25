@@ -133,6 +133,12 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         SocketManager.getInstance().disconnect();
@@ -365,5 +371,11 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         getBatchCount();
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }
