@@ -6,7 +6,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_general"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="?android:attr/actionBarSize"
         android:background="@color/toolbar_color"
         app:contentInsetStart="0dp">
 

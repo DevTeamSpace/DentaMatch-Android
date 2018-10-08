@@ -133,12 +133,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         SocketManager.getInstance().disconnect();
@@ -355,6 +349,7 @@ public class HomeActivity extends BaseActivity {
                         onCount(response.getUnReadNotificationResponse().getNotificationCount());
                         ShortcutBadger.applyCount(HomeActivity.this, response.getUnReadNotificationResponse().getNotificationCount());
                     }
+                    EventBus.getDefault().post(response.getUnReadNotificationResponse());
                 } else {
                     showToast(response.getMessage());
                 }
@@ -373,9 +368,4 @@ public class HomeActivity extends BaseActivity {
         getBatchCount();
     }
 
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
 }

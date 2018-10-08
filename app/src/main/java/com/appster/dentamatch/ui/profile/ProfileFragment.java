@@ -34,6 +34,7 @@ import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
+import com.appster.dentamatch.network.response.notification.UnReadNotificationResponseData;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
@@ -477,36 +478,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             if (response.getCertificatesLists() != null && response.getCertificatesLists().size() > 0) {
                 inflateCertification(response.getCertificatesLists());
             }
-//            if (response.getDentalStateBoard() != null && !TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
-//                profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.GONE);
-//                profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.VISIBLE);
-//                profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.VISIBLE);
-//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.VISIBLE);
-//                profileBinding.cellDentalStateBoard.tvCertificateValidityDate.setVisibility(View.GONE);
-//                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
-//
-////                profileBinding.cellDentalStateBoard.tvCertificateImageName.setText(getString(R.string.certificate_dental_state_board));
-//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
-//
-//                if (!TextUtils.isEmpty(response.getDentalStateBoard().getImageUrl())) {
-//                    Picasso.with(getActivity()).load(response.getDentalStateBoard().getImageUrl())
-////                            .centerCrop()
-//                            .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
-//                            .onlyScaleDown()
-//                            .placeholder(R.drawable.ic_upload)
-//                            .memoryPolicy(MemoryPolicy.NO_CACHE)
-//                            .into(profileBinding.cellDentalStateBoard.ivCertificateImage);
-//
-//                }
-//            } else {
-//                profileBinding.cellDentalStateBoard.tvAddCertificates.setVisibility(View.VISIBLE);
-//                profileBinding.cellDentalStateBoard.tvEdit.setVisibility(View.GONE);
-//                profileBinding.cellDentalStateBoard.ivCertificateImage.setVisibility(View.GONE);
-//                profileBinding.cellDentalStateBoard.tvCertificateImageName.setVisibility(View.GONE);
-//                profileBinding.cellDentalStateBoard.layoutValidationDate.setVisibility(View.GONE);
-//
-//
-//            }
+
             if (response.getSchoolArrayList() != null && response.getSchoolArrayList().size() > 0) {
                 profileBinding.cellSchooling.tvAddCertificates.setVisibility(View.GONE);
                 profileBinding.cellSchooling.tvEditCell.setVisibility(View.VISIBLE);
@@ -665,24 +637,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             int months = expList.get(i).getMonthsOfExpereince() % 12;
             int years = expList.get(i).getMonthsOfExpereince() / 12;
 
-//            if (months == 0) {
-//                expBinding.tvExpDuration.setText(String.valueOf(years).concat(getString(R.string.yrs)));
-//            } else {
-//                String strMonths = "";
-//
-//                if (months == 1) {
-//                    strMonths = getString(R.string.month);
-//                } else {
-//                    strMonths = getString(R.string.txt_multiple_months);
-//                }
-//
-//
-//                expBinding.tvExpDuration.setText(String.valueOf(years)
-//                        .concat(getString(R.string.yrs))
-//                        .concat(" ")
-//                        .concat(String.valueOf(months).concat(strMonths)));
-//            }
-
             String yearLabel, monthLabel;
 
             if (years == 1) {
@@ -817,6 +771,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void onProfileUpdatedEvent(ProfileUpdatedEvent profileUpdatedEvent) {
         if (profileUpdatedEvent.ismIsProfileUpdated()) {
             getProfileData();
+        }
+    }
+
+    @Subscribe
+    public void onMessage(UnReadNotificationResponseData responseData) {
+        if (responseData.getNotificationCount() == 0) {
+            profileBinding.tvBatchCount.setVisibility(View.GONE);
+        } else {
+            profileBinding.tvBatchCount.setVisibility(View.VISIBLE);
         }
     }
 
