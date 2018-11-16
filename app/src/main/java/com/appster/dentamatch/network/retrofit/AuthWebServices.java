@@ -50,6 +50,7 @@ import com.appster.dentamatch.network.response.notification.UnReadNotificationCo
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
+import com.appster.dentamatch.network.response.profile.StateResponse;
 import com.appster.dentamatch.network.response.schools.SchoolingResponse;
 import com.appster.dentamatch.network.response.skills.SkillsResponse;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
@@ -121,6 +122,7 @@ public interface AuthWebServices {
     String UPDATE_FCM_TOKEN = "users/update-devicetoken";
     String PREFERRED_JOB_LOCATIONS = "jobs/preferred-job-locations";
     String CHECK_USER_VERIFIED = "users/is-verified";
+    String LIST_STATES = "list-states";
 
     @POST(USER_CHAT_BLOCK_UNBLOCK)
     Call<BaseResponse> blockUnBlockUser(@Body BlockUnBlockRequest request);
@@ -232,6 +234,9 @@ public interface AuthWebServices {
 
     @GET(UNREAD_NOTIFICATION_COUNT)
     Call<UnReadNotificationCountResponse> getUnreadNotificationCount();
+
+    @GET(LIST_STATES)
+    Call<StateResponse> getStateList();
 
     @GET(GET_PROFILE)
     Call<ProfileResponse> getProfile();

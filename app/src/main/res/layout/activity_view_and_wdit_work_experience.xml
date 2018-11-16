@@ -93,7 +93,8 @@
                     android:layout_height="@dimen/cell_height"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:layout_marginTop="@dimen/margin_10"
-                    android:background="@drawable/bg_cell">
+                    android:background="@drawable/bg_cell"
+                    android:visibility="gone">
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_save"

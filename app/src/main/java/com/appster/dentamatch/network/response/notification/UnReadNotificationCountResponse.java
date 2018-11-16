@@ -22,4 +22,8 @@ public class UnReadNotificationCountResponse extends BaseResponse {
     public UnReadNotificationResponseData getUnReadNotificationResponse() {
         return unReadNotificationResponse;
     }
+
+    public void setUnReadNotificationResponse(UnReadNotificationResponseData unReadNotificationResponse) {
+        this.unReadNotificationResponse = unReadNotificationResponse;
+    }
 }

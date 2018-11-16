@@ -13,7 +13,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/margin_normal">
 
@@ -21,7 +21,7 @@
                 android:id="@+id/tv_skip_onboarding"
                 style="@style/text_view_normal"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_alignParentBottom="true"
                 android:text="@string/skip_button"
                 android:textColor="@color/get_started_color"
                 android:textSize="@dimen/text_size_normal"
@@ -30,9 +30,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:gravity="clip_horizontal"
                 android:orientation="horizontal">
 
                 <ImageView

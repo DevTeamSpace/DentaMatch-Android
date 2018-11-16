@@ -48,7 +48,7 @@
                         <com.appster.dentamatch.widget.CustomTextView
                             android:id="@+id/tv_batch_count"
                             style="@style/text_view_normal"
-                            android:layout_width="@dimen/batch_count_dimen"
+                            android:layout_width="wrap_content"
                             android:layout_height="@dimen/batch_count_dimen"
                             android:layout_gravity="end"
                             android:layout_marginTop="@dimen/margin_5"
@@ -56,7 +56,8 @@
                             android:gravity="center"
                             android:textColor="@color/white_color"
                             android:textSize="@dimen/text_size_8"
-                            app:customFont="@string/font_light" />
+                            android:visibility="gone"
+                            app:customFont="@string/font_bold" />
                     </FrameLayout>
 
                     <ImageView
@@ -64,9 +65,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_10"
                         android:layout_toEndOf="@id/layout_count"
-                        android:src="@drawable/ic_settings"
-                        android:layout_marginStart="@dimen/margin_10"/>
+                        android:src="@drawable/ic_settings" />
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_edit"

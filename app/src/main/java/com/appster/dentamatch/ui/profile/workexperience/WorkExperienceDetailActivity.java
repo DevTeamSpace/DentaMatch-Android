@@ -148,6 +148,7 @@ public class WorkExperienceDetailActivity extends BaseActivity implements View.O
                             Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeName),
                             Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeAddress),
                             Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeCity),
+                            Utils.getStringFromEditText(mBinder.includeLayoutWorkExp.etOfficeState),
                             Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceName),
                             Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceMobile),
                             Utils.getStringFromEditText(mBinder.includeReference1.etOfficeReferenceEmail),

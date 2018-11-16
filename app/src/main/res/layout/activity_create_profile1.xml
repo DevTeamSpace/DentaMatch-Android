@@ -176,6 +176,21 @@
                             android:textColor="@color/text_default_color" />
                     </android.support.design.widget.TextInputLayout>
 
+                    <com.appster.dentamatch.widget.CustomTextView
+                        android:id="@+id/licToolTip"
+                        style="@style/text_view_normal"
+                        android:layout_gravity="start"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableStart="@drawable/ic_help"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="@dimen/margin_medium"
+                        android:text="@string/tool_tip_lic"
+                        android:textColor="@color/register_help_color"
+                        android:textSize="@dimen/text_size_11"
+                        android:visibility="gone"/>
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/create_profile_input_layout_state"
@@ -194,7 +209,6 @@
                             android:layout_marginLeft="@dimen/margin_normal"
                             android:layout_marginRight="@dimen/margin_normal"
                             android:background="@drawable/edit_text_selector"
-                            android:digits="@string/digits_alpha_numeric_only"
                             android:hint="@string/label_licence_state" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -209,7 +223,7 @@
                         android:background="@drawable/bg_edit_text"
                         android:inputType="textMultiLine"
                         android:gravity="top"
-                        android:hint="@string/write_description"
+                        android:hint="@string/write_dsc"
 
                         app:customFont="@string/font_light"
                         />

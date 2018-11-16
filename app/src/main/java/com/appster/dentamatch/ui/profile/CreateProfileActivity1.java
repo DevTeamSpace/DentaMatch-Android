@@ -32,9 +32,11 @@ import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
+import com.appster.dentamatch.network.response.profile.StateList;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.UserVerifyPendingActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.SearchStateActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
@@ -47,6 +49,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -65,6 +68,8 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     private boolean mImageUploaded;
     private int isLicenceRequired = 0;
     private int jobTitleId;
+    private int mPrevSelStatePos;
+    private ArrayList<StateList> mStateList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,10 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         }
 
         mBinder.etJobTitle.setOnClickListener(this);
-        mBinder.createProfileTvName.setText(getString(R.string.hi_user, PreferenceUtil.getFirstName()+" "+PreferenceUtil.getLastName()));
+        mBinder.createProfileEtState.setFocusableInTouchMode(false);
+        mBinder.createProfileEtState.setCursorVisible(false);
+        mBinder.createProfileEtState.setOnClickListener(this);
+        mBinder.createProfileTvName.setText(getString(R.string.hi_user, PreferenceUtil.getFirstName()));
         mBinder.tvPreferredJobLocationVal.setText(PreferenceUtil.getPreferredJobLocationName());
     }
 
@@ -113,54 +121,18 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
             case R.id.create_profile1_btn_next:
 
-               /* if (mImageUploaded) {
-                    if (validateInputData())
-                        launchNextActivity();
-
-                    *//*if (TextUtils.isEmpty(selectedJobTitle)) {
-                        Utils.showToast(getApplicationContext(), getString(R.string.blank_job_title_alert));
-                    } else if (TextUtils.isEmpty(mBinder.etDescAboutMe.getText().toString().trim())) {
-                        Utils.showToast(getApplicationContext(), getString(R.string.blank_profile_summary_alert));
-                    } else {
-                        launchNextActivity();
-                    }*//*
-
-                } else {
-                    if (checkValidation()) {
-                        uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
-                    }
-                }*/
-
                 if (validateInputData())
                     callUploadLicenseApi();
 
                 break;
-
-            /*case R.id.create_profile1_btn_not_now:
-                Alert.createYesNoAlert(CreateProfileActivity1.this,
-                        getString(R.string.ok),
-                        getString(R.string.cancel),
-                        "",
-                        getString(R.string.alert_profile),
-                        new Alert.OnAlertClickListener() {
-                    @Override
-                    public void onPositive(DialogInterface dialog) {
-                        if(PreferenceUtil.isJobFilterSet()){
-                            startActivity(new Intent(CreateProfileActivity1.this, HomeActivity.class)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-                        }else {
-                            startActivity(new Intent(CreateProfileActivity1.this, SearchJobActivity.class)
-                                    .putExtra(Constants.EXTRA_IS_FIRST_TIME, true)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-                        }
-                    }
-
-                    @Override
-                    public void onNegative(DialogInterface dialog) {
-                        dialog.dismiss();
-                    }
-                });
-                break;*/
+            case R.id.create_profile_et_state:
+                Intent intent = new Intent(this, SearchStateActivity.class);
+                if (mStateList != null && !mStateList.isEmpty()) {
+                    intent.putExtra(Constants.BundleKey.PREV_SEL_STATE, mPrevSelStatePos);
+                    intent.putParcelableArrayListExtra(Constants.BundleKey.STATE, mStateList);
+                }
+                startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_STATE);
+                break;
             default:
                 break;
         }
@@ -180,13 +152,13 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
                         PreferenceUtil.setUserModel(response.getResult().getUserDetails());
                         PreferenceUtil.setUserToken(response.getResult().getUserDetails().getAccessToken());
                         PreferenceUtil.setJobTitleId(jobTitleId);
-                        if(response.getResult().getUserDetails().getIsVerified()==Constants.USER_VERIFIED_STATUS) {
+                        if (response.getResult().getUserDetails().getIsVerified() == Constants.USER_VERIFIED_STATUS) {
                             Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, ProfileCompletedPendingActivity.class);
                             profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, isLicenceRequired);
                             startActivity(profileCompletedIntent);
 
                             finish();
-                        }else{
+                        } else {
                             Intent profileCompletedIntent = new Intent(CreateProfileActivity1.this, UserVerifyPendingActivity.class);
                             profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, isLicenceRequired);
                             startActivity(profileCompletedIntent);
@@ -208,7 +180,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
         } catch (Exception e) {
             hideProgressBar();
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -393,28 +365,18 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
         startActivity(intent);
     }
 
-//    private void getImageFromGallery() {
-//        Intent gIntent = new Intent(
-//                Intent.ACTION_PICK,
-//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        gIntent.setType("image/*");
-//        startActivityForResult(
-//                Intent.createChooser(gIntent, "Select File"),
-//                Constants.REQUEST_CODE.REQUEST_CODE_GALLERY);
-//    }
-
-//    private void takePhoto() {
-//        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
-//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-//        startActivityForResult(cameraIntent, Constants.REQUEST_CODE.REQUEST_CODE_CAMERA);
-//    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_STATE) {
+                mStateList = data.getParcelableArrayListExtra(Constants.BundleKey.STATE);
+                mPrevSelStatePos = data.getIntExtra(Constants.BundleKey.PREV_SEL_STATE, -1);
+                mBinder.createProfileEtState.setText(data.getStringExtra(Constants.BundleKey.SEL_STATE));
+                mBinder.etDescAboutMe.setFocusable(true);
+                return;
+            }
             if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
@@ -458,19 +420,21 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
     @Override
     public void onJobTitleSelection(String title, int titleId, int position, int isLicenseRequired) {
         PreferenceUtil.setJobTitle(title);
-       // PreferenceUtil.setJobTitleId(titleId);
-        jobTitleId=titleId;
+        // PreferenceUtil.setJobTitleId(titleId);
+        jobTitleId = titleId;
         PreferenceUtil.setJobTitlePosition(position);
         this.isLicenceRequired = isLicenseRequired;
         mBinder.etJobTitle.setText(title);
         selectedJobTitle = title;
         if (isLicenseRequired == 0) {
             mBinder.createProfileInputLayoutLicence.setVisibility(View.GONE);
+            mBinder.licToolTip.setVisibility(View.GONE);
             mBinder.createProfileInputLayoutState.setVisibility(View.GONE);
             mBinder.createProfileEtLicence.setText("");
             mBinder.createProfileEtState.setText("");
         } else {
             mBinder.createProfileInputLayoutLicence.setVisibility(View.VISIBLE);
+            mBinder.licToolTip.setVisibility(View.VISIBLE);
             mBinder.createProfileInputLayoutState.setVisibility(View.VISIBLE);
             mBinder.createProfileEtLicence.setText("");
             mBinder.createProfileEtState.setText("");

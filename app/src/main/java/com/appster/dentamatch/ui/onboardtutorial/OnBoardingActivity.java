@@ -20,6 +20,7 @@ import com.appster.dentamatch.databinding.ActivityOnboardingBinding;
 import com.appster.dentamatch.ui.auth.LoginActivity;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.Utils;
 
 /**
  * Created by virender on 06/01/17.
@@ -31,6 +32,7 @@ public class OnBoardingActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.setTransparentTheme(this);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_onboarding);
         OnBoardingAdapter onBoardingAdapter = new OnBoardingAdapter(this);
         mBinder.pagerOnboarding.setAdapter(onBoardingAdapter);

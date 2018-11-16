@@ -16,10 +16,31 @@
             android:id="@+id/custom_calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_25"
             android:layout_marginBottom="@dimen/margin_medium"
             android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"/>
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_25" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginBottom="@dimen/margin_8">
+
+            <com.appster.dentamatch.widget.CustomTextView
+                android:id="@+id/tvUpdateAvl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:drawableStart="@drawable/ic_update_ava"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/margin_4"
+                android:text="@string/upd_avl"
+                android:background="@drawable/bg_text_view"
+                android:textColor="@color/text_default_color"
+                app:customFont="@string/font_regular"
+                android:textSize="@dimen/text_size_12"/>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

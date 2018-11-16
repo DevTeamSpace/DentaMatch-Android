@@ -69,6 +69,7 @@
                 <com.appster.dentamatch.widget.CustomTextView
                     android:id="@+id/tv_add_more_reference"
                     style="@style/text_view_normal"
+                    android:layout_marginBottom="@dimen/margin_normal"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_12"
                     android:drawablePadding="@dimen/padding_drawable"
@@ -83,10 +84,10 @@
                     android:id="@+id/tv_experience_delete"
                     style="@style/text_view_normal"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_marginBottom="@dimen/margin_normal"
                     android:drawablePadding="@dimen/padding_drawable"
-                    android:textAllCaps="true"
                     android:text="@string/experience_delete"
+                    android:textAllCaps="true"
                     android:textColor="@color/color_forgot_pwd"
                     android:textSize="@dimen/text_size_normal"
                     android:visibility="visible"
@@ -98,7 +99,8 @@
                     android:layout_height="@dimen/cell_height"
                     android:layout_marginBottom="@dimen/margin_29"
                     android:layout_marginTop="@dimen/margin_17"
-                    android:background="@drawable/bg_cell">
+                    android:background="@drawable/bg_cell"
+                    android:visibility="gone">
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_add_more_experience"

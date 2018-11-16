@@ -4,15 +4,17 @@
 <resources>
 
     <string-array name="on_boarding_title">
-        <item>Find Jobs\nNear You</item>
-        <item>Set Your\nAvailability</item>
-        <item>Get Quick\nAssignments</item>
-        <item>Create\nYour Profile</item>
+        <item>You Work Hard Enough</item>
+        <item>Apply Away</item>
+        <item>Set Your Schedule</item>
+        <item>Build Your Profile</item>
     </string-array>
 
     <string-array name="on_boarding_desc">
-        <item>Quis nostrud exercitullamco laboris nisi ut aliquip consequat.quis nostrud exercitullamco laboris nisi ut.</item>
-        <item>Choose from Gallery</item>
+        <item>DentaMatch makes it easy to pick up an extra day, find a  part-time gig, or a new full-time position.</item>
+        <item>Search and apply to job matches, star your favorites, and accept temp work from offices directly.</item>
+        <item>Select the type of work you’re looking for and the days you’re available to temp. You can update it anytime.</item>
+        <item>Who Need a resume? Just add your skills and certifications to your profile and we’ll do the matching.</item>
     </string-array>
 
 </resources>

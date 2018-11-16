@@ -27,6 +27,7 @@ public class WorkExpRequest implements Parcelable {
     private String officeName;
     private String officeAddress;
     private String city;
+    private String state;
     private String reference1Name;
     private String reference2Name;
     private String reference1Mobile;
@@ -49,6 +50,7 @@ public class WorkExpRequest implements Parcelable {
         officeName = in.readString();
         officeAddress = in.readString();
         city = in.readString();
+        state = in.readString();
         reference1Name = in.readString();
         reference2Name = in.readString();
         reference1Mobile = in.readString();
@@ -75,6 +77,7 @@ public class WorkExpRequest implements Parcelable {
         parcel.writeString(officeName);
         parcel.writeString(officeAddress);
         parcel.writeString(city);
+        parcel.writeString(state);
         parcel.writeString(reference1Name);
         parcel.writeString(reference2Name);
         parcel.writeString(reference1Mobile);
@@ -232,5 +235,13 @@ public class WorkExpRequest implements Parcelable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

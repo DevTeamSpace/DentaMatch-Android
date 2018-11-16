@@ -55,12 +55,12 @@ class OnBoardingAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View itemView = mLayoutInflater.inflate(R.layout.item_onboarding, container, false);
 
-        ImageView imageView = itemView.findViewById(R.id.iv_bg_onboarding);
+        ImageView imageView = itemView.findViewById(R.id.ivTutImg);
         TextView tvTitle = itemView.findViewById(R.id.tv_title);
         TextView tvDesc = itemView.findViewById(R.id.tv_desc);
-        imageView.setBackgroundResource(images[position]);
+        imageView.setImageResource(images[position]);
         tvTitle.setText(mTitle[position]);
-        tvDesc.setText(mDesc[0]);
+        tvDesc.setText(mDesc[position]);
 
         container.addView(itemView);
 

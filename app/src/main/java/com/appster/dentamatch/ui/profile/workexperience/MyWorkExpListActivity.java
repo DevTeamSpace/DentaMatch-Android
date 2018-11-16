@@ -27,9 +27,11 @@ import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
+import com.appster.dentamatch.network.response.profile.StateList;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.SearchStateActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
@@ -54,12 +56,14 @@ import retrofit2.Call;
  */
 
 public class MyWorkExpListActivity extends BaseActivity implements View.OnClickListener, JobTitleSelectionListener, YearSelectionListener {
-    private static final String TAG=LogUtils.makeLogTag(MyWorkExpListActivity.class);
+    private static final String TAG = LogUtils.makeLogTag(MyWorkExpListActivity.class);
     private ActivityWorkExpListBinding mBinder;
     private boolean isFromProfile;
     private String mSelectedJobTitle = "";
     private int mJobTitleId, mExpMonth, jobTitlePosition;
     private ArrayList<WorkExpRequest> workExpList;
+    private int mPrevSelStatePos;
+    private ArrayList<StateList> mStateList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,9 +137,17 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
 
             case R.id.btn_next_work_exp_list:
                 hideKeyboard();
-                validateDataAndProceed();
+                //validateDataAndProceed();
+                addExperience();
                 break;
-
+            case R.id.et_office_state:
+                Intent intent = new Intent(this, SearchStateActivity.class);
+                if (mStateList != null && !mStateList.isEmpty()) {
+                    intent.putExtra(Constants.BundleKey.PREV_SEL_STATE, mPrevSelStatePos);
+                    intent.putParcelableArrayListExtra(Constants.BundleKey.STATE, mStateList);
+                }
+                startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_STATE);
+                break;
             default:
                 break;
 
@@ -145,13 +157,20 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT) {
-            if (data != null) {
-                workExpList.clear();
-                workExpList = data.getParcelableArrayListExtra(Constants.INTENT_KEY.DATA);
-                clearAllExpField();
-                inflateExpList(workExpList);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_STATE) {
+                mStateList = data.getParcelableArrayListExtra(Constants.BundleKey.STATE);
+                mPrevSelStatePos = data.getIntExtra(Constants.BundleKey.PREV_SEL_STATE, -1);
+                mBinder.includeWorkExpList.etOfficeState.setText(data.getStringExtra(Constants.BundleKey.SEL_STATE));
+                return;
+            }
+            if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT) {
+                if (data != null) {
+                    workExpList.clear();
+                    workExpList = data.getParcelableArrayListExtra(Constants.INTENT_KEY.DATA);
+                    clearAllExpField();
+                    inflateExpList(workExpList);
+                }
             }
         }
     }
@@ -186,6 +205,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeState),
                     Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
                     Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
                     Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
@@ -234,6 +254,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                             Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
                             Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
                             Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
+                            Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeState),
                             Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
                             Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
                             Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
@@ -296,6 +317,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
                 Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
+                Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeState),
                 Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
                 Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
                 Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
@@ -316,6 +338,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeName),
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeAddress),
                     Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeCity),
+                    Utils.getStringFromEditText(mBinder.includeWorkExpList.etOfficeState),
                     Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
                     Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
                     Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
@@ -337,7 +360,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
             public void onSuccess(WorkExpResponse response) {
 
                 if (response.getStatus() == 1) {
-
+                    Utils.showToast(MyWorkExpListActivity.this, response.getMessage());
                     if (workExpList != null) {
                         response.getWorkExpResponseData().getSaveList().get(0).setJobTitleName(mSelectedJobTitle);
                         clearAllExpField();
@@ -458,6 +481,11 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
         mBinder.tvAddMoreReference.setOnClickListener(this);
         mBinder.btnNextWorkExpList.setOnClickListener(this);
         mBinder.includeLayoutReference2.tvReferenceDelete.setOnClickListener(this);
+
+        mBinder.includeWorkExpList.etOfficeState.setFocusableInTouchMode(false);
+        mBinder.includeWorkExpList.etOfficeState.setCursorVisible(false);
+        mBinder.includeWorkExpList.etOfficeState.setOnClickListener(this);
+
     }
 
     private void setDataFromPreference() {
@@ -478,15 +506,15 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
         try {
             String yearLabel, monthLabel;
 
-            if(PreferenceUtil.getYear() == 1){
+            if (PreferenceUtil.getYear() == 1) {
                 yearLabel = getString(R.string.txt_single_year);
-            }else{
+            } else {
                 yearLabel = getString(R.string.txt_multiple_years);
             }
 
-            if(PreferenceUtil.getMonth() == 1){
+            if (PreferenceUtil.getMonth() == 1) {
                 monthLabel = getString(R.string.txt_single_month);
-            }else {
+            } else {
                 monthLabel = getString(R.string.txt_multiple_months);
             }
 
@@ -505,7 +533,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
             }
 
         } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         }
     }
 
@@ -514,6 +542,7 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
         mBinder.includeWorkExpList.etJobTitle.setText("");
         mBinder.includeWorkExpList.etOfficeAddress.setText("");
         mBinder.includeWorkExpList.etOfficeCity.setText("");
+        mBinder.includeWorkExpList.etOfficeState.setText("");
         mBinder.includeWorkExpList.etOfficeName.setText("");
         mBinder.includeLayoutReference1.etOfficeReferenceEmail.setText("");
         mBinder.includeLayoutReference1.etOfficeReferenceMobile.setText("");
@@ -539,15 +568,15 @@ public class MyWorkExpListActivity extends BaseActivity implements View.OnClickL
     public void onExperienceSection(int year, int month) {
         String yearLabel, monthLabel;
 
-        if(year == 1){
+        if (year == 1) {
             yearLabel = getString(R.string.txt_single_year);
-        }else{
+        } else {
             yearLabel = getString(R.string.txt_multiple_years);
         }
 
-        if(month == 1){
+        if (month == 1) {
             monthLabel = getString(R.string.txt_single_month);
-        }else {
+        } else {
             monthLabel = getString(R.string.txt_multiple_months);
         }
 

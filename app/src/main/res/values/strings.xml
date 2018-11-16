@@ -41,7 +41,7 @@
     <string name="blank_lname_alert">Last Name text field can not be left blank.</string>
     <string name="blank_location_alert">Preferred Job Location can not be left blank.</string>
     <string name="blank_tnc_alert">Please accept Terms and Conditions/Privacy Policy.</string>
-    <string name="valid_email_alert">Please provide a valid Email Id.</string>
+    <string name="valid_email_alert">Please provide a valid email address.</string>
     <string name="valid_mobile_alert">Please provide a valid phone number of 10 digits.</string>
     <string name="password_min_length_alert">Password should be 6&#8211;25 characters long.</string>
     <string name="password_contains_space">Password can not contain spaces.</string>
@@ -54,30 +54,31 @@
     <!--register & Login & Forgot password screen-->
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
-    <string name="preferred_location_label">Preferred Job Location</string>
+    <string name="preferred_location_label">Looking for Jobs In</string>
     <string name="login_label">LOGIN</string>
     <string name="send_label">Send</string>
     <string name="show_password">Show</string>
     <string name="hide_password">Hide</string>
-    <string name="register_label">REGISTER</string>
+    <string name="register_label">SIGN UP</string>
     <string name="forgot_password_label">Forgot Password?</string>
     <string name="fname_label">First Name</string>
     <string name="lname_label">Last Name</string>
     <string name="register_help_info">Helps Dental Offices find you easily.</string>
-    <string name="login_info_label">Login using your registered email</string>
+    <string name="login_info_label">Your job matches are right this way.</string>
     <string name="label_accept_term_n_condition">I agree to the Terms and Conditions and Privacy Policy </string>
     <string name="forgot_password_title">Enter your email address below and we’ll send you the instructions on how to change your password.</string>
-    <string name="profile_completion">Your profile has been created successfully. \n \n Let\'s set your availability so that dental offices can get to know about your timings.</string>
+    <string name="profile_completion">\n Now it\'s time set your availability to get matched with jobs and temp work that fits your schedule.</string>
 
     <!--  Reset password string-->
     <string name="old_password_label">Old Password</string>
     <string name="new_password_label">New Password</string>
     <string name="confirm_password_label">Confirm Password</string>
     <string name="save_label">Save</string>
+    <string name="save_job">Save Job</string>
 
     <!--  Bottom sheet string-->
-    <string name="label_take_photo">Take photo</string>
-    <string name="label_choose_gallery">Choose from gallery</string>
+    <string name="label_take_photo">Take a photo</string>
+    <string name="label_choose_gallery">Choose from Library</string>
     <string name="dental_state_board">ADD DENTAL STATE BOARD</string>
     <string name="label_licence">LICENSE</string>
     <string name="label_licence_number">License Number</string>
@@ -86,7 +87,7 @@
     <string name="label_licence_state">License State</string>
 
     <string name="label_next">Next</string>
-    <string name="text_camera_permision">Camera and storage permission is required to take photos of the user.</string>
+    <string name="text_camera_permision">Photo access is turned off. please enable app access in Settings.</string>
     <string name="decode_stream_alert">Unable to parse this image.</string>
     <string name="profile1_text">Let’s start with creating your profile.</string>
     <string name="label_job_title">Current Job Title</string>
@@ -120,12 +121,13 @@
     <string name="office_name">Office Name</string>
     <string name="office_address">Office Address</string>
     <string name="city">City</string>
+    <string name="state">State</string>
     <string name="reference">Reference 1</string>
     <string name="reference2">Reference 2</string>
     <string name="reference_delete">Delete Reference</string>
-    <string name="experience_delete">Delete This Job</string>
+    <string name="experience_delete">Delete This Experience</string>
     <string name="reference_name">Reference Name (Optional)</string>
-    <string name="reference_mobile">Reference Mobile No. (Optional)</string>
+    <string name="reference_mobile">Reference Phone Number (Optional)</string>
     <string name="reference_email">Reference Email (Optional)</string>
     <string name="year">Year</string>
     <string name="month">month</string>
@@ -141,10 +143,12 @@
     <string name="server_error">There is some issue connecting with server.</string>
     <string name="no_internet">Please check your internet connection.</string>
     <string name="add_more_reference">Add More References</string>
-    <string name="add_more_exp">ADD ANOTHER JOB</string>
+    <string name="add_more_exp">Save Job</string>
+    <string name="ad_more_exp">Add work experience</string>
 
     <!--screen header text-->
     <string name="header_work_exp">EMPLOYMENT HISTORY</string>
+    <string name="hdr_work_exp">EXPERIENCE</string>
     <string name="header_create_profile">CREATE PROFILE</string>
     <string name="header_privacy">PRIVACY POLICY</string>
     <string name="header_term">TERMS &amp; CONDITIONS</string>
@@ -158,6 +162,7 @@
     <string name="header_skills_exp">KEY SKILLS &amp; EXPERIENCE</string>
     <string name="header_schooling_exp">EDUCATION / TRAINING</string>
 
+    <string name="search_hint">Search</string>
     <string name="autocomplete_hint">Search Places</string>
     <string name="get_started">GET STARTED</string>
     <string name="hint_type_to_search">Enter School</string>
@@ -174,6 +179,7 @@
     <string name="about_me_title">Executive Summary </string>
     <string name="alert_pervious_date">Please select a valid date.</string>
     <string name="write_description">Introduce yourself and tell us what you\'re looking for. What can you bring to the office?</string>
+    <string name="write_dsc">Here\'s a sentence or two about me and the work I do.</string>
     <string name="lable_complete_profile">Complete Profile</string>
     <string name="blank_licence_number">Licence number can not be blank.</string>
     <string name="licence_number_length">Licence Number should not exceed 15 characters.</string>
@@ -186,6 +192,7 @@
     <string name="blank_office_name_alert">Office name can never be blank</string>
     <string name="blank_office_addrerss_alert">Office address can never be blank</string>
     <string name="blank_city_alert">City can never be blank</string>
+    <string name="empty_state_alert">State can never be blank</string>
     <string name="office_name_length_alert">Office name length can not exceed 30 characters</string>
     <string name="office_address_length_alert">Office address length can not exceed 30 characters</string>
     <string name="city_length_alert">City name length can not exceed 30 characters</string>
@@ -195,7 +202,7 @@
     <string name="blank_satate_board_photo_alert">Please upload photo for Dental state board</string>
     <string name="blank_certificate_photo_alert">Please upload atleast one certificate</string>
     <string name="desc_about_me">Describe about your work and things you are passionate about.</string>
-    <string name="blank_other_alert">Please write some text in other</string>
+    <string name="blank_other_alert">Other affiliation can\'t be empty</string>
     <string name="blank_affiliation_selection">Please select atleast one affiliation.</string>
     <string name="blank_certificate_validity_date">Please enter certificate validation date of %1$s</string>
     <string name="blank_profile_summary_alert">Please write something about your profile.</string>
@@ -220,21 +227,24 @@
     <string name="add_certificate">Add Certificate/Document</string>
     <string name="title_schooling">EDUCATION / TRAINING</string>
     <string name="title_skill">KEY SKILLS</string>
-    <string name="office_location">OFFICE LOCATION</string>
-    <string name="contact_info">CONTACT INFORMATION</string>
+    <string name="office_location">EMPLOYER</string>
+    <string name="contact_info">REFERENCE CONTACT</string>
     <string name="blank_alert_old_password">Old password can never be blank.</string>
     <string name="blank_alert_new_password">New password can never be blank.</string>
     <string name="blank_alert_confirm_password">Confirm password can never be blank.</string>
     <string name="alert_reset_password_mismatch">New password and Confirm password should be same.</string>
     <string name="job_type">Job Type</string>
+    <string name="job_lok">I\'M LOOKING FOR</string>
     <string name="header_list_view">List View</string>
     <string name="header_map_view">Map View</string>
     <string name="select_multiple_job">Choose multiple options</string>
+    <string name="select_opt">Select the job type and days you\'re available to work.</string>
     <string name="error_no_first_name">First name cannot be empty</string>
     <string name="error_no_last_name">Last name cannot be empty</string>
     <string name="error_no_job_type">Job type  cannot be empty</string>
     <string name="error_no_description">Introduction cannot be empty</string>
     <string name="alert_upload_photo_first">Please upload certificate image first</string>
+    <string name="tool_tip_lic">We\'ll confirm your license within the next business day.</string>
     <!--search job-->
     <string name="job_title">JOB TITLE</string>
     <string name="full_time">Full Time</string>
@@ -388,27 +398,27 @@
     <string name="mixpanel_event_login">Login</string>
     <string name="mixpanel_event_signup">SignUp</string>
     <string name="mixpanel_event_logout">Logout</string>
-    <string name="msg_delete_exp_warning">Are you sure you want to delete this experience ?</string>
+    <string name="msg_delete_exp_warning">Are you sure you want to delete this work experience?</string>
     <string name="msg_invite_reject_warning">Are you sure you want to reject this job invitation?</string>
     <string name="hint_license_expiry">License Expiry</string>
     <string name="label_create_profile">Create Profile</string>
-    <string name="lets_go">LETS\'S GO</string>
+    <string name="lets_go">LET\'S GO</string>
     <string name="congratulations">Congratulations!</string>
-    <string name="pending_approval">Pending Approval</string>
-    <string name="profile_pending">Your profile has been sent for admin’s  approval. You can apply for jobs once your profile gets approved. \n \n In the meantime, Lets set your availability so that dental offices can get to know about your timings.</string>
+    <string name="pending_approval">Nice to Meet You</string>
+    <string name="profile_pending">We\'ll confirm your license and approve your profile within 1 business day. \n \n In the meantime, set your availability to get matched with jobs that fit your schedule and add skills and certifications to your profile.</string>
 
     <string name="success">Success</string>
-    <string name="your_job_profile_status">Your Profile is currently is being reviewed by Admin. Once it gets approved, you can start applying for jobs.</string>
+    <string name="your_job_profile_status">Once we confirm your license, you\'ll be able to apply for jobs.</string>
 
-    <string name="we_have_sent_a_verification">We have sent a verification link on\n your registered email. Please\n verify it to proceed further.</string>
-    <string name="verify_email_b">Verify Email</string>
+    <string name="we_have_sent_a_verification">Please check your email to activate your new account.</string>
+    <string name="verify_email_b">Almost There</string>
 
     <string name="need_attention">Needs Attention </string>
     <string name="pending">Pending </string>
     <string name="active">Active </string>
 
 
-    <string name="your_profile_pending">Your profile is pending admin’s approval. You will be able to apply for jobs once its approved.</string>
+    <string name="your_profile_pending">Your profile is pending approval. Once we confirm your license, you\'ll be able to apply for jobs.</string>
     <string name="got_it">GOT IT</string>
 
     <string name="txt_match">\nMATCH</string>
@@ -425,6 +435,7 @@
 
     <string name="pls_enter_license_no">Please enter License number</string>
     <string name="pls_enter_license_state">Please enter License state</string>
+    <string name="ttl_state">STATE</string>
 
     <string name="resume">Resume</string>
     <string name="show_more">See More</string>
@@ -433,4 +444,9 @@
     <string name="ntf_cnt">100+</string>
 
     <string name="del_chat_his">This chat history with this Recruiter is deleted you will no longer be able to see the previous chat</string>
+
+    <string name="post">POSTED\u0020</string>
+
+    <string name="upd_avl">Update my availability</string>
+
 </resources>

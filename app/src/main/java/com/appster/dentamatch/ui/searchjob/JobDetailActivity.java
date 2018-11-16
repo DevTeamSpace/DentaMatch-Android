@@ -414,9 +414,9 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                 mBinding.tvJobDetailDate.setVisibility(View.VISIBLE);
                 mBinding.tvJobDetailDate.setText(partTimeDays);
 
-                final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
-                params.addRule(RelativeLayout.END_OF, mBinding.tvJobDetailType.getId());
+                /*final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailName.getId());
+                params.addRule(RelativeLayout.END_OF, mBinding.tvJobDetailName.getId());
                 params.setMargins(Utils.dpToPx(this, getResources().getInteger(R.integer.margin_12)),
                         getResources().getInteger(R.integer.margin_0),
                         Utils.dpToPx(this, getResources().getInteger(R.integer.margin_10)),
@@ -426,10 +426,10 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                     @Override
                     public void run() {
                         if (mBinding.tvJobDetailDate.getLineCount() == LINE_COUNT_ONE) {
-                            params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailType.getId());
+                            params.addRule(RelativeLayout.ALIGN_BOTTOM, mBinding.tvJobDetailName.getId());
                             mBinding.tvJobDetailDate.setLayoutParams(params);
                         } else {
-                            params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailType.getId());
+                            params.addRule(RelativeLayout.ALIGN_BASELINE, mBinding.tvJobDetailName.getId());
                             mBinding.tvJobDetailDate.setLayoutParams(params);
                             mBinding.tvJobDetailDate.setPadding(
                                     getResources().getInteger(R.integer.padding_0),
@@ -438,7 +438,7 @@ public class JobDetailActivity extends BaseActivity implements OnMapReadyCallbac
                                     getResources().getInteger(R.integer.padding_0));
                         }
                     }
-                }, VIEW_DELAY_TIME);
+                }, VIEW_DELAY_TIME);*/
 
             } else if (dataModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                 mBinding.tvJobDetailType.setBackgroundResource(R.drawable.job_type_background_full_time);

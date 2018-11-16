@@ -69,6 +69,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_job_detail_name"
                         android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginEnd="@dimen/margin_12"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:layout_toStartOf="@+id/tv_matches_percent"
                         android:textColor="@color/black_color"

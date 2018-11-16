@@ -100,4 +100,5 @@ public class JobTitleListModel implements Parcelable {
         dest.writeInt(isLicenseRequired);
         dest.writeByte((byte) (isSelected ? 1 : 0));
     }
+
 }

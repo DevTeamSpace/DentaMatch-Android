@@ -52,7 +52,7 @@ public class ProfileCompletedPendingActivity extends BaseActivity {
     private void updateUI() {
         if (isLicenceRequired == 0) {
             activityProfileCompletedPendingBinding.imageview.setImageDrawable(getResources().getDrawable(R.drawable.approval_approved));
-            activityProfileCompletedPendingBinding.headingMessage.setText(getResources().getString(R.string.congratulations));
+            activityProfileCompletedPendingBinding.headingMessage.setText(getResources().getString(R.string.pending_approval));
             activityProfileCompletedPendingBinding.message.setText(getResources().getString(R.string.profile_completion));
         } else {
             activityProfileCompletedPendingBinding.imageview.setImageDrawable(getResources().getDrawable(R.drawable.approval_pending));

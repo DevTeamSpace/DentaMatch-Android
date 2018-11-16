@@ -26,6 +26,7 @@ import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
+import com.appster.dentamatch.network.response.notification.UnReadNotificationResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.calendar.CalendarFragment;
 import com.appster.dentamatch.ui.messages.ChatActivity;
@@ -242,14 +243,16 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    public void onCount(int count) {
+    @Subscribe
+    public void onCount(UnReadNotificationCountResponse count) {
         AHNotification notification = new AHNotification.Builder()
-                .setText(count == 0 ? "" : count > 100 ? getString(R.string.ntf_cnt) : String.valueOf(count))
+                .setText(count.getUnReadNotificationResponse().getNotificationCount() == 0 ? "" : count.getUnReadNotificationResponse().getNotificationCount() > 100 ? getString(R.string.ntf_cnt) : String.valueOf(count.getUnReadNotificationResponse().getNotificationCount()))
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.clr_cnl))
                 .setTextColor(ContextCompat.getColor(this, R.color.white))
                 .build();
         bottomBar.setNotification(notification, 4);
-        ShortcutBadger.applyCount(getApplicationContext(), count);
+        EventBus.getDefault().post(count.getUnReadNotificationResponse());
+        ShortcutBadger.applyCount(getApplicationContext(), count.getUnReadNotificationResponse().getNotificationCount());
     }
 
     private void setTitleMargins(int bottomBarPosition) {
@@ -343,13 +346,16 @@ public class HomeActivity extends BaseActivity {
                  */
                 if (response.getStatus() == 1) {
                     if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
-                        onCount(0);
+                        UnReadNotificationCountResponse countResponse = new UnReadNotificationCountResponse();
+                        UnReadNotificationResponseData responseData = new UnReadNotificationResponseData();
+                        responseData.setNotificationCount(0);
+                        countResponse.setUnReadNotificationResponse(responseData);
+                        onCount(countResponse);
                         ShortcutBadger.removeCount(HomeActivity.this);
                     } else {
-                        onCount(response.getUnReadNotificationResponse().getNotificationCount());
+                        onCount(response);
                         ShortcutBadger.applyCount(HomeActivity.this, response.getUnReadNotificationResponse().getNotificationCount());
                     }
-                    EventBus.getDefault().post(response.getUnReadNotificationResponse());
                 } else {
                     showToast(response.getMessage());
                 }

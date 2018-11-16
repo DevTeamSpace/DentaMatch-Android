@@ -163,11 +163,11 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
 
             holder.tvDocAddress.setText(data.getAddress());
             if (data.getDays() == DURATION_TIME_0) {
-                holder.tvDuration.setText(mContext.getString(R.string.text_todays));
+                holder.tvDuration.setText(mContext.getString(R.string.post).concat(mContext.getString(R.string.text_todays)));
 
             } else {
                 String endMessage = data.getDays() > DURATION_TIME_1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
-                holder.tvDuration.setText(String.valueOf(data.getDays()).concat(" ").concat(endMessage));
+                holder.tvDuration.setText(mContext.getString(R.string.post).concat(String.valueOf(data.getDays()).concat(" ").concat(endMessage)));
             }
 
             //holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));

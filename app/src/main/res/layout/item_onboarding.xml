@@ -2,13 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/tut_base_bg">
 
     <ImageView
-        android:id="@+id/iv_bg_onboarding"
+        android:id="@+id/ivTutImg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         />
+        android:scaleType="center" />
 
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/tv_skip_onboarding"
@@ -22,29 +23,32 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:layout_width="@dimen/on_boarding_text_layout_size"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_normal"
-        android:layout_marginRight="@dimen/margin_normal"
-        android:layout_marginBottom="@dimen/margin_80"
-        android:layout_above="@+id/tv_skip_onboarding"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tut_btm_hgt"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:background="@drawable/tut_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/margin_22"
+        android:paddingStart="@dimen/margin_22"
+        android:paddingTop="@dimen/margin_22">
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_title"
             style="@style/text_view_normal"
             android:textColor="@color/white_color"
-            android:textSize="@dimen/text_size_34"
+            android:textSize="@dimen/text_size_xlarge"
             app:customFont="@string/font_bold" />
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_desc"
             style="@style/text_view_normal"
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/margin_12"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="@dimen/line_space"
             android:textColor="@color/white_color"
-            android:textSize="@dimen/text_size_13"
-            android:lineSpacingExtra="@dimen/margin_small_3"
+            android:textSize="@dimen/text_size_14"
             app:customFont="@string/font_light" />
 
     </LinearLayout>

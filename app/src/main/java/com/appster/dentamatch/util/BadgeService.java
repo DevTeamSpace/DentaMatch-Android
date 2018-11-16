@@ -8,10 +8,9 @@
 
 package com.appster.dentamatch.util;
 
-import android.content.Context;
+import android.app.IntentService;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
+import android.support.annotation.Nullable;
 
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
@@ -25,20 +24,17 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import retrofit2.Call;
 
 /**
- * Created by atul on 23/08/18.
+ * Created by atul on 24/10/18.
  * To inject activity reference.
  */
+public class BadgeService extends IntentService {
 
-public class BadgeIntentService extends JobIntentService {
-
-    public static final int JOB_ID = 0x01;
-
-    public static void enqueueWork(Context context, Intent work) {
-        enqueueWork(context, BadgeIntentService.class, JOB_ID, work);
+    public BadgeService() {
+        super("BadgeIntentService");
     }
 
     @Override
-    protected void onHandleWork(@NonNull Intent intent) {
+    protected void onHandleIntent(@Nullable Intent intent) {
         getBatchCount();
     }
 

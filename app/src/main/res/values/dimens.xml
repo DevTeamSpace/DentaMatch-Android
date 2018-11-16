@@ -27,6 +27,7 @@
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_6">6sp</dimen>
     <dimen name="text_size_8">8sp</dimen>
     <dimen name="text_size_normal">15sp</dimen>
     <dimen name="text_size_small">10sp</dimen>
@@ -98,15 +99,16 @@
     <dimen name="edit_height_about_me">160dp</dimen>
     <dimen name="create_profile_header_height">285dp</dimen>
 
+    <dimen name="et_height">48dp</dimen>
 
     <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_74">74dp</dimen>
     <dimen name="circular_text_dimen">35dp</dimen>
     <dimen name="calendar_cell_height">40dp</dimen>
-    <dimen name="batch_count_dimen">12dp</dimen>
+    <dimen name="batch_count_dimen">13dp</dimen>
     <dimen name="user_profile_pic_dimen">91dp</dimen>
     <dimen name="skill_other_cell_height">53dp</dimen>
-
+    <dimen name="tut_btm_hgt">223dp</dimen>
     <dimen name="date_tag_width">28dp</dimen>
-
+    <dimen name="line_space">3.3sp</dimen>
 </resources>

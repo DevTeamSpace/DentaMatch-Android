@@ -122,6 +122,9 @@ public class Constants {
         String LAYOUT_ID = "layoutResId";
         String INDEX = "INDEX";
         String SUB_SKILLS = "sub_skills";
+        String STATE = "States";
+        String SEL_STATE = "selState";
+        String PREV_SEL_STATE = "prevSelPos";
     }
 
     public interface DateFormat {
@@ -170,7 +173,7 @@ public class Constants {
         int REQUEST_CODE_LOCATION = 101;
         int REQUEST_CODE_JOB_DETAIL = 121;
         int REQUEST_CODE_PREFJOB_LOC = 656;
-
+        int REQUEST_CODE_STATE = 301;
     }
 
     public interface FRAGMENT_NAME {

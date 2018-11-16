@@ -18,4 +18,8 @@ public class UnReadNotificationResponseData {
     public int getNotificationCount() {
         return notificationCount;
     }
+
+    public void setNotificationCount(int notificationCount) {
+        this.notificationCount = notificationCount;
+    }
 }

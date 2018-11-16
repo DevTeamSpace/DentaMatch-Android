@@ -34,6 +34,7 @@ import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
+import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationResponseData;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
@@ -107,17 +108,18 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getProfileData();
+        getBatchCount();
     }
 
     private void initViews() {
 //        profileBinding.cellDentalStateBoard.tvAddCertificates.setText(getString(R.string.add_dental_state_board));
         profileBinding.cellAffiliation.tvAddCertificates.setText(getString(R.string.add_affiliation));
-        profileBinding.cellExp.tvAddCertificates.setText(getString(R.string.add_more_exp));
+        profileBinding.cellExp.tvAddCertificates.setText(getString(R.string.ad_more_exp));
         profileBinding.cellKeySkill.tvAddCertificates.setText(getString(R.string.add_key_skill));
         profileBinding.cellSchooling.tvAddCertificates.setText(getString(R.string.add_school));
         profileBinding.cellLicence.tvAddCertificates.setText(getString(R.string.add_licence));
         profileBinding.cellLicence.tvCertificatesName.setText(getString(R.string.label_licence_number));
-        profileBinding.cellExp.tvCertificatesName.setText(getString(R.string.header_work_exp));
+        profileBinding.cellExp.tvCertificatesName.setText(getString(R.string.hdr_work_exp));
         profileBinding.cellSchooling.tvCertificatesName.setText(getString(R.string.title_schooling));
         profileBinding.cellKeySkill.tvCertificatesName.setText(getString(R.string.title_skill));
         profileBinding.cellAffiliation.tvCertificatesName.setText(getString(R.string.title_affiliation));
@@ -139,32 +141,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 startActivity(licenseIntent);
             }
         });
-//        profileBinding.cellDentalStateBoard.tvEdit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), UpdateCertificateActivity.class);
-//                CertificatesList data = new CertificatesList();
-//                if (TextUtils.isEmpty(profileResponseData.getDentalStateBoard().getImageUrl())) {
-//                    data.setImage("");
-//
-//                } else {
-//                    data.setImage(profileResponseData.getDentalStateBoard().getImageUrl());
-//                }
-//                data.setCertificateName(getString(R.string.dental_state_board));
-//
-//                intent.putExtra(Constants.INTENT_KEY.FROM_WHERE, true);
-//                intent.putExtra(Constants.INTENT_KEY.DATA, data);
-//                startActivity(intent);
-//            }
-//        });
-//        profileBinding.cellDentalStateBoard.tvAddCertificates.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                profileBinding.cellDentalStateBoard.tvEdit.performClick();
-//
-//            }
-//        });
-
 
         profileBinding.cellAffiliation.tvEditCell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -407,7 +383,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 goneViews(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
                 inflateExperience(response.getWorkExperience().getSaveList());
             } else {
-                profileBinding.expInflater.setVisibility(View.VISIBLE);
+                profileBinding.expInflater.setVisibility(View.GONE);
                 profileBinding.expInflater.removeAllViews();
                 visibleView(profileBinding.cellExp.tvAddCertificates, profileBinding.cellExp.tvEditCell);
             }
@@ -780,6 +756,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             profileBinding.tvBatchCount.setVisibility(View.GONE);
         } else {
             profileBinding.tvBatchCount.setVisibility(View.VISIBLE);
+            profileBinding.tvBatchCount.setText(responseData.getNotificationCount() > 100 ? getString(R.string.ntf_cnt) : String.valueOf(responseData.getNotificationCount()));
         }
     }
 
@@ -788,5 +765,22 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         PreferenceUtil.setUserModel(userModel);
     }
 
+    private void getBatchCount() {
+        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
+        webServices.getUnreadNotificationCount().enqueue(new BaseCallback<UnReadNotificationCountResponse>(getBaseActivity()) {
+            @Override
+            public void onSuccess(UnReadNotificationCountResponse response) {
+                if (response.getStatus() == 1) {
+                    onMessage(response.getUnReadNotificationResponse());
+                    EventBus.getDefault().post(response);
+                }
+            }
+
+            @Override
+            public void onFail(Call<UnReadNotificationCountResponse> call, BaseResponse baseResponse) {
+            }
+        });
+
+    }
 
 }

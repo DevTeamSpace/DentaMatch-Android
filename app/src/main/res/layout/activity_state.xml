@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbarState"
+            layout="@layout/toolbar_general" />
+
+        <com.appster.dentamatch.widget.CustomEditText
+            android:id="@+id/textSearchState"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/et_height"
+            android:background="@drawable/find_et_bg"
+            android:layout_gravity="start|center"
+            android:paddingStart="@dimen/margin_8"
+            android:paddingEnd="@dimen/margin_8"
+            android:paddingTop="@dimen/margin_4"
+            android:paddingBottom="@dimen/margin_4"
+            android:lines="1"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/white"
+            android:hint="@string/search_hint"
+            android:textColorHint="@color/white_color"
+            android:drawableStart="@drawable/ic_search_et"
+            android:drawablePadding="@dimen/margin_6"
+            app:customFont="@string/font_regular"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:inputType="textCapSentences"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvStateList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</layout>

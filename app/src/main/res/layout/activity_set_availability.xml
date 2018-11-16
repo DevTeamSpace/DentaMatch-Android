@@ -30,7 +30,7 @@
                     android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_17"
-                    android:text="@string/job_type"
+                    android:text="@string/job_lok"
                     android:textAllCaps="true"
                     android:textColor="@color/grayish_brown_color"
                     android:textSize="@dimen/text_size_13"
@@ -42,7 +42,7 @@
                     android:layout_marginBottom="@dimen/margin_15"
                     android:layout_marginLeft="@dimen/margin_normal"
                     android:layout_marginRight="@dimen/margin_normal"
-                    android:text="@string/select_multiple_job"
+                    android:text="@string/select_opt"
                     android:textColor="@color/grayish_color"
                     android:textSize="@dimen/text_size_12"
                     app:customFont="@string/font_regular" />

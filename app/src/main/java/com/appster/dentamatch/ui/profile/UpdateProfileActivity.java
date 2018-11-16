@@ -31,6 +31,7 @@ import com.appster.dentamatch.databinding.ActivityUpdateProfileBinding;
 import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
+import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
@@ -43,10 +44,12 @@ import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.PreferredJobLocationAdapter;
 import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.ui.common.SearchStateActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PermissionUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
+import com.appster.dentamatch.util.StringUtils;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetJobTitle;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetView;
@@ -98,6 +101,10 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
 
         mBinding.etJobTitle.setFocusableInTouchMode(false);
         mBinding.etJobTitle.setCursorVisible(false);
+
+        mBinding.createProfileEtState.setFocusableInTouchMode(false);
+        mBinding.createProfileEtState.setCursorVisible(false);
+
         setViewData();
 
         mBinding.etDesc.setOnTouchListener(new View.OnTouchListener() {
@@ -138,8 +145,8 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                     boolean isFound = false;
                     for (int i = 0; i < response.getProfileResponseData().getJobTitleLists().size(); i++) {
                         if (mSelectedJobTitleID == response.getProfileResponseData().getJobTitleLists().get(i).getId()) {
-
-                            mJobTitle = response.getProfileResponseData().getJobTitleLists().get(i).getJobTitle();
+                            JobTitleListModel jtm = response.getProfileResponseData().getJobTitleLists().get(i);
+                            mJobTitle = StringUtils.isNullOrEmpty(jtm.getShortName()) ? jtm.getJobTitle() : jtm.getShortName();
                             isFound = true;
                             break;
                         }
@@ -195,8 +202,14 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
             } else {
-                //mBinding.etJobTitle.setText(mProfileData.getUser().getJobTitle());
-                mBinding.etJobTitle.setText(mProfileData.getUser().getJobtitleName());
+                String shortName = "";
+                for (JobTitleListModel jtm : mProfileData.getJobTitleLists()) {
+                    if (StringUtils.isNullOrEmpty(jtm.getShortName()) || jtm.getId() != mProfileData.getUser().getJobTitleId()) {
+                        continue;
+                    }
+                    shortName = jtm.getShortName();
+                }
+                mBinding.etJobTitle.setText(StringUtils.isNullOrEmpty(shortName) ? mProfileData.getUser().getJobtitleName() : shortName);
             }
 
             if ((mProfileData.getUser().getLicenseNumber() != null && !TextUtils.isEmpty(mProfileData.getUser().getLicenseNumber()))) {
@@ -224,6 +237,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             mBinding.createProfile1IvProfileIcon.setOnClickListener(this);
             mBinding.btnSave.setOnClickListener(this);
             mBinding.etJobTitle.setOnClickListener(this);
+            mBinding.createProfileEtState.setOnClickListener(this);
             mBinding.toolbarProfile.ivToolBarLeft.setOnClickListener(this);
         }
 
@@ -253,22 +267,6 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 validateAndUpdate();
                 break;
 
-         /*   case R.id.et_location:
-                Intent intent = new Intent(UpdateProfileActivity.this, PlacesMapActivity.class);
-
-                if (mProfileData != null && mProfileData.getUser() != null) {
-                    intent.putExtra(Constants.EXTRA_LATITUDE, mProfileData.getUser().getLatitude());
-                    intent.putExtra(Constants.EXTRA_LONGITUDE, mProfileData.getUser().getLongitude());
-                    intent.putExtra(Constants.EXTRA_POSTAL_CODE, mProfileData.getUser().getPostalCode());
-                    intent.putExtra(Constants.EXTRA_PLACE_NAME, mProfileData.getUser().getPreferredJobLocation());
-                    intent.putExtra(Constants.EXTRA_COUNTRY_NAME, mSelectedCountry);
-                    intent.putExtra(Constants.EXTRA_CITY_NAME, mSelectedCity);
-                    intent.putExtra(Constants.EXTRA_STATE_NAME, mSelectedState);
-                }
-
-                startActivityForResult(intent, REQUEST_CODE_LOCATION);
-                break;*/
-
             case R.id.create_profile1_iv_profile_icon:
                 callBottomSheet();
                 break;
@@ -295,6 +293,9 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 } else {
                     showLocationList();
                 }
+                break;
+            case R.id.create_profile_et_state:
+                startActivity(new Intent(this, SearchStateActivity.class));
                 break;
             default:
                 break;

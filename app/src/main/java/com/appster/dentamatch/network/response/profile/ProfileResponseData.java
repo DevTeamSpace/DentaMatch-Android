@@ -54,6 +54,8 @@ public class ProfileResponseData implements Parcelable {
 
     private ProfileResponseData(Parcel in) {
         userModel = in.readParcelable(UserModel.class.getClassLoader());
+        jobTitleLists = new ArrayList<>();
+        jobTitleLists = in.readArrayList(JobTitleListModel.class.getClassLoader());
     }
 
     public static final Creator<ProfileResponseData> CREATOR = new Creator<ProfileResponseData>() {
@@ -76,6 +78,7 @@ public class ProfileResponseData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(userModel, flags);
+        dest.writeList(jobTitleLists);
     }
 
     public UserModel getUser() {

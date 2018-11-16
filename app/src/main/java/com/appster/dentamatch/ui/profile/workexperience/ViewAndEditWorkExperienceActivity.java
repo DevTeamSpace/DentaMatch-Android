@@ -24,10 +24,12 @@ import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
+import com.appster.dentamatch.network.response.profile.StateList;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.common.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
+import com.appster.dentamatch.ui.common.SearchStateActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.UsPhoneNumberFormat;
@@ -54,6 +56,8 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     private String selectedJobtitle;
     private ArrayList<WorkExpRequest> workExpList;
     private int expMonth, jobTitleId;
+    private int mPrevSelStatePos;
+    private ArrayList<StateList> mStateList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,10 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         UsPhoneNumberFormat addLineNumberFormatter2 = new UsPhoneNumberFormat(
                 new WeakReference<>(mBinder.includeLayoutReference2.etOfficeReferenceMobile));
         mBinder.includeLayoutReference2.etOfficeReferenceMobile.addTextChangedListener(addLineNumberFormatter2);
+
+        mBinder.layoutWorkExpViewEdit.etOfficeState.setFocusableInTouchMode(false);
+        mBinder.layoutWorkExpViewEdit.etOfficeState.setCursorVisible(false);
+        mBinder.layoutWorkExpViewEdit.etOfficeState.setOnClickListener(this);
     }
 
     private void setViewData() {
@@ -95,6 +103,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         jobTitleId = workExpList.get(position).getJobTitleId();
         expMonth = workExpList.get(position).getMonthsOfExpereince();
         mBinder.layoutWorkExpViewEdit.etOfficeCity.setText(workExpList.get(position).getCity());
+        mBinder.layoutWorkExpViewEdit.etOfficeState.setText(workExpList.get(position).getState());
         mBinder.layoutWorkExpViewEdit.etOfficeName.setText(workExpList.get(position).getOfficeName());
         mBinder.layoutWorkExpViewEdit.etJobTitle.setText(workExpList.get(position).getJobTitleName());
         mBinder.layoutWorkExpViewEdit.tvExperienceWorkExp.setText(Utils.getExpYears(workExpList.get(position).getMonthsOfExpereince()));
@@ -161,7 +170,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 break;
 
             case R.id.btn_update:
-                updateExp(false);
+                updateExp(true);
 
                 break;
 
@@ -212,7 +221,14 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
             case R.id.rel_save:
                 updateExp(true);
                 break;
-
+            case R.id.et_office_state:
+                Intent intent = new Intent(this, SearchStateActivity.class);
+                if (mStateList != null && !mStateList.isEmpty()) {
+                    intent.putExtra(Constants.BundleKey.PREV_SEL_STATE, mPrevSelStatePos);
+                    intent.putParcelableArrayListExtra(Constants.BundleKey.STATE, mStateList);
+                }
+                startActivityForResult(intent, Constants.REQUEST_CODE.REQUEST_CODE_STATE);
+                break;
             default:
                 break;
         }
@@ -223,6 +239,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
                 Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
                 Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
+                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeState),
                 Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
                 Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
                 Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
@@ -243,6 +260,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                         Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
                         Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
                         Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
+                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeState),
                         Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
                         Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
                         Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
@@ -294,7 +312,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                     workExpList.remove(position);
                     Intent intent = new Intent();
                     intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
-                    setResult(Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT, intent);
+                    setResult(RESULT_OK, intent);
                     EventBus.getDefault().post(new ProfileUpdatedEvent(true));
                     finish();
                 }
@@ -340,6 +358,18 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_STATE) {
+                mStateList = data.getParcelableArrayListExtra(Constants.BundleKey.STATE);
+                mPrevSelStatePos = data.getIntExtra(Constants.BundleKey.PREV_SEL_STATE, -1);
+                mBinder.layoutWorkExpViewEdit.etOfficeState.setText(data.getStringExtra(Constants.BundleKey.SEL_STATE));
+            }
+        }
     }
 
     @Override

@@ -58,8 +58,13 @@
             </intent-filter>
         </service>
 
-        <service android:name=".util.BadgeIntentService"
-            android:exported="false"/>
+        <service
+            android:name=".util.BadgeIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".util.BadgeService"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -266,6 +271,11 @@
             android:theme="@style/Theme.Transparent">
 
         </activity>
+
+        <activity
+            android:name=".ui.common.SearchStateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 
     </application>
 

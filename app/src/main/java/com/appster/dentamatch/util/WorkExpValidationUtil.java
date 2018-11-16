@@ -33,6 +33,7 @@ public class WorkExpValidationUtil {
                                                            String officeName,
                                                            String officeAddress,
                                                            String officeCity,
+                                                           String officeState,
                                                            String reference1Email,
                                                            String reference2Email,
                                                            String reference1Mobile,
@@ -63,6 +64,9 @@ public class WorkExpValidationUtil {
         } else if (TextUtils.isEmpty(officeCity)) {
             returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_city_alert));
 
+        } else if (TextUtils.isEmpty(officeState)) {
+            returnValue.put(false, DentaApp.getInstance().getString(R.string.empty_state_alert));
+
         } else if (officeCity.length() > Constants.DEFAULT_FIELD_LENGTH) {
             returnValue.put(false, DentaApp.getInstance().getString(R.string.city_length_alert));
 
@@ -92,9 +96,10 @@ public class WorkExpValidationUtil {
         return returnValue;
     }
 
-    public static WorkExpRequest prepareWorkExpRequest(int isReference2, String action, int jobTitleId, int expMonth, String officeName, String officeAddress, String officeCity, String officeReference1Name, String reference1Mobile, String reference1Email, String reference2Email, String reference2Name, String reference2Mobile) {
+    public static WorkExpRequest prepareWorkExpRequest(int isReference2, String action, int jobTitleId, int expMonth, String officeName, String officeAddress, String officeCity,String officeState, String officeReference1Name, String reference1Mobile, String reference1Email, String reference2Email, String reference2Name, String reference2Mobile) {
         WorkExpRequest workExpRequest = new WorkExpRequest();
         workExpRequest.setCity(officeCity);
+        workExpRequest.setState(officeState);
         workExpRequest.setOfficeName(officeName);
         workExpRequest.setOfficeAddress(officeAddress);
         workExpRequest.setMonthsOfExpereince(expMonth);
