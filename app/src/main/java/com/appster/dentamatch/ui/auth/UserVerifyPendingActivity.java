@@ -57,7 +57,7 @@ public class UserVerifyPendingActivity extends BaseActivity {
         updateUI();
 
         activityProfileCompletedPendingBinding.letsGoBtn.setVisibility(View.VISIBLE);
-        activityProfileCompletedPendingBinding.letsGoBtn.setText(getString(R.string.resend_email));
+        activityProfileCompletedPendingBinding.letsGoBtn.setText(getString(R.string.lets_go));
 
 
     }

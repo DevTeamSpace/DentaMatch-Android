@@ -120,6 +120,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (currentItem != null) {
                     itemHolder.tvType.setText(currentItem.getAffiliationName());
                     itemHolder.ivCheckBox.setTag(position);
+                    itemHolder.tvType.setSelected(true);
                 }
 
                 if (currentItem != null && currentItem.getJobSeekerAffiliationStatus() == 0) {

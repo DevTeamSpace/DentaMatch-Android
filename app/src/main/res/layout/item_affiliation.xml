@@ -10,14 +10,18 @@
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_affiliation_type"
             style="@style/text_view_normal"
+            android:layout_width="match_parent"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="@dimen/margin_15"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_15"
             android:layout_toStartOf="@+id/cb_check_box"
-            android:maxLines="1"
-            android:ellipsize="end"
+            android:ellipsize="marquee"
+            android:freezesText="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:textColor="@color/grayish_brown_color"
             android:textSize="@dimen/text_size_normal"
             app:customFont="@string/font_medium" />
@@ -36,8 +40,8 @@
             android:id="@+id/view_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_height"
-            android:visibility="gone"
             android:layout_below="@+id/tv_affiliation_type"
-            android:background="@color/line_divider" />
+            android:background="@color/line_divider"
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>
