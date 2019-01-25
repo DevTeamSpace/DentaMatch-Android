@@ -22,12 +22,12 @@ import com.appster.dentamatch.databinding.ActivitySettingsBinding;
 import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.ResetPasswordActivity;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.ui.map.PlacesMapActivity;
 import com.appster.dentamatch.ui.termsnprivacy.TermsAndConditionActivity;
 import com.appster.dentamatch.util.Alert;
@@ -220,7 +220,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 /*
                  Track event via mixpanel.
                  */
-                DentaApp.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_logout));
+                DentaApp.Companion.getInstance().getMixpanelAPI().track(getString(R.string.mixpanel_event_logout));
                 localLogOut();
             }
 
@@ -233,7 +233,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void onDestroy() {
-        DentaApp.getInstance().getMixpanelAPI().flush();
+        DentaApp.Companion.getInstance().getMixpanelAPI().flush();
         super.onDestroy();
     }
 }

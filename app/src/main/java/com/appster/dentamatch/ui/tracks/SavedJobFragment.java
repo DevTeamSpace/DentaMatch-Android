@@ -25,7 +25,7 @@ import com.appster.dentamatch.adapters.TrackJobsAdapter;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.base.BaseFragment;
 import com.appster.dentamatch.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;

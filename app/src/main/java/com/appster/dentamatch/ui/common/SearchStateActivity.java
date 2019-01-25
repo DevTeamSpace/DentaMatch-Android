@@ -20,9 +20,10 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.StateAdapter;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.databinding.ActivityStateBinding;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.response.profile.StateList;
 import com.appster.dentamatch.network.response.profile.StateResponse;

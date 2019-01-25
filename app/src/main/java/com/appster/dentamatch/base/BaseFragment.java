@@ -6,7 +6,7 @@
  *
  */
 
-package com.appster.dentamatch.ui.common;
+package com.appster.dentamatch.base;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,12 +20,14 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.util.LogUtils;
 
+import dagger.android.support.DaggerFragment;
+
 /**
  * Created by gautambisht on 11/11/16.
  * To inject activity reference.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends DaggerFragment {
 
     private static final String TAG = LogUtils.makeLogTag(BaseActivity.class);
     protected Handler handler = new Handler();

@@ -18,11 +18,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.eventbus.LocationEvent;
 import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;

@@ -24,7 +24,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemSubSkillBinding;
 import com.appster.dentamatch.model.SubSkillModel;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 
 import java.util.List;

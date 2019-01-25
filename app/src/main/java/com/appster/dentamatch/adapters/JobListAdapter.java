@@ -22,14 +22,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.databinding.ItemJobListBinding;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
 import com.appster.dentamatch.util.Alert;

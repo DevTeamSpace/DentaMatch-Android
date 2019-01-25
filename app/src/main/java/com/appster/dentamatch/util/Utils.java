@@ -382,8 +382,6 @@ public class Utils {
             } else {
                 edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 tvShowPwd.setText(context.getString(R.string.show_password));
-
-
             }
             edtPassword.setSelection(edtPassword.length());
         }
@@ -590,16 +588,17 @@ public class Utils {
     public static String getExpYears(int month) {
         String yearLabel, monthLabel;
 
+        DentaApp app = DentaApp.Companion.getInstance();
         if (month / 12 == 1) {
-            yearLabel = DentaApp.getInstance().getString(R.string.txt_single_year);
+            yearLabel = app.getString(R.string.txt_single_year);
         } else {
-            yearLabel = DentaApp.getInstance().getString(R.string.txt_multiple_years);
+            yearLabel = app.getString(R.string.txt_multiple_years);
         }
 
         if (month % 12 == 1) {
-            monthLabel = DentaApp.getInstance().getString(R.string.txt_single_month);
+            monthLabel = app.getString(R.string.txt_single_month);
         } else {
-            monthLabel = DentaApp.getInstance().getString(R.string.txt_multiple_months);
+            monthLabel = app.getString(R.string.txt_multiple_months);
         }
 
         if (month / 12 == 0) {

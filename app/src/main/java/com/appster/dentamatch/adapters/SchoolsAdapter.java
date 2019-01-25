@@ -34,7 +34,7 @@ import com.appster.dentamatch.interfaces.EditTextSelected;
 import com.appster.dentamatch.model.SchoolModel;
 import com.appster.dentamatch.model.SchoolTypeModel;
 import com.appster.dentamatch.network.request.schools.PostSchoolData;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -141,9 +141,12 @@ public class SchoolsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             } else {
                 if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-                    Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath()).centerCrop().
-                            resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).
-                            placeholder(R.drawable.profile_pic_placeholder).into(mBinderHeader.ivProfileIcon);
+                    Picasso.get()
+                            .load(PreferenceUtil.getProfileImagePath())
+                            .centerCrop()
+                            .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                            .placeholder(R.drawable.profile_pic_placeholder)
+                            .into(mBinderHeader.ivProfileIcon);
                 }
 
                 mBinderHeader.progressBar.setProgress(Constants.PROFILE_PERCENTAGE.SCHOOLING);

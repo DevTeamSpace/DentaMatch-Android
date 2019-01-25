@@ -22,7 +22,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.SubSkillsAdapter;
 import com.appster.dentamatch.databinding.ActivitySubSkillsBinding;
 import com.appster.dentamatch.model.SubSkillModel;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 

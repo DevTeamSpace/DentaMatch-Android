@@ -6,9 +6,10 @@
  *
  */
 
-package com.appster.dentamatch.network.response.auth;
+package com.appster.dentamatch.domain.login;
 
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
+import com.appster.dentamatch.network.response.auth.LoginResponseData;
 import com.google.gson.annotations.SerializedName;
 
 /**

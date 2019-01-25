@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.base.BaseFragment;
 
 /**
  * Created by Appster on 23/01/17.

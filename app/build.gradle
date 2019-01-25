@@ -1,3 +1,26 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
+apply plugin: 'realm-android'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: "org.sonarqube"
+sonarqube {
+    properties {
+        property "sonar.projectName", "DentaMatch_android"
+        property "sonar.projectKey", "myproject:DentaMatch_android"
+        property "sonar.host.url", "https://sonarqube.appster.in/sonar"
+        property "sonar.sources", "src/main"
+        property "sonar.signIn", "32178e74d955c119fc38c5e044b13a5f137096bb"
+        property 'sonar.sourceEncoding', 'UTF-8'
+        property 'sonar.profile', 'AllAndroid'
+        property 'sonar.import_unknown_files', true
+        property 'sonar.android.lint.report', 'build/reports/lint-results.xml'
+    }
+}
+
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -5,17 +28,15 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.22.1'
+        classpath 'io.fabric.tools:gradle:1.26.1'
+        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
     }
 }
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
 }
-
-apply plugin: 'realm-android'
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
@@ -29,11 +50,13 @@ def serverProperties = new Properties()
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 serverProperties.load(new FileInputStream(serverConfigPropertiesFile))
+
 android {
 
     configurations.all {
-        resolutionStrategy.force 'com.android.support:support-v4:27.0.2'
+        resolutionStrategy.force 'com.android.support:support-v4:28.0.0'
     }
+
     dexOptions {
         javaMaxHeapSize "4g"
         incremental true
@@ -47,14 +70,13 @@ android {
         doNotStrip '*/mips64/*.so'
     }
 
-    compileSdkVersion 27
-    buildToolsVersion '27.0.2'
-
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.appster.dentamatch"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -62,7 +84,6 @@ android {
         multiDexEnabled true
     }
 
-    //Build types of App
     buildTypes {
         release {
             lintOptions {
@@ -73,25 +94,13 @@ android {
             shrinkResources true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "MixpanelKey", "\"" + DentaMatch_MixpanelKey + "\""
         }
         debug {
             minifyEnabled false
-
-            /* shrinkResources true
-             zipAlignEnabled true
-             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
+            buildConfigField "String", "MixpanelKey", "\"" + DentaMatch_MixpanelKey + "\""
         }
     }
-
-    /*applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def fileName = outputFile.name.replace('.apk', "-${versionName}.apk")
-                output.outputFile = new File(outputFile.parent, fileName)
-            }
-        }
-    }*/
 
     //Signing config for release build
     signingConfigs {
@@ -115,9 +124,7 @@ android {
         QA {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://qa.dentamatch.co/api/v1/"')
-            //buildConfigField("String", "CHAT_URL", '"http://qa.dentamatch.co:3000"')
             buildConfigField("String", "CHAT_URL", '"https://qanode.dentamatch.co:8443"')
-
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
@@ -132,111 +139,82 @@ android {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://production.dentamach/api/v1/"')
             buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:8443"')
-
             minSdkVersion 19
             signingConfig signingConfigs.config
-
         }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 
     return void
 }
 
 ext {
-    //supportLibrary Version
-    supportLibrary = '27.0.2'
-
-    //Play services Version
-    playServiceVersion = '11.8.0'
-
-    //fireBase Version
-    fireBaseLibrary = '11.8.0'
-
-    //leakCanary Version
+    supportLibrary = '28.0.0'
+    playServiceVersion = '16.0.0'
+    fireBaseLibrary = '17.3.4'
     leakCanaryLibrary = '1.5.4'
-
-    //Retrofit Version
-    retrofitVersion = '2.1.0'
-
-    //Build tools  Version
-//    buildToolsVersion '23.0.1'
-
+    retrofitVersion = '2.3.0'
+    dagger_version = '2.16'
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.google.maps.android:android-maps-utils:0.4'
-    //Firebase libs
-    compile "com.google.firebase:firebase-messaging:${fireBaseLibrary}"
-    //Google Support libs
-    compile "com.android.support:design:${supportLibrary}"
-    compile "com.android.support:appcompat-v7:${supportLibrary}"
-    compile "com.android.support:recyclerview-v7:${supportLibrary}"
-    compile "com.android.support:cardview-v7:${supportLibrary}"
-    compile "com.android.support:support-annotations:${supportLibrary}"
-    compile 'com.android.support:multidex:1.0.1'
-    //Google Play service libs
-    compile "com.google.android.gms:play-services-location:${playServiceVersion}"
-    compile "com.google.android.gms:play-services-auth:${playServiceVersion}"
-    compile "com.google.android.gms:play-services-maps:${playServiceVersion}"
-    compile "com.google.android.gms:play-services-places:${playServiceVersion}"
-    //Third party libs
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.aurelhubert:ahbottomnavigation:2.0.3'
-    compile 'com.orhanobut:hawk:2.0.1'
-    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    testCompile 'junit:junit:4.12'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.wefika:flowlayout:0.4.1'
-    compile('io.socket:socket.io-client:0.8.1') {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.google.maps.android:android-maps-utils:0.5"
+    implementation "com.google.firebase:firebase-messaging:${fireBaseLibrary}"
+    implementation "com.android.support:design:${supportLibrary}"
+    implementation "com.android.support:appcompat-v7:${supportLibrary}"
+    implementation "com.android.support:recyclerview-v7:${supportLibrary}"
+    implementation "com.android.support:cardview-v7:${supportLibrary}"
+    implementation "com.android.support:support-annotations:${supportLibrary}"
+    implementation "com.android.support:multidex:1.0.3"
+    implementation "com.google.android.gms:play-services-location:${playServiceVersion}"
+    implementation "com.google.android.gms:play-services-auth:16.0.1"
+    implementation "com.google.android.gms:play-services-maps:${playServiceVersion}"
+    implementation "com.google.android.gms:play-services-places:${playServiceVersion}"
+    implementation "org.greenrobot:eventbus:3.0.0"
+    implementation "com.aurelhubert:ahbottomnavigation:2.1.0"
+    implementation "com.orhanobut:hawk:2.0.1"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.11.0"
+    implementation ("com.squareup.picasso:picasso:2.71828") { exclude group: 'com.android.support' }
+    implementation "de.hdodenhof:circleimageview:2.2.0"
+    implementation ("com.wefika:flowlayout:0.4.1") { exclude group: 'com.intellij' }
+    implementation "io.realm:android-adapters:1.4.0"
+    implementation "com.mixpanel.android:mixpanel-android:4.9.8"
+    implementation ("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") { transitive = true }
+    implementation "com.facebook.stetho:stetho-okhttp3:1.4.1"
+    implementation "com.google.android:flexbox:1.0.0"
+    implementation "me.leolin:ShortcutBadger:1.1.22@aar"
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation "com.instabug.library:instabug:4.8.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation ("io.socket:socket.io-client:0.8.1") {
         exclude group: 'org.json', module: 'json'
+        exclude group: 'com.squareup.okhttp3'
     }
-    compile 'io.realm:android-adapters:1.4.0'
-    compile 'com.mixpanel.android:mixpanel-android:4.9.8'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
-        transitive = true
-    }
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryLibrary"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:1.6.2"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"
-    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
-    implementation 'com.google.android:flexbox:1.0.0'
-    implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
-    /*compile('com.android.support:appcompat-v7:22.2.0') {
-        exclude module: 'support-v4'
-    }*/
 
-    //compile 'com.instabug.library:instabug:4.7.0'
-    compile('com.instabug.library:instabug:4.8.1') {
-        exclude module: 'support-v4'
-    }
+    testImplementation "junit:junit:4.12"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
 
+    kapt "androidx.databinding:databinding-compiler:3.3.0"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
+
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'
-
-
-apply plugin: "org.sonarqube"
-sonarqube {
-    properties {
-        property "sonar.projectName", "DentaMatch_android"
-        property "sonar.projectKey", "myproject:DentaMatch_android"
-        property "sonar.host.url", "https://sonarqube.appster.in/sonar"
-        //property "sonar.host.url", "http://54.152.88.149:9000/sonar"
-
-        property "sonar.sources", "src/main"
-        property "sonar.login", "32178e74d955c119fc38c5e044b13a5f137096bb"
-        // property "sonar.password", "admin"
-        property 'sonar.sourceEncoding', 'UTF-8'
-        property 'sonar.profile', 'AllAndroid'
-        property 'sonar.import_unknown_files', true
-        property 'sonar.android.lint.report', 'build/reports/lint-results.xml'
-    }
-}

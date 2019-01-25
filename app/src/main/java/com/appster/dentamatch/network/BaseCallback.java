@@ -11,7 +11,8 @@ package com.appster.dentamatch.network;
 import android.content.Context;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.util.LogUtils;
 
 import java.lang.ref.WeakReference;

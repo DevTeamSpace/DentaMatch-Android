@@ -24,13 +24,13 @@ import com.appster.dentamatch.chat.DBModel;
 import com.appster.dentamatch.databinding.FragmentMessagesBinding;
 import com.appster.dentamatch.model.ChatListModel;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.chat.Recruiter;
 import com.appster.dentamatch.network.response.chat.ChatHistoryResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.base.BaseActivity;
+import com.appster.dentamatch.base.BaseFragment;
 import com.appster.dentamatch.util.Utils;
 
 import io.realm.RealmResults;

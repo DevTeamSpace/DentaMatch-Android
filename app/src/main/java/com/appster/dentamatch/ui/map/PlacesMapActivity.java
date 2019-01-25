@@ -25,7 +25,7 @@ import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.eventbus.LocationEvent;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
 import com.appster.dentamatch.util.LogUtils;

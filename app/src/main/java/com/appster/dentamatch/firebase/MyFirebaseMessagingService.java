@@ -57,7 +57,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         /**
          * Not getting messages here? See why this may be: https://goo.gl/39bRNJ
          */
-        LogUtils.LOGD(TAG, "From: " + remoteMessage.getFrom());
         NOTIFICATION_COUNTER = ++NOTIFICATION_COUNTER;
 
         if (remoteMessage.getData().size() > 0) {

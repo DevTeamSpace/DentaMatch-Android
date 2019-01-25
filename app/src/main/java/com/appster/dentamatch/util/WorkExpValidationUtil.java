@@ -42,51 +42,52 @@ public class WorkExpValidationUtil {
                                                            String referenceName2) {
 
         returnValue.clear();
+        DentaApp app = DentaApp.Companion.getInstance();
 
         if (TextUtils.isEmpty(selectedJobtitle)) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_job_title_alert));
+            returnValue.put(false, app.getString(R.string.blank_job_title_alert));
 
         } else if (expMonth == 0) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_year_alert));
+            returnValue.put(false, app.getString(R.string.blank_year_alert));
 
         } else if (TextUtils.isEmpty(officeName)) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_office_name_alert));
+            returnValue.put(false, app.getString(R.string.blank_office_name_alert));
 
         } else if (officeName.length() > Constants.DEFAULT_FIELD_LENGTH) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.office_name_length_alert));
+            returnValue.put(false, app.getString(R.string.office_name_length_alert));
 
         } else if (TextUtils.isEmpty(officeAddress)) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_office_addrerss_alert));
+            returnValue.put(false, app.getString(R.string.blank_office_addrerss_alert));
 
         } else if (officeAddress.length() > Constants.DEFAULT_FIELD_LENGTH) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.office_address_length_alert));
+            returnValue.put(false, app.getString(R.string.office_address_length_alert));
 
         } else if (TextUtils.isEmpty(officeCity)) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.blank_city_alert));
+            returnValue.put(false, app.getString(R.string.blank_city_alert));
 
         } else if (TextUtils.isEmpty(officeState)) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.empty_state_alert));
+            returnValue.put(false, app.getString(R.string.empty_state_alert));
 
         } else if (officeCity.length() > Constants.DEFAULT_FIELD_LENGTH) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.city_length_alert));
+            returnValue.put(false, app.getString(R.string.city_length_alert));
 
         }   else if((!TextUtils.isEmpty(reference1Mobile) || !TextUtils.isEmpty(reference1Email)) && TextUtils.isEmpty(referenceName1)) {
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.msg_reference_name_1_blank));
+            returnValue.put(false, app.getString(R.string.msg_reference_name_1_blank));
 
         }else if((!TextUtils.isEmpty(reference2Mobile) || !TextUtils.isEmpty(reference2Email)) && TextUtils.isEmpty(referenceName2)){
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.msg_reference_name_2_blank));
+            returnValue.put(false, app.getString(R.string.msg_reference_name_2_blank));
 
         }else if(!TextUtils.isEmpty(reference2Email) && !Utils.isValidEmailAddress(reference2Email)){
-            returnValue.put(false, DentaApp.getInstance().getString(R.string.valid_email_alert));
+            returnValue.put(false, app.getString(R.string.valid_email_alert));
 
         }else if (!TextUtils.isEmpty(reference1Mobile) && reference1Mobile.length() < 13) {
-            returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_mobile_alert));
+            returnValue.put(true, app.getString(R.string.valid_mobile_alert));
 
         }else if(!TextUtils.isEmpty(reference2Mobile) && reference2Mobile.length() < 13){
-            returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_mobile_alert));
+            returnValue.put(true, app.getString(R.string.valid_mobile_alert));
 
         }else if (!TextUtils.isEmpty(reference1Email) && !Utils.isValidEmailAddress(reference1Email)) {
-            returnValue.put(true, DentaApp.getInstance().getString(R.string.valid_email_alert));
+            returnValue.put(true, app.getString(R.string.valid_email_alert));
 
         }else {
             returnValue.put(true, "");

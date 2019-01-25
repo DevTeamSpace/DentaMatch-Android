@@ -84,7 +84,7 @@
     <dimen name="line_height">1dp</dimen>
     <dimen name="dot_dimen">8dp</dimen>
 
-    <!--Register/login-->
+    <!--Register/signIn-->
     <dimen name="login_header_height">180dp</dimen>
     <dimen name="on_boarding_text_layout_size">220dp</dimen>
 

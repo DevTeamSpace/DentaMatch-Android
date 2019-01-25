@@ -27,7 +27,7 @@ import com.appster.dentamatch.model.SelectedJobTitleModel;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
 import com.appster.dentamatch.network.response.PreferredJobLocation.SelectedPreferredJobLocationData;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
@@ -597,7 +597,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
 
 
         /*
-          This value is set in order to redirect user from login or splash screen.
+          This value is set in order to redirect user from signIn or splash screen.
          */
         PreferenceUtil.setJobFilter(true);
         PreferenceUtil.saveJobFilter(request);

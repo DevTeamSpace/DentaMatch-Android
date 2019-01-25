@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.FragmentJobsBinding;
-import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.base.BaseFragment;
 import com.appster.dentamatch.ui.notification.NotificationActivity;
 
 /**

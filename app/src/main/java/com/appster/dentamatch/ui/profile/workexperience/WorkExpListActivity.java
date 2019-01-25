@@ -24,13 +24,13 @@ import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
@@ -309,7 +309,7 @@ public class WorkExpListActivity extends BaseActivity implements View.OnClickLis
                         @Override
                         public void onPositive(DialogInterface dialog) {
                             dialog.dismiss();
-                            Utils.showToast(DentaApp.getInstance(), result.get(false));
+                            Utils.showToast(DentaApp.Companion.getInstance(), result.get(false));
                         }
 
                         @Override

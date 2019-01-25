@@ -18,7 +18,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityWorkExperienceBinding;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
@@ -54,7 +54,7 @@ public class WorkExperienceActivity extends BaseActivity implements View.OnClick
         mBinder.tvExperienceWorkExp.setOnClickListener(this);
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-            Picasso.with(getApplicationContext())
+            Picasso.get()
                     .load(PreferenceUtil.getProfileImagePath())
                     .centerCrop()
                     .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)

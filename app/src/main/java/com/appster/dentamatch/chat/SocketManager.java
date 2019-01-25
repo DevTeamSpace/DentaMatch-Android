@@ -19,7 +19,7 @@ import com.appster.dentamatch.eventbus.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.eventbus.MessageAcknowledgementEvent;
 import com.appster.dentamatch.eventbus.SocketConnectionEvent;
 import com.appster.dentamatch.eventbus.UnblockEvent;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.ui.common.HomeActivity;
 import com.appster.dentamatch.ui.messages.ChatActivity;
 import com.appster.dentamatch.ui.messages.ChatMessageModel;

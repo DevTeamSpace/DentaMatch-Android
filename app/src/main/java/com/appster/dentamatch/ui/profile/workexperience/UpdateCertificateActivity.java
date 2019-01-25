@@ -28,14 +28,14 @@ import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.certificates.UpdateCertificates;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
@@ -101,7 +101,7 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
             mBinder.tvCertificatesName.setText(data.getCertificateName());
 
             if (!TextUtils.isEmpty(data.getImage())) {
-                Picasso.with(UpdateCertificateActivity.this).load(data.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUploadIcon);
+                Picasso.get().load(data.getImage()).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUploadIcon);
                 isImageUploaded = true;
             }
 
@@ -310,7 +310,13 @@ public class UpdateCertificateActivity extends BaseActivity implements View.OnCl
                 if (response.getStatus() == 1) {
                     data.setImage(response.getFileUploadResponseData().getImageUrl());
                     isImageUploaded = true;
-                    Picasso.with(UpdateCertificateActivity.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.ivCertificateUploadIcon);
+                    Picasso.get()
+                            .load(new File(mFilePath))
+                            .centerCrop()
+                            .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                            .placeholder(R.drawable.profile_pic_placeholder)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .into(mBinder.ivCertificateUploadIcon);
                     // showSnackBarFromTop(response.getMessage(), false);
                 } else {
                     isImageUploaded = false;
