@@ -27,7 +27,7 @@ constructor(
     fun signIn(email: String, password: String) = addDisposable(
                 loginInteractor.signIn(email, password)
                         .compose(viewModelCompose())
-                        .subscribe({ userInfoData.postValue(it) }, { LoginLog.e(TAG, "signIn", it) })
+                        .subscribe({ userInfoData.postValue(it) }, { Log.e(TAG, "signIn", it) })
     )
 
     fun signUp(email: String,
