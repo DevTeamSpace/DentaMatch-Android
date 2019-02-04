@@ -27,6 +27,7 @@ sonar-project.properties
 
 # apk and jks
 *.apk
+*.aab
 
 keystore.properties
 
