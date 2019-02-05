@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.eventbus.LocationEvent;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -103,7 +103,7 @@ class AffiliationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 itemProfileHolder.tvTitle.setText(mContext.getString(R.string.title_affiliation));
                 itemProfileHolder.tvDesc.setText(mContext.getString(R.string.lorem_ipsum));
                 if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-                    Picasso.with(mContext).load(PreferenceUtil.getProfileImagePath())
+                    Picasso.get().load(PreferenceUtil.getProfileImagePath())
                             .centerCrop()
                             .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                             .placeholder(R.drawable.profile_pic_placeholder)

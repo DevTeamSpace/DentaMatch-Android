@@ -18,7 +18,7 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityOnboardingBinding;
 import com.appster.dentamatch.ui.auth.LoginActivity;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 

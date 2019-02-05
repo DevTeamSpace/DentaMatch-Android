@@ -28,10 +28,10 @@ import java.util.ArrayList;
  * Created by virender on 19/01/17.
  * To inject activity reference.
  */
-public class ProfileResponseData implements Parcelable {
+public class ProfileResponseData {
 
     @SerializedName("user")
-    private final UserModel userModel;
+    private UserModel userModel;
     @SerializedName("workExperience")
     private WorkExpResponseData workExperience;
 
@@ -51,35 +51,6 @@ public class ProfileResponseData implements Parcelable {
     @SerializedName("joblists")
     private ArrayList<JobTitleListModel> jobTitleLists;
 
-
-    private ProfileResponseData(Parcel in) {
-        userModel = in.readParcelable(UserModel.class.getClassLoader());
-        jobTitleLists = new ArrayList<>();
-        jobTitleLists = in.readArrayList(JobTitleListModel.class.getClassLoader());
-    }
-
-    public static final Creator<ProfileResponseData> CREATOR = new Creator<ProfileResponseData>() {
-        @Override
-        public ProfileResponseData createFromParcel(Parcel in) {
-            return new ProfileResponseData(in);
-        }
-
-        @Override
-        public ProfileResponseData[] newArray(int size) {
-            return new ProfileResponseData[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(userModel, flags);
-        dest.writeList(jobTitleLists);
-    }
 
     public UserModel getUser() {
         return userModel;

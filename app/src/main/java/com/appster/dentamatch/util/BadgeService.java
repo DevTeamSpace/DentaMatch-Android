@@ -13,7 +13,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;

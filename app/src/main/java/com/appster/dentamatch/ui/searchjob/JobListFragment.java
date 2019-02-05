@@ -28,7 +28,7 @@ import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.base.BaseFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 

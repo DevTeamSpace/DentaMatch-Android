@@ -24,7 +24,7 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.DBModel;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.databinding.ItemMessageListBinding;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;

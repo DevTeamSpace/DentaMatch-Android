@@ -28,7 +28,7 @@ import com.appster.dentamatch.databinding.ActivityCertificateBinding;
 import com.appster.dentamatch.interfaces.DateSelectedListener;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.certificates.CertificateRequest;
 import com.appster.dentamatch.network.request.certificates.UpdateCertificates;
@@ -36,7 +36,7 @@ import com.appster.dentamatch.network.response.certificates.CertificateResponse;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PermissionUtils;
@@ -85,7 +85,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
         mBinder.toolbarCertificates.ivToolBarLeft.setOnClickListener(this);
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-            Picasso.with(getApplicationContext())
+            Picasso.get()
                     .load(PreferenceUtil.getProfileImagePath())
                     .centerCrop()
                     .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
@@ -341,7 +341,7 @@ public class CertificateActivity extends BaseActivity implements View.OnClickLis
 
             if (!TextUtils.isEmpty(certificateList.get(i).getImage())) {
                 certificateList.get(i).setImageUploaded(true);
-                Picasso.with(getApplicationContext())
+                Picasso.get()
                         .load(certificateList.get(i).getImage())
                         .centerCrop()
                         .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)

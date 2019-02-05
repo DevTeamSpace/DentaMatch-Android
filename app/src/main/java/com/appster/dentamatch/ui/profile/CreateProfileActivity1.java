@@ -26,7 +26,7 @@ import com.appster.dentamatch.databinding.ActivityCreateProfile1Binding;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
@@ -35,7 +35,7 @@ import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.response.profile.StateList;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.UserVerifyPendingActivity;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.ui.common.SearchStateActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
@@ -85,7 +85,7 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
             mFilePath = PreferenceUtil.getProfileImagePath();
-            Picasso.with(CreateProfileActivity1.this).load(PreferenceUtil.getProfileImagePath())
+            Picasso.get().load(PreferenceUtil.getProfileImagePath())
                     .centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -390,7 +390,12 @@ public class CreateProfileActivity1 extends BaseActivity implements View.OnClick
             if (mFilePath != null) {
                 uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_PIC);
                 mImageUploaded = false;
-                Picasso.with(CreateProfileActivity1.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN).placeholder(R.drawable.profile_pic_placeholder).memoryPolicy(MemoryPolicy.NO_CACHE).into(mBinder.createProfile1IvProfileIcon);
+                Picasso.get()
+                        .load(new File(mFilePath))
+                        .centerCrop().resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
+                        .placeholder(R.drawable.profile_pic_placeholder)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .into(mBinder.createProfile1IvProfileIcon);
 
             }
         }

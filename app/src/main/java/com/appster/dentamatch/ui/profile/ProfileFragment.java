@@ -30,7 +30,7 @@ import com.appster.dentamatch.model.ProfileSchoolModel;
 import com.appster.dentamatch.model.ProfileSkillModel;
 import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.certificates.CertificatesList;
@@ -39,7 +39,7 @@ import com.appster.dentamatch.network.response.notification.UnReadNotificationRe
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.base.BaseFragment;
 import com.appster.dentamatch.ui.notification.NotificationActivity;
 import com.appster.dentamatch.ui.profile.affiliation.AffiliationActivity;
 import com.appster.dentamatch.ui.profile.workexperience.MyWorkExpListActivity;
@@ -255,8 +255,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         switch (v.getId()) {
             case R.id.tv_edit:
-                startActivity(new Intent(getActivity(), UpdateProfileActivity.class)
-                        .putExtra(Constants.EXTRA_PROFILE_DATA, profileResponseData));
+                //TODO !!!
+//                startActivity(new Intent(getActivity(), UpdateProfileActivity.class)
+//                        .putExtra(Constants.EXTRA_PROFILE_DATA, profileResponseData));
                 break;
 
             case R.id.iv_setting:
@@ -305,7 +306,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 //PreferenceUtil.setUserModel(response.getUser());
 
                 if (!TextUtils.isEmpty(response.getUser().getProfilePic())) {
-                    Picasso.with(getActivity())
+                    Picasso.get()
                             .load(response.getUser().getProfilePic())
                             .placeholder(R.drawable.profile_pic_placeholder)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -678,7 +679,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 cellCertificateBinding.tvEdit.setVisibility(View.VISIBLE);
                 cellCertificateBinding.ivCertificateImage.setVisibility(View.VISIBLE);
 
-                Picasso.with(getActivity())
+                Picasso.get()
                         .load(certificate.getImage())
                         .placeholder(R.drawable.ic_upload)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)

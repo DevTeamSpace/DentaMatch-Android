@@ -16,11 +16,11 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityResetPasswordBinding;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 

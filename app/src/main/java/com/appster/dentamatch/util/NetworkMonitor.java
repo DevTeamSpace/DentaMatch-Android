@@ -35,7 +35,7 @@ public class NetworkMonitor extends BroadcastReceiver {
     }
 
     public static void initialize() {
-        checkNetworkConnectivity(DentaApp.getInstance());
+        checkNetworkConnectivity(DentaApp.Companion.getInstance());
     }
 
     /**
@@ -99,8 +99,8 @@ public class NetworkMonitor extends BroadcastReceiver {
      * @return wifi or mobile data service
      */
     private static int getNetworkType() {
-        if (DentaApp.getInstance() != null) {
-            ConnectivityManager connectivitymanager = (ConnectivityManager) DentaApp.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (DentaApp.Companion.getInstance() != null) {
+            ConnectivityManager connectivitymanager = (ConnectivityManager) DentaApp.Companion.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
             if (connectivitymanager != null) {
                 NetworkInfo networkinfo = connectivitymanager.getActiveNetworkInfo();
 
@@ -108,7 +108,7 @@ public class NetworkMonitor extends BroadcastReceiver {
                     return 1;
                 }
             }
-            TelephonyManager telephonyManager = (TelephonyManager) DentaApp.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager telephonyManager = (TelephonyManager) DentaApp.Companion.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
             int i = 0;
             if (telephonyManager != null)
                 i = telephonyManager.getNetworkType();

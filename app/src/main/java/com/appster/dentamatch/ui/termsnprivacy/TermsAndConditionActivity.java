@@ -16,7 +16,7 @@ import android.webkit.WebView;
 import com.appster.dentamatch.BuildConfig;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityTermsAndConditionBinding;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 
 /**

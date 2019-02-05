@@ -27,13 +27,13 @@ import com.appster.dentamatch.adapters.TrackJobsAdapter;
 import com.appster.dentamatch.eventbus.JobCancelEvent;
 import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.tracks.CancelJobRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
-import com.appster.dentamatch.ui.common.BaseFragment;
+import com.appster.dentamatch.base.BaseActivity;
+import com.appster.dentamatch.base.BaseFragment;
 import com.appster.dentamatch.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;

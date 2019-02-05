@@ -29,13 +29,13 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.auth.LicenceRequest;
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse;
 import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.ui.profile.workexperience.WorkExperienceActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
@@ -96,7 +96,9 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
         tvToolbarLeft.setText(getString(R.string.header_create_profile));
 
         if (!TextUtils.isEmpty(PreferenceUtil.getProfileImagePath())) {
-            Picasso.with(getApplicationContext()).load(PreferenceUtil.getProfileImagePath()).centerCrop()
+            Picasso.get()
+                    .load(PreferenceUtil.getProfileImagePath())
+                    .centerCrop()
                     .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -326,7 +328,7 @@ public class CreateProfileActivity2 extends BaseActivity implements View.OnClick
             }
 
             if (mFilePath != null) {
-                Picasso.with(CreateProfileActivity2.this).load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
+                Picasso.get().load(new File(mFilePath)).centerCrop().resize(Constants.IMAGE_DIME_CERTIFICATE, Constants.IMAGE_DIME_CERTIFICATE).placeholder(R.drawable.ic_upload).memoryPolicy(MemoryPolicy.NO_CACHE).into(ivUpload);
                 uploadImageApi(mFilePath, Constants.APIS.IMAGE_TYPE_STATE_BOARD);
             }
         }

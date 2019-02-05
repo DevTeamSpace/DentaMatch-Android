@@ -8,7 +8,7 @@
 
 package com.appster.dentamatch.network.retrofit;
 
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.request.Notification.AcceptRejectInviteRequest;
 import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest;
 import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
@@ -36,7 +36,7 @@ import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
-import com.appster.dentamatch.network.response.auth.LoginResponse;
+import com.appster.dentamatch.domain.login.LoginResponse;
 import com.appster.dentamatch.network.response.auth.UserVerifiedStatus;
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
@@ -171,8 +171,6 @@ public interface AuthWebServices {
     @POST(SIGN_IN)
     Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
 
-    @POST(SIGN_UP)
-    Call<LoginResponse> signUp(@Body LoginRequest loginRequest);
 
     @PUT(FORGOT_PASS)
     Call<LoginResponse> forgotPassword(@Body LoginRequest loginRequest);

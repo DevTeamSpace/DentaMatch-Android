@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.databinding.ActivityImageViewBinding;
 import com.appster.dentamatch.util.Constants;
 import com.squareup.picasso.MemoryPolicy;
@@ -46,7 +47,7 @@ public class ImageViewingActivity extends BaseActivity implements View.OnClickLi
             mBinding.imageProgress.setVisibility(View.VISIBLE);
             mPicUrl = getIntent().getStringExtra(Constants.EXTRA_PIC);
 
-            Picasso.with(this)
+            Picasso.get()
                     .load(mPicUrl)
                     .placeholder(R.drawable.ic_image_preview_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -58,7 +59,7 @@ public class ImageViewingActivity extends BaseActivity implements View.OnClickLi
                         }
 
                         @Override
-                        public void onBitmapFailed(Drawable errorDrawable) {
+                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                             mBinding.imageProgress.setVisibility(View.GONE);
                         }
 

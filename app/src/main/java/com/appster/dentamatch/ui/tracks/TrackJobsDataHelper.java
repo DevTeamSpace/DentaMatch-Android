@@ -15,13 +15,13 @@ import android.text.TextUtils;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 

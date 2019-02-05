@@ -33,7 +33,7 @@ import com.appster.dentamatch.interfaces.ImageSelectedListener;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.profile.UpdateUserProfileRequest;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
@@ -43,7 +43,7 @@ import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponseData;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.ui.auth.PreferredJobLocationAdapter;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.ui.common.SearchStateActivity;
 import com.appster.dentamatch.util.CameraUtil;
 import com.appster.dentamatch.util.Constants;
@@ -227,7 +227,8 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
             //mBinding.etLocation.setText(mProfileData.getUser().getPreferredJobLocation());
 
             if (!TextUtils.isEmpty(mProfileData.getUser().getProfilePic())) {
-                Picasso.with(this).load(mProfileData.getUser().getProfilePic())
+                Picasso.get()
+                        .load(mProfileData.getUser().getProfilePic())
                         .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                         .placeholder(R.drawable.profile_pic_placeholder)
                         .into(mBinding.createProfile1IvProfileIcon);
@@ -366,7 +367,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
                 if (mFilePath != null) {
-                    Picasso.with(UpdateProfileActivity.this)
+                    Picasso.get()
                             .load(new File(mFilePath)).centerCrop()
                             .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                             .centerCrop()
@@ -385,7 +386,7 @@ public class UpdateProfileActivity extends BaseActivity implements View.OnClickL
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
 
                 if (mFilePath != null) {
-                    Picasso.with(UpdateProfileActivity.this)
+                    Picasso.get()
                             .load(new File(mFilePath)).centerCrop()
                             .resize(Constants.IMAGE_DIMEN, Constants.IMAGE_DIMEN)
                             .placeholder(R.drawable.profile_pic_placeholder)

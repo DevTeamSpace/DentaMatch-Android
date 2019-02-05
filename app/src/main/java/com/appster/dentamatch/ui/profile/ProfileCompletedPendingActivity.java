@@ -17,7 +17,7 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ActivityProfileCompletedPendingBinding;
 import com.appster.dentamatch.ui.calendar.SetAvailabilityActivity;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.Constants;
 
 /**

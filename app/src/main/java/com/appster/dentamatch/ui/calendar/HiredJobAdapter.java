@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemJobListBinding;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.ui.searchjob.JobDetailActivity;
 import com.appster.dentamatch.ui.tracks.CancelReasonDialogFragment;
 import com.appster.dentamatch.util.Alert;

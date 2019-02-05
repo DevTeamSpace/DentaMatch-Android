@@ -8,7 +8,7 @@
 
 package com.appster.dentamatch.network.response.chat;
 
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 
 /**
  * Created by Appster on 08/02/17.

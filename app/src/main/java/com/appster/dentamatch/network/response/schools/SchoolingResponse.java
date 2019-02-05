@@ -8,7 +8,7 @@
 
 package com.appster.dentamatch.network.response.schools;
 
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.google.gson.annotations.SerializedName;
 
 /**

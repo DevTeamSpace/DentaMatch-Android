@@ -8,7 +8,7 @@
 
 package com.appster.dentamatch.network.response.profile;
 
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.response.auth.LicenceVerifiedStatus;
 
 /**

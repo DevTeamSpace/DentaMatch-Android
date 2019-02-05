@@ -13,13 +13,13 @@ import android.widget.Toast;
 
 import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.network.BaseResponse;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.jobs.SearchJobRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.ui.common.BaseActivity;
+import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
