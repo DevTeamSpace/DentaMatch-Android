@@ -10,6 +10,7 @@ package com.appster.dentamatch.network.response.PreferredJobLocation;
 
 import com.appster.dentamatch.base.BaseResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,13 +30,13 @@ public class PreferredJobLocationModel extends BaseResponse {
     }
 
     public class PreferredJobResult{
-        private List<PreferredJobLocationData> preferredJobLocations = null;
+        private ArrayList<PreferredJobLocationData> preferredJobLocations = null;
 
-        public List<PreferredJobLocationData> getPreferredJobLocations() {
+        public ArrayList<PreferredJobLocationData> getPreferredJobLocations() {
             return preferredJobLocations;
         }
 
-        public void setPreferredJobLocations(List<PreferredJobLocationData> preferredJobLocations) {
+        public void setPreferredJobLocations(ArrayList<PreferredJobLocationData> preferredJobLocations) {
             this.preferredJobLocations = preferredJobLocations;
         }
     }

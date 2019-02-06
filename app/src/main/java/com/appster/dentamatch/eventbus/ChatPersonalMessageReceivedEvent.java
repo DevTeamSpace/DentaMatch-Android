@@ -8,7 +8,7 @@
 
 package com.appster.dentamatch.eventbus;
 
-import com.appster.dentamatch.ui.messages.ChatMessageModel;
+import com.appster.dentamatch.presentation.messages.ChatMessageModel;
 
 /**
  * Created by Appster on 09/02/17.

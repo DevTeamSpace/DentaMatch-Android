@@ -8,6 +8,9 @@
 
 package com.appster.dentamatch.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ import java.util.ArrayList;
  * Created by virender on 21/01/17.
  * To inject activity reference.
  */
-public class ProfileSkillModel {
+public class ProfileSkillModel implements Parcelable {
     @SerializedName("id")
     private int parentId;
     @SerializedName("skillName")
@@ -35,4 +38,38 @@ public class ProfileSkillModel {
     public ArrayList<ProfileSubSkillModel> getChildSkillList() {
         return childSkillList;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.parentId);
+        dest.writeString(this.skillsName);
+        dest.writeList(this.childSkillList);
+    }
+
+    public ProfileSkillModel() {
+    }
+
+    protected ProfileSkillModel(Parcel in) {
+        this.parentId = in.readInt();
+        this.skillsName = in.readString();
+        this.childSkillList = new ArrayList<>();
+        in.readList(this.childSkillList, ProfileSubSkillModel.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<ProfileSkillModel> CREATOR = new Parcelable.Creator<ProfileSkillModel>() {
+        @Override
+        public ProfileSkillModel createFromParcel(Parcel source) {
+            return new ProfileSkillModel(source);
+        }
+
+        @Override
+        public ProfileSkillModel[] newArray(int size) {
+            return new ProfileSkillModel[size];
+        }
+    };
 }

@@ -15,7 +15,7 @@ import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest
 import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
 import com.appster.dentamatch.network.request.auth.ChangePasswordRequest;
 import com.appster.dentamatch.network.request.auth.ChangeUserLocation;
-import com.appster.dentamatch.network.request.auth.LicenceRequest;
+import com.appster.dentamatch.network.request.auth.LicenseRequest;
 import com.appster.dentamatch.network.request.auth.LoginRequest;
 import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest;
 import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
@@ -36,7 +36,7 @@ import com.appster.dentamatch.network.request.workexp.WorkExpListRequest;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
-import com.appster.dentamatch.domain.login.LoginResponse;
+import com.appster.dentamatch.domain.auth.AuthResponse;
 import com.appster.dentamatch.network.response.auth.UserVerifiedStatus;
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
 import com.appster.dentamatch.network.response.certificates.CertificateResponse;
@@ -48,7 +48,7 @@ import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
 import com.appster.dentamatch.network.response.notification.NotificationResponse;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
 import com.appster.dentamatch.network.response.profile.JobTitleResponse;
-import com.appster.dentamatch.network.response.profile.LicenceUpdateResponse;
+import com.appster.dentamatch.network.response.profile.LicenseUpdateResponse;
 import com.appster.dentamatch.network.response.profile.ProfileResponse;
 import com.appster.dentamatch.network.response.profile.StateResponse;
 import com.appster.dentamatch.network.response.schools.SchoolingResponse;
@@ -169,11 +169,11 @@ public interface AuthWebServices {
     Call<HiredJobResponse> getHiredJob(@Body HiredJobRequest hiredJobRequest);
 
     @POST(SIGN_IN)
-    Call<LoginResponse> signIn(@Body LoginRequest loginRequest);
+    Call<AuthResponse> signIn(@Body LoginRequest loginRequest);
 
 
     @PUT(FORGOT_PASS)
-    Call<LoginResponse> forgotPassword(@Body LoginRequest loginRequest);
+    Call<AuthResponse> forgotPassword(@Body LoginRequest loginRequest);
 
     @DELETE(WORK_EXP_DELETE)
     Call<BaseResponse> workExpDelete(@Query(ID) int id);
@@ -246,7 +246,7 @@ public interface AuthWebServices {
     Call<BaseResponse> saveAvailability(@Body SaveAvailabilityRequest saveAvailabilityRequest);
 
     @PUT(UPDATE_LICENCE)
-    Call<LicenceUpdateResponse> updateLicence(@Body LicenceRequest licenceRequest);
+    Call<LicenseUpdateResponse> updateLicence(@Body LicenseRequest licenseRequest);
 
     @PUT(UPDATE_PROFILE)
     Call<BaseResponse> updateUserProfile(@Body UpdateUserProfileRequest request);

@@ -12,7 +12,7 @@
             android:id="@+id/toolbar_calendar"
             layout="@layout/toolbar_general" />
 
-        <com.appster.dentamatch.ui.calendar.CalendarViewEvent
+        <com.appster.dentamatch.presentation.calendar.CalendarViewEvent
             android:id="@+id/custom_calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
