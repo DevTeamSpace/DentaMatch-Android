@@ -10,7 +10,6 @@ package com.appster.dentamatch.base;
 
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
-import android.arch.lifecycle.Observer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -22,21 +21,22 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.text.Editable;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.DBHelper;
-import com.appster.dentamatch.ui.auth.LoginActivity;
-import com.appster.dentamatch.ui.common.ImageViewingActivity;
-import com.appster.dentamatch.ui.searchjob.SearchJobDataHelper;
-import com.appster.dentamatch.ui.tracks.TrackJobsDataHelper;
+import com.appster.dentamatch.presentation.auth.LoginActivity;
+import com.appster.dentamatch.presentation.common.ImageViewingActivity;
+import com.appster.dentamatch.presentation.searchjob.SearchJobDataHelper;
+import com.appster.dentamatch.presentation.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
@@ -53,7 +53,8 @@ import me.leolin.shortcutbadger.ShortcutBadger;
  * Created for common handling and design-.
  */
 
-public abstract class BaseActivity<T extends BaseViewModel> extends DaggerAppCompatActivity {
+public abstract class BaseActivity extends DaggerAppCompatActivity {
+
     private static final String TAG = LogUtils.makeLogTag(BaseActivity.class);
     private static final int MY_PERMISSION_ACCESS_LOCATION = 101;
     private boolean mAlive;
@@ -64,35 +65,14 @@ public abstract class BaseActivity<T extends BaseViewModel> extends DaggerAppCom
 
     abstract public String getActivityName();
 
-    protected T mViewModel;
-
-    protected void bindViewModel(@NonNull T viewModel) {
-        mViewModel = viewModel;
-        mViewModel.getLoading().observe(this, mLoadingObserver);
-        mViewModel.getError().observe(this, mErrorObserver);
+    @NonNull
+    public String getTextFromEditText(@NonNull EditText editText) {
+        Editable text = editText.getText();
+        if (text != null) {
+            return text.toString().trim();
+        }
+        return "";
     }
-
-    @NonNull
-    private Observer<Boolean> mLoadingObserver = new Observer<Boolean>() {
-        @Override
-        public void onChanged(@Nullable Boolean o) {
-            if (Boolean.TRUE.equals(o)) {
-                processToShowDialog();
-            } else {
-                hideProgressBar();
-            }
-        }
-    };
-
-    @NonNull
-    private Observer<Throwable> mErrorObserver = new Observer<Throwable>() {
-        @Override
-        public void onChanged(@Nullable Throwable throwable) {
-            if (throwable != null) {
-                showSnackBar(throwable.getLocalizedMessage());
-            }
-        }
-    };
 
     public void showSnackBar(String message) {
         Alert.showSnackBar(findViewById(android.R.id.content), message);

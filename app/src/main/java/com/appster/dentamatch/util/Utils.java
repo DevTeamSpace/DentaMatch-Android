@@ -55,7 +55,7 @@ import com.appster.dentamatch.DentaApp;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.network.response.notification.NotificationData;
-import com.appster.dentamatch.ui.messages.ChatMessageModel;
+import com.appster.dentamatch.presentation.messages.ChatMessageModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;

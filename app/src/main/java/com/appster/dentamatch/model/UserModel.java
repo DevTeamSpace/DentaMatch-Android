@@ -131,7 +131,7 @@ public class UserModel implements Parcelable{
         dest.writeString(status);
         dest.writeString(firstName);
         dest.writeString(lastName);
-        dest.writeString(jobTitle);
+        dest.writeString(jobTitles);
         dest.writeInt(jobTitleId);
         dest.writeString(profileImage);
         dest.writeString(profilePic);

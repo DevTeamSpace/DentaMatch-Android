@@ -17,9 +17,9 @@ import android.util.Log;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.chat.DBHelper;
-import com.appster.dentamatch.ui.common.HomeActivity;
-import com.appster.dentamatch.ui.messages.ChatMessageModel;
-import com.appster.dentamatch.ui.notification.NotificationActivity;
+import com.appster.dentamatch.presentation.common.HomeActivity;
+import com.appster.dentamatch.presentation.messages.ChatMessageModel;
+import com.appster.dentamatch.presentation.notification.NotificationActivity;
 import com.appster.dentamatch.util.BadgeIntentService;
 import com.appster.dentamatch.util.BadgeService;
 import com.appster.dentamatch.util.Constants;

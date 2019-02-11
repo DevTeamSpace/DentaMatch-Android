@@ -1,15 +1,15 @@
 package com.appster.dentamatch.di.fragment
 
-import com.appster.dentamatch.ui.calendar.CalendarFragment
-import com.appster.dentamatch.ui.messages.MessagesListFragment
-import com.appster.dentamatch.ui.profile.ProfileFragment
-import com.appster.dentamatch.ui.searchjob.JobListFragment
-import com.appster.dentamatch.ui.searchjob.JobMapFragment
-import com.appster.dentamatch.ui.searchjob.JobsFragment
-import com.appster.dentamatch.ui.tracks.AppliedJobsFragment
-import com.appster.dentamatch.ui.tracks.SavedJobFragment
-import com.appster.dentamatch.ui.tracks.ShortlistedJobsFragment
-import com.appster.dentamatch.ui.tracks.TrackFragment
+import com.appster.dentamatch.presentation.calendar.CalendarFragment
+import com.appster.dentamatch.presentation.messages.MessagesListFragment
+import com.appster.dentamatch.presentation.profile.ProfileFragment
+import com.appster.dentamatch.presentation.searchjob.JobListFragment
+import com.appster.dentamatch.presentation.searchjob.JobMapFragment
+import com.appster.dentamatch.presentation.searchjob.JobsFragment
+import com.appster.dentamatch.presentation.tracks.AppliedJobsFragment
+import com.appster.dentamatch.presentation.tracks.SavedJobFragment
+import com.appster.dentamatch.presentation.tracks.ShortlistedJobsFragment
+import com.appster.dentamatch.presentation.tracks.TrackFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

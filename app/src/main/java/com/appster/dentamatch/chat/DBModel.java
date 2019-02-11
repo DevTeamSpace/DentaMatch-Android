@@ -8,7 +8,7 @@
 
 package com.appster.dentamatch.chat;
 
-import com.appster.dentamatch.ui.messages.Message;
+import com.appster.dentamatch.presentation.messages.Message;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

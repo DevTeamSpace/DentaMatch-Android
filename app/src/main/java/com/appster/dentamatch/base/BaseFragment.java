@@ -13,7 +13,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -161,6 +160,13 @@ public abstract class BaseFragment extends DaggerFragment {
 
     public void showProgressBar(String msg, int delayTime) {
         showProgressBar(null, msg, null, delayTime);
+    }
+
+    public void hideProgressBar() {
+        BaseActivity activity = getBaseActivity();
+        if (activity != null) {
+            activity.hideProgressBar();
+        }
     }
 
     protected void launchImageViewer(View v, String imageUrl) {

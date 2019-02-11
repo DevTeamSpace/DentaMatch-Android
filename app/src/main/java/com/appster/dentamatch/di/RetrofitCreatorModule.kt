@@ -27,6 +27,7 @@ class RetrofitCreatorModule {
         private const val HEADER_CONTENT_TYPE = "Content-Type"
         private const val HEADER_ACCEPT = "accept"
         private const val APPLICATION_JSON = "application/json"
+        private const val HEADER_ACCESS_TOKEN = "accessToken"
     }
 
     @Provides
@@ -53,12 +54,13 @@ class RetrofitCreatorModule {
             .addInterceptor { chain ->
                 var request = chain.request()
                 val builder = request.newBuilder()
-                if (PreferenceUtil.getIsLogin())
-                    request = builder.addHeader("Authorization", "Basic ${PreferenceUtil.getKeyUserToken()}")
+                if (PreferenceUtil.getIsLogin()) {
+                    request = builder.addHeader(HEADER_ACCESS_TOKEN, PreferenceUtil.getKeyUserToken())
                             .addHeader(HEADER_CONTENT_TYPE, APPLICATION_JSON)
                             .addHeader(HEADER_ACCEPT, APPLICATION_JSON)
                             .method(request.method(), request.body())
                             .build()
+                }
                 chain.proceed(request)
             }
             .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)

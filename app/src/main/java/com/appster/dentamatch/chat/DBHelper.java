@@ -12,14 +12,13 @@ package com.appster.dentamatch.chat;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.appster.dentamatch.ui.messages.Message;
+import com.appster.dentamatch.presentation.messages.Message;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.Utils;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import io.realm.Sort;
 
 /**
  * Created by Appster on 14/02/17.
@@ -78,7 +77,7 @@ public class DBHelper {
             LogUtils.LOGD(TAG, REALM_INSTANCE_ERROR);
             return null;
         }
-        return mRealmInstance.where(DBModel.class).findAllSorted("lastMsgTime", Sort.DESCENDING);
+        return mRealmInstance.where(DBModel.class).findAll();
     }
 
     public void updateRecruiterDetails(String recruiterId, String recruiterName, int unreadMsgCount, String msgListID, String msg, String timeStamp, boolean isFromList) {

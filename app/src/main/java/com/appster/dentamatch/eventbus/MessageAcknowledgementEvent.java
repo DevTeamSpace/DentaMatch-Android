@@ -8,7 +8,7 @@
 
 package com.appster.dentamatch.eventbus;
 
-import com.appster.dentamatch.ui.messages.Message;
+import com.appster.dentamatch.presentation.messages.Message;
 
 /**
  * Created by Appster on 16/02/17.

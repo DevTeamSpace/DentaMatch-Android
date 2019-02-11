@@ -290,7 +290,7 @@
                     android:background="@color/line_divider"
                     />
 
-                <com.appster.dentamatch.ui.calendar.CalendarViewSetAvailability
+                <com.appster.dentamatch.presentation.calendar.CalendarViewSetAvailability
                     android:id="@+id/custom_calendar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
