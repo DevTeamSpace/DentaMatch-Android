@@ -12,23 +12,20 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.appster.dentamatch.R;
-import com.appster.dentamatch.base.BaseActivity;
+import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.chat.SocketManager;
 import com.appster.dentamatch.eventbus.LocationEvent;
 import com.appster.dentamatch.model.UserModel;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.Notification.UpdateFcmTokenRequest;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse;
 import com.appster.dentamatch.network.response.notification.UnReadNotificationResponseData;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.presentation.calendar.CalendarFragment;
 import com.appster.dentamatch.presentation.messages.ChatActivity;
 import com.appster.dentamatch.presentation.messages.MessagesListFragment;
@@ -48,13 +45,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
-import retrofit2.Call;
 
 /**
  * Created by virender on 17/01/17.
  * To inject activity reference.
  */
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseLoadingActivity<HomeViewModel> {
+
     private static final String TAG = LogUtils.makeLogTag(HomeActivity.class);
     private final int SEARCH_JOBS_FRAGMENT_POS = 0;
     private final int TRACKS_FRAGMENT_POS = 1;
@@ -115,6 +112,25 @@ public class HomeActivity extends BaseActivity {
          */
         LocationUtils.addFragment(this);
         updateToken(PreferenceUtil.getFcmToken());
+
+        viewModel.getUnReadNotificationCount().observe(this,
+                this::onSuccessUnreadNotificationCountRequest);
+    }
+
+    private void onSuccessUnreadNotificationCountRequest(@Nullable UnReadNotificationCountResponse response) {
+        if (response != null) {
+            if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
+                UnReadNotificationCountResponse countResponse = new UnReadNotificationCountResponse();
+                UnReadNotificationResponseData responseData = new UnReadNotificationResponseData();
+                responseData.setNotificationCount(0);
+                countResponse.setUnReadNotificationResponse(responseData);
+                onCount(countResponse);
+                ShortcutBadger.removeCount(HomeActivity.this);
+            } else {
+                onCount(response);
+                ShortcutBadger.applyCount(HomeActivity.this, response.getUnReadNotificationResponse().getNotificationCount());
+            }
+        }
     }
 
     @Override
@@ -169,77 +185,60 @@ public class HomeActivity extends BaseActivity {
         bottomBar.setAccentColor(ContextCompat.getColor(this, R.color.cerulean_color));
         bottomBar.setInactiveColor(ContextCompat.getColor(this, R.color.gray_nav_bottom_unselected));
 
-        bottomBar.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                switch (position) {
-
-                    case SEARCH_JOBS_FRAGMENT_POS:
-                        if (mJobsFragment != null) {
-                            pushFragment(mJobsFragment, null, ANIMATION_TYPE.FADE);
-                        } else {
-                            mJobsFragment = JobsFragment.newInstance();
-                            pushFragment(mJobsFragment, null, ANIMATION_TYPE.FADE);
-                        }
-                        break;
-
-                    case TRACKS_FRAGMENT_POS:
-                        if (mTrackFragment != null) {
-                            pushFragment(mTrackFragment, null, ANIMATION_TYPE.FADE);
-                        } else {
-                            mTrackFragment = TrackFragment.newInstance();
-                            pushFragment(mTrackFragment, null, ANIMATION_TYPE.FADE);
-                        }
-
-                        break;
-
-                    case CALENDAR_FRAGMENT_POS:
-                        if (mCalendarFragment != null) {
-                            pushFragment(mCalendarFragment, null, ANIMATION_TYPE.FADE);
-                        } else {
-                            mCalendarFragment = CalendarFragment.newInstance();
-                            pushFragment(mCalendarFragment, null, ANIMATION_TYPE.FADE);
-                        }
-
-                        break;
-
-                    case MESSAGE_FRAGMENT_POS:
-                        if (mMessagesFragment != null) {
-                            pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
-                        } else {
-                            mMessagesFragment = MessagesListFragment.newInstance();
-                            pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
-                        }
-                        break;
-
-                    case PROFILE_FRAGMENT_POS:
-                        if (mProfileFragment != null) {
-                            pushFragment(mProfileFragment, null, ANIMATION_TYPE.FADE);
-                        } else {
-                            mProfileFragment = ProfileFragment.newInstance();
-                            pushFragment(mProfileFragment, null, ANIMATION_TYPE.FADE);
-                        }
-                        break;
-
-                    default:
-                        break;
-
-                }
-
-                return true;
+        bottomBar.setOnTabSelectedListener((position, wasSelected) -> {
+            switch (position) {
+                case SEARCH_JOBS_FRAGMENT_POS:
+                    if (mJobsFragment != null) {
+                        pushFragment(mJobsFragment, null, ANIMATION_TYPE.FADE);
+                    } else {
+                        mJobsFragment = JobsFragment.newInstance();
+                        pushFragment(mJobsFragment, null, ANIMATION_TYPE.FADE);
+                    }
+                    break;
+                case TRACKS_FRAGMENT_POS:
+                    if (mTrackFragment != null) {
+                        pushFragment(mTrackFragment, null, ANIMATION_TYPE.FADE);
+                    } else {
+                        mTrackFragment = TrackFragment.newInstance();
+                        pushFragment(mTrackFragment, null, ANIMATION_TYPE.FADE);
+                    }
+                    break;
+                case CALENDAR_FRAGMENT_POS:
+                    if (mCalendarFragment != null) {
+                        pushFragment(mCalendarFragment, null, ANIMATION_TYPE.FADE);
+                    } else {
+                        mCalendarFragment = CalendarFragment.newInstance();
+                        pushFragment(mCalendarFragment, null, ANIMATION_TYPE.FADE);
+                    }
+                    break;
+                case MESSAGE_FRAGMENT_POS:
+                    if (mMessagesFragment != null) {
+                        pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
+                    } else {
+                        mMessagesFragment = MessagesListFragment.newInstance();
+                        pushFragment(mMessagesFragment, null, ANIMATION_TYPE.FADE);
+                    }
+                    break;
+                case PROFILE_FRAGMENT_POS:
+                    if (mProfileFragment != null) {
+                        pushFragment(mProfileFragment, null, ANIMATION_TYPE.FADE);
+                    } else {
+                        mProfileFragment = ProfileFragment.newInstance();
+                        pushFragment(mProfileFragment, null, ANIMATION_TYPE.FADE);
+                    }
+                    break;
+                default:
+                    break;
             }
+            return true;
         });
 
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setTitleMargins(SEARCH_JOBS_FRAGMENT_POS);
-                setTitleMargins(TRACKS_FRAGMENT_POS);
-                setTitleMargins(CALENDAR_FRAGMENT_POS);
-                setTitleMargins(MESSAGE_FRAGMENT_POS);
-                setTitleMargins(PROFILE_FRAGMENT_POS);
-            }
+        new Handler().postDelayed(() -> {
+            setTitleMargins(SEARCH_JOBS_FRAGMENT_POS);
+            setTitleMargins(TRACKS_FRAGMENT_POS);
+            setTitleMargins(CALENDAR_FRAGMENT_POS);
+            setTitleMargins(MESSAGE_FRAGMENT_POS);
+            setTitleMargins(PROFILE_FRAGMENT_POS);
         }, 1000);
 
     }
@@ -304,69 +303,12 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    public String getActivityName() {
-        return null;
-    }
-
-    private void updateToken(String fcmToken) {
-        try {
-            UpdateFcmTokenRequest request = new UpdateFcmTokenRequest();
-            request.setUpdateDeviceToken(fcmToken);
-            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-            webServices.updateFcmToken(request).enqueue(new BaseCallback<BaseResponse>(this) {
-                @Override
-                public void onSuccess(BaseResponse response) {
-
-                    if (response.getStatus() == 1) {
-                        LogUtils.LOGD(TAG, "token updated successfully");
-                    } else {
-                        LogUtils.LOGD(TAG, "token  not updated fails");
-
-                    }
-                }
-
-                @Override
-                public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                }
-            });
-
-        } catch (Exception e) {
-            LogUtils.LOGE(TAG, e.getMessage());
-        }
+    private void updateToken(@NonNull String fcmToken) {
+        viewModel.updateFcmToken(fcmToken);
     }
 
     private void getBatchCount() {
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getUnreadNotificationCount().enqueue(new BaseCallback<UnReadNotificationCountResponse>(this) {
-            @Override
-            public void onSuccess(UnReadNotificationCountResponse response) {
-                /*
-                  Once data has been loaded from the filter changes we can dismiss this filter.
-                 */
-                if (response.getStatus() == 1) {
-                    if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
-                        UnReadNotificationCountResponse countResponse = new UnReadNotificationCountResponse();
-                        UnReadNotificationResponseData responseData = new UnReadNotificationResponseData();
-                        responseData.setNotificationCount(0);
-                        countResponse.setUnReadNotificationResponse(responseData);
-                        onCount(countResponse);
-                        ShortcutBadger.removeCount(HomeActivity.this);
-                    } else {
-                        onCount(response);
-                        ShortcutBadger.applyCount(HomeActivity.this, response.getUnReadNotificationResponse().getNotificationCount());
-                    }
-                } else {
-                    showToast(response.getMessage());
-                }
-            }
-
-            @Override
-            public void onFail(Call<UnReadNotificationCountResponse> call, BaseResponse baseResponse) {
-            }
-        });
-
+        viewModel.requestUnreadNotificationCount();
     }
 
     @Override
@@ -374,5 +316,4 @@ public class HomeActivity extends BaseActivity {
         super.onResume();
         getBatchCount();
     }
-
 }

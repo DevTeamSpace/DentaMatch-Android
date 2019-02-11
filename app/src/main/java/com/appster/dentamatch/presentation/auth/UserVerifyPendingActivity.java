@@ -51,7 +51,6 @@ public class UserVerifyPendingActivity extends BaseLoadingActivity<UserVerifyPen
     protected void onResume() {
         super.onResume();
         new Handler().postDelayed(() -> checkUserVerified(false), 700);
-
     }
 
     private void updateUI() {
@@ -80,7 +79,6 @@ public class UserVerifyPendingActivity extends BaseLoadingActivity<UserVerifyPen
     private void onSuccessUserVerified(@Nullable UserVerifiedStatus response) {
         if (response != null) {
             if (response.getResult().getIsVerified() == Constants.USER_VERIFIED_STATUS) {
-
                 Intent profileCompletedIntent = new Intent(UserVerifyPendingActivity.this, ProfileCompletedPendingActivity.class);
                 UserModel userModel = PreferenceUtil.getUserModel();
                 if (userModel == null) {
@@ -93,7 +91,6 @@ public class UserVerifyPendingActivity extends BaseLoadingActivity<UserVerifyPen
                 } else {
                     //Pending liecence screen
                     profileCompletedIntent.putExtra(Constants.IS_LICENCE_REQUIRED, 1);
-
                 }
                 startActivity(profileCompletedIntent);
                 finish();

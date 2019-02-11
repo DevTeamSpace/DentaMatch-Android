@@ -13,13 +13,19 @@ open class BaseLoadingActivity<T : BaseLoadingViewModel> : BaseActivity() {
     @Inject
     lateinit var viewModel: T
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.loading.observe(this, mLoadingObserver)
-        viewModel.error.observe(this, mErrorObserver)
+    override fun onResume() {
+        super.onResume()
+        viewModel.loading.observe(this, loadingObserver)
+        viewModel.error.observe(this, errorObserver)
     }
 
-    private val mLoadingObserver = Observer<Boolean> { o ->
+    override fun onPause() {
+        viewModel.loading.removeObserver(loadingObserver)
+        viewModel.error.removeObserver(errorObserver)
+        super.onPause()
+    }
+
+    private val loadingObserver = Observer<Boolean> { o ->
         if (true == o) {
             processToShowDialog()
         } else {
@@ -27,5 +33,5 @@ open class BaseLoadingActivity<T : BaseLoadingViewModel> : BaseActivity() {
         }
     }
 
-    private val mErrorObserver = Observer<Throwable> { e -> showSnackBar(e?.localizedMessage) }
+    private val errorObserver = Observer<Throwable> { e -> showSnackBar(e?.localizedMessage) }
 }

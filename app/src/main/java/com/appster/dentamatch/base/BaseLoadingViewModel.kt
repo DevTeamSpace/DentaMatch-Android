@@ -7,8 +7,8 @@ import io.reactivex.SingleTransformer
 
 open class BaseLoadingViewModel : BaseViewModel() {
 
-    private val mutableLoading = MutableLiveData<Boolean>()
-    private val mutableError = MutableLiveData<Throwable>()
+    protected val mutableLoading = MutableLiveData<Boolean>()
+    protected val mutableError = MutableLiveData<Throwable>()
 
     val loading: LiveData<Boolean> get() = mutableLoading
     val error: LiveData<Throwable> get() = mutableError
