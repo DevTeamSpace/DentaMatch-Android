@@ -11,8 +11,14 @@ open class BaseLoadingFragment<T : BaseLoadingViewModel> : BaseFragment() {
     @Inject
     lateinit var viewModel: T
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onPause() {
+        viewModel.loading.removeObserver(loadingObserver)
+        viewModel.error.removeObserver(errorObserver)
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.loading.observe(this, loadingObserver)
         viewModel.error.observe(this, errorObserver)
     }
@@ -25,5 +31,5 @@ open class BaseLoadingFragment<T : BaseLoadingViewModel> : BaseFragment() {
         }
     }
 
-    private val errorObserver = Observer<Throwable> { e -> showSnackBar(e?.localizedMessage) }
+    private val errorObserver = Observer<Throwable> { e -> showToast(e?.localizedMessage) }
 }

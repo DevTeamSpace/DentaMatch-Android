@@ -17,25 +17,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.databinding.ActivityNotificationBinding;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.response.notification.NotificationData;
 import com.appster.dentamatch.network.response.notification.NotificationResponse;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.base.BaseActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
+import kotlin.Pair;
 
 /**
  * Created by bawenderyandra on 08/03/17.
  * To inject activity reference.
  */
 
-public class NotificationActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class NotificationActivity extends BaseLoadingActivity<NotificationViewModel>
+        implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+
     private ActivityNotificationBinding mBinder;
     private NotificationAdapter mNotificationAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -53,72 +53,58 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
 
         mBinder.rvNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 checkIfItsLastItem();
             }
         });
 
         getNotificationsData(false, false);
+
+        viewModel.getNotificationResponse().observe(this, this::onSuccessRequestNotifications);
+        viewModel.getNotificationFailed().observe(this, throwable -> onFailedNotificationRequest());
     }
 
-    public void showHideEmptyLabel(int visibility){
+    private void onFailedNotificationRequest() {
+        if (mBinder.swipeRefreshNotification.isRefreshing()) {
+            mBinder.swipeRefreshNotification.setRefreshing(false);
+        }
+        if (mBinder.layPagination.getVisibility() == View.VISIBLE) {
+            mBinder.layPagination.setVisibility(View.GONE);
+        }
+    }
+
+    private void onSuccessRequestNotifications(@Nullable Pair<NotificationResponse, Boolean> result) {
+        if (result != null && result.getFirst() != null && result.getSecond() != null) {
+            NotificationResponse response = result.getFirst();
+            boolean isRefreshing = Boolean.TRUE.equals(result.getSecond());
+            if (isRefreshing) {
+                mNotificationData.clear();
+            }
+            mNotificationData.addAll(response.getNotificationResponseData().getNotificationList());
+            mNotificationAdapter.notifyDataSetChanged();
+            mIsPaginationNeeded = response.getNotificationResponseData().getTotal() != mNotificationData.size();
+            if (mNotificationData.size() > 0) {
+                showHideEmptyLabel(View.GONE);
+            } else {
+                showHideEmptyLabel(View.VISIBLE);
+            }
+            if (mBinder.swipeRefreshNotification.isRefreshing()) {
+                mBinder.swipeRefreshNotification.setRefreshing(false);
+            }
+            if (mBinder.layPagination.getVisibility() == View.VISIBLE) {
+                mBinder.layPagination.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void showHideEmptyLabel(int visibility) {
         mBinder.layoutEmptyNotification.setVisibility(visibility);
     }
 
     private void getNotificationsData(final boolean isRefreshing, boolean isPaginating) {
-
-        if(!isPaginating && !isRefreshing){
-            processToShowDialog();
-        }
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-
-        webServices.getNotification(mPage).enqueue(new BaseCallback<NotificationResponse>(this) {
-            @Override
-            public void onSuccess(NotificationResponse response) {
-
-                if(response.getStatus() == 1){
-
-                    if(isRefreshing){
-                        mNotificationData.clear();
-                    }
-
-                    mNotificationData.addAll(response.getNotificationResponseData().getNotificationList());
-                    mNotificationAdapter.notifyDataSetChanged();
-
-                    mIsPaginationNeeded = response.getNotificationResponseData().getTotal() != mNotificationData.size();
-
-                }else{
-                    showToast(response.getMessage());
-                }
-
-                if(mNotificationData.size() > 0){
-                    showHideEmptyLabel(View.GONE);
-                }else{
-                    showHideEmptyLabel(View.VISIBLE);
-                }
-
-                if(mBinder.swipeRefreshNotification.isRefreshing()){
-                    mBinder.swipeRefreshNotification.setRefreshing(false);
-                }
-
-                if(mBinder.layPagination.getVisibility() == View.VISIBLE){
-                    mBinder.layPagination.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFail(Call<NotificationResponse> call, BaseResponse baseResponse) {
-                if(mBinder.swipeRefreshNotification.isRefreshing()){
-                    mBinder.swipeRefreshNotification.setRefreshing(false);
-                }
-
-                if(mBinder.layPagination.getVisibility() == View.VISIBLE){
-                    mBinder.layPagination.setVisibility(View.GONE);
-                }
-            }
-        });
+        boolean showRefreshing = !isPaginating && !isRefreshing;
+        viewModel.requestNotifications(mPage, showRefreshing);
     }
 
     private void checkIfItsLastItem() {
@@ -138,18 +124,13 @@ public class NotificationActivity extends BaseActivity implements SwipeRefreshLa
 
     private void intiView() {
         mNotificationData = new ArrayList<>();
-        mNotificationAdapter = new NotificationAdapter(this,mNotificationData);
+        mNotificationAdapter = new NotificationAdapter(this, mNotificationData);
         mBinder.toolbarNotification.tvToolbarGeneralLeft.setText(getString(R.string.header_notification));
         mBinder.swipeRefreshNotification.setColorSchemeResources(R.color.colorAccent);
         mBinder.swipeRefreshNotification.setOnRefreshListener(this);
         mLayoutManager = new LinearLayoutManager(this);
 
         mBinder.toolbarNotification.ivToolBarLeft.setOnClickListener(this);
-    }
-
-    @Override
-    public String getActivityName() {
-        return null;
     }
 
     @Override

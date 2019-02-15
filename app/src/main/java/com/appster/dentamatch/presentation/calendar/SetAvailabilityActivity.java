@@ -11,23 +11,20 @@ package com.appster.dentamatch.presentation.calendar;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.databinding.ActivitySetAvailabilityBinding;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest;
 import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest;
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponse;
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponseData;
 import com.appster.dentamatch.network.response.calendar.CalendarAvailability;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.presentation.common.HomeActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -39,16 +36,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import retrofit2.Call;
-
 /**
  * Created by virender on 01/02/17.
  * To inject activity reference.
  */
-public class SetAvailabilityActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class SetAvailabilityActivity extends BaseLoadingActivity<SetAvailabilityViewModel>
+        implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+
     private ActivitySetAvailabilityBinding mBinder;
     private ArrayList<String> mPartTimeDays;
-    private AvailabilityResponse mAvailabilityResponse;
     private boolean mIsPartTime, mIsFullTime, mIsTemporary, mIsSunday, mIsMonday, mIsTuesday, mIsWednesday, mIsThursday, mIsFriday, mIsSaturday, mIsFromProfileComplete;
     private boolean isFromRegistration;
 
@@ -62,19 +58,29 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         //open it
         getAvailability(prepareGetAvailableRequest());
         PreferenceUtil.setSetAvailability(true);
+
+        viewModel.getAvailabilityResponse().observe(this, this::onSuccessRequestAvailability);
+        viewModel.getSaveAvailability().observe(this, save -> onSuccessSaveAvailability());
+    }
+
+    private void onSuccessSaveAvailability() {
+        EventBus.getDefault().isRegistered(true);
+        if(isFromRegistration){
+            startActivity(new Intent(SetAvailabilityActivity.this, HomeActivity.class));
+        }
+        finish();
+    }
+
+    private void onSuccessRequestAvailability(@Nullable AvailabilityResponse response) {
+        if (response != null) {
+            setViewData(response);
+        }
     }
 
     private void getIntentData() {
-       /* if (getIntent().getExtras() != null && getIntent().hasExtra(Constants.IS_LICENCE_REQUIRED)) {
-            mIsFromProfileComplete = getIntent().getBooleanExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.FALSE);
-            if (mIsFromProfileComplete)
-                getAvailability(prepareGetAvailableRequest());
-        }*/
-
         if (getIntent().getExtras() != null){
             isFromRegistration=getIntent().getBooleanExtra(Constants.IS_FROM_PROFILE_COMPLETE, Boolean.FALSE);
         }
-
     }
 
     private void initViews() {
@@ -95,11 +101,6 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         mBinder.tvWednesday.setOnClickListener(this);
         mBinder.tvThursday.setOnClickListener(this);
         mBinder.tvFriday.setOnClickListener(this);
-    }
-
-    @Override
-    public String getActivityName() {
-        return null;
     }
 
     @Override
@@ -276,39 +277,7 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private void resetParTimeAvailability() {
-        if (mAvailabilityResponse != null && mAvailabilityResponse.getAvailabilityResponseData() != null && mAvailabilityResponse.getAvailabilityResponseData().getCalendarAvailability() != null) {
-            CalendarAvailability calendarAvailability = mAvailabilityResponse.getAvailabilityResponseData().getCalendarAvailability();
-
-            calendarAvailability.setIsParttimeMonday(0);
-            calendarAvailability.setIsParttimeTuesday(0);
-            calendarAvailability.setIsParttimeWednesday(0);
-            calendarAvailability.setIsParttimeThursday(0);
-            calendarAvailability.setIsParttimeFriday(0);
-            calendarAvailability.setIsParttimeSaturday(0);
-            calendarAvailability.setIsParttimeSunday(0);
-            setPartTimeDayView(calendarAvailability);
-        }
-    }
-
-   /* private boolean checkValidation() {
-        if (!mIsPartTime && !mIsFullTime && !mIsTemporary) {
-            showToast(getString(R.string.alert_select_job_type));
-            return false;
-        }
-        if (mIsPartTime && (!mIsSunday && !mIsMonday && !mIsTuesday && !mIsWednesday && !mIsThursday && !mIsFriday && !mIsSaturday && !mIsSunday)) {
-            showToast(getString(R.string.alert_invalid_part_time));
-
-            return false;
-        }
-        if (mIsTemporary && (mBinder.customCalendar.getAvailabilityList() == null || mBinder.customCalendar.getAvailabilityList().size() == 0)) {
-            showToast(getString(R.string.alert_invalid_temp_job));
-            return false;
-
-        }
-        return true;
-    }*/
-
+    @NonNull
     private GetAvailabilityRequest prepareGetAvailableRequest() {
         GetAvailabilityRequest request = new GetAvailabilityRequest();
         Calendar calendar = Calendar.getInstance();
@@ -317,9 +286,6 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         Calendar endDateCalendar = Calendar.getInstance();
         endDateCalendar.add(Calendar.MONTH, 6);
 
-        /**
-         * to get  the number of days  in month
-         */
         Calendar tempCalendar = Calendar.getInstance();
         tempCalendar.set(Calendar.MONTH, endDateCalendar.get(Calendar.MONTH));
         int days = tempCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -334,15 +300,13 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
         request.setCalendarEndDate(splitEndDate[0] + "-" + splitEndDate[1] + "-" + days);
 
         return request;
-
     }
 
+    @NonNull
     private SaveAvailabilityRequest prepareSaveRequest() {
-
         SaveAvailabilityRequest request = new SaveAvailabilityRequest();
         ArrayList<String> dayList = new ArrayList<>();
         ArrayList<String> temporaryList = new ArrayList<>();
-
 
         if (mIsFullTime) {
             request.setIsFulltime(1);
@@ -350,66 +314,38 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
             request.setIsFulltime(0);
         }
         if (mIsPartTime) {
-
             if (mIsMonday) {
                 dayList.add(getString(R.string.txt_full_monday).toLowerCase());
             }
-
             if (mIsTuesday) {
                 dayList.add(getString(R.string.txt_full_tuesday).toLowerCase());
             }
-
             if (mIsWednesday) {
                 dayList.add(getString(R.string.txt_full_wednesday).toLowerCase());
             }
-
             if (mIsThursday) {
                 dayList.add(getString(R.string.txt_full_thursday).toLowerCase());
             }
-
             if (mIsFriday) {
                 dayList.add(getString(R.string.txt_full_friday).toLowerCase());
             }
-
             if (mIsSaturday) {
                 dayList.add(getString(R.string.txt_full_saturday).toLowerCase());
             }
-
             if (mIsSunday) {
                 dayList.add(getString(R.string.txt_full_sunday).toLowerCase());
             }
         }
         request.setPartTimeDays(dayList);
-
         if (mIsTemporary) {
             temporaryList = mBinder.customCalendar.getAvailabilityList();
         }
-
         request.setTempDates(temporaryList);
         return request;
     }
 
-
-    private void getAvailability(GetAvailabilityRequest request) {
-        processToShowDialog();
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getAvailabilityList(request).enqueue(new BaseCallback<AvailabilityResponse>(SetAvailabilityActivity.this) {
-            @Override
-            public void onSuccess(AvailabilityResponse response) {
-                if (response.getStatus() == 1) {
-                    mAvailabilityResponse = response;
-                    setViewData(response);
-
-                } else {
-                    Utils.showToast(SetAvailabilityActivity.this, response.getMessage());
-
-                }
-            }
-
-            @Override
-            public void onFail(Call<AvailabilityResponse> call, BaseResponse baseResponse) {
-            }
-        });
+    private void getAvailability(@NonNull GetAvailabilityRequest request) {
+        viewModel.requestAvailabilityList(request);
     }
 
     private void setViewData(AvailabilityResponse res) {
@@ -559,31 +495,8 @@ public class SetAvailabilityActivity extends BaseActivity implements View.OnClic
 
     }
 
-    private void saveAvailability(SaveAvailabilityRequest request) {
-        processToShowDialog();
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.saveAvailability(request).enqueue(new BaseCallback<BaseResponse>(SetAvailabilityActivity.this) {
-            @Override
-            public void onSuccess(BaseResponse response) {
-                Utils.showToast(SetAvailabilityActivity.this, response.getMessage());
-
-                if (response.getStatus() == 1) {
-                    EventBus.getDefault().isRegistered(true);
-
-                    if(isFromRegistration){
-                        startActivity(new Intent(SetAvailabilityActivity.this, HomeActivity.class));
-                    }
-                    finish();
-
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-            }
-        });
+    private void saveAvailability(@NonNull SaveAvailabilityRequest request) {
+        viewModel.saveAvailability(request);
     }
-
-
 }
 

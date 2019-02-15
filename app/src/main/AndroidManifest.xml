@@ -28,6 +28,8 @@
         tools:replace="allowBackup"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.appster.dentamatch.provider"

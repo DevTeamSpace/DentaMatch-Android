@@ -20,26 +20,21 @@ import android.view.View;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.StateAdapter;
-import com.appster.dentamatch.base.BaseActivity;
+import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.databinding.ActivityStateBinding;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.response.profile.StateList;
 import com.appster.dentamatch.network.response.profile.StateResponse;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.widget.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
-
 /**
  * Created by atul on 13/11/18.
  * To show and search list of states.
  */
-public class SearchStateActivity extends BaseActivity implements View.OnClickListener, StateAdapter.ISettingCallback {
+public class SearchStateActivity extends BaseLoadingActivity<SearchStateViewModel>
+        implements View.OnClickListener, StateAdapter.ISettingCallback {
 
     private int mPrevSelPos = -1;
     private StateAdapter mStateAdapter;
@@ -52,6 +47,14 @@ public class SearchStateActivity extends BaseActivity implements View.OnClickLis
         mStateBinding = DataBindingUtil.setContentView(this, R.layout.activity_state);
         mStateBinding.toolbarState.txvToolbarGeneralCenter.setText(R.string.ttl_state);
         mStateBinding.toolbarState.ivToolBarLeft.setOnClickListener(this);
+        viewModel.getStateList().observe(this, this::onSuccessStateReceived);
+    }
+
+    private void onSuccessStateReceived(@Nullable StateResponse response) {
+        if (response != null) {
+            mStateLists = response.getResult().getStateList();
+            initView();
+        }
     }
 
     @Override
@@ -93,24 +96,7 @@ public class SearchStateActivity extends BaseActivity implements View.OnClickLis
             initView();
             return;
         }
-        showProgressBar(getString(R.string.please_wait));
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getStateList().enqueue(new BaseCallback<StateResponse>(this) {
-            @Override
-            public void onSuccess(StateResponse response) {
-                if (response.getStatus() == 1) {
-                    mStateLists = response.getResult().getStateList();
-                    initView();
-                } else {
-                    showToast(response.getMessage());
-                }
-            }
-
-            @Override
-            public void onFail(Call<StateResponse> call, BaseResponse baseResponse) {
-            }
-        });
-
+        viewModel.requestStateList();
     }
 
     @Override
@@ -153,10 +139,4 @@ public class SearchStateActivity extends BaseActivity implements View.OnClickLis
         }
         mStateAdapter.updateList(temp);
     }
-
-    @Override
-    public String getActivityName() {
-        return getClass().getSimpleName();
-    }
-
 }
