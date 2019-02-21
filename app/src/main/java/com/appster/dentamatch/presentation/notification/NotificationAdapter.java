@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -20,57 +22,59 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
 import com.appster.dentamatch.model.JobDetailModel;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.Notification.AcceptRejectInviteRequest;
-import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest;
 import com.appster.dentamatch.network.response.notification.NotificationData;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.presentation.searchjob.JobDetailActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
-
-import retrofit2.Call;
-
-import static com.instabug.library.Instabug.getApplicationContext;
 
 /**
  * Created by bawenderyandra on 08/03/17.
  * To inject activity reference.
  */
 
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolder> implements View.OnClickListener, View.OnLongClickListener {
+public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolder>
+        implements View.OnClickListener, View.OnLongClickListener {
+
     private final int NOTIFICATION_UNREAD = 0;
-    private final int NOTIFICATION_READ = 1;
 
     private ItemNotificationBinding mBinding;
     private final ArrayList<NotificationData> mNotificationList;
     private final Context mContext;
 
-    public NotificationAdapter(Context ct, ArrayList<NotificationData> notificationData) {
-        mNotificationList = notificationData;
-        mContext = ct;
+    @NonNull
+    private final NotificationAdapterCallback mCallback;
+
+    public interface NotificationAdapterCallback {
+        void readNotification(int id);
+        void acceptRejectNotification(int id, int status);
+        void deleteNotification(int id);
     }
 
+    NotificationAdapter(Context ct, ArrayList<NotificationData> notificationData, @NonNull NotificationAdapterCallback callback) {
+        mNotificationList = notificationData;
+        mContext = ct;
+        mCallback = callback;
+    }
+
+    @NotNull
     @Override
-    public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_notification, parent, false);
         return new MyHolder(mBinding.getRoot());
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
+    public void onBindViewHolder(@NotNull MyHolder holder, int position) {
         if (mNotificationList.get(position) != null) {
             NotificationData data = mNotificationList.get(position);
 
@@ -190,7 +194,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onClick(View v) {
         final int position = (int) v.getTag();
         switch (v.getId()) {
-
             case R.id.tv_reject:
                 Alert.createYesNoAlert(mContext,
                         mContext.getString(R.string.txt_ok),
@@ -198,35 +201,28 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         mContext.getString(R.string.txt_alert_title),
                         mContext.getString(R.string.msg_invite_reject_warning),
                         new Alert.OnAlertClickListener() {
+
                             @Override
                             public void onPositive(DialogInterface dialog) {
-                                callInviteStatusApi(position, 0);
-
+                                mCallback.acceptRejectNotification(getIdByPosition(position), 0);
                             }
 
                             @Override
                             public void onNegative(DialogInterface dialog) {
                                 dialog.dismiss();
                             }
-
                         });
                 break;
-
             case R.id.tv_accept:
-                callInviteStatusApi(position, 1);
+                mCallback.acceptRejectNotification(getIdByPosition(position), 1);
                 break;
-
-            // ItemView Clicked
             default:
                 if (mNotificationList.get(position) != null) {
                     NotificationData data = mNotificationList.get(position);
-
                     if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
                         redirectToDetail(data.getJobDetailModel().getId());
-
                     } else if (data.getSeen() == NOTIFICATION_UNREAD) {
-                        updateSeenStatus(position, false);
-
+                        mCallback.readNotification(getIdByPosition(position));
                     } else {
                         /*
                           In case of recruiter deleted the job then user doesn't get the
@@ -246,128 +242,57 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 .putExtra(Constants.EXTRA_JOB_DETAIL_ID, notificationID));
     }
 
-    private void updateSeenStatus(final int position, final boolean isInvite) {
-        ((BaseActivity) mContext).processToShowDialog();
-        ReadNotificationRequest request = new ReadNotificationRequest();
-        request.setNotificationId(mNotificationList.get(position).getId());
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.readNotification(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
-            @Override
-            public void onSuccess(BaseResponse response) {
-                if (response.getStatus() == 1) {
-                    NotificationData data = mNotificationList.get(position);
-                    data.setSeen(NOTIFICATION_READ);
-                    notifyItemChanged(position);
-
-                    if (!isInvite) {
-                        if (data.getJobDetailModel() != null) {
-                            redirectToDetail(data.getJobDetailModel().getId());
-                        }
-                    }
-
-                } else {
-
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            response.getMessage(),
-                            Toast.LENGTH_LONG);
-                    View toastView = toast.getView();
-                    toastView.setBackgroundResource(R.drawable.taost_drawable);
-                    toastView.setPadding(60, 60, 60, 60);
-                    toast.show();
-                    //((BaseActivity) mContext).showToast(response.getMessage());
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
+    private int getIdByPosition(int position) {
+        return mNotificationList.get(position).getId();
     }
 
-    private void callInviteStatusApi(final int position, int inviteStatus) {
-
-        if (mNotificationList.get(position) != null) {
-            ((BaseActivity) mContext).processToShowDialog();
-            AcceptRejectInviteRequest request = new AcceptRejectInviteRequest();
-            request.setNotificationId(mNotificationList.get(position).getId());
-            request.setAcceptStatus(inviteStatus);
-
-            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-            webServices.acceptRejectNotification(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
-                @Override
-                public void onSuccess(BaseResponse response) {
-                    if (response.getStatus() == 1) {
-
-                        if (mNotificationList.get(position) != null) {
-                            mNotificationList.get(position).setSeen(1);
-                            notifyItemChanged(position);
-                        }
-
-                    } else {
-                        // Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG).show();
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                response.getMessage(),
-                                Toast.LENGTH_LONG);
-                        View toastView = toast.getView();
-                        toastView.setBackgroundResource(R.drawable.taost_drawable);
-                        toastView.setPadding(60, 60, 60, 60);
-                        toast.show();
-                    }
-
-                    //////// updateSeenStatus(position, true);
-
-                }
-
-
-                @Override
-                public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                }
-            });
+    void onAcceptNotification(@Nullable Integer id) {
+        int position = getPositionById(id);
+        if (position != RecyclerView.NO_POSITION) {
+            if (mNotificationList.get(position) != null) {
+                mNotificationList.get(position).setSeen(1);
+                notifyItemChanged(position);
+            }
         }
-
     }
 
-    private void callDeleteNotificationApi(final int position) {
-        if (mNotificationList.get(position) != null) {
-            ((BaseActivity) mContext).processToShowDialog();
-            ReadNotificationRequest request = new ReadNotificationRequest();
-            request.setNotificationId(mNotificationList.get(position).getId());
-            AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-            webServices.deleteNotification(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
-                @Override
-                public void onSuccess(BaseResponse response) {
-                    if (response.getStatus() == 1) {
-                        mNotificationList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, mNotificationList.size());
-
-                        if (mNotificationList.size() == 0) {
-                            ((NotificationActivity) mContext).showHideEmptyLabel(View.VISIBLE);
-                        } else {
-                            ((NotificationActivity) mContext).showHideEmptyLabel(View.GONE);
-                        }
-
-                    } else {
-                        //((BaseActivity) mContext).showToast(response.getMessage());
-
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                response.getMessage(),
-                                Toast.LENGTH_LONG);
-                        View toastView = toast.getView();
-                        toastView.setBackgroundResource(R.drawable.taost_drawable);
-                        toastView.setPadding(60, 60, 60, 60);
-                        toast.show();
-                    }
-                }
-
-                @Override
-                public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                }
-            });
+    void onDeleteNotification(@Nullable Integer id) {
+        int position = getPositionById(id);
+        if (position != RecyclerView.NO_POSITION) {
+            mNotificationList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, mNotificationList.size());
+            if (mNotificationList.size() == 0) {
+                ((NotificationActivity) mContext).showHideEmptyLabel(View.VISIBLE);
+            } else {
+                ((NotificationActivity) mContext).showHideEmptyLabel(View.GONE);
+            }
         }
+    }
 
+    private int getPositionById(@Nullable Integer id) {
+        if (id != null) {
+            for (int i = 0; i < mNotificationList.size(); i++) {
+                NotificationData notification = mNotificationList.get(i);
+                if (notification.getId() == id) {
+                    return i;
+                }
+            }
+        }
+        return RecyclerView.NO_POSITION;
+    }
+
+    void onReadNotification(@Nullable Integer id) {
+        int position = getPositionById(id);
+        if (position != RecyclerView.NO_POSITION) {
+            NotificationData data = mNotificationList.get(position);
+            int NOTIFICATION_READ = 1;
+            data.setSeen(NOTIFICATION_READ);
+            notifyItemChanged(position);
+            if (data.getJobDetailModel() != null) {
+                redirectToDetail(data.getJobDetailModel().getId());
+            }
+        }
     }
 
     @Override
@@ -381,7 +306,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                     @Override
                     public void onPositive(DialogInterface dialog) {
-                        callDeleteNotificationApi(position);
+                        mCallback.deleteNotification(position);
                     }
 
                     @Override
@@ -389,7 +314,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         dialog.dismiss();
                     }
                 });
-
         return false;
     }
 
@@ -418,4 +342,3 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
     }
 }
-

@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -31,10 +32,13 @@ import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.presentation.searchjob.JobDetailActivity;
+import com.appster.dentamatch.presentation.searchjob.JobListViewModel;
 import com.appster.dentamatch.presentation.searchjob.SearchJobDataHelper;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -47,6 +51,7 @@ import retrofit2.Call;
  */
 
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder> implements View.OnClickListener {
+
     private static final int JOB_SAVED = 1;
     private static final int STATUS_UNSAVED = 0;
     private static final int STATUS_SAVED = 1;
@@ -60,20 +65,35 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
     private final Context mContext;
     private final ArrayList<SearchJobModel> mJobListData;
 
+    @NonNull
+    private final SaveUnSaveJobListener mListener;
 
-    public JobListAdapter(Context context, ArrayList<SearchJobModel> jobListData) {
-        mContext = context;
-        mJobListData = jobListData;
+    public void updateData(@NonNull JobListViewModel.SaveUnSaveJobResult result) {
+        int position = result.getPosition();
+        mJobListData.get(position).setIsSaved(result.getStatus());
+        notifyItemChanged(position);
+        SearchJobDataHelper.getInstance().notifyItemsChanged(mJobListData.get(position));
     }
 
+    public interface SaveUnSaveJobListener {
+        void saveUnSaveJob(int JobID, int status, int position);
+    }
+
+    public JobListAdapter(Context context, ArrayList<SearchJobModel> jobListData, @NonNull SaveUnSaveJobListener listener) {
+        mContext = context;
+        mJobListData = jobListData;
+        mListener = listener;
+    }
+
+    @NotNull
     @Override
-    public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_job_list, parent, false);
         return new MyHolder(mBinding.getRoot());
     }
 
     @Override
-    public void onBindViewHolder(final MyHolder holder, int position) {
+    public void onBindViewHolder(@NotNull final MyHolder holder, int position) {
         SearchJobModel data = mJobListData.get(position);
 
         if (data != null) {
@@ -130,53 +150,39 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                         Utils.dpToPx(mContext, mContext.getResources().getInteger(R.integer.margin_10)),
                         mContext.getResources().getInteger(R.integer.margin_12));
 
-                holder.tvDate.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (holder.tvDate.getLineCount() == LINE_COUNT_ONE) {
-                            params.addRule(RelativeLayout.ALIGN_BOTTOM, holder.tvJobType.getId());
-                            holder.tvDate.setLayoutParams(params);
-                        } else {
-                            params.addRule(RelativeLayout.ALIGN_TOP, holder.tvJobType.getId());
-                            holder.tvDate.setLayoutParams(params);
-                            holder.tvDate.setPadding(mContext.getResources().getInteger(R.integer.padding_0),
-                                    mContext.getResources().getInteger(R.integer.padding_0),
-                                    mContext.getResources().getInteger(R.integer.padding_0),
-                                    mContext.getResources().getInteger(R.integer.padding_0));
-                        }
+                holder.tvDate.postDelayed(() -> {
+                    if (holder.tvDate.getLineCount() == LINE_COUNT_ONE) {
+                        params.addRule(RelativeLayout.ALIGN_BOTTOM, holder.tvJobType.getId());
+                        holder.tvDate.setLayoutParams(params);
+                    } else {
+                        params.addRule(RelativeLayout.ALIGN_TOP, holder.tvJobType.getId());
+                        holder.tvDate.setLayoutParams(params);
+                        holder.tvDate.setPadding(mContext.getResources().getInteger(R.integer.padding_0),
+                                mContext.getResources().getInteger(R.integer.padding_0),
+                                mContext.getResources().getInteger(R.integer.padding_0),
+                                mContext.getResources().getInteger(R.integer.padding_0));
                     }
                 }, VIEW_DELAY_TIME);
-
                 holder.tvDate.setEllipsize(TextUtils.TruncateAt.END);
-
-
             } else if (data.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
                 holder.tvDate.setVisibility(View.GONE);
                 holder.tvJobType.setText(mContext.getString(R.string.txt_full_time));
-
             } else if (data.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
                 holder.tvDate.setVisibility(View.GONE);
                 holder.tvJobType.setText(mContext.getString(R.string.txt_temporary));
             }
-
             holder.tvDocAddress.setText(data.getAddress());
             if (data.getDays() == DURATION_TIME_0) {
                 holder.tvDuration.setText(mContext.getString(R.string.post).concat(mContext.getString(R.string.text_todays)));
-
             } else {
                 String endMessage = data.getDays() > DURATION_TIME_1 ? mContext.getString(R.string.txt_days_ago) : mContext.getString(R.string.txt_day_ago);
                 holder.tvDuration.setText(mContext.getString(R.string.post).concat(String.valueOf(data.getDays()).concat(" ").concat(endMessage)));
             }
-
-            //holder.tvDistance.setText(String.format(Locale.getDefault(), "%.1f", data.getDistance()).concat(mContext.getString(R.string.txt_miles)));
             holder.tvDistance.setText(String.format(Locale.getDefault(), "%.2f", data.getPercentaSkillsMatch()).concat("%"));
-
             holder.tvDocName.setText(data.getOfficeName());
         }
-
-
     }
 
     @Override
@@ -184,38 +190,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
         if (mJobListData != null) {
             return mJobListData.size();
         }
-
         return 0;
-    }
-
-    private void saveUnSaveJob(int JobID, final int status, final int position) {
-        SaveUnSaveRequest request = new SaveUnSaveRequest();
-        request.setJobId(JobID);
-        request.setStatus(status);
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        ((BaseActivity) mContext).processToShowDialog();
-        webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) mContext) {
-            @Override
-            public void onSuccess(BaseResponse response) {
-                ((BaseActivity) mContext).showToast(response.getMessage());
-
-                if (response.getStatus() == 1) {
-                    mJobListData.get(position).setIsSaved(status);
-                    notifyItemChanged(position);
-                    SearchJobDataHelper.getInstance().notifyItemsChanged(mJobListData.get(position));
-                } else {
-                    if (TextUtils.isEmpty(response.getMessage())) {
-                        notifyItemChanged(position);
-                        ((BaseActivity) mContext).showToast(response.getMessage());
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                notifyItemChanged(position);
-            }
-        });
     }
 
     @Override
@@ -233,7 +208,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                             new Alert.OnAlertClickListener() {
                                 @Override
                                 public void onPositive(DialogInterface dialog) {
-                                    saveUnSaveJob(mJobListData.get(position).getId(), status, position);
+                                    mListener.saveUnSaveJob(mJobListData.get(position).getId(), status, position);
                                 }
 
                                 @Override
@@ -243,11 +218,9 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                                 }
                             });
                 } else {
-                    saveUnSaveJob(mJobListData.get(position).getId(), status, position);
+                    mListener.saveUnSaveJob(mJobListData.get(position).getId(), status, position);
                 }
-
                 break;
-
             case R.id.lay_item_job_list:
                 int jobID = (int) v.getTag();
                 double matchPercentage = 0;
@@ -257,18 +230,14 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.MyHolder
                         break;
                     }
                 }
-
                 mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
                         .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobID)
                         .putExtra(Constants.EXTRA_MATCHES_PERCENT, matchPercentage)
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
-
                 break;
-
             default:
                 break;
         }
-
     }
 
     public void updateData(SearchJobModel model) {

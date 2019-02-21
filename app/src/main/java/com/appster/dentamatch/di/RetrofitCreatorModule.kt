@@ -31,7 +31,6 @@ class RetrofitCreatorModule {
     }
 
     @Provides
-    @Singleton
     fun provideApiErrorHandler(context: Context): ApiErrorHandler =
         ApiErrorHandler(context)
 

@@ -8,6 +8,7 @@ import com.appster.dentamatch.domain.calendar.CalendarInteractor
 import com.appster.dentamatch.network.request.calendar.GetAvailabilityRequest
 import com.appster.dentamatch.network.request.calendar.SaveAvailabilityRequest
 import com.appster.dentamatch.network.response.calendar.AvailabilityResponse
+import timber.log.Timber
 
 class SetAvailabilityViewModel(
         private val calendarInteractor: CalendarInteractor
@@ -28,7 +29,7 @@ class SetAvailabilityViewModel(
                     calendarInteractor.requestAvailabilityList(request)
                             .compose(viewModelCompose())
                             .subscribe({ mutableAvailabilityResponse.postValue(it) },
-                                    { Log.e(TAG, "requestAvailabilityList", it) })
+                                    { Timber.e(it) })
             )
 
     fun saveAvailability(request: SaveAvailabilityRequest) =
@@ -36,6 +37,6 @@ class SetAvailabilityViewModel(
                     calendarInteractor.saveAvailability(request)
                             .compose(viewModelCompletableCompose())
                             .subscribe({ mutableSaveAvailability.postValue(true) },
-                                    { Log.e(TAG, "saveAvailability", it) })
+                                    { Timber.e(it) })
             )
 }

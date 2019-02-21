@@ -11,9 +11,13 @@ import com.appster.dentamatch.presentation.common.SearchStateActivity
 import com.appster.dentamatch.presentation.common.SearchStateViewModel
 import com.appster.dentamatch.presentation.notification.NotificationActivity
 import com.appster.dentamatch.presentation.notification.NotificationViewModel
+import com.appster.dentamatch.presentation.profile.*
 import com.appster.dentamatch.presentation.settings.SettingsViewModel
-import com.appster.dentamatch.presentation.profile.CreateProfileActivity
-import com.appster.dentamatch.presentation.profile.CreateProfileViewModel
+import com.appster.dentamatch.presentation.profile.affiliation.AffiliationActivity
+import com.appster.dentamatch.presentation.profile.affiliation.AffiliationViewModel
+import com.appster.dentamatch.presentation.profile.workexperience.*
+import com.appster.dentamatch.presentation.searchjob.JobDetailActivity
+import com.appster.dentamatch.presentation.searchjob.JobDetailViewModel
 import com.appster.dentamatch.presentation.searchjob.SelectJobTitleActivity
 import com.appster.dentamatch.presentation.searchjob.SelectJobTitleViewModel
 import com.appster.dentamatch.presentation.settings.SettingsActivity
@@ -80,4 +84,76 @@ class ActivityViewModelModule {
                                     searchStateActivity: SearchStateActivity): SearchStateViewModel =
             ViewModelProviders.of(searchStateActivity, viewModelFactory)
                     .get(SearchStateViewModel::class.java)
+
+    @Provides
+    fun provideJobDetailViewModel(viewModelFactory: ViewModelFactory,
+                                  jobDetailActivity: JobDetailActivity): JobDetailViewModel =
+            ViewModelProviders.of(jobDetailActivity, viewModelFactory)
+                    .get(JobDetailViewModel::class.java)
+
+    @Provides
+    fun provideAffiliationViewModel(viewModelFactory: ViewModelFactory,
+                                    affiliationActivity: AffiliationActivity): AffiliationViewModel =
+            ViewModelProviders.of(affiliationActivity, viewModelFactory)
+                    .get(AffiliationViewModel::class.java)
+
+    @Provides
+    fun provideMyWorkExpListViewModel(viewModelFactory: ViewModelFactory,
+                                      myWorkExpListActivity: MyWorkExpListActivity): MyWorkExpListViewModel =
+            ViewModelProviders.of(myWorkExpListActivity, viewModelFactory)
+                    .get(MyWorkExpListViewModel::class.java)
+
+    @Provides
+    fun provideSchoolingViewModel(viewModelFactory: ViewModelFactory,
+                                  schoolingActivity: SchoolingActivity): SchoolingViewModel =
+            ViewModelProviders.of(schoolingActivity, viewModelFactory)
+                    .get(SchoolingViewModel::class.java)
+
+    @Provides
+    fun provideSkillsViewModel(viewModelFactory: ViewModelFactory,
+                               skillsActivity: SkillsActivity): SkillsViewModel =
+            ViewModelProviders.of(skillsActivity, viewModelFactory)
+                    .get(SkillsViewModel::class.java)
+
+    @Provides
+    fun provideUpdateCertificateViewModel(viewModelFactory: ViewModelFactory,
+                                          updateCertificateActivity: UpdateCertificateActivity): UpdateCertificateViewModel =
+            ViewModelProviders.of(updateCertificateActivity, viewModelFactory)
+                    .get(UpdateCertificateViewModel::class.java)
+
+    @Provides
+    fun provideUpdateLicenseViewModel(viewModelFactory: ViewModelFactory,
+                                      updateLicenseActivity: UpdateLicenseActivity): UpdateLicenseViewModel =
+            ViewModelProviders.of(updateLicenseActivity, viewModelFactory)
+                    .get(UpdateLicenseViewModel::class.java)
+
+    @Provides
+    fun provideViewAndEditWorkExperienceViewModel(viewModelFactory: ViewModelFactory,
+                                                  viewAndEditWorkExperienceActivity: ViewAndEditWorkExperienceActivity): ViewAndEditWorkExperienceViewModel =
+            ViewModelProviders.of(viewAndEditWorkExperienceActivity, viewModelFactory)
+                    .get(ViewAndEditWorkExperienceViewModel::class.java)
+
+    @Provides
+    fun provideWorkExperienceDetailViewModel(viewModelFactory: ViewModelFactory,
+                                             workExperienceDetailActivity: WorkExperienceDetailActivity): WorkExperienceDetailViewModel =
+            ViewModelProviders.of(workExperienceDetailActivity, viewModelFactory)
+                    .get(WorkExperienceDetailViewModel::class.java)
+
+    @Provides
+    fun provideWorkExpListViewModel(viewModelFactory: ViewModelFactory,
+                                    workExperienceDetailActivity: WorkExpListActivity): WorkExpListViewModel =
+            ViewModelProviders.of(workExperienceDetailActivity, viewModelFactory)
+                    .get(WorkExpListViewModel::class.java)
+
+    @Provides
+    fun provideAboutMeViewModel(viewModelFactory: ViewModelFactory,
+                                aboutMeActivity: AboutMeActivity): AboutMeViewModel =
+            ViewModelProviders.of(aboutMeActivity, viewModelFactory)
+                    .get(AboutMeViewModel::class.java)
+
+    @Provides
+    fun provideCertificateViewModel(viewModelFactory: ViewModelFactory,
+                                    certificateActivity: CertificateActivity): CertificateViewModel =
+            ViewModelProviders.of(certificateActivity, viewModelFactory)
+                    .get(CertificateViewModel::class.java)
 }

@@ -11,37 +11,31 @@ package com.appster.dentamatch.presentation.profile.affiliation;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseLoadingActivity;
+import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.databinding.ActivityAffiliationBinding;
 import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.affiliation.AffiliationPostRequest;
-import com.appster.dentamatch.network.request.affiliation.OtherAffiliationRequest;
 import com.appster.dentamatch.network.response.affiliation.AffiliationResponse;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.presentation.profile.CertificateActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-
-import retrofit2.Call;
-
 /**
  * Created by virender on 13/01/17.
  * To inject activity reference.
  */
-public class AffiliationActivity extends BaseActivity implements OnClickListener {
+public class AffiliationActivity extends BaseLoadingActivity<AffiliationViewModel>
+        implements OnClickListener {
+
     private ActivityAffiliationBinding mBinder;
     private AffiliationAdapter affiliationAdapter;
     private boolean isFromEditProfile;
@@ -57,11 +51,28 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
 
         initViews();
         getAffiliation();
+
+        viewModel.getAffiliation().observe(this, this::onSuccessAffiliation);
+        viewModel.getFailedRequestAffiliation().observe(this, e -> mBinder.btnNext.setVisibility(View.GONE));
+        viewModel.getSaveAffiliations().observe(this, this::onSuccessSaveAffiliations);
     }
 
-    @Override
-    public String getActivityName() {
-        return null;
+    private void onSuccessSaveAffiliations(@Nullable BaseResponse response) {
+        if (response != null) {
+            if (getIntent() != null && getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false)) {
+                EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+                finish();
+            } else {
+                startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));
+            }
+        }
+    }
+
+    private void onSuccessAffiliation(@Nullable AffiliationResponse response) {
+        if (response != null) {
+            affiliationAdapter.addList(response.getAffiliationResponseData().getAffiliationList());
+            mBinder.btnNext.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initViews() {
@@ -93,7 +104,7 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
                 hideKeyboard();
 
                 if (checkValidation()) {
-                    postAffiliationData(preParePostAffiliationRequest());
+                    postAffiliationData();
                 }
                 break;
 
@@ -133,77 +144,10 @@ public class AffiliationActivity extends BaseActivity implements OnClickListener
     }
 
     private void getAffiliation() {
-        processToShowDialog();
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.getAffiliationList().enqueue(new BaseCallback<AffiliationResponse>(AffiliationActivity.this) {
-            @Override
-            public void onSuccess(AffiliationResponse response) {
-                if (response.getStatus() == 1) {
-                    affiliationAdapter.addList(response.getAffiliationResponseData().getAffiliationList());
-                    mBinder.btnNext.setVisibility(View.VISIBLE);
-                } else {
-                    Utils.showToast(getApplicationContext(), response.getMessage());
-                    mBinder.btnNext.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFail(Call<AffiliationResponse> call, BaseResponse baseResponse) {
-                mBinder.btnNext.setVisibility(View.GONE);
-            }
-        });
-
+        viewModel.requestAffiliationList();
     }
 
-    private AffiliationPostRequest preParePostAffiliationRequest() {
-        AffiliationPostRequest postRequest = new AffiliationPostRequest();
-        ArrayList<Integer> idList = new ArrayList<>();
-        ArrayList<OtherAffiliationRequest> otherList = new ArrayList<>();
-
-        for (int i = 0; i < affiliationAdapter.getList().size(); i++) {
-
-            if (!affiliationAdapter.getList().get(i).getAffiliationName().equalsIgnoreCase(Constants.OTHERS) &&
-                    affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
-                idList.add(affiliationAdapter.getList().get(i).getAffiliationId());
-
-            } else {
-                if (affiliationAdapter.getList().get(i).getJobSeekerAffiliationStatus() == 1) {
-                    OtherAffiliationRequest otherAffiliationRequest = new OtherAffiliationRequest();
-                    otherAffiliationRequest.setAffiliationId(affiliationAdapter.getList().get(i).getAffiliationId());
-                    otherAffiliationRequest.setOtherAffiliation(affiliationAdapter.getList().get(i).getOtherAffiliation());
-                    otherList.add(otherAffiliationRequest);
-                }
-            }
-
-        }
-
-        postRequest.setIdList(idList);
-        postRequest.setOtherAffiliationList(otherList);
-
-        return postRequest;
-    }
-
-    private void postAffiliationData(AffiliationPostRequest affiliationPostRequest) {
-        processToShowDialog();
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.saveAffiliation(affiliationPostRequest).enqueue(new BaseCallback<BaseResponse>(AffiliationActivity.this) {
-            @Override
-            public void onSuccess(BaseResponse response) {
-                Utils.showToast(getApplicationContext(), response.getMessage());
-
-                if (response.getStatus() == 1) {
-                    if (getIntent() != null && getIntent().getBooleanExtra(Constants.INTENT_KEY.FROM_WHERE, false)) {
-                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
-                        finish();
-                    } else {
-                        startActivity(new Intent(AffiliationActivity.this, CertificateActivity.class));
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-            }
-        });
+    private void postAffiliationData() {
+        viewModel.saveAffiliations(affiliationAdapter.getList());
     }
 }

@@ -8,7 +8,6 @@
 
 package com.appster.dentamatch.presentation.tracks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -20,35 +19,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
+import com.appster.dentamatch.base.BaseLoadingFragment;
 import com.appster.dentamatch.eventbus.JobCancelEvent;
 import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.tracks.CancelJobRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.base.BaseActivity;
-import com.appster.dentamatch.base.BaseFragment;
+import com.appster.dentamatch.presentation.searchjob.JobListViewModel;
 import com.appster.dentamatch.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
 
 /**
  * Created by Appster on 02/02/17.
  * Fragment to render Applied job user interface.
  */
 
-public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class AppliedJobsFragment extends BaseLoadingFragment<AppliedJobsViewModel>
+        implements SwipeRefreshLayout.OnRefreshListener, TrackJobsAdapter.UnSaveJobListener {
+
     private com.appster.dentamatch.databinding.FragmentAppliedJobsBinding mBinding;
     private LinearLayoutManager mLayoutManager;
     private TrackJobsAdapter mJobAdapter;
@@ -56,11 +50,6 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
 
     public static com.appster.dentamatch.presentation.tracks.AppliedJobsFragment newInstance() {
         return new com.appster.dentamatch.presentation.tracks.AppliedJobsFragment();
-    }
-
-    @Override
-    public String getFragmentName() {
-        return null;
     }
 
     @Override
@@ -75,7 +64,6 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
     public void onDetach() {
         EventBus.getDefault().unregister(this);
         super.onDetach();
-
     }
 
     @Nullable
@@ -87,12 +75,38 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
         mBinding.rvFragmentAppliedJobs.setAdapter(mJobAdapter);
         mBinding.rvFragmentAppliedJobs.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 checkIfItsLastItem();
             }
         });
+        viewModel.getCancelJob().observe(this, this::onSuccessCancelJob);
+        viewModel.getUnSaveJob().observe(this, this::onSuccessUnSaveJob);
+        viewModel.getUnSaveJobFailed().observe(this, this::onFailedUnSaveJob);
         return mBinding.getRoot();
+    }
+
+    private void onFailedUnSaveJob(@Nullable JobListViewModel.SaveUnSaveJobResult result) {
+        if (result != null) {
+            mJobAdapter.onFailedCancel(result);
+        }
+    }
+
+    private void onSuccessUnSaveJob(@Nullable JobListViewModel.SaveUnSaveJobResult result) {
+        if (result != null) {
+            mJobAdapter.onSuccessCancel(result);
+        }
+    }
+
+    private void onSuccessCancelJob(@Nullable Integer id) {
+        if (id != null) {
+            mJobAdapter.cancelJob(id);
+            if (mJobListData.size() > 0) {
+                mBinding.tvNoJobs.setVisibility(View.GONE);
+            } else {
+                mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -106,7 +120,7 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
     private void initViews() {
         mJobListData = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mJobAdapter = new TrackJobsAdapter(getActivity(), mJobListData, false, true, false);
+        mJobAdapter = new TrackJobsAdapter(getActivity(), mJobListData, false, true, this);
         mBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeRefreshJobList.setOnRefreshListener(this);
     }
@@ -123,7 +137,6 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
             if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                 mBinding.layJobListPagination.setVisibility(View.VISIBLE);
                 TrackJobsDataHelper.getInstance().requestPaginatedData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
-
             }
         }
     }
@@ -131,20 +144,16 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
     @Subscribe
     public void onDataUpdated(TrackJobListRetrievedEvent event) {
         if (event != null) {
-
             if (event.getType() == Constants.SEARCHJOBTYPE.APPLIED.getValue()) {
                 mJobListData.clear();
                 mJobListData.addAll(event.getData());
-
                 if (mJobListData.size() == 0) {
                     mBinding.tvNoJobs.setVisibility(View.VISIBLE);
                 } else {
                     mBinding.tvNoJobs.setVisibility(View.GONE);
                 }
-
                 mJobAdapter.notifyDataSetChanged();
             }
-
                 /*
                   Hide pagination loader if it is visible.
                  */
@@ -160,41 +169,9 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
         }
     }
 
-    private void cancelJob(final int ID, String msg) {
-        CancelJobRequest request = new CancelJobRequest();
-        request.setCancelReason(msg);
-        request.setJobId(ID);
-
-        showProgressBar(getString(R.string.please_wait));
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.cancelJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
-
-            @Override
-            public void onSuccess(BaseResponse response) {
-                Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-
-                if (response.getStatus() == 1) {
-                    mJobAdapter.cancelJob(ID);
-
-                    if (mJobListData.size() > 0) {
-                        mBinding.tvNoJobs.setVisibility(View.GONE);
-                    } else {
-                        mBinding.tvNoJobs.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    Activity activity = getActivity();
-                    if (activity != null)
-                        ((BaseActivity) activity).showToast(response.getMessage());
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
+    private void cancelJob(final int id, String msg) {
+        viewModel.cancelJob(id, msg);
     }
-
 
     @Subscribe
     public void jobCancelled(JobCancelEvent event) {
@@ -207,12 +184,16 @@ public class AppliedJobsFragment extends BaseFragment implements SwipeRefreshLay
                 }
             }
         }
-
     }
 
     @Override
     public void onRefresh() {
         TrackJobsDataHelper.getInstance().refreshData(getActivity(), Constants.SEARCHJOBTYPE.APPLIED.getValue());
+    }
+
+    @Override
+    public void unSaveJob(int id, int position) {
+        viewModel.unSaveJob(id, position);
     }
 }
 

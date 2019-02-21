@@ -19,35 +19,32 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
+import com.appster.dentamatch.base.BaseLoadingFragment;
 import com.appster.dentamatch.eventbus.JobCancelEvent;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.tracks.CancelJobRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobResponse;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.base.BaseActivity;
-import com.appster.dentamatch.base.BaseFragment;
+import com.appster.dentamatch.presentation.searchjob.JobListViewModel;
 import com.appster.dentamatch.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
+import kotlin.Pair;
 
 /**
  * Created by Appster on 02/02/17.
  * Fragment to render user interface for shortlisted jobs.
  */
 
-public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ShortlistedJobsFragment extends BaseLoadingFragment<ShortlistedJobsViewModel>
+        implements SwipeRefreshLayout.OnRefreshListener, TrackJobsAdapter.UnSaveJobListener {
+
     private com.appster.dentamatch.databinding.FragmentShortlistedJobsBinding mBinding;
     private static final String DATA_ARRAY = "DATA_ARRAY";
     private int mPage = 1;
@@ -58,11 +55,6 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
 
     public static ShortlistedJobsFragment newInstance() {
         return new ShortlistedJobsFragment();
-    }
-
-    @Override
-    public String getFragmentName() {
-        return null;
     }
 
     public ShortlistedJobsFragment() {
@@ -81,7 +73,6 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
     public void onDetach() {
         EventBus.getDefault().unregister(this);
         super.onDetach();
-
     }
 
     @Subscribe
@@ -98,36 +89,8 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
 
     }
 
-    private void cancelJob(final int ID, String msg) {
-        CancelJobRequest request = new CancelJobRequest();
-        request.setCancelReason(msg);
-        request.setJobId(ID);
-
-        showProgressBar(getString(R.string.please_wait));
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.cancelJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
-
-            @Override
-            public void onSuccess(BaseResponse response) {
-
-                if (response.getStatus() == 1) {
-                    mJobAdapter.cancelJob(ID);
-
-                    if (mJobListData.size() > 0) {
-                        mBinding.tvNoJobs.setVisibility(View.GONE);
-                    } else {
-                        mBinding.tvNoJobs.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-
-            }
-        });
+    private void cancelJob(final int id, String msg) {
+        viewModel.cancelJob(id, msg);
     }
 
     @Nullable
@@ -139,13 +102,26 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         mBinding.rvFragmentShortlistedJobs.setAdapter(mJobAdapter);
         mBinding.rvFragmentShortlistedJobs.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 checkIfItsLastItem();
             }
         });
+        viewModel.getUnSaveJob().observe(this, this::onSuccessUnSaveJob);
+        viewModel.getUnSaveJobFailed().observe(this, this::onFailedUnSaveJob);
         return mBinding.getRoot();
+    }
 
+    private void onFailedUnSaveJob(@Nullable JobListViewModel.SaveUnSaveJobResult result) {
+        if (result != null) {
+            mJobAdapter.onFailedCancel(result);
+        }
+    }
+
+    private void onSuccessUnSaveJob(@Nullable JobListViewModel.SaveUnSaveJobResult result) {
+        if (result != null) {
+            mJobAdapter.onSuccessCancel(result);
+        }
     }
 
     /**
@@ -194,97 +170,59 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
     private void initViews() {
         mJobListData = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mJobAdapter = new TrackJobsAdapter(getActivity(), mJobListData, false, false, true);
+        mJobAdapter = new TrackJobsAdapter(getActivity(), mJobListData, false, false, this);
         mBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeRefreshJobList.setOnRefreshListener(this);
+        viewModel.getShortListedJobs().observe(this, this::onSuccessShortListedJobsRequest);
+        viewModel.getShortListedFailed().observe(this, e -> refreshView());
+        viewModel.getCancelJob().observe(this, this::onSuccessCancelJob);
     }
 
-    private void getAllShortListedJobs(final boolean isPaginationLoading, boolean showProgress) {
-
-//        Location userLocation = (Location) PreferenceUtil.getUserCurrentLocation();
-        // SearchJobRequest request = (SearchJobRequest) PreferenceUtil.getJobFilter();
-        //if(request != null) {
-        int type = Constants.SEARCHJOBTYPE.SHORTLISTED.getValue();
-        double lat = 0, lng = 0;
-            /*if(request!=null && request.getLat()!=null &&  !TextUtils.isEmpty(request.getLat())) {
-                lat = Double.parseDouble(request.getLat());
-                lng = Double.parseDouble(request.getLng());
-            }*/
-
-        if (showProgress) {
-            showProgressBar(getString(R.string.please_wait));
-        }
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        webServices.fetchTrackJobs(type, mPage, lat, lng).enqueue(new BaseCallback<SearchJobResponse>((BaseActivity) getActivity()) {
-            @Override
-            public void onSuccess(SearchJobResponse response) {
-
-                if (response.getStatus() == 1) {
-
-                    if (!isPaginationLoading) {
-                        mJobListData.clear();
-                        processResponse(response);
-                    } else {
-                        processResponse(response);
-                    }
-
-                    mJobAdapter.notifyDataSetChanged();
-                } else {
-                    showToast(response.getMessage());
-                }
-
-                if (mBinding.swipeRefreshJobList.isRefreshing()) {
-                    mBinding.swipeRefreshJobList.setRefreshing(false);
-                }
-
-                if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
-                    mBinding.layJobListPagination.setVisibility(View.GONE);
-                }
-
-                if (mJobListData.size() > 0) {
-                    mBinding.tvNoJobs.setVisibility(View.GONE);
-                } else {
-                    mBinding.tvNoJobs.setVisibility(View.VISIBLE);
-                }
-
-            }
-
-            @Override
-            public void onFail(Call<SearchJobResponse> call, BaseResponse baseResponse) {
-                if (mBinding.swipeRefreshJobList.isRefreshing()) {
-                    mBinding.swipeRefreshJobList.setRefreshing(false);
-                }
-
-                if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
-                    mBinding.layJobListPagination.setVisibility(View.GONE);
-                }
-            }
-        });
-        /*}else{
-            if (mBinding.swipeRefreshJobList.isRefreshing()) {
-                mBinding.swipeRefreshJobList.setRefreshing(false);
-            }
-
-            if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
-                mBinding.layJobListPagination.setVisibility(View.GONE);
-            }
-
+    private void onSuccessCancelJob(@Nullable Integer id) {
+        if (id != null) {
+            mJobAdapter.cancelJob(id);
             if (mJobListData.size() > 0) {
                 mBinding.tvNoJobs.setVisibility(View.GONE);
             } else {
                 mBinding.tvNoJobs.setVisibility(View.VISIBLE);
             }
+        }
+    }
 
-        }*/
+    private void onSuccessShortListedJobsRequest(@Nullable Pair<SearchJobResponse, Boolean> result) {
+        if (result != null && result.getFirst() != null && result.getSecond() != null) {
+            if (!result.getSecond()) {
+                mJobListData.clear();
+            }
+            processResponse(result.getFirst());
+            mJobAdapter.notifyDataSetChanged();
+            refreshView();
+        }
+    }
+
+    private void getAllShortListedJobs(final boolean isPaginationLoading, boolean showProgress) {
+        int type = Constants.SEARCHJOBTYPE.SHORTLISTED.getValue();
+        double lat = 0, lng = 0;
+        viewModel.requestAllShortListedJobs(type, mPage, lat, lng, isPaginationLoading, showProgress);
+    }
+
+    private void refreshView() {
+        if (mBinding.swipeRefreshJobList.isRefreshing()) {
+            mBinding.swipeRefreshJobList.setRefreshing(false);
+        }
+        if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
+            mBinding.layJobListPagination.setVisibility(View.GONE);
+        }
+        if (mJobListData.size() > 0) {
+            mBinding.tvNoJobs.setVisibility(View.GONE);
+        } else {
+            mBinding.tvNoJobs.setVisibility(View.VISIBLE);
+        }
     }
 
     private void processResponse(SearchJobResponse response) {
         if (response.getSearchJobResponseData() != null && response.getSearchJobResponseData().getList() != null) {
             mJobListData.addAll(response.getSearchJobResponseData().getList());
-            /**
-             * In case total item count and the job received size is equal, then pagination is not required.
-             */
             int mTotalResultCount = response.getSearchJobResponseData().getTotal();
             mIsPaginationNeeded = !(mTotalResultCount == mJobListData.size());
         }
@@ -296,4 +234,8 @@ public class ShortlistedJobsFragment extends BaseFragment implements SwipeRefres
         getAllShortListedJobs(false, false);
     }
 
+    @Override
+    public void unSaveJob(int id, int position) {
+        viewModel.unSaveJob(id, position);
+    }
 }

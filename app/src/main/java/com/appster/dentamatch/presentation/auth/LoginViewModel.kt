@@ -7,6 +7,7 @@ import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.auth.AuthInteractor
 import com.appster.dentamatch.domain.auth.AuthResponse
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel
+import timber.log.Timber
 
 class LoginViewModel(
         private val authInteractor: AuthInteractor
@@ -24,7 +25,7 @@ class LoginViewModel(
     fun signIn(email: String, password: String) = addDisposable(
                 authInteractor.signIn(email, password)
                         .compose(viewModelCompose())
-                        .subscribe({ userInfoData.postValue(it) }, { Log.e(TAG, "signIn", it) })
+                        .subscribe({ userInfoData.postValue(it) }, { Timber.e(it) })
     )
 
     fun signUp(email: String,
@@ -34,7 +35,7 @@ class LoginViewModel(
                preferredJobLocationId: Int) = addDisposable(
                 authInteractor.signUp(email, password, firstName, lastName, preferredJobLocationId)
                         .compose(viewModelCompose())
-                        .subscribe({ userInfoData.postValue(it) }, { Log.e(TAG, "signUp", it) })
+                        .subscribe({ userInfoData.postValue(it) }, { Timber.e(it) })
     )
 
 
@@ -42,6 +43,6 @@ class LoginViewModel(
                 authInteractor.getPreferred()
                         .compose(viewModelCompose())
                         .subscribe({ mutablePreferredLocationsList.postValue(it) },
-                                { Log.e(TAG, "preferredJobLocationList", it) })
+                                { Timber.e(it) })
     )
 }

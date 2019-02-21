@@ -10,6 +10,7 @@ package com.appster.dentamatch.network.request.auth;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 /**
  * Created by virender on 12/01/17.
@@ -17,10 +18,15 @@ import android.os.Parcelable;
  */
 public class LicenseRequest implements Parcelable {
 
+    @Nullable
     private String license;
+    @Nullable
     private String licenseNumber;
+    @Nullable
     private String state;
-    private int jobTitleId;
+    @Nullable
+    private Integer jobTitleId;
+    @Nullable
     private String aboutMe;
 
     public String getAboutMe() {
@@ -30,28 +36,6 @@ public class LicenseRequest implements Parcelable {
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
     }
-
-    public LicenseRequest() { }
-
-    private LicenseRequest(Parcel in) {
-        license = in.readString();
-        licenseNumber = in.readString();
-        state = in.readString();
-        jobTitleId = in.readInt();
-        aboutMe = in.readString();
-    }
-
-    public static final Creator<LicenseRequest> CREATOR = new Creator<LicenseRequest>() {
-        @Override
-        public LicenseRequest createFromParcel(Parcel in) {
-            return new LicenseRequest(in);
-        }
-
-        @Override
-        public LicenseRequest[] newArray(int size) {
-            return new LicenseRequest[size];
-        }
-    };
 
     public String getLicenseNumber() {
         return licenseNumber;
@@ -77,11 +61,11 @@ public class LicenseRequest implements Parcelable {
         this.state = state;
     }
 
-    public int getJobTitleId() {
+    public Integer getJobTitleId() {
         return jobTitleId;
     }
 
-    public void setJobTitleId(int jobTitleId) {
+    public void setJobTitleId(Integer jobTitleId) {
         this.jobTitleId = jobTitleId;
     }
 
@@ -91,13 +75,36 @@ public class LicenseRequest implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(license);
-        parcel.writeString(licenseNumber);
-        parcel.writeString(state);
-        parcel.writeInt(jobTitleId);
-        parcel.writeString(aboutMe);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.license);
+        dest.writeString(this.licenseNumber);
+        dest.writeString(this.state);
+        dest.writeValue(this.jobTitleId);
+        dest.writeString(this.aboutMe);
     }
+
+    public LicenseRequest() {
+    }
+
+    protected LicenseRequest(Parcel in) {
+        this.license = in.readString();
+        this.licenseNumber = in.readString();
+        this.state = in.readString();
+        this.jobTitleId = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.aboutMe = in.readString();
+    }
+
+    public static final Parcelable.Creator<LicenseRequest> CREATOR = new Parcelable.Creator<LicenseRequest>() {
+        @Override
+        public LicenseRequest createFromParcel(Parcel source) {
+            return new LicenseRequest(source);
+        }
+
+        @Override
+        public LicenseRequest[] newArray(int size) {
+            return new LicenseRequest[size];
+        }
+    };
 }
 
 

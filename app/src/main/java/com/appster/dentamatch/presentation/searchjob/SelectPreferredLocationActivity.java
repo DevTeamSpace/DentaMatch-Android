@@ -8,7 +8,6 @@
 
 package com.appster.dentamatch.presentation.searchjob;
 
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -21,19 +20,13 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.databinding.ActivitySelectJobTitleBinding;
 import com.appster.dentamatch.interfaces.PreferredJobListSelected;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationData;
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.widget.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
 
 /**
  * Created by virender on 27/01/17.
@@ -60,7 +53,7 @@ public class SelectPreferredLocationActivity extends BaseLoadingActivity<SelectP
             getPreferredLocation();
         }
         viewModel.getPreferredJobLocationModel().observe(this, this::onSuccessPreferredJobLocationResponse);
-        viewModel.getPreferredJobLocationFailed().observe(this, this::onFailedRequestPreferredJobLocation);
+        viewModel.getPreferredJobLocationFailed().observe(this, e -> onFailedRequestPreferredJobLocation());
     }
 
     @Override
@@ -93,23 +86,6 @@ public class SelectPreferredLocationActivity extends BaseLoadingActivity<SelectP
 
     private void getPreferredLocation(){
         viewModel.requestPreferredJobLocationList();
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        webServices.getPreferredJobLocationList().enqueue(new BaseCallback<PreferredJobLocationModel>(SelectPreferredLocationActivity.this) {
-            @Override
-            public void onSuccess(PreferredJobLocationModel response) {
-
-            }
-
-            @Override
-            public void onFail(Call<PreferredJobLocationModel> call, BaseResponse baseResponse) {
-                if (PreferenceUtil.getPreferredJobList() != null && PreferenceUtil.getPreferredJobList().size() > 0) {
-                    mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
-                } else {
-                    mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.GONE);
-                }
-                mJobTitleAdapter.addList(PreferenceUtil.getPreferredJobList());
-            }
-        });
     }
 
     @Override
@@ -157,7 +133,7 @@ public class SelectPreferredLocationActivity extends BaseLoadingActivity<SelectP
         }
     }
 
-    private void onFailedRequestPreferredJobLocation(@NonNull Throwable throwable) {
+    private void onFailedRequestPreferredJobLocation() {
         if (PreferenceUtil.getPreferredJobList() != null && PreferenceUtil.getPreferredJobList().size() > 0) {
             mBinder.toolbarJobTitle.txvToolbarGeneralRight.setVisibility(View.VISIBLE);
         } else {

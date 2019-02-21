@@ -9,6 +9,7 @@
 package com.appster.dentamatch.util;
 
 import android.location.Location;
+import android.support.annotation.Nullable;
 
 import com.appster.dentamatch.model.JobTitleListModel;
 import com.appster.dentamatch.model.UserModel;
@@ -231,7 +232,7 @@ public final class PreferenceUtil {
         return Hawk.get(KEY_JOB_TITLE_POSITION, 0);
     }
 
-    public static void setJobTitleId(int value) {
+    public static void setJobTitleId(Integer value) {
         Hawk.put(KEY_JOB_TITLE_ID, value);
     }
 
@@ -252,7 +253,8 @@ public final class PreferenceUtil {
         Hawk.put(KEY_YEAR, value);
     }
 
-    public static int getYear() {
+    @Nullable
+    public static Integer getYear() {
         return Hawk.get(KEY_YEAR);
     }
 
@@ -261,7 +263,8 @@ public final class PreferenceUtil {
         Hawk.put(KEY_MONTH, value);
     }
 
-    public static int getMonth() {
+    @Nullable
+    public static Integer getMonth() {
         return Hawk.get(KEY_MONTH);
     }
 

@@ -34,7 +34,7 @@ import kotlin.Pair;
  */
 
 public class NotificationActivity extends BaseLoadingActivity<NotificationViewModel>
-        implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+        implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, NotificationAdapter.NotificationAdapterCallback {
 
     private ActivityNotificationBinding mBinder;
     private NotificationAdapter mNotificationAdapter;
@@ -63,6 +63,9 @@ public class NotificationActivity extends BaseLoadingActivity<NotificationViewMo
 
         viewModel.getNotificationResponse().observe(this, this::onSuccessRequestNotifications);
         viewModel.getNotificationFailed().observe(this, throwable -> onFailedNotificationRequest());
+        viewModel.getAcceptNotification().observe(this, id -> mNotificationAdapter.onAcceptNotification(id));
+        viewModel.getDeleteNotification().observe(this, id -> mNotificationAdapter.onDeleteNotification(id));
+        viewModel.getReadNotification().observe(this, id -> mNotificationAdapter.onReadNotification(id));
     }
 
     private void onFailedNotificationRequest() {
@@ -124,7 +127,7 @@ public class NotificationActivity extends BaseLoadingActivity<NotificationViewMo
 
     private void intiView() {
         mNotificationData = new ArrayList<>();
-        mNotificationAdapter = new NotificationAdapter(this, mNotificationData);
+        mNotificationAdapter = new NotificationAdapter(this, mNotificationData, this);
         mBinder.toolbarNotification.tvToolbarGeneralLeft.setText(getString(R.string.header_notification));
         mBinder.swipeRefreshNotification.setColorSchemeResources(R.color.colorAccent);
         mBinder.swipeRefreshNotification.setOnRefreshListener(this);
@@ -145,6 +148,19 @@ public class NotificationActivity extends BaseLoadingActivity<NotificationViewMo
         onBackPressed();
     }
 
+    @Override
+    public void readNotification(int id) {
+        viewModel.readNotification(id);
+    }
 
+    @Override
+    public void acceptRejectNotification(int id, int status) {
+        viewModel.acceptRejectNotification(id, status);
+    }
+
+    @Override
+    public void deleteNotification(int id) {
+        viewModel.deleteNotification(id);
+    }
 }
 
