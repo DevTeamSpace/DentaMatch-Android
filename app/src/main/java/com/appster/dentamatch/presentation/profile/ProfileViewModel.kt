@@ -7,6 +7,7 @@ import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.profile.ProfileInteractor
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse
 import com.appster.dentamatch.network.response.profile.ProfileResponse
+import timber.log.Timber
 
 class ProfileViewModel(
         private val profileInteractor: ProfileInteractor
@@ -27,7 +28,7 @@ class ProfileViewModel(
                   profileInteractor.requestProfile()
                           .compose(viewModelCompose())
                           .subscribe({ mutableProfile.postValue(it) },
-                                  { Log.e(TAG, "requestProfile", it) })
+                                  { Timber.e(it) })
             )
 
     fun requestUnreadNotificationCount() =
@@ -35,6 +36,6 @@ class ProfileViewModel(
                     profileInteractor.requestUnreadNotificationCount()
                             .compose(viewModelCompose())
                             .subscribe({ mutableUnreadNotificationCount.postValue(it) },
-                                    {Log.e(TAG, "requestUnreadNotificationCount", it)})
+                                    {Timber.e(it)})
             )
 }

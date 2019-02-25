@@ -448,5 +448,6 @@
     <string name="post">POSTED\u0020</string>
 
     <string name="upd_avl">Update my availability</string>
+    <string name="txt_view_on_map">View on map</string>
 
 </resources>

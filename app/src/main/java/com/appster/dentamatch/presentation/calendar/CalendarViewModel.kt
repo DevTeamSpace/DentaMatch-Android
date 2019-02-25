@@ -6,6 +6,7 @@ import android.util.Log
 import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.calendar.CalendarInteractor
 import com.appster.dentamatch.network.response.jobs.HiredJobResponse
+import timber.log.Timber
 import java.util.*
 
 class CalendarViewModel(
@@ -29,7 +30,7 @@ class CalendarViewModel(
                     interactor.cancelJob(jobId, msg)
                             .compose(viewModelCompletableCompose())
                             .subscribe({ mutableCancelJob.postValue(jobId) },
-                                    { Log.e(TAG, "cancelJob", it) })
+                                    { Timber.e(it) })
             )
 
     fun requestHiredJob(cal: Calendar) =
@@ -38,6 +39,6 @@ class CalendarViewModel(
                             .compose(viewModelCompose())
                             .doOnError { mutableHiredJobFailed.postValue(it) }
                             .subscribe({ mutableHiredJob.postValue(it) },
-                                    { Log.e(TAG, "requestHiredJob", it) })
+                                    { Timber.e(it) })
             )
 }

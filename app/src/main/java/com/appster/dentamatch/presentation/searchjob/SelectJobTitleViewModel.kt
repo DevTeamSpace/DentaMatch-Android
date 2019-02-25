@@ -7,6 +7,7 @@ import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.searchjob.SearchJobInteractor
 import com.appster.dentamatch.model.JobTitleListModel
 import com.appster.dentamatch.util.PreferenceUtil
+import timber.log.Timber
 import java.util.ArrayList
 
 class SelectJobTitleViewModel(
@@ -28,5 +29,5 @@ class SelectJobTitleViewModel(
                             mutableJobsList.postValue(it)
                             PreferenceUtil.setSearchJobTitleList(it)
                         },
-                        { Log.e(TAG, "requestJobsList", it)}))
+                        { Timber.e(it)}))
 }

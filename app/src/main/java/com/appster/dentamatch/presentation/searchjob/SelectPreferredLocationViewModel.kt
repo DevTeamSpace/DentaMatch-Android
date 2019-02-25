@@ -6,6 +6,7 @@ import android.util.Log
 import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.searchjob.SearchJobInteractor
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel
+import timber.log.Timber
 import javax.inject.Inject
 
 class SelectPreferredLocationViewModel
@@ -28,7 +29,7 @@ constructor(
                 .compose(viewModelCompose())
                 .subscribe({ mutablePreferredJobLocationModel.postValue(it) },
                         {
-                            Log.e(TAG, "requestPreferredJobLocationList", it)
+                            Timber.e(it)
                             mutablePreferredJobLocationFailed.postValue(it)
                         }))
     }

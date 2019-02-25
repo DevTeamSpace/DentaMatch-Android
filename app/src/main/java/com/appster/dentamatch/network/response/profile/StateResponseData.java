@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class StateResponseData implements Parcelable {
 
-    @SerializedName("state_list")
+    @SerializedName("stateList")
     private ArrayList<StateList> stateList;
 
     public ArrayList<StateList> getStateList() {

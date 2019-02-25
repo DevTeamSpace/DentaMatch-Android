@@ -6,6 +6,7 @@ import android.util.Log
 import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.auth.AuthInteractor
 import com.appster.dentamatch.network.response.auth.UserVerifiedStatus
+import timber.log.Timber
 import javax.inject.Inject
 
 class UserVerifyPendingViewModel
@@ -24,6 +25,6 @@ constructor(
     fun checkUserVerified() {
         addDisposable(authInteractor.checkUserVerified()
                 .compose(viewModelCompose())
-                .subscribe({ mutableUserVerified.postValue(it) }, { Log.e(TAG, "checkUserVerified", it) }))
+                .subscribe({ mutableUserVerified.postValue(it) }, { Timber.e(it) }))
     }
 }

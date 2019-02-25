@@ -23,17 +23,18 @@ import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.JobListAdapter;
+import com.appster.dentamatch.base.BaseLoadingFragment;
 import com.appster.dentamatch.databinding.FragmentJobListBinding;
 import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.model.UserModel;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.base.BaseFragment;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,9 @@ import java.util.ArrayList;
  * User Interface to view job listing screen.
  */
 
-public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class JobListFragment extends BaseLoadingFragment<JobListViewModel>
+        implements SwipeRefreshLayout.OnRefreshListener, JobListAdapter.SaveUnSaveJobListener {
+
     private FragmentJobListBinding mJobListBinding;
     private ArrayList<SearchJobModel> mJobListData;
     private boolean mIsPaginationNeeded;
@@ -155,11 +158,6 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
         }
     }
 
-    @Override
-    public String getFragmentName() {
-        return null;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -169,13 +167,19 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
         mJobListBinding.rvJobs.setAdapter(mJobAdapter);
         mJobListBinding.rvJobs.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 checkIfItsLastItem();
             }
         });
-
+        viewModel.getSaveUnSaveJob().observe(this, this::onSuccessSaveUnSaveJob);
         return mJobListBinding.getRoot();
+    }
+
+    private void onSuccessSaveUnSaveJob(@Nullable JobListViewModel.SaveUnSaveJobResult result) {
+        if (result != null) {
+            mJobAdapter.updateData(result);
+        }
     }
 
     @Override
@@ -190,11 +194,9 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
     private void initViews() {
         mJobListData = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mJobAdapter = new JobListAdapter(getActivity(), mJobListData);
+        mJobAdapter = new JobListAdapter(getActivity(), mJobListData, this);
         mJobListBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
         mJobListBinding.swipeRefreshJobList.setOnRefreshListener(this);
-
-
     }
 
     /**
@@ -219,5 +221,8 @@ public class JobListFragment extends BaseFragment implements SwipeRefreshLayout.
         SearchJobDataHelper.getInstance().requestRefreshData(getActivity());
     }
 
-
+    @Override
+    public void saveUnSaveJob(int JobID, int status, int position) {
+        viewModel.saveUnSaveJob(JobID, status, position);
+    }
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.auth.AuthInteractor
+import timber.log.Timber
 
 class ForgotPasswordViewModel(
         private val authInteractor: AuthInteractor
@@ -23,6 +24,6 @@ class ForgotPasswordViewModel(
                     authInteractor.forgotPassword(eMail)
                             .compose(viewModelCompletableCompose())
                             .subscribe({ mutableForgotPassword.postValue(true) },
-                                    { Log.e(TAG, "forgotPassword", it)})
+                                    { Timber.e(it)})
             )
 }

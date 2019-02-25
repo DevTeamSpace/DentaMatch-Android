@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.auth.AuthInteractor
+import timber.log.Timber
 
 class ResetPasswordViewModel(
         private val authInteractor: AuthInteractor
@@ -23,6 +24,6 @@ class ResetPasswordViewModel(
                     authInteractor.changePassword(confirmPassword, oldPassword, newPassword)
                             .compose(viewModelCompletableCompose())
                             .subscribe({ mutableChangePassword.postValue(true) },
-                                    { Log.e(TAG, "changePassword", it)})
+                                    { Timber.e(it)})
             )
 }

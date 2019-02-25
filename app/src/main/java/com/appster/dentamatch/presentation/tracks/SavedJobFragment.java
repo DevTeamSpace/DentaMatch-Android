@@ -22,14 +22,16 @@ import android.view.ViewGroup;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.adapters.TrackJobsAdapter;
+import com.appster.dentamatch.base.BaseLoadingFragment;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
 import com.appster.dentamatch.eventbus.TrackJobListRetrievedEvent;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.base.BaseFragment;
+import com.appster.dentamatch.presentation.searchjob.JobListViewModel;
 import com.appster.dentamatch.util.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,9 @@ import java.util.ArrayList;
  * Fragment to render user interface for saved jobs.
  */
 
-public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class SavedJobFragment extends BaseLoadingFragment<SavedJobViewModel>
+        implements SwipeRefreshLayout.OnRefreshListener, TrackJobsAdapter.UnSaveJobListener {
+
     private com.appster.dentamatch.databinding.FragmentSavedJobsBinding mBinding;
     private LinearLayoutManager mLayoutManager;
     private TrackJobsAdapter mJobAdapter;
@@ -46,11 +50,6 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
 
     public static SavedJobFragment newInstance() {
         return new SavedJobFragment();
-    }
-
-    @Override
-    public String getFragmentName() {
-        return null;
     }
 
     @Override
@@ -77,12 +76,26 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
         mBinding.rvFragmentSavedJobs.setAdapter(mJobAdapter);
         mBinding.rvFragmentSavedJobs.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 checkIfItsLastItem();
             }
         });
+        viewModel.getUnSaveJob().observe(this, this::onSuccessUnSaveJob);
+        viewModel.getUnSaveJobFailed().observe(this, this::onFailedUnSaveJob);
         return mBinding.getRoot();
+    }
+
+    private void onFailedUnSaveJob(@Nullable JobListViewModel.SaveUnSaveJobResult result) {
+        if (result != null) {
+            mJobAdapter.onSuccessCancel(result);
+        }
+    }
+
+    private void onSuccessUnSaveJob(@Nullable JobListViewModel.SaveUnSaveJobResult result) {
+        if (result != null) {
+            mJobAdapter.onFailedCancel(result);
+        }
     }
 
     @Override
@@ -96,7 +109,7 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
     private void initViews() {
         mJobListData = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mJobAdapter = new TrackJobsAdapter(getActivity(), mJobListData, true, false, false);
+        mJobAdapter = new TrackJobsAdapter(getActivity(), mJobListData, true, false, this);
         mBinding.swipeRefreshJobList.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeRefreshJobList.setOnRefreshListener(this);
     }
@@ -156,25 +169,22 @@ public class SavedJobFragment extends BaseFragment implements SwipeRefreshLayout
 
                 mJobAdapter.notifyDataSetChanged();
             }
-
-            /**
-             * Hide pagination loader if it is visible.
-             */
             if (mBinding.layJobListPagination.getVisibility() == View.VISIBLE) {
                 mBinding.layJobListPagination.setVisibility(View.GONE);
             }
-            /**
-             * Stop refreshing if the swipe loader is refreshing.
-             */
             if (mBinding.swipeRefreshJobList.isRefreshing()) {
                 mBinding.swipeRefreshJobList.setRefreshing(false);
             }
-
         }
     }
 
     @Override
     public void onRefresh() {
         TrackJobsDataHelper.getInstance().refreshData(getActivity(), Constants.SEARCHJOBTYPE.SAVED.getValue());
+    }
+
+    @Override
+    public void unSaveJob(int id, int position) {
+        viewModel.unSaveJob(id, position);
     }
 }

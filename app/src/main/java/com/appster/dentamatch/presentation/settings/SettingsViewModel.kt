@@ -6,6 +6,7 @@ import android.util.Log
 import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.settings.SettingsInteractor
 import com.appster.dentamatch.model.UserModel
+import timber.log.Timber
 
 class SettingsViewModel(
         private val settingsInteractor: SettingsInteractor
@@ -32,14 +33,14 @@ class SettingsViewModel(
                 settingsInteractor.updateUserLocation(userModel)
                         .compose(viewModelCompletableCompose())
                         .subscribe({ mutableUserModel.postValue(userModel) },
-                                { Log.e(TAG, "updateLocation", it) })
+                                { Timber.e(it) })
         )
     }
 
     fun logout() = addDisposable(
             settingsInteractor.logout()
                     .compose(viewModelCompletableCompose())
-                    .subscribe({ mutableLogout.postValue(true) }, { Log.e(TAG, "logout", it) })
+                    .subscribe({ mutableLogout.postValue(true) }, { Timber.e(it) })
     )
 
     private fun createUserModel(lat: String?,

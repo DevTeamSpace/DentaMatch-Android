@@ -8,6 +8,8 @@ import com.appster.dentamatch.domain.profile.ProfileInteractor
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse
 import com.appster.dentamatch.network.response.profile.JobTitleResponse
 import com.appster.dentamatch.network.response.profile.LicenseUpdateResponse
+import com.appster.dentamatch.util.Constants
+import timber.log.Timber
 
 class CreateProfileViewModel(
         private val profileInteractor: ProfileInteractor
@@ -29,23 +31,20 @@ class CreateProfileViewModel(
             addDisposable(
                     profileInteractor.updateLicense(jobTitleId, about, license, state)
                             .compose(viewModelCompose())
-                            .subscribe({ mutableLicenseUpdate.postValue(it) },
-                                    { Log.e(TAG, "updateLicence", it) })
+                            .subscribe({ mutableLicenseUpdate.postValue(it) }, { Timber.e(it) })
             )
 
     fun uploadImage(filePath: String) =
             addDisposable(
-                    profileInteractor.uploadImage(filePath)
+                    profileInteractor.uploadImage(filePath, Constants.APIS.IMAGE_TYPE_PIC)
                             .compose(viewModelCompose())
-                            .subscribe({ mutableUploadImage.postValue(it) },
-                                    { Log.e(TAG, "uploadImage", it) })
+                            .subscribe({ mutableUploadImage.postValue(it) }, { Timber.e(it) })
             )
 
     fun requestJobTitle() =
             addDisposable(
                     profileInteractor.requestJobTitle()
                             .compose(viewModelCompose())
-                            .subscribe({ mutableJobTitle.postValue(it) },
-                                    { Log.e(TAG, "requestJobTitle", it) })
+                            .subscribe({ mutableJobTitle.postValue(it) }, { Timber.e(it) })
             )
 }

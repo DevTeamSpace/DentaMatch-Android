@@ -241,44 +241,36 @@ public class SocketManager {
         }
     };
 
-    private final Emitter.Listener onConnectError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
-            isConnected = false;
-            disconnectFromChat();
-
-        }
+    private final Emitter.Listener onConnectError = args -> {
+        LogUtils.LOGD(TAG, SOCKET_CONNECTION_ERROR);
+        isConnected = false;
+        disconnectFromChat();
     };
 
     private final Ack messageSentAcknowledgement = new Ack() {
         @Override
         public void call(final Object... args) {
-            attachedActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    /*
-                      Insert the message sent into the DB .
-                     */
-                    final JSONObject jsonObject = (JSONObject) args[0];
-                    LogUtils.LOGD(TAG, SOCKET_MESSAGE_ACKNOWLEDGEMENT + args[0]);
+            attachedActivity.runOnUiThread(() -> {
+                /*
+                  Insert the message sent into the DB .
+                 */
+                final JSONObject jsonObject = (JSONObject) args[0];
+                LogUtils.LOGD(TAG, SOCKET_MESSAGE_ACKNOWLEDGEMENT + args[0]);
 
-                    if (jsonObject.has(BLOCKED)) {
-                        ((BaseActivity) attachedActivity).showToast(attachedActivity.getString(R.string.msg_recruiter_blocked_you));
-                    } else {
-                        ChatMessageModel model = Utils.parseData(jsonObject);
+                if (jsonObject.has(BLOCKED)) {
+                    ((BaseActivity) attachedActivity).showToast(attachedActivity.getString(R.string.msg_recruiter_blocked_you));
+                } else {
+                    ChatMessageModel model = Utils.parseData(jsonObject);
 
-                        Message message = new Message(model.getMessage(),
-                                model.getRecruiterName(),
-                                model.getMessageTime(),
-                                model.getMessageId(),
-                                Message.TYPE_MESSAGE_SEND);
+                    Message message = new Message(model.getMessage(),
+                            model.getRecruiterName(),
+                            model.getMessageTime(),
+                            model.getMessageId(),
+                            Message.TYPE_MESSAGE_SEND);
 
-                        EventBus.getDefault().post(new MessageAcknowledgementEvent(message, model.getToID()));
-                    }
+                    EventBus.getDefault().post(new MessageAcknowledgementEvent(message, model.getToID()));
                 }
             });
-
         }
     };
 
@@ -292,12 +284,9 @@ public class SocketManager {
              */
             if (attachedActivity != null) {
 
-                attachedActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray));
-                    }
-                });
+                attachedActivity.runOnUiThread(
+                        () -> EventBus.getDefault().post(new ChatHistoryRetrievedEvent(jsonArray))
+                );
             }
 
         }
@@ -327,99 +316,88 @@ public class SocketManager {
               If the user ID matches the attached activities userID then send message to the chatActivity to update adapter.
               Else send the message to the global message list listener to update data.
              */
-            if (attachedRecruiterID != null && model.getFromID().equalsIgnoreCase(attachedRecruiterID)) {
+            if (model.getFromID().equalsIgnoreCase(attachedRecruiterID)) {
                 if (attachedActivity != null) {
-                    attachedActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            /*
-                              update the Unread status to read when the user has seen the message. In this case we
-                              add the message after in the post event of eventBus because we need to update the chat adapter
-                              in the UI, for the user to read the message.
-                             */
-                            updateMsgRead(model.getFromID(), model.getToID());
-                            EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(model));
+                    attachedActivity.runOnUiThread(() -> {
+                        /*
+                          update the Unread status to read when the user has seen the message. In this case we
+                          add the message after in the post event of eventBus because we need to update the chat adapter
+                          in the UI, for the user to read the message.
+                         */
+                        updateMsgRead(model.getFromID(), model.getToID());
+                        EventBus.getDefault().post(new ChatPersonalMessageReceivedEvent(model));
 
-                            /*
-                              in case the activity goes into background and socket is still connected , update user about message through notification.
-                             */
-                            if (attachedActivityStatus == ON_PAUSE) {
-                                Intent intent = new Intent(attachedActivity, ChatActivity.class);
-                                intent.putExtra(Constants.EXTRA_CHAT_MODEL, model.getFromID());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent, model.getFromID());
-                            }
+                        /*
+                          in case the activity goes into background and socket is still connected , update user about message through notification.
+                         */
+                        if (attachedActivityStatus == ON_PAUSE) {
+                            Intent intent = new Intent(attachedActivity, ChatActivity.class);
+                            intent.putExtra(Constants.EXTRA_CHAT_MODEL, model.getFromID());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            Utils.showNotification(attachedActivity, model.getRecruiterName(), model.getMessage(), intent, model.getFromID());
                         }
                     });
                 }
             } else {
-
                 /*
                   In case a global message has been received we store it to the DB directly as no UI needs to be updated,
                   The DB changes are directly reflected in the Adapter.
                  */
                 if (attachedGlobalActivity != null) {
-                    attachedGlobalActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Message message = new Message(model.getMessage(),
-                                    model.getRecruiterName(),
-                                    model.getMessageTime(),
-                                    model.getMessageId(),
-                                    Message.TYPE_MESSAGE_RECEIVED);
-
-
-                            /*
-                              Don't shoot another notification in case the message has the same ID. Server has the tendency
-                              to send the same msg multiple times.
-                             */
-                            if (!DBHelper.getInstance().checkIfMessageAlreadyExists(model.getFromID(), message)) {
-                                DBModel dbModel = DBHelper.getInstance().getDBData(model.getFromID());
-
-                                if (dbModel != null) {
-                                    if (dbModel.isDBUpdated()) {
-                                        DBHelper.getInstance().insertIntoDB(model.getFromID(),
-                                                message,
-                                                model.getRecruiterName(),
-                                                1,
-                                                model.getMessageListId());
-
-                                    } else {
-                                        /*
-                                          In case there is a sync needed , we update only the listing of messages and not the chat array
-                                          as it will be updated with the history fetched.
-                                         */
-                                        DBHelper.getInstance().updateRecruiterDetails(model.getFromID(),
-                                                model.getRecruiterName(),
-                                                1,
-                                                model.getMessageListId(),
-                                                model.getMessage(),
-                                                model.getMessageTime(),
-                                                false);
-                                    }
-                                } else {
-                                    /*
-                                      In case the message is from a new recruiter, directly insert it into the DB as it does not
-                                      require any syncing.
-                                     */
+                    attachedGlobalActivity.runOnUiThread(() -> {
+                        Message message = new Message(model.getMessage(),
+                                model.getRecruiterName(),
+                                model.getMessageTime(),
+                                model.getMessageId(),
+                                Message.TYPE_MESSAGE_RECEIVED);
+                        /*
+                          Don't shoot another notification in case the message has the same ID. Server has the tendency
+                          to send the same msg multiple times.
+                         */
+                        if (!DBHelper.getInstance().checkIfMessageAlreadyExists(model.getFromID(), message)) {
+                            DBModel dbModel = DBHelper.getInstance().getDBData(model.getFromID());
+                            if (dbModel != null) {
+                                if (dbModel.isDBUpdated()) {
                                     DBHelper.getInstance().insertIntoDB(model.getFromID(),
                                             message,
                                             model.getRecruiterName(),
                                             1,
                                             model.getMessageListId());
+
+                                } else {
+                                    /*
+                                      In case there is a sync needed , we update only the listing of messages and not the chat array
+                                      as it will be updated with the history fetched.
+                                     */
+                                    DBHelper.getInstance().updateRecruiterDetails(model.getFromID(),
+                                            model.getRecruiterName(),
+                                            1,
+                                            model.getMessageListId(),
+                                            model.getMessage(),
+                                            model.getMessageTime(),
+                                            false);
                                 }
-
-                                Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
-                                intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                                Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent, model.getFromID());
+                            } else {
+                                /*
+                                  In case the message is from a new recruiter, directly insert it into the DB as it does not
+                                  require any syncing.
+                                 */
+                                DBHelper.getInstance().insertIntoDB(model.getFromID(),
+                                        message,
+                                        model.getRecruiterName(),
+                                        1,
+                                        model.getMessageListId());
                             }
+
+                            Intent intent = new Intent(attachedGlobalActivity, HomeActivity.class);
+                            intent.putExtra(Constants.EXTRA_FROM_CHAT, model.getFromID());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                            Utils.showNotification(attachedGlobalActivity, model.getRecruiterName(), model.getMessage(), intent, model.getFromID());
                         }
                     });
                 }
             }
-
         }
     };
 
@@ -433,23 +411,11 @@ public class SocketManager {
                 boolean status = Boolean.parseBoolean(object.getString("logout"));
 
                 if (status) {
-
                     if (attachedActivity != null) {
-                        attachedActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((BaseActivity) attachedActivity).localLogOut();
-                            }
-                        });
+                        attachedActivity.runOnUiThread(() -> ((BaseActivity) attachedActivity).localLogOut());
                     } else if (attachedGlobalActivity != null) {
-                        attachedGlobalActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((BaseActivity) attachedGlobalActivity).localLogOut();
-                            }
-                        });
+                        attachedGlobalActivity.runOnUiThread(() -> ((BaseActivity) attachedGlobalActivity).localLogOut());
                     }
-
                 }
             } catch (JSONException e) {
                 LogUtils.LOGE(TAG, e.getMessage());
@@ -623,23 +589,17 @@ public class SocketManager {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put(PARAM_FROM_ID, fromId);
         hashMap.put(PARAM_TO_ID, toId);
-        mSocket.emit(EMIT_UPDATE_READ_COUNT, new JSONObject(hashMap), new Ack() {
-            @Override
-            public void call(Object... args) {
+        mSocket.emit(EMIT_UPDATE_READ_COUNT, new JSONObject(hashMap), (Ack) args -> {
 
-                if (attachedGlobalActivity != null) {
-                    attachedGlobalActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            /**
-                             * Update the unread count once the user has opened the chat activity.
-                             */
-                            DBHelper.getInstance().upDateDB(attachedRecruiterID, DBHelper.UNREAD_MSG_COUNT, "0", null);
-                        }
-                    });
-                } else {
-                    LogUtils.LOGD(TAG, "attachedGlobalActivity == null");
-                }
+            if (attachedGlobalActivity != null) {
+                attachedGlobalActivity.runOnUiThread(() ->
+                        DBHelper.getInstance()
+                                .upDateDB(attachedRecruiterID,
+                                        DBHelper.UNREAD_MSG_COUNT,
+                                        "0",
+                                        null));
+            } else {
+                LogUtils.LOGD(TAG, "attachedGlobalActivity == null");
             }
         });
     }

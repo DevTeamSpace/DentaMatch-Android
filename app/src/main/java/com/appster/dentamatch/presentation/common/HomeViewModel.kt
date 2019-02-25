@@ -7,6 +7,7 @@ import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.common.CommonInteractor
 import com.appster.dentamatch.domain.profile.ProfileInteractor
 import com.appster.dentamatch.network.response.notification.UnReadNotificationCountResponse
+import timber.log.Timber
 
 class HomeViewModel(
         private val commonInteractor: CommonInteractor,
@@ -25,10 +26,10 @@ class HomeViewModel(
             addDisposable(
                     commonInteractor.updateFcmToken(fcmToken)
                             .subscribe(
-                                    { Log.d(TAG, "token updated successfully") },
+                                    { Timber.d("token updated successfully") },
                                     {
-                                        Log.e(TAG, "updateFcmToken", it)
-                                        Log.d(TAG, "token update fails")
+                                        Timber.e(it)
+                                        Timber.d("token update fails")
                                     }
                             )
             )
@@ -37,6 +38,6 @@ class HomeViewModel(
             addDisposable(
                     profileInteractor.requestUnreadNotificationCount()
                             .subscribe({ mutableUnReadNotificationCount.postValue(it) },
-                                    { Log.e(TAG, "requestUnreadNotificationCount", it) })
+                                    { Timber.e(it) })
             )
 }

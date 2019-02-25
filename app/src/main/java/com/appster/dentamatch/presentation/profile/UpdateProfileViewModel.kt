@@ -10,6 +10,8 @@ import com.appster.dentamatch.domain.profile.ProfileInteractor
 import com.appster.dentamatch.network.response.PreferredJobLocation.PreferredJobLocationModel
 import com.appster.dentamatch.network.response.fileupload.FileUploadResponse
 import com.appster.dentamatch.network.response.profile.ProfileResponse
+import com.appster.dentamatch.util.Constants
+import timber.log.Timber
 import javax.inject.Inject
 
 class UpdateProfileViewModel
@@ -38,7 +40,7 @@ constructor(
                     profileInteractor.requestProfile()
                             .compose(viewModelCompose())
                             .subscribe({ mutableProfileResponse.postValue(it) },
-                                    { Log.e(TAG, "requestProfile", it) })
+                                    { Timber.e(it) })
             )
 
     fun requestPreferredJobLocation() =
@@ -46,7 +48,7 @@ constructor(
                     authInteractor.getPreferred()
                             .compose(viewModelCompose())
                             .subscribe({ mutablePreferredJobLocation.postValue(it) },
-                                    { Log.e(TAG, "requestPreferredJobLocation", it) })
+                                    { Timber.e(it) })
             )
 
     fun updateUserProfile(firstName: String,
@@ -66,14 +68,14 @@ constructor(
                             license)
                             .compose(viewModelCompose())
                             .subscribe({ mutableUpdateUserProfile.postValue(it) },
-                                    { Log.e(TAG, "updateUserProfile", it) })
+                                    { Timber.e(it) })
             )
 
     fun uploadImage(filePath: String) =
             addDisposable(
-                    profileInteractor.uploadImage(filePath)
+                    profileInteractor.uploadImage(filePath, Constants.APIS.IMAGE_TYPE_PIC)
                             .compose(viewModelCompose())
                             .subscribe({ mutableUploadImage.postValue(it) },
-                                    { Log.e(TAG, "uploadImage", it) })
+                                    { Timber.e(it) })
             )
 }

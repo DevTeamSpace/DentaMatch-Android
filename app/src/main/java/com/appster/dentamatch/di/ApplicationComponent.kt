@@ -9,8 +9,8 @@ import com.appster.dentamatch.domain.notification.NotificationModule
 import com.appster.dentamatch.domain.profile.ProfileModule
 import com.appster.dentamatch.domain.searchjob.SearchJobModule
 import com.appster.dentamatch.domain.settings.SettingsModule
+import com.appster.dentamatch.domain.tracks.TracksModule
 import dagger.Component
-import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
@@ -21,7 +21,7 @@ import javax.inject.Singleton
         RetrofitCreatorModule::class, ViewModelModule::class, AuthModule::class,
         SettingsModule::class, SearchJobModule::class, ProfileModule::class,
         CalendarModule::class, CommonModule::class, NotificationModule::class,
-        MessagesModule::class]
+        MessagesModule::class, TracksModule::class]
 )
 interface ApplicationComponent : AndroidInjector<DentaApp> {
 

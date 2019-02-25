@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -31,18 +30,12 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseLoadingFragment;
 import com.appster.dentamatch.databinding.FragmentJobsMapBinding;
 import com.appster.dentamatch.eventbus.JobDataReceivedEvent;
 import com.appster.dentamatch.eventbus.LocationEvent;
 import com.appster.dentamatch.eventbus.SaveUnSaveEvent;
-import com.appster.dentamatch.network.BaseCallback;
-import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
-import com.appster.dentamatch.network.request.jobs.SaveUnSaveRequest;
 import com.appster.dentamatch.network.response.jobs.SearchJobModel;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.base.BaseActivity;
-import com.appster.dentamatch.base.BaseFragment;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LocationUtils;
@@ -64,30 +57,23 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import retrofit2.Call;
-
 /**
  * To view job along-with the location on map
  */
 
-public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, View.OnClickListener {
+public class JobMapFragment extends BaseLoadingFragment<JobMapViewModel>
+        implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnMapClickListener, View.OnClickListener {
+
     private static final String TAG = LogUtils.makeLogTag(JobMapFragment.class);
     private final int MARKER_PADDING = 100;
     private int mSelectedJobID;
     private BottomSheetBehavior mBottomSheetBehavior;
     private FragmentJobsMapBinding mMapBinding;
     private GoogleMap mGoogleMap;
-    private double mCurrentLocLat;
-    private double mCurrentLocLng;
     private ArrayList<LatLng> mMarkerPositionList;
     private Marker previousSelectedMarker;
     private ArrayList<SearchJobModel> mJobData;
-
-
-    @Override
-    public String getFragmentName() {
-        return null;
-    }
 
     public static JobMapFragment newInstance() {
         return new JobMapFragment();
@@ -110,18 +96,14 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     @Subscribe
     public void onDataUpdated(JobDataReceivedEvent event) {
         if (event != null) {
-
             if (mMarkerPositionList != null) {
                 mMarkerPositionList.clear();
             }
-
             mJobData = event.getJobList();
-
             for (SearchJobModel model : mJobData) {
                 if (mMarkerPositionList != null)
                     mMarkerPositionList.add(new LatLng(model.getLatitude(), model.getLongitude()));
             }
-
         }
 
         if (mMarkerPositionList != null)
@@ -131,9 +113,7 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     @Subscribe
     public void onJobSavedUnsaved(SaveUnSaveEvent event) {
         if (event != null) {
-
             for (SearchJobModel model1 : mJobData) {
-
                 if (model1.getId() == event.getJobID()) {
                     model1.setIsSaved(event.getStatus());
                     SearchJobDataHelper.getInstance().notifyItemsChanged(model1);
@@ -161,6 +141,10 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
         mBottomSheetBehavior.setHideable(false);
         mMapBinding.infoWindowContent.getRoot().setOnClickListener(this);
         mMapBinding.mapView.getMapAsync(this);
+        viewModel.getSaveUnSaveJob().observe(this,
+                status -> mMapBinding.infoWindowContent.cbJobSelection.setChecked(Integer.valueOf(1).equals(status)));
+        viewModel.getSaveUnSaveJobFailed().observe(this,
+                status -> mMapBinding.infoWindowContent.cbJobSelection.setChecked(!Integer.valueOf(1).equals(status)));
         return mMapBinding.getRoot();
     }
 
@@ -177,11 +161,9 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
         if (getActivity() != null && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             PermissionUtils.requestPermission(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
-
         } else {
             mGoogleMap.setMyLocationEnabled(true);
             LocationUtils.addFragment((AppCompatActivity) getActivity());
@@ -191,13 +173,10 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS) {
-
             if (grantResults.length > 0 &&
                     (grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
                 if (getActivity() != null && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mGoogleMap.setMyLocationEnabled(true);
@@ -210,9 +189,6 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
     @Subscribe
     public void onEvent(LocationEvent locationEvent) {
-        Location location = locationEvent.getMessage();
-        mCurrentLocLat = location.getLatitude();
-        mCurrentLocLng = location.getLongitude();
 
         /*
           the map is already loaded as we request current location onMapReady method.
@@ -224,7 +200,6 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
           Request Data helper class to provide job search data
          */
         SearchJobDataHelper.getInstance().requestData(getActivity());
-
     }
 
     @Override
@@ -320,12 +295,9 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
               Allow the previous info window which is open to close , for that purpose a delay handler
               of 300 ms is added .
              */
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    updateInfoWindowData(jobModel);
-                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }
+            new Handler().postDelayed(() -> {
+                updateInfoWindowData(jobModel);
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }, 300);
         } else {
             updateInfoWindowData(jobModel);
@@ -345,32 +317,25 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                 if (jobModel.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                     mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_part_time));
                     mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
-
                     ArrayList<String> partTimeDaysArray = new ArrayList<>();
                     if (jobModel.getIsMonday() == 1) {
                         partTimeDaysArray.add(getString(R.string.mon));
                     }
-
                     if (jobModel.getIsTuesday() == 1) {
                         partTimeDaysArray.add(getString(R.string.tue));
                     }
-
                     if (jobModel.getIsWednesday() == 1) {
                         partTimeDaysArray.add(getString(R.string.wed));
                     }
-
                     if (jobModel.getIsThursday() == 1) {
                         partTimeDaysArray.add(getString(R.string.thu));
                     }
-
                     if (jobModel.getIsFriday() == 1) {
                         partTimeDaysArray.add(getString(R.string.fri));
                     }
-
                     if (jobModel.getIsSaturday() == 1) {
                         partTimeDaysArray.add(getString(R.string.sat));
                     }
-
                     if (jobModel.getIsSunday() == 1) {
                         partTimeDaysArray.add(getString(R.string.sun));
                     }
@@ -385,38 +350,27 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                     params.addRule(RelativeLayout.START_OF, mMapBinding.infoWindowContent.tvJobDocDistance.getId());
                     params.setMargins(Utils.dpToPx(getActivity(), 12), 0, Utils.dpToPx(getActivity(), 10), 0);
 
-                    mMapBinding.infoWindowContent.tvJobDate.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mMapBinding.infoWindowContent.tvJobDate.getLineCount() == 1) {
-                                params.addRule(RelativeLayout.ALIGN_BASELINE, mMapBinding.infoWindowContent.tvJobType.getId());
-                                mMapBinding.infoWindowContent.tvJobDate.setLayoutParams(params);
-                            } else {
-                                mMapBinding.infoWindowContent.tvJobDate.setLayoutParams(params);
-                            }
+                    mMapBinding.infoWindowContent.tvJobDate.postDelayed(() -> {
+                        if (mMapBinding.infoWindowContent.tvJobDate.getLineCount() == 1) {
+                            params.addRule(RelativeLayout.ALIGN_BASELINE, mMapBinding.infoWindowContent.tvJobType.getId());
+                            mMapBinding.infoWindowContent.tvJobDate.setLayoutParams(params);
+                        } else {
+                            mMapBinding.infoWindowContent.tvJobDate.setLayoutParams(params);
                         }
                     }, 200);
-
-
                 } else if (jobModel.getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
                     mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
                     mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.GONE);
                     mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_full_time));
-
                 } else if (jobModel.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
                     mMapBinding.infoWindowContent.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
                     mMapBinding.infoWindowContent.tvJobDate.setVisibility(View.GONE);
                     mMapBinding.infoWindowContent.tvJobType.setText(getString(R.string.txt_temporary));
                 }
-
                 mMapBinding.infoWindowContent.tvJobDocAddress.setText(jobModel.getAddress());
                 String endMessage = jobModel.getDays() > 1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
                 mMapBinding.infoWindowContent.tvJobDocTime.setText(String.valueOf(jobModel.getDays()).concat(" ").concat(endMessage));
-
-                //mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
                 mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.2f", jobModel.getPercentaSkillsMatch()).concat("%"));
-
-                // mMapBinding.infoWindowContent.tvJobDocDistance.setText(String.format(Locale.getDefault(), "%.1f", jobModel.getDistance()).concat(getString(R.string.txt_miles)));
                 mMapBinding.infoWindowContent.tvJobDocName.setText(jobModel.getOfficeName());
             }
         } catch (Exception e) {
@@ -430,31 +384,15 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
 
 
     private void addMarker(ArrayList<LatLng> markerList) {
-        /*
-          Lat lng Bounds of the entire icons on the map.
-         */
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-
         for (int i = 0; i < markerList.size(); i++) {
             MarkerOptions options = new MarkerOptions();
             options.position(markerList.get(i));
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_unselected_large));
             Marker addedMarker = mGoogleMap.addMarker(options);
-
-            /*
-              Set the data model as a tag on the marker so it can be used when info window is
-              displayed.
-             */
             addedMarker.setTag(mJobData.get(i));
             builder.include(options.getPosition());
         }
-
-        /*
-          Include the current location also into the bounds so that the screen can be adjusted to a zoom
-          level inclusive of both current location and other location markers.
-         */
-      /*  builder.include(new LatLng(mCurrentLocLat, mCurrentLocLng));*/
         LatLngBounds bounds = builder.build();
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, MARKER_PADDING));
 
@@ -463,44 +401,13 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             if (getActivity() != null && getActivity().getWindowManager() != null) {
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                int height = displayMetrics.heightPixels;
-                int width = displayMetrics.widthPixels;
             }
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(markerList.get(0).latitude, markerList.get(0).longitude), 10));
         }
     }
 
     private void saveUnSaveJob(int JobID, final int status, final SearchJobModel model) {
-        SaveUnSaveRequest request = new SaveUnSaveRequest();
-        request.setJobId(JobID);
-        request.setStatus(status);
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class);
-        if (getActivity() != null)
-            ((BaseActivity) getActivity()).processToShowDialog();
-        webServices.saveUnSaveJob(request).enqueue(new BaseCallback<BaseResponse>((BaseActivity) getActivity()) {
-            @Override
-            public void onSuccess(BaseResponse response) {
-                ((BaseActivity) getActivity()).showToast(response.getMessage());
-
-                if (response.getStatus() == 1) {
-                    model.setIsSaved(status);
-                    mMapBinding.infoWindowContent.cbJobSelection.setChecked(status == 1);
-                    SearchJobDataHelper.getInstance().notifyItemsChanged(model);
-                } else {
-
-                    if (TextUtils.isEmpty(response.getMessage())) {
-                        mMapBinding.infoWindowContent.cbJobSelection.setChecked(!(status == 1));
-                        ((BaseActivity) getActivity()).showToast(response.getMessage());
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                mMapBinding.infoWindowContent.cbJobSelection.setChecked(!(status == 1));
-            }
-        });
+        viewModel.saveUnSaveJob(JobID, status, model);
     }
 
     @Override
@@ -509,7 +416,6 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
             case R.id.cb_job_selection:
                 final SearchJobModel model = (SearchJobModel) v.getTag();
                 final int status = (model.getIsSaved() == 1) ? 0 : 1;
-
                 if (status == 0) {
                     Alert.createYesNoAlert(getActivity(), getString(R.string.txt_ok),
                             getString(R.string.txt_cancel),
@@ -531,24 +437,11 @@ public class JobMapFragment extends BaseFragment implements OnMapReadyCallback, 
                     saveUnSaveJob(model.getId(), status, model);
                 }
                 break;
-
             default:
                 if (getActivity() != null)
                     getActivity().startActivity(new Intent(getActivity(), JobDetailActivity.class)
                             .putExtra(Constants.EXTRA_JOB_DETAIL_ID, mSelectedJobID));
                 break;
         }
-    }
-
-    private int calculateZoomLevel(int screenWidth) {
-        double equatorLength = 40075004; // in meters
-        double metersPerPixel = equatorLength / 256;
-        int zoomLevel = 1;
-        while ((metersPerPixel * screenWidth) > 400000) {
-            metersPerPixel /= 2;
-            ++zoomLevel;
-        }
-        LogUtils.LOGD("ADNAN", "zoom level = " + zoomLevel);
-        return zoomLevel;
     }
 }

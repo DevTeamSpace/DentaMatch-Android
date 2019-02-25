@@ -12,22 +12,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.databinding.ActivityViewAndWditWorkExperienceBinding;
 import com.appster.dentamatch.eventbus.ProfileUpdatedEvent;
 import com.appster.dentamatch.interfaces.JobTitleSelectionListener;
 import com.appster.dentamatch.interfaces.YearSelectionListener;
-import com.appster.dentamatch.network.BaseCallback;
 import com.appster.dentamatch.base.BaseResponse;
-import com.appster.dentamatch.network.RequestController;
 import com.appster.dentamatch.network.request.workexp.WorkExpRequest;
 import com.appster.dentamatch.network.response.profile.StateList;
 import com.appster.dentamatch.network.response.workexp.WorkExpResponse;
-import com.appster.dentamatch.network.retrofit.AuthWebServices;
-import com.appster.dentamatch.base.BaseActivity;
+import com.appster.dentamatch.network.response.workexp.WorkExpResponseData;
 import com.appster.dentamatch.presentation.common.HomeActivity;
 import com.appster.dentamatch.presentation.common.SearchStateActivity;
 import com.appster.dentamatch.util.Alert;
@@ -39,21 +38,22 @@ import com.appster.dentamatch.widget.bottomsheet.BottomSheetJobTitle;
 import com.appster.dentamatch.widget.bottomsheet.BottomSheetPicker;
 
 import org.greenrobot.eventbus.EventBus;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import retrofit2.Call;
-
 /**
  * Created by virender on 04/01/17.
  * To inject activity reference.
  */
-public class ViewAndEditWorkExperienceActivity extends BaseActivity implements View.OnClickListener, YearSelectionListener, JobTitleSelectionListener {
+public class ViewAndEditWorkExperienceActivity extends BaseLoadingActivity<ViewAndEditWorkExperienceViewModel>
+        implements View.OnClickListener, YearSelectionListener, JobTitleSelectionListener {
+
     private ActivityViewAndWditWorkExperienceBinding mBinder;
     private int position;
-    private String selectedJobtitle;
+    private String selectedJobTitle;
     private ArrayList<WorkExpRequest> workExpList;
     private int expMonth, jobTitleId;
     private int mPrevSelStatePos;
@@ -64,6 +64,33 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         super.onCreate(savedInstanceState);
         mBinder = DataBindingUtil.setContentView(this, R.layout.activity_view_and_wdit_work_experience);
         initViews();
+        viewModel.getAddWorkExperience().observe(this, this::onSuccessAddWorkExperience);
+        viewModel.getDeleteWorkExperience().observe(this, this::onSuccessDeleteWorkExperience);
+    }
+
+    private void onSuccessDeleteWorkExperience(@Nullable BaseResponse response) {
+        if (response != null) {
+            workExpList.remove(position);
+            Intent intent = new Intent();
+            intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
+            setResult(RESULT_OK, intent);
+            EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+            finish();
+        }
+    }
+
+    private void onSuccessAddWorkExperience(@Nullable WorkExpResponse response) {
+        if (response != null) {
+            WorkExpResponseData data = response.getWorkExpResponseData();
+            workExpList.remove(position);
+            data.getSaveList().get(0).setJobTitleName(selectedJobTitle);
+            workExpList.add(position, data.getSaveList().get(0));
+            Intent intent = new Intent();
+            intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
+            setResult(Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT, intent);
+            EventBus.getDefault().post(new ProfileUpdatedEvent(true));
+            finish();
+        }
     }
 
     private void initViews() {
@@ -99,7 +126,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     }
 
     private void setViewData() {
-        selectedJobtitle = workExpList.get(position).getJobTitleName();
+        selectedJobTitle = workExpList.get(position).getJobTitleName();
         jobTitleId = workExpList.get(position).getJobTitleId();
         expMonth = workExpList.get(position).getMonthsOfExpereince();
         mBinder.layoutWorkExpViewEdit.etOfficeCity.setText(workExpList.get(position).getCity());
@@ -126,12 +153,6 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         } else {
             mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
         }
-    }
-
-
-    @Override
-    public String getActivityName() {
-        return null;
     }
 
     @Override
@@ -161,20 +182,15 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                                 dialog.dismiss();
                             }
                         });
-
                 break;
-
             case R.id.et_job_title:
                 hideKeyboard();
                 new BottomSheetJobTitle(ViewAndEditWorkExperienceActivity.this, this, 0);
                 break;
-
             case R.id.btn_update:
-                updateExp(true);
+                updateExp();
 
                 break;
-
-
             case R.id.tv_experience_work_exp:
                 int year = 0, month = 0;
                 if (!TextUtils.isEmpty(mBinder.layoutWorkExpViewEdit.tvExperienceWorkExp.getText().toString())) {
@@ -191,10 +207,8 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                     }
 
                 }
-
                 new BottomSheetPicker(this, this, year, month);
                 break;
-
             case R.id.tv_reference_delete:
                 mBinder.tvAddMoreReference.setVisibility(View.VISIBLE);
                 mBinder.layoutReference2.setVisibility(View.GONE);
@@ -202,7 +216,6 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 mBinder.includeLayoutReference2.etOfficeReferenceMobile.setText("");
                 mBinder.includeLayoutReference2.etOfficeReferenceName.setText("");
                 break;
-
             case R.id.tv_add_more_reference:
                 if (TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName)) &&
                         TextUtils.isEmpty(Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail)) &&
@@ -217,9 +230,8 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                     mBinder.layoutReference2.setVisibility(View.VISIBLE);
                 }
                 break;
-
             case R.id.rel_save:
-                updateExp(true);
+                updateExp();
                 break;
             case R.id.et_office_state:
                 Intent intent = new Intent(this, SearchStateActivity.class);
@@ -234,8 +246,8 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
         }
     }
 
-    private void updateExp(boolean isBack) {
-        final HashMap<Boolean, String> result = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobtitle, expMonth,
+    private void updateExp() {
+        final HashMap<Boolean, String> result = WorkExpValidationUtil.checkValidation(mBinder.layoutReference2.getVisibility(), selectedJobTitle, expMonth,
                 Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
                 Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
                 Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
@@ -247,33 +259,35 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
                 Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
                 Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceName));
         hideKeyboard();
-
-
         if (result.containsKey(false)) {
             showToast(result.get(false));
         } else {
             if (TextUtils.isEmpty(result.get(true))) {
-                WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(),
-                        Constants.APIS.ACTION_EDIT,
-                        jobTitleId,
-                        expMonth,
-                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
-                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
-                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
-                        Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeState),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceName),
-                        Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceMobile));
-                request.setId(workExpList.get(position).getId());
-                callUpdateExpApi(request, isBack);
-
+                callUpdateExpApi(createWorkExperienceRequest());
             } else {
                 showToast(result.get(true));
             }
         }
+    }
+
+    @NotNull
+    private WorkExpRequest createWorkExperienceRequest() {
+        WorkExpRequest request = WorkExpValidationUtil.prepareWorkExpRequest(mBinder.layoutReference2.getVisibility(),
+                Constants.APIS.ACTION_EDIT,
+                jobTitleId,
+                expMonth,
+                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeName),
+                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeAddress),
+                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeCity),
+                Utils.getStringFromEditText(mBinder.layoutWorkExpViewEdit.etOfficeState),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceName),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceMobile),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference1.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceEmail),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceName),
+                Utils.getStringFromEditText(mBinder.includeLayoutReference2.etOfficeReferenceMobile));
+        request.setId(workExpList.get(position).getId());
+        return request;
     }
 
 
@@ -300,64 +314,11 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
     }
 
     private void callDeleteApi() {
-        processToShowDialog();
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.workExpDelete(Integer.parseInt(workExpList.get(position).getId())).enqueue(new BaseCallback<BaseResponse>(ViewAndEditWorkExperienceActivity.this) {
-            @Override
-            public void onSuccess(BaseResponse response) {
-                Utils.showToast(getApplicationContext(), response.getMessage());
-
-                if (response.getStatus() == 1) {
-                    workExpList.remove(position);
-                    Intent intent = new Intent();
-                    intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
-                    setResult(RESULT_OK, intent);
-                    EventBus.getDefault().post(new ProfileUpdatedEvent(true));
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFail(Call<BaseResponse> call, BaseResponse baseResponse) {
-                Utils.showToast(getApplicationContext(), baseResponse.getMessage());
-            }
-        });
+        viewModel.deleteWorkExperience(Integer.parseInt(workExpList.get(position).getId()));
     }
 
-    private void callUpdateExpApi(final WorkExpRequest workExpRequest, final boolean isBack) {
-        processToShowDialog();
-
-        AuthWebServices webServices = RequestController.createService(AuthWebServices.class, true);
-        webServices.addWorkExp(workExpRequest).enqueue(new BaseCallback<WorkExpResponse>(ViewAndEditWorkExperienceActivity.this) {
-            @Override
-            public void onSuccess(WorkExpResponse response) {
-                Utils.showToast(getApplicationContext(), response.getMessage());
-
-                if (response.getStatus() == 1) {
-                    workExpList.remove(position);
-                    response.getWorkExpResponseData().getSaveList().get(0).setJobTitleName(selectedJobtitle);
-                    workExpList.add(position, response.getWorkExpResponseData().getSaveList().get(0));
-
-                    if (isBack) {
-                        Intent intent = new Intent();
-                        intent.putExtra(Constants.INTENT_KEY.DATA, workExpList);
-                        setResult(Constants.REQUEST_CODE.REQUEST_CODE_PASS_INTENT, intent);
-                        EventBus.getDefault().post(new ProfileUpdatedEvent(true));
-                        finish();
-                    } else {
-                        startActivity(new Intent(ViewAndEditWorkExperienceActivity.this, HomeActivity.class)
-                                .putExtra(Constants.EXTRA_FROM_JOB_DETAIL, true)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(Call<WorkExpResponse> call, BaseResponse baseResponse) {
-            }
-        });
-
+    private void callUpdateExpApi(final WorkExpRequest workExpRequest) {
+        viewModel.addWorkExp(workExpRequest);
     }
 
     @Override
@@ -374,7 +335,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseActivity implements V
 
     @Override
     public void onJobTitleSelection(String title, int titleId, int postion, int isLicenseRequired) {
-        selectedJobtitle = title;
+        selectedJobTitle = title;
         jobTitleId = titleId;
         mBinder.layoutWorkExpViewEdit.etJobTitle.setText(title);
     }
