@@ -114,7 +114,7 @@ android {
         Dev {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://dev.dentamatch.co/api/v1/"')
-            buildConfigField("String", "CHAT_URL", '"http://dev.dentamatch.co:3000"')
+            buildConfigField("String", "CHAT_URL", '"https://dev.dentamatch.co:3000"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
@@ -169,7 +169,7 @@ dependencies {
     implementation "com.android.support:multidex:1.0.3"
     implementation "com.google.android.gms:play-services-location:${playServiceVersion}"
     implementation "com.google.android.gms:play-services-auth:16.0.1"
-    implementation "com.google.android.gms:play-services-maps:${playServiceVersion}"
+    implementation "com.google.android.gms:play-services-maps:16.1.0"
     implementation "com.google.android.gms:play-services-places:${playServiceVersion}"
     implementation "org.greenrobot:eventbus:3.0.0"
     implementation "com.aurelhubert:ahbottomnavigation:2.1.0"
@@ -183,7 +183,7 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828") { exclude group: 'com.android.support' }
     implementation "de.hdodenhof:circleimageview:2.2.0"
     implementation ("com.wefika:flowlayout:0.4.1") { exclude group: 'com.intellij' }
-    implementation "io.realm:android-adapters:1.4.0"
+    implementation "io.realm:android-adapters:2.0.0"
     implementation "com.mixpanel.android:mixpanel-android:4.9.8"
     implementation ("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") { transitive = true }
     implementation "com.facebook.stetho:stetho-okhttp3:1.4.1"

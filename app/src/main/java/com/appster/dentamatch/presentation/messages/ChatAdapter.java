@@ -24,6 +24,8 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemChatMessageBinding;
 import com.appster.dentamatch.util.Utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 
@@ -37,21 +39,22 @@ public class ChatAdapter extends RealmRecyclerViewAdapter<Message, ChatAdapter.M
     private final OrderedRealmCollection<Message> mChatMessages;
     private final Context mContext;
 
-    public ChatAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Message> data, boolean autoUpdate) {
-        super(context, data, autoUpdate);
+    ChatAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Message> data, boolean autoUpdate) {
+        super(data, autoUpdate);
         mContext = context;
         mChatMessages = data;
     }
 
 
+    @NotNull
     @Override
-    public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_chat_message, parent, false);
         return new MyHolder(mBinding.getRoot());
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
+    public void onBindViewHolder(@NotNull MyHolder holder, int position) {
         if (mChatMessages != null && mChatMessages.get(position) != null) {
             holder.tvMessage.setText(mChatMessages.get(position).getMessage());
 
