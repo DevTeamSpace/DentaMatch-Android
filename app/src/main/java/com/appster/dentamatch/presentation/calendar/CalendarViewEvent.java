@@ -12,7 +12,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,14 +31,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class CalendarViewEvent extends LinearLayout {
-    private static int MAX_CALENDAR_COLUMN = 35;
+
     private static final String TAG = LogUtils.makeLogTag(CalendarViewEvent.class);
 
     private ImageView mIvPreviousButton, mIvNextButton;
     private TextView mCurrentDate;
     private GridView mCalendarGridView;
     private final SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-    private final Calendar mCal = Calendar.getInstance(Locale.ENGLISH);
+    private final Calendar mCal = (Calendar) Calendar.getInstance(Locale.ENGLISH).clone();
     private Context mContext;
     private CalendarEventGridAdapter mAdapter;
     private int mOldClickedPos = -1;
@@ -74,39 +73,25 @@ public class CalendarViewEvent extends LinearLayout {
 
     public void setHiredListData(ArrayList<HiredJobs> hiredListData) {
         try {
-            if (mHiredListData != null && mHiredListData.size() > 0) {
-                mHiredListData.clear();
-
-                mHiredListData.addAll(hiredListData);
-            }//Need to remove else part
-            else {
-
-                if (hiredListData != null && hiredListData.size() > 0) {
-                    if(mHiredListData!=null) {
-                        mHiredListData.clear();
-                        mHiredListData.addAll(hiredListData);
-                    }
-
-                }
-            }
+            mHiredListData = new ArrayList<>(hiredListData);
 
             if (mAdapter != null) {
                 mAdapter.setJobList(mHiredListData);
             }
-        } catch (Exception e) {
-            LogUtils.LOGE(TAG,e.getMessage());
-        }
 
+            mCalendarGridView.invalidate();
+            mCalendarGridView.requestLayout();
+        } catch (Exception e) {
+            LogUtils.LOGE(TAG, e.getMessage());
+        }
     }
 
     public void isFullTimeJob(boolean isFullTime) {
-
         if (isFullTime) {
             mIvFullTime.setVisibility(View.VISIBLE);
         } else {
             mIvFullTime.setVisibility(View.GONE);
         }
-
     }
 
     private void initializeUILayout() {
@@ -120,56 +105,42 @@ public class CalendarViewEvent extends LinearLayout {
     }
 
     private void setPreviousButtonClickEvent() {
-        mIvPreviousButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                --mCount;
-                mCal.add(Calendar.MONTH, -1);
-                mDateSelectedListener.onMonthChanged(mCal);
-                setUpCalendarAdapter();
-
-            }
+        mIvPreviousButton.setOnClickListener(v -> {
+            --mCount;
+            mCal.add(Calendar.MONTH, -1);
+            mDateSelectedListener.onMonthChanged(mCal);
+            setUpCalendarAdapter();
+            mDateSelectedListener.selectedDate(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(0).getDate()));
         });
     }
 
     private void setNextButtonClickEvent() {
-        mIvNextButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCount < Constants.MAX_MONTH_COUNT - 1) {
-                    ++mCount;
-                    mCal.add(Calendar.MONTH, 1);
-                    mDateSelectedListener.onMonthChanged(mCal);
-                    setUpCalendarAdapter();
-
-                } else {
-                    Utils.showToast(mContext, mContext.getString(R.string.alert_next_month_job));
-
-                }
+        mIvNextButton.setOnClickListener(v -> {
+            if (mCount < Constants.MAX_MONTH_COUNT - 1) {
+                ++mCount;
+                mCal.add(Calendar.MONTH, 1);
+                mDateSelectedListener.onMonthChanged(mCal);
+                setUpCalendarAdapter();
+                mDateSelectedListener.selectedDate(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(0).getDate()));
+            } else {
+                Utils.showToast(mContext, mContext.getString(R.string.alert_next_month_job));
             }
         });
     }
 
     private void setGridCellClickEvents() {
-        mCalendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if ((Integer) view.getTag() != -1) {
-                    if (!mDayList.get(position).isSelected()) {
-
-                        mDayList.get(position).setSelected(true);
-                        if (mOldClickedPos != -1) {
-                            mDayList.get(mOldClickedPos).setSelected(false);
-                        }
-                        mOldClickedPos = position;
-
-                        view.setBackgroundResource(R.drawable.shape_date_selection);
-                        mAdapter.setJobList(mHiredListData);
-
+        mCalendarGridView.setOnItemClickListener((parent, view, position, id) -> {
+            if ((Integer) view.getTag() != -1) {
+                if (!mDayList.get(position).isSelected()) {
+                    mDayList.get(position).setSelected(true);
+                    if (mOldClickedPos != -1) {
+                        mDayList.get(mOldClickedPos).setSelected(false);
                     }
-
-                    mDateSelectedListener.selectedDate(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
+                    mOldClickedPos = position;
+                    view.setBackgroundResource(R.drawable.shape_date_selection);
+                    mAdapter.setJobList(mHiredListData);
                 }
+                mDateSelectedListener.selectedDate(Utils.dateFormetyyyyMMdd(mAdapter.getList().get(position).getDate()));
             }
         });
     }
@@ -184,15 +155,16 @@ public class CalendarViewEvent extends LinearLayout {
         mCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
         int days = this.mCal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
+        int maxCalendarColumn;
         if (firstDayOfTheMonth == 6 && (days == 30 || days == 31) || (firstDayOfTheMonth == 5 && days == 31)) {
-            MAX_CALENDAR_COLUMN = 42;
+            maxCalendarColumn = 42;
         } else {
-            MAX_CALENDAR_COLUMN = 35;
+            maxCalendarColumn = 35;
         }
 
         boolean reqPos = false;
 
-        for (int i = 0; i < MAX_CALENDAR_COLUMN; i++) {
+        for (int i = 0; i < maxCalendarColumn; i++) {
             CalenderAvailableCellModel data = new CalenderAvailableCellModel();
             data.setDate(mCal.getTime());
             mCal.add(Calendar.DAY_OF_MONTH, 1);

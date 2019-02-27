@@ -33,13 +33,13 @@ import java.util.List;
 import static android.view.View.GONE;
 
 class CalendarEventGridAdapter extends ArrayAdapter<CalenderAvailableCellModel> {
+
     private static final String TAG = LogUtils.makeLogTag(CalendarEventGridAdapter.class);
     private final LayoutInflater mInflater;
     private final List<CalenderAvailableCellModel> monthlyDates;
     private final Calendar mCurrentDate;
     private final Context mContext;
     private ArrayList<HiredJobs> mJobList;
-
 
     CalendarEventGridAdapter(Context context, List<CalenderAvailableCellModel> monthlyDates, Calendar currentDate) {
         super(context, R.layout.single_cell_layout);
@@ -49,15 +49,8 @@ class CalendarEventGridAdapter extends ArrayAdapter<CalenderAvailableCellModel> 
         mInflater = LayoutInflater.from(context);
     }
 
-
     void setJobList(ArrayList<HiredJobs> list) {
-        if (mJobList != null) {
-            mJobList = null;
-        }
-
-        mJobList = new ArrayList<>();
-        mJobList.addAll(list);
-
+        mJobList = new ArrayList<>(list);
         notifyDataSetChanged();
     }
 
