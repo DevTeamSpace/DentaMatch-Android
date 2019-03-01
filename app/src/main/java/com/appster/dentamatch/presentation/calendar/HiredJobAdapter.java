@@ -13,6 +13,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -31,7 +33,9 @@ import com.appster.dentamatch.presentation.tracks.CancelReasonDialogFragment;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.StringUtils;
+import com.appster.dentamatch.util.TextViewUtils;
 import com.appster.dentamatch.util.Utils;
+import com.appster.dentamatch.widget.CustomTextView;
 
 import java.util.ArrayList;
 
@@ -68,7 +72,7 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
     @Override
     public void onBindViewHolder(final MyHolder holder, int position) {
         HiredJobs data = mJobListData.get(position);
-
+        Context context = holder.itemView.getContext();
         if (data != null) {
             holder.itemView.setTag(position);
             holder.itemView.setOnClickListener(this);
@@ -149,6 +153,8 @@ public class HiredJobAdapter extends RecyclerView.Adapter<HiredJobAdapter.MyHold
                 holder.tvHwaKey.setVisibility(View.VISIBLE);
                 holder.tvHwaVal.setVisibility(View.VISIBLE);
                 holder.tvHwaVal.setText(StringUtils.getPayRate(data.getPayRate()));
+                TextViewUtils.setTextColor(holder.tvHwaVal, R.color.bold_red);
+                TextViewUtils.setCustomFont(holder.tvHwaVal, R.string.font_bold);
             }
 
             holder.tvDocAddress.setText(data.getAddress());
