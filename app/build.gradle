@@ -114,7 +114,7 @@ android {
         Dev {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://dev.dentamatch.co/api/v1/"')
-            buildConfigField("String", "CHAT_URL", '"http://dev.dentamatch.co:3000"')
+            buildConfigField("String", "CHAT_URL", '"https://dev.dentamatch.co:3000"')
             minSdkVersion 19
             signingConfig signingConfigs.config
         }
