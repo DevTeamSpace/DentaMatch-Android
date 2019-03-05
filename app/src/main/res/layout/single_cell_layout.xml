@@ -1,52 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/calendar_cell_height"
-    android:layout_height="@dimen/calendar_cell_height"
-    android:orientation="vertical"
-
-    >
+    android:layout_height="@dimen/calendar_cell_height">
 
     <com.appster.dentamatch.widget.CustomTextView
         android:id="@+id/calendar_date_id"
         style="@style/text_view_normal"
-        android:layout_centerInParent="true"
         android:textColor="@color/grayish_brown_color"
         android:textSize="@dimen/text_size_normal"
-        app:customFont="@string/font_regular" />
+        app:customFont="@string/font_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="23" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/calendar_date_id"
-        android:layout_centerHorizontal="true"
+    <ImageView
+        android:id="@+id/dot1"
+        android:layout_width="@dimen/margin_5"
+        android:layout_height="@dimen/margin_5"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/shape_full_time_dot"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintEnd_toStartOf="@id/dot2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendar_date_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="ContentDescription" />
 
-        android:layout_marginTop="@dimen/margin_2">
+    <ImageView
+        android:id="@+id/dot2"
+        android:layout_width="@dimen/margin_5"
+        android:layout_height="@dimen/margin_5"
+        android:background="@drawable/shape_part_time_dot"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/dot3"
+        app:layout_constraintStart_toEndOf="@id/dot1"
+        app:layout_constraintTop_toTopOf="@id/dot1"
+        app:layout_constraintBottom_toBottomOf="@id/dot1"
+        tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:layout_width="@dimen/margin_5"
-            android:layout_height="@dimen/margin_5"
-            android:layout_marginEnd="@dimen/margin_5"
+    <ImageView
+        android:id="@+id/dot3"
+        android:layout_width="@dimen/margin_8"
+        android:layout_height="@dimen/margin_8"
+        android:background="@drawable/shape_temporary_dot"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/dot2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/dot1"
+        app:layout_constraintBottom_toBottomOf="@id/dot1"
+        tools:ignore="ContentDescription" />
 
-            android:background="@drawable/shape_full_time_dot"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/dot2"
-            android:layout_width="@dimen/margin_5"
-            android:layout_height="@dimen/margin_5"
-            android:background="@drawable/shape_part_time_dot"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/dot3"
-            android:layout_width="@dimen/margin_8"
-            android:layout_height="@dimen/margin_8"
-            android:layout_marginStart="@dimen/margin_5"
-
-            android:background="@drawable/shape_temporary_dot"
-            android:visibility="gone" />
-    </LinearLayout>
-
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

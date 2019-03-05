@@ -151,10 +151,12 @@ android {
 ext {
     supportLibrary = '28.0.0'
     playServiceVersion = '16.0.0'
-    fireBaseLibrary = '17.3.4'
+    mapsVersion = '16.1.0'
+    fireBaseLibrary = '17.4.0'
     leakCanaryLibrary = '1.5.4'
     retrofitVersion = '2.3.0'
     dagger_version = '2.16'
+    constraintLayoutVersion = '1.1.0'
 }
 
 dependencies {
@@ -167,9 +169,10 @@ dependencies {
     implementation "com.android.support:cardview-v7:${supportLibrary}"
     implementation "com.android.support:support-annotations:${supportLibrary}"
     implementation "com.android.support:multidex:1.0.3"
+    implementation "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}"
     implementation "com.google.android.gms:play-services-location:${playServiceVersion}"
     implementation "com.google.android.gms:play-services-auth:16.0.1"
-    implementation "com.google.android.gms:play-services-maps:16.1.0"
+    implementation "com.google.android.gms:play-services-maps:${mapsVersion}"
     implementation "com.google.android.gms:play-services-places:${playServiceVersion}"
     implementation "org.greenrobot:eventbus:3.0.0"
     implementation "com.aurelhubert:ahbottomnavigation:2.1.0"

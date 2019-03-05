@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,82 +11,9 @@
             android:id="@+id/toolbar_calendar"
             layout="@layout/toolbar_general" />
 
-        <com.appster.dentamatch.presentation.calendar.CalendarViewEvent
-            android:id="@+id/custom_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_25" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:layout_marginBottom="@dimen/margin_8">
-
-            <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/tvUpdateAvl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_normal"
-                android:drawableStart="@drawable/ic_update_ava"
-                android:gravity="center_vertical"
-                android:drawablePadding="@dimen/margin_4"
-                android:text="@string/upd_avl"
-                android:background="@drawable/bg_text_view"
-                android:textColor="@color/text_default_color"
-                app:customFont="@string/font_regular"
-                android:textSize="@dimen/text_size_12"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_height"
-            android:background="@color/line_divider" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            style="@style/text_view_normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cell_color"
-            android:paddingBottom="@dimen/margin_6"
-            android:paddingStart="@dimen/margin_normal"
-            android:paddingTop="@dimen/margin_20"
-            android:text="@string/booked_job"
-            android:textColor="@color/text_default_color"
-            app:customFont="@string/font_medium" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line_height"
-            android:background="@color/line_divider" />
-
-        <LinearLayout
-            android:id="@+id/layout_blank_alert"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:visibility="gone">
-
-            <com.appster.dentamatch.widget.CustomTextView
-                style="@style/text_view_normal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_normal"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@string/alert_empty_hired_job"
-                android:textColor="@color/edt_hint_color"
-                app:customFont="@string/font_medium" />
-
-        </LinearLayout>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_booked_job"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 </layout>
