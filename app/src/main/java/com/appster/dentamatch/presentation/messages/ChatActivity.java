@@ -352,19 +352,19 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 String fromID;
                 String toID;
 
-                if (lastMessage.getType() == Message.TYPE_MESSAGE_RECEIVED) {
-                    fromID = recruiterId;
-                    toID = userId;
-                } else {
-                    fromID = userId;
-                    toID = recruiterId;
+                if (lastMessage != null) {
+                    if (lastMessage.getType() == Message.TYPE_MESSAGE_RECEIVED) {
+                        fromID = recruiterId;
+                        toID = userId;
+                    } else {
+                        fromID = userId;
+                        toID = recruiterId;
+                    }
+                    SocketManager.getInstance().fetchPastChatsAfterMsgID(lastMessage.getMessageId(), toID, fromID);
                 }
-
-                SocketManager.getInstance().fetchPastChatsAfterMsgID(lastMessage.getMessageId(), toID, fromID);
             } else {
                 SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
             }
-
         }
     }
 }

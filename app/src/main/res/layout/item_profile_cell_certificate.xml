@@ -34,16 +34,17 @@
             <com.appster.dentamatch.widget.CustomTextView
                 android:id="@+id/tv_edit"
                 style="@style/text_view_normal"
+                android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_normal"
-                android:layout_marginRight="@dimen/margin_normal"
-                android:paddingBottom="@dimen/margin_medium"
-                android:paddingStart="@dimen/margin_medium"
+                android:paddingLeft="@dimen/margin_normal"
+                android:paddingRight="@dimen/margin_normal"
                 android:paddingTop="@dimen/margin_medium"
+                android:paddingBottom="@dimen/margin_medium"
                 android:text="@string/edit_label"
                 android:textColor="@color/cerulean_color"
                 android:textSize="@dimen/text_size_13"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:customFont="@string/font_medium" />
 
             <View
@@ -58,10 +59,11 @@
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_add_certificates"
             style="@style/text_view_normal"
-            android:layout_margin="@dimen/margin_normal"
-            android:drawablePadding="@dimen/padding_drawable"
+            android:layout_width="match_parent"
+            android:background="?attr/selectableItemBackground"
             android:drawableStart="@drawable/ic_plus_exp"
-            android:gravity="center"
+            android:drawablePadding="@dimen/padding_drawable"
+            android:padding="@dimen/margin_normal"
             android:text="@string/add_certificate"
             android:textColor="@color/cell_text_color"
             android:textSize="@dimen/text_size_normal"
@@ -81,9 +83,9 @@
             android:id="@+id/tv_certificate_image_name"
             style="@style/text_view_normal"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_small"
             android:text="@string/header_certification"
             android:textColor="@color/text_default_color"
             android:textSize="@dimen/text_size_13"
@@ -94,9 +96,9 @@
             android:id="@+id/layout_validation_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_normal"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 

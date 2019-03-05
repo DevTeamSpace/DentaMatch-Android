@@ -118,7 +118,7 @@ android {
         Dev {
             dimension "environment"
             buildConfigField("String", "BASE_URL", '"https://dev.dentamatch.co/api/v1/"')
-            buildConfigField("String", "CHAT_URL", '"http://dev.dentamatch.co:3000"')
+            buildConfigField("String", "CHAT_URL", '"https://dev.dentamatch.co:3000"')
             signingConfig signingConfigs.config
         }
         QA {
@@ -211,7 +211,6 @@ dependencies {
 
     testImplementation "junit:junit:4.12"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
-
 
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
