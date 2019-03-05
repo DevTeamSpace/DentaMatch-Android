@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
@@ -25,8 +26,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_height"
                     android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginRight="@dimen/margin_normal"
-                    android:visibility="visible">
+                    android:visibility="visible"
+                    tools:ignore="RtlHardcoded">
 
                     <FrameLayout
                         android:id="@+id/layout_count"
@@ -38,12 +39,11 @@
                             android:id="@+id/iv_tool_bar_left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/margin_10"
-                            android:paddingEnd="@dimen/margin_10"
-                            android:paddingStart="@dimen/margin_10"
-                            android:paddingTop="@dimen/margin_10"
+                            android:padding="@dimen/margin_10"
                             android:src="@drawable/img_notifications"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            tools:ignore="ContentDescription" />
 
                         <com.appster.dentamatch.widget.CustomTextView
                             android:id="@+id/tv_batch_count"
@@ -65,17 +65,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/margin_10"
+                        android:padding="@dimen/margin_10"
                         android:layout_toEndOf="@id/layout_count"
-                        android:src="@drawable/ic_settings" />
+                        android:src="@drawable/ic_settings"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        tools:ignore="ContentDescription" />
 
                     <com.appster.dentamatch.widget.CustomTextView
                         android:id="@+id/tv_edit"
                         style="@style/text_view_normal"
+                        android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
+                        android:paddingEnd="@dimen/margin_normal"
+                        android:paddingStart="@dimen/margin_normal"
                         android:text="@string/edit_label"
                         android:textColor="@color/white_color"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         app:customFont="@string/font_regular" />
 
                 </RelativeLayout>
@@ -124,7 +130,7 @@
                     android:textSize="@dimen/text_size_13"
                     app:customFont="@string/font_regular"
 
-                    />
+                    tools:ignore="RtlSymmetry" />
 
 
                 <!--<include
@@ -153,7 +159,7 @@
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/ic_click_indicator"
 
-                        />
+                        tools:ignore="ContentDescription" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -260,7 +266,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/ic_click_indicator" />
+                    android:background="@drawable/ic_click_indicator"
+                    tools:ignore="ContentDescription" />
 
                 <View
                     android:layout_width="match_parent"
