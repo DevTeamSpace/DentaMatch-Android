@@ -30,6 +30,8 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.Utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 
@@ -45,21 +47,22 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
     private final String userID;
     private IDeleteMessage mListener;
 
-    public MessageListAdapter(Context context, @Nullable OrderedRealmCollection<DBModel> data, boolean autoUpdate) {
-        super(context, data, autoUpdate);
+    MessageListAdapter(Context context, @Nullable OrderedRealmCollection<DBModel> data, boolean autoUpdate) {
+        super(data, autoUpdate);
         messagesData = data;
         mContext = context;
         userID = PreferenceUtil.getUserChatId();
     }
 
+    @NotNull
     @Override
-    public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.item_message_list, parent, false);
         return new MessageListAdapter.MyHolder(mBinding.getRoot());
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
+    public void onBindViewHolder(@NotNull MyHolder holder, int position) {
 
         if (messagesData.get(position) != null) {
             DBModel dataModel = messagesData.get(position);
@@ -125,7 +128,7 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
 
                         @Override
                         public void onPositive(DialogInterface dialog) {
-                            blockUnBlockUser("1", messagesData.get(position).getRecruiterId(), userID);
+                            blockUnBlockUser(messagesData.get(position).getRecruiterId(), userID);
                         }
 
                         @Override
@@ -142,9 +145,9 @@ public class MessageListAdapter extends RealmRecyclerViewAdapter<DBModel, Messag
         return true;
     }
 
-    private void blockUnBlockUser(final String status, final String recruiterID, String userID) {
+    private void blockUnBlockUser(final String recruiterID, String userID) {
         if (SocketManager.getInstance().isConnected()) {
-            SocketManager.getInstance().blockUnblockUser(status, recruiterID, userID);
+            SocketManager.getInstance().blockUnblockUser("1", recruiterID, userID);
         } else {
             ((BaseActivity) mContext).showToast(mContext.getString(R.string.error_socket_connection));
         }
