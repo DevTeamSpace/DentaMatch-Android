@@ -18,6 +18,7 @@
     <color name="off_white">#f9f9f9</color>
     <color name="black_color">#0f183e</color>
     <color name="red_color">#fe3824</color>
+    <color name="bold_red">#ff0000</color>
     <color name="white_color_opacity">#50ffffff</color>
     <color name="edt_boundary_color">#e4e4e4</color>
     <color name="edt_boundary_highlight_color">#046dbb</color>

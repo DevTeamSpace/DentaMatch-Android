@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -41,6 +42,7 @@ import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
 import com.appster.dentamatch.util.StringUtils;
+import com.appster.dentamatch.util.TextViewUtils;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 import com.google.android.flexbox.FlexboxLayout;
@@ -413,6 +415,8 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
                     mBinding.tvHwoLabel.setVisibility(View.VISIBLE);
                     mBinding.tvHwoValue.setVisibility(View.VISIBLE);
                     mBinding.tvHwoValue.setText(StringUtils.getPayRate(dataModel.getPayRate()));
+                    TextViewUtils.setTextColor(mBinding.tvHwoValue, R.color.bold_red);
+                    TextViewUtils.setCustomFont(mBinding.tvHwoValue, R.string.font_bold);
                 }
             }
             if (dataModel.getJobPostedTimeGap() == DURATION_TIME_0) {
