@@ -11,6 +11,7 @@ package com.appster.dentamatch.network.response.calendar;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by virender on 08/02/17.
@@ -21,13 +22,13 @@ public class AvailabilityResponseData {
     private CalendarAvailability calendarAvailability;
 
     @SerializedName("tempDatesAvailability")
-    private ArrayList<String> tempDateList;
+    private ArrayList<Date> tempDateList;
 
     public CalendarAvailability getCalendarAvailability() {
         return calendarAvailability;
     }
 
-    public ArrayList<String> getTempDateList() {
+    public ArrayList<Date> getTempDateList() {
         return tempDateList;
     }
 }
