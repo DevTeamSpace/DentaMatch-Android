@@ -99,8 +99,9 @@ class ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     fun provideHomeViewModel(commonInteractor: CommonInteractor,
-                             profileInteractor: ProfileInteractor): ViewModel =
-            HomeViewModel(commonInteractor, profileInteractor)
+                             profileInteractor: ProfileInteractor,
+                             messagesInteractor: MessagesInteractor): ViewModel =
+            HomeViewModel(commonInteractor, profileInteractor, messagesInteractor)
 
     @Provides
     @IntoMap
