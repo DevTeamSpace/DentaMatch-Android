@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small">
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/sun"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_sun"
+            android:textColor="@color/grayish_brown_opacity_color"
+            android:textStyle="bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/mon"
+            style="@style/text_view_normal"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_mon"
+            android:textColor="@color/grayish_brown_opacity_color"
+            android:textStyle="bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tue"
+            style="@style/text_view_normal"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_tue"
+            android:textColor="@color/grayish_brown_opacity_color"
+            android:textStyle="bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/wed"
+            style="@style/text_view_normal"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_wed"
+            android:textColor="@color/grayish_brown_opacity_color"
+            android:textStyle="bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/thu"
+            style="@style/text_view_normal"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_thu"
+            android:textColor="@color/grayish_brown_opacity_color"
+            android:textStyle="bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/fri"
+            style="@style/text_view_normal"
+
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_fri"
+            android:textColor="@color/grayish_brown_opacity_color"
+            android:textStyle="bold" />
+
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/sat"
+            style="@style/text_view_normal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_sat"
+            android:textColor="@color/grayish_brown_opacity_color"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.appster.dentamatch.widget.ExpandableGridView
+        android:id="@+id/calendarGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="@dimen/margin_5"
+        android:numColumns="7"
+        android:scrollbars="none"
+        android:verticalSpacing="@dimen/margin_small_3" />
+
+</LinearLayout>

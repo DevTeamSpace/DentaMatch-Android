@@ -119,7 +119,7 @@ public class HomeActivity extends BaseLoadingActivity<HomeViewModel> {
     }
 
     private void onSuccessUnreadNotificationCountRequest(@Nullable UnReadNotificationCountResponse response) {
-        if (response != null) {
+        if (response != null && response.getUnReadNotificationResponse() != null) {
             if (response.getUnReadNotificationResponse().getNotificationCount() == 0) {
                 UnReadNotificationCountResponse countResponse = new UnReadNotificationCountResponse();
                 UnReadNotificationResponseData responseData = new UnReadNotificationResponseData();

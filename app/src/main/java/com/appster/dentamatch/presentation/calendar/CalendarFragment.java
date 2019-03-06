@@ -24,19 +24,11 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.base.BaseLoadingFragment;
 import com.appster.dentamatch.databinding.FragmentCalendarBinding;
 import com.appster.dentamatch.eventbus.JobCancelEvent;
-import com.appster.dentamatch.interfaces.OnDateSelected;
-import com.appster.dentamatch.network.response.jobs.HiredJobResponse;
-import com.appster.dentamatch.network.response.jobs.HiredJobs;
-import com.appster.dentamatch.util.Constants;
-import com.appster.dentamatch.util.LogUtils;
-import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Appster on 23/01/17.
@@ -44,18 +36,24 @@ import java.util.Date;
  */
 
 public class CalendarFragment extends BaseLoadingFragment<CalendarViewModel>
-        implements View.OnClickListener, OnDateSelected {
+        implements View.OnClickListener {
 
-    private static final String TAG = LogUtils.makeLogTag(CalendarFragment.class);
     private FragmentCalendarBinding mCalendarBinding;
     private HiredJobAdapter mJobAdapter;
 
     @NonNull
-    private ArrayList<HiredJobs> mAllJobLIst = new ArrayList<>();
+    private final CalendarModel mCalendarModel = CalendarModel.Companion.getInstance();
 
     @NonNull
     public static CalendarFragment newInstance() {
         return new CalendarFragment();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mJobAdapter.updateCalendarPosition();
     }
 
     @Nullable
@@ -81,41 +79,29 @@ public class CalendarFragment extends BaseLoadingFragment<CalendarViewModel>
             mCalendarBinding.toolbarCalendar.txvToolbarGeneralRight.setCompoundDrawables(ContextCompat.getDrawable(getActivity(), android.R.drawable.btn_plus), null, null, null);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mCalendarBinding.rvBookedJob.setLayoutManager(mLayoutManager);
-        mAllJobLIst = new ArrayList<>();
-        mJobAdapter = new HiredJobAdapter(mAllJobLIst, this);
+
+        mJobAdapter = new HiredJobAdapter(this, mCalendarModel);
         mCalendarBinding.rvBookedJob.setAdapter(mJobAdapter);
 
         viewModel.getCancelJob().observe(this, this::onSuccessCancelJob);
-        viewModel.getHiredJob().observe(this, this::onSuccessRequestHiredJob);
+        viewModel.getCalendarModel().observe(this, this::onSuccessRequestCalendarModel);
         viewModel.getHiredJobFailed().observe(this, throwable -> onFailedRequestHiredJob());
     }
 
-    private void onSuccessCancelJob(@Nullable Integer jobId) {
-        if (jobId != null) {
-            mJobAdapter.cancelJob(jobId);
-            for (int i = 0; i < mAllJobLIst.size(); i++) {
-                if (mAllJobLIst.get(i).getId() == jobId) {
-                    mAllJobLIst.remove(i);
-                    i = -1;
-                }
-            }
-            mJobAdapter.setCalendarJobList(mAllJobLIst);
+    private void onSuccessRequestCalendarModel(@Nullable CalendarModel calendarModel) {
+        if (calendarModel != null) {
+            mJobAdapter.setCalendarModel(mCalendarModel);
         }
     }
 
-    private void onSuccessRequestHiredJob(@Nullable HiredJobResponse response) {
-        if (response != null && response.getHiredJobResponseData() != null) {
-            ArrayList<HiredJobs> jobList = response.getHiredJobResponseData().getJobList();
-            mAllJobLIst = jobList != null ? jobList : new ArrayList<>();
-            mJobAdapter.setCalendarJobList(mAllJobLIst);
-            arrangeJobData(getCurrentDateString());
+    private void onSuccessCancelJob(@Nullable CalendarModel calendarModel) {
+        if (calendarModel != null) {
+            mJobAdapter.setCalendarModel(mCalendarModel);
         }
     }
 
     private void onFailedRequestHiredJob() {
-        mJobAdapter.isFullTimeJob(false);
-        mAllJobLIst.clear();
-        mJobAdapter.setCalendarJobList(mAllJobLIst);
+        mJobAdapter.setCalendarModel(mCalendarModel);
     }
 
     @Override
@@ -138,76 +124,17 @@ public class CalendarFragment extends BaseLoadingFragment<CalendarViewModel>
     }
 
     private void getBookedJob(Calendar cal) {
-        viewModel.requestHiredJob(cal);
+        viewModel.requestHiredJob(cal, mCalendarModel);
     }
 
     private void cancelJob(int jobId, @NonNull String msg) {
-        viewModel.cancelJob(jobId, msg);
-    }
-
-    @Override
-    public void selectedDate(String date) {
-        arrangeJobData(date);
-    }
-
-    @Override
-    public void onMonthChanged(Calendar cal) {
-        getBookedJob(cal);
-    }
-
-    @NonNull
-    private String getCurrentDateString() {
-        return Utils.dateFormetyyyyMMdd(Calendar.getInstance().getTime());
-    }
-
-    private void arrangeJobData(@NonNull String date) {
-        ArrayList<HiredJobs> selectedDateJobList = new ArrayList<>();
-        boolean isFullTime = false;
-        try {
-            if (mAllJobLIst.size() > 0) {
-                for (int i = 0; i < mAllJobLIst.size(); i++) {
-                    if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.FULL_TIME.getValue()) {
-                        isFullTime = true;
-                    } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
-                        Date jobHireDate = Utils.getDate(mAllJobLIst.get(i).getJobDate(), Constants.DateFormat.YYYYMMDD);
-                        Date currentDate = Utils.getDate(date, Constants.DateFormat.YYYYMMDD);
-                        if (jobHireDate != null && jobHireDate.compareTo(currentDate) <= 0) {
-                            String day = Utils.getDayOfWeek(date);
-                            if ((day.equalsIgnoreCase(getString(R.string.txt_full_monday)) && mAllJobLIst.get(i).getIsMonday() == 1)
-                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_tuesday)) && mAllJobLIst.get(i).getIsTuesday() == 1)
-                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_wednesday)) && mAllJobLIst.get(i).getIsWednesday() == 1)
-                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_thursday)) && mAllJobLIst.get(i).getIsThursday() == 1)
-                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_friday)) && mAllJobLIst.get(i).getIsFriday() == 1)
-                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_saturday)) && mAllJobLIst.get(i).getIsSaturday() == 1)
-                                    || (day.equalsIgnoreCase(getString(R.string.txt_full_sunday)) && mAllJobLIst.get(i).getIsSunday() == 1)) {
-                                selectedDateJobList.add(mAllJobLIst.get(i));
-                            }
-                        }
-                    } else if (mAllJobLIst.get(i).getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
-                        if (mAllJobLIst.get(i).getTempDates().equalsIgnoreCase(date)) {
-                            selectedDateJobList.add(mAllJobLIst.get(i));
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            LogUtils.LOGE(TAG, e.getMessage());
-        }
-        mJobAdapter.isFullTimeJob(isFullTime);
-        mJobAdapter.isFullTimeJob(isFullTime);
-        mCalendarBinding.rvBookedJob.setFocusable(true);
-        mJobAdapter.setJobList(selectedDateJobList);
+        viewModel.cancelJob(jobId, msg, mCalendarModel);
     }
 
     @Subscribe
     public void jobCancelled(JobCancelEvent event) {
         if (event != null) {
-            for (HiredJobs model : mAllJobLIst) {
-                if (model.getId() == event.getJobID()) {
-                    cancelJob(event.getJobID(), event.getMsg());
-                    break;
-                }
-            }
+            cancelJob(event.getJobID(), event.getMsg());
         }
     }
 

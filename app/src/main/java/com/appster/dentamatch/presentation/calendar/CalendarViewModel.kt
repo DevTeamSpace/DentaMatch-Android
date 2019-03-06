@@ -2,10 +2,8 @@ package com.appster.dentamatch.presentation.calendar
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.util.Log
 import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.domain.calendar.CalendarInteractor
-import com.appster.dentamatch.network.response.jobs.HiredJobResponse
 import timber.log.Timber
 import java.util.*
 
@@ -17,28 +15,28 @@ class CalendarViewModel(
         const val TAG = "CalendarViewModel"
     }
 
-    private val mutableHiredJob = MutableLiveData<HiredJobResponse>()
-    private val mutableCancelJob = MutableLiveData<Int>()
+    private val mutableCalendarModel = MutableLiveData<CalendarModel>()
+    private val mutableCancelJob = MutableLiveData<CalendarModel>()
     private val mutableHiredJobFailed = MutableLiveData<Throwable>()
 
-    val hiredJob: LiveData<HiredJobResponse> get() = mutableHiredJob
-    val cancelJob: LiveData<Int> get() = mutableCancelJob
+    val calendarModel: LiveData<CalendarModel> get() = mutableCalendarModel
+    val cancelJob: LiveData<CalendarModel> get() = mutableCancelJob
     val hiredJobFailed: LiveData<Throwable> get() = mutableHiredJobFailed
 
-    fun cancelJob(jobId: Int, msg: String) =
+    fun cancelJob(jobId: Int, msg: String, calendarModel: CalendarModel?) =
             addDisposable(
-                    interactor.cancelJob(jobId, msg)
-                            .compose(viewModelCompletableCompose())
-                            .subscribe({ mutableCancelJob.postValue(jobId) },
+                    interactor.cancelJob(jobId, msg, calendarModel)
+                            .compose(viewModelCompose())
+                            .subscribe({ mutableCancelJob.postValue(it) },
                                     { Timber.e(it) })
             )
 
-    fun requestHiredJob(cal: Calendar) =
+    fun requestHiredJob(cal: Calendar, calendarModel: CalendarModel) =
             addDisposable(
-                    interactor.requestHiredJob(cal)
+                    interactor.requestHiredJob(cal, calendarModel)
                             .compose(viewModelCompose())
                             .doOnError { mutableHiredJobFailed.postValue(it) }
-                            .subscribe({ mutableHiredJob.postValue(it) },
+                            .subscribe({ mutableCalendarModel.postValue(it) },
                                     { Timber.e(it) })
             )
 }

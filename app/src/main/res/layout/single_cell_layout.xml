@@ -4,13 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/calendar_cell_height"
-    android:layout_height="@dimen/calendar_cell_height">
+    android:layout_height="@dimen/calendar_cell_height"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackgroundBorderless">
 
     <com.appster.dentamatch.widget.CustomTextView
-        android:id="@+id/calendar_date_id"
+        android:id="@+id/calendarDateId"
         style="@style/text_view_normal"
         android:textColor="@color/grayish_brown_color"
         android:textSize="@dimen/text_size_normal"
+        android:gravity="center"
         app:customFont="@string/font_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,13 +26,13 @@
         android:id="@+id/dot1"
         android:layout_width="@dimen/margin_5"
         android:layout_height="@dimen/margin_5"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="5.5dp"
         android:background="@drawable/shape_full_time_dot"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintEnd_toStartOf="@id/dot2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/calendar_date_id"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="ContentDescription" />
 
@@ -36,24 +40,26 @@
         android:id="@+id/dot2"
         android:layout_width="@dimen/margin_5"
         android:layout_height="@dimen/margin_5"
+        android:layout_marginBottom="5.5dp"
         android:background="@drawable/shape_part_time_dot"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintEnd_toStartOf="@id/dot3"
         app:layout_constraintStart_toEndOf="@id/dot1"
-        app:layout_constraintTop_toTopOf="@id/dot1"
-        app:layout_constraintBottom_toBottomOf="@id/dot1"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/dot3"
         android:layout_width="@dimen/margin_8"
         android:layout_height="@dimen/margin_8"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/shape_temporary_dot"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintStart_toEndOf="@id/dot2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/dot1"
-        app:layout_constraintBottom_toBottomOf="@id/dot1"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="ContentDescription" />
 
 </android.support.constraint.ConstraintLayout>

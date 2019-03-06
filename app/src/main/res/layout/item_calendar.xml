@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.appster.dentamatch.presentation.calendar.CalendarViewEvent
+        <com.appster.dentamatch.presentation.calendar.CalendarView
             android:id="@+id/custom_calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

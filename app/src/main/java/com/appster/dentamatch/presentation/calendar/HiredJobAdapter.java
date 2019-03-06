@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,7 +25,6 @@ import android.widget.RelativeLayout;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemCalendarBinding;
 import com.appster.dentamatch.databinding.ItemJobListBinding;
-import com.appster.dentamatch.interfaces.OnDateSelected;
 import com.appster.dentamatch.network.response.jobs.HiredJobs;
 import com.appster.dentamatch.base.BaseActivity;
 import com.appster.dentamatch.presentation.searchjob.JobDetailActivity;
@@ -37,12 +37,14 @@ import com.appster.dentamatch.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by virender on 10/02/17.
  * To inject activity reference.
  */
-public class HiredJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HiredJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements CalendarPagerAdapter.CalendarPagerListener {
 
     private final static int CALENDAR_ITEM = 1;
     private final static int TYPE_CALENDAR = 1001;
@@ -50,21 +52,22 @@ public class HiredJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final static int TYPE_NO_JOBS = 1003;
     private static final int NO_JOBS_ITEM = 1;
 
-    private boolean mIsFullTime = false;
-
     @NonNull
     private ArrayList<HiredJobs> mJobListData;
 
     @NonNull
-    private ArrayList<HiredJobs> mCalendarJobListData = new ArrayList<>();
+    private CalendarModel mCalendarModel;
 
     @NonNull
-    private final OnDateSelected mListener;
+    private FragmentManager mFragmentManager;
 
-    HiredJobAdapter(@NonNull ArrayList<HiredJobs> jobListData,
-                    @NonNull OnDateSelected listener) {
-        mJobListData = new ArrayList<>(jobListData);
-        mListener = listener;
+    private int mCalendarPosition = -1;
+    private boolean mForceUpdatePosition = false;
+
+    HiredJobAdapter(@NonNull CalendarFragment fragment, @NonNull CalendarModel calendarModel) {
+        mJobListData = new ArrayList<>();
+        mFragmentManager = fragment.getChildFragmentManager();
+        mCalendarModel = calendarModel;
     }
 
     @NonNull
@@ -129,30 +132,48 @@ public class HiredJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mJobListData.size() + CALENDAR_ITEM + (isEmptyList() ? NO_JOBS_ITEM : 0);
     }
 
-    void setCalendarJobList(@NonNull ArrayList<HiredJobs> list) {
-        mCalendarJobListData = new ArrayList<>(list);
-        notifyDataSetChanged();
-    }
-
-    void isFullTimeJob(boolean isFullTimeJob) {
-        mIsFullTime = isFullTimeJob;
-        notifyDataSetChanged();
-    }
-
-    void setJobList(@NonNull ArrayList<HiredJobs> jobList) {
+    private void setJobList(@NonNull ArrayList<HiredJobs> jobList) {
         mJobListData = new ArrayList<>(jobList);
-        notifyDataSetChanged();
+        //Can be invoked before the RecyclerView's onLayout() method was called
+        try {
+            notifyDataSetChanged();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     public void cancelJob(int JobID) {
         for (int i = 0; i < mJobListData.size(); i++) {
             if (mJobListData.get(i).getId() == JobID) {
                 mJobListData.remove(i);
-                notifyItemRemoved(i);
-                notifyItemRangeChanged(i, mJobListData.size());
+                notifyDataSetChanged();
                 break;
             }
         }
+    }
+
+    void setCalendarModel(@NonNull CalendarModel calendarModel) {
+        mCalendarModel = calendarModel;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onMonthChanged(int month) {
+        mCalendarPosition = month;
+        mForceUpdatePosition = false;
+    }
+
+    @Override
+    public void onDaySelected(@NotNull CalendarDayModel day) {
+        setJobList(day.getJobs());
+    }
+
+    void updateCalendarPosition() {
+        mCalendarPosition = mCalendarPosition == -1
+                ? Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH)
+                : mCalendarPosition;
+        mForceUpdatePosition = true;
+        notifyDataSetChanged();
     }
 
     class NoJobsViewHolder extends RecyclerView.ViewHolder {
@@ -169,15 +190,19 @@ public class HiredJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         CalendarViewHolder(@NonNull ItemCalendarBinding itemView) {
             super(itemView.getRoot());
             mBinding = itemView;
+            mBinding.customCalendar.initialize(mFragmentManager);
         }
 
         void bind() {
             Context context = itemView.getContext();
             mBinding.tvUpdateAvl.setOnClickListener(v ->
                     context.startActivity(new Intent(context, SetAvailabilityActivity.class)));
-            mBinding.customCalendar.setDateSelectedInterface(mListener);
-            mBinding.customCalendar.setHiredListData(mCalendarJobListData);
-            mBinding.customCalendar.isFullTimeJob(mIsFullTime);
+            mBinding.customCalendar.setCalendarModel(mCalendarModel);
+            mBinding.customCalendar.setListener(HiredJobAdapter.this);
+            if (mCalendarPosition != -1 && mForceUpdatePosition) {
+                mBinding.customCalendar.setSelectedPosition(mCalendarPosition);
+                mForceUpdatePosition = false;
+            }
         }
     }
 
