@@ -115,6 +115,7 @@ public class HomeActivity extends BaseLoadingActivity<HomeViewModel> {
 
         viewModel.getUnReadNotificationCount().observe(this,
                 this::onSuccessUnreadNotificationCountRequest);
+        viewModel.getUnreadMessages().observe(this, this::setNewMessagesCount);
     }
 
     private void onSuccessUnreadNotificationCountRequest(@Nullable UnReadNotificationCountResponse response) {
@@ -307,13 +308,22 @@ public class HomeActivity extends BaseLoadingActivity<HomeViewModel> {
         viewModel.updateFcmToken(fcmToken);
     }
 
-    private void getBatchCount() {
-        viewModel.requestUnreadNotificationCount();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        getBatchCount();
+        viewModel.requestUnreadNotificationCount();
+        viewModel.requestUnreadMessagesCount();
+    }
+
+    public void setNewMessagesCount(@Nullable Integer count) {
+        if (count != null) {
+            AHNotification notification = new AHNotification.Builder()
+                    .setText(count == 0 ? "" : count > 100 ? getString(R.string.ntf_cnt) : String.valueOf(count))
+                    .setBackgroundColor(ContextCompat.getColor(this, R.color.clr_cnl))
+                    .setTextColor(ContextCompat.getColor(this, R.color.white))
+                    .build();
+            bottomBar.setNotification(notification, 3);
+            ShortcutBadger.applyCount(getApplicationContext(), count);
+        }
     }
 }
