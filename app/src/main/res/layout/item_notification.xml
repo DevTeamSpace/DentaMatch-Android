@@ -79,6 +79,7 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:textColor="@color/chat_message"
             android:textSize="@dimen/text_size_small"
+            android:textAllCaps="true"
             app:customFont="@string/font_regular" />
 
 

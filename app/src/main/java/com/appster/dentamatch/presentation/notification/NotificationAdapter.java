@@ -36,6 +36,7 @@ import com.appster.dentamatch.widget.CustomTextView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by bawenderyandra on 08/03/17.
@@ -106,7 +107,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
              */
             if (data.getCreatedAt() != null) {
                 holder.tvDuration.setVisibility(View.VISIBLE);
-                holder.tvDuration.setText(Utils.getDuration(Utils.getDateNotification(data.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS), mContext));
+                Date date = Utils.getDateNotification(data.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS);
+                if (date != null) {
+                    holder.tvDuration.setText(Utils.getDuration(date, mContext));
+                }
             } else {
                 holder.tvDuration.setVisibility(View.GONE);
             }

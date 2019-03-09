@@ -155,7 +155,7 @@ ext {
     fireBaseLibrary = '17.4.0'
     leakCanaryLibrary = '1.5.4'
     retrofitVersion = '2.3.0'
-    dagger_version = '2.16'
+    dagger_version = '2.20'
     constraintLayoutVersion = '1.1.3'
 }
 
@@ -206,7 +206,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
 
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:1.6.2"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:1.6.3"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryLibrary"
 
     testImplementation "junit:junit:4.12"
