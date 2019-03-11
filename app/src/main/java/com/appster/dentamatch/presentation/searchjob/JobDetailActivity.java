@@ -38,6 +38,7 @@ import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.presentation.common.HomeActivity;
 import com.appster.dentamatch.presentation.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
+import com.appster.dentamatch.util.ChatUtilsKt;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -430,8 +431,13 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
             mBinding.tvJobDetailJobDistance.setText(R.string.txt_view_on_map);
             mBinding.tvJobDetailJobDistance.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_location_blue, 0, 0, 0);
             mBinding.tvJobDetailJobDistance.setCompoundDrawablePadding(5);
-
             mBinding.tvJobDetailJobDistance.setTextColor(ContextCompat.getColor(this, R.color.cerulean_color));
+            if (getIntent().hasExtra(Constants.EXTRA_RECRUITER_ID)) {
+                mBinding.jobDetailMessageButton.setVisibility(View.VISIBLE);
+                mBinding.jobDetailMessageButton.setOnClickListener(v ->
+                        ChatUtilsKt.startChatWithUser(this,
+                                String.valueOf(getIntent().getIntExtra(Constants.EXTRA_RECRUITER_ID, -1))));
+            }
             mBinding.tvMap.setVisibility(View.GONE);
             mBinding.mapJobDetail.setVisibility(View.GONE);
             mBinding.lineMap.setVisibility(View.VISIBLE);

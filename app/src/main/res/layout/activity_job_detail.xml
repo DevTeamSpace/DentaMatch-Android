@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/cell_color"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -652,6 +652,17 @@
                     android:id="@+id/map_job_detail"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
+
+                <Button
+                    android:id="@+id/job_detail_message_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/txt_message"
+                    android:background="@drawable/message_button_background"
+                    android:visibility="gone"
+                    android:textColor="@color/color_forgot_pwd"
+                    style="?android:attr/borderlessButtonStyle"/>
 
             </LinearLayout>
 

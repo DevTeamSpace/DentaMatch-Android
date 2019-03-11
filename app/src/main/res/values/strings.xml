@@ -450,4 +450,5 @@
     <string name="upd_avl">Update my availability</string>
     <string name="txt_view_on_map">View on map</string>
     <string name="calendar_month">%1$s %2$s</string>
+    <string name="txt_message">message</string>
 </resources>
