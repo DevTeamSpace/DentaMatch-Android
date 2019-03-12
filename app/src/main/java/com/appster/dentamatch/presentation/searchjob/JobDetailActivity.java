@@ -17,10 +17,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -68,7 +70,7 @@ import kotlin.Pair;
  */
 
 public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
-        implements OnMapReadyCallback, View.OnClickListener {
+        implements OnMapReadyCallback, View.OnClickListener, Toolbar.OnMenuItemClickListener {
 
     private static final String TAG = LogUtils.makeLogTag(JobDetailActivity.class);
     private final int DESC_MAX_LINES = 4;
@@ -433,10 +435,9 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
             mBinding.tvJobDetailJobDistance.setCompoundDrawablePadding(5);
             mBinding.tvJobDetailJobDistance.setTextColor(ContextCompat.getColor(this, R.color.cerulean_color));
             if (getIntent().hasExtra(Constants.EXTRA_RECRUITER_ID)) {
-                mBinding.jobDetailMessageButton.setVisibility(View.VISIBLE);
-                mBinding.jobDetailMessageButton.setOnClickListener(v ->
-                        ChatUtilsKt.startChatWithUser(this,
-                                String.valueOf(getIntent().getIntExtra(Constants.EXTRA_RECRUITER_ID, -1))));
+                mBinding.jobDetailToolbar.toolbarGeneral.getMenu().clear();
+                mBinding.jobDetailToolbar.toolbarGeneral.inflateMenu(R.menu.job_detail_message_menu);
+                mBinding.jobDetailToolbar.toolbarGeneral.setOnMenuItemClickListener(this);
             }
             mBinding.tvMap.setVisibility(View.GONE);
             mBinding.mapJobDetail.setVisibility(View.GONE);
@@ -689,5 +690,16 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
 
     private void saveUnSaveJob(final int JobID, final int status) {
         viewModel.saveUnSaveJob(JobID, status);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.job_detail_message) {
+            ChatUtilsKt.startChatWithUser(this,
+                    String.valueOf(getIntent().getIntExtra(Constants.EXTRA_RECRUITER_ID, -1)),
+                    mJobDetailModel.getOfficeName());
+            return true;
+        }
+        return false;
     }
 }

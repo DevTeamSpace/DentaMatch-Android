@@ -28,7 +28,6 @@ import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
 import com.appster.dentamatch.model.JobDetailModel;
 import com.appster.dentamatch.network.response.notification.NotificationData;
-import com.appster.dentamatch.presentation.messages.ChatActivity;
 import com.appster.dentamatch.presentation.searchjob.JobDetailActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.ChatUtilsKt;
@@ -166,7 +165,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 }
             });
             holder.messageButton.setOnClickListener(v ->
-                    ChatUtilsKt.startChatWithUser(mContext, String.valueOf(senderId)));
+                    ChatUtilsKt.startChatWithUser(mContext,
+                            String.valueOf(senderId),
+                            data.getJobDetailModel().getOfficeName()));
         } else {
             holder.tvAddress.setVisibility(View.GONE);
             holder.tvJobType.setVisibility(View.GONE);
