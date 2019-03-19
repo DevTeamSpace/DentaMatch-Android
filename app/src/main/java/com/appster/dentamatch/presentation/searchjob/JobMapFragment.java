@@ -166,7 +166,7 @@ public class JobMapFragment extends BaseLoadingFragment<JobMapViewModel>
                     Constants.REQUEST_CODE.REQUEST_CODE_LOCATION_ACCESS);
         } else {
             mGoogleMap.setMyLocationEnabled(true);
-            LocationUtils.addFragment((AppCompatActivity) getActivity());
+            LocationUtils.addFragment((AppCompatActivity) requireActivity());
         }
     }
 
