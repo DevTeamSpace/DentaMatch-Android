@@ -165,9 +165,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 }
             });
             holder.messageButton.setOnClickListener(v ->
-                    ChatUtilsKt.startChatWithUser(mContext,
-                            String.valueOf(senderId),
-                            data.getJobDetailModel().getOfficeName()));
+                    ChatUtilsKt.startChatWithUser(mContext, String.valueOf(senderId)));
         } else {
             holder.tvAddress.setVisibility(View.GONE);
             holder.tvJobType.setVisibility(View.GONE);

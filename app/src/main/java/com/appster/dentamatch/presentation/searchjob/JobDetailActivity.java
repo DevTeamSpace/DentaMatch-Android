@@ -696,8 +696,7 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
     public boolean onMenuItemClick(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.job_detail_message) {
             ChatUtilsKt.startChatWithUser(this,
-                    String.valueOf(getIntent().getIntExtra(Constants.EXTRA_RECRUITER_ID, -1)),
-                    mJobDetailModel.getOfficeName());
+                    String.valueOf(getIntent().getIntExtra(Constants.EXTRA_RECRUITER_ID, -1)));
             return true;
         }
         return false;

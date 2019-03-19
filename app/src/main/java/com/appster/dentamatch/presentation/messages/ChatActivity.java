@@ -11,12 +11,14 @@ package com.appster.dentamatch.presentation.messages;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.chat.DBModel;
 import com.appster.dentamatch.chat.SocketManager;
@@ -26,7 +28,7 @@ import com.appster.dentamatch.eventbus.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.eventbus.MessageAcknowledgementEvent;
 import com.appster.dentamatch.eventbus.SocketConnectionEvent;
 import com.appster.dentamatch.eventbus.UnblockEvent;
-import com.appster.dentamatch.base.BaseActivity;
+import com.appster.dentamatch.model.ChatResponse;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -44,7 +46,9 @@ import org.json.JSONObject;
  * To inject activity reference.
  */
 
-public class ChatActivity extends BaseActivity implements View.OnClickListener {
+public class ChatActivity extends BaseLoadingActivity<ChatViewModel>
+        implements View.OnClickListener {
+
     private static final String TAG = LogUtils.makeLogTag(ChatActivity.class);
     private ActivityChatBinding mBinder;
     @Nullable
@@ -68,7 +72,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         initViews();
         mLayoutManager.setStackFromEnd(true);
         mBinder.messages.setLayoutManager(mLayoutManager);
-        updateUI(getIntent());
+        viewModel.setArguments(getIntent());
+        viewModel.getBdModel().observe(this, model -> updateUI(model, getIntent()));
+        viewModel.getInitError().observe(this, this::onErrorInit);
+        viewModel.initChat();
+    }
+
+    private void onErrorInit(@Nullable Throwable throwable) {
+        if (throwable != null) {
+            showToast(throwable.toString());
+            onBackPressed();
+        }
     }
 
     private void initViews() {
@@ -82,7 +96,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        updateUI(intent);
+        updateUI(null, intent);
     }
 
     @Override
@@ -95,11 +109,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         SocketManager.getInstance().setAttachedActivityStatus(SocketManager.ON_RESUME);
-    }
-
-    @Override
-    public String getActivityName() {
-        return null;
     }
 
     /**
@@ -279,7 +288,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void updateUI(Intent intent) {
+    private void updateUI(@Nullable ChatResponse chatResponse, @NonNull Intent intent) {
+        if (chatResponse != null && chatResponse.getResult() != null) {
+            mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(chatResponse.getResult().getName());
+        }
+
         if (intent.hasExtra(Constants.EXTRA_CHAT_MODEL)) {
             recruiterId = intent.getStringExtra(Constants.EXTRA_CHAT_MODEL);
             dbModel = DBHelper.getInstance().getDBData(recruiterId);
@@ -305,7 +318,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
                 if (dbModel != null) {
                     recruiterName = dbModel.getName();
-                    mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(recruiterName);
                     /*
                       Change the UI based on recruiter is blocked or not.
                      */
@@ -315,12 +327,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     } else {
                         mBinder.layUnblock.setVisibility(View.GONE);
                         mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
-                    }
-                }
-                if (getIntent().hasExtra(Constants.EXTRA_OFFICE_NAME)) {
-                    String officeName = getIntent().getStringExtra(Constants.EXTRA_OFFICE_NAME);
-                    if (officeName != null) {
-                        mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(officeName);
                     }
                 }
                 if (dbModel == null || !dbModel.isDBUpdated()) {

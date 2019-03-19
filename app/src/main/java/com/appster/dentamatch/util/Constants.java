@@ -60,7 +60,6 @@ public class Constants {
     public static final String CONNECTION_TIMED_OUT = "CONNECTION_TIMED_OUT";
     public static final String CONNECTED = "CONNECTED";
     public static final String EXTRA_RECRUITER_ID = "RECRUITER_ID";
-    public static final String EXTRA_OFFICE_NAME = "OFFICE_NAME";
 
     public enum ACTIVITIES {
         SWITCH_ACTIVITY
