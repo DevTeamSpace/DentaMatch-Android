@@ -53,7 +53,7 @@ public class CalendarFragment extends BaseLoadingFragment<CalendarViewModel>
     @Override
     public void onResume() {
         super.onResume();
-        mJobAdapter.updateCalendarPosition();
+//        mJobAdapter.updateCalendarPosition();
     }
 
     @Nullable
@@ -82,7 +82,7 @@ public class CalendarFragment extends BaseLoadingFragment<CalendarViewModel>
 
         mJobAdapter = new HiredJobAdapter(this, mCalendarModel);
         mCalendarBinding.rvBookedJob.setAdapter(mJobAdapter);
-
+        mJobAdapter.updateCalendarPosition();
         viewModel.getCancelJob().observe(this, this::onSuccessCancelJob);
         viewModel.getCalendarModel().observe(this, this::onSuccessRequestCalendarModel);
         viewModel.getHiredJobFailed().observe(this, throwable -> onFailedRequestHiredJob());

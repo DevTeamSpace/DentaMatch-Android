@@ -8,6 +8,8 @@
 
 package com.appster.dentamatch.util;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Class to hold constant values.
  */
@@ -57,6 +59,7 @@ public class Constants {
     public static final String DISCONNECTED = "DISCONNECTED";
     public static final String CONNECTION_TIMED_OUT = "CONNECTION_TIMED_OUT";
     public static final String CONNECTED = "CONNECTED";
+    public static final String EXTRA_RECRUITER_ID = "RECRUITER_ID";
 
     public enum ACTIVITIES {
         SWITCH_ACTIVITY

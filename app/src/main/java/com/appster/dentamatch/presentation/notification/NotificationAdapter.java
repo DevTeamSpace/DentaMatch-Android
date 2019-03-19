@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -29,6 +30,7 @@ import com.appster.dentamatch.model.JobDetailModel;
 import com.appster.dentamatch.network.response.notification.NotificationData;
 import com.appster.dentamatch.presentation.searchjob.JobDetailActivity;
 import com.appster.dentamatch.util.Alert;
+import com.appster.dentamatch.util.ChatUtilsKt;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
@@ -75,8 +77,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NotNull MyHolder holder, int position) {
-        if (mNotificationList.get(position) != null) {
-            NotificationData data = mNotificationList.get(position);
+        NotificationData data = mNotificationList.get(position);
+        if (data != null) {
 
             holder.itemView.setTag(position);
             holder.tvReject.setTag(position);
@@ -144,17 +146,32 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             } else {
                 holder.layoutInVite.setVisibility(View.GONE);
             }
-
-
+            int senderId = data.getSenderId();
+            holder.itemView.setOnClickListener(v -> {
+                JobDetailModel jobDetailModel = data.getJobDetailModel();
+                if (jobDetailModel != null) {
+                    int notificationID = jobDetailModel.getId();
+                    if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
+                        redirectToDetail(notificationID, senderId);
+                    } else if (data.getSeen() == NOTIFICATION_UNREAD) {
+                        mCallback.readNotification(getIdByPosition(position));
+                    } else {
+                            /*
+                              In case of recruiter deleted the job then user doesn't get the
+                              jobDetailModel.
+                             */
+                            redirectToDetail(notificationID);
+                    }
+                }
+            });
+            holder.messageButton.setOnClickListener(v ->
+                    ChatUtilsKt.startChatWithUser(mContext, String.valueOf(senderId)));
         } else {
             holder.tvAddress.setVisibility(View.GONE);
             holder.tvJobType.setVisibility(View.GONE);
         }
-
-        holder.itemView.setOnClickListener(this);
         holder.tvReject.setOnClickListener(this);
         holder.tvAccept.setOnClickListener(this);
-        holder.itemView.setOnLongClickListener(this);
     }
 
     private void setJobDetailData(JobDetailModel model, MyHolder holder) {
@@ -182,7 +199,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             }
         }
-
     }
 
     @Override
@@ -216,30 +232,18 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             case R.id.tv_accept:
                 mCallback.acceptRejectNotification(getIdByPosition(position), 1);
                 break;
-            default:
-                if (mNotificationList.get(position) != null) {
-                    NotificationData data = mNotificationList.get(position);
-                    if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
-                        redirectToDetail(data.getJobDetailModel().getId());
-                    } else if (data.getSeen() == NOTIFICATION_UNREAD) {
-                        mCallback.readNotification(getIdByPosition(position));
-                    } else {
-                        /*
-                          In case of recruiter deleted the job then user doesn't get the
-                          jobDetailModel.
-                         */
-                        if (data.getJobDetailModel() != null) {
-                            redirectToDetail(data.getJobDetailModel().getId());
-                        }
-                    }
-                }
-                break;
         }
     }
 
     private void redirectToDetail(int notificationID) {
         mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
                 .putExtra(Constants.EXTRA_JOB_DETAIL_ID, notificationID));
+    }
+
+    private void redirectToDetail(int notificationID, int recruiterId) {
+        mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
+                .putExtra(Constants.EXTRA_JOB_DETAIL_ID, notificationID)
+                .putExtra(Constants.EXTRA_RECRUITER_ID, recruiterId));
     }
 
     private int getIdByPosition(int position) {
@@ -322,8 +326,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         private final CustomTextView tvAddress;
         private final CustomTextView tvDuration;
         private final CustomTextView tvJobType;
-        private final CustomTextView tvAccept;
-        private final CustomTextView tvReject;
+        private final Button tvAccept;
+        private final Button tvReject;
+        private final Button messageButton;
         private final ImageView ivRead;
         private final ImageView ivRightArrow;
         private final LinearLayout layoutInVite;
@@ -339,6 +344,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             layoutInVite = mBinding.layoutInviteNotification;
             ivRead = mBinding.ivRead;
             ivRightArrow = mBinding.ivRightArrow;
+            messageButton = mBinding.notificationMessageButton;
         }
     }
 }

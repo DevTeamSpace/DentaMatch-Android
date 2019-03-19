@@ -9,6 +9,8 @@ import com.appster.dentamatch.presentation.common.HomeActivity
 import com.appster.dentamatch.presentation.common.HomeViewModel
 import com.appster.dentamatch.presentation.common.SearchStateActivity
 import com.appster.dentamatch.presentation.common.SearchStateViewModel
+import com.appster.dentamatch.presentation.messages.ChatActivity
+import com.appster.dentamatch.presentation.messages.ChatViewModel
 import com.appster.dentamatch.presentation.notification.NotificationActivity
 import com.appster.dentamatch.presentation.notification.NotificationViewModel
 import com.appster.dentamatch.presentation.profile.*
@@ -156,4 +158,10 @@ class ActivityViewModelModule {
                                     certificateActivity: CertificateActivity): CertificateViewModel =
             ViewModelProviders.of(certificateActivity, viewModelFactory)
                     .get(CertificateViewModel::class.java)
+
+    @Provides
+    fun provideChatViewModel(viewModelFactory: ViewModelFactory,
+                             chatActivity: ChatActivity): ChatViewModel =
+            ViewModelProviders.of(chatActivity, viewModelFactory)
+                    .get(ChatViewModel::class.java)
 }

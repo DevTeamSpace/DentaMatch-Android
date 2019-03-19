@@ -93,35 +93,36 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <com.appster.dentamatch.widget.CustomTextView
+            <Button
                 android:id="@+id/tv_accept"
-                style="@style/text_view_normal"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:lineSpacingExtra="@dimen/margin_small_3"
+                android:layout_height="wrap_content"
                 android:text="@string/txt_accept"
-                android:textColor="@color/color_forgot_pwd"
-                android:textSize="@dimen/text_size_17"
-                app:customFont="@string/font_medium" />
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@color/color_forgot_pwd"/>
 
-            <!--<View-->
-            <!--android:layout_width="@dimen/line_height"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@color/colorPrimaryDark" />-->
-
-            <com.appster.dentamatch.widget.CustomTextView
+            <Button
                 android:id="@+id/tv_reject"
-                style="@style/text_view_normal"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:gravity="center"
-                android:lineSpacingExtra="@dimen/margin_small_3"
+                android:layout_height="wrap_content"
                 android:text="@string/txt_reject"
                 android:textColor="@color/red_color"
-                android:textSize="@dimen/text_size_17"
-                app:customFont="@string/font_medium" />
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/notification_message_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:text="@string/txt_message"
+                android:textColor="@color/color_forgot_pwd"
+                android:background="@drawable/message_button_background"
+                style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
 
         <View

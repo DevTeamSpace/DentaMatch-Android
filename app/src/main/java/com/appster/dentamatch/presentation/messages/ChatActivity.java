@@ -11,12 +11,14 @@ package com.appster.dentamatch.presentation.messages;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.appster.dentamatch.R;
+import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.chat.DBHelper;
 import com.appster.dentamatch.chat.DBModel;
 import com.appster.dentamatch.chat.SocketManager;
@@ -26,7 +28,7 @@ import com.appster.dentamatch.eventbus.ChatPersonalMessageReceivedEvent;
 import com.appster.dentamatch.eventbus.MessageAcknowledgementEvent;
 import com.appster.dentamatch.eventbus.SocketConnectionEvent;
 import com.appster.dentamatch.eventbus.UnblockEvent;
-import com.appster.dentamatch.base.BaseActivity;
+import com.appster.dentamatch.model.ChatResponse;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -44,14 +46,18 @@ import org.json.JSONObject;
  * To inject activity reference.
  */
 
-public class ChatActivity extends BaseActivity implements View.OnClickListener {
-    private static final String TAG= LogUtils.makeLogTag(ChatActivity.class);
+public class ChatActivity extends BaseLoadingActivity<ChatViewModel>
+        implements View.OnClickListener {
+
+    private static final String TAG = LogUtils.makeLogTag(ChatActivity.class);
     private ActivityChatBinding mBinder;
+    @Nullable
     private ChatAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
     private String userId;
     private String recruiterId;
     private String recruiterName;
+    @Nullable
     private DBModel dbModel;
 
     @Override
@@ -66,7 +72,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         initViews();
         mLayoutManager.setStackFromEnd(true);
         mBinder.messages.setLayoutManager(mLayoutManager);
-        updateUI(getIntent());
+        viewModel.setArguments(getIntent());
+        viewModel.getBdModel().observe(this, model -> updateUI(model, getIntent()));
+        viewModel.getInitError().observe(this, this::onErrorInit);
+        viewModel.initChat();
+    }
+
+    private void onErrorInit(@Nullable Throwable throwable) {
+        if (throwable != null) {
+            showToast(throwable.toString());
+            onBackPressed();
+        }
     }
 
     private void initViews() {
@@ -74,12 +90,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mBinder.sendButton.setOnClickListener(this);
         mBinder.toolbarActivityChat.ivToolBarLeft.setOnClickListener(this);
         mBinder.layUnblock.setOnClickListener(this);
+        mBinder.messages.setAdapter(mAdapter);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        updateUI(intent);
+        updateUI(null, intent);
     }
 
     @Override
@@ -92,11 +109,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         SocketManager.getInstance().setAttachedActivityStatus(SocketManager.ON_RESUME);
-    }
-
-    @Override
-    public String getActivityName() {
-        return null;
     }
 
     /**
@@ -184,21 +196,24 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
              */
             DBHelper.getInstance()
                     .insertIntoDB(recruiterID, message, event.getModel().getRecruiterName(), 0, messageModel.getMessageListId());
-
-            if (mBinder.messages.getAdapter() == null) {
-                mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
-                mBinder.messages.setAdapter(mAdapter);
-            }
-
+            updateDBModel();
             scrollToBottom();
         }
+    }
 
+    private void updateDBModel() {
+        dbModel = DBHelper.getInstance().getDBData(recruiterId);
+        if (mBinder.messages.getAdapter() == null && dbModel != null) {
+            mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
+            mBinder.messages.setAdapter(mAdapter);
+        }
     }
 
     @Subscribe()
     public void onSentMsgAcknowledgement(final MessageAcknowledgementEvent event) {
-        if (event != null) {
+        if (event != null && dbModel != null) {
             DBHelper.getInstance().insertIntoDB(event.getRecruiterId(), event.getMessage(), recruiterName, 0, dbModel.getMessageListId());
+            updateDBModel();
             scrollToBottom();
         }
 
@@ -206,9 +221,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onChatHistoryRetrieved(final ChatHistoryRetrievedEvent event) {
-
         JSONArray chatArray = event.getModel();
-
         try {
             if (chatArray.length() > 0) {
                 for (int i = 0; i < chatArray.length(); i++) {
@@ -222,15 +235,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                     onNewMessageReceived(new ChatPersonalMessageReceivedEvent(chatData));
                 }
             } else {
-                if (mBinder.messages.getAdapter() == null) {
-                    mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
-                    mBinder.messages.setAdapter(mAdapter);
-                }
+                updateDBModel();
             }
         } catch (JSONException e) {
-            LogUtils.LOGE(TAG,e.getMessage());
+            LogUtils.LOGE(TAG, e.getMessage());
         } finally {
             DBHelper.getInstance().upDateDB(recruiterId, DBHelper.IS_SYNCED, "true", null);
+            updateDBModel();
         }
     }
 
@@ -258,7 +269,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             if (event.isStatus()) {
                 mBinder.layUnblock.setVisibility(View.GONE);
                 mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
-
             }
         }
     }
@@ -273,98 +283,91 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void scrollToBottom() {
-        mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
+        if (mAdapter != null) {
+            mBinder.messages.scrollToPosition(mAdapter.getItemCount() - 1);
+        }
     }
 
-    private void updateUI(Intent intent) {
+    private void updateUI(@Nullable ChatResponse chatResponse, @NonNull Intent intent) {
+        if (chatResponse != null && chatResponse.getResult() != null) {
+            mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(chatResponse.getResult().getName());
+        }
+
         if (intent.hasExtra(Constants.EXTRA_CHAT_MODEL)) {
             recruiterId = intent.getStringExtra(Constants.EXTRA_CHAT_MODEL);
-
+            dbModel = DBHelper.getInstance().getDBData(recruiterId);
             if (recruiterId != null) {
-                dbModel = DBHelper.getInstance().getDBData(recruiterId);
                 userId = PreferenceUtil.getUserChatId();
-                recruiterName = dbModel.getName();
-                mBinder.toolbarActivityChat.tvToolbarGeneralLeft.setText(recruiterName);
-            /*
-              Start new adapter for the new message received.
-             */
+                /*
+                  Start new adapter for the new message received.
+                 */
                 mBinder.messages.setAdapter(null);
                 Utils.clearRecruiterNotification(this, recruiterId);
 
-            /*
-              Change the UI based on recruiter is blocked or not.
-             */
-                if (dbModel.getSeekerHasBlocked() == 1) {
-                    mBinder.layUnblock.setVisibility(View.VISIBLE);
-                    mBinder.layActivityChatSender.setVisibility(View.GONE);
-                } else {
-                    mBinder.layUnblock.setVisibility(View.GONE);
-                    mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
-                }
-
-
-            /*
-              Connect to socket and request past chats to update the recycler view.
-             */
+                /*
+                  Connect to socket and request past chats to update the recycler view.
+                 */
                 SocketManager.getInstance().attachPersonalListener(this, recruiterId);
 
-             /*
-              Update all unread chats corresponding to this recruiterID and update server and local Db about it.
-             */
+                 /*
+                  Update all unread chats corresponding to this recruiterID and update server and local Db about it.
+                 */
                 if (SocketManager.getInstance().isConnected()) {
                     SocketManager.getInstance().updateMsgRead(recruiterId, userId);
                 }
 
-
-                if (!dbModel.isDBUpdated()) {
-
+                if (dbModel != null) {
+                    recruiterName = dbModel.getName();
+                    /*
+                      Change the UI based on recruiter is blocked or not.
+                     */
+                    if (dbModel.getSeekerHasBlocked() == 1) {
+                        mBinder.layUnblock.setVisibility(View.VISIBLE);
+                        mBinder.layActivityChatSender.setVisibility(View.GONE);
+                    } else {
+                        mBinder.layUnblock.setVisibility(View.GONE);
+                        mBinder.layActivityChatSender.setVisibility(View.VISIBLE);
+                    }
+                }
+                if (dbModel == null || !dbModel.isDBUpdated()) {
                     if (Utils.isConnected(this)) {
                         if (SocketManager.getInstance().isConnected()) {
-                        /*
-                          Show loader in case of fetching data from the server and clear all past chats of the user for corresponding
-                          recruiterID.
-                         */
+                            /*
+                              Show loader in case of fetching data from the server and clear all past chats of the user for corresponding
+                              recruiterID.
+                             */
                             ChatActivity.this.showToast(getString(R.string.msg_syncing_chat));
                             updateDataFromDB();
-
                         } else {
                             ChatActivity.this.showToast(getString(R.string.error_socket_connection));
                         }
-
                     } else {
                         ChatActivity.this.showToast(getString(R.string.error_internet_connection));
-
                     }
-
                 } else {
-                    mAdapter = new ChatAdapter(this, dbModel.getUserChats(), true);
-                    mBinder.messages.setAdapter(mAdapter);
+                    updateDBModel();
                 }
-
             }
         }
     }
 
     private void updateDataFromDB() {
-        if (dbModel != null) {
-            if (dbModel.getUserChats().size() > 0) {
-                Message lastMessage = dbModel.getUserChats().last();
-                String fromID;
-                String toID;
-
-                if (lastMessage != null) {
-                    if (lastMessage.getType() == Message.TYPE_MESSAGE_RECEIVED) {
-                        fromID = recruiterId;
-                        toID = userId;
-                    } else {
-                        fromID = userId;
-                        toID = recruiterId;
-                    }
-                    SocketManager.getInstance().fetchPastChatsAfterMsgID(lastMessage.getMessageId(), toID, fromID);
+        if (dbModel != null && dbModel.getUserChats().size() > 0) {
+            Message lastMessage = dbModel.getUserChats().last();
+            String fromID;
+            String toID;
+            if (lastMessage != null) {
+                if (lastMessage.getType() == Message.TYPE_MESSAGE_RECEIVED) {
+                    fromID = recruiterId;
+                    toID = userId;
+                } else {
+                    fromID = userId;
+                    toID = recruiterId;
                 }
-            } else {
-                SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
+                SocketManager.getInstance().fetchPastChatsAfterMsgID(lastMessage.getMessageId(), toID, fromID);
             }
+        } else {
+            SocketManager.getInstance().getAllPastChats(userId, "1", recruiterId);
         }
     }
 }

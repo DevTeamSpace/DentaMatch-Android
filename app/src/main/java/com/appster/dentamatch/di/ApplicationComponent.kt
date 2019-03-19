@@ -3,6 +3,7 @@ package com.appster.dentamatch.di
 import com.appster.dentamatch.DentaApp
 import com.appster.dentamatch.domain.auth.AuthModule
 import com.appster.dentamatch.domain.calendar.CalendarModule
+import com.appster.dentamatch.domain.chat.ChatModule
 import com.appster.dentamatch.domain.common.CommonModule
 import com.appster.dentamatch.domain.messages.MessagesModule
 import com.appster.dentamatch.domain.notification.NotificationModule
@@ -21,7 +22,7 @@ import javax.inject.Singleton
         RetrofitCreatorModule::class, ViewModelModule::class, AuthModule::class,
         SettingsModule::class, SearchJobModule::class, ProfileModule::class,
         CalendarModule::class, CommonModule::class, NotificationModule::class,
-        MessagesModule::class, TracksModule::class]
+        MessagesModule::class, TracksModule::class, ChatModule::class]
 )
 interface ApplicationComponent : AndroidInjector<DentaApp> {
 

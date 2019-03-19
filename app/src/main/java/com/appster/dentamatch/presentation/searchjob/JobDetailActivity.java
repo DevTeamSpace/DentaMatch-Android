@@ -17,10 +17,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -38,6 +40,7 @@ import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.presentation.common.HomeActivity;
 import com.appster.dentamatch.presentation.tracks.TrackJobsDataHelper;
 import com.appster.dentamatch.util.Alert;
+import com.appster.dentamatch.util.ChatUtilsKt;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.LogUtils;
 import com.appster.dentamatch.util.PreferenceUtil;
@@ -67,7 +70,7 @@ import kotlin.Pair;
  */
 
 public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
-        implements OnMapReadyCallback, View.OnClickListener {
+        implements OnMapReadyCallback, View.OnClickListener, Toolbar.OnMenuItemClickListener {
 
     private static final String TAG = LogUtils.makeLogTag(JobDetailActivity.class);
     private final int DESC_MAX_LINES = 4;
@@ -430,8 +433,12 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
             mBinding.tvJobDetailJobDistance.setText(R.string.txt_view_on_map);
             mBinding.tvJobDetailJobDistance.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_location_blue, 0, 0, 0);
             mBinding.tvJobDetailJobDistance.setCompoundDrawablePadding(5);
-
             mBinding.tvJobDetailJobDistance.setTextColor(ContextCompat.getColor(this, R.color.cerulean_color));
+            if (getIntent().hasExtra(Constants.EXTRA_RECRUITER_ID)) {
+                mBinding.jobDetailToolbar.toolbarGeneral.getMenu().clear();
+                mBinding.jobDetailToolbar.toolbarGeneral.inflateMenu(R.menu.job_detail_message_menu);
+                mBinding.jobDetailToolbar.toolbarGeneral.setOnMenuItemClickListener(this);
+            }
             mBinding.tvMap.setVisibility(View.GONE);
             mBinding.mapJobDetail.setVisibility(View.GONE);
             mBinding.lineMap.setVisibility(View.VISIBLE);
@@ -683,5 +690,15 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
 
     private void saveUnSaveJob(final int JobID, final int status) {
         viewModel.saveUnSaveJob(JobID, status);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.job_detail_message) {
+            ChatUtilsKt.startChatWithUser(this,
+                    String.valueOf(getIntent().getIntExtra(Constants.EXTRA_RECRUITER_ID, -1)));
+            return true;
+        }
+        return false;
     }
 }
