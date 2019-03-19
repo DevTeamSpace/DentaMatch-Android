@@ -60,6 +60,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import kotlin.Pair;
@@ -425,8 +426,10 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
             if (dataModel.getJobPostedTimeGap() == DURATION_TIME_0) {
                 mBinding.tvJobDocTime.setText(getString(R.string.text_todays));
             } else {
-                String endMessage = dataModel.getJobPostedTimeGap() > DURATION_TIME_1 ? getString(R.string.txt_days_ago) : getString(R.string.txt_day_ago);
-                mBinding.tvJobDocTime.setText(String.valueOf(dataModel.getJobPostedTimeGap()).concat(" ").concat(endMessage));
+                Date date = Utils.getDateNotification(dataModel.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS);
+                if (date != null) {
+                    mBinding.tvJobDocTime.setText(Utils.getDuration(date, this));
+                }
             }
             mBinding.tvJobDetailDocName.setText(dataModel.getOfficeName());
             mBinding.tvJobDetailDocAddress.setText(dataModel.getAddress());

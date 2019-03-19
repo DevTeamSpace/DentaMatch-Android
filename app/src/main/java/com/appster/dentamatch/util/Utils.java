@@ -38,6 +38,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
@@ -79,6 +80,9 @@ import java.util.UUID;
 public class Utils {
 
     private static final String TAG = LogUtils.makeLogTag(Utils.class);
+    private static final int DAYS_IN_WEEK = 7;
+    private static final int DAYS_IN_MONTH = 30;
+    private static final int MONTH_IN_YEAR = 12;
 
     /**
      * To get the device unique ID
@@ -894,8 +898,6 @@ public class Utils {
             } else {
                 inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             }
-            inputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
             return inputFormat.parse(dateStr);
         } catch (Exception e) {
             LogUtils.LOGE(TAG, e.getMessage());
@@ -951,52 +953,62 @@ public class Utils {
     public static String getDuration(Date createdDate, Context context) {
         String time;
         Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
 
         long currentMillis = currentDate.getTime();
+        calendar.setTime(currentDate);
+        calendar.set(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                0,
+                0,
+                1);
+        long currentDay = calendar.getTimeInMillis();
+
         long createMillis = createdDate.getTime();
+        calendar.setTime(createdDate);
+        calendar.set(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                23,
+                59,
+                59);
+        long createDay = calendar.getTimeInMillis();
 
         if (currentMillis >= createMillis) {
             long reqTime = (currentMillis - createMillis);
-
-            long sec = reqTime / 1000;
+            long reqDays = (currentDay - createDay);
+            long sec = reqTime / DateUtils.SECOND_IN_MILLIS;
             time = sec + " " + context.getString(R.string.sec);
-
-            if (sec >= 60) {
-                long minute = sec / 60;
+            if (reqTime >= DateUtils.MINUTE_IN_MILLIS) {
+                long minute = reqTime / DateUtils.MINUTE_IN_MILLIS;
                 time = minute + " " + context.getString(R.string.min);
-
-                if (minute >= 60) {
-                    long hrs = minute / 60;
+                if (reqTime >= DateUtils.HOUR_IN_MILLIS) {
+                    long hrs = reqTime / DateUtils.HOUR_IN_MILLIS;
                     time = hrs + " " + context.getString(R.string.hrs);
-
-                    if (hrs > 24) {
-                        int days = (int) hrs / 24;
-                        time = days + " " + context.getString(R.string.days);
-
-                        if (days >= 7) {
-                            int week = days / 7;
+                    if (reqTime > DateUtils.DAY_IN_MILLIS) {
+                        int days = (int) (reqDays / DateUtils.DAY_IN_MILLIS);
+                        days = days  == 0 ? 1 : days;
+                        time = context.getResources()
+                                .getQuantityString(R.plurals.days_ago_plurals, days, days);
+                        if (days >= DAYS_IN_WEEK) {
+                            int week = days / DAYS_IN_WEEK;
                             time = week + " " + context.getString(R.string.weeks);
-
-                            if (days >= 30) {
-                                int month = days / 30;
+                            if (days >= DAYS_IN_MONTH) {
+                                int month = days / DAYS_IN_MONTH;
                                 time = month + " " + context.getString(R.string.months);
-
-                                if (month >= 12) {
-                                    int year = month / 12;
+                                if (month >= MONTH_IN_YEAR) {
+                                    int year = month / MONTH_IN_YEAR;
                                     time = year + " " + context.getString(R.string.years);
-
                                 }
                             }
                         }
                     }
                 }
             }
-
         } else {
             time = "20 sec ago";
         }
         return time;
-
-
     }
 }
