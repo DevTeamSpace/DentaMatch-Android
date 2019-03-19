@@ -244,25 +244,9 @@ public class SetAvailabilityActivity extends BaseLoadingActivity<SetAvailability
     @NonNull
     private GetAvailabilityRequest prepareGetAvailableRequest() {
         GetAvailabilityRequest request = new GetAvailabilityRequest();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, -6);
-        Date startDate = calendar.getTime();
-        Calendar endDateCalendar = Calendar.getInstance();
-        endDateCalendar.add(Calendar.MONTH, 6);
-
-        Calendar tempCalendar = Calendar.getInstance();
-        tempCalendar.set(Calendar.MONTH, endDateCalendar.get(Calendar.MONTH));
-        int days = tempCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-
-        Date endDate = endDateCalendar.getTime();
-
-        String startStr = Utils.dateFormetyyyyMMdd(startDate);
-        startStr = startStr.substring(0, startStr.lastIndexOf("-"));
-        startStr = startStr + "-01";
-        String[] splitEndDate = Utils.dateFormetyyyyMMdd(endDate).split("-");
-        request.setCalendarStartDate(startStr);
-        request.setCalendarEndDate(splitEndDate[0] + "-" + splitEndDate[1] + "-" + days);
-
+        int year = Calendar.getInstance(Locale.ENGLISH).get(Calendar.YEAR);
+        request.setCalendarStartDate(String.format("%s-01-01", String.valueOf(year)));
+        request.setCalendarEndDate(String.format("%s-12-31", String.valueOf(year)));
         return request;
     }
 
