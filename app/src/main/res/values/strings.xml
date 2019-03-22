@@ -451,4 +451,9 @@
     <string name="txt_view_on_map">View on map</string>
     <string name="calendar_month">%1$s %2$s</string>
     <string name="txt_message">message</string>
+
+    <string name="notification_snack_bar">Notification was removed</string>
+    <string name="notification_snack_bar_undo">Undo</string>
+    <string name="notifications_clear">Clear notification list</string>
+
 </resources>

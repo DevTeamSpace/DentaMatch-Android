@@ -15,8 +15,8 @@ class NotificationInteractor(
     fun requestNotifications(page: Int): Single<NotificationResponse> =
             remoteRepository.requestNotifications(page)
 
-    fun deleteNotification(id: Int): Single<BaseResponse> =
-            remoteRepository.deleteNotification(id)
+    fun deleteNotification(iDs: ArrayList<Int>): Single<BaseResponse> =
+            remoteRepository.deleteNotification(iDs)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess { showNotificationToast(it) }
 

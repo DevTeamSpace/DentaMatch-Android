@@ -2,6 +2,7 @@ package com.appster.dentamatch.domain.notification
 
 import com.appster.dentamatch.base.BaseResponse
 import com.appster.dentamatch.network.request.Notification.AcceptRejectInviteRequest
+import com.appster.dentamatch.network.request.Notification.DeleteNotificationRequest
 import com.appster.dentamatch.network.request.Notification.ReadNotificationRequest
 import com.appster.dentamatch.network.response.notification.NotificationResponse
 import io.reactivex.Single
@@ -16,7 +17,7 @@ interface NotificationRetrofit {
     fun requestNotifications(@Query("page") page: Int): Single<NotificationResponse>
 
     @POST("users/delete-notification")
-    fun deleteNotification(@Body request: ReadNotificationRequest): Single<BaseResponse>
+    fun deleteNotification(@Body request: DeleteNotificationRequest): Single<BaseResponse>
 
     @POST("users/acceptreject-job")
     fun acceptRejectNotification(@Body request: AcceptRejectInviteRequest): Single<BaseResponse>

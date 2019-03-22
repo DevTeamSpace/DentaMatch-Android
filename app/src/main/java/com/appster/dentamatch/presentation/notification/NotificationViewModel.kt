@@ -16,13 +16,11 @@ class NotificationViewModel(
     private val mutableNotificationFailed = MutableLiveData<Throwable>()
     private val mutableReadNotification = MutableLiveData<Int>()
     private val mutableAcceptNotification = MutableLiveData<Int>()
-    private val mutableDeleteNotification = MutableLiveData<Int>()
 
     val notificationResponse: LiveData<Pair<NotificationResponse, Boolean>> get() = mutableNotificationResponse
     val notificationFailed: LiveData<Throwable> get() = mutableNotificationFailed
     val readNotification: LiveData<Int> get() = mutableReadNotification
     val acceptNotification: LiveData<Int> get() = mutableAcceptNotification
-    val deleteNotification: LiveData<Int> get() = mutableDeleteNotification
 
     fun requestNotifications(page: Int, refreshing: Boolean) =
             addDisposable(
@@ -51,12 +49,11 @@ class NotificationViewModel(
                                     { Timber.e(it) })
             )
 
-    fun deleteNotification(id: Int) =
-            addDisposable(
-                    notificationInteractor.deleteNotification(id)
-                            .subscribe({ if (checkStatus(it)) mutableDeleteNotification.postValue(id) },
-                                    {Timber.e(it)})
-            )
-
     private fun checkStatus(it: BaseResponse?) = it != null && it.status == 1
+
+    fun deleteNotifications(notificationIDs: ArrayList<Int>) =
+            addDisposable(
+                    notificationInteractor.deleteNotification(notificationIDs)
+                            .subscribe({ }, {Timber.e(it)})
+            )
 }

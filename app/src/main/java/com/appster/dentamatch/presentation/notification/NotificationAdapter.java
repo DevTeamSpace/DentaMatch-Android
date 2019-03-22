@@ -15,6 +15,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,38 +33,92 @@ import com.appster.dentamatch.presentation.searchjob.JobDetailActivity;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.ChatUtilsKt;
 import com.appster.dentamatch.util.Constants;
+import com.appster.dentamatch.util.SwipeableAdapter;
 import com.appster.dentamatch.util.Utils;
 import com.appster.dentamatch.widget.CustomTextView;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
-/**
- * Created by bawenderyandra on 08/03/17.
- * To inject activity reference.
- */
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolder>
-        implements View.OnClickListener, View.OnLongClickListener {
+        implements View.OnClickListener, View.OnLongClickListener, SwipeableAdapter {
 
     private final int NOTIFICATION_UNREAD = 0;
 
     private ItemNotificationBinding mBinding;
-    private final ArrayList<NotificationData> mNotificationList;
+    private ArrayList<NotificationData> mNotificationList;
     private final Context mContext;
 
     @NonNull
     private final NotificationAdapterCallback mCallback;
+    @Nullable
+    private ArrayList<NotificationData> mRecentlyDeletedItems;
+
+    @Override
+    public void delete(int position) {
+        ArrayList<NotificationData> newList = new ArrayList<>(mNotificationList);
+        mRecentlyDeletedItems = mNotificationList;
+        newList.remove(position);
+        updateItems(newList);
+        if (mRecentlyDeletedItems != null) {
+            ArrayList<Integer> listToDelete = new ArrayList<>();
+            listToDelete.add(mRecentlyDeletedItems.get(position).getId());
+            mCallback.deleteNotification(listToDelete);
+        }
+    }
+
+    private void updateItems(@NonNull ArrayList<NotificationData> newList) {
+        NotificationDiffCallback diffCallback = new NotificationDiffCallback(mNotificationList, newList);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        mNotificationList = newList;
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    @NotNull
+    @Override
+    public Context getContext() {
+        return mContext;
+    }
+
+    @Override
+    public void revert() {
+        if (mRecentlyDeletedItems != null) {
+            updateItems(mRecentlyDeletedItems);
+        }
+    }
+
+    ArrayList<NotificationData> getItems() {
+        return mNotificationList;
+    }
+
+    @Override
+    public void deleteAll() {
+        mRecentlyDeletedItems = mNotificationList;
+        updateItems(new ArrayList<>());
+        if (mRecentlyDeletedItems != null) {
+            ArrayList<Integer> listToDelete = new ArrayList<>();
+            for (NotificationData item : mRecentlyDeletedItems) {
+                listToDelete.add(item.getId());
+            }
+            mCallback.deleteNotification(listToDelete);
+        }
+    }
 
     public interface NotificationAdapterCallback {
         void readNotification(int id);
         void acceptRejectNotification(int id, int status);
-        void deleteNotification(int id);
+        void deleteNotification(ArrayList<Integer> iDs);
     }
 
-    NotificationAdapter(Context ct, ArrayList<NotificationData> notificationData, @NonNull NotificationAdapterCallback callback) {
+    NotificationAdapter(Context ct,
+                        ArrayList<NotificationData> notificationData,
+                        @NonNull NotificationAdapterCallback callback) {
         mNotificationList = notificationData;
         mContext = ct;
         mCallback = callback;
@@ -72,7 +127,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @NotNull
     @Override
     public MyHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_notification, parent, false);
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.item_notification,
+                parent,
+                false);
         return new MyHolder(mBinding.getRoot());
     }
 
@@ -178,6 +236,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.tvAccept.setOnClickListener(this);
     }
 
+    @Override
+    public int getItemCount() {
+        return mNotificationList.size();
+    }
+
     private void setJobDetailData(JobDetailModel model, MyHolder holder) {
         if (model != null) {
 
@@ -203,11 +266,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             }
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return mNotificationList.size();
     }
 
     @Override
@@ -259,7 +317,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         if (position != RecyclerView.NO_POSITION) {
             if (mNotificationList.get(position) != null) {
                 mNotificationList.get(position).setSeen(1);
-                notifyItemChanged(position);
+                updateItems(mNotificationList);
             }
         }
     }
@@ -267,9 +325,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     void onDeleteNotification(@Nullable Integer id) {
         int position = getPositionById(id);
         if (position != RecyclerView.NO_POSITION) {
-            mNotificationList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, mNotificationList.size());
+            mNotificationList.remove(position);updateItems(mNotificationList);
+            updateItems(mNotificationList);
             if (mNotificationList.size() == 0) {
                 ((NotificationActivity) mContext).showHideEmptyLabel(View.VISIBLE);
             } else {
@@ -296,7 +353,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             NotificationData data = mNotificationList.get(position);
             int NOTIFICATION_READ = 1;
             data.setSeen(NOTIFICATION_READ);
-            notifyItemChanged(position);
+            updateItems(mNotificationList);
             if (data.getJobDetailModel() != null) {
                 redirectToDetail(data.getJobDetailModel().getId());
             }
@@ -314,7 +371,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                     @Override
                     public void onPositive(DialogInterface dialog) {
-                        mCallback.deleteNotification(position);
+                        ArrayList<Integer> itemsToDelete = new ArrayList<>();
+                        itemsToDelete.add(position);
+                        mCallback.deleteNotification(itemsToDelete);
                     }
 
                     @Override

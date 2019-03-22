@@ -99,4 +99,8 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="NotificationActivityStyle" parent="NoActionBar">
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
 </resources>

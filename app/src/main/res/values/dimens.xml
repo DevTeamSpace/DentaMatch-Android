@@ -111,4 +111,5 @@
     <dimen name="tut_btm_hgt">223dp</dimen>
     <dimen name="date_tag_width">28dp</dimen>
     <dimen name="line_space">3.3sp</dimen>
+    <dimen name="notification_delete_margin">24dp</dimen>
 </resources>
