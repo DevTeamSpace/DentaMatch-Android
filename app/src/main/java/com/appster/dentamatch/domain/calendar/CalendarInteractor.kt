@@ -22,6 +22,7 @@ class CalendarInteractor(
 
     fun cancelJob(jobId: Int, msg: String, calendarModel: CalendarModel?): Single<CalendarModel> =
             remoteRepository.cancelJob(jobId, msg)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess { Utils.showToast(context, it.message) }
                     .map { return@map removeJobFromCalendarModel(calendarModel, jobId) }
 

@@ -5,6 +5,7 @@ import com.appster.dentamatch.network.response.jobs.SearchJobResponse
 import com.appster.dentamatch.util.Utils
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class TracksInteractor(
         private val tracksRemoteRepository: TracksRemoteRepository,
@@ -13,6 +14,7 @@ class TracksInteractor(
 
     fun cancelJob(id: Int, msg: String): Completable =
             tracksRemoteRepository.cancelJob(id, msg)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess { Utils.showToast(context, it.message) }
                     .ignoreElement()
 
