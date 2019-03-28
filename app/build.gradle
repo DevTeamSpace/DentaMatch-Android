@@ -74,8 +74,8 @@ android {
         applicationId "com.appster.dentamatch"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 8
-        versionName "0.8"
+        versionCode 10
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -135,8 +135,8 @@ android {
         }
         Production {
             dimension "environment"
-            buildConfigField("String", "BASE_URL", '"https://production.dentamach/api/v1/"')
-            buildConfigField("String", "CHAT_URL", '"https://staging.dentamatch.co:8443"')
+            buildConfigField("String", "BASE_URL", '"https://dentamatch.co/api/v1/"')
+            buildConfigField("String", "CHAT_URL", '"https://dentamatch.co:8443"')
             signingConfig signingConfigs.config
         }
     }
