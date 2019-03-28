@@ -75,7 +75,7 @@ public class UpdateLicenseActivity extends BaseLoadingActivity<UpdateLicenseView
                     callLicenceApi();
                 }
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 finish();
                 break;
         }

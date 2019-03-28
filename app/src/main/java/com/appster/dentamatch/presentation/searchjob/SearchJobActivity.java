@@ -391,7 +391,7 @@ public class SearchJobActivity extends BaseActivity implements View.OnClickListe
                     saveAndProceed();
                 }
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
             case R.id.tv_preferred_job_location:

@@ -107,7 +107,7 @@ public class WorkExperienceDetailActivity extends BaseLoadingActivity<WorkExperi
                     mBinder.layoutReference2.setVisibility(View.VISIBLE);
                 }
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
             case R.id.tv_reference_delete:

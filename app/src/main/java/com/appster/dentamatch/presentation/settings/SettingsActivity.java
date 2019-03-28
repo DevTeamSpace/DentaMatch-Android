@@ -69,7 +69,7 @@ public class SettingsActivity extends BaseLoadingActivity<SettingsViewModel> imp
             case R.id.tv_reset_password:
                 startActivity(new Intent(SettingsActivity.this, ResetPasswordActivity.class));
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 finish();
                 break;
             case R.id.tv_change_location:

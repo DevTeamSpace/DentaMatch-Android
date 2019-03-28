@@ -33,7 +33,7 @@
                 android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/iv_tool_bar_left"
+                    android:id="@+id/ivToolBarLeft"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/margin_10"
@@ -59,7 +59,7 @@
             </FrameLayout>
 
             <TextView
-                android:id="@+id/txv_toolbar_general_center"
+                android:id="@+id/txvToolbarGeneralCenter"
                 style="@style/text_view_normal"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white_color" />

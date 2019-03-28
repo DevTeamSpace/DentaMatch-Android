@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingStart="24dp"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
+    android:paddingEnd="24dp">
+
+    <CheckBox
+        android:id="@+id/itemApplyTempJobCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/checkbox_dark_indigo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/itemApplyTempJobDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        tools:text="Monday"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="16sp"
+        android:textColor="@color/dark_indigo"
+        app:layout_constraintStart_toEndOf="@id/itemApplyTempJobCheckbox"
+        app:layout_constraintTop_toTopOf="@id/itemApplyTempJobCheckbox"
+        app:layout_constraintBottom_toBottomOf="@id/itemApplyTempJobCheckbox"/>
+
+    <TextView
+        android:id="@+id/itemApplyTempJobDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        tools:text="(March 18, 2019)"
+        android:fontFamily="sans-serif-light"
+        android:textSize="16sp"
+        android:textColor="@color/dark_indigo"
+        android:lines="1"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/itemApplyTempJobDay"
+        app:layout_constraintTop_toTopOf="@id/itemApplyTempJobCheckbox"
+        app:layout_constraintBottom_toBottomOf="@id/itemApplyTempJobCheckbox"/>
+
+</android.support.constraint.ConstraintLayout>

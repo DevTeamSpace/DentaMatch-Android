@@ -160,7 +160,7 @@ public class UpdateCertificateActivity extends BaseLoadingActivity<UpdateCertifi
                     }
                 }
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 finish();
                 break;
             default:

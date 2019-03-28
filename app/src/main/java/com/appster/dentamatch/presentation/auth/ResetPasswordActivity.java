@@ -114,7 +114,7 @@ public class ResetPasswordActivity extends BaseLoadingActivity<ResetPasswordView
                     }
                 }
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 finish();
                 break;
 
