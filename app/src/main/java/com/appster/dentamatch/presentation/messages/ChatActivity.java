@@ -145,7 +145,7 @@ public class ChatActivity extends BaseLoadingActivity<ChatViewModel>
                 }
                 break;
 
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
 

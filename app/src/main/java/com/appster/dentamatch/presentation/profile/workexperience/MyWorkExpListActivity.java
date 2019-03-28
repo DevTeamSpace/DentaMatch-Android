@@ -107,7 +107,7 @@ public class MyWorkExpListActivity extends BaseLoadingActivity<MyWorkExpListView
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 hideKeyboard();
                 onBackPressed();
                 break;

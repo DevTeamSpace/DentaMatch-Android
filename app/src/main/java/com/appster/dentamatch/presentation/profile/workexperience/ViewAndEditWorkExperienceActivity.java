@@ -158,7 +158,7 @@ public class ViewAndEditWorkExperienceActivity extends BaseLoadingActivity<ViewA
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 hideKeyboard();
                 //onBackPressed();
 

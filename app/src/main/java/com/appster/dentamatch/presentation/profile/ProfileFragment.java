@@ -205,7 +205,7 @@ public class ProfileFragment extends BaseLoadingFragment<ProfileViewModel>
             case R.id.iv_setting:
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 startActivity(new Intent(getActivity(), NotificationActivity.class));
                 break;
             default:

@@ -28,13 +28,11 @@ import com.appster.dentamatch.network.response.calendar.CalendarAvailability;
 import com.appster.dentamatch.presentation.common.HomeActivity;
 import com.appster.dentamatch.util.Constants;
 import com.appster.dentamatch.util.PreferenceUtil;
-import com.appster.dentamatch.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -116,7 +114,7 @@ public class SetAvailabilityActivity extends BaseLoadingActivity<SetAvailability
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 finish();
                 break;
             case R.id.txv_toolbar_general_right:

@@ -36,7 +36,7 @@
                         android:layout_centerVertical="true">
 
                         <ImageView
-                            android:id="@+id/iv_tool_bar_left"
+                            android:id="@+id/ivToolBarLeft"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/margin_10"

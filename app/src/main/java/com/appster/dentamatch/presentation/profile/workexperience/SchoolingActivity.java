@@ -95,7 +95,7 @@ public class SchoolingActivity extends BaseLoadingActivity<SchoolingViewModel>
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 hideKeyboard();
                 onBackPressed();
                 break;

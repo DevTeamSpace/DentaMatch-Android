@@ -451,4 +451,9 @@
     <string name="txt_view_on_map">View on map</string>
     <string name="calendar_month">%1$s %2$s</string>
     <string name="txt_message">message</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="apply_temp_job_button">accept invitation</string>
+    <string name="apply_temp_job_description">Select the days you would like to work for this job listing</string>
 </resources>

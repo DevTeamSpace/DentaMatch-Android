@@ -6,7 +6,9 @@ import com.appster.dentamatch.base.BaseLoadingViewModel
 import com.appster.dentamatch.base.BaseResponse
 import com.appster.dentamatch.domain.notification.NotificationInteractor
 import com.appster.dentamatch.network.response.notification.NotificationResponse
+import org.jetbrains.annotations.NotNull
 import timber.log.Timber
+import java.util.ArrayList
 
 class NotificationViewModel(
         private val notificationInteractor: NotificationInteractor
@@ -44,13 +46,6 @@ class NotificationViewModel(
                                     { Timber.e(it) })
             )
 
-    fun acceptRejectNotification(id: Int, status: Int) =
-            addDisposable(
-                    notificationInteractor.acceptRejectNotification(id, status)
-                            .subscribe({ if (checkStatus(it)) mutableAcceptNotification.postValue(id) },
-                                    { Timber.e(it) })
-            )
-
     fun deleteNotification(id: Int) =
             addDisposable(
                     notificationInteractor.deleteNotification(id)
@@ -59,4 +54,18 @@ class NotificationViewModel(
             )
 
     private fun checkStatus(it: BaseResponse?) = it != null && it.status == 1
+
+    fun rejectNotification(notificationId: Int) =
+            addDisposable(
+                    notificationInteractor.rejectNotification(notificationId)
+                            .subscribe({ if (checkStatus(it)) mutableAcceptNotification.postValue(notificationId) },
+                                    { Timber.e(it) })
+            )
+
+    fun acceptNotification(notificationId: Int, dates: @NotNull ArrayList<String>) =
+            addDisposable(
+                    notificationInteractor.acceptNotification(notificationId, dates)
+                            .subscribe({ if (checkStatus(it)) mutableAcceptNotification.postValue(notificationId) },
+                                    { Timber.e(it) })
+            )
 }

@@ -59,7 +59,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface NotificationAdapterCallback {
         void readNotification(int id);
-        void acceptRejectNotification(int id, int status);
+
+        void rejectNotification(int i);
+
+        void acceptNotification(int i, JobDetailModel id);
+
         void deleteNotification(int id);
     }
 
@@ -154,17 +158,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.itemView.setOnClickListener(v -> {
                 JobDetailModel jobDetailModel = data.getJobDetailModel();
                 if (jobDetailModel != null) {
-                    int notificationID = jobDetailModel.getId();
+                    int jobId = jobDetailModel.getId();
                     if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
-                        redirectToDetail(notificationID, senderId);
+                        redirectToDetail(jobId, senderId, data.getId());
                     } else if (data.getSeen() == NOTIFICATION_UNREAD) {
-                        mCallback.readNotification(getIdByPosition(position));
+                        mCallback.readNotification(mNotificationList.get(position).getId());
                     } else {
                             /*
                               In case of recruiter deleted the job then user doesn't get the
                               jobDetailModel.
                              */
-                            redirectToDetail(notificationID);
+                        redirectToDetail(jobId, data.getId());
                     }
                 }
             });
@@ -213,6 +217,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onClick(View v) {
         final int position = (int) v.getTag();
+        final int notificationId = mNotificationList.get(position).getId();
+        final JobDetailModel jobDetailModel = mNotificationList.get(position).getJobDetailModel();
         switch (v.getId()) {
             case R.id.tv_reject:
                 Alert.createYesNoAlert(mContext,
@@ -224,7 +230,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                             @Override
                             public void onPositive(DialogInterface dialog) {
-                                mCallback.acceptRejectNotification(getIdByPosition(position), 0);
+                                mCallback.rejectNotification(notificationId);
                             }
 
                             @Override
@@ -234,24 +240,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         });
                 break;
             case R.id.tv_accept:
-                mCallback.acceptRejectNotification(getIdByPosition(position), 1);
+                mCallback.acceptNotification(notificationId, jobDetailModel);
                 break;
         }
     }
 
-    private void redirectToDetail(int notificationID) {
+    private void redirectToDetail(int jobId, int notificationId) {
         mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                .putExtra(Constants.EXTRA_JOB_DETAIL_ID, notificationID));
+                .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId)
+                .putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationId));
     }
 
-    private void redirectToDetail(int notificationID, int recruiterId) {
+    private void redirectToDetail(int jobId, int recruiterId, int notificationId) {
         mContext.startActivity(new Intent(mContext, JobDetailActivity.class)
-                .putExtra(Constants.EXTRA_JOB_DETAIL_ID, notificationID)
-                .putExtra(Constants.EXTRA_RECRUITER_ID, recruiterId));
-    }
-
-    private int getIdByPosition(int position) {
-        return mNotificationList.get(position).getId();
+                .putExtra(Constants.EXTRA_JOB_DETAIL_ID, jobId)
+                .putExtra(Constants.EXTRA_RECRUITER_ID, recruiterId)
+                .putExtra(Constants.EXTRA_NOTIFICATION_ID, notificationId));
     }
 
     void onAcceptNotification(@Nullable Integer id) {
@@ -298,7 +302,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             data.setSeen(NOTIFICATION_READ);
             notifyItemChanged(position);
             if (data.getJobDetailModel() != null) {
-                redirectToDetail(data.getJobDetailModel().getId());
+                redirectToDetail(data.getJobDetailModel().getId(), data.getId());
             }
         }
     }

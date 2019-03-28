@@ -21,10 +21,6 @@ class NotificationRemoteRepository(
             notificationRetrofit.deleteNotification(createDeleteNotificationRequest(id))
                     .subscribeOn(Schedulers.io())
 
-    fun acceptRejectNotification(id: Int, status: Int): Single<BaseResponse> =
-            notificationRetrofit.acceptRejectNotification(createAcceptNotificationRequest(id, status))
-                    .subscribeOn(Schedulers.io())
-
     fun readNotification(id: Int): Single<BaseResponse> =
             notificationRetrofit.readNotification(createDeleteNotificationRequest(id))
                     .subscribeOn(Schedulers.io())
@@ -32,9 +28,18 @@ class NotificationRemoteRepository(
     private fun createDeleteNotificationRequest(id: Int) =
             ReadNotificationRequest().apply { setNotificationId(id) }
 
-    private fun createAcceptNotificationRequest(id: Int, status: Int) =
+    private fun createAcceptNotificationRequest(id: Int, status: Int, dates: ArrayList<String>? = null) =
             AcceptRejectInviteRequest().apply {
-                setNotificationId(id)
-                setAcceptStatus(status)
+                notificationId = id
+                acceptStatus = status
+                jobDates = dates
             }
+
+    fun rejectNotification(notificationId: Int): Single<BaseResponse> =
+            notificationRetrofit.acceptRejectNotification(createAcceptNotificationRequest(notificationId, 0))
+                    .subscribeOn(Schedulers.io())
+
+    fun acceptNotification(notificationId: Int, dates: java.util.ArrayList<String>): Single<BaseResponse> =
+            notificationRetrofit.acceptRejectNotification(createAcceptNotificationRequest(notificationId, 1, dates))
+                    .subscribeOn(Schedulers.io())
 }
