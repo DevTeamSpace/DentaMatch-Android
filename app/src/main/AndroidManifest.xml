@@ -249,7 +249,7 @@
         <activity
             android:name=".presentation.notification.NotificationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NotificationActivityStyle" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
