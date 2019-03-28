@@ -7,6 +7,7 @@ import com.appster.dentamatch.base.BaseResponse
 import com.appster.dentamatch.network.response.notification.NotificationResponse
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import java.util.ArrayList
 
 class NotificationInteractor(
         private val remoteRepository: NotificationRemoteRepository,
@@ -17,11 +18,6 @@ class NotificationInteractor(
 
     fun deleteNotification(iDs: ArrayList<Int>): Single<BaseResponse> =
             remoteRepository.deleteNotification(iDs)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSuccess { showNotificationToast(it) }
-
-    fun acceptRejectNotification(id: Int, status: Int): Single<BaseResponse> =
-            remoteRepository.acceptRejectNotification(id, status)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess { showNotificationToast(it) }
 
@@ -40,4 +36,14 @@ class NotificationInteractor(
             }.show()
         }
     }
+
+    fun rejectNotification(notificationId: Int): Single<BaseResponse> =
+            remoteRepository.rejectNotification(notificationId)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSuccess { showNotificationToast(it) }
+
+    fun acceptNotification(notificationId: Int, dates: ArrayList<String>): Single<BaseResponse> =
+            remoteRepository.acceptNotification(notificationId, dates)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSuccess { showNotificationToast(it) }
 }

@@ -42,18 +42,25 @@ class NotificationViewModel(
                                     { Timber.e(it) })
             )
 
-    fun acceptRejectNotification(id: Int, status: Int) =
-            addDisposable(
-                    notificationInteractor.acceptRejectNotification(id, status)
-                            .subscribe({ if (checkStatus(it)) mutableAcceptNotification.postValue(id) },
-                                    { Timber.e(it) })
-            )
-
     private fun checkStatus(it: BaseResponse?) = it != null && it.status == 1
 
     fun deleteNotifications(notificationIDs: ArrayList<Int>) =
             addDisposable(
                     notificationInteractor.deleteNotification(notificationIDs)
                             .subscribe({ }, {Timber.e(it)})
+            )
+
+    fun rejectNotification(notificationId: Int) =
+            addDisposable(
+                    notificationInteractor.rejectNotification(notificationId)
+                            .subscribe({ if (checkStatus(it)) mutableAcceptNotification.postValue(notificationId) },
+                                    { Timber.e(it) })
+            )
+
+    fun acceptNotification(notificationId: Int, dates: java.util.ArrayList<String>) =
+            addDisposable(
+                    notificationInteractor.acceptNotification(notificationId, dates)
+                            .subscribe({ if (checkStatus(it)) mutableAcceptNotification.postValue(notificationId) },
+                                    { Timber.e(it) })
             )
 }

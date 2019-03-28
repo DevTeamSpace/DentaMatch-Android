@@ -69,7 +69,7 @@ public class TermsAndConditionActivity extends BaseActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
 

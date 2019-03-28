@@ -271,6 +271,7 @@
     <string name="working_hours_label">WORKING HOURS</string>
     <string name="map_label">MAP</string>
     <string name="button_apply_for_job">APPLY FOR JOB</string>
+    <string name="button_apply_for_job">accept job for temp jobs</string>
     <string name="txt_part_time">Part Time</string>
     <string name="txt_full_time">Full Time</string>
     <string name="txt_temporary">Temporary</string>
@@ -451,6 +452,9 @@
     <string name="txt_view_on_map">View on map</string>
     <string name="calendar_month">%1$s %2$s</string>
     <string name="txt_message">message</string>
+
+    <string name="apply_temp_job_button">accept invitation</string>
+    <string name="apply_temp_job_description">Select the days you would like to work for this job listing</string>
 
     <string name="notification_snack_bar">Notification was removed</string>
     <string name="notification_snack_bar_undo">Undo</string>

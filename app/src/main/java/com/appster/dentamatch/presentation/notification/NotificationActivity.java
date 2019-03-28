@@ -24,9 +24,13 @@ import android.view.View;
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.base.BaseLoadingActivity;
 import com.appster.dentamatch.databinding.ActivityNotificationBinding;
+import com.appster.dentamatch.model.JobDetailModel;
 import com.appster.dentamatch.network.response.notification.NotificationData;
 import com.appster.dentamatch.network.response.notification.NotificationResponse;
 import com.appster.dentamatch.util.SwipeToDeleteCallback;
+import com.appster.dentamatch.presentation.searchjob.ApplyTempJobCallback;
+import com.appster.dentamatch.presentation.searchjob.ApplyTempJobFragment;
+import com.appster.dentamatch.util.ActivityUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +41,8 @@ import kotlin.Pair;
 
 public class NotificationActivity extends BaseLoadingActivity<NotificationViewModel>
         implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener,
-        NotificationAdapter.NotificationAdapterCallback, Toolbar.OnMenuItemClickListener {
+        NotificationAdapter.NotificationAdapterCallback, Toolbar.OnMenuItemClickListener,
+{, ApplyTempJobCallback
 
     private ActivityNotificationBinding mBinder;
     private NotificationAdapter mNotificationAdapter;
@@ -70,6 +75,12 @@ public class NotificationActivity extends BaseLoadingActivity<NotificationViewMo
         viewModel.getNotificationFailed().observe(this, throwable -> onFailedNotificationRequest());
         viewModel.getAcceptNotification().observe(this, id -> mNotificationAdapter.onAcceptNotification(id));
         viewModel.getReadNotification().observe(this, id -> mNotificationAdapter.onReadNotification(id));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onRefresh();
     }
 
     private void onFailedNotificationRequest() {
@@ -163,8 +174,17 @@ public class NotificationActivity extends BaseLoadingActivity<NotificationViewMo
     }
 
     @Override
-    public void acceptRejectNotification(int id, int status) {
-        viewModel.acceptRejectNotification(id, status);
+    public void acceptNotification(int notificationId, @NonNull JobDetailModel jobDetailModel) {
+        ActivityUtils.Companion.replaceFragment(getSupportFragmentManager(),
+                android.R.id.content,
+                ApplyTempJobFragment.Companion.newInstance(notificationId, jobDetailModel),
+                ApplyTempJobFragment.TAG,
+                true);
+    }
+
+    @Override
+    public void rejectNotification(int notificationId) {
+        viewModel.rejectNotification(notificationId);
     }
 
     @Override
@@ -203,6 +223,11 @@ public class NotificationActivity extends BaseLoadingActivity<NotificationViewMo
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onDatesSelected(int notificationId, @NotNull ArrayList<String> dates) {
+        viewModel.acceptNotification(notificationId, dates);
     }
 }
 

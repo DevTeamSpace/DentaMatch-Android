@@ -140,8 +140,9 @@ class ViewModelModule {
     @Provides
     @IntoMap
     @ViewModelKey(JobDetailViewModel::class)
-    fun provideJobDetailViewModel(searchJobInteractor: SearchJobInteractor): ViewModel =
-            JobDetailViewModel(searchJobInteractor)
+    fun provideJobDetailViewModel(searchJobInteractor: SearchJobInteractor,
+                                  notificationInteractor: NotificationInteractor): ViewModel =
+            JobDetailViewModel(searchJobInteractor, notificationInteractor)
 
     @Provides
     @IntoMap

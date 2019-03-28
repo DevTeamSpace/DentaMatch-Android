@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -39,6 +38,7 @@ import com.appster.dentamatch.base.BaseResponse;
 import com.appster.dentamatch.network.response.jobs.JobDetailResponse;
 import com.appster.dentamatch.presentation.common.HomeActivity;
 import com.appster.dentamatch.presentation.tracks.TrackJobsDataHelper;
+import com.appster.dentamatch.util.ActivityUtils;
 import com.appster.dentamatch.util.Alert;
 import com.appster.dentamatch.util.ChatUtilsKt;
 import com.appster.dentamatch.util.Constants;
@@ -71,7 +71,8 @@ import kotlin.Pair;
  */
 
 public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
-        implements OnMapReadyCallback, View.OnClickListener, Toolbar.OnMenuItemClickListener {
+        implements OnMapReadyCallback, View.OnClickListener, Toolbar.OnMenuItemClickListener,
+                   ApplyTempJobCallback {
 
     private static final String TAG = LogUtils.makeLogTag(JobDetailActivity.class);
     private final int DESC_MAX_LINES = 4;
@@ -81,6 +82,7 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
     private static final int VIEW_DELAY_TIME = 200;
 
     private int jobId;
+    private int notificationId;
     private ActivityJobDetailBinding mBinding;
     private GoogleMap mGoogleMap;
     private JobDetailModel mJobDetailModel;
@@ -97,6 +99,9 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
         if (getIntent().hasExtra(Constants.EXTRA_JOB_DETAIL_ID)) {
             jobId = getIntent().getIntExtra(Constants.EXTRA_JOB_DETAIL_ID, 0);
             mMatchPercent = getIntent().getDoubleExtra(Constants.EXTRA_MATCHES_PERCENT, 0);
+        }
+        if (getIntent().hasExtra(Constants.EXTRA_NOTIFICATION_ID)) {
+            notificationId = getIntent().getIntExtra(Constants.EXTRA_NOTIFICATION_ID, 0);
         }
         mBinding.mapJobDetail.onCreate(savedInstanceState);
         mBinding.mapJobDetail.getMapAsync(this);
@@ -115,7 +120,7 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
         if (result != null && result.getFirst() != null && result.getSecond() != null) {
             int jobId = result.getFirst();
             int status = result.getSecond();
-            mJobDetailModel.setIsSaved(status);
+            mJobDetailModel.setSaved(status);
             mBinding.cbJobSelection.setChecked(status == 1);
             EventBus.getDefault().post(new SaveUnSaveEvent(jobId, status));
             TrackJobsDataHelper.getInstance().updateSavedData();
@@ -221,11 +226,6 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
     }
 
     @Override
-    public void onBackPressed() {
-        finish();
-    }
-
-    @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.hold_still, R.anim.pull_out);
@@ -275,7 +275,7 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
     public void onClick(final View v) {
         int JOB_UNSAVED = 0;
         switch (v.getId()) {
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
             case R.id.tv_job_detail_doc_read_more:
@@ -288,7 +288,7 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
                 }
                 break;
             case R.id.cb_job_selection:
-                final int status = mJobDetailModel.getIsSaved() == JOB_SAVED ? JOB_UNSAVED : JOB_SAVED;
+                final int status = mJobDetailModel.isSaved() == JOB_SAVED ? JOB_UNSAVED : JOB_SAVED;
 
                 if (status == JOB_UNSAVED) {
                     Alert.createYesNoAlert(JobDetailActivity.this,
@@ -316,7 +316,19 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
             case R.id.btn_apply_job:
                 if (PreferenceUtil.getUserModel().getIsCompleted() == Constants.PROFILE_COMPLETED_STATUS
                         || PreferenceUtil.getUserModel().getProfileCompleted() == Constants.PROFILE_COMPLETED_STATUS) {
-                    applyJob();
+                    JobDetailResponse jobDetail = viewModel.getJobDetailResponse().getValue();
+                    boolean isTemporaryJob = jobDetail != null
+                            && jobDetail.getResult() != null
+                            && jobDetail.getResult().getJobType() == Constants.JOBTYPE.TEMPORARY.getValue();
+                    if (isTemporaryJob) {
+                        ActivityUtils.Companion.replaceFragment(getSupportFragmentManager(),
+                                android.R.id.content,
+                                ApplyTempJobFragment.Companion.newInstance(notificationId, jobDetail.getResult()),
+                                ApplyTempJobFragment.TAG,
+                                true);
+                    } else{
+                        applyJob();
+                    }
                 } else {
                     Intent intent = new Intent(getApplicationContext(), CompleteProfileDialogActivity.class);
                     startActivity(intent);
@@ -354,25 +366,25 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
 
                 ArrayList<String> partTimeDaysArray = new ArrayList<>();
                 int ADDED_PART_TIME = 1;
-                if (dataModel.getIsMonday() == ADDED_PART_TIME) {
+                if (dataModel.isMonday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.mon));
                 }
-                if (dataModel.getIsTuesday() == ADDED_PART_TIME) {
+                if (dataModel.isTuesday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.tue));
                 }
-                if (dataModel.getIsWednesday() == ADDED_PART_TIME) {
+                if (dataModel.isWednesday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.wed));
                 }
-                if (dataModel.getIsThursday() == ADDED_PART_TIME) {
+                if (dataModel.isThursday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.thu));
                 }
-                if (dataModel.getIsFriday() == ADDED_PART_TIME) {
+                if (dataModel.isFriday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.fri));
                 }
-                if (dataModel.getIsSaturday() == ADDED_PART_TIME) {
+                if (dataModel.isSaturday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.sat));
                 }
-                if (dataModel.getIsSunday() == ADDED_PART_TIME) {
+                if (dataModel.isSunday() == ADDED_PART_TIME) {
                     partTimeDaysArray.add(getString(R.string.sun));
                 }
                 String partTimeDays = TextUtils.join(", ", partTimeDaysArray);
@@ -483,8 +495,8 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
                 }
             }, VIEW_DELAY_TIME);
 
-            if (dataModel.getIsApplied() != 0) {
-                switch (Constants.JOBSTATUS.values()[dataModel.getIsApplied() - 1]) {
+            if (dataModel.isApplied() != 0) {
+                switch (Constants.JOBSTATUS.values()[dataModel.isApplied() - 1]) {
                     case APPLIED:
                         mBinding.tvJobStatus.setText(getString(R.string.txt_applied));
                         mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
@@ -495,7 +507,7 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
                         mBinding.tvJobStatus.setText(getString(R.string.txt_invited));
                         mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
                         mBinding.tvJobStatus.setVisibility(View.VISIBLE);
-                        mBinding.btnApplyJob.setVisibility(View.GONE);
+                        mBinding.btnApplyJob.setVisibility(View.VISIBLE);
                         break;
                     case SHORTLISTED:
                         mBinding.tvJobStatus.setText(getString(R.string.txt_shortlisted));
@@ -534,7 +546,7 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
                 mBinding.tvJobStatus.setVisibility(View.GONE);
                 mBinding.btnApplyJob.setVisibility(View.VISIBLE);
             }
-            if (dataModel.getIsSaved() == JOB_SAVED) {
+            if (dataModel.isSaved() == JOB_SAVED) {
                 mBinding.cbJobSelection.setChecked(true);
             } else {
                 mBinding.cbJobSelection.setChecked(false);
@@ -703,5 +715,10 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onDatesSelected(int notificationId, @NotNull ArrayList<String> dates) {
+        viewModel.acceptJobInvite(notificationId, dates);
     }
 }

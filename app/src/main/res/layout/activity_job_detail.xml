@@ -2,682 +2,697 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/job_detail_toolbar"
             layout="@layout/toolbar_general" />
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <FrameLayout
+            android:id="@+id/job_detail_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/btn_apply_job"
-            android:layout_below="@+id/job_detail_toolbar">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <LinearLayout
-                android:id="@+id/lay_job_detail_holder"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/cell_color"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:layout_height="match_parent">
 
-                <RelativeLayout
+                <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white_color">
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/btn_apply_job">
 
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_name"
-                        style="@style/text_view_large"
+                    <LinearLayout
+                        android:id="@+id/lay_job_detail_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_15"
-                        android:layout_toStartOf="@+id/cb_job_selection"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:paddingTop="@dimen/margin_small"
-                        android:textColor="@color/cerulean_color"
-                        app:customFont="@string/font_medium" />
+                        android:background="@color/cell_color"
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
-                    <com.google.android.flexbox.FlexboxLayout
-                        android:id="@+id/tempDateContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_name"
-                        android:layout_marginEnd="@dimen/margin_6"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_toStartOf="@+id/tv_matches_percent"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        app:alignContent="flex_start"
-                        app:alignItems="flex_start"
-                        app:dividerDrawable="@drawable/divider"
-                        app:flexWrap="wrap"
-                        app:justifyContent="flex_start"
-                        app:showDivider="beginning|middle" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white_color">
 
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_date"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_name"
-                        android:layout_marginStart="@dimen/margin_12"
-                        android:layout_marginEnd="@dimen/margin_12"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_toStartOf="@+id/tv_matches_percent"
-                        android:textColor="@color/black_color"
-                        app:customFont="@string/font_regular"
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_name"
+                                style="@style/text_view_large"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_15"
+                                android:layout_marginEnd="@dimen/margin_normal"
+                                android:layout_toStartOf="@+id/cb_job_selection"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:paddingTop="@dimen/margin_small"
+                                android:textColor="@color/cerulean_color"
+                                app:customFont="@string/font_medium" />
 
-                        />
+                            <com.google.android.flexbox.FlexboxLayout
+                                android:id="@+id/tempDateContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_name"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginEnd="@dimen/margin_6"
+                                android:layout_toStartOf="@+id/tv_matches_percent"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                app:alignContent="flex_start"
+                                app:alignItems="flex_start"
+                                app:dividerDrawable="@drawable/divider"
+                                app:flexWrap="wrap"
+                                app:justifyContent="flex_start"
+                                app:showDivider="beginning|middle" />
 
-                    <CheckBox
-                        android:id="@+id/cb_job_selection"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignTop="@+id/tv_job_detail_name"
-                        android:layout_marginEnd="@dimen/margin_35"
-                        android:button="@drawable/checkbox_star_selector"
-                        android:gravity="center"
-                        android:padding="@dimen/margin_small" />
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_date"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_name"
+                                android:layout_marginStart="@dimen/margin_12"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginEnd="@dimen/margin_12"
+                                android:layout_toStartOf="@+id/tv_matches_percent"
+                                android:textColor="@color/black_color"
+                                app:customFont="@string/font_regular"
+
+                                />
+
+                            <CheckBox
+                                android:id="@+id/cb_job_selection"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignTop="@+id/tv_job_detail_name"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="@dimen/margin_35"
+                                android:button="@drawable/checkbox_star_selector"
+                                android:gravity="center"
+                                android:padding="@dimen/margin_small" />
 
 
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_matches_percent"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_below="@+id/cb_job_selection"
-                        android:layout_marginBottom="@dimen/margin_1"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:paddingTop="@dimen/margin_small"
-                        android:textAllCaps="true"
-                        android:textColor="@color/black_match_text"
-                        android:textSize="@dimen/text_size_16"
-                        android:visibility="gone"
-                        app:customFont="@string/font_medium"
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_matches_percent"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/cb_job_selection"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="@dimen/margin_normal"
+                                android:layout_marginBottom="@dimen/margin_1"
+                                android:paddingTop="@dimen/margin_small"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black_match_text"
+                                android:textSize="@dimen/text_size_16"
+                                android:visibility="gone"
+                                app:customFont="@string/font_medium"
 
-                        />
+                                />
 
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_match"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_below="@+id/cb_job_selection"
-                        android:layout_marginEnd="35dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/txt_match"
-                        android:textAllCaps="true"
-                        android:textColor="@color/black_match_text"
-                        android:textSize="@dimen/text_size_11"
-                        android:visibility="gone"
-                        app:customFont="@string/font_medium"
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_match"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/cb_job_selection"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="35dp"
+                                android:text="@string/txt_match"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black_match_text"
+                                android:textSize="@dimen/text_size_11"
+                                android:visibility="gone"
+                                app:customFont="@string/font_medium"
 
-                        />
+                                />
 
-                </RelativeLayout>
+                        </RelativeLayout>
 
-                <LinearLayout
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white_color"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_type"
+                                style="@style/text_view_normal"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_weight=".35"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/margin_medium"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingEnd="@dimen/margin_medium"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:textColor="@color/white_color"
+                                app:customFont="@string/font_medium" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_doc_time"
+                                style="@style/text_view_small"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_15"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_15"
+                                android:layout_weight=".35"
+                                android:gravity="start|center_vertical"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:textAllCaps="true"
+                                app:customFont="@string/font_regular" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_status"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginEnd="@dimen/margin_normal"
+                                android:layout_weight=".30"
+                                android:gravity="end|center_vertical"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:text="@string/txt_applied"
+                                android:textAllCaps="true"
+                                android:textColor="@color/light_moss_green"
+                                android:textSize="@dimen/text_size_12"
+                                android:visibility="invisible"
+                                app:customFont="@string/font_medium" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+
+                        <com.appster.dentamatch.widget.CustomTextView
+                            style="@style/text_view_normal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_normal"
+                            android:layout_marginTop="@dimen/margin_25"
+                            android:layout_marginBottom="@dimen/margin_5"
+                            android:drawableStart="@drawable/ic_about"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:paddingTop="@dimen/margin_small"
+                            android:paddingBottom="@dimen/margin_small"
+                            android:text="@string/label_about"
+                            android:textColor="@color/cell_text_color"
+                            app:customFont="@string/font_medium" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white_color">
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_office_location_label"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_15"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:text="@string/label_office_location"
+                                android:textColor="@color/dark_state_blue_color"
+                                app:customFont="@string/font_medium" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_doc_name"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_office_location_label"
+                                android:layout_alignStart="@+id/tv_office_location_label"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                app:customFont="@string/font_bold" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_doc_address"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_doc_name"
+                                android:layout_alignStart="@+id/tv_office_location_label"
+                                android:layout_toStartOf="@+id/tv_job_detail_job_distance"
+                                android:lineSpacingMultiplier="1.2"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:textColor="@color/grayish_brown_color"
+                                app:customFont="@string/font_regular" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_hwo_label"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_doc_address"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_15"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:text="@string/hwo_label"
+                                android:textColor="@color/dark_state_blue_color"
+                                android:visibility="gone"
+                                app:customFont="@string/font_medium" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_hwo_value"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_hwo_label"
+                                android:layout_alignStart="@+id/tv_hwo_label"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:textColor="@color/grayish_brown_color"
+                                android:visibility="gone"
+                                app:customFont="@string/font_regular" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_office_type_label"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_hwo_value"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_15"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:text="@string/office_type_label"
+                                android:textColor="@color/dark_state_blue_color"
+                                app:customFont="@string/font_medium" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_doc_office_type"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_office_type_label"
+                                android:layout_alignStart="@+id/tv_office_location_label"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:textColor="@color/grayish_brown_color"
+                                app:customFont="@string/font_regular" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_total_job_label"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_doc_office_type"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_15"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:text="@string/total_job_openings_label"
+                                android:textColor="@color/dark_state_blue_color"
+                                app:customFont="@string/font_medium" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_job_openings"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_total_job_label"
+                                android:layout_alignStart="@+id/tv_office_location_label"
+                                android:layout_marginBottom="@dimen/margin_20"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:textColor="@color/grayish_brown_color"
+                                app:customFont="@string/font_regular" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_job_distance"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignTop="@+id/tv_office_location_label"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:lineSpacingMultiplier="1.2"
+                                android:textSize="@dimen/text_size_11"
+                                app:customFont="@string/font_regular"
+
+                                />
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+                        <com.appster.dentamatch.widget.CustomTextView
+                            style="@style/text_view_normal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_normal"
+                            android:layout_marginTop="@dimen/margin_25"
+                            android:layout_marginBottom="@dimen/margin_5"
+                            android:drawableStart="@drawable/ic_description"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:paddingTop="@dimen/margin_small"
+                            android:paddingBottom="@dimen/margin_small"
+                            android:text="@string/job_description_label"
+                            android:textColor="@color/cell_text_color"
+                            app:customFont="@string/font_medium" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+                        <RelativeLayout
+                            android:id="@+id/lay_job_detail_desc_holder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white_color">
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_doc_description"
+                                style="@style/text_view_normal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:layout_marginBottom="@dimen/margin_2"
+                                android:ellipsize="end"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:text="@string/lorem_ipsum_medium"
+
+                                app:customFont="@string/font_regular" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_doc_read_more"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_doc_description"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/margin_12"
+                                android:layout_marginBottom="@dimen/margin_12"
+                                android:ellipsize="end"
+                                android:maxLines="4"
+                                android:text="@string/txt_read_more"
+                                android:textColor="@color/cerulean_color"
+                                app:customFont="@string/font_regular" />
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+                        <com.appster.dentamatch.widget.CustomTextView
+                            style="@style/text_view_normal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_normal"
+                            android:layout_marginTop="@dimen/margin_25"
+                            android:layout_marginBottom="@dimen/margin_5"
+                            android:drawableStart="@drawable/ic_office_description"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:paddingTop="@dimen/margin_small"
+                            android:paddingBottom="@dimen/margin_small"
+                            android:text="@string/office_description_label"
+                            android:textColor="@color/cell_text_color"
+                            app:customFont="@string/font_medium" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white_color">
+
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_office_description"
+                                style="@style/text_view_normal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:layout_marginEnd="@dimen/margin_20"
+                                android:layout_marginBottom="@dimen/margin_10"
+                                android:ellipsize="end"
+                                android:paddingTop="@dimen/margin_small"
+                                android:paddingBottom="@dimen/margin_small"
+                                android:text="@string/lorem_ipsum_medium"
+                                app:customFont="@string/font_regular" />
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_office_read_more"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_office_description"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/margin_15"
+                                android:layout_marginBottom="@dimen/margin_12"
+                                android:ellipsize="end"
+                                android:maxLines="4"
+                                android:text="@string/txt_read_more"
+                                android:textColor="@color/cerulean_color"
+                                app:customFont="@string/font_regular" />
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+                        <com.appster.dentamatch.widget.CustomTextView
+                            style="@style/text_view_normal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_normal"
+                            android:layout_marginTop="@dimen/margin_25"
+                            android:layout_marginBottom="@dimen/margin_5"
+                            android:drawableStart="@drawable/ic_working_hours"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:paddingTop="@dimen/margin_small"
+                            android:paddingBottom="@dimen/margin_small"
+                            android:text="@string/working_hours_label"
+                            android:textColor="@color/cell_text_color"
+                            app:customFont="@string/font_medium" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white_color">
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_mon"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                android:visibility="gone" />
+                            <!--app:customFont="@string/font_bold" />-->
+
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_tue"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_mon"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                android:visibility="gone" />
+                            <!--app:customFont="@string/font_bold" />-->
+
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_wed"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_tue"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                android:visibility="gone" />
+                            <!--app:customFont="@string/font_bold" />-->
+
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_thu"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_wed"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                android:visibility="gone" />
+                            <!--app:customFont="@string/font_bold" />-->
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_fri"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_thu"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                android:visibility="gone" />
+                            <!--app:customFont="@string/font_bold" />-->
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_sat"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_fri"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                android:visibility="gone" />
+                            <!--app:customFont="@string/font_bold" />-->
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_sun"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_job_detail_sat"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                android:visibility="gone" />
+                            <!--app:customFont="@string/font_bold" />-->
+
+                            <com.appster.dentamatch.widget.CustomTextView
+                                android:id="@+id/tv_job_detail_full"
+                                style="@style/text_view_normal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_normal"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:layout_marginBottom="@dimen/margin_medium"
+                                android:textColor="@color/black_color"
+                                android:visibility="gone" />
+                            <!--app:customFont="@string/font_medium" />-->
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray"
+                            android:paddingBottom="@dimen/margin_5" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/margin_10" />
+
+                        <com.appster.dentamatch.widget.CustomTextView
+                            android:id="@+id/tv_map"
+                            style="@style/text_view_normal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_normal"
+                            android:layout_marginTop="@dimen/margin_25"
+                            android:layout_marginBottom="@dimen/margin_5"
+                            android:drawableStart="@drawable/ic_job_map"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:paddingTop="@dimen/margin_small"
+                            android:paddingBottom="@dimen/margin_small"
+                            android:text="@string/map_label"
+                            android:textColor="@color/cell_text_color"
+                            app:customFont="@string/font_medium" />
+
+                        <View
+                            android:id="@+id/line_map"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/line_height"
+                            android:background="@color/light_gray" />
+
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/map_job_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp" />
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+                <com.appster.dentamatch.widget.CustomButton
+                    android:id="@+id/btn_apply_job"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white_color"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_type"
-                        style="@style/text_view_normal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_weight=".35"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingEnd="@dimen/margin_medium"
-                        android:paddingStart="@dimen/margin_medium"
-                        android:paddingTop="@dimen/margin_small"
-                        android:textColor="@color/white_color"
-                        app:customFont="@string/font_medium" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_doc_time"
-                        style="@style/text_view_small"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_15"
-                        android:layout_marginStart="@dimen/margin_15"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_weight=".35"
-                        android:gravity="start|center_vertical"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:textAllCaps="true"
-                        app:customFont="@string/font_regular" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_status"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:layout_weight=".30"
-                        android:gravity="end|center_vertical"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:text="@string/txt_applied"
-                        android:textAllCaps="true"
-                        android:textColor="@color/light_moss_green"
-                        android:textSize="@dimen/text_size_12"
-                        android:visibility="invisible"
-                        app:customFont="@string/font_medium" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/button_apply_for_job"
+                    android:textColor="@color/white_color"
+                    android:visibility="gone" />
 
                 <com.appster.dentamatch.widget.CustomTextView
+                    android:id="@+id/tv_job_not_found"
                     style="@style/text_view_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_5"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_25"
-                    android:drawablePadding="@dimen/margin_10"
-                    android:drawableStart="@drawable/ic_about"
-                    android:paddingBottom="@dimen/margin_small"
+                    android:layout_centerInParent="true"
                     android:paddingTop="@dimen/margin_small"
-                    android:text="@string/label_about"
-                    android:textColor="@color/cell_text_color"
-                    app:customFont="@string/font_medium" />
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white_color">
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_office_location_label"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_15"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:text="@string/label_office_location"
-                        android:textColor="@color/dark_state_blue_color"
-                        app:customFont="@string/font_medium" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_doc_name"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/tv_office_location_label"
-                        android:layout_below="@+id/tv_office_location_label"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        app:customFont="@string/font_bold" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_doc_address"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/tv_office_location_label"
-                        android:layout_below="@+id/tv_job_detail_doc_name"
-                        android:layout_toStartOf="@+id/tv_job_detail_job_distance"
-                        android:lineSpacingMultiplier="1.2"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:textColor="@color/grayish_brown_color"
-                        app:customFont="@string/font_regular" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_hwo_label"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_doc_address"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_15"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:text="@string/hwo_label"
-                        android:textColor="@color/dark_state_blue_color"
-                        android:visibility="gone"
-                        app:customFont="@string/font_medium" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_hwo_value"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/tv_hwo_label"
-                        android:layout_below="@+id/tv_hwo_label"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:textColor="@color/grayish_brown_color"
-                        android:visibility="gone"
-                        app:customFont="@string/font_regular" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_office_type_label"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_hwo_value"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_15"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:text="@string/office_type_label"
-                        android:textColor="@color/dark_state_blue_color"
-                        app:customFont="@string/font_medium" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_doc_office_type"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/tv_office_location_label"
-                        android:layout_below="@+id/tv_job_detail_office_type_label"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:textColor="@color/grayish_brown_color"
-                        app:customFont="@string/font_regular" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_total_job_label"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_doc_office_type"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_15"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:text="@string/total_job_openings_label"
-                        android:textColor="@color/dark_state_blue_color"
-                        app:customFont="@string/font_medium" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_job_openings"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/tv_office_location_label"
-                        android:layout_below="@+id/tv_job_detail_total_job_label"
-                        android:layout_marginBottom="@dimen/margin_20"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:textColor="@color/grayish_brown_color"
-                        app:customFont="@string/font_regular" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_job_distance"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignTop="@+id/tv_office_location_label"
-                        android:layout_marginEnd="@dimen/margin_20"
-                        android:lineSpacingMultiplier="1.2"
-                        android:textSize="@dimen/text_size_11"
-                        app:customFont="@string/font_regular"
-
-                        />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
-                <com.appster.dentamatch.widget.CustomTextView
-                    style="@style/text_view_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_5"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_25"
-                    android:drawablePadding="@dimen/margin_10"
-                    android:drawableStart="@drawable/ic_description"
                     android:paddingBottom="@dimen/margin_small"
-                    android:paddingTop="@dimen/margin_small"
-                    android:text="@string/job_description_label"
-                    android:textColor="@color/cell_text_color"
+                    android:text="@string/txt_job_expired"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
                     app:customFont="@string/font_medium" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:id="@+id/lay_job_detail_desc_holder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white_color">
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_doc_description"
-                        style="@style/text_view_normal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_2"
-                        android:layout_marginEnd="@dimen/margin_20"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_10"
-                        android:ellipsize="end"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:text="@string/lorem_ipsum_medium"
-
-                        app:customFont="@string/font_regular" />
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_doc_read_more"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_doc_description"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/margin_12"
-                        android:layout_marginTop="@dimen/margin_12"
-                        android:ellipsize="end"
-                        android:maxLines="4"
-                        android:text="@string/txt_read_more"
-                        android:textColor="@color/cerulean_color"
-                        app:customFont="@string/font_regular" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
-                <com.appster.dentamatch.widget.CustomTextView
-                    style="@style/text_view_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_5"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_25"
-                    android:drawablePadding="@dimen/margin_10"
-                    android:drawableStart="@drawable/ic_office_description"
-                    android:paddingBottom="@dimen/margin_small"
-                    android:paddingTop="@dimen/margin_small"
-                    android:text="@string/office_description_label"
-                    android:textColor="@color/cell_text_color"
-                    app:customFont="@string/font_medium" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white_color">
+            </RelativeLayout>
+        </FrameLayout>
 
 
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_office_description"
-                        style="@style/text_view_normal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_10"
-                        android:layout_marginEnd="@dimen/margin_20"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_10"
-                        android:ellipsize="end"
-                        android:paddingBottom="@dimen/margin_small"
-                        android:paddingTop="@dimen/margin_small"
-                        android:text="@string/lorem_ipsum_medium"
-                        app:customFont="@string/font_regular" />
+    </LinearLayout>
 
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_office_read_more"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_office_description"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="@dimen/margin_12"
-                        android:layout_marginTop="@dimen/margin_15"
-                        android:ellipsize="end"
-                        android:maxLines="4"
-                        android:text="@string/txt_read_more"
-                        android:textColor="@color/cerulean_color"
-                        app:customFont="@string/font_regular" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
-                <com.appster.dentamatch.widget.CustomTextView
-                    style="@style/text_view_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_5"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_25"
-                    android:drawablePadding="@dimen/margin_10"
-                    android:drawableStart="@drawable/ic_working_hours"
-                    android:paddingBottom="@dimen/margin_small"
-                    android:paddingTop="@dimen/margin_small"
-                    android:text="@string/working_hours_label"
-                    android:textColor="@color/cell_text_color"
-                    app:customFont="@string/font_medium" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white_color">
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_mon"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        android:visibility="gone" />
-                    <!--app:customFont="@string/font_bold" />-->
-
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_tue"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_mon"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        android:visibility="gone" />
-                    <!--app:customFont="@string/font_bold" />-->
-
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_wed"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_tue"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        android:visibility="gone" />
-                    <!--app:customFont="@string/font_bold" />-->
-
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_thu"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_wed"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        android:visibility="gone" />
-                    <!--app:customFont="@string/font_bold" />-->
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_fri"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_thu"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        android:visibility="gone" />
-                    <!--app:customFont="@string/font_bold" />-->
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_sat"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_fri"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        android:visibility="gone" />
-                    <!--app:customFont="@string/font_bold" />-->
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_sun"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_job_detail_sat"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        android:visibility="gone" />
-                    <!--app:customFont="@string/font_bold" />-->
-
-                    <com.appster.dentamatch.widget.CustomTextView
-                        android:id="@+id/tv_job_detail_full"
-                        style="@style/text_view_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:textColor="@color/black_color"
-                        android:visibility="gone" />
-                    <!--app:customFont="@string/font_medium" />-->
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray"
-                    android:paddingBottom="@dimen/margin_5" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_10" />
-
-                <com.appster.dentamatch.widget.CustomTextView
-                    android:id="@+id/tv_map"
-                    style="@style/text_view_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_5"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_25"
-                    android:drawablePadding="@dimen/margin_10"
-                    android:drawableStart="@drawable/ic_job_map"
-                    android:paddingBottom="@dimen/margin_small"
-                    android:paddingTop="@dimen/margin_small"
-                    android:text="@string/map_label"
-                    android:textColor="@color/cell_text_color"
-                    app:customFont="@string/font_medium" />
-
-                <View
-                    android:id="@+id/line_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@color/light_gray" />
-
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/map_job_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-        <com.appster.dentamatch.widget.CustomButton
-            android:id="@+id/btn_apply_job"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimary"
-            android:text="@string/button_apply_for_job"
-            android:textColor="@color/white_color"
-            android:visibility="gone" />
-
-        <com.appster.dentamatch.widget.CustomTextView
-            android:id="@+id/tv_job_not_found"
-            style="@style/text_view_normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:paddingBottom="@dimen/margin_small"
-            android:paddingTop="@dimen/margin_small"
-            android:text="@string/txt_job_expired"
-            android:textColor="@color/colorPrimary"
-            android:visibility="gone"
-            app:customFont="@string/font_medium" />
-    </RelativeLayout>
 </layout>

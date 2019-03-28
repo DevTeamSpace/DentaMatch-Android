@@ -226,7 +226,7 @@ public class UpdateProfileActivity extends BaseLoadingActivity<UpdateProfileView
             case R.id.et_job_title:
                 new BottomSheetJobTitle(UpdateProfileActivity.this, this, PreferenceUtil.getJobTitlePosition());
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
             case R.id.btn_save:

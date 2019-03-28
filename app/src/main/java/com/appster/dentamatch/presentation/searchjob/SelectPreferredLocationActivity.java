@@ -96,7 +96,7 @@ public class SelectPreferredLocationActivity extends BaseLoadingActivity<SelectP
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
             case R.id.txv_toolbar_general_right:

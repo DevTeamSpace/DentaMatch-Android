@@ -136,7 +136,7 @@ public class CertificateActivity extends BaseLoadingActivity<CertificateViewMode
                     postCertificateData();
                 }
                 break;
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
             default:

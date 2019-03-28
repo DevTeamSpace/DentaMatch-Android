@@ -113,7 +113,7 @@ public class CalendarFragment extends BaseLoadingFragment<CalendarViewModel>
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_tool_bar_left:
+            case R.id.ivToolBarLeft:
                 break;
             case R.id.txv_toolbar_general_right:
                 startActivity(new Intent(getActivity(), SetAvailabilityActivity.class));
