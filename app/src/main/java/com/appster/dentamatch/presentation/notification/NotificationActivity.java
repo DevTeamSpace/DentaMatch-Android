@@ -42,7 +42,7 @@ import kotlin.Pair;
 public class NotificationActivity extends BaseLoadingActivity<NotificationViewModel>
         implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener,
         NotificationAdapter.NotificationAdapterCallback, Toolbar.OnMenuItemClickListener,
-{, ApplyTempJobCallback
+        ApplyTempJobCallback {
 
     private ActivityNotificationBinding mBinder;
     private NotificationAdapter mNotificationAdapter;

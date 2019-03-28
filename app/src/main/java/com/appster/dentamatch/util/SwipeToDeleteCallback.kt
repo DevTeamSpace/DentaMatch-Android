@@ -35,7 +35,6 @@ class SwipeToDeleteCallback(private val adapter: SwipeableAdapter) :
                              isCurrentlyActive: Boolean) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val itemView = viewHolder.itemView
-        val iconMargin = (itemView.height - (icon?.intrinsicHeight ?: 0)) / 2
         val iconTop = itemView.top + (itemView.height - (icon?.intrinsicHeight ?: 0)) / 2
         val iconBottom = iconTop + (icon?.intrinsicHeight ?: 0)
         if (dX < 0) { // Swiping to the left

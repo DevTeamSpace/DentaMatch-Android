@@ -271,7 +271,7 @@
     <string name="working_hours_label">WORKING HOURS</string>
     <string name="map_label">MAP</string>
     <string name="button_apply_for_job">APPLY FOR JOB</string>
-    <string name="button_apply_for_job">accept job for temp jobs</string>
+    <string name="button_apply_for_temp_job">accept job for temp jobs</string>
     <string name="txt_part_time">Part Time</string>
     <string name="txt_full_time">Full Time</string>
     <string name="txt_temporary">Temporary</string>

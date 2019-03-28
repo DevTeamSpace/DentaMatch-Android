@@ -508,6 +508,7 @@ public class JobDetailActivity extends BaseLoadingActivity<JobDetailViewModel>
                         mBinding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.light_moss_green));
                         mBinding.tvJobStatus.setVisibility(View.VISIBLE);
                         mBinding.btnApplyJob.setVisibility(View.VISIBLE);
+                        mBinding.btnApplyJob.setText(R.string.button_apply_for_temp_job);
                         break;
                     case SHORTLISTED:
                         mBinding.tvJobStatus.setText(getString(R.string.txt_shortlisted));
