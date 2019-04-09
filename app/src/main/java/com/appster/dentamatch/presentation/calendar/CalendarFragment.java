@@ -53,6 +53,7 @@ public class CalendarFragment extends BaseLoadingFragment<CalendarViewModel>
     @Override
     public void onResume() {
         super.onResume();
+        getBookedJob(Calendar.getInstance());
 //        mJobAdapter.updateCalendarPosition();
     }
 
@@ -102,12 +103,6 @@ public class CalendarFragment extends BaseLoadingFragment<CalendarViewModel>
 
     private void onFailedRequestHiredJob() {
         mJobAdapter.setCalendarModel(mCalendarModel);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getBookedJob(Calendar.getInstance());
     }
 
     @Override

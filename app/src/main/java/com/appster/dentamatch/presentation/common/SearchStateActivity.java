@@ -105,7 +105,6 @@ public class SearchStateActivity extends BaseLoadingActivity<SearchStateViewMode
             case R.id.ivToolBarLeft:
                 onBackPressed();
                 break;
-
             default:
                 break;
         }
