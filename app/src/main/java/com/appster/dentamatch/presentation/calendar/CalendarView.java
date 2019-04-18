@@ -97,6 +97,7 @@ public class CalendarView extends LinearLayout
     public void onMonthChanged(int month) {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
         String monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
         String yearName = String.valueOf(calendar.get(Calendar.YEAR));
         mCurrentDate.setText(getContext().getString(R.string.calendar_month, monthName, yearName));

@@ -62,17 +62,10 @@ import java.io.File;
 public class UpdateProfileActivity extends BaseLoadingActivity<UpdateProfileViewModel>
         implements View.OnClickListener, ImageSelectedListener, JobTitleSelectionListener {
 
-    private static final int REQUEST_CODE_LOCATION = 102;
-
     private byte imageSourceType;
     private ActivityUpdateProfileBinding mBinding;
     private ProfileResponseData mProfileData;
-    private String mSelectedCity;
-    private String mSelectedState;
-    private String mSelectedCountry;
-
     private int mSelectedJobTitleID;
-
     private ArrayAdapter<PreferredJobLocationData> mPreferredJobLocationDataArrayAdapter;
     private int preferredJobLocationId;
 
@@ -172,9 +165,6 @@ public class UpdateProfileActivity extends BaseLoadingActivity<UpdateProfileView
     private void setViewData() {
         if (mProfileData != null) {
             mSelectedJobTitleID = mProfileData.getUser().getJobTitleId();
-            mSelectedCity = mProfileData.getUser().getPreferredCity();
-            mSelectedState = mProfileData.getUser().getPreferredState();
-            mSelectedCountry = mProfileData.getUser().getPreferredCountry();
             preferredJobLocationId = mProfileData.getUser().getPreferredJobLocationId();
             if (mSelectedJobTitleID == 0) {
                 mBinding.etJobTitle.setText(getString(R.string.msg_empty_job_title));
@@ -245,7 +235,8 @@ public class UpdateProfileActivity extends BaseLoadingActivity<UpdateProfileView
                 }
                 break;
             case R.id.create_profile_et_state:
-                startActivity(new Intent(this, SearchStateActivity.class));
+                startActivityForResult(new Intent(this, SearchStateActivity.class),
+                        Constants.REQUEST_CODE.REQUEST_CODE_STATE);
                 break;
             default:
                 break;
@@ -272,25 +263,7 @@ public class UpdateProfileActivity extends BaseLoadingActivity<UpdateProfileView
         super.onActivityResult(requestCode, resultCode, data);
 
         String mFilePath;
-        if (requestCode == REQUEST_CODE_LOCATION) {
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    mSelectedCity = data.getStringExtra(Constants.EXTRA_CITY_NAME);
-                    mSelectedState = data.getStringExtra(Constants.EXTRA_STATE_NAME);
-                    mSelectedCountry = data.getStringExtra(Constants.EXTRA_COUNTRY_NAME);
-                    if (TextUtils.isEmpty(mSelectedCity)) {
-                        mSelectedCity = "";
-                    }
-                    if (TextUtils.isEmpty(mSelectedState)) {
-                        mSelectedState = "";
-                    }
-                    if (TextUtils.isEmpty(mSelectedCountry)) {
-                        mSelectedCountry = "";
-                    }
-                }
-            }
-
-        } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
+        if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {
             if (resultCode == RESULT_OK) {
                 mFilePath = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
                 mFilePath = CameraUtil.getInstance().compressImage(mFilePath, this);
@@ -308,28 +281,27 @@ public class UpdateProfileActivity extends BaseLoadingActivity<UpdateProfileView
                     uploadImageApi(mFilePath);
                 }
             }
+        } else if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_STATE) {
+            if (resultCode == RESULT_OK && data.hasExtra(Constants.BundleKey.SEL_STATE)) {
+                String selectedState = data.getStringExtra(Constants.BundleKey.SEL_STATE);
+                mBinding.createProfileEtState.setText(selectedState);
+            }
         }
     }
 
     private void validateAndUpdate() {
         if (TextUtils.isEmpty(mBinding.etFname.getText().toString().trim())) {
             showToast(getString(R.string.error_no_first_name));
-
         } else if (TextUtils.isEmpty(mBinding.etLname.getText().toString().trim())) {
             showToast(getString(R.string.error_no_last_name));
-
         } else if (mSelectedJobTitleID == 0) {
             showToast(getString(R.string.error_no_job_type));
-
         } else if (mBinding.etJobTitle.getText().toString().equalsIgnoreCase(getString(R.string.txt_job_title_hint))) {
             showToast(getString(R.string.error_no_job_type));
-
         } else if (TextUtils.isEmpty(mBinding.etDesc.getText().toString().trim())) {
             showToast(getString(R.string.error_no_description));
-
         } else if (mBinding.createProfileEtLicence.isShown() && mBinding.createProfileEtLicence.getText().toString().trim().length() == 0) {
             showToast(getString(R.string.pls_enter_license_no));
-
         } else if (mBinding.createProfileEtLicence.isShown() && mBinding.createProfileEtState.getText().toString().trim().length() == 0) {
             showToast(getString(R.string.pls_enter_license_state));
         } else {
