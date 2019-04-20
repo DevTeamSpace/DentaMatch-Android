@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.appster.dentamatch.R;
 import com.appster.dentamatch.databinding.ItemNotificationBinding;
@@ -40,11 +39,7 @@ import com.appster.dentamatch.widget.CustomTextView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyHolder>
         implements View.OnClickListener, View.OnLongClickListener, SwipeableAdapter {
@@ -91,10 +86,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         if (mRecentlyDeletedItems != null) {
             updateItems(mRecentlyDeletedItems);
         }
-    }
-
-    ArrayList<NotificationData> getItems() {
-        return mNotificationList;
     }
 
     @Override
@@ -166,9 +157,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 holder.ivRead.setVisibility(View.INVISIBLE);
             }
 
-            /*
-              Set time of the notification.
-             */
             if (data.getCreatedAt() != null) {
                 holder.tvDuration.setVisibility(View.VISIBLE);
                 Date date = Utils.getDateNotification(data.getCreatedAt(), Constants.DateFormat.YYYYMMDDHHMMSS);
@@ -179,53 +167,59 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 holder.tvDuration.setVisibility(View.GONE);
             }
 
-
-            /*
-              if notification is OTHER we hide jobType, address,accept - reject layout and right arrow.
-              if notification is INVITE type show all views as visible.
-              else accept - reject layout is hidden and all other views are visible
-             */
-            if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER || data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_LICENCE_ACCEPT_REJ) {
-                holder.layoutInVite.setVisibility(View.GONE);
+            JobDetailModel jobDetailModel = data.getJobDetailModel();
+            int notificationType = data.getNotificationType();
+            if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_OTHER
+                    || notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_LICENCE_ACCEPT_REJ) {
+                holder.tvAccept.setVisibility(View.GONE);
+                holder.tvReject.setVisibility(View.GONE);
                 holder.tvJobType.setVisibility(View.GONE);
                 holder.tvAddress.setVisibility(View.GONE);
                 holder.ivRightArrow.setVisibility(View.GONE);
-
-            } else if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
-                holder.layoutInVite.setVisibility(View.VISIBLE);
+            } else if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
+                holder.tvAccept.setVisibility(View.VISIBLE);
+                holder.tvReject.setVisibility(View.VISIBLE);
                 holder.tvJobType.setVisibility(View.VISIBLE);
                 holder.ivRightArrow.setVisibility(View.VISIBLE);
                 setJobDetailData(data.getJobDetailModel(), holder);
                 holder.tvAddress.setVisibility(View.GONE);
             } else {
-                holder.layoutInVite.setVisibility(View.GONE);
+                holder.tvAccept.setVisibility(View.GONE);
+                holder.tvReject.setVisibility(View.GONE);
                 holder.tvJobType.setVisibility(View.VISIBLE);
                 holder.tvAddress.setVisibility(View.VISIBLE);
                 holder.ivRightArrow.setVisibility(View.VISIBLE);
                 setJobDetailData(data.getJobDetailModel(), holder);
-
             }
 
-            if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE && data.getSeen() == NOTIFICATION_UNREAD) {
-                holder.layoutInVite.setVisibility(View.VISIBLE);
-
+            if (notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE
+                    && data.getSeen() == NOTIFICATION_UNREAD) {
+                holder.tvAccept.setVisibility(View.VISIBLE);
+                holder.tvReject.setVisibility(View.VISIBLE);
             } else {
-                holder.layoutInVite.setVisibility(View.GONE);
+                holder.tvAccept.setVisibility(View.GONE);
+                holder.tvReject.setVisibility(View.GONE);
+            }
+            int jobType = -1;
+            if (jobDetailModel != null) {
+                jobType = jobDetailModel.getJobType();
+            }
+            boolean isTempJobInvite = jobType == Constants.JOBTYPE.TEMPORARY.getValue()
+                    && notificationType == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE;
+            if (isTempJobInvite) {
+                holder.messageButton.setVisibility(View.VISIBLE);
+            } else {
+                holder.messageButton.setVisibility(View.GONE);
             }
             int senderId = data.getSenderId();
             holder.itemView.setOnClickListener(v -> {
-                JobDetailModel jobDetailModel = data.getJobDetailModel();
                 if (jobDetailModel != null) {
                     int jobId = jobDetailModel.getId();
-                    if (data.getNotificationType() == Constants.NOTIFICATIONTYPES.NOTIFICATION_INVITE) {
+                    if (isTempJobInvite) {
                         redirectToDetail(jobId, senderId, data.getId());
                     } else if (data.getSeen() == NOTIFICATION_UNREAD) {
                         mCallback.readNotification(mNotificationList.get(position).getId());
                     } else {
-                            /*
-                              In case of recruiter deleted the job then user doesn't get the
-                              jobDetailModel.
-                             */
                         redirectToDetail(jobId, data.getId());
                     }
                 }
@@ -258,16 +252,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             if (model.getJobType() == Constants.JOBTYPE.PART_TIME.getValue()) {
                 holder.tvJobType.setText(mContext.getString(R.string.txt_part_time));
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_part_time);
-
             } else if (model.getJobType() == Constants.JOBTYPE.TEMPORARY.getValue()) {
                 holder.tvJobType.setText(mContext.getString(R.string.txt_temporary));
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_temporary);
-
-
             } else {
                 holder.tvJobType.setBackgroundResource(R.drawable.job_type_background_full_time);
                 holder.tvJobType.setText(mContext.getString(R.string.txt_full_time));
-
             }
         }
     }
@@ -322,19 +312,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             if (mNotificationList.get(position) != null) {
                 mNotificationList.get(position).setSeen(1);
                 updateItems(mNotificationList);
-            }
-        }
-    }
-
-    void onDeleteNotification(@Nullable Integer id) {
-        int position = getPositionById(id);
-        if (position != RecyclerView.NO_POSITION) {
-            mNotificationList.remove(position);updateItems(mNotificationList);
-            updateItems(mNotificationList);
-            if (mNotificationList.size() == 0) {
-                ((NotificationActivity) mContext).showHideEmptyLabel(View.VISIBLE);
-            } else {
-                ((NotificationActivity) mContext).showHideEmptyLabel(View.GONE);
             }
         }
     }
@@ -398,7 +375,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         private final Button messageButton;
         private final ImageView ivRead;
         private final ImageView ivRightArrow;
-        private final LinearLayout layoutInVite;
 
         MyHolder(View itemView) {
             super(itemView);
@@ -408,7 +384,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             tvDuration = mBinding.tvTime;
             tvAccept = mBinding.tvAccept;
             tvReject = mBinding.tvReject;
-            layoutInVite = mBinding.layoutInviteNotification;
             ivRead = mBinding.ivRead;
             ivRightArrow = mBinding.ivRightArrow;
             messageButton = mBinding.notificationMessageButton;
