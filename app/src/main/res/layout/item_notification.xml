@@ -1,134 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <android.support.constraint.Barrier
+            android:id="@+id/notification_header_barrier"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_18">
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="iv_read,tv_desc,iv_right_arrow" />
 
-            <ImageView
-                android:id="@+id/iv_read"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/shape_read_notification" />
+        <ImageView
+            android:id="@+id/iv_read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:background="@drawable/shape_read_notification"
+            app:layout_constraintEnd_toStartOf="@id/tv_desc"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_desc"
+            app:layout_constraintBottom_toBottomOf="@id/tv_desc"
+            tools:ignore="ContentDescription" />
 
-            <com.appster.dentamatch.widget.CustomTextView
-                android:id="@+id/tv_desc"
-                style="@style/text_view_normal"
-                android:layout_marginLeft="@dimen/margin_15"
-                android:layout_marginRight="@dimen/margin_15"
-                android:layout_toEndOf="@+id/iv_read"
-                android:layout_toStartOf="@+id/iv_right_arrow"
-                android:textColor="@color/chat_message"
-                android:textSize="@dimen/text_size_14"
-                app:customFont="@string/font_regular" />
+        <com.appster.dentamatch.widget.CustomTextView
+            android:id="@+id/tv_desc"
+            style="@style/text_view_normal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_18"
+            android:layout_marginLeft="@dimen/margin_15"
+            android:layout_marginRight="@dimen/margin_15"
+            android:textColor="@color/chat_message"
+            android:textSize="@dimen/text_size_14"
+            android:gravity="start"
+            app:customFont="@string/font_regular"
+            app:layout_constraintEnd_toStartOf="@id/iv_right_arrow"
+            app:layout_constraintStart_toEndOf="@id/iv_read"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/iv_right_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_arrow_right" />
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:background="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/tv_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_desc"
+            tools:ignore="ContentDescription" />
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_address"
             style="@style/text_view_normal"
-            android:layout_marginStart="@dimen/margin_50"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_medium"
             android:lineSpacingExtra="@dimen/margin_small_3"
             android:textColor="@color/chat_message"
             android:textSize="@dimen/text_size_14"
-            app:customFont="@string/font_regular" />
+            app:customFont="@string/font_regular"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/tv_desc"
+            app:layout_constraintTop_toBottomOf="@id/notification_header_barrier"
+            app:layout_constraintEnd_toEndOf="@id/tv_desc" />
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_job_type"
             style="@style/text_view_normal"
-            android:layout_marginStart="@dimen/margin_50"
-            android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
             android:lineSpacingExtra="@dimen/margin_small_3"
-            android:paddingBottom="@dimen/margin_5"
             android:paddingLeft="@dimen/margin_10"
-            android:paddingRight="@dimen/margin_10"
             android:paddingTop="@dimen/margin_5"
+            android:paddingRight="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_5"
             android:text="@string/txt_temporary"
             android:textColor="@color/white_color"
             android:textSize="@dimen/text_size_small"
-
-            app:customFont="@string/font_regular" />
+            app:customFont="@string/font_regular"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/tv_desc"
+            app:layout_constraintTop_toBottomOf="@id/tv_address"
+            app:layout_constraintEnd_toEndOf="@id/tv_desc"/>
 
         <com.appster.dentamatch.widget.CustomTextView
             android:id="@+id/tv_time"
             style="@style/text_view_normal"
-            android:layout_marginBottom="@dimen/margin_19"
-            android:layout_marginStart="@dimen/margin_50"
-            android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_19"
+            android:textAllCaps="true"
             android:textColor="@color/chat_message"
             android:textSize="@dimen/text_size_small"
-            android:textAllCaps="true"
-            app:customFont="@string/font_regular" />
+            app:customFont="@string/font_regular"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/tv_desc"
+            app:layout_constraintTop_toBottomOf="@id/tv_job_type"
+            app:layout_constraintEnd_toEndOf="@id/tv_desc"/>
 
-
-        <LinearLayout
-            android:id="@+id/layout_invite_notification"
-            android:layout_width="match_parent"
+        <android.support.constraint.Barrier
+            android:id="@+id/notification_info_barrier"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_19"
-            android:layout_marginStart="@dimen/margin_36"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tv_time,tv_job_type,tv_address"/>
 
-            <Button
-                android:id="@+id/tv_accept"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_accept"
-                style="?android:attr/borderlessButtonStyle"
-                android:textColor="@color/color_forgot_pwd"/>
+        <Button
+            android:id="@+id/tv_accept"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:text="@string/txt_accept"
+            android:textColor="@color/color_forgot_pwd"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@id/tv_reject"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/tv_desc"
+            app:layout_constraintTop_toBottomOf="@id/notification_info_barrier" />
 
-            <Button
-                android:id="@+id/tv_reject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_reject"
-                android:textColor="@color/red_color"
-                style="?android:attr/borderlessButtonStyle"/>
+        <Button
+            android:id="@+id/tv_reject"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:text="@string/txt_reject"
+            android:textColor="@color/red_color"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/notification_message_button"
+            app:layout_constraintStart_toEndOf="@id/tv_accept"
+            app:layout_constraintTop_toBottomOf="@id/notification_info_barrier" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+        <Button
+            android:id="@+id/notification_message_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:background="@drawable/message_button_background"
+            android:text="@string/txt_message"
+            android:textColor="@color/color_forgot_pwd"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/iv_right_arrow"
+            app:layout_constraintTop_toBottomOf="@id/notification_info_barrier" />
 
-            <Button
-                android:id="@+id/notification_message_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:text="@string/txt_message"
-                android:textColor="@color/color_forgot_pwd"
-                android:background="@drawable/message_button_background"
-                style="?android:attr/borderlessButtonStyle"/>
-        </LinearLayout>
+        <android.support.constraint.Barrier
+            android:id="@+id/notification_buttons_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tv_accept,tv_reject,notification_message_button"/>
 
         <View
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="@dimen/line_height"
-            android:background="@color/line_divider" />
-    </LinearLayout>
+            android:layout_marginTop="8dp"
+            android:background="@color/line_divider"
+            app:layout_constraintTop_toBottomOf="@id/notification_buttons_barrier"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 </layout>

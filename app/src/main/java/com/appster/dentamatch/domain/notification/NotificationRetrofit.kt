@@ -23,5 +23,5 @@ interface NotificationRetrofit {
     fun acceptRejectNotification(@Body request: AcceptRejectInviteRequest): Single<BaseResponse>
 
     @POST("users/notification-read")
-    fun readNotification(id: ReadNotificationRequest): Single<BaseResponse>
+    fun readNotification(@Body id: ReadNotificationRequest): Single<BaseResponse>
 }
