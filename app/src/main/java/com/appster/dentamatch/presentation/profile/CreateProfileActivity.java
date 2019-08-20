@@ -256,6 +256,7 @@ public class CreateProfileActivity extends BaseLoadingActivity<CreateProfileView
                 mPrevSelStatePos = data.getIntExtra(Constants.BundleKey.PREV_SEL_STATE, -1);
                 mBinder.createProfileEtState.setText(data.getStringExtra(Constants.BundleKey.SEL_STATE));
                 mBinder.etDescAboutMe.setFocusable(true);
+                mBinder.etDescAboutMe.requestFocus();
                 return;
             }
             if (requestCode == Constants.REQUEST_CODE.REQUEST_CODE_CAMERA) {

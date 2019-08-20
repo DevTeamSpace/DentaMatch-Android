@@ -150,6 +150,7 @@ class AuthInteractor(private val remoteRepository: AuthRemoteRepository,
         if (loginResponse.status == STATUS_SUCCESS) {
             mixpanelAPI.track(EVENT_SIGHUP)
             persistUserData(loginResponse)
+            PreferenceUtil.setIsLogin(true)
         }
         return loginResponse
     }
